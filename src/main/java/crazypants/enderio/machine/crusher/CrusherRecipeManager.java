@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -20,6 +19,7 @@ import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.util.Util;
 
 public class CrusherRecipeManager {
@@ -33,8 +33,6 @@ public class CrusherRecipeManager {
 
   static final CrusherRecipeManager instance = new CrusherRecipeManager();
 
-
-
   public static CrusherRecipeManager getInstance() {
     return instance;
   }
@@ -47,14 +45,7 @@ public class CrusherRecipeManager {
   
   private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
 
-  public CrusherRecipeManager() {
-    //    GrindingBall gb = new GrindingBall(new ItemStack(Items.flint));
-    //    gb.setGrindingMultiplier(1.25f);
-    //    gb.setChanceMultiplier(1.25f);
-    //    gb.setPowerMultiplier(0.75f);
-    //    gb.setDurationMJ(ORE_ENERGY_COST * 6);
-    //
-    //    balls.add(gb);
+  public CrusherRecipeManager() {   
   }
 
   public boolean isValidSagBall(ItemStack stack) {
@@ -124,7 +115,7 @@ public class CrusherRecipeManager {
   public void loadRecipesFromConfig() {
     GrindingBallTagHandler th = new GrindingBallTagHandler();
     RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, th);
-    balls.addAll(th.balls);
+    balls.addAll(th.balls.values());
     ballExcludes.addAll(th.excludes);
     Log.info("Loaded " + balls.size() + " grinding balls from SAG Mill config.");
     Log.info("Excluding " + ballExcludes.size() + " recipes from grinding balls bonus.");
@@ -177,18 +168,18 @@ public class CrusherRecipeManager {
     for (Recipe rec : newRecipes) {
       addRecipe(rec);
     }
-    Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
+    Log.info("Finished processing SAG Mill recipes. " + recipes.size() + " recipes avaliable.");
   }
 
-  public void addRecipe(ItemStack input, float energyCost, ItemStack output) {
+  public void addRecipe(ItemStack input, int energyCost, ItemStack output) {
     addRecipe(input, energyCost, new RecipeOutput(output, 1));
   }
 
-  public void addRecipe(ItemStack input, float energyCost, RecipeOutput... output) {
+  public void addRecipe(ItemStack input, int energyCost, RecipeOutput... output) {
     if(input == null || output == null) {
       return;
     }
-    addRecipe(new Recipe(new RecipeInput(input, false), energyCost, output));
+    addRecipe(new Recipe(new RecipeInput(input, false), energyCost, RecipeBonusType.MULTIPLY_OUTPUT, output));
   }
 
   public void addRecipe(Recipe recipe) {

@@ -78,5 +78,4 @@ public class ItemAlloy extends Item {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }
-
 }

@@ -27,6 +27,14 @@ public final class ForgeDirectionOffsets {
     return res;
   }
 
+  public static Vector3d absolueOffset(ForgeDirection dir) {
+    Vector3d res = forDirCopy(dir);
+    res.x = Math.abs(res.x);
+    res.y = Math.abs(res.y);
+    res.z = Math.abs(res.z);
+    return res;
+  }
+
   public ForgeDirection closest(float x, float y, float z) {
     float ax = Math.abs(x);
     float ay = Math.abs(y);

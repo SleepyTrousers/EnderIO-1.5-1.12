@@ -64,7 +64,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
       drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
     }
 
-    if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
+    if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
       tex = EnderIO.blockConduitBundle.getConnectorIcon();
       List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
       Tessellator tessellator = Tessellator.instance;

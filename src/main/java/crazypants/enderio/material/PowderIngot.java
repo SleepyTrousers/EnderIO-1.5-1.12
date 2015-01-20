@@ -1,14 +1,21 @@
 package crazypants.enderio.material;
 
+import static crazypants.util.OreDictionaryHelper.DUST_ENDERPEARL;
+import static crazypants.util.OreDictionaryHelper.INGOT_COPPER;
+import static crazypants.util.OreDictionaryHelper.INGOT_ENDERIUM;
+import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
+import static crazypants.util.OreDictionaryHelper.isRegistered;
+
 
 public enum PowderIngot {
 
-  POWDER_COAL("powderCoal"),
-  POWDER_IRON("powderIron"),
-  POWDER_GOLD("powderGold"),
-  POWDER_COPPER("powderCopper"),
-  POWDER_TIN("powderTin"),
-  POWDER_ENDER("powderEnder");
+  POWDER_COAL("powderCoal", null),
+  POWDER_IRON("powderIron", null),
+  POWDER_GOLD("powderGold", null),
+  POWDER_COPPER("powderCopper", INGOT_COPPER),
+  POWDER_TIN("powderTin", INGOT_TIN),
+  POWDER_ENDER("powderEnder", DUST_ENDERPEARL),
+  INGOT_ENDERIUM_BASE("ingotEnderiumBase", INGOT_ENDERIUM);
   // POWDER_LEAD("powderLead", "Lead Powder", "powderLead"),
   // POWDER_SILVER("powderSilver", "Silver Powder", "powderSilver"),
   // POWDER_BRONZE("powderBronze", "Bronze Powder", "powderBronze"),
@@ -21,10 +28,19 @@ public enum PowderIngot {
 
   public final String unlocalisedName;
   public final String iconKey;
+  public final String oreDictDependancy;
 
-  private PowderIngot(String unlocalisedName) {
+  private PowderIngot(String unlocalisedName, String oreDictDependancy) {
     this.unlocalisedName = "enderio." + unlocalisedName;
-    this.iconKey = "enderio:" + unlocalisedName;
+    iconKey = "enderio:" + unlocalisedName;
+    this.oreDictDependancy = oreDictDependancy;
+  }
+
+  public boolean isDependancyMet() {
+    if(oreDictDependancy == null) {
+      return true;
+    }
+    return isRegistered(oreDictDependancy);
   }
 
 }

@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.farm;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.farmers.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,55 +11,63 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class FarmersRegistry {
 
+  public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
+  
   public static void addFarmers() {
-    //vanilla
-    FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
-    FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
-    FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
-    FarmersCommune.instance.joinCommune(new NetherWartFarmer());
-    FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
-    FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
-    FarmersCommune.instance.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
-    FarmersCommune.instance.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
 
     addExtraUtilities();
-    addNutura();
+    addNatura();
     addTiC();
     addStillHungry();
+    addIC2();
+    addMFR();
+    addThaumcraft();
+
+    FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
+    FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
+    FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
+    FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
+    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.red_mushroom, Blocks.red_mushroom_block));
+    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.brown_mushroom, Blocks.brown_mushroom_block));
+    //special case of plantables to get spacing correct
+    FarmersCommune.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
+    FarmersCommune.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));
+    //'BlockNetherWart' is not an IGrowable
+    FarmersCommune.joinCommune(new NetherWartFarmer());
+    //Cocoa is odd
+    FarmersCommune.joinCommune(new CocoaFarmer());
+    //Handles all 'vanilla' style crops
+    FarmersCommune.joinCommune(DEFAULT_FARMER);
   }
 
-  private static void addStillHungry() {
-    String mod = "stillhungry";          
-    addSeed(mod, "strawberryBlock", "StillHungry_strawberrySeed");        
-    addPickable(mod, "grapeBlock", "StillHungry_grapeSeed");
-    addSeed(mod, "riceBlock", "StillHungry_riceSeed");
-  }
-
-
-  private static void addExtraUtilities() {
-    String mod = "ExtraUtilities";
-    String name = "plant/ender_lilly";
-    addSeed(mod, name, name);
-  }
-  
-  private static void addPickable(String mod, String blockName, String itemName) {
+  public static void addPickable(String mod, String blockName, String itemName) {
     Block cropBlock = GameRegistry.findBlock(mod, blockName);
     if(cropBlock != null) {
       Item seedItem = GameRegistry.findItem(mod, itemName);
       if(seedItem != null) {
-        FarmersCommune.instance.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
+        FarmersCommune.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
       }
     }
   }
-  
-  private static void addSeed(String mod, String blockName, String itemName) {
+
+  public static CustomSeedFarmer addSeed(String mod, String blockName, String itemName, Block... extraFarmland) {
     Block cropBlock = GameRegistry.findBlock(mod, blockName);
     if(cropBlock != null) {
       Item seedItem = GameRegistry.findItem(mod, itemName);
       if(seedItem != null) {
-        FarmersCommune.instance.joinCommune(new SeedFarmer(cropBlock, new ItemStack(seedItem)));
+        CustomSeedFarmer farmer = new CustomSeedFarmer(cropBlock, new ItemStack(seedItem));
+        if(extraFarmland != null) {
+          for (Block farmland : extraFarmland) {
+            if(farmland != null) {
+              farmer.addTilledBlock(farmland);
+            }
+          }
+        }
+        FarmersCommune.joinCommune(farmer);
+        return farmer;
       }
     }
+    return null;
   }
 
   private static void addTiC() {
@@ -71,7 +81,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 2; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
-          FarmersCommune.instance.joinCommune(farmer);
+          FarmersCommune.joinCommune(farmer);
         }
       }
     }
@@ -84,25 +94,26 @@ public final class FarmersRegistry {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
-          FarmersCommune.instance.joinCommune(farmer);
+          FarmersCommune.joinCommune(farmer);
         }
       }
     }
 
   }
 
-  private static void addNutura() {
+  private static void addNatura() {
     String mod = "Natura";
     String blockName = "N Crops";
 
     Block cropBlock = GameRegistry.findBlock(mod, blockName);
     if(cropBlock != null) {
+      DEFAULT_FARMER.addHarvestExlude(cropBlock);
       Item seedItem = GameRegistry.findItem(mod, "barley.seed");
       if(seedItem != null) {
         //barley
-        FarmersCommune.instance.joinCommune(new SeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
+        FarmersCommune.joinCommune(new CustomSeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
         // cotton
-        FarmersCommune.instance.joinCommune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
+        FarmersCommune.joinCommune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
       }
     }
 
@@ -114,9 +125,69 @@ public final class FarmersRegistry {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 12 + i));
           farmer.setRequiresFarmland(false);
-          FarmersCommune.instance.joinCommune(farmer);
+          FarmersCommune.joinCommune(farmer);
         }
       }
+    }
+
+    blockName = "florasapling";
+    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    if(saplingBlock != null) {
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock,
+          GameRegistry.findBlock(mod, "tree"),
+          GameRegistry.findBlock(mod, "willow"),
+          GameRegistry.findBlock(mod, "Dark Tree")));
+    }
+    blockName = "Rare Sapling";
+    saplingBlock = GameRegistry.findBlock(mod, blockName);
+    if(saplingBlock != null) {
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "Rare Tree")));
+    }
+
+  }
+
+  private static void addThaumcraft()
+  {
+    String mod = "Thaumcraft";
+    String manaBean = "ItemManaBean";
+    String manaPod = "blockManaPod";
+    Block block = GameRegistry.findBlock(mod,manaPod);
+    Item item = GameRegistry.findItem(mod,manaBean);
+    if (Config.farmManaBeansEnabled && block!=null && item!=null)
+    {
+      FarmersCommune.joinCommune(new ManaBeanFarmer(block, new ItemStack(item)));
+    }
+  }
+  
+  private static void addMFR() {
+    String mod = "MineFactoryReloaded";
+    String blockName = "rubberwood.sapling";
+    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    if(saplingBlock != null) {
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "rubberwood.log")));
+    }
+    
+  }
+
+  private static void addIC2() {
+    RubberTreeFarmerIC2 rtf = new RubberTreeFarmerIC2();
+    if(rtf.isValid()) {
+      FarmersCommune.joinCommune(rtf);
+    }
+  }
+
+  private static void addStillHungry() {
+    String mod = "stillhungry";
+    addPickable(mod, "grapeBlock", "StillHungry_grapeSeed");
+  }
+
+  private static void addExtraUtilities() {
+    String mod = "ExtraUtilities";
+    String name = "plant/ender_lilly";
+
+    CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.end_stone, GameRegistry.findBlock(mod, "decorativeBlock1"));
+    if(farmer != null) {
+      farmer.setIgnoreGroundCanSustainCheck(true);
     }
   }
 

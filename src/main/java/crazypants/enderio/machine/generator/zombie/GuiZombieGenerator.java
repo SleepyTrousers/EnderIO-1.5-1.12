@@ -9,37 +9,33 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiZombieGenerator extends GuiMachineBase {
-
-  private TileZombieGenerator gen;
-
+public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
   public GuiZombieGenerator(InventoryPlayer inventory, TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity));
-    gen = tileEntity;
     
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
 
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("zombieGenerator.fuelTank");        
+        String heading = Lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.fuelTank));
+        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
       }
 
     });
-    
+
   }
-  
+
   @Override
   protected boolean showRecipeButton() {
     return false;
@@ -54,7 +50,7 @@ public class GuiZombieGenerator extends GuiMachineBase {
       int y = 19;
       int w = 15 + 4;
       int h = 47 + 4;
-      renderSlotHighlight(PULL_COLOR,x,y,w,h);     
+      renderSlotHighlight(PULL_COLOR, x, y, w, h);
     }
 
   }
@@ -66,28 +62,29 @@ public class GuiZombieGenerator extends GuiMachineBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    int scaled;
+    TileZombieGenerator gen = getTileEntity();
 
     FontRenderer fr = getFontRenderer();
-    double output = 0;
+    int output = 0;
     if(gen.isActive()) {
       output = gen.outputPerTick;
     }
-    String txt =  Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+    String txt = Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+        + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 
     int x = guiLeft + 80;
-    int y = guiTop + 21;    
+    int y = guiTop + 21;
     if(gen.fuelTank.getFluidAmount() > 0) {
-    
-      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 15, 47);
+
+      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if(gen.isActive()) {
-        txt = gen.tickPerMbFuel + " t/Mb";
+        txt = gen.tickPerBucketOfFuel / 1000 + " t/Mb";
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
-      }      
+      }
     }
 
     RenderUtil.bindTexture("enderio:textures/gui/zombieGenerator.png");

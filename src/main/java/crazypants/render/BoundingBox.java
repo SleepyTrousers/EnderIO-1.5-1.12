@@ -3,6 +3,8 @@ package crazypants.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector2f;
@@ -21,6 +23,10 @@ public final class BoundingBox {
   public final float maxY;
   public final float maxZ;
 
+  public BoundingBox(AxisAlignedBB bb) {
+    this(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+  }
+  
   public BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
     this.minX = minX;
     this.minY = minY;
@@ -49,6 +55,10 @@ public final class BoundingBox {
 
   public BoundingBox(BlockCoord bc) {
     this(bc.x, bc.y, bc.z, bc.x + 1, bc.y + 1, bc.z + 1);
+  }
+
+  public BoundingBox(Block block) {
+    this(block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ());
   }
 
   public BoundingBox expandBy(BoundingBox other) {
@@ -329,6 +339,10 @@ public final class BoundingBox {
       return this;
     }
     return new BoundingBox(mnX, mnY, mnZ, mxX, mxY, mxZ);
+  }
+
+  public AxisAlignedBB getAxisAlignedBB() {    
+    return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
 }

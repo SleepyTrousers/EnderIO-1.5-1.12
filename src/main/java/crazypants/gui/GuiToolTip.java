@@ -17,6 +17,8 @@ public class GuiToolTip {
   private int lastMouseX = -1;
 
   private int lastMouseY = -1;
+  
+  private boolean visible = true;
 
   public GuiToolTip(Rectangle bounds, String... lines) {
     this.bounds = bounds;
@@ -37,6 +39,14 @@ public class GuiToolTip {
     } else {
       text = new ArrayList<String>(lines);
     }
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
   public Rectangle getBounds() {
@@ -65,7 +75,10 @@ public class GuiToolTip {
     lastMouseY = mouseY;
   }
 
-  public boolean shouldDraw() {
+  public boolean shouldDraw() {    
+    if(!visible) {
+      return false;
+    }    
     updateText();
     if(mouseOverStart == 0) {
       return false;

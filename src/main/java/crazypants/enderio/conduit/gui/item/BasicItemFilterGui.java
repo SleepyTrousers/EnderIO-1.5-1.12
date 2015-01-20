@@ -5,13 +5,11 @@ import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
@@ -23,8 +21,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
   private static final int ID_STICKY = GuiExternalConnection.nextButtonId();    
   
-  private IItemConduit itemConduit;
-  private GuiExternalConnection gui;
+  private GuiContainerBase gui;
   
   private ToggleButtonEIO useMetaB;
   private ToggleButtonEIO useNbtB;
@@ -33,36 +30,47 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private ToggleButtonEIO stickyB;
     
   boolean isAdvanced;
-  boolean isInput;
+  boolean isStickyModeAvailable;
   
+  private IItemFilterContainer filterContainer;
   private ItemFilter filter;
   
-  public BasicItemFilterGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+  private int buttonIdOffset;
+  private int xOffset;
+  private int yOffset;
+
+  public BasicItemFilterGui(GuiContainerBase gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
+    this(gui, filterContainer, isStickyModeAvailable, 32, 68, 0);
+  }
+
+  public BasicItemFilterGui(GuiContainerBase gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset, int yOffset,
+      int buttonIdOffset) {
     this.gui = gui;
-    this.itemConduit = itemConduit;
-    this.isInput = isInput;
+    this.isStickyModeAvailable = isStickyModeAvailable;
+    this.filterContainer = filterContainer;
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;
+    this.buttonIdOffset = buttonIdOffset;
+
+
+    filter = filterContainer.getItemFilter();
     
-    if(isInput) {
-      filter = (ItemFilter) itemConduit.getInputFilter(gui.getDir());
-    } else {
-      filter = (ItemFilter) itemConduit.getOutputFilter(gui.getDir());
-    }
     isAdvanced = filter.isAdvanced();
     
-    int butLeft = 124;
+    int butLeft = xOffset + 92;
     int x = butLeft ;
-    int y = 68;
-    whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
+    int y = yOffset;
+    whiteListB = new IconButtonEIO(gui, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
 
     x += 20;
-    useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
+    useMetaB = new ToggleButtonEIO(gui, ID_META + buttonIdOffset, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
     useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
-    stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    stickyB = new ToggleButtonEIO(gui, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
     String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
     stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
@@ -72,21 +80,26 @@ public class BasicItemFilterGui implements IItemFilterGui {
     x = butLeft;
 
     x += 20;
-    useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
+    useNbtB = new ToggleButtonEIO(gui, ID_NBT + buttonIdOffset, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
     useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
     x = butLeft;
-    useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
+    useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
   }
   
+  @Override
+  public void mouseClicked(int x, int y, int par3) {      
+  }
+  
+  @Override
   public void updateButtons() {
     
-    ItemFilter activeFilter = (ItemFilter)filter;
+    ItemFilter activeFilter = filter;
     
     if(isAdvanced) {
       useNbtB.onGuiInit();
@@ -95,7 +108,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
       useOreDictB.onGuiInit();
       useOreDictB.setSelected(activeFilter.isUseOreDict());
       
-      if(!isInput) {
+      if(isStickyModeAvailable) {
         stickyB.onGuiInit();
         stickyB.setSelected(activeFilter.isSticky());
       }
@@ -115,21 +128,22 @@ public class BasicItemFilterGui implements IItemFilterGui {
   }
   
   
+  @Override
   public void actionPerformed(GuiButton guiButton) {
     
-    if(guiButton.id == ID_META) {
+    if(guiButton.id == ID_META + buttonIdOffset) {
       filter.setMatchMeta(useMetaB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_NBT) {
+    } else if(guiButton.id == ID_NBT + buttonIdOffset) {
       filter.setMatchNBT(useNbtB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_STICKY) {
+    } else if(guiButton.id == ID_STICKY + buttonIdOffset) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_ORE_DICT) {
+    } else if(guiButton.id == ID_ORE_DICT + buttonIdOffset) {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_WHITELIST) {
+    } else if(guiButton.id == ID_WHITELIST + buttonIdOffset) {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
     } 
@@ -137,9 +151,10 @@ public class BasicItemFilterGui implements IItemFilterGui {
   
   private void sendFilterChange() {
     updateButtons();
-    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
+    filterContainer.onFilterChanged();
   }
   
+  @Override
   public void deactivate() {        
     useNbtB.detach();
     useMetaB.detach();
@@ -148,12 +163,13 @@ public class BasicItemFilterGui implements IItemFilterGui {
     stickyB.detach();
   }
   
+  @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
     GL11.glColor3f(1, 1, 1);
     RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-    gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
     if(filter.isAdvanced()) {      
-      gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
+      gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
     }
   }
   

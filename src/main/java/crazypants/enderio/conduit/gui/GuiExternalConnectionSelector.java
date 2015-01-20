@@ -15,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.BlockCoord;
@@ -28,7 +29,17 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     this.cb = cb;
     cons = new HashSet<ForgeDirection>();
     for (IConduit con : cb.getConduits()) {
-      cons.addAll(con.getExternalConnections());
+      if(con instanceof IInsulatedRedstoneConduit) {
+        Set<ForgeDirection> conCons = con.getConduitConnections();
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+          if(!conCons.contains(dir)) {
+            cons.add(dir);
+          }
+        }
+        
+      } else {        
+        cons.addAll(con.getExternalConnections());
+      }
     }
   }
 
@@ -36,7 +47,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   protected void actionPerformed(GuiButton b) {
     ForgeDirection dir = ForgeDirection.values()[b.id];
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    BlockCoord loc = cb.getBlockCoord();
+    BlockCoord loc = cb.getLocation();
     PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }

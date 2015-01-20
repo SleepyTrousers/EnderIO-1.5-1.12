@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cofh.api.inventory.IInventoryConnection;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,8 +29,9 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.monitor.PacketConduitProbe;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
@@ -109,7 +111,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   public ItemConduit(int itemDamage) {
-    this.metaData = itemDamage;
+    metaData = itemDamage;
     updateFromNonUpgradeableVersion();
   }
 
@@ -130,23 +132,45 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     }
 
     Map<ForgeDirection, ItemStack> converted = new HashMap<ForgeDirection, ItemStack>();
-    
-    convertToItemUpgrades(filterMeta, converted, inputFilters);    
+
+    convertToItemUpgrades(filterMeta, converted, inputFilters);
     for (Entry<ForgeDirection, ItemStack> entry : converted.entrySet()) {
       setInputFilter(entry.getKey(), null);
       setInputFilterUpgrade(entry.getKey(), entry.getValue());
     }
-        
+
     converted.clear();
     convertToItemUpgrades(filterMeta, converted, outputFilters);
     for (Entry<ForgeDirection, ItemStack> entry : converted.entrySet()) {
       setOutputFilter(entry.getKey(), null);
       setOutputFilterUpgrade(entry.getKey(), entry.getValue());
     }
-    
+
 
   }
 
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);    
+    setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
+    setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
+    setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
+    setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
+    setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
+  }
+  
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
+    dataRoot.setShort("inputColor", (short)getInputColor(dir).ordinal());
+    dataRoot.setShort("outputColor", (short)getOutputColor(dir).ordinal());
+    dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
+    dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
+    dataRoot.setInteger("outputPriority", getOutputPriority(dir));    
+  }
+  
   protected void convertToItemUpgrades(int filterMeta, Map<ForgeDirection, ItemStack> converted, EnumMap<ForgeDirection, IItemFilter> sourceFilters) {
     for (Entry<ForgeDirection, IItemFilter> entry : sourceFilters.entrySet()) {
       if(entry.getValue() != null) {
@@ -181,13 +205,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
-    } else if(ConduitUtil.isToolEquipped(player)) {
+    } else if(ToolUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().getWorldObj().isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -222,7 +246,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public ItemStack insertItem(ForgeDirection from, ItemStack item) {
     if(!externalConnections.contains(from)) {
       return item;
-    } else if(!getConectionMode(from).acceptsInput()) {
+    } else if(!getConnectionMode(from).acceptsInput()) {
       return item;
     } else if(network == null) {
       return item;
@@ -236,7 +260,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     inputFilters.put(dir, filter);
     if(network != null) {
       network.routesChanged();
-    }    
+    }
     setClientStateDirty();
   }
 
@@ -432,7 +456,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void externalConnectionRemoved(ForgeDirection direction) {
-    super.externalConnectionRemoved(direction);
+    externalConnections.remove(direction);
+    connectionsChanged();
     if(network != null) {
       TileEntity te = bundle.getEntity();
       network.inventoryRemoved(this, te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
@@ -518,11 +543,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IInventory inv = getExternalInventory(direction);
-    if(inv instanceof ISidedInventory) {
+    if (inv==null) return false;
+    else if (inv instanceof IInventoryConnection){
+      return ((IInventoryConnection)inv).canConnectInventory(direction.getOpposite()).canConnect;
+    }
+    else if(inv instanceof ISidedInventory) {
       int[] slots = ((ISidedInventory) inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal());
-      return slots != null && slots.length != 0;
+      return slots!=null && slots.length>0;
     } else {
-      return inv != null;
+      return true;
     }
   }
 
@@ -717,7 +746,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     super.readFromNBT(nbtRoot, nbtVersion);
 
     if(nbtRoot.hasKey("metaData")) {
-      metaData = nbtRoot.getShort("metaData");      
+      metaData = nbtRoot.getShort("metaData");
     } else {
       metaData = 0;
     }
@@ -727,7 +756,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
         IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);
         inputFilters.put(dir, filter);
       }
@@ -756,8 +784,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       key = "outFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
-        IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);        
+        IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
 
@@ -810,10 +837,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
-    if(nbtRoot.hasKey("metaData")) {      
+    if(nbtRoot.hasKey("metaData")) {
       updateFromNonUpgradeableVersion();
     }
-    
+
     if(nbtVersion == 0 && !nbtRoot.hasKey("conModes")) {
       //all externals where on default so need to switch them to the old default
       for (ForgeDirection dir : externalConnections) {

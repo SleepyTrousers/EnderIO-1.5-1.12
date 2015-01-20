@@ -2,6 +2,7 @@ package crazypants.enderio.machine;
 
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public interface IPoweredTask {
 
@@ -16,6 +17,8 @@ public interface IPoweredTask {
   float getRequiredEnergy();
 
   float getChance();
+
+  RecipeBonusType getBonusType();
 
   void writeToNBT(NBTTagCompound nbtRoot);
 

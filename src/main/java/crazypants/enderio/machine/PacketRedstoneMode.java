@@ -55,7 +55,6 @@ public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedst
     if(te instanceof IRedstoneModeControlable) {
       IRedstoneModeControlable me = (IRedstoneModeControlable) te;
       me.setRedstoneControlMode(message.mode);
-      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
     }
     return null;
   }

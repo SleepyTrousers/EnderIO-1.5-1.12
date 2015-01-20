@@ -1,9 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.material.Material;
+import crazypants.enderio.config.Config;
 
 public class JumpUpgrade extends AbstractUpgrade {
 
@@ -11,13 +14,17 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   private static String UPGRADE_NAME = "jumpBoost";
 
-
-  public static JumpUpgrade JUMP_ONE = new JumpUpgrade("enderio.darksteel.upgrade.jump_one", 1, 15);
-  public static JumpUpgrade JUMP_TWO = new JumpUpgrade("enderio.darksteel.upgrade.jump_two", 2, 20);
-  public static JumpUpgrade JUMP_THREE = new JumpUpgrade("enderio.darksteel.upgrade.jump_three", 3, 30);
+  public static JumpUpgrade JUMP_ONE = new JumpUpgrade("enderio.darksteel.upgrade.jump_one", 1, Config.darkSteelJumpOneCost);
+  public static JumpUpgrade JUMP_TWO = new JumpUpgrade("enderio.darksteel.upgrade.jump_two", 2, Config.darkSteelJumpTwoCost);
+  public static JumpUpgrade JUMP_THREE = new JumpUpgrade("enderio.darksteel.upgrade.jump_three", 3, Config.darkSteelJumpThreeCost);
 
   protected short level;
 
+  public static boolean isEquipped(EntityPlayer player) {
+    ItemStack boots = player.getEquipmentInSlot(1);    
+    return loadFromItem(boots) != null;
+  }
+  
   public static JumpUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -37,7 +44,7 @@ public class JumpUpgrade extends AbstractUpgrade {
   }
 
   public JumpUpgrade(String unlocName,int level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal()), levelCost);
+    super(UPGRADE_NAME, unlocName, new ItemStack(Blocks.piston), levelCost);
     this.level = (short)level;
   }
 

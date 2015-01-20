@@ -19,6 +19,8 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   public static BlockFarmStation create() {
     PacketHandler.INSTANCE.registerMessage(PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketFarmLockedSlot.class, PacketFarmLockedSlot.class, PacketHandler.nextID(), Side.SERVER);
     BlockFarmStation result = new BlockFarmStation();
     result.init();
     return result;

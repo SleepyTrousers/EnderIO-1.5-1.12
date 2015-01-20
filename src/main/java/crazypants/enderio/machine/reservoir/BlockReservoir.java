@@ -21,9 +21,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
@@ -97,8 +97,8 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       } else {
         // Handle empty containers
 
-        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-        if(available != null) {
+        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;        
+        if(available != null && available.amount > 0) {          
           ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
           if(current.getItem() == Items.bucket) {
             filled = new ItemStack(Items.water_bucket);
@@ -124,7 +124,7 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
             tank.drain(ForgeDirection.UNKNOWN, liquid.amount, true);
             return true;
 
-          } else if(ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
+          } else if(ToolUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
             tank.setAutoEject(!tank.isAutoEject());
             for (BlockCoord bc : tank.multiblock) {
               world.markBlockForUpdate(bc.x, bc.y, bc.z);
@@ -214,6 +214,10 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int blockSide) {
+    if (y < 0 || y >= 256) { // getTileEntity is not safe for out of bounds coords
+      return false;
+    }
+    
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileReservoir)) {
       return true;
@@ -246,9 +250,9 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       boolean isRight;
       if(tr.isVertical()) { // to to flip right and left for back faces of
         // vertical multiblocks
-        isRight = !pos.isRight;
+        isRight = !pos.isRight(side);
       } else {
-        isRight = pos.isRight;
+        isRight = pos.isRight(side);
       }
       if(pos.isTop) {
         return isRight ? mbIcons[MbFace.TR.ordinal()] : mbIcons[MbFace.TL.ordinal()];
@@ -276,11 +280,7 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       if(tr.isVertical()) {
         return pos.isTop ? mbIcons[MbFace.T.ordinal()] : mbIcons[MbFace.B.ordinal()];
       } else {
-        if(tr.right == side || tr.right.getOpposite() == side) {
-          return pos.isTop ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
-        } else {
-          return pos.isTop ? mbIcons[MbFace.R.ordinal()] : mbIcons[MbFace.L.ordinal()];
-        }
+        return pos.isTop(side) ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
       }
     }
 

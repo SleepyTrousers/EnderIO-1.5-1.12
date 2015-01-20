@@ -22,8 +22,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.util.BlockCoord;
 
 public class BlockFusedQuartz extends BlockEio {
 
@@ -32,9 +34,9 @@ public class BlockFusedQuartz extends BlockEio {
   public enum Type {
 
     FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
-    GLASS("fusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem"),
+    GLASS("fusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame", "enderio:fusedGlassItem"),
     ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
-    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem");
+    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame", "enderio:fusedGlassItem");
 
     final String unlocalisedName;
     final String blockIcon;
@@ -47,7 +49,25 @@ public class BlockFusedQuartz extends BlockEio {
       this.blockIcon = blockIcon;
       this.itemIcon = itemIcon;
     }
-
+    
+    public boolean connectTo(int otherMeta) {
+      if (otherMeta == ordinal() || Config.clearGlassConnectToFusedQuartz) {
+        return true;
+      }
+      
+      switch(this) {
+      case FUSED_QUARTZ:
+        return otherMeta == ENLIGHTENED_FUSED_QUARTZ.ordinal();
+      case ENLIGHTENED_FUSED_QUARTZ:
+        return otherMeta == FUSED_QUARTZ.ordinal();
+      case GLASS:
+        return otherMeta == ENLIGHTENED_GLASS.ordinal();
+      case ENLIGHTENED_GLASS:
+        return otherMeta == GLASS.ordinal();
+      }
+      
+      return false;
+    }
   }
 
   public static BlockFusedQuartz create() {
@@ -76,8 +96,8 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     int meta = world.getBlockMetadata(x, y, z);
-    meta = MathHelper.clamp_int(meta, 0, 1);
-    if(meta == 0) {
+    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    if(meta == Type.FUSED_QUARTZ.ordinal() || meta == Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()) {
       return 2000;
     } else {
       return super.getExplosionResistance(par1Entity);
@@ -143,9 +163,15 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-    Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
-    return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+  public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    Block block = world.getBlock(x, y, z);
+    int meta = world.getBlockMetadata(x, y, z);
+    if(block == this) {
+      BlockCoord here = new BlockCoord(x, y, z).getLocation(ForgeDirection.VALID_DIRECTIONS[side].getOpposite());
+      int myMeta = world.getBlockMetadata(here.x, here.y, here.z);
+      return !Type.values()[myMeta].connectTo(meta);
+    }
+    return true;
   }
 
   @Override
@@ -154,7 +180,15 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {    
+    if(side == ForgeDirection.UP) { //stop drips
+      return false;  
+    }
+    return true;    
+  }
+  
+  @Override
+  public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
     return true;
   }
 

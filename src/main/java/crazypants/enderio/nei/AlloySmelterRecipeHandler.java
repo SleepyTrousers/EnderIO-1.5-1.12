@@ -4,30 +4,33 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.RecipeReigistry;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.GuiAlloySmelter;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getRecipeName() {
-    return "Alloy Smelter";
+    return StatCollector.translateToLocal("enderio.nei.alloysmelter");
   }
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/alloySmelter.png";
+    return "enderio:textures/gui/nei/alloySmelter.png";
   }
-
 
   @Override
   public Class<? extends GuiContainer> getGuiClass() {
@@ -51,24 +54,26 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       return;
     }
 
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.ALLOY_SMELTER_ID, result);
-
-    for (IEnderIoRecipe recipe : recipes) {
-      for (IRecipeOutput output : recipe.getOutputs()) {
-        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
+    List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+    recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+    for (IRecipe recipe : recipes) {
+      ItemStack output = recipe.getOutputs()[0].getOutput();
+      if(result.getItem() == output.getItem() && result.getItemDamage() == output.getItemDamage()) {
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
     }
+
   }
 
   @Override
-  public void loadCraftingRecipes(String outputId, Object... results)
-  {
-    if(outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class)
-    {
-      List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
-      for (IEnderIoRecipe recipe : recipes) {
-        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getItem());
+  public void loadCraftingRecipes(String outputId, Object... results) {
+    if(outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class) {
+      List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+      recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+      for (IRecipe recipe : recipes) {
+        ItemStack output = recipe.getOutputs()[0].getOutput();
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
     } else {
@@ -78,33 +83,45 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void loadUsageRecipes(ItemStack ingredient) {
-
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
-
-    for (IEnderIoRecipe recipe : recipes) {
-      if(recipe.isInput(ingredient)) {
-        for (IRecipeOutput output : recipe.getOutputs()) {
-          AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
-          res.setIngredientPermutation(res.input, ingredient);
-          arecipes.add(res);
-        }
+    List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+    recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+    for (IRecipe recipe : recipes) {
+      if(recipe.isValidInput(0, ingredient)) {
+        ItemStack output = recipe.getOutputs()[0].getOutput();
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        res.setIngredientPermutation(res.input, ingredient);
+        arecipes.add(res);
       }
     }
   }
 
   @Override
-  public void drawExtras(int recipeIndex) {
-    drawProgressBar(98, 25, 176, 0, 22, 13, 48, 3);
-    drawProgressBar(50, 25, 176, 0, 22, 13, 48, 3);
-    AlloySmelterRecipe recipe = (AlloySmelterRecipe) arecipes.get(recipeIndex);
-    String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
-    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 100, 50, 0xFFFFFFFF);
+  public void drawBackground(int recipeIndex) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiDraw.changeTexture(getGuiTexture());
+    GuiDraw.drawTexturedModalRect(0, 0, 0, 0, 166, 65);
   }
 
-  public List<ItemStack> getInputs(IRecipeInput input) {
+  @Override
+  public void drawExtras(int recipeIndex) {
+    drawProgressBar(51, 31, 166, 0, 22, 13, 48, 3);
+    drawProgressBar(99, 31, 166, 0, 22, 13, 48, 3);
+    AlloySmelterRecipe recipe = (AlloySmelterRecipe) arecipes.get(recipeIndex);
+    String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
+    GuiDraw.drawString(energyString, 100, 52, 0x808080, false);
+
+    IconEIO.RECIPE_BUTTON.renderIcon(149, 32, 16, 16, 0, true);
+  }
+
+  public List<ItemStack> getInputs(RecipeInput input) {
     List<ItemStack> result = new ArrayList<ItemStack>();
-    result.add(input.getItem());
-    result.addAll(input.getEquivelentInputs());
+    result.add(input.getInput());
+    ItemStack[] equivs = input.getEquivelentInputs();
+    if(equivs != null) {
+      for (ItemStack st : equivs) {
+        result.add(st);
+      }
+    }
     return result;
   }
 
@@ -112,10 +129,9 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
     private ArrayList<PositionedStack> input;
     private PositionedStack output;
-    private double energy;
+    private int energy;
 
-    // Possible energy cost in the future?
-    public double getEnergy() {
+    public int getEnergy() {
       return energy;
     }
 
@@ -129,23 +145,24 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       return output;
     }
 
-    public AlloySmelterRecipe(float energy, List<IRecipeInput> ingredients, ItemStack result) {
-      int recipeSize = ingredients.size();
+    public AlloySmelterRecipe(int energy, RecipeInput[] ingredients, ItemStack result) {
+      int recipeSize = ingredients.length;
       this.input = new ArrayList<PositionedStack>();
-      int yOff = 8;
       if(recipeSize > 0) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(0)), 49, 14 - yOff));
+        this.input.add(new PositionedStack(getInputs(ingredients[0]), 50, 13));
       }
       if(recipeSize > 1) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(1)), 73, 4 - yOff));
+        this.input.add(new PositionedStack(getInputs(ingredients[1]), 75, 3));
       }
       if(recipeSize > 2) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(2)), 98, 14 - yOff));
+        this.input.add(new PositionedStack(getInputs(ingredients[2]), 99, 13));
       }
       if(result != null) {
-        this.output = new PositionedStack(result, 74, 54 - yOff);
+        this.output = new PositionedStack(result, 75, 42);
       }
-      this.energy = energy; //If we wanted to do an energy cost
+      this.energy = energy;
     }
+
   }
+
 }

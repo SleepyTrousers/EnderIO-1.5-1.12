@@ -1,6 +1,8 @@
 package crazypants.enderio.teleport;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -18,8 +20,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -37,7 +42,6 @@ import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4d;
 
 public class TravelController {
 
@@ -62,10 +66,146 @@ public class TravelController {
   private double fovRad;
 
   private double tanFovRad;
-
-  private Minecraft mc = Minecraft.getMinecraft();
+  
+  private final List<UniqueIdentifier> blackList = new ArrayList<GameRegistry.UniqueIdentifier>();
 
   private TravelController() {
+    String[] blackListNames = Config.travelStaffBlinkBlackList;
+    for(String name : blackListNames) {
+      blackList.add(new UniqueIdentifier(name));  
+    }    
+  }
+
+  public void addBlockToBlinkBlackList(String blockName) {
+    blackList.add(new UniqueIdentifier(blockName));
+  }
+
+  public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
+    if(!hasTarget()) {
+      return false;
+    }
+    BlockCoord target = selectedCoord;
+    TileEntity te = world.getTileEntity(target.x, target.y, target.z);
+    if(te instanceof ITravelAccessable) {
+      ITravelAccessable ta = (ITravelAccessable) te;
+      if(ta.getRequiresPassword(player)) {
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
+        PacketHandler.INSTANCE.sendToServer(p);
+        return true;
+      }
+    }
+    if(isTargetEnderIO()) {
+      openEnderIO(equipped, world, player);
+    } else if(Config.travelAnchorEnabled) {
+      travelToSelectedTarget(player, source, false);
+    }
+    return true;
+  }
+
+  public boolean doBlink(ItemStack equipped, EntityPlayer player) {
+    Vector3d eye = Util.getEyePositionEio(player);
+    Vector3d look = Util.getLookVecEio(player);
+
+    Vector3d sample = new Vector3d(look);
+    sample.scale(Config.travelStaffMaxBlinkDistance);
+    sample.add(eye);
+    Vec3 eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
+    Vec3 end = Vec3.createVectorHelper(sample.x, sample.y, sample.z);
+
+    double playerHeight = player.yOffset;
+    //if you looking at you feet, and your player height to the max distance, or part there of
+    double lookComp = -look.y * playerHeight;
+    double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
+
+    MovingObjectPosition p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    if(p == null) {
+
+      //go as far as possible
+      for (double i = maxDistance; i > 1; i--) {
+
+        sample.set(look);
+        sample.scale(i);
+        sample.add(eye);
+        //we test against our feets location
+        sample.y -= playerHeight;
+        if(doBlinkAround(player, sample, true)) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+
+      List<MovingObjectPosition> res = Util.raytraceAll(player.worldObj, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+      for (MovingObjectPosition pos : res) {
+        if(pos != null) {
+          Block hitBlock = player.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+          if(isBlackListedBlock(player, pos, hitBlock)) {
+            maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(pos.blockX + 0.5, pos.blockY + 0.5, pos.blockZ + 0.5)) - 1.5 - lookComp);            
+          }
+        }
+      }
+
+      eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
+
+      Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
+      double sampleDistance = 1.5;      
+      double teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance; 
+      
+      while (teleDistance < maxDistance) {
+        sample.set(look);
+        sample.scale(sampleDistance);
+        sample.add(targetBc);
+        //we test against our feets location
+        sample.y -= playerHeight;
+
+        if(doBlinkAround(player, sample, false)) {
+          return true;
+        }
+        teleDistance++;
+        sampleDistance++;
+      }
+      sampleDistance = -0.5;
+      teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance;
+      while (teleDistance > 1) {
+        sample.set(look);
+        sample.scale(sampleDistance);
+        sample.add(targetBc);
+        //we test against our feets location
+        sample.y -= playerHeight;
+
+        if(doBlinkAround(player, sample, false)) {
+          return true;
+        }
+        sampleDistance--;
+        teleDistance--;
+      }
+    }
+    return false;
+  }
+
+  private boolean isBlackListedBlock(EntityPlayer player, MovingObjectPosition pos, Block hitBlock) {
+    UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(hitBlock);
+    if(ui == null) {
+      return false;
+    }
+    return blackList.contains(ui) && (hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
+  }
+
+  private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
+    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)), conserveMomentum)) {
+      return true;
+    }
+    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
+      return true;
+    }
+    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)), conserveMomentum)) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean doBlink(EntityPlayer player, BlockCoord coord, boolean conserveMomentum) {
+    return travelToLocation(player, TravelSource.STAFF_BLINK, coord, conserveMomentum);
   }
 
   public boolean showTargets() {
@@ -106,19 +246,20 @@ public class TravelController {
   @SubscribeEvent
   public void onRender(RenderWorldLastEvent event) {
 
+    Minecraft mc = Minecraft.getMinecraft();
     Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
     lookAt.add(eye);
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
-    float fov = 70 + Minecraft.getMinecraft().gameSettings.fovSetting * 40.0F;
+    float fov = Minecraft.getMinecraft().gameSettings.fovSetting;        
     Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth,
-        mc.displayHeight);
+        mc.displayHeight);       
     currentView.setProjectionMatrix(pr);
     currentView.setViewMatrix(mv);
     currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
 
-    fovRad = Math.toRadians(fov) / 2;
+    fovRad = Math.toRadians(fov);
     tanFovRad = Math.tanh(fovRad);
   }
 
@@ -132,7 +273,7 @@ public class TravelController {
       }
       onBlockCoord = getActiveTravelBlock(player);
       boolean onBlock = onBlockCoord != null;
-      showTargets = onBlock || ItemTravelStaff.isEquipped(player);
+      showTargets = onBlock || isTravelItemActive(player);
       if(showTargets) {
         updateSelectedTarget(player);
       } else {
@@ -154,8 +295,13 @@ public class TravelController {
 
         if(isTargetEnderIO()) {
           openEnderIO(null, player.worldObj, player);
-        } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK)) {
+        } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
           input.jump = false;
+          try{ 
+            ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer", "field_71101_bC");
+          } catch (Exception e) {
+            //ignore
+          }
         }
 
       }
@@ -176,9 +322,8 @@ public class TravelController {
     }
     TileEnderIO eio = (TileEnderIO) te;
     if(eio.canBlockBeAccessed(player)) {
-
-      int requiredPower = ItemTravelStaff.isEquipped(player) ? TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target) : 0; 
-      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+      int requiredPower = equipped == null ? 0 : instance.getRequiredPower(player, TravelSource.STAFF, target);
+      if(requiredPower <= 0 || requiredPower <= getEnergyInTravelItem(equipped)) {
         if(requiredPower > 0) {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower);
           PacketHandler.INSTANCE.sendToServer(p);
@@ -191,11 +336,29 @@ public class TravelController {
     }
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
-    return travelToLocation(player, source, selectedCoord);
+  public int getEnergyInTravelItem(ItemStack equipped) {
+    if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
+      return 0;
+    }
+    return ((IItemOfTravel) equipped.getItem()).getEnergyStored(equipped);
   }
 
-  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord) {
+  public boolean isTravelItemActive(EntityPlayer ep) {
+    if(ep == null || ep.getCurrentEquippedItem() == null) {
+      return false;
+    }
+    ItemStack equipped = ep.getCurrentEquippedItem();
+    if(equipped.getItem() instanceof IItemOfTravel) {
+      return ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
+    }
+    return false;
+  }
+
+  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source,boolean conserveMomentum) {
+    return travelToLocation(player, source, selectedCoord, conserveMomentum);
+  }
+
+  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
 
     if(source != TravelSource.STAFF_BLINK) {
       TileEntity te = player.worldObj.getTileEntity(coord.x, coord.y, coord.z);
@@ -226,10 +389,10 @@ public class TravelController {
       }
       return false;
     }
-    sendTravelEvent(coord, source, requiredPower);
+    sendTravelEvent(coord, source, requiredPower, conserveMomentum);
     for (int i = 0; i < 6; ++i) {
       player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
-          player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
+          player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
           (rand.nextDouble() - 0.5D) * 2.0D);
     }
     return true;
@@ -237,13 +400,13 @@ public class TravelController {
   }
 
   public int getRequiredPower(EntityPlayer player, TravelSource source, BlockCoord coord) {
-    if(!ItemTravelStaff.isEquipped(player)) {
+    if(!isTravelItemActive(player)) {
       return 0;
     }
     int requiredPower;
     ItemStack staff = player.getCurrentEquippedItem();
     requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
-    int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
+    int canUsePower = getEnergyInTravelItem(staff);
     if(requiredPower > canUsePower) {
       player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
       return -1;
@@ -284,18 +447,21 @@ public class TravelController {
   }
 
   private boolean canTeleportTo(EntityPlayer player, TravelSource source, BlockCoord bc, World w) {
+    if(bc.y < 1) {
+      return false;
+    }
     if(source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
       Vec3 start = Util.getEyePosition(player);
       Vec3 target = Vec3.createVectorHelper(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
       if(!canBlinkTo(bc, w, start, target)) {
         return false;
       }
-    }
+    }   
 
     Block block = w.getBlock(bc.x, bc.y, bc.z);
     if(block == null || block.isAir(w, bc.x, bc.y, bc.z)) {
       return true;
-    }
+    }    
     final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, bc.x, bc.y, bc.z);
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
   }
@@ -338,43 +504,18 @@ public class TravelController {
     return block.getLightOpacity(w, x, y, z) < 2;
   }
 
+  @SideOnly(Side.CLIENT)
   private void updateSelectedTarget(EntityClientPlayerMP player) {
     selectedCoord = null;
     if(candidates.isEmpty()) {
       return;
     }
 
-    Vector3d eye = Util.getEyePositionEio(player);
-    Vec3 look = player.getLookVec();
-
-    Vector3d b = new Vector3d(eye);
-    b.add(look.xCoord, look.yCoord, look.zCoord);
-
-    Vector3d c = new Vector3d(eye);
-    c.add(0, 1, 0);
-
-    Vector4d leftPlane = new Vector4d();
-    VecmathUtil.computePlaneEquation(eye, b, c, leftPlane);
-
-    c.set(eye);
-    c.add(leftPlane.x, leftPlane.y, leftPlane.z);
-
-    Vector4d upPlane = new Vector4d();
-    VecmathUtil.computePlaneEquation(eye, b, c, upPlane);
-
-    double closestDistance = Double.MAX_VALUE;
-    Vector3d point = new Vector3d();
+    double closestDistance = Double.MAX_VALUE;    
     for (BlockCoord bc : candidates.keySet()) {
-      if(!bc.equals(onBlockCoord)) {
-        point.set(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
-
-        Vector2d sp = currentView.getScreenPoint(new Vector3d(point.x, point.y, point.z));
-        Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-        mid.scale(0.5);
-
-        double d = sp.distance(mid);
-        float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
-        candidates.put(bc, ratio);
+      if(!bc.equals(onBlockCoord)) {        
+        
+        double d = addRatio(bc);
         if(d < closestDistance) {
           selectedCoord = bc;
           closestDistance = d;
@@ -383,18 +524,31 @@ public class TravelController {
     }
 
     if(selectedCoord != null) {
-      Vector2d sp = currentView.getScreenPoint(new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5));
-      Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-      mid.scale(0.5);
-      double ratio = sp.distance(mid) / Minecraft.getMinecraft().displayWidth;
-      if(ratio > 0.05) {
+      
+      Vector3d blockCenter = new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5);
+      Vector2d blockCenterPixel = currentView.getScreenPoint(blockCenter);            
+      
+      Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+      screenMidPixel.scale(0.5);
+
+      
+      double pixDist = blockCenterPixel.distance(screenMidPixel);
+      double rat = pixDist / Minecraft.getMinecraft().displayHeight;
+      if(rat != rat) {
+        rat = 0;
+      }      
+      if(rat > 0.07) {
         selectedCoord = null;
-      }
+      }      
 
     }
   }
 
   public double getScaleForCandidate(Vector3d loc) {
+
+    if(!currentView.isValid()) {
+      return 1;
+    }
 
     BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
     float ratio = -1;
@@ -404,12 +558,8 @@ public class TravelController {
     }
     if(ratio < 0) {
       //no cached value
-      Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x, bc.y, bc.z));
-      Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-      mid.scale(0.5);
-      double d = sp.distance(mid);
-      ratio = (float) d / Minecraft.getMinecraft().displayWidth;
-      candidates.put(bc, ratio);
+      addRatio(bc);
+      ratio = candidates.get(bc);
     }
 
     //smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
@@ -418,33 +568,51 @@ public class TravelController {
     double mix = MathHelper.clamp_float((start - ratio) / (start - end), 0, 1);
     double scale = 1;
     if(mix > 0) {
-      double d = tanFovRad * currentView.getEyePoint().distance(loc);
-      scale = d / tanFovRad;
-
-      scale = scale * 0.1;// why I need this is completely beyond me.
+      
+      Vector3d eyePoint = Util.getEyePositionEio(EnderIO.proxy.getClientPlayer());      
+      scale = tanFovRad * eyePoint.distance(loc);
+      
+      //Using this scale will give us the block full screen, we will make it 20% of the screen
+      scale *= Config.travelAnchorZoomScale;      
 
       //only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp_float((float) currentView.getEyePoint().distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
+      float nf = 1 - MathHelper.clamp_float((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
       scale = Math.max(1, scale);
+      
     }
     return scale;
   }
 
+  private double addRatio(BlockCoord bc) {
+    Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5));
+    Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+    mid.scale(0.5);
+    double d = sp.distance(mid);
+    if(d != d) {
+      d = 0f;  
+     }
+    float ratio = (float) d / Minecraft.getMinecraft().displayWidth;                
+    candidates.put(bc, ratio);
+    return d;
+  }
+
+  @SideOnly(Side.CLIENT)
   private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
-    if(ItemTravelStaff.isEquipped(player)) {
+    if(isTravelItemActive(player)) {
       return TravelSource.STAFF.maxDistanceTravelledSq;
     }
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse) {
-    PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, source.getConserveMomentum());
+  private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+    PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, conserveMomentum);
     PacketHandler.INSTANCE.sendToServer(p);
   }
 
+  @SideOnly(Side.CLIENT)
   private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {
     World world = Minecraft.getMinecraft().theWorld;
     if(world != null && player != null) {
@@ -456,10 +624,6 @@ public class TravelController {
       }
     }
     return null;
-  }
-
-  public boolean isStaffEquipped(EntityPlayer player) {
-    return player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff;
   }
 
 }

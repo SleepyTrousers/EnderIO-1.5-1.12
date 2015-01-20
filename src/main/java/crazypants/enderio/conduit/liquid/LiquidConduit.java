@@ -296,7 +296,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return null;
     }
     return tank.drain(maxDrain, doDrain);
@@ -312,7 +312,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(getConectionMode(from) == ConnectionMode.OUTPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+    if(getConnectionMode(from) == ConnectionMode.OUTPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return false;
     }
     if(tank.getFluid() == null) {
@@ -326,7 +326,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED
+    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED
         || tank.getFluid() == null || fluid == null) {
       return false;
     }
@@ -400,7 +400,7 @@ public class LiquidConduit extends AbstractTankConduit {
     if(isExtractingFromDir(component.dir)) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
     }
-    if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
+    if(getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
     }
     //    if(getFluidType() == null) {

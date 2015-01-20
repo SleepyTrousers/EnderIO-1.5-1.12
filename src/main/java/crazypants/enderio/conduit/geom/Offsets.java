@@ -5,8 +5,10 @@ import java.util.Map;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 
@@ -34,6 +36,16 @@ public class Offsets {
     OFFSETS.put(key(IItemConduit.class, Axis.X), Offset.SOUTH);
     OFFSETS.put(key(IItemConduit.class, Axis.Y), Offset.EAST);
     OFFSETS.put(key(IItemConduit.class, Axis.Z), Offset.EAST);
+
+    OFFSETS.put(key(IGasConduit.class, Axis.NONE), Offset.NORTH_UP);
+    OFFSETS.put(key(IGasConduit.class, Axis.X), Offset.NORTH_UP);
+    OFFSETS.put(key(IGasConduit.class, Axis.Y), Offset.NORTH_EAST);
+    OFFSETS.put(key(IGasConduit.class, Axis.Z), Offset.WEST_UP);
+    
+    OFFSETS.put(key(IMEConduit.class, Axis.NONE), Offset.SOUTH_UP);
+    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
+    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_WEST);
+    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
 
   }
 

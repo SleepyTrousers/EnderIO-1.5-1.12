@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
@@ -59,7 +60,56 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getConectionMode(ForgeDirection dir) {
+  public boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt) {
+    if(!getExternalConnections().contains(dir)) {
+      return false;
+    }
+    NBTTagCompound dataRoot = getNbtRootForType(nbt, true);     
+    dataRoot.setShort("connectionMode", (short)getConnectionMode(dir).ordinal());
+    writeTypeSettingsToNbt(dir, dataRoot);    
+    return true;
+  }
+
+  @Override
+  public boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt) {
+    if(!getExternalConnections().contains(dir)) {
+      return false;
+    }
+    NBTTagCompound dataRoot = getNbtRootForType(nbt, false);
+    if(dataRoot == null) {
+      return false;
+    }    
+    if(dataRoot.hasKey("connectionMode")) {
+      ConnectionMode mode = ConnectionMode.values()[dataRoot.getShort("connectionMode")];
+      setConnectionMode(dir, mode);
+    }    
+    readTypeSettings(dir, dataRoot);
+    return true;
+  }
+  
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+  }
+  
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {    
+  }
+
+  protected NBTTagCompound getNbtRootForType(NBTTagCompound nbt, boolean createIfNull) {
+    Class<? extends IConduit> bt = getBaseConduitType();
+    String dataRootName = bt.getSimpleName();
+    NBTTagCompound dataRoot = null;
+    if(nbt.hasKey(dataRootName)) {
+      dataRoot = nbt.getCompoundTag(dataRootName);
+    }    
+    if(dataRoot == null && createIfNull) {
+      dataRoot = new NBTTagCompound();
+      nbt.setTag(dataRootName, dataRoot);
+    }
+    return dataRoot;
+  }
+
+
+  @Override
+  public ConnectionMode getConnectionMode(ForgeDirection dir) {
     ConnectionMode res = conectionModes.get(dir);
     if(res == null) {
       return getDefaultConnectionMode();
@@ -82,6 +132,7 @@ public abstract class AbstractConduit implements IConduit {
     if(oldVal == mode) {
       return;
     }
+    
     if(mode == null) {
       conectionModes.remove(dir);
     } else {
@@ -89,10 +140,18 @@ public abstract class AbstractConduit implements IConduit {
     }
     clientStateDirty = true;
     collidablesDirty = true;
+    
+    connectionsChanged();
   }
 
   @Override
   public boolean hasConnectionMode(ConnectionMode mode) {
+    if(mode == null) {
+      return false;
+    }
+    if(mode == getDefaultConnectionMode() && conectionModes.size() != 6) {
+      return true;
+    }
     for (ConnectionMode cm : conectionModes.values()) {
       if(cm == mode) {
         return true;
@@ -103,7 +162,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
-    ConnectionMode curMode = getConectionMode(dir);
+    ConnectionMode curMode = getConnectionMode(dir);
     ConnectionMode next = ConnectionMode.getNext(curMode);
     if(next == ConnectionMode.NOT_SET) {
       next = ConnectionMode.IN_OUT;
@@ -113,7 +172,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
-    ConnectionMode curMode = getConectionMode(dir);
+    ConnectionMode curMode = getConnectionMode(dir);
     ConnectionMode prev = ConnectionMode.getPrevious(curMode);
     if(prev == ConnectionMode.NOT_SET) {
       prev = ConnectionMode.DISABLED;
@@ -180,7 +239,7 @@ public abstract class AbstractConduit implements IConduit {
     if(conduit == null) {
       return false;
     }
-    return getConectionMode(direction) != ConnectionMode.DISABLED && conduit.getConectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
+    return getConnectionMode(direction) != ConnectionMode.DISABLED && conduit.getConnectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
   }
 
   @Override
@@ -222,7 +281,6 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void externalConnectionRemoved(ForgeDirection fromDirection) {
     externalConnections.remove(fromDirection);
-    conectionModes.remove(fromDirection);
     connectionsChanged();
   }
 
@@ -265,7 +323,7 @@ public abstract class AbstractConduit implements IConduit {
       byte[] modes = new byte[6];
       int i = 0;
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        modes[i] = (byte) getConectionMode(dir).ordinal();
+        modes[i] = (byte) getConnectionMode(dir).ordinal();
         i++;
       }
       nbtRoot.setByteArray("conModes", modes);
@@ -445,9 +503,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public boolean onNeighborBlockChange(Block block) {
-    // Check for changes to external connections, connections to conduits are
-    // handled by the bundle
-
+    
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
@@ -455,9 +511,34 @@ public abstract class AbstractConduit implements IConduit {
       return false;
     }
 
-    connectionsDirty = true;
-
-    return true;
+    // Check for changes to external connections, connections to conduits are
+    // handled by the bundle
+    Set<ForgeDirection> newCons = new HashSet<ForgeDirection>();
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      if(!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
+        newCons.add(dir);
+      }
+    }
+    if(newCons.size() != externalConnections.size()) {
+      connectionsDirty = true;
+      return true;
+    }
+    for(ForgeDirection dir : externalConnections) {      
+      if(!newCons.remove(dir)) {
+        connectionsDirty = true;
+        return true;
+      }
+    }
+    if(!newCons.isEmpty()) {
+      connectionsDirty = true;
+      return true;
+    }
+    return false;
+  }
+  
+  @Override
+  public boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {    
+    return onNeighborBlockChange(world.getBlock(tileX, tileY, tileZ));
   }
 
   @Override
@@ -502,7 +583,7 @@ public abstract class AbstractConduit implements IConduit {
   private Collection<CollidableComponent> getCollidables(ForgeDirection dir) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getCollidableType();
-    if(isConnectedTo(dir) && getConectionMode(dir) != ConnectionMode.DISABLED) {
+    if(isConnectedTo(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
       return cc.getCollidables(cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)), this);
     }
     return null;

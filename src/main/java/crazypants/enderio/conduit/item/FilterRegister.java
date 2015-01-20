@@ -7,8 +7,6 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.network.NetworkUtil;
 
 public class FilterRegister {
 
@@ -74,18 +72,18 @@ public class FilterRegister {
     }
   }
 
-  public static void updateLegacyFilterNbt(NBTTagCompound filterTag, int conduitMeta) {
-    if(filterTag == null) {
-      return;
-    }
-    if(!filterTag.hasKey("filterClass")) {
-      filterTag.setString("filterClass", ItemFilter.class.getName());
-    }
-    if(!filterTag.hasKey("isAdvanced")) {
-      filterTag.setBoolean("isAdvanced", conduitMeta == 1);
+  private static IItemFilter loadFilterFromByteBuf(String className, ByteBuf buf) {
+    try {
+      Class<?> clz = Class.forName(className);
+      IItemFilter filter = (IItemFilter) clz.newInstance();
+      filter.readFromByteBuf(buf);
+      return filter;
+    } catch (Exception e) {
+      Log.error("Could not read item filter with class name: " + className + " from ByteBuf Error: " + e);
+      return null;
     }
   }
-  
+
   public static void writeFilter(ByteBuf buf, IItemFilter filter) {
     if(filter == null) {
       ByteBufUtils.writeUTF8String(buf, "nullFilter");
@@ -93,10 +91,7 @@ public class FilterRegister {
     }
     String name = filter.getClass().getName();
     ByteBufUtils.writeUTF8String(buf, name);
-
-    NBTTagCompound root = new NBTTagCompound();
-    filter.writeToNBT(root);
-    NetworkUtil.writeNBTTagCompound(root, buf);
+    filter.writeToByteBuf(buf);
   }
 
   public static IItemFilter readFilter(ByteBuf buf) {
@@ -104,8 +99,7 @@ public class FilterRegister {
     if(className.equals("nullFilter")) {
       return null;
     }
-    NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
-    return loadFilterFromNbt(className, tag);
+    return loadFilterFromByteBuf(className, buf);
   }
-  
+
 }

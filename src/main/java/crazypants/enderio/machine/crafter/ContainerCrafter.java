@@ -7,7 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.AbstractMachineContainer;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.gui.TemplateSlot;
 
 public class ContainerCrafter extends AbstractMachineContainer {
@@ -41,11 +41,11 @@ public class ContainerCrafter extends AbstractMachineContainer {
   }
 
   @Override
-  protected Point getPlayerInventoryOffset() {
+  public Point getPlayerInventoryOffset() {
     return new Point(30, 84);
   }
 
-  protected Point getUpgradeOffset() {
+  public Point getUpgradeOffset() {
     return new Point(6, 60);
   }
 

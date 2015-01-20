@@ -7,18 +7,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiTank extends GuiMachineBase {
+public class GuiTank extends GuiMachineBase<TileTank> {
 
   private TileTank entity;
 
   public GuiTank(InventoryPlayer par1InventoryPlayer, TileTank te) {
     super(te, new ContainerTank(par1InventoryPlayer, te));
-    this.entity = te;
+    entity = te;
     
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 16, 47), "") {
 
@@ -27,7 +27,7 @@ public class GuiTank extends GuiMachineBase {
         text.clear();
         String heading = Lang.localize("tank.tank");
         if(entity.tank.getFluid() != null) {
-          heading += ": " + entity.tank.getFluid().getFluid().getLocalizedName();
+          heading += ": " + entity.tank.getFluid().getLocalizedName();
         }
         text.add(heading);
         text.add(Fluids.toCapactityString(entity.tank));
@@ -48,7 +48,7 @@ public class GuiTank extends GuiMachineBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
@@ -56,8 +56,5 @@ public class GuiTank extends GuiMachineBase {
     RenderUtil.renderGuiTank(entity.tank, guiLeft + 80, guiTop + 21, zLevel, 16,47);    
 
   }
-  
-  protected boolean renderPowerBar() {
-    return false;
-  }
+
 }

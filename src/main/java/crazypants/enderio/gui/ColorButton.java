@@ -1,10 +1,15 @@
 package crazypants.enderio.gui;
 
+import java.awt.Rectangle;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemDye;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.gui.IGuiScreen;
@@ -15,6 +20,8 @@ public class ColorButton extends IconButtonEIO {
   private int colorIndex = 0;
 
   private String tooltipPrefix = "";
+  
+  private boolean rightMouseDown = false;
 
   public ColorButton(IGuiScreen gui, int id, int x, int y) {
     super(gui, id, x, y, null);
@@ -48,6 +55,14 @@ public class ColorButton extends IconButtonEIO {
     }
     setColorIndex(colorIndex);
   }
+  
+  private void prevColor() {
+    colorIndex--;
+    if(colorIndex < 0) {
+      colorIndex = ItemDye.field_150923_a.length - 1;
+    }
+    setColorIndex(colorIndex);    
+  }
 
   public int getColorIndex() {
     return colorIndex;
@@ -67,6 +82,19 @@ public class ColorButton extends IconButtonEIO {
   public void drawButton(Minecraft mc, int mouseX, int mouseY) {
     super.drawButton(mc, mouseX, mouseY);
     if(visible) {
+            
+      Rectangle r = new Rectangle(xPosition, yPosition, width, height);
+      if(r.contains(mouseX, mouseY)) {
+        if(rightMouseDown && Mouse.getEventButton() == 1 && !Mouse.getEventButtonState()) {
+          Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+          prevColor();
+          gui.doActionPerformed(this);
+        }
+        rightMouseDown = Mouse.getEventButton() == 1 && Mouse.getEventButtonState();
+      } else {
+        rightMouseDown = false;
+      }
+      
       Tessellator tes = Tessellator.instance;
       tes.startDrawingQuads();
 

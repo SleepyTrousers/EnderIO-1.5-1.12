@@ -67,7 +67,7 @@ public class RecipeConfig {
     return config;
   }
 
-  private static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
+  public static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
     if(!replaceIfExists && copyTo.exists()) {
       return readStream(new FileInputStream(copyTo));
     }
@@ -284,6 +284,8 @@ public class RecipeConfig {
 
     private int energyRequired;
 
+    private RecipeBonusType bonusType = RecipeBonusType.MULTIPLY_OUTPUT;
+
     private String name;
 
     private RecipeElement(String name) {
@@ -309,11 +311,11 @@ public class RecipeConfig {
       List<Recipe> result = new ArrayList<Recipe>();
       if(isRecipePerInput) {
         for (RecipeInput input : inputs) {
-          result.add(new Recipe(input, energyRequired, outputArr));
+          result.add(new Recipe(input, energyRequired, bonusType, outputArr));
         }
       } else {
         for (RecipeOutput output : outputs) {
-          result.add(new Recipe(output, energyRequired, inputArr));
+          result.add(new Recipe(output, energyRequired, bonusType, inputArr));
         }
       }
       return result;
@@ -331,9 +333,17 @@ public class RecipeConfig {
       this.energyRequired = energyRequired;
     }
 
+    public RecipeBonusType getBonusType() {
+      return bonusType;
+    }
+
+    public void setBonusType(RecipeBonusType bonusType) {
+      this.bonusType = bonusType;
+    }
+
     @Override
     public String toString() {
-      return "Recipe [input=" + inputs + ", outputs=" + outputs + ", energyRequired=" + energyRequired + "]";
+      return "Recipe [input=" + inputs + ", outputs=" + outputs + ", energyRequired=" + energyRequired + ", bonusType=" + bonusType + "]";
     }
 
   }

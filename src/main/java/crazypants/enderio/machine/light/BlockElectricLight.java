@@ -5,12 +5,13 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,9 +20,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.vecmath.Vector3f;
 
-public class BlockElectricLight extends BlockEio {
+public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
 
   static final float BLOCK_HEIGHT = 0.05f;
   static final float BLOCK_WIDTH = 0.3f;
@@ -170,6 +174,28 @@ public class BlockElectricLight extends BlockEio {
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
+  
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    ItemStack stack = player.getCurrentEquippedItem();
+    if (stack == null) {
+      return false;
+    }
+    ITool tool = ToolUtil.getEquippedTool(player);
+    if(tool != null && tool.canUse(stack, player, x, y, z) && player.isSneaking() && !world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if (te instanceof TileElectricLight) {
+        ((TileElectricLight) te).onBlockRemoved();
+        world.setBlockToAir(x, y, z);
+        if(!player.capabilities.isCreativeMode) {
+          dropBlockAsItem(world, x, y, z, createDrop((TileElectricLight) te));
+        }
+        tool.used(stack, player, x, y, z);
+      }
+      return true;
+    }
+    return false;
+  }
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
@@ -183,7 +209,6 @@ public class BlockElectricLight extends BlockEio {
       te.onBlockRemoved();
       world.removeTileEntity(x, y, z);
     }
-
   }
 
   @Override
@@ -191,52 +216,44 @@ public class BlockElectricLight extends BlockEio {
     return 0;
   }
 
-  @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    
-    ArrayList<ItemStack> res = new ArrayList<ItemStack>();
-    if(!world.isRemote) {
-      TileEntity t = world.getTileEntity(x, y, z);
-      TileElectricLight te = null;
-      if(t instanceof TileElectricLight) {
-        te = (TileElectricLight) t;
-      }
-      if(t != null) {        
-        ItemStack st = createDrop(te);
-        res.add(st);
-      }
-    }
-    return res;
-  }
-
   private ItemStack createDrop(TileElectricLight te) {
     int meta = te.isInvereted() ? 1 : 0;
     if(!te.isRequiresPower()) {
       meta += 2;
+    } else if (te.isWireless()) {
+      meta += 4;
     }
     ItemStack st = new ItemStack(this, 1, meta);
     return st;
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileElectricLight) {
         TileElectricLight cb = (TileElectricLight) te;                
         if(!player.capabilities.isCreativeMode) {
-          ItemStack itemStack = createDrop(cb);
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
+          dropBlockAsItem(world, x, y, z, createDrop(cb));
         }
       }
     }
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
+  }
+  
+  @Override
+  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te != null && te instanceof TileElectricLight) {
+      return createDrop((TileElectricLight) te);
+    }
+    return new ItemStack(this);
   }
 
+  /* IRedstoneConnectable */
+  
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
+  }
 }

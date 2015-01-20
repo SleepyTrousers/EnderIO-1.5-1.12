@@ -172,7 +172,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       }
     }
 
-    private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, float filledRatio, List<Vertex> vertices, double x, double y, double z) {
+    private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, double filledRatio, List<Vertex> vertices, double x, double y, double z) {
 
       int totalPixels;
       if(gb.vInfo.verticalHeight == 1) {
@@ -181,7 +181,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
         totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
       }
 
-      int targetPixelCount = Math.max(0, Math.round(totalPixels * filledRatio));
+      int targetPixelCount = (int)Math.max(0, Math.round(totalPixels * filledRatio));
       int pixelsBellowFace;
       if(gb.vInfo.index < 2) {
         // either none or a bottom section

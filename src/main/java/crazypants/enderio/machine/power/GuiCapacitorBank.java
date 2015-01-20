@@ -17,11 +17,11 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.GuiOverlayIoConfig;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
@@ -36,19 +36,19 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   protected static final int CONFIG_ID = 377996104;
 
-  private static final int POWER_X = 8;
+  private static final int POWER_X = 11 + 18;
   private static final int POWER_Y = 9;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  private int inputX = 78;
+  private int inputX = 78 + 24;
   private int inputY = 18;
 
-  private int outputX = 78;
+  private int outputX = 78 + 24;
   private int outputY = 36;
 
-  private int rightMargin = 8;
+  private int rightMargin = 8 + 24;
 
   private final TileCapacitorBank capBank;
 
@@ -65,7 +65,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
     super(new ContainerCapacitorBank(player, playerInv, te));
     this.capBank = te;
 
-    addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
+    xSize = 176 + 42;
+
+    addToolTip(new GuiToolTip(new Rectangle(5, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
       protected void updateText() {
@@ -76,7 +78,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     });
 
-    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
+    int x = xSize - rightMargin - GuiPoweredMachineBase.BUTTON_SIZE - 21;
     int y = inputY;
     inputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
@@ -93,7 +95,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     });
     inputRsButton.setTooltipKey("enderio.gui.capBank.inputRs");
 
-    y += 20;
+    y += 18;
     outputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
       @Override
@@ -108,7 +110,6 @@ public class GuiCapacitorBank extends GuiContainerBase {
       }
     });
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
-
 
     y += 20;
     configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
@@ -164,7 +165,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     configB.onGuiInit();
 
-    int x = guiLeft + xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
+    int x = guiLeft + xSize - rightMargin - GuiPoweredMachineBase.BUTTON_SIZE;
     int y = guiTop + inputY;
 
     FontRenderer fontRenderer = getFontRenderer();
@@ -174,7 +175,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     x = guiLeft + inputX;
     y = guiTop + inputY;
-    maxInputTF = new GuiTextField(fontRenderer, x, y, 72, 16);
+    maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setFocused(false);
@@ -182,7 +183,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     x = guiLeft + outputX;
     y = guiTop + outputY;
-    maxOutputTF = new GuiTextField(fontRenderer, x, y, 72, 16);
+    maxOutputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
     maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setFocused(true);
@@ -230,7 +231,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private int parsePower(GuiTextField tf) {
     String txt = tf.getText();
     try {
-      Float power = PowerDisplayUtil.parsePower(txt);
+      Integer power = PowerDisplayUtil.parsePower(txt);
       if(power == null) {
         return -1;
       }
@@ -261,15 +262,10 @@ public class GuiCapacitorBank extends GuiContainerBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-
-    //armor slots
-    drawTexturedModalRect(sx - 21, sy + 24, 232, 0, 24, 81);
-
-
+    drawTexturedModalRect(sx, sy, 0, 0, this.xSize - 21, this.ySize);
 
     int i1 = capBank.getEnergyStoredScaled(POWER_HEIGHT);
-    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176, 0, POWER_WIDTH, i1);
+    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);
@@ -308,14 +304,14 @@ public class GuiCapacitorBank extends GuiContainerBase {
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-    super.drawHoveringText(par1List, par2, par3, font);
+    super.drawHoveringText(par1List, par2 + 24, par3, font);
     GL11.glPopAttrib();
     GL11.glPopAttrib();
   }
 
   @Override
   public int getGuiLeft() {
-    return guiLeft;
+    return guiLeft + 24;
   }
 
   @Override
@@ -325,7 +321,12 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   @Override
   public int getXSize() {
-    return xSize;
+    return xSize - 42;
+  }
+
+  @Override
+  public int getOverlayOffsetX() {
+    return 21;
   }
 
   @Override

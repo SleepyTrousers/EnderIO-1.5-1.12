@@ -53,7 +53,6 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
     if(te instanceof IIoConfigurable) {
       IIoConfigurable me = (IIoConfigurable) te;
       me.setIoMode(message.face, message.mode);
-      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
     }
     return null;
   }

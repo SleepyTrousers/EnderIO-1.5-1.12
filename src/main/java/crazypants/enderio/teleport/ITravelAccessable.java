@@ -30,10 +30,12 @@ public interface ITravelAccessable {
   ItemStack getItemLabel();
   
   void setItemLabel(ItemStack lableIcon);
+  
+  String getLabel();
+  
+  void setLabel(String label);
 
-  UUID getPlacedBy();
-
-//  void setPlacedBy(String placedBy);
+  String getPlacedBy();
 
   void setPlacedBy(EntityPlayer player);
 

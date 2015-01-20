@@ -6,21 +6,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
+import appeng.api.networking.IGridNode;
+import appeng.api.util.AECableType;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -30,6 +35,7 @@ import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
@@ -72,6 +78,15 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void dirty() {
     conduitsDirty = true;
     collidablesDirty = true;
+  }  
+
+  @Override
+  public boolean shouldRenderInPass(int arg0) {
+    // TODO Can avoid the call to the TESR here
+    if(facadeId != null && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+      return false;
+    }
+    return super.shouldRenderInPass(arg0);
   }
 
   @Override
@@ -173,7 +188,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return hasFacade() ? 255 : 0;
+      return hasFacade() ? facadeId.getLightOpacity() : 0;
     }
     return lightOpacity;
   }
@@ -204,6 +219,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(conduitsDirty) {
       if(!worldObj.isRemote) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
       }
       conduitsDirty = false;
     }
@@ -261,7 +277,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public BlockCoord getBlockCoord() {
+  public BlockCoord getLocation() {
     return new BlockCoord(xCoord, yCoord, zCoord);
   }
 
@@ -274,6 +290,17 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(needsUpdate) {
       dirty();
     }
+  }
+  
+  @Override
+  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+    boolean needsUpdate = false;
+    for (IConduit conduit : conduits) {
+      needsUpdate |= conduit.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+    }
+    if(needsUpdate) {
+      dirty();
+    }   
   }
 
   @Override
@@ -525,7 +552,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       Set<ForgeDirection> extCons = con.getExternalConnections();
       if(extCons != null) {
         for (ForgeDirection dir : extCons) {
-          if(con.getConectionMode(dir) != ConnectionMode.DISABLED) {
+          if(con.getConnectionMode(dir) != ConnectionMode.DISABLED) {
             externalDirs.add(dir);
           }
         }
@@ -623,27 +650,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   // ------------ Power -----------------------------
 
-  @Override
-  public void doWork(PowerHandler workProvider) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      pc.doWork(workProvider);
-    }
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      return pc.getPowerReceiver(side);
-    }
-    return null;
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
@@ -690,8 +696,44 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return 0;
   }
 
-  // ------- Liquids -----------------------------
+  @Override
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getMaxEnergyRecieved(dir);
+    }
+    return 0;
+  }
 
+  @Override
+  public int getEnergyStored() {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getEnergyStored();
+    }
+    return 0;
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getMaxEnergyStored();
+    }
+    return 0;
+  }
+
+  @Override
+  public void setEnergyStored(int stored) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      pc.setEnergyStored(stored);
+    }
+    
+  }
+
+//------- Liquids -----------------------------
+  
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
@@ -757,4 +799,95 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return item;
   }
 
+  // ---- Mekanism Gas Tubes
+
+  @Override
+  public int receiveGas(ForgeDirection side, GasStack stack) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.receiveGas(side, stack);
+    }
+    return 0;
+  }
+
+  @Override
+  public GasStack drawGas(ForgeDirection side, int amount) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.drawGas(side, amount);
+    }
+    return null;
+  }
+
+  @Override
+  public boolean canReceiveGas(ForgeDirection side, Gas type) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.canReceiveGas(side, type);
+    }
+    return false;
+  }
+
+  @Override
+  public boolean canDrawGas(ForgeDirection side, Gas type) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.canDrawGas(side, type);
+    }
+    return false;
+  }
+
+  @Override
+  public World getWorld() {
+    return getWorldObj();
+  }
+  
+  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
+  
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public IGridNode getGridNode(ForgeDirection dir) {
+    if (dir == null || dir == ForgeDirection.UNKNOWN) {
+      return (IGridNode) node;
+    } else {
+      IMEConduit cond = getConduit(IMEConduit.class);
+      if (cond != null) {
+        if (cond.getConnectionMode(dir.getOpposite()) == ConnectionMode.IN_OUT) {
+          return (IGridNode) node;
+        } else {
+          return null;
+        }
+      }
+    }
+    return (IGridNode) node;
+  }
+  
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void setGridNode(Object node) {
+    this.node = (IGridNode) node;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public AECableType getCableConnectionType(ForgeDirection dir) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond == null) {
+      return AECableType.NONE;
+    } else {
+      ConnectionMode mode = cond.getConnectionMode(dir);
+      return mode == ConnectionMode.DISABLED ? AECableType.NONE : AECableType.SMART;
+    }
+  }
+  
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void securityBreak() {
+    ;
+  }
+
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

@@ -21,7 +21,7 @@ public class RoundRobinIterator<T> implements Iterable<T>, Iterator<T> {
 
   @Override
   public boolean hasNext() {
-    return !itOver.isEmpty() && currentCount <= itOver.size();
+    return !itOver.isEmpty() && currentCount < itOver.size();
   }
 
   @Override

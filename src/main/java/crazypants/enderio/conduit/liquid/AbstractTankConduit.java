@@ -14,6 +14,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
@@ -31,7 +32,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       return false;
     }
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
 
@@ -42,7 +43,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
 
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -177,6 +178,10 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       result = tank.getFluid();
     }
     return result;
+  }
+
+  public boolean isFluidTypeLocked() {
+    return fluidTypeLocked;
   }
 
   protected abstract void updateTank();

@@ -15,13 +15,13 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiScreenBase;
+import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiPowerMonitor extends GuiScreenBase {
+public class GuiPowerMonitor extends GuiContainerBase {
 
   private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
 
@@ -66,9 +66,10 @@ public class GuiPowerMonitor extends GuiScreenBase {
   private String monHeading5;
 
   public GuiPowerMonitor(final TilePowerMonitor te) {
-    super(WIDTH, HEIGHT);
+    super(new ContainerPowerMonitor());
     this.te = te;
-    drawButtons = false;
+    xSize = WIDTH;
+    ySize = HEIGHT;    
 
     titleStr = Lang.localize("gui.powerMonitor.engineControl");
     engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
@@ -89,7 +90,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStoredMJ()) + " "
+        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStored()) + " "
             + PowerDisplayUtil.abrevation());
       }
 
@@ -98,8 +99,8 @@ public class GuiPowerMonitor extends GuiScreenBase {
     int x = MARGIN + Minecraft.getMinecraft().fontRenderer.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBoxEIO(this, 21267, x, 8);
-    enabledB.setSelectedToolTip(Lang.localize("enderio.gui.enabled"));
-    enabledB.setUnselectedToolTip(Lang.localize("enderio.gui.disabled"));
+    enabledB.setSelectedToolTip(Lang.localize("gui.enabled"));
+    enabledB.setUnselectedToolTip(Lang.localize("gui.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
 
   }
@@ -109,7 +110,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     super.initGui();
 
     buttonList.clear();
-    enabledB.onGuiInit();
+    //enabledB.onGuiInit();
 
     int x = guiLeft + MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
     int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
@@ -149,6 +150,11 @@ public class GuiPowerMonitor extends GuiScreenBase {
   }
 
   @Override
+  public int getOverlayOffsetX() {  
+    return 0;
+  }
+
+  @Override
   protected void mouseClicked(int x, int y, int par3) {
     super.mouseClicked(x, y, par3);
 
@@ -160,15 +166,18 @@ public class GuiPowerMonitor extends GuiScreenBase {
     if(x > 200 && x < 220) {
       if(y > 9 && y < 27) {
         isRedstoneMode = false;
+        enabledB.detach();
       } else if(y > 34 && y < 53) {
         isRedstoneMode = true;
+        enabledB.onGuiInit();
       }
     }
 
   }
 
   @Override
-  protected void drawBackgroundLayer(float par3, int par1, int par2) {
+  protected void drawGuiContainerBackgroundLayer(float ptick, int mouseX, int mouseY) {
+  
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/powerMonitor.png");
     int sx = (width - xSize) / 2;
@@ -290,8 +299,6 @@ public class GuiPowerMonitor extends GuiScreenBase {
   private void renderInfoTab(int sx, int sy) {
     drawTexturedModalRect(sx + 200, sy + SPACING, 225, 53, 20, 48);
 
-    //    int headingCol = ColorUtil.getRGB(Color.black);
-    //    int valuesCol = ColorUtil.getRGB(Color.white);
     int headingCol = ColorUtil.getRGB(Color.white);
     int valuesCol = ColorUtil.getRGB(Color.black);
     int rgb;
@@ -313,7 +320,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(" ");
     sb.append(PowerDisplayUtil.ofStr());
     sb.append(" ");
-    sb.append(formatPower(te.maxPowerInCoduits));
+    sb.append(formatPower(te.maxPowerInConduits));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     fontRenderer.drawString(sb.toString(), x, y, rgb, false);
@@ -363,7 +370,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveMjSent));
+    sb.append(formatPowerFloat(te.aveRfSent));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append(PowerDisplayUtil.perTickStr());
@@ -378,7 +385,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveMjRecieved));
+    sb.append(formatPowerFloat(te.aveRfReceived));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append(PowerDisplayUtil.perTickStr());

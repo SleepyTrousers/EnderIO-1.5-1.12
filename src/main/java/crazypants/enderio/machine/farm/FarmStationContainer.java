@@ -5,7 +5,7 @@ import java.awt.Point;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.AbstractMachineContainer;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class FarmStationContainer extends AbstractMachineContainer {
 
@@ -24,10 +24,10 @@ public class FarmStationContainer extends AbstractMachineContainer {
       new Point(53, 55),
       new Point(71, 55),
 
-      new Point(106, 37),
-      new Point(124, 37),
-      new Point(106, 55),
-      new Point(124, 55),
+      new Point(116, 37),
+      new Point(134, 37),
+      new Point(116, 55),
+      new Point(134, 55),
     };
 
     int i=0;
@@ -39,27 +39,17 @@ public class FarmStationContainer extends AbstractMachineContainer {
         public boolean isItemValid(ItemStack itemStack) {
           return tileEntity.isItemValidForSlot(slot, itemStack);
         }
+
+        @Override
+        public int getSlotStackLimit() {             
+          if(slot > 1 && slot < 6) {
+            int tier = ((TileFarmStation)tileEntity).tier;
+            return (int) (16 * Math.pow(2, tier));
+          }
+          return 64;
+        }
       });
     }
-
-//    addSlotToContainer(new Slot(tileEntity, 0, 54, 17) {
-//      @Override
-//      public boolean isItemValid(ItemStack itemStack) {
-//        return tileEntity.isItemValidForSlot(0, itemStack);
-//      }
-//    });
-//    addSlotToContainer(new Slot(tileEntity, 1, 79, 7) {
-//      @Override
-//      public boolean isItemValid(ItemStack itemStack) {
-//        return tileEntity.isItemValidForSlot(1, itemStack);
-//      }
-//    });
-//    addSlotToContainer(new Slot(tileEntity, 2, 103, 17) {
-//      @Override
-//      public boolean isItemValid(ItemStack itemStack) {
-//        return tileEntity.isItemValidForSlot(2, itemStack);
-//      }
-//    });
 
   }
 

@@ -2,6 +2,7 @@ package crazypants.enderio.material;
 
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.material.Material;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -24,9 +25,8 @@ public class BlockDarkIronBars extends BlockPane {
   }
   
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemDarkIronBars.class, ModObject.blockDarkIronBars.unlocalisedName);    
+    GameRegistry.registerBlock(this, BlockItemDarkIronBars.class, ModObject.blockDarkIronBars.unlocalisedName);
+    OreDictionary.registerOre("barsIron", this);
   }
-  
-  
 
 }

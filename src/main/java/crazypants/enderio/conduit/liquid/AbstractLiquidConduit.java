@@ -48,11 +48,11 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     //it causes issues with not conecting to empty tanks such as dim. trans +
     //BC fluid pipes, so I am removing it for now.
 
-//    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
-//    if(info == null) {
-//      return false;
-//    }
-//    return  info.length > 0;
+    //    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
+    //    if(info == null) {
+    //      return false;
+    //    }
+    //    return  info.length > 0;
     return true;
   }
 
@@ -98,7 +98,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean canOutputToDir(ForgeDirection dir) {
-    if(isExtractingFromDir(dir) || getConectionMode(dir) == ConnectionMode.DISABLED) {
+    if(isExtractingFromDir(dir) || getConnectionMode(dir) == ConnectionMode.DISABLED) {
       return false;
     }
     if(conduitConnections.contains(dir)) {
@@ -134,11 +134,16 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
     DyeColor col = getExtractionSignalColor(dir);
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    if(mode.isConditionMet(mode, signal) && mode != RedstoneControlMode.OFF) {
-      return true;
+    
+    boolean res;
+    if(mode == RedstoneControlMode.OFF) {
+      //if checking for no signal, must be no signal from both
+      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || isConditionMetByExternalSignal(dir, mode, col));     
+    } else {
+      //if checking for a signal, either is fine
+      res = mode.isConditionMet(mode, signal) || (col == DyeColor.RED && isConditionMetByExternalSignal(dir, mode, col));
     }
-
-    return isConditionMetByExternalSignal(dir, mode, col);
+    return res;
   }
 
   private boolean isConditionMetByExternalSignal(ForgeDirection dir, RedstoneControlMode mode, DyeColor col) {
@@ -159,7 +164,19 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean isExtractingFromDir(ForgeDirection dir) {
-    return getConectionMode(dir) == ConnectionMode.INPUT;
+    return getConnectionMode(dir) == ConnectionMode.INPUT;
+  }
+
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
+    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
+  }
+
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
   }
 
   @Override

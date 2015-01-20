@@ -104,7 +104,7 @@ public class ExternalConnectionContainer extends Container {
     List<Slot> slots;
     inputFilter = itemConduit.getInputFilter(dir);
     if(inputFilter != null && inputFilter.getSlotCount() > 0) {
-      slots = inputFilter.getSlots();
+      slots = inputFilter.getSlots(33, 69);
       for (Slot slot : slots) {
         addSlotToContainer(slot);
         slotLocations.add(new Point(slot.xDisplayPosition, slot.yDisplayPosition));
@@ -113,7 +113,7 @@ public class ExternalConnectionContainer extends Container {
 
     outputFilter = itemConduit.getOutputFilter(dir);
     if(outputFilter != null && outputFilter.getSlotCount() > 0) {
-      slots = outputFilter.getSlots();
+      slots = outputFilter.getSlots(33, 69);
       for (Slot slot : slots) {
         addSlotToContainer(slot);
         slotLocations.add(new Point(slot.xDisplayPosition, slot.yDisplayPosition));

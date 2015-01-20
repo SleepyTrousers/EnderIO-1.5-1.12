@@ -53,7 +53,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
       PREFIX = Lang.localize("power.maxOutput") + " ";
     }
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    ICapacitor cap = PowerConduit.CAPACITORS[itemStack.getItemDamage()];
+    ICapacitor cap = PowerConduit.getCapacitors()[itemStack.getItemDamage()];
     list.add(PREFIX + PowerDisplayUtil.formatPower(cap.getMaxEnergyExtracted()) + POSTFIX);
   }
 

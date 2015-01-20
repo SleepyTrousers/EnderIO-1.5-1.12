@@ -1,8 +1,10 @@
 package crazypants.enderio.item.darksteel;
 
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,11 +12,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.google.common.collect.Sets;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,10 +30,15 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.teleport.IItemOfTravel;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.TravelSource;
+import crazypants.render.BoundingBox;
+import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -53,6 +65,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return res;
   }
 
+  private long lastBlickTick = -1;
+
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -64,20 +78,22 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
-    ItemStack is = new ItemStack(this);   
+    ItemStack is = new ItemStack(this);
     par3List.add(is);
 
-    is = new ItemStack(this);    
+    is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);    
+    EnergyUpgrade.setPowerFull(is);
+    TravelUpgrade.INSTANCE.writeToItem(is);
+    SpoonUpgrade.INSTANCE.writeToItem(is);
     par3List.add(is);
   }
-  
+
   @Override
   public int getIngotsRequiredForFullRepair() {
-    return 3;  
+    return 3;
   }
-  
+
   @Override
   public boolean isDamaged(ItemStack stack) {
     return false;
@@ -92,7 +108,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public boolean onBlockDestroyed(ItemStack item, World world, Block block, int x, int y, int z, EntityLivingBase entLiving) {
     if(block.getBlockHardness(world, x, y, z) != 0.0D) {
-      if(block == Blocks.obsidian) {
+      if(useObsidianEffeciency(item, block)) {
         extractEnergy(item, Config.darkSteelPickPowerUseObsidian, false);
       }
       applyDamage(entLiving, item, 1);
@@ -101,47 +117,86 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
-
-    int slot = player.inventory.currentItem + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, par3World, par4, par5, par6, par7, par8,
-          par9, par10);
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    if(!isTravelUpgradeActive(player, item)) {
+      return doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
     }
-
-    return super.onItemUse(item, player, par3World, par4, par5, par6, par7, par8, par9, par10);
+    return false;
   }
 
-  private void applyDamage(EntityLivingBase entity, ItemStack item, int damage) {
+  static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    int current = player.inventory.currentItem;
+    int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
+    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
 
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(item);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      if(!canPlaceBlockOnRightClick(player, world, x, y, z, side, slot)) {
+        return false;
+      }
+      boolean ret = player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
+          par9, par10);
+      if(player.inventory.mainInventory[slot].stackSize <= 0) {
+        player.inventory.mainInventory[slot] = null;
+      }
+      return ret;
+    }
+    return false;
+  }
+
+  static boolean canPlaceBlockOnRightClick(EntityPlayer player, World world, int x, int y, int z, int side, int slot) {
+    BlockCoord placeCoord = new BlockCoord(x, y, z).getLocation(ForgeDirection.getOrientation(side));
+    ItemStack toUse = player.inventory.mainInventory[slot];
+    AxisAlignedBB aabb;
+    Block blk = Block.getBlockFromItem(toUse.getItem());
+    if(blk != null) {
+      aabb = blk.getCollisionBoundingBoxFromPool(world, placeCoord.x, placeCoord.y, placeCoord.z);
+    } else {
+      BoundingBox bb = new BoundingBox(placeCoord);
+      aabb = bb.getAxisAlignedBB();
+    }
+    if(aabb != null && aabb.intersectsWith(player.boundingBox)) {
+      return false;
+    }
+    return true;
+  }
+
+  private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage) {
+
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelPickPowerUsePerDamagePoint, false);
 
     } else {
-      damage = item.getItemDamage() + damage;
+      damage = stack.getItemDamage() + damage;
       if(damage >= getMaxDamage()) {
-        item.stackSize = 0;
+        stack.stackSize = 0;
       }
-      item.setItemDamage(damage);
+      stack.setItemDamage(damage);
     }
     if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
-      eu.writeToItem(item);
+      eu.writeToItem(stack);
     }
 
   }
-  
+
   @Override
-  public float func_150893_a(ItemStack item, Block block) {
-    if(block == Blocks.obsidian && getEnergyStored(item) > 0) {     
-      return super.func_150893_a(item, block) + Config.darkSteelPickEffeciencyObsidian;
-    }    
-    return super.func_150893_a(item, block);
+  public boolean canHarvestBlock(Block block, ItemStack item) {
+    if(hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
+      return block == Blocks.snow_layer ? true : block == Blocks.snow || super.canHarvestBlock(block, item);
+    } else {
+      return super.canHarvestBlock(block, item);
+    }
+  }
+
+  private boolean hasSpoonUpgrade(ItemStack item) {
+    return SpoonUpgrade.loadFromItem(item) != null;
   }
 
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
+    if(useObsidianEffeciency(stack, block)) {
+      return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered
+          + Config.darkSteelPickEffeciencyObsidian;
+    }
     if(ForgeHooks.isToolEffective(stack, block, meta)) {
       if(Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
@@ -149,6 +204,39 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
     }
     return super.getDigSpeed(stack, block, meta);
+  }
+
+  @Override
+  public float func_150893_a(ItemStack item, Block block) {
+    if(block.getMaterial() == Material.glass) {
+      return efficiencyOnProperMaterial;
+    }
+    return super.func_150893_a(item, block);
+  }
+
+  private boolean useObsidianEffeciency(ItemStack item, Block block) {
+    boolean useObsidianSpeed = false;
+    int energy = getEnergyStored(item);
+    if(energy > 0) {
+      useObsidianSpeed = block == Blocks.obsidian;
+      if(!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
+        try {
+          useObsidianSpeed = (block != null && block.getBlockHardness(null, -1, -1, -1) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
+        } catch (Exception e) {
+          //given we are passing in a null world to getBlockHardness it is possible this could cause an NPE, so just ignore it
+        }
+      }
+    }
+    return useObsidianSpeed;
+  }
+
+  @Override
+  public Set<String> getToolClasses(ItemStack stack) {
+    Set<String> set = Sets.newHashSet("pickaxe");
+    if(hasSpoonUpgrade(stack)) {
+      set.add("shovel");
+    }
+    return set;
   }
 
   protected void init() {
@@ -192,7 +280,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(!Config.addDurabilityTootip) {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+    }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
     if(str != null) {
       list.add(str);
@@ -211,6 +301,46 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   public ItemStack createItemStack() {
     return new ItemStack(this);
+  }
+
+  @Override
+  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
+    return isTravelUpgradeActive(ep, equipped);
+  }
+
+  @Override
+  public void extractInternal(ItemStack equipped, int power) {
+    extractEnergy(equipped, power, false);
+  }
+
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
+    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    if(isTravelUpgradeActive(player, stack)) {
+      if(world.isRemote) {
+        if(TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
+          player.swingItem();
+          return stack;
+        }
+      }
+
+      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
+      if(ticksSinceBlink < 0) {
+        lastBlickTick = -1;
+      }
+      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if(TravelController.instance.doBlink(stack, player)) {
+          player.swingItem();
+          lastBlickTick = EnderIO.proxy.getTickCount();
+        }
+      }
+      return stack;
+    }
+
+    return super.onItemRightClick(stack, world, player);
   }
 
 }

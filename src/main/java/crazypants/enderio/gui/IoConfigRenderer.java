@@ -125,11 +125,11 @@ public class IoConfigRenderer {
     }
 
     world = mc.thePlayer.worldObj;
-    RB.blockAccess = new InnerBA();
+    RB.blockAccess = new InnerBA();    
   }
 
   public void init() {
-    initTime = world.getTotalWorldTime();
+    initTime = System.currentTimeMillis();
   }
 
   public SelectedFace getSelection() {
@@ -158,7 +158,8 @@ public class IoConfigRenderer {
     distance -= Mouse.getEventDWheel() * 0.01;
     distance = VecmathUtil.clamp(distance, 0.01, 200);
 
-    long elapsed = world.getTotalWorldTime() - initTime;
+    long elapsed = System.currentTimeMillis() - initTime;
+    
     int x = Mouse.getEventX();
     int y = Mouse.getEventY();
     Vector3d start = new Vector3d();
@@ -169,7 +170,7 @@ public class IoConfigRenderer {
       updateSelection(start, end);
     }
 
-    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 500) {
       if(Mouse.getEventButton() == 1) {
         if(selection != null) {
           selection.config.toggleIoModeForFace(selection.face);
@@ -197,13 +198,13 @@ public class IoConfigRenderer {
       }
     }
     selection = null;
-    MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
+    MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);    
     if(hit != null) {
-      TileEntity te = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
+      TileEntity te = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);      
       if(te instanceof IIoConfigurable) {
         IIoConfigurable configuarble = (IIoConfigurable) te;
         ForgeDirection face = ForgeDirection.getOrientation(hit.sideHit);
-        selection = new SelectedFace(configuarble, face);
+        selection = new SelectedFace(configuarble, face);        
       }
     }
   }
@@ -400,7 +401,12 @@ public class IoConfigRenderer {
           RB.renderAllFaces = true;
           RB.setRenderAllFaces(true);
           RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-          RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          try {
+            RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          } catch (Exception e) {
+            //Ignore, things might blow up in rendering due to the modified block access
+            //but this is about as good as we can do
+          }
         }
       }
     }

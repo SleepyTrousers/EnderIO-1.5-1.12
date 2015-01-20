@@ -40,9 +40,9 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     AdvancedLiquidConduit pc = (AdvancedLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       IIcon tex = null;
-      if(conduit.getConectionMode(dir) == ConnectionMode.INPUT) {
+      if(conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
         tex = pc.getTextureForInputMode();
-      } else if(conduit.getConectionMode(dir) == ConnectionMode.OUTPUT) {
+      } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
         tex = pc.getTextureForOutputMode();
       }
       if(tex != null) {
@@ -116,7 +116,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         }
       }
 
-      if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
+      if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon();
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;

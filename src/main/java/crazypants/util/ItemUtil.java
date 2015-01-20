@@ -1,5 +1,8 @@
 package crazypants.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
@@ -7,16 +10,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.transport.IPipeTile;
 import cofh.api.transport.IItemDuct;
+import cpw.mods.fml.common.Loader;
+import crazypants.enderio.Log;
 
 public class ItemUtil {
+
+  public static final List<IItemReceptor> receptors = new ArrayList<IItemReceptor>();
+
+  static {
+    try {
+      Class.forName("crazypants.util.BuildcraftUtil");
+    } catch (Exception e) {
+      if(Loader.isModLoaded("BuildCraft|Transport")) {
+        Log.warn("ItemUtil: Could not register Build Craft pipe handler. Machines will not be able to output to BC pipes.");
+      } //Don't log if BC isn't installed, but we still check in case another mod is using their API
+    }
+  }
 
   public static String getDurabilityString(ItemStack item) {
     if(item == null) {
       return null;
     }
-    return Lang.localize("item.darkSteel.tooltip.durability") + " " +  (item.getMaxDamage() - item.getItemDamage()) + "/" + item.getMaxDamage();
+    return Lang.localize("item.darkSteel.tooltip.durability") + " " + (item.getMaxDamage() - item.getItemDamage()) + "/" + item.getMaxDamage();
   }
 
   public static NBTTagCompound getOrCreateNBT(ItemStack stack) {
@@ -36,9 +52,14 @@ public class ItemUtil {
       return ItemUtil.doInsertItem(getInventory((IInventory) into), item);
     } else if(into instanceof IItemDuct) {
       return ItemUtil.doInsertItem((IItemDuct) into, item, side);
-    } else if(into instanceof IPipeTile) {
-      return ((IPipeTile) into).injectItem(item, true, side);
     }
+
+    for (IItemReceptor rec : receptors) {
+      if(rec.canInsertIntoObject(into, side)) {
+        return rec.doInsertItem(into, item, side);
+      }
+    }
+
     return 0;
   }
 
@@ -119,7 +140,7 @@ public class ItemUtil {
             toInsert.stackSize = 0;
           }
         }
-        if (!inv.isItemValidForSlot(slot, toInsert)) {
+        if(!inv.isItemValidForSlot(slot, toInsert)) {
           inserted = 0;
         }
 
@@ -146,20 +167,56 @@ public class ItemUtil {
   public static IInventory getInventory(IInventory inv) {
     if(inv instanceof TileEntityChest) {
       TileEntityChest chest = (TileEntityChest) inv;
-      TileEntityChest neigbour = null;
+      TileEntityChest neighbour = null;
       if(chest.adjacentChestXNeg != null) {
-        neigbour = chest.adjacentChestXNeg;
+        neighbour = chest.adjacentChestXNeg;
       } else if(chest.adjacentChestXPos != null) {
-        neigbour = chest.adjacentChestXPos;
+        neighbour = chest.adjacentChestXPos;
       } else if(chest.adjacentChestZNeg != null) {
-        neigbour = chest.adjacentChestZNeg;
+        neighbour = chest.adjacentChestZNeg;
+      } else if(chest.adjacentChestZPos != null) {
+        neighbour = chest.adjacentChestZPos;
       }
-      if(neigbour != null) {
-        return new InventoryLargeChest("", inv, neigbour);
+      if(neighbour != null) {
+        return new InventoryLargeChest("", inv, neighbour);
       }
       return inv;
     }
     return inv;
+  }
+
+  /**
+   * Checks if items, damage and NBT are equal and the items are stackable.
+   * 
+   * @param s1
+   * @param s2
+   * @return
+   */
+  public static boolean areStackMergable(ItemStack s1, ItemStack s2) {
+    if(s1 == null || s2 == null || !s1.isStackable() || !s2.isStackable()) {
+      return false;
+    }
+    if(!s1.isItemEqual(s2)) {
+      return false;
+    }
+    return ItemStack.areItemStackTagsEqual(s1, s2);
+  }
+
+  /**
+   * Checks if items, damage and NBT are equal.
+   * 
+   * @param s1
+   * @param s2
+   * @return
+   */
+  public static boolean areStacksEqual(ItemStack s1, ItemStack s2) {
+    if(s1 == null || s2 == null) {
+      return false;
+    }
+    if(!s1.isItemEqual(s2)) {
+      return false;
+    }
+    return ItemStack.areItemStackTagsEqual(s1, s2);
   }
 
 }

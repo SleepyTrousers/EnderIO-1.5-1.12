@@ -46,34 +46,39 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   @Override
   public boolean isUpgradeItem(ItemStack stack) {
-    if(stack == null || stack.getItem() == null) {
+    if(stack == null || stack.getItem() == null || getUpgradeItem() == null) {
       return false;
     }
-    return stack.isItemEqual(upgradeItem) && stack.stackSize == upgradeItem.stackSize;
+    return stack.isItemEqual(getUpgradeItem()) && stack.stackSize == getUpgradeItem().stackSize;
   }
 
   @Override
   public ItemStack getUpgradeItem() {
     return upgradeItem;
   }
+  
+  @Override
+  public String getUpgradeItemName() {
+    return getUpgradeItem().getDisplayName();
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.instance.addCommonTooltipFromResources(list, unlocName);
+    TooltipAddera.instance.addCommonTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName + ".name", false));
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName + ".name", false));
-    TooltipAddera.instance.addDetailedTooltipFromResources(list, unlocName);
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
+    TooltipAddera.instance.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
@@ -104,11 +109,11 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     }
     NBTTagCompound upgradeRoot = new NBTTagCompound();
     upgradeRoot.setInteger(KEY_LEVEL_COST, levelCost);
-    upgradeRoot.setString(KEY_UNLOC_NAME, unlocName);
+    upgradeRoot.setString(KEY_UNLOC_NAME, getUnlocalizedName());
 
-    if(upgradeItem != null) {
+    if(getUpgradeItem() != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
-      upgradeItem.writeToNBT(itemRoot);
+      getUpgradeItem().writeToNBT(itemRoot);
       upgradeRoot.setTag(KEY_UPGRADE_ITEM, itemRoot);
     }
 

@@ -25,6 +25,10 @@ public class TranslatedCubeRenderer {
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
+  public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, boolean enableLighting) {
+    renderBoundingBox(x, y, z, block, bb, vt, null, enableLighting);
+  }
+  
   public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt) {
     renderBoundingBox(x, y, z, block, bb, vt, null);
   }
@@ -57,9 +61,9 @@ public class TranslatedCubeRenderer {
           v.xyz.sub(xyz);
           xform.apply(v);
           if(!enableLighting) {
-            v.brightness = -1;
+            v.brightness = 15 << 20 | 15 << 4;
             float col = RenderUtil.getColorMultiplierForFace(face);
-            v.color = new Vector4f(col,col,col,1);
+            v.color = new Vector4f(col,col,col,1);            
             v.normal = null;
           }
         }

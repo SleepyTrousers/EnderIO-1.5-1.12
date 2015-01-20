@@ -35,6 +35,21 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
       this.isTop = isTop;
       this.isRight = isRight;
     }
+
+    // These are necessary to get around texture mirroring, don't ask me
+    public boolean isRight(ForgeDirection side) {
+      if (side == ForgeDirection.EAST || side == ForgeDirection.NORTH) {
+        return !isRight;
+      }
+      return isRight;
+    }
+
+    public boolean isTop(ForgeDirection side) {
+      if (side == ForgeDirection.EAST) {
+        return !isTop;
+      }
+      return isTop;
+    }
   }
 
   static final FluidStack WATER_BUCKET = FluidRegistry.getFluidStack("water", BUCKET_VOLUME);
@@ -363,7 +378,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
 
   protected float doGetFilledRatio() {
     float result = tank.getFilledRatio();
-    if(isMaster()) {
+    if(isMaster() && regenTank != null) {
       result = regenTank.getFilledRatio() * 0.5f + result * 0.5f;
     }
     return result;

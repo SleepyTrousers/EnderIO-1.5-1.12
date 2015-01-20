@@ -25,6 +25,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -34,6 +35,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreEnder";
   public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitAdvancedInput";
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
+  public static final String ICON_IN_OUT_KEY = "enderio:liquidConduitAdvancedInOut";
 
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
@@ -47,6 +49,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
         ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
+        ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
       }
 
       @Override
@@ -74,7 +77,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       return false;
     }
 
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
 
@@ -85,7 +88,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
 
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -166,6 +169,10 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     return ICONS.get(ICON_INSERT_KEY);
   }
 
+  public IIcon getTextureForInOutMode() {
+    return ICONS.get(ICON_IN_OUT_KEY);
+  }
+
   @Override
   public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return null;
@@ -216,9 +223,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     doExtract();
   }
 
+  @Override
+  public boolean isExtractingFromDir(ForgeDirection dir) {
+    return getConnectionMode(dir).acceptsInput();
+  }
+
   private void doExtract() {
     BlockCoord loc = getLocation();
-    if(!hasConnectionMode(ConnectionMode.INPUT)) {
+    if(!hasConnectionMode(ConnectionMode.INPUT) && !hasConnectionMode(ConnectionMode.IN_OUT)) {
       return;
     }
     if(network == null) {
@@ -246,7 +258,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(network == null || !getConectionMode(from).acceptsInput()) {
+    if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
     return network.fillFrom(this, from, resource, doFill);
@@ -257,7 +269,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsInput();
+    return getConnectionMode(from).acceptsInput();
   }
 
   @Override
@@ -289,7 +301,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     for (Entry<ForgeDirection, FluidFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
-        if(f != null && !f.isEmpty()) {
+        if(f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
@@ -299,7 +311,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     for (Entry<ForgeDirection, FluidFilter> entry : outputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
-        if(f != null && !f.isEmpty()) {
+        if(f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);

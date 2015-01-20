@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class BlockEio extends Block {
 
@@ -24,8 +26,8 @@ public abstract class BlockEio extends Block {
     setHardness(0.5F);
     setBlockName(name);
     setStepSound(Block.soundTypeMetal);
+    setHarvestLevel("pickaxe", 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-
   }
 
   protected void init() {
@@ -53,6 +55,7 @@ public abstract class BlockEio extends Block {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:" + name);
   }
