@@ -111,8 +111,8 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     ei.hoverStart = (float) world.getTotalWorldTime() * 0.05f + (tick * 0.05f) + rand.nextFloat();
 
     glPushMatrix();
-    glScalef(1.1f, 1.1f, 1.1f);
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
+    glScalef(1.1f, 1.1f, 1.1f);
     glDepthMask(true);
     
     if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {

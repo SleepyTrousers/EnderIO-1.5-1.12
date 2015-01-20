@@ -62,6 +62,19 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {
-    return "enderio:blockWeatherObeliskSide";
+    if(active) {
+      return "enderio:blockAttractorSideOn";
+    }
+    return "enderio:blockAttractorSide";
+  }
+
+  @Override
+  protected String getSideIconKey(boolean active) {
+    return getMachineFrontIconKey(active);
+  }
+
+  @Override
+  protected String getBackIconKey(boolean active) {
+    return getMachineFrontIconKey(active);
   }
 }

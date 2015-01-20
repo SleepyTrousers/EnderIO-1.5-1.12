@@ -61,13 +61,13 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     }
   }
 
-  private int powerUsed = 0;
-  private Task activeTask = null;
+  int powerUsed = 0;
+  Task activeTask = null;
 
   private boolean canBeActive = true;
 
   public TileWeatherObelisk() {
-    super(new SlotDefinition(1, 0, 1));
+    super(new SlotDefinition(1, 0, 0));
   }
   
   public void updateEntity() {
@@ -133,7 +133,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
           powerUsed += toUse;
           res = true;
         }
-
+        
         if(powerUsed >= activeTask.power) {
           activeTask.complete(this);
           PacketHandler.INSTANCE.sendToDimension(new PacketFinishWeather(this, activeTask), worldObj.provider.dimensionId);
