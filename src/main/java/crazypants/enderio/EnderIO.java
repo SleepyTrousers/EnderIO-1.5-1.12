@@ -72,11 +72,7 @@ import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
-import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
-import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
-import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
-import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
-import crazypants.enderio.item.darksteel.ItemGliderWing;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
@@ -157,7 +153,7 @@ import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Forestry", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
@@ -293,15 +289,7 @@ public class EnderIO {
   public static ItemSoulVessel itemSoulVessel;
   public static ItemFrankenSkull itemFrankenSkull;
 
-  public static ItemDarkSteelArmor itemDarkSteelHelmet;
-  public static ItemDarkSteelArmor itemDarkSteelChestplate;
-  public static ItemDarkSteelArmor itemDarkSteelLeggings;
-  public static ItemDarkSteelArmor itemDarkSteelBoots;
-  public static ItemDarkSteelSword itemDarkSteelSword;
-  public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
-  public static ItemDarkSteelAxe itemDarkSteelAxe;
   public static BlockVacuumChest blockVacuumChest;
-  public static ItemGliderWing itemGliderWing;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -416,16 +404,7 @@ public class EnderIO {
 
     blockDarkIronBars = BlockDarkIronBars.create();
 
-    itemGliderWing = ItemGliderWing.create();
-
-    itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
-    itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
-    itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
-    itemDarkSteelBoots = ItemDarkSteelArmor.create(3);
-
-    itemDarkSteelSword = ItemDarkSteelSword.create();
-    itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
-    itemDarkSteelAxe = ItemDarkSteelAxe.create();
+    DarkSteelItems.createDarkSteelArmorItems();
 
     int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
@@ -549,19 +528,8 @@ public class EnderIO {
       ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
     }
 
-    if(Config.lootTheEnder) {
-      ItemStack sword = new ItemStack(EnderIO.itemDarkSteelSword, 1, 0);
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
-      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
-      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
-    }
+    DarkSteelItems.addLoot();
 
-    if(Config.lootDarkSteelBoots) {
-      ItemStack boots = new ItemStack(EnderIO.itemDarkSteelBoots, 1, 0);
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
-    }
     if(Loader.isModLoaded("ComputerCraft")) {
       ConduitBundledRedstoneProvider.register();
     }

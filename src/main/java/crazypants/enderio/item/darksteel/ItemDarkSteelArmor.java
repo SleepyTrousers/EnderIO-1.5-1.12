@@ -27,7 +27,6 @@ import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
@@ -67,13 +66,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public static ItemDarkSteelArmor forArmorType(int armorType) {
     switch (armorType) {
     case 0:
-      return EnderIO.itemDarkSteelHelmet;
+      return DarkSteelItems.itemDarkSteelHelmet;
     case 1:
-      return EnderIO.itemDarkSteelChestplate;
+      return DarkSteelItems.itemDarkSteelChestplate;
     case 2:
-      return EnderIO.itemDarkSteelLeggings;
+      return DarkSteelItems.itemDarkSteelLeggings;
     case 3:
-      return EnderIO.itemDarkSteelBoots;
+      return DarkSteelItems.itemDarkSteelBoots;
     }
     return null;
   }
@@ -97,7 +96,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return res;
   }
 
-  private int powerPerDamagePoint;
+  private final int powerPerDamagePoint;
 
   protected ItemDarkSteelArmor(int armorType) {
     super(MATERIAL, 0, armorType);
@@ -173,7 +172,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2"));
-      if(itemstack.getItem() == EnderIO.itemDarkSteelBoots) {
+      if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
         list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line1"));
         list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line2"));
       }
@@ -284,7 +283,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Thaumcraft")
   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelHelmet) {
+    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
       return 0;
     }
     return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
@@ -309,7 +308,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Forestry")
   public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
-    if(armor == null || armor.getItem() != EnderIO.itemDarkSteelHelmet) {
+    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
       return false;
     }
     return NaturalistEyeUpgrade.isUpgradeEquipped(player);

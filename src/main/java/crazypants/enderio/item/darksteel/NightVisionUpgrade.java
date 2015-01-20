@@ -46,7 +46,7 @@ public class NightVisionUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelHelmet) {
+    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
       return false;
     }
     NightVisionUpgrade up = loadFromItem(stack);

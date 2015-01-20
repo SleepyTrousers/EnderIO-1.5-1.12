@@ -48,14 +48,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == EnderIO.itemDarkSteelPickaxe;
+    return equipped.getItem() == DarkSteelItems.itemDarkSteelPickaxe;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
     if(!isEquipped(player)) {
       return false;
     }
-    return EnderIO.itemDarkSteelPickaxe.getEnergyStored(player.getCurrentEquippedItem()) >= requiredPower;
+    return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem()) >= requiredPower;
   }
 
   public static ItemDarkSteelPickaxe create() {

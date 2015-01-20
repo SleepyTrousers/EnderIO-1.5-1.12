@@ -1,16 +1,11 @@
 package crazypants.enderio.item.darksteel;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockNewLeaf;
-import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,12 +15,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
@@ -34,26 +27,17 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
-import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
-  private static Point[] DIAGINALS = new Point[] {
-      new Point(1,1),
-      new Point(1,-1),
-      new Point(-1,1),
-      new Point(-1,-1)
-  };
-  
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
       return false;
@@ -62,7 +46,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == EnderIO.itemDarkSteelAxe;
+    return equipped.getItem() == DarkSteelItems.itemDarkSteelAxe;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
@@ -73,7 +57,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if(!isEquipped(player)) {
       return 0;
     }
-    return EnderIO.itemDarkSteelAxe.getEnergyStored(player.getCurrentEquippedItem());
+    return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem());
   }
 
   public static ItemDarkSteelAxe create() {
@@ -84,7 +68,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   private int logOreId = -1;
-  private MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
+  private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
   
   protected ItemDarkSteelAxe() {
     super(ItemDarkSteelSword.MATERIAL);

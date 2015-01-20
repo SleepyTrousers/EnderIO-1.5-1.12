@@ -14,6 +14,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.GogglesOfRevealingUpgrade;
@@ -27,7 +28,7 @@ import crazypants.util.Lang;
 
 public class KeyTracker {
 
-  public static KeyTracker instance = new KeyTracker();
+  public static final KeyTracker instance = new KeyTracker();
   
   static {
     FMLCommonHandler.instance().bus().register(instance);
@@ -128,7 +129,7 @@ public class KeyTracker {
       return;
     }
     if(gogglesKey.getIsKeyPressed()) {      
-      EnderIO.itemDarkSteelHelmet.setGogglesUgradeActive(!EnderIO.itemDarkSteelHelmet.isGogglesUgradeActive());
+      DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(!DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive());
     }
     
   }
