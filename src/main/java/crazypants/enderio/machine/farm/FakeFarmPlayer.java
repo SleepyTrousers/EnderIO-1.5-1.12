@@ -19,11 +19,11 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class FakeFarmPlayer extends EntityPlayerMP {
-  
+
   private static final UUID uuid = UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d");
-  
+
   private static GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioFarmer]");
-  
+
   public FakeFarmPlayer(WorldServer world) {
     super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new ItemInWorldManager(world));
   }
@@ -40,6 +40,10 @@ public class FakeFarmPlayer extends EntityPlayerMP {
 
   @Override
   public void addChatComponentMessage(IChatComponent chatmessagecomponent) {
+  }
+
+  @Override
+  public void addChatMessage(IChatComponent p_145747_1_) {
   }
 
   @Override
@@ -79,7 +83,7 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   public void func_147100_a(C15PacketClientSettings pkt) {
     return;
   }
-  
+
   @Override
   public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack) {
     return true;
