@@ -1,23 +1,17 @@
 package crazypants.enderio.machine.vacuum;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 
 public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
@@ -31,8 +25,9 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    
-    double size = 0.4;    
+    IIcon override = renderer.overrideBlockTexture;
+
+    double size = 0.4;
     renderer.renderMinX = 0.5 - size;
     renderer.renderMaxX = 0.5 + size;
     renderer.renderMinY = 0.5 - size;
@@ -40,24 +35,28 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
     renderer.renderMinZ = 0.5 - size;
     renderer.renderMaxZ = 0.5 + size;
     renderer.lockBlockBounds = true;
-    
-    renderer.setOverrideBlockTexture(EnderIO.blockHyperCube.getIcon(0, 0));
+
+    if(!renderer.hasOverrideBlockTexture()) {
+      renderer.setOverrideBlockTexture(EnderIO.blockHyperCube.getIcon(0, 0));
+    }
     renderer.renderStandardBlock(Blocks.stone, x, y, z);
-    renderer.setOverrideBlockTexture(null);
-    
+    renderer.setOverrideBlockTexture(override);
+
     renderer.lockBlockBounds = false;
-    
+
     renderer.renderMinX = 0;
     renderer.renderMaxX = 1;
     renderer.renderMinY = 0;
     renderer.renderMaxY = 1;
     renderer.renderMinZ = 0;
     renderer.renderMaxZ = 1;
-    
-    renderer.setOverrideBlockTexture(EnderIO.blockVacuumChest.getIcon(0, 0));
+
+    if(!renderer.hasOverrideBlockTexture()) {
+      renderer.setOverrideBlockTexture(EnderIO.blockVacuumChest.getIcon(0, 0));
+    }
     renderer.renderStandardBlock(Blocks.stone, x, y, z);
-    renderer.setOverrideBlockTexture(null);
-    
+    renderer.setOverrideBlockTexture(override);
+
     return true;
   }
 

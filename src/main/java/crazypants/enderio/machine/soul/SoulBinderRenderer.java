@@ -23,7 +23,8 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
   private float skullScale = 0.5f;
   private BoundingBox scaledBB = BoundingBox.UNIT_CUBE.scale(skullScale, skullScale, skullScale);
   private IIcon[] icons = new IIcon[6];
-
+  private IIcon override = null;
+  
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 
@@ -38,7 +39,8 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
     IIcon soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
-
+    override = renderer.overrideBlockTexture;
+    
     //Horrible hack to get the MC lighting engine to set the correct values for me
     if(renderer != null && world != null) {
       renderer.setOverrideBlockTexture(IconUtil.blankTexture);
@@ -99,7 +101,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 
   private void setIcons(IIcon defaultIcon, IIcon faceIcon, ForgeDirection faceSide) {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      icons[dir.ordinal()] = dir == faceSide ? faceIcon : defaultIcon;
+      icons[dir.ordinal()] = override != null ? override : dir == faceSide ? faceIcon : defaultIcon;
     }
   }
 

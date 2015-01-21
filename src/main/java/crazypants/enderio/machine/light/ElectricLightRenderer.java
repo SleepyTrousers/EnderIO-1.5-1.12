@@ -36,7 +36,11 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     RenderUtil.setTesselatorBrightness(world, x, y, z);
     
     IIcon[] textures = RenderUtil.getBlockTextures(world, x, y, z);
-    CubeRenderer.render(bb, textures, null, null);
+    if(renderer.hasOverrideBlockTexture()) {
+      CubeRenderer.render(bb, renderer.overrideBlockTexture);
+    } else {
+      CubeRenderer.render(bb, textures, null, null);
+    }
 
     return true;
   }

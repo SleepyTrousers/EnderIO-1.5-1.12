@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -41,9 +42,9 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, double x, double y, double z,
       float partialTick,
-      float worldLight) {
+      float worldLight, RenderBlocks rb) {
 
-    super.renderEntity(conduitBundleRenderer, bundle, conduit, x, y, z, partialTick, worldLight);
+    super.renderEntity(conduitBundleRenderer, bundle, conduit, x, y, z, partialTick, worldLight, rb);
 
     RedstoneSwitch sw = (RedstoneSwitch) conduit;
 

@@ -5,7 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
@@ -50,7 +49,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelHelmet || getGoggles() == null) {
+    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet || getGoggles() == null) {
       return false;
     }
     GogglesOfRevealingUpgrade up = loadFromItem(stack);

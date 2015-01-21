@@ -24,7 +24,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
-import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
 import crazypants.enderio.conduit.gas.IGasConduit;

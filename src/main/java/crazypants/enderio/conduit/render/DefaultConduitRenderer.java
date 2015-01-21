@@ -1,11 +1,9 @@
 package crazypants.enderio.conduit.render;
 
-import static crazypants.render.CubeRenderer.*;
-import static net.minecraftforge.common.util.ForgeDirection.*;
-
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,6 +16,9 @@ import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vertex;
 
+import static crazypants.render.CubeRenderer.*;
+import static net.minecraftforge.common.util.ForgeDirection.*;
+
 public class DefaultConduitRenderer implements ConduitRenderer {
 
   protected float transmissionScaleFactor;
@@ -29,7 +30,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight) {
+      float worldLight, RenderBlocks rb) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     Tessellator tessellator = Tessellator.instance;
@@ -37,25 +38,26 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
 
     IIcon tex;
-    for (CollidableComponent component : components) {
-      if(renderComponent(component)) {
-        float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if(isNSEWUD(component.dir) &&
-            conduit.getTransmitionTextureForState(component) != null) {
-          tessellator.setBrightness((int) (worldLight));
-          tex = conduit.getTransmitionTextureForState(component);
-          renderTransmission(conduit, tex, component, selfIllum);
-        }
 
-        tex = conduit.getTextureForState(component);
-        if(tex != null) {
-          tessellator.setBrightness((int) (worldLight));
-          renderConduit(tex, conduit, component, selfIllum);
+    if(!rb.hasOverrideBlockTexture()) {
+      for (CollidableComponent component : components) {
+        if(renderComponent(component)) {
+          float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
+          if(isNSEWUD(component.dir) &&
+              conduit.getTransmitionTextureForState(component) != null) {
+            tessellator.setBrightness((int) (worldLight));
+            tex = conduit.getTransmitionTextureForState(component);
+            renderTransmission(conduit, tex, component, selfIllum);
+          }
+
+          tex = conduit.getTextureForState(component);
+          if(tex != null) {
+            tessellator.setBrightness((int) (worldLight));
+            renderConduit(tex, conduit, component, selfIllum);
+          }
         }
       }
-
     }
-
   }
 
   @Override

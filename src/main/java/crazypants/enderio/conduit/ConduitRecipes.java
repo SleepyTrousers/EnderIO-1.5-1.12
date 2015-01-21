@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.ModObject.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,8 @@ import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
+
+import static crazypants.enderio.ModObject.*;
 
 public class ConduitRecipes {
 

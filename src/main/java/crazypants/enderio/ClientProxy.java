@@ -55,7 +55,7 @@ import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
 import crazypants.enderio.item.ToolTickHandler;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
-import crazypants.enderio.item.darksteel.PoweredItemRenderer;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.darksteel.SoundRenderer;
@@ -157,9 +157,9 @@ public class ClientProxy extends CommonProxy {
     MEConduit.initIcons();
   }
 
-  private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
+  private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
 
-  private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
+  private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
   private ConduitBundleRenderer cbr;
 
@@ -393,14 +393,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     FMLCommonHandler.instance().bus().register(TravelController.instance);
 
-    PoweredItemRenderer dsr = new PoweredItemRenderer();
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelBoots, dsr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelLeggings, dsr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelChestplate, dsr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelHelmet, dsr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelSword, dsr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelPickaxe, dsr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelAxe, dsr);
+    DarkSteelItems.registerItemRenderer();
+
     //Ensure it is loaded and registered
     KeyTracker.instance.isGlideActive();
 

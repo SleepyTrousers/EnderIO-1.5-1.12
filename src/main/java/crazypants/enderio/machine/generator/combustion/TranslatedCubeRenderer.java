@@ -73,5 +73,8 @@ public class TranslatedCubeRenderer {
       Tessellator.instance.addTranslation(-(float)x,- (float)y, -(float)z);
     }
   }
-
+  
+  public CustomCubeRenderer getRenderer() {
+    return ccr;
+  }
 }

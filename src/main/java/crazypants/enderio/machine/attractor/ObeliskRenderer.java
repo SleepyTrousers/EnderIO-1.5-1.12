@@ -147,10 +147,15 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     BoundingBox bb = BoundingBox.UNIT_CUBE;
 
     Tessellator.instance.addTranslation(x, y, z);
-
+    
     IIcon icon = EnderIO.blockAttractor.getOnIcon();
     if(world != null) {
       icon = block.getIcon(world, x, y, z, 0);
+      Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
+    }
+
+    if(renderer.hasOverrideBlockTexture()) {
+      icon = renderer.overrideBlockTexture;
     }
 
     float height = 0.475f;

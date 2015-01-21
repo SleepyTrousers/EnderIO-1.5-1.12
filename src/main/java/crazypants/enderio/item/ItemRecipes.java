@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
@@ -32,14 +33,14 @@ public class ItemRecipes {
     GameRegistry.addShapedRecipe(magnet, "scc", "  v", "scc", 's', electricalSteel, 'c', conductiveIron, 'v', vibCry);
 
     //Dark Steel        
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "sss", "s s", 's', darkSteel);
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelChestplate.createItemStack(), "s s", "sss", "sss", 's', darkSteel);
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelLeggings.createItemStack(), "sss", "s s", "s s", 's', darkSteel);
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "s s", 's', darkSteel);
+    GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelHelmet.createItemStack(), "sss", "s s", 's', darkSteel);
+    GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelChestplate.createItemStack(), "s s", "sss", "sss", 's', darkSteel);
+    GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelLeggings.createItemStack(), "sss", "s s", "s s", 's', darkSteel);
+    GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelBoots.createItemStack(), "s s", "s s", 's', darkSteel);
     
-    ItemStack wing = new ItemStack(EnderIO.itemGliderWing,1,0);
+    ItemStack wing = new ItemStack(DarkSteelItems.itemGliderWing,1,0);
     GameRegistry.addShapedRecipe(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.leather);
-    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemGliderWing,1,1), " s ", "wsw", "   ", 's', darkSteel, 'w', wing);
+    GameRegistry.addShapedRecipe(new ItemStack(DarkSteelItems.itemGliderWing,1,1), " s ", "wsw", "   ", 's', darkSteel, 'w', wing);
     
     
     ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
@@ -58,11 +59,11 @@ public class ItemRecipes {
   
   public static void addOreDictionaryRecipes() {
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "woodStick"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "woodStick"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "woodStick"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "woodStick"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "woodStick"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "woodStick"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "stickWood"));
   }
 }

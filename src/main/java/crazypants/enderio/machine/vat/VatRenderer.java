@@ -71,18 +71,20 @@ public class VatRenderer implements ISimpleBlockRenderingHandler, IItemRenderer 
     }
 
     float fudge = 1f;
+    
+    IIcon override = renderer.overrideBlockTexture;
 
     //-x side
     BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.334, fudge,fudge);
     bb = bb.translate(0.5f - (0.334f/2),0,0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
 
     bb = BoundingBox.UNIT_CUBE.scale(0.334, fudge,fudge);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
 
     bb = BoundingBox.UNIT_CUBE.scale(0.334, fudge,fudge);
     bb = bb.translate(-0.5f + (0.334f/2),0,0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
 
     if(vat != null) {
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);
@@ -104,7 +106,9 @@ public class VatRenderer implements ISimpleBlockRenderingHandler, IItemRenderer 
     GL11.glDisable(GL11.GL_LIGHTING);   
     Tessellator tes = Tessellator.instance;
     tes.startDrawingQuads();
+    tes.addTranslation(0, -0.1f, 0);
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
+    tes.addTranslation(0, 0.1f, 0);
     tes.draw();    
     GL11.glEnable(GL11.GL_LIGHTING);
   }

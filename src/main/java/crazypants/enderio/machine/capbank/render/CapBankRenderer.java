@@ -66,7 +66,13 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
       connectedTexRenderer.setForceAllEdges(false);
     }
     connectedTexRenderer.setEdgeTexture(EnderIO.blockCapBank.getBorderIcon(0, meta));
-    CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, connectedTexRenderer);
+    CustomCubeRenderer.instance.setOverrideTexture(renderer.overrideBlockTexture);
+    if (renderer.overrideBlockTexture == null) {
+      CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, connectedTexRenderer);
+    } else {
+      CustomCubeRenderer.instance.renderBlock(world, block, x, y, z);
+    }
+    CustomCubeRenderer.instance.setOverrideTexture(null);
     return true;
   }
 

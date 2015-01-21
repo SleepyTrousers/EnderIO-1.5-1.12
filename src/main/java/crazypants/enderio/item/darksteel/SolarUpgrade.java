@@ -51,7 +51,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-      if(stack == null || stack.getItem() != EnderIO.itemDarkSteelHelmet || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+      if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
         return false;
       }
       SolarUpgrade up = loadFromItem(stack);
