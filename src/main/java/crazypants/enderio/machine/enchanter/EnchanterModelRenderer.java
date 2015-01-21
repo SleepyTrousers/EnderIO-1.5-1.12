@@ -6,23 +6,13 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.generator.zombie.ModelZombieJar;
-import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
 
 public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
@@ -48,8 +38,6 @@ public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements
     renderModel(gen.getFacing());    
     GL11.glPopMatrix();
   }
-
- 
 
   private void renderModel(int facing) {
 

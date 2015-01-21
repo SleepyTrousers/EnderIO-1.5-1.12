@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.farm;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -35,25 +35,27 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    IIcon override = renderer.overrideBlockTexture;
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
 
     float scale = 0.7f;
     float width = 0.4f;
     float trans = (1 - scale) / 2;
     bb = BoundingBox.UNIT_CUBE.scale(1, scale, width);
     bb = bb.translate(0, -trans, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
 
     bb = BoundingBox.UNIT_CUBE.scale(width, scale, 1);
     bb = bb.translate(0, -trans, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
 
     float topWidth = 0.15f;
     bb = BoundingBox.UNIT_CUBE.scale(1, topWidth, 1);
     bb = bb.translate(0, 0.3f + topWidth / 2f, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, override, world != null);
+    TranslatedCubeRenderer.instance.getRenderer().setOverrideTexture(null);
 
     if(world != null) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -62,13 +64,13 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
         bb = bb.translate(0, 0.1f, 0);
         bb = bb.translate(x, y, z);
         Tessellator.instance.setColorOpaque_F(1, 1, 1);
-        CubeRenderer.render(bb, Blocks.portal.getBlockTextureFromSide(1));
+        CubeRenderer.render(bb, override != null ? override : Blocks.portal.getBlockTextureFromSide(1));
 
         bb = BoundingBox.UNIT_CUBE.scale(.4, 0.08, 1);
         bb = bb.translate(0, 0.1f, 0);
         bb = bb.translate(x, y, z);
         Tessellator.instance.setColorOpaque_F(1, 1, 1);
-        CubeRenderer.render(bb, Blocks.portal.getBlockTextureFromSide(1));
+        CubeRenderer.render(bb, override != null ? override : Blocks.portal.getBlockTextureFromSide(1));
       }
     }
 

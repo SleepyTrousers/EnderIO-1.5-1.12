@@ -5,6 +5,7 @@ import static crazypants.render.CubeRenderer.*;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,9 +43,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight) {
+      float worldLight, RenderBlocks rb) {
     calculateRatios((LiquidConduit) conduit);
-    super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
+    super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
   }
 
   @Override

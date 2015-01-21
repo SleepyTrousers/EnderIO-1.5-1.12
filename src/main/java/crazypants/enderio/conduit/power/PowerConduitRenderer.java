@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.power;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,8 +27,8 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
 
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight) {
-    super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
+      float worldLight, RenderBlocks rb) {
+    super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
 
     if(!conduit.hasConnectionMode(ConnectionMode.INPUT) && !conduit.hasConnectionMode(ConnectionMode.OUTPUT)) {
       return;

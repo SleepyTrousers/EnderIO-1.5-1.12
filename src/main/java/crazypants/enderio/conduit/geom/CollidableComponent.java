@@ -23,4 +23,12 @@ public class CollidableComponent {
     return "CollidableComponent [conduitType=" + conduitType + ", bound=" + bound + ", id=" + dir + "]";
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if(obj instanceof CollidableComponent) {
+      CollidableComponent other = (CollidableComponent) obj;
+      return conduitType == other.conduitType && bound.equals(((CollidableComponent) obj).bound) && dir == other.dir;
+    }
+    return false;
+  }
 }

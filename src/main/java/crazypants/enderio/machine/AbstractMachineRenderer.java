@@ -85,11 +85,13 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
     if (te instanceof IPaintableTileEntity && ((IPaintableTileEntity) te).getSourceBlock() != null) {
       ccr.setOverrideTexture(IconUtil.blankTexture);
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);
-      ccr.setOverrideTexture(null);
+      ccr.setOverrideTexture(renderer.overrideBlockTexture);
       paintedRenderer.renderWorldBlock(world, x, y, z, block, modelId, renderer);
     } else {
+      ccr.setOverrideTexture(renderer.overrideBlockTexture);
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);
     }
+    ccr.setOverrideTexture(null);
 
     return true;
   }

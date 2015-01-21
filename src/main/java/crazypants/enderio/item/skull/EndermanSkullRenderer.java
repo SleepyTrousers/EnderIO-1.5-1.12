@@ -86,12 +86,15 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     float size = 0.25f;
     float height = 0.5f;
     BoundingBox bb = new BoundingBox(size, 0, size, 1 - size, height, 1 - size); 
-    CubeRenderer.render(bb, icons, rot, true);
-    
-    if(meta > 1) {
-      renderBolts(rot, size);
+    if (renderer.hasOverrideBlockTexture()) {
+      CubeRenderer.render(bb, renderer.overrideBlockTexture, rot);
+    } else {
+      CubeRenderer.render(bb, icons, rot, true);
+
+      if(meta > 1) {
+        renderBolts(rot, size);
+      }
     }
-    
     
     tes.addTranslation(-x, -y, -z);
 

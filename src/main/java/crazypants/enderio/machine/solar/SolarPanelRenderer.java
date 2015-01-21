@@ -64,7 +64,11 @@ public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
     meta = MathHelper.clamp_int(meta, 0, 1);
     ctr.setEdgeTexture(EnderIO.blockSolarPanel.getBorderIcon(0, meta));
     CustomCubeRenderer.instance.setOverrideTexture(IconUtil.blankTexture);
-    CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, ctr);
+    if(!renderer.hasOverrideBlockTexture()) {
+      CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, ctr);
+    } else {
+      CustomCubeRenderer.instance.renderBlock(world, block, x, y, z);
+    }
     CustomCubeRenderer.instance.setOverrideTexture(null);
     Tessellator.instance.addTranslation(0, -0.0001f, 0);
     return true;

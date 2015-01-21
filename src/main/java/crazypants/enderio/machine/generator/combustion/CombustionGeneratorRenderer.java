@@ -60,12 +60,14 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     boolean scaleX = facing != 4 && facing != 5;
     float scx;
     float scz;
+    
+    IIcon override = renderer.overrideBlockTexture;
 
     //middle chunk
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(1, 0.34, 1);
     vt.setFacing(facing);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, null ,world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, override, world != null);
 
     scaleX = facing != 4 && facing != 5;
     scx = scaleX ? 0.7f : 1;
@@ -75,18 +77,18 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(scx, 0.21, scz);
     bb = bb.translate(0, 0.26f, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, null ,world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, override ,world != null);
 
 
     //lower 1/3
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(scx, 0.21, scz);
     bb = bb.translate(0, -0.26f, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, null ,world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, override ,world != null);
 
     //top / bottom connectors
     bb = BoundingBox.UNIT_CUBE.scale(0.35, 1, 0.35);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, null ,world != null);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, override ,world != null);
 
     //tanks
     float size = 0.64f;
@@ -105,6 +107,11 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     } else {
       tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
     } 
+    
+    if (override != null) {
+      tex = override;
+    }
+    
     TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, tex, world != null);
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);

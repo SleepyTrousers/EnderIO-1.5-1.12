@@ -67,12 +67,17 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     if(te instanceof TileEntityPaintedBlock) {
       tecb = (TileEntityPaintedBlock) te;
     }
-    IBlockAccess origBa = renderer.blockAccess;
-    renderer.blockAccess = new FacadeAccessWrapper(origBa);
-    try {
-      renderFrame(renderer.blockAccess, x, y, z, tecb, false, meta);
-    } finally {
-      renderer.blockAccess = origBa;
+    
+    if(renderer.hasOverrideBlockTexture()) {
+      renderer.renderStandardBlock(block, x, y, z);
+    } else {
+      IBlockAccess origBa = renderer.blockAccess;
+      renderer.blockAccess = new FacadeAccessWrapper(origBa);
+      try {
+        renderFrame(renderer.blockAccess, x, y, z, tecb, false, meta);
+      } finally {
+        renderer.blockAccess = origBa;
+      }
     }
     //    }
     return true;

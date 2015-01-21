@@ -345,4 +345,40 @@ public final class BoundingBox {
     return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(maxX);
+    result = prime * result + Float.floatToIntBits(maxY);
+    result = prime * result + Float.floatToIntBits(maxZ);
+    result = prime * result + Float.floatToIntBits(minX);
+    result = prime * result + Float.floatToIntBits(minY);
+    result = prime * result + Float.floatToIntBits(minZ);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if(this == obj)
+      return true;
+    if(obj == null)
+      return false;
+    if(getClass() != obj.getClass())
+      return false;
+    BoundingBox other = (BoundingBox) obj;
+    if(Float.floatToIntBits(maxX) != Float.floatToIntBits(other.maxX))
+      return false;
+    if(Float.floatToIntBits(maxY) != Float.floatToIntBits(other.maxY))
+      return false;
+    if(Float.floatToIntBits(maxZ) != Float.floatToIntBits(other.maxZ))
+      return false;
+    if(Float.floatToIntBits(minX) != Float.floatToIntBits(other.minX))
+      return false;
+    if(Float.floatToIntBits(minY) != Float.floatToIntBits(other.minY))
+      return false;
+    if(Float.floatToIntBits(minZ) != Float.floatToIntBits(other.minZ))
+      return false;
+    return true;
+  }
 }
