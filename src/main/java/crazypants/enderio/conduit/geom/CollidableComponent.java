@@ -31,4 +31,14 @@ public class CollidableComponent {
     }
     return false;
   }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((bound == null) ? 0 : bound.hashCode());
+    result = prime * result + ((conduitType == null) ? 0 : conduitType.getName().hashCode());
+    result = prime * result + ((dir == null) ? 0 : dir.hashCode());
+    return result;
+  }
 }
