@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.weather;
 
+import java.util.Random;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -16,6 +18,7 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
     BlockWeatherObelisk ret = new BlockWeatherObelisk();
     ret.init();
     PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketFinishWeather.Handler.class, PacketFinishWeather.class, PacketHandler.nextID(), Side.CLIENT);
     return ret;
   }
@@ -76,5 +79,10 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
   @Override
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
+  }
+  
+  @Override
+  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+    ; // no active smoke
   }
 }

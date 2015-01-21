@@ -41,7 +41,6 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
     
     int barHeight = getTileEntity().getProgressScaled(31);
-    System.out.println(barHeight);
     this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -76,6 +75,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if (b.id >= 0 && b.id <= 2) {
+      getTileEntity().startTask(b.id);
       PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity(), Task.values()[b.id]));
     }
   }

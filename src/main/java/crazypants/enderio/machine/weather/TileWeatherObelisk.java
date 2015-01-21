@@ -55,7 +55,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     void thunder(TileEntity te, boolean state) {
       te.getWorldObj().getWorldInfo().setThundering(state);
     }
-    
+
     boolean isValid(ItemStack item) {
       return item != null && ItemStack.areItemStacksEqual(item, this.requiredItem);
     }
@@ -69,16 +69,16 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0));
   }
-  
+
   public void updateEntity() {
     super.updateEntity();
-    if (worldObj.isRemote) {
-      if (activeParticleTicks > 0) {
+    if(worldObj.isRemote) {
+      if(activeParticleTicks > 0) {
         spawnParticle();
       }
     }
   }
-  
+
   @SideOnly(Side.CLIENT)
   private void spawnParticle() {
     EntitySmokeFX fx = new EntitySmokeFX(getWorldObj(), xCoord + 0.5, yCoord + 0.3, zCoord + 0.5, 0, 0.2, 0);
@@ -95,7 +95,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     for (Task task : Task.values()) {
-      if (task.isValid(itemstack)) {
+      if(task.isValid(itemstack)) {
         return true;
       }
     }
@@ -133,30 +133,36 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
           powerUsed += toUse;
           res = true;
         }
-        
+
         if(powerUsed >= activeTask.power) {
           activeTask.complete(this);
           PacketHandler.INSTANCE.sendToDimension(new PacketFinishWeather(this, activeTask), worldObj.provider.dimensionId);
-          powerUsed = 0;
-          activeTask = null;
+          startTask(-1);
           res = true;
         }
       }
     }
 
-    return true;
+    return res;
   }
 
   public void startTask(int taskid) {
-    powerUsed = 0;
-    Task task = Task.values()[taskid];
-    if (task.isValid(inventory[slotDefinition.minInputSlot])) {
-      activeTask = task;
-      decrStackSize(slotDefinition.minInputSlot, 1);
+    if(activeTask == null && taskid >= 0) {
+      powerUsed = 0;
+      Task task = Task.values()[taskid];
+      if(task.isValid(inventory[slotDefinition.minInputSlot])) {
+        activeTask = task;
+        decrStackSize(slotDefinition.minInputSlot, 1);
+      }
+    } else if(activeTask != null && taskid == -1) {
+      activeTask = null;
+      powerUsed = 0;
+      PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.dimensionId);
     }
   }
 
   private int activeParticleTicks = 0;
+
   public void activateClientParticles() {
     activeParticleTicks = 10;
   }
