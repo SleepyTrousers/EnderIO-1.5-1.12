@@ -42,6 +42,7 @@ repositories {
     maven { url = "http://chickenbones.net/maven/" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
     maven { url = "http://maven.tterrag.com" }
+    maven { url = "http://maven.ic2.player.to" }
 }
 
 dependencies {
@@ -50,6 +51,7 @@ dependencies {
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}"
     compile "tterrag.core:ttCore:${ttCore_version}"
+    compile "net.sengir.forestry:${forestry_version}:api"
 }
 
 sourceSets {

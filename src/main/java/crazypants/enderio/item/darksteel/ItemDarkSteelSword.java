@@ -54,14 +54,14 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == EnderIO.itemDarkSteelSword;
+    return equipped.getItem() == DarkSteelItems.itemDarkSteelSword;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
     if(!isEquipped(player)) {
       return false;
     }
-    return EnderIO.itemDarkSteelSword.getEnergyStored(player.getCurrentEquippedItem()) >= requiredPower;
+    return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem()) >= requiredPower;
   }
 
   public static ItemDarkSteelSword create() {
@@ -71,7 +71,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     return res;
   }
 
-  private int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
+  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
   private long lastBlickTick = -1;
 
   public ItemDarkSteelSword() {
@@ -198,7 +198,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       return true;
     }
 
-    float fromWeapon = 0;
+    float fromWeapon;
     if(isCleaver) {
       fromWeapon = Config.ticCleaverSkullDropChance;
     } else {
@@ -223,8 +223,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
         return 0.01;
       }
     }
-    float fromWeapon = 0;
-    float fromLooting = 0;
+    float fromWeapon;
+    float fromLooting;
     if(isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
       fromWeapon = Config.darkSteelSwordSkullChance;
       fromLooting = Config.darkSteelSwordSkullLootingModifier * evt.lootingLevel;

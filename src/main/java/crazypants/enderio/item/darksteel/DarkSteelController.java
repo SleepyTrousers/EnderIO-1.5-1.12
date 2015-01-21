@@ -34,28 +34,28 @@ public class DarkSteelController {
 
   public static final DarkSteelController instance = new DarkSteelController();
 
-  private AttributeModifier[] walkModifiers = new AttributeModifier[] {
+  private final AttributeModifier[] walkModifiers = new AttributeModifier[] {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[1], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[2], 1),
   };
 
-  private AttributeModifier[] sprintModifiers = new AttributeModifier[] {
+  private final AttributeModifier[] sprintModifiers = new AttributeModifier[] {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
   };
 
-  private AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier",
+  private final AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier",
       2, 0);
 
   private boolean wasJumping;
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();  
-  private Map<String, Boolean> speedActiveMap = new HashMap<String, Boolean>();
-  private Map<String, Boolean> stepAssistActiveMap = new HashMap<String, Boolean>();
+  private final Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();  
+  private final Map<String, Boolean> speedActiveMap = new HashMap<String, Boolean>();
+  private final Map<String, Boolean> stepAssistActiveMap = new HashMap<String, Boolean>();
   
   private boolean nightVisionActive = false;
   private boolean removeNightvision = false;
@@ -239,7 +239,7 @@ public class DarkSteelController {
       attackInst.removeModifier(swordDamageModifierPowered);
 
       ItemStack sword = player.getCurrentEquippedItem();
-      if(Config.darkSteelSwordPowerUsePerHit <= 0 || EnderIO.itemDarkSteelSword.getEnergyStored(sword) >= Config.darkSteelSwordPowerUsePerHit) {
+      if(Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(sword) >= Config.darkSteelSwordPowerUsePerHit) {
         attackInst.applyModifier(swordDamageModifierPowered);
       }
     }
@@ -259,16 +259,16 @@ public class DarkSteelController {
 
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
-    if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null && isSpeedActive(player)) {
+    if(leggings != null && leggings.getItem() == DarkSteelItems.itemDarkSteelLeggings && speedUpgrade != null && isSpeedActive(player)) {
 
       double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
       double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
       costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
       int cost = (int) (horzMovement * costModifier);
-      int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelLeggings);
+      int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings);
 
       if(totalEnergy > 0) {
-        usePlayerEnergy(player, EnderIO.itemDarkSteelLeggings, cost);
+        usePlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings, cost);
         if(player.isSprinting()) {
           moveInst.applyModifier(sprintModifiers[speedUpgrade.level - 1]);
         } else {
@@ -281,20 +281,20 @@ public class DarkSteelController {
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);
 
-    if(boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
+    if(boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots) {
       int costedDistance = (int) player.fallDistance;
       if(costedDistance > 0) {
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
-        int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelBoots);
+        int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
         if(totalEnergy > 0 && totalEnergy >= energyCost) {
-          usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, energyCost);
+          usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, energyCost);
           player.fallDistance -= costedDistance;
         }
       }
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if(jumpUpgrade != null && boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots && isStepAssistActive(player)) {
+    if(jumpUpgrade != null && boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
@@ -380,19 +380,19 @@ public class DarkSteelController {
     ItemStack boots = player.getEquipmentInSlot(1);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
-    if(jumpUpgrade == null || boots == null || boots.getItem() != EnderIO.itemDarkSteelBoots) {
+    if(jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
       return;
     }
 
     int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1, 2.5);
-    int availablePower = getPlayerEnergy(player, EnderIO.itemDarkSteelBoots);
+    int availablePower = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
     if(availablePower > 0 && requiredPower <= availablePower && jumpCount < jumpUpgrade.level) {
       jumpCount++;
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
-      usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, requiredPower);
+      usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
       player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.jump", 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f, false);
-      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
     }
 
   }
