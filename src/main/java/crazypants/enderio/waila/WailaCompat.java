@@ -1,7 +1,5 @@
 package crazypants.enderio.waila;
 
-import info.jbcs.minecraft.chisel.api.IFacade;
-
 import java.util.List;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -10,6 +8,7 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.impl.ConfigHandler;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -20,6 +19,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -39,11 +40,59 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
+  
+  private class WailaWorldWrapper extends World {
+    private World wrapped;
+    
+    private WailaWorldWrapper(World wrapped) {
+      super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
+      this.wrapped = wrapped;
+    }
+    
+    @Override
+    public Block getBlock(int x, int y, int z) {
+      Block block = wrapped.getBlock(x, y, z);
+      if (block instanceof IFacade) {
+        return ((IFacade)block).getFacade(wrapped, x, y, z, -1);
+      }
+      return block;
+    }
+    
+    @Override
+    public int getBlockMetadata(int x, int y, int z) {
+      Block block = wrapped.getBlock(x, y, z);
+      if (block instanceof IFacade) {
+        return ((IFacade)block).getFacadeMetadata(wrapped, x, y, z, -1);
+      }
+      return wrapped.getBlockMetadata(x, y, z);
+    }
+    
+    @Override
+    public TileEntity getTileEntity(int p_147438_1_, int p_147438_2_, int p_147438_3_) {
+      return wrapped.getTileEntity(p_147438_1_, p_147438_2_, p_147438_3_);
+    }
+
+    @Override
+    protected IChunkProvider createChunkProvider() {
+      return null;
+    }
+
+    @Override
+    protected int func_152379_p() {
+      return 0;
+    }
+
+    @Override
+    public Entity getEntityByID(int p_73045_1_) {
+      return null;
+    }
+  }
 
   public static final WailaCompat INSTANCE = new WailaCompat();
   
@@ -75,11 +124,8 @@ public class WailaCompat implements IWailaDataProvider {
       if(accessor.getBlock() instanceof IFacade) {
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
-        if (facade != null) {
-          //accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, bundle.getFacadeMetadata(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, 0), 0);
-          // TODO metadata is wrong, this gives the wrong output
-          ItemStack ret = facade.getPickBlock(pos, accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
-          //accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, 0, 0);
+        if(facade != null) {
+          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ);
           return ret;
         }
       }
@@ -99,17 +145,17 @@ public class WailaCompat implements IWailaDataProvider {
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 	
     _accessor = accessor;
-	
-    Block block = accessor.getBlock();
-    TileEntity te = accessor.getTileEntity();
-    Item item = Item.getItemFromBlock(block);
+
     EntityPlayer player = accessor.getPlayer();
-    World world = player.worldObj;
     MovingObjectPosition pos = accessor.getPosition();
-
     int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
+    World world = new WailaWorldWrapper(player.worldObj);
+    Block block = world.getBlock(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
+    Item item = Item.getItemFromBlock(block);
 
-    if(te instanceof IIoConfigurable) {
+
+    if(te instanceof IIoConfigurable && block == accessor.getBlock()) {
       IIoConfigurable machine = (IIoConfigurable) te;
       ForgeDirection side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
@@ -163,7 +209,7 @@ public class WailaCompat implements IWailaDataProvider {
       }
     }
 
-    if(te instanceof IInternalPoweredTile && accessor.getNBTData().hasKey("storedEnergyRF") && !(te instanceof TileCapBank)) {
+    if(te instanceof IInternalPoweredTile && block == accessor.getBlock() && accessor.getNBTData().hasKey("storedEnergyRF") && !(te instanceof TileCapBank)) {
       IInternalPoweredTile power = (IInternalPoweredTile) te;
 
       if(power.displayPower()) {
