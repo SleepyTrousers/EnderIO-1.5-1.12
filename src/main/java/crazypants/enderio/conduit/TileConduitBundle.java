@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import net.minecraft.block.Block;
@@ -544,6 +546,33 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
           }
         }
       }
+    }
+    
+    List<CollidableComponent> internals = Lists.newArrayList();
+    // Merge all internal conduit connectors into one box
+    for (int i = 0; i < result.size(); i++) {
+      CollidableComponent cc = result.get(i);
+      if (cc.conduitType == null && cc.data == ConduitConnectorType.INTERNAL) {
+        internals.add(cc);
+        result.remove(i);
+        i--;
+        cachedConnectors.remove(cc);
+      }
+    }
+    
+    BoundingBox conBB = null;
+    for (CollidableComponent cc : internals) {
+      if (conBB == null) {
+        conBB = cc.bound;
+      } else {
+        conBB = conBB.expandBy(cc.bound);
+      }
+    }
+
+    if(conBB != null) {
+      CollidableComponent cc = new CollidableComponent(null, conBB, ForgeDirection.UNKNOWN, ConduitConnectorType.INTERNAL);
+      result.add(cc);
+      cachedConnectors.add(cc);
     }
 
     // External Connectors
