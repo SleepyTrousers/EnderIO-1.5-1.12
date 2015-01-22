@@ -39,6 +39,7 @@ import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
@@ -244,7 +245,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         }
 
       } else if(ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL && !rb.hasOverrideBlockTexture()) {
-        IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon();
+        IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         CubeRenderer.render(component.bound, tex);
       }
     }
@@ -267,7 +268,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   }
 
   private void renderExternalConnection(ForgeDirection dir) {
-    IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon();
+    IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
       CubeRenderer.render(bb, tex, true);

@@ -115,7 +115,7 @@ public class GasConduitRenderer extends DefaultConduitRenderer {
       }
 
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = EnderIO.blockConduitBundle.getConnectorIcon();
+        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;
         for (Vertex c : corners) {

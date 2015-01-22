@@ -64,6 +64,7 @@ import crazypants.util.Util;
 public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRedNetOmniNode {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
+  private static final String KEY_CONNECTOR_ICON_EXTERNAL = "enderIO:conduitConnectorExternal";
 
   public static BlockConduitBundle create() {
 
@@ -90,7 +91,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   public static int rendererId = -1;
 
-  private IIcon connectorIcon;
+  private IIcon connectorIcon, connectorIconExternal;
 
   private IIcon lastRemovedComponetIcon = null;
 
@@ -233,14 +234,15 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return 0;
   }
 
-  public IIcon getConnectorIcon() {
-    return connectorIcon;
+  public IIcon getConnectorIcon(Object data) {
+    return data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister IIconRegister) {
     connectorIcon = IIconRegister.registerIcon(KEY_CONNECTOR_ICON);
+    connectorIconExternal = IIconRegister.registerIcon(KEY_CONNECTOR_ICON_EXTERNAL);
     blockIcon = connectorIcon;
   }
 

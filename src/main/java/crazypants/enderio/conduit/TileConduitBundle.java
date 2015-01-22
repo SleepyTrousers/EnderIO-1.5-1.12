@@ -548,24 +548,15 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       }
     }
     
-    List<CollidableComponent> internals = Lists.newArrayList();
     // Merge all internal conduit connectors into one box
+    BoundingBox conBB = null;
     for (int i = 0; i < result.size(); i++) {
       CollidableComponent cc = result.get(i);
       if (cc.conduitType == null && cc.data == ConduitConnectorType.INTERNAL) {
-        internals.add(cc);
+        conBB = conBB == null ? cc.bound : conBB.expandBy(cc.bound);
         result.remove(i);
         i--;
         cachedConnectors.remove(cc);
-      }
-    }
-    
-    BoundingBox conBB = null;
-    for (CollidableComponent cc : internals) {
-      if (conBB == null) {
-        conBB = cc.bound;
-      } else {
-        conBB = conBB.expandBy(cc.bound);
       }
     }
 
@@ -595,7 +586,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
 
     connectorsDirty = false;
-
   }
 
   private boolean axisOfConnectionsEqual(Set<ForgeDirection> cons) {
