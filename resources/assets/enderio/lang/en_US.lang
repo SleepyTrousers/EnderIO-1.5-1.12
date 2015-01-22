@@ -845,6 +845,12 @@ enderio.gui.conduit.fluid.blacklist=Blacklist
 
 enderio.gui.conduit.gas.autoExtract=Auto Extract
 
+//Weather
+enderio.gui.weather.task.clear=Clear Weather
+enderio.gui.weather.task.rain=Rainy Weather
+enderio.gui.weather.task.storm=Thunderstorm
+enderio.gui.weather.requireditem=Required Item: %s
+
 //Enchants
 enchantment.enderio.soulBound=Soulbound
 description.enchantment.enderio.soulBound=This enchantment prevents the item from being lost on death

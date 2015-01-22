@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.weather;
 
+import java.awt.Color;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.init.Items;
@@ -16,21 +18,21 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   enum Task {
     // TODO placeholder power vals
-    CLEAR(1000, new ItemStack(Items.cake)) {
+    CLEAR(1000, new ItemStack(Items.cake), Color.YELLOW) {
       @Override
       void complete(TileEntity te) {
         rain(te, false);
         thunder(te, false);
       }
     },
-    RAIN(1000, new ItemStack(Items.water_bucket)) {
+    RAIN(1000, new ItemStack(Items.water_bucket), new Color(120, 120, 255)) {
       @Override
       void complete(TileEntity te) {
         rain(te, true);
         thunder(te, false);
       }
     },
-    STORM(1000, new ItemStack(Items.lava_bucket)) {
+    STORM(1000, new ItemStack(Items.lava_bucket), Color.DARK_GRAY) {
       @Override
       void complete(TileEntity te) {
         rain(te, true);
@@ -40,10 +42,12 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
     final int power;
     final ItemStack requiredItem;
+    final Color color;
 
-    Task(int power, ItemStack requiredItem) {
+    Task(int power, ItemStack requiredItem, Color color) {
       this.power = power;
       this.requiredItem = requiredItem;
+      this.color = color;
     }
 
     abstract void complete(TileEntity te);
@@ -64,6 +68,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   int powerUsed = 0;
   Task activeTask = null;
 
+  private Color particleColor;
   private boolean canBeActive = true;
 
   public TileWeatherObelisk() {
@@ -81,8 +86,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   @SideOnly(Side.CLIENT)
   private void spawnParticle() {
-    EntitySmokeFX fx = new EntitySmokeFX(getWorldObj(), xCoord + 0.5, yCoord + 0.3, zCoord + 0.5, 0, 0.2, 0);
-    fx.setRBGColorF(0.95f, 0.50f, 1f);
+    EntitySmokeFX fx = new EntitySmokeFX(getWorldObj(), xCoord + 0.5, yCoord + 0.3, zCoord + 0.5, 0, 0, 0);
+    fx.setRBGColorF((float) particleColor.getRed() / 255f, (float) particleColor.getGreen() / 255f, (float) particleColor.getBlue() / 255f);
+    fx.setVelocity(worldObj.rand.nextDouble() * 0.1 - 0.05, 0.35, worldObj.rand.nextDouble() * 0.1 - 0.05);
     Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     activeParticleTicks--;
   }
@@ -163,7 +169,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   private int activeParticleTicks = 0;
 
-  public void activateClientParticles() {
-    activeParticleTicks = 10;
+  public void activateClientParticles(Task task) {
+    activeParticleTicks = 20;
+    particleColor = task.color;
   }
 }

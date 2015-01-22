@@ -1,13 +1,22 @@
 package crazypants.enderio.machine.weather;
 
+import java.awt.Color;
+import java.util.Locale;
+
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.weather.TileWeatherObelisk.Task;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.Lang;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
@@ -18,17 +27,24 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   }
 
   @Override
-  public void initGui() {
+  public void initGui() {    
     super.initGui();
-    
-    int x = guiLeft + (xSize / 2) - (BUTTON_SIZE / 2);
-    int y = guiTop + 8;
-    
-    addButton(new IconButtonEIO(this, 0, x - 30, y, IconEIO.SINGLE_PLUS));
-    addButton(new IconButtonEIO(this, 1, x, y, IconEIO.DOUBLE_PLUS));
-    addButton(new IconButtonEIO(this, 2, x + 30, y, IconEIO.TRIPLE_PLUS));
+
+    int x = (xSize / 2) - (BUTTON_SIZE / 2);
+    int y = 8;
+
+    addButton(new IconButtonEIO(this, 0, x - 30, y, IconEIO.SUN), Task.CLEAR);
+    addButton(new IconButtonEIO(this, 1, x, y, IconEIO.RAIN), Task.RAIN);
+    addButton(new IconButtonEIO(this, 2, x + 30, y, IconEIO.THUNDER), Task.STORM);
   }
-  
+
+  private void addButton(IconButtonEIO button, Task task) {
+    String tt1 = EnumChatFormatting.WHITE + Lang.localize("gui.weather.task." + task.name().toLowerCase(Locale.ENGLISH));
+    String tt2 = EnumChatFormatting.GRAY + String.format(Lang.localize("gui.weather.requireditem"), task.requiredItem.getDisplayName());
+    button.setToolTip(tt1, tt2);
+    button.onGuiInit();
+  }
+
   @Override
   protected boolean showRecipeButton() {
     return false;
@@ -40,9 +56,12 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
 
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
     
-    int barHeight = getTileEntity().getProgressScaled(31);
-    this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
-    
+    if(getTileEntity().activeTask != null) {
+      int barHeight = getTileEntity().getProgressScaled(31);
+      Color color = getTileEntity().activeTask.color;
+      GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+      this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
+    }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
   

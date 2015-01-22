@@ -19,8 +19,8 @@ public class PacketFinishWeather extends PacketActivateWeather {
     @Override
     public IMessage onMessage(PacketFinishWeather message, MessageContext ctx) {
       TileWeatherObelisk te = message.getTileEntity(EnderIO.proxy.getClientWorld());
-      if (te != null) {
-        te.activateClientParticles();
+      if(te != null) {
+        te.activateClientParticles(Task.values()[message.taskid]);
       }
       return null;
     }

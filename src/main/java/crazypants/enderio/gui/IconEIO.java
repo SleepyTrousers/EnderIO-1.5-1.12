@@ -124,7 +124,11 @@ public final class IconEIO {
 
   public static final IconEIO UNLOCKED = new IconEIO(150, 245, 10, 10);
   public static final IconEIO LOCKED   = new IconEIO(162, 245, 10, 10);
-  
+
+  public static final IconEIO SUN = new IconEIO(32, 132);
+  public static final IconEIO RAIN = new IconEIO(48, 132);
+  public static final IconEIO THUNDER = new IconEIO(64, 132);
+
   public final double minU;
   public final double maxU;
   public final double minV;
