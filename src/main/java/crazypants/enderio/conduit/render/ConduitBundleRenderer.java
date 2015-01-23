@@ -163,7 +163,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         res = !isFacadeOpaque;
 
         if((isFacadeOpaque && BlockConduitBundle.theRenderPass == 0) ||
-            (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1)) {
+            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1))) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);
           try {
