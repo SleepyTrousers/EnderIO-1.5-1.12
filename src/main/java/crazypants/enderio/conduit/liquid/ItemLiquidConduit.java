@@ -88,6 +88,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   }
 
-
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 
 }

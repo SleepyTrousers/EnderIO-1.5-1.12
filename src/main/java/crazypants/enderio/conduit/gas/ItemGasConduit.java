@@ -65,5 +65,10 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
     list.add(Lang.localize("itemGasConduit.tooltip.maxIo") + " " + maxIo + gpt);
     TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemGasConduit");
   }
+  
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 
 }

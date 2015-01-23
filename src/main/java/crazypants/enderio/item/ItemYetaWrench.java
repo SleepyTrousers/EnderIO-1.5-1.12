@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
@@ -27,7 +28,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.Lang;
 
-public class ItemYetaWrench extends Item implements ITool, IAdvancedTooltipProvider, InvocationHandler {
+public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
@@ -105,6 +106,11 @@ public class ItemYetaWrench extends Item implements ITool, IAdvancedTooltipProvi
   
   @Override
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
+  
+  @Override
+  public boolean showOverlay(ItemStack stack, EntityPlayer player) {
     return true;
   }
 

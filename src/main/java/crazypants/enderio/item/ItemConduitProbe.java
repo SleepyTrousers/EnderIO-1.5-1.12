@@ -2,12 +2,8 @@ package crazypants.enderio.item;
 
 import java.text.NumberFormat;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,18 +15,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 
-public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
+public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades {
 
   private static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
@@ -124,5 +117,9 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
   public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
     return true;
   }
-
+  
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 }
