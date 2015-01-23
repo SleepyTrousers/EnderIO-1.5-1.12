@@ -269,16 +269,22 @@ public final class Config {
   public static boolean farmEssenceBerriesEnabled = true;
   public static boolean farmManaBeansEnabled = false;
   public static boolean farmHarvestJungleWhenCocoa = false;
-  public static String[] hoeStrings = new String[] { 
-    "minecraft:wooden_hoe", "minecraft:stone_hoe", "minecraft:iron_hoe", "minecraft:diamond_hoe", "minecraft:golden_hoe",
-    "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe", "MekanismTools:GlowstoneHoe", "MekanismTools:SteelHoe",
-    "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold",
-    "Railcraft:tool.steel.hoe",
-    "TConstruct:mattock",
-    "appliedenergistics2:item.ToolCertusQuartzHoe", "appliedenergistics2:item.ToolNetherQuartzHoe",
-    "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire", "ProjRed|Exploration:projectred.exploration.hoeperidot",
-    "magicalcrops:magicalcrops_AccioHoe", "magicalcrops:magicalcrops_CrucioHoe", "magicalcrops:magicalcrops_ImperioHoe",
-    // disabled as it is currently not unbreaking as advertised "magicalcrops:magicalcrops_ZivicioHoe",
+  public static String[] hoeStrings = new String[] {
+      "minecraft:wooden_hoe", "minecraft:stone_hoe", "minecraft:iron_hoe", "minecraft:diamond_hoe", "minecraft:golden_hoe",
+      "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe", "MekanismTools:GlowstoneHoe",
+      "MekanismTools:SteelHoe",
+      "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold",
+      "Railcraft:tool.steel.hoe",
+      "TConstruct:mattock",
+      "appliedenergistics2:item.ToolCertusQuartzHoe", "appliedenergistics2:item.ToolNetherQuartzHoe",
+      "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire",
+      "ProjRed|Exploration:projectred.exploration.hoeperidot",
+      "magicalcrops:magicalcrops_AccioHoe", "magicalcrops:magicalcrops_CrucioHoe", "magicalcrops:magicalcrops_ImperioHoe",
+      // disabled as it is currently not unbreaking as advertised "magicalcrops:magicalcrops_ZivicioHoe",
+      "BiomesOPlenty:hoeAmethyst", "BiomesOPlenty:hoeMud",
+      "Eln:Eln.Copper Hoe",
+      "Thaumcraft:ItemHoeThaumium", "Thaumcraft:ItemHoeElemental", "Thaumcraft:ItemHoeVoid",
+      "ThermalExpansion:tool.hoeInvar"
   };
   public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
 
