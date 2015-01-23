@@ -534,6 +534,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line6=Используйте Shif
 item.itemSoulVessel.name=Флакон для душ
 enderio.item.itemSoulVessel.tooltip.health=Здоровье:
 enderio.item.itemSoulVessel.tooltip.fluidname=Название жидкости:
+enderio.item.itemSoulVessel.tooltip.color=Цвет:
 item.itemSoulVessel.tooltip.detailed.line1=ПКМ по мобу, чтобы
 item.itemSoulVessel.tooltip.detailed.line2=захватить его душу
 item.itemSoulVessel.tooltip.detailed.line3=Нажмите ПКМ снова, чтобы выпустить её
@@ -619,6 +620,21 @@ enderio.darksteel.upgrade.sound.disabled=Звуколокатор отключе
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Откровение
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Снижение затрат Вис: 5%
+
+enderio.darksteel.upgrade.naturalistEye.name=Глаз натуралиста
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Показывает опылённую листву
+
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=Шапка пчеловода
+enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Защита от пчёл
+
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Рубашка пчеловода
+enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Защита от пчёл
+
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=Брюки пчеловода
+enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Защита от пчёл
+
+enderio.darksteel.upgrade.apiaristArmor.boots.name=Обувь пчеловода
+enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Защита от пчёл
 
 item.itemGliderWing.name=Крыло планёра
 item.itemGliderWings.name=Крылья планёра
@@ -824,6 +840,8 @@ enderio.gui.conduit.redstone.signalStrengh.tooltip=Испускает сильн
 
 enderio.gui.conduit.fluid.autoExtract=Авто-извлечение
 enderio.gui.conduit.fluid.filter=Фильтр
+enderio.gui.conduit.fluid.whitelist=Белый список
+enderio.gui.conduit.fluid.blacklist=Чёрный список
 
 enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 
@@ -876,15 +894,15 @@ enderio.config.fluid.tooltip=Чистая энергия жидкостей!
 enderio.config.spawner=Настройки электрического спаунера
 enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
 
-//Keybinds/Waila/NEI
+//Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Броня из тёмной стали
 enderio.category.tools=Инструменты
 enderio.keybind.glidertoggle=Переключить планер
-enderio.keybind.soundlocator=Звуколокатор
-enderio.keybind.nightvision=Ночное зрение
 enderio.keybind.gogglesofrevealing=Очки откровения
-enderio.keybind.stepassist=Шаг вверх
+enderio.keybind.nightvision=Ночное зрение
+enderio.keybind.soundlocator=Звуколокатор
 enderio.keybind.speed=Скорость
+enderio.keybind.stepassist=Шаг вверх
 enderio.keybind.yetawrenchmode=Режим ключа Yeta
 enderio.nei.alloysmelter=Завод сплавов
 enderio.nei.enchanter=Зачарователь
@@ -892,3 +910,8 @@ enderio.nei.sagmill=Дробилка
 enderio.nei.slicensplice=«Отрубатель и сращиватель»
 enderio.nei.soulbinder=Связыватель душ
 enderio.nei.vat=Чан
+enderio.tooltip.burntime=Время горения:
+enderio.tooltip.oredict=Словарь руд:
+enderio.tooltip.meta=Метаданные:
+enderio.tooltip.uid=UID:
+enderio.waila.config.hiddenfacades=Скрытые фасады

@@ -894,15 +894,15 @@ enderio.config.fluid.tooltip=Pure liquid energy!
 enderio.config.spawner=PoweredSpawner Settings
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
-//Keybinds/Waila/NEI
+//Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Dark Steel Armor
 enderio.category.tools=Tools
 enderio.keybind.glidertoggle=Glider Toggle
-enderio.keybind.soundlocator=Sound Locator
-enderio.keybind.nightvision=Night Vision
 enderio.keybind.gogglesofrevealing=Goggles of Revealing
-enderio.keybind.stepassist=Step Assist
+enderio.keybind.nightvision=Night Vision
+enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.speed=Speed
+enderio.keybind.stepassist=Step Assist
 enderio.keybind.yetawrenchmode=Yeta Wrench Mode
 enderio.nei.alloysmelter=Alloy Smelter
 enderio.nei.enchanter=Enchanter
@@ -910,3 +910,8 @@ enderio.nei.sagmill=SAG Mill
 enderio.nei.slicensplice=Slice'N'Splice
 enderio.nei.soulbinder=Soul Binder
 enderio.nei.vat=Vat
+enderio.tooltip.burntime=Burn Time:
+enderio.tooltip.oredict=Ore Dictionary:
+enderio.tooltip.meta=Meta:
+enderio.tooltip.uid=UID:
+enderio.waila.config.hiddenfacades=Sneaky Facades

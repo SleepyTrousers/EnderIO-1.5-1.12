@@ -113,7 +113,7 @@ public class WailaCompat implements IWailaDataProvider {
     //    registrar.registerHeadProvider(INSTANCE, IInternalPowerReceptor.class);
     //    registrar.registerSyncedNBTKey("*", IInternalPowerReceptor.class);
 
-    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", "Sneaky Facades");
+    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
     IWailaInfoProvider.fmt.setMaximumFractionDigits(1);
   }
 
