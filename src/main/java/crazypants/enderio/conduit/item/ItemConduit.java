@@ -404,26 +404,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public int getMaximumExtracted(ForgeDirection dir) {
-    int numUpgrades = getNumSpeedUpgrades(dir);
-    //int res = (int)Math.pow(4, numUpgrades);
-    int res = 4 + (numUpgrades * 4);
-    return res;
+    ItemStack stack = speedUpgrades.get(dir);
+    if(stack == null) {
+      return SpeedUpgrade.BASE_MAX_EXTRACTED;
+    }
+    SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(stack);
+    return speedUpgrade.getMaximumExtracted(stack.stackSize);
   }
 
   @Override
   public float getTickTimePerItem(ForgeDirection dir) {
-    int numUpgrades = getNumSpeedUpgrades(dir);
     float maxExtract = 10f / getMaximumExtracted(dir);
     return maxExtract;
-
-  }
-
-  private int getNumSpeedUpgrades(ForgeDirection dir) {
-    ItemStack stack = speedUpgrades.get(dir);
-    if(stack == null) {
-      return 0;
-    }
-    return stack.stackSize;
   }
 
   @Override
