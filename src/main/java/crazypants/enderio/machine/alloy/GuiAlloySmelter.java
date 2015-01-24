@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.alloy;
 
 import java.awt.Rectangle;
+import java.text.MessageFormat;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,35 +21,21 @@ import crazypants.vecmath.Vector4f;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
-  private IconButton vanillaFurnaceButton;
+  private final IconButton vanillaFurnaceButton;
+  private final GuiToolTip vanillaFurnaceTooltip;
 
   protected static final int SMELT_MODE_BUTTON_ID = 76;
 
   public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
     super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory));
 
-    addToolTip(new GuiToolTip(new Rectangle(0, 0, 0, 0), "") {
+    vanillaFurnaceButton = new IconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
+    vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add(Lang.localize("gui.alloy.mode.heading"));
-        String txt = Lang.localize("gui.alloy.mode.all");
-        if(getTileEntity().getMode() == Mode.ALLOY) {
-          txt = Lang.localize("gui.alloy.mode.alloy");
-        } else if(getTileEntity().getMode() == Mode.FURNACE) {
-          txt = Lang.localize("gui.alloy.mode.furnace");
-        }
-        text.add(txt);
-      }
+    vanillaFurnaceTooltip = new GuiToolTip(new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE), (String[])null);
 
-      @Override
-      public void onTick(int mouseX, int mouseY) {
-        bounds.setBounds(xSize - 5 - BUTTON_SIZE, 60, BUTTON_SIZE, BUTTON_SIZE);
-        super.onTick(mouseX, mouseY);
-      }
-
-    });
+    addProgressTooltip(55, 35, 14, 14);
+    addProgressTooltip(103, 35, 14, 14);
   }
 
   @SuppressWarnings("unchecked")
@@ -56,13 +43,13 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   public void initGui() {
     super.initGui();
 
-    int x = guiLeft + xSize - 5 - BUTTON_SIZE;
-    int y = guiTop + 62;
-
-    vanillaFurnaceButton = new IconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, x, y, getIconForMode(), RenderUtil.BLOCK_TEX);
-    vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+    vanillaFurnaceButton.xPosition = guiLeft + vanillaFurnaceTooltip.getBounds().x;
+    vanillaFurnaceButton.yPosition = guiTop + vanillaFurnaceTooltip.getBounds().y;
 
     buttonList.add(vanillaFurnaceButton);
+    addToolTip(vanillaFurnaceTooltip);
+
+    updateVanillaFurnaceButton();
   }
 
   @Override
@@ -78,21 +65,27 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   protected void actionPerformed(GuiButton par1GuiButton) {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
       getTileEntity().setMode(getTileEntity().getMode().next());
-      vanillaFurnaceButton.setIcon(getIconForMode());
+      updateVanillaFurnaceButton();
       PacketHandler.INSTANCE.sendToServer(new PacketClientState(getTileEntity()));
     } else {
       super.actionPerformed(par1GuiButton);
     }
   }
 
-  private IIcon getIconForMode() {
+  private void updateVanillaFurnaceButton() {
     IIcon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
+    String unlocText = "gui.alloy.mode.all";
     if(getTileEntity().getMode() == Mode.ALLOY) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
+      unlocText = "gui.alloy.mode.alloy";
     } else if(getTileEntity().getMode() == Mode.FURNACE) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly;
+      unlocText = "gui.alloy.mode.furnace";
     }
-    return icon;
+    vanillaFurnaceButton.setIcon(icon);
+    vanillaFurnaceTooltip.setToolTipText(
+            Lang.localize("gui.alloy.mode.heading"),
+            Lang.localize(unlocText));
   }
 
   /**
@@ -103,15 +96,13 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/alloySmelter.png");
-    int sx = (width - xSize) / 2;
-    int sy = (height - ySize) / 2;
+    int sx = guiLeft;
+    int sy = guiTop;
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    int scaled;
-
-    if(getTileEntity().getProgress() < 1 && getTileEntity().getProgress() > 0) {
-      scaled = getTileEntity().getProgressScaled(14) + 1;
+    if(shouldRenderProgress()) {
+      int scaled = getTileEntity().getProgressScaled(14) + 1;
       drawTexturedModalRect(sx + 55, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
       drawTexturedModalRect(sx + 103, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
     }

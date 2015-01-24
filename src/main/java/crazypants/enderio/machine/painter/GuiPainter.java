@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;
@@ -16,6 +15,8 @@ public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
 
   public GuiPainter(InventoryPlayer par1InventoryPlayer, TileEntityPainter te) {
     super(te, new PainterContainer(par1InventoryPlayer, te));
+
+    addProgressTooltip(88, 34, 24, 16);
   }
 
   /**
@@ -26,14 +27,15 @@ public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/painter.png");
-    int k = (width - xSize) / 2;
-    int l = (height - ySize) / 2;
+    int k = guiLeft;
+    int l = guiTop;
 
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
-    int i1;
 
-    i1 = getTileEntity().getProgressScaled(24);
-    drawTexturedModalRect(k + 88, l + 34, 176, 14, i1 + 1, 16);
+    if(shouldRenderProgress()) {
+      int scaled = getTileEntity().getProgressScaled(24);
+      drawTexturedModalRect(k + 88, l + 34, 176, 14, scaled + 1, 16);
+    }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }

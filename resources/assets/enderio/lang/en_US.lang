@@ -687,6 +687,7 @@ enderio.gui.disabled=Disabled
 enderio.gui.send=Send
 enderio.gui.recieve=Receive
 enderio.gui.sendRecieve=Send & Receive
+enderio.gui.progress=Progress {0,number}%
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Redstone Mode

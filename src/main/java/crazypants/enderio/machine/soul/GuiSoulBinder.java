@@ -20,13 +20,15 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
   private static final int PLAYER_XP_ID = 985162394;
   
-  private IconButtonEIO usePlayerXP;
+  private final IconButtonEIO usePlayerXP;
 
   public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, TileSoulBinder te) {
     super(te, new ContainerSoulBinder(par1InventoryPlayer, te));
     usePlayerXP = new IconButtonEIO(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
     usePlayerXP.setToolTip("Use Player XP");    
+
+    addProgressTooltip(80, 34, 24, 16);
   }
 
   @Override
@@ -55,18 +57,20 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/soulFuser.png");
-    int k = (width - xSize) / 2;
-    int l = (height - ySize) / 2;
+    int k = guiLeft;
+    int l = guiTop;
 
     drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     int i1;
 
     TileSoulBinder binder = getTileEntity();
     
-    i1 = binder.getProgressScaled(24);
-    drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);    
+    if(shouldRenderProgress()) {
+      i1 = binder.getProgressScaled(24);
+      drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);
+    }
 
-    boolean needsXp = getTileEntity().getCurrentlyRequiredLevel() > 0 && binder.getCurrentlyRequiredLevel() > binder.getContainer().getExperienceLevel();
+    boolean needsXp = binder.getCurrentlyRequiredLevel() > 0 && binder.getCurrentlyRequiredLevel() > binder.getContainer().getExperienceLevel();
     usePlayerXP.visible = needsXp;        
     
     ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, binder.getContainer(), binder.getCurrentlyRequiredLevel());
