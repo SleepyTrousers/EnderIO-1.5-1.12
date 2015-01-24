@@ -2,6 +2,7 @@ package crazypants.enderio.item;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -24,9 +25,9 @@ import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.Lang;
 
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
@@ -116,26 +117,25 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   /* IAdvancedTooltipProvider */
   
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings("rawtypes")
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    int line = 1;
-    String unloc = getUnlocalizedName() + ".tooltip.detailed.line", loc = null;
-    while (!(loc = Lang.localize(unloc + line, false)).equals(unloc + line++)) {
-      list.add(String.format(loc, Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode())));
-    }
   }
   
   @SuppressWarnings("rawtypes")
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    ; // none
   }
   
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    ; // none
+    ArrayList<String> tmp = new ArrayList<String>();
+    TooltipAddera.addDetailedTooltipFromResources(tmp, getUnlocalizedName());
+    String keyName = Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode());
+    for(String line : tmp) {
+      list.add(String.format(line, keyName));
+    }
   }
 
   /* InvocationHandler */
