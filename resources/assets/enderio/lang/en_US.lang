@@ -345,7 +345,7 @@ tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
 tile.blockEnchanter.name=Enchanter
 tile.blockEnchanter.tooltip.detailed.line1=Uses XP to combine items
 tile.blockEnchanter.tooltip.detailed.line2=and a book and quill to
-tile.blockEnchanter.tooltip.detailed.line2=created enchanted books
+tile.blockEnchanter.tooltip.detailed.line3=created enchanted books
 
 tile.blockCombustionGenerator.name=Combustion Generator
 tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to generate power
