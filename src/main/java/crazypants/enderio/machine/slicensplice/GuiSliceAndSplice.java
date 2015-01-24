@@ -12,7 +12,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
   public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, TileSliceAndSplice te) {
     super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te));
 
-    addProgressTooltip(101, 46, 24, 16);
+    addProgressTooltip(103, 49, 24, 16);
   }
 
   /**
@@ -30,7 +30,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
 
     if(shouldRenderProgress()) {
       int scaled = getTileEntity().getProgressScaled(24);
-      drawTexturedModalRect(k + 101, l + 46, 176, 14, scaled + 1, 16);
+      drawTexturedModalRect(k + 103, l + 49, 176, 14, scaled + 1, 16);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
