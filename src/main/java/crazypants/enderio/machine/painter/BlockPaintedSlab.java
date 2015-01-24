@@ -12,7 +12,7 @@ import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -205,9 +205,8 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
    * Remove the tile entity too.
    */
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
+    if(!world.isRemote && !player.capabilities.isCreativeMode) {
       TileEntity te = world.getTileEntity(x, y, z);
 
       if(te instanceof TileEntityPaintedSlab && !((TileEntityPaintedSlab) te).isConvertingToFullBlock) {
@@ -216,17 +215,11 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
         for (int i = 0; i < super.quantityDropped(null); i++) {
           ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
+          dropBlockAsItem(world, x, y, z, itemStack);
         }
       }
     }
-    world.removeTileEntity(x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   @Override
