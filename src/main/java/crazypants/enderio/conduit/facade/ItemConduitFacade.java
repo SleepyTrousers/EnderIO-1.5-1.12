@@ -26,6 +26,7 @@ import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.util.Util;
+import crazypants.util.Lang;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider {
 
@@ -119,7 +120,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     if(PainterUtil.getSourceBlock(itemstack) == null) {
-      list.add("Not Painted");
+      list.add(Lang.localize("item.itemConduitFacade.tooltip.notpainted"));
     } else {
       list.add(PainterUtil.getTooltTipText(itemstack));
     }
