@@ -26,7 +26,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
 
-  private IconButtonEIO dump1, dump2;
+  private final IconButtonEIO dump1, dump2;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
     super(te, new ContainerVat(inventory, te));
@@ -65,6 +65,8 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     dump1.setToolTip(Lang.localize("gui.machine.vat.dump.1"));
     dump2 = new IconButtonEIO(this, 2, 131, 62, IconEIO.REDSTONE_MODE_NEVER);
     dump2.setToolTip(Lang.localize("gui.machine.vat.dump.2"));
+
+    addProgressTooltip(81, 63, 14, 14);
   }
 
   @Override
@@ -97,12 +99,10 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture(GUI_TEXTURE);
-    int guiLeft = (width - xSize) / 2;
-    int guiTop = (height - ySize) / 2;
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     TileVat vat = getTileEntity();
     
-    if(vat.getProgress() < 1 && vat.getProgress() > 0) {
+    if(shouldRenderProgress()) {
       int scaled = vat.getProgressScaled(14) + 1;
       drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);
 

@@ -1,5 +1,10 @@
 package crazypants.enderio.machine.gui;
 
+import java.awt.Rectangle;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -16,6 +21,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.gui.GuiContainerBase;
+import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
@@ -30,22 +36,23 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   private static final int CONFIG_ID = 8962349;
   private static final int RECIPE_ID = CONFIG_ID + 1;
 
-  private T tileEntity;
+  private final T tileEntity;
 
   protected RedstoneModeButton redstoneButton;
 
-  private GuiOverlayIoConfig configOverlay;
+  private final GuiOverlayIoConfig configOverlay;
 
   protected ToggleButtonEIO configB;
   
   protected IconButtonEIO recipeButton;
 
+  protected List<GuiToolTip> progressTooltips;
+  protected int lastProgressTooltipValue = -1;
+
   protected GuiMachineBase(T machine, Container par1Container) {
     super(par1Container);
     tileEntity = machine;
 
-    xSize = getXSize();
-    ySize = getYSize();
     int x = getXSize() - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
@@ -150,5 +157,46 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   
   protected T getTileEntity() {
     return tileEntity;
+  }
+
+  protected void addProgressTooltip(int x, int y, int w, int h) {
+    if(progressTooltips == null) {
+      progressTooltips = new ArrayList<GuiToolTip>();
+    }
+
+    GuiToolTip tt = new GuiToolTip(new Rectangle(x, y, w, h), (String[])null);
+    progressTooltips.add(tt);
+    addToolTip(tt);
+  }
+
+  private void updateProgressTooltips(int progress) {
+    if(lastProgressTooltipValue == progress || progressTooltips == null) {
+      return;
+    }
+    lastProgressTooltipValue = progress;
+
+    if(progress < 0) {
+      for(GuiToolTip tt : progressTooltips) {
+        tt.setVisible(false);
+      }
+      return;
+    }
+
+    String msg = MessageFormat.format(Lang.localize("gui.progress"), progress);
+    for(GuiToolTip tt : progressTooltips) {
+      tt.setToolTipText(msg);
+      tt.setVisible(true);
+    }
+  }
+
+  protected boolean shouldRenderProgress() {
+    float progress = tileEntity.getProgress();
+    if(progress > 0 && progress < 1) {
+      updateProgressTooltips((int)(progress * 100));
+      return true;
+    } else {
+      updateProgressTooltips(-1);
+      return false;
+    }
   }
 }

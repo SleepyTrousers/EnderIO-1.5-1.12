@@ -11,6 +11,8 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
 
   public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, TileSliceAndSplice te) {
     super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te));
+
+    addProgressTooltip(101, 46, 24, 16);
   }
 
   /**
@@ -21,14 +23,15 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/sliceAndSplice.png");
-    int k = (width - xSize) / 2;
-    int l = (height - ySize) / 2;
+    int k = guiLeft;
+    int l = guiTop;
 
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
-    int i1;
 
-    i1 = getTileEntity().getProgressScaled(24);
-    drawTexturedModalRect(k + 101, l + 46, 176, 14, i1 + 1, 16);
+    if(shouldRenderProgress()) {
+      int scaled = getTileEntity().getProgressScaled(24);
+      drawTexturedModalRect(k + 101, l + 46, 176, 14, scaled + 1, 16);
+    }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
