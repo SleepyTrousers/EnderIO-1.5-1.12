@@ -62,7 +62,7 @@ public class TooltipAddera {
       if(!addStirlinGeneratorTooltip(evt)) {
         int time = TileEntityFurnace.getItemBurnTime(evt.itemStack);
         if(time > 0) {
-          evt.toolTip.add("Burn time " + time);
+          evt.toolTip.add(Lang.localize("tooltip.burntime") + " " + time);
         }
       }
     }
@@ -108,7 +108,7 @@ public class TooltipAddera {
         uid = GameRegistry.findUniqueIdentifierFor(evt.itemStack.getItem());
       }
       if(uid != null) {
-        evt.toolTip.add(EnumChatFormatting.AQUA + "UID: " + uid.toString() + " Meta: " + evt.itemStack.getItemDamage());
+        evt.toolTip.add(EnumChatFormatting.AQUA + Lang.localize("tooltip.uid") + " " + uid.toString() + " " + Lang.localize("tooltip.meta") + " " + evt.itemStack.getItemDamage());
       }
     }
 
@@ -116,9 +116,9 @@ public class TooltipAddera {
       int[] ids = OreDictionary.getOreIDs(evt.itemStack);
       if(ids != null && ids.length > 0) {
         if(ids.length == 1) {
-          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary: " + OreDictionary.getOreName(ids[0]));
+          evt.toolTip.add(EnumChatFormatting.AQUA + Lang.localize("tooltip.oredict") + " " + OreDictionary.getOreName(ids[0]));
         } else {
-          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary:");
+          evt.toolTip.add(EnumChatFormatting.AQUA + Lang.localize("tooltip.oredict"));
           for (int id : ids) {
             String name = OreDictionary.getOreName(id);
             evt.toolTip.add(EnumChatFormatting.AQUA + "  " + name);
