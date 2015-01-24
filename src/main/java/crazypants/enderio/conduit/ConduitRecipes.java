@@ -89,7 +89,11 @@ public class ConduitRecipes {
 
     ItemStack speedUpgrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0);
     GameRegistry.addShapedRecipe(speedUpgrade, "iii","epe","ere", 'p', Blocks.piston, 'e', electricalSteel, 'r', Blocks.redstone_torch, 'i', Items.iron_ingot);
-    
+
+    ItemStack speedDowngrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 1);
+    GameRegistry.addRecipe(new ShapedOreRecipe(speedDowngrade, "iii","ese","ete", 's', "slimeball", 'e', electricalSteel, 't', "stickWood", 'i', Items.iron_ingot));
+    GameRegistry.addRecipe(new ShapedOreRecipe(speedDowngrade, "iii","ese","ete", 's', "slimeball", 'e', electricalSteel, 't', "woodStick", 'i', Items.iron_ingot));
+
     if (MEUtil.isMEEnabled()) {
       addAeRecipes();
     }

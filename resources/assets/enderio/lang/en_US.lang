@@ -88,6 +88,11 @@ item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
 
+item.itemExtractSpeedDowngrade.name=Item Conduit Speed Downgrade
+item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
+item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
+item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
+
 enderio.itemGasConduit.name=Gas Conduit
 
 enderio.itemGasConduit.tooltip.maxExtract=Max Extract:

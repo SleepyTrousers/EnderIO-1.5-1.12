@@ -11,10 +11,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
 import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public class ExternalConnectionContainer extends Container {
@@ -24,6 +26,7 @@ public class ExternalConnectionContainer extends Container {
   private ForgeDirection dir;
   private IItemConduit itemConduit;
 
+  private int speedUpgradeSlotLimit = 15;
   private IItemFilter inputFilter;
   private IItemFilter outputFilter;
 
@@ -86,7 +89,11 @@ public class ExternalConnectionContainer extends Container {
         public boolean isItemValid(ItemStack par1ItemStack) {
           return si.isItemValidForSlot(0, par1ItemStack);
         }
-        
+
+        @Override
+        public int getSlotStackLimit() {
+          return speedUpgradeSlotLimit;
+        }
       });
       slotLocations.add(new Point(x, y));
 
@@ -193,6 +200,11 @@ public class ExternalConnectionContainer extends Container {
 
   @Override
   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
+    ItemStack st = par4EntityPlayer.inventory.getItemStack();
+    if(st != null && st.getItem() == EnderIO.itemExtractSpeedUpgrade) {
+      SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(st);
+      speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
+    }
     if(par4EntityPlayer.worldObj != null) {
       if(par1 >= startFilterSlot && itemConduit != null) {
         itemConduit.setInputFilter(dir, inputFilter);
