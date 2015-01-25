@@ -32,7 +32,7 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     if(stack.getItemDamage() == 0) {
       return new RedstoneConduit();
     }

@@ -74,7 +74,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     BlockCoord bc = state.getInventoryImplLocation();
     if(bc == null) {
       inventory.setCapBank(null);
-    } else {
+    } else if(world != null) {
       TileEntity te = world.getTileEntity(bc.x, bc.y, bc.z);
       if(te instanceof TileCapBank) {
         inventory.setCapBank((TileCapBank) te);

@@ -33,7 +33,7 @@ public class ItemItemConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack item) {
+  public IConduit createConduit(ItemStack item, EntityPlayer player) {
     return new ItemConduit(item.getItemDamage());
   }
 

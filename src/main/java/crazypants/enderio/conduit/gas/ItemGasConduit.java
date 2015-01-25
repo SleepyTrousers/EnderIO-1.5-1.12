@@ -40,7 +40,7 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     return new GasConduit();
   }
 

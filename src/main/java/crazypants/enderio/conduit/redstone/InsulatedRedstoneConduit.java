@@ -197,6 +197,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
               }
               neighbour.conduitConnectionRemoved(connDir.getOpposite());
               conduitConnectionRemoved(connDir);
+              neighbour.connectionsChanged();
+              connectionsChanged();
               updateNetwork();
               neighbour.updateNetwork();
               return true;

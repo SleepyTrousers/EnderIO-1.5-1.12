@@ -41,7 +41,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     return new PowerConduit(stack.getItemDamage());
   }
 

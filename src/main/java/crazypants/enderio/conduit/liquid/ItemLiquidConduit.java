@@ -40,7 +40,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     if(stack.getItemDamage() == 1) {
       return new AdvancedLiquidConduit();
     } else if(stack.getItemDamage() == 2) {

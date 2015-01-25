@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.me;
 
+import appeng.api.AEApi;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
@@ -32,8 +33,10 @@ public class ItemMEConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack item) {
-    return new MEConduit(item.getItemDamage());
+  public IConduit createConduit(ItemStack item, EntityPlayer player) {
+    MEConduit con = new MEConduit(item.getItemDamage());
+    con.setPlayerID(AEApi.instance().registries().players().getID(player));
+    return con;
   }
   
   @Override
