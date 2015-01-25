@@ -15,6 +15,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -59,8 +60,9 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
     if(player.isSneaking()) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof IInventory) {
+        IInventory inv = ItemUtil.getInventory((IInventory)te);
         ExistingItemFilter filter = (ExistingItemFilter)createFilterFromStack(item);
-        if(filter.mergeSnapshot((IInventory)te)) {
+        if(filter.mergeSnapshot(inv)) {
           player.addChatComponentMessage(new ChatComponentText(Lang.localize("item.itemExistingItemFilter.filterUpdated")));
         } else {
           player.addChatComponentMessage(new ChatComponentText(Lang.localize("item.itemExistingItemFilter.filterNotUpdated")));
