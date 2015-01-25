@@ -62,10 +62,6 @@ enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to cle
 enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
 
 item.itemExistingItemFilter.name=Existing Item Filter
-enderio.item.itemExistingItemFilter.button.clear=Clear
-enderio.item.itemExistingItemFilter.button.merge=Merge
-enderio.item.itemExistingItemFilter.button.show=Show
-enderio.item.itemExistingItemFilter.button.snap=Snapshot
 item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
 item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
@@ -825,6 +821,10 @@ enderio.gui.conduit.ioMode.disabled=Disabled
 enderio.gui.conduit.ioMode.notSet=Default
 tile.blockConduitBundle.name=Conduit Connector
 
+enderio.gui.conduit.button.clear=Clear
+enderio.gui.conduit.button.merge=Merge
+enderio.gui.conduit.button.show=Show
+enderio.gui.conduit.button.snap=Snapshot
 enderio.gui.conduit.item.insertionFilter=Insert
 enderio.gui.conduit.item.extractionFilter=Extract
 enderio.gui.conduit.item.sigCol=Signal Color

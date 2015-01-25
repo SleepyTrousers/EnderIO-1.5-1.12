@@ -62,10 +62,6 @@ enderio.itemConduitFilterUpgrade.clearConfigMethod=Положите в сетк�
 enderio.itemConduitFilterUpgrade.clearConfigWarning=Это очистит все сохранённые настройки фильтра!
 
 item.itemExistingItemFilter.name=Существующий предметный фильтр
-enderio.item.itemExistingItemFilter.button.clear=Очистить
-enderio.item.itemExistingItemFilter.button.merge=Соединить
-enderio.item.itemExistingItemFilter.button.show=Показать
-enderio.item.itemExistingItemFilter.button.snap=Снимок
 item.itemExistingItemFilter.tooltip.basic.line1=Улучшение для предметных труб
 item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает предметы только
 item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
@@ -825,6 +821,10 @@ enderio.gui.conduit.ioMode.disabled=Отключен
 enderio.gui.conduit.ioMode.notSet=По-умолчанию
 tile.blockConduitBundle.name=Коннектор для труб
 
+enderio.gui.conduit.button.clear=Очистить
+enderio.gui.conduit.button.merge=Соединить
+enderio.gui.conduit.button.show=Показать
+enderio.gui.conduit.button.snap=Снимок
 enderio.gui.conduit.item.insertionFilter=Помещение
 enderio.gui.conduit.item.extractionFilter=Извлечение
 enderio.gui.conduit.item.sigCol=Цвет сигнала
