@@ -102,10 +102,10 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
 
-    snapshotB = new GuiButton(ID_SNAPSHOT, 0, 0, 60, 20, "Snapshot");
-    mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, "Merge");
-    clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, "Clear");
-    showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, "Show");
+    snapshotB = new GuiButton(ID_SNAPSHOT, 0, 0, 60, 20, Lang.localize("item.itemExistingItemFilter.button.snap"));
+    mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, Lang.localize("item.itemExistingItemFilter.button.merge"));
+    clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, Lang.localize("item.itemExistingItemFilter.button.clear"));
+    showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, Lang.localize("item.itemExistingItemFilter.button.show"));
 
     snapshotOverlay = new SnapshotOverlay();
     gui.addOverlay(snapshotOverlay);

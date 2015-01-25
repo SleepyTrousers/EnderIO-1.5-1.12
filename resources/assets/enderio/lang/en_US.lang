@@ -62,6 +62,10 @@ enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to cle
 enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
 
 item.itemExistingItemFilter.name=Existing Item Filter
+enderio.item.itemExistingItemFilter.button.clear=Clear
+enderio.item.itemExistingItemFilter.button.merge=Merge
+enderio.item.itemExistingItemFilter.button.show=Show
+enderio.item.itemExistingItemFilter.button.snap=Snapshot
 item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
 item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
