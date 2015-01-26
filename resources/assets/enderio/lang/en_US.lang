@@ -821,6 +821,10 @@ enderio.gui.conduit.ioMode.disabled=Disabled
 enderio.gui.conduit.ioMode.notSet=Default
 tile.blockConduitBundle.name=Conduit Connector
 
+enderio.gui.conduit.button.clear=Clear
+enderio.gui.conduit.button.merge=Merge
+enderio.gui.conduit.button.show=Show
+enderio.gui.conduit.button.snap=Snapshot
 enderio.gui.conduit.item.insertionFilter=Insert
 enderio.gui.conduit.item.extractionFilter=Extract
 enderio.gui.conduit.item.sigCol=Signal Color
