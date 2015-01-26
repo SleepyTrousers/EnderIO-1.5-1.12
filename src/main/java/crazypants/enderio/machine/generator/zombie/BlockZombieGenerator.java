@@ -23,6 +23,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
+import crazypants.util.Lang;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
@@ -151,7 +152,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te != null && te instanceof TileZombieGenerator) {
-      tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " mB");
+      tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " " + Lang.localize("fluid.millibucket.abr"));
     }
   }
 

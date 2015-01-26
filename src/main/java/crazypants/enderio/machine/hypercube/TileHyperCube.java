@@ -44,8 +44,8 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   public static enum IoMode {
 
     SEND("gui.send"),
-    RECIEVE("gui.recieve"),
-    BOTH("gui.sendRecieve"),
+    RECIEVE("gui.receive"),
+    BOTH("gui.sendReceive"),
     NEITHER("gui.disabled");
 
     public static IoMode next(IoMode mode) {

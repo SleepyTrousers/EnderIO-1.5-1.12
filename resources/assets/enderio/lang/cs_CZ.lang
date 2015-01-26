@@ -269,7 +269,7 @@ enderio.trans.power=Energie
 enderio.trans.item=Předmět
 enderio.trans.fluid=Tekutina
 
-enderio.trans.recieving=Přijímám
+enderio.trans.receiving=Přijímám
 enderio.trans.sending=Odesílám
 
 tile.blockPowerMonitor.name=Monitor energie
@@ -587,8 +587,8 @@ enderio.darksteel.upgrade.nightVision.disabled=Noční vidění zakázáno
 enderio.gui.enabled=Povoleno
 enderio.gui.disabled=Zakázáno
 enderio.gui.send=Posílat
-enderio.gui.recieve=Přijímat
-enderio.gui.sendRecieve=Posílat & Přijímat
+enderio.gui.receive=Přijímat
+enderio.gui.sendReceive=Posílat & Přijímat
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Ruditový mód

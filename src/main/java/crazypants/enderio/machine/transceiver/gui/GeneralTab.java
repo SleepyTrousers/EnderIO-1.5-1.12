@@ -20,6 +20,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GeneralTab implements ITabPanel {
 
@@ -37,8 +38,8 @@ public class GeneralTab implements ITabPanel {
     int x = parent.getXSize() - 5 - 16;
     int y = 43;
     bufferSizeB = new ToggleButtonEIO(parent, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
-    bufferSizeB.setSelectedToolTip("Buffering item stacks");
-    bufferSizeB.setUnselectedToolTip("Buffering single items");
+    bufferSizeB.setSelectedToolTip(Lang.localize("gui.machine.bufferingstacks"));
+    bufferSizeB.setUnselectedToolTip(Lang.localize("gui.machine.bufferingsingle"));
     bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());
     
     sendPowerBarTT = new GuiToolTip(new Rectangle(parent.getPowerX() + SEND_BAR_OFFSET, parent.getPowerY(), parent.getPowerWidth(), parent.getPowerHeight()), "") {
@@ -89,11 +90,11 @@ public class GeneralTab implements ITabPanel {
     parent.drawTexturedModalRect(left + invRoot.x - 1 + (18 * 4) + container.getItemBufferSpacing(), top + invRoot.y - 1, 24, 180, 72, 36);
             
     FontRenderer fr = parent.getFontRenderer();
-    String sendTxt = "Send";    
+    String sendTxt = Lang.localize("gui.send");    
     int x = left + invRoot.x + 36 - fr.getStringWidth(sendTxt)/2;
     int y = top + invRoot.y - fr.FONT_HEIGHT - 3;
     fr.drawStringWithShadow(sendTxt, x, y, ColorUtil.getRGB(Color.WHITE));
-    String recText = "Receive";
+    String recText = Lang.localize("gui.receive");
     x = left + invRoot.x + 72 + container.getItemBufferSpacing() + 36 - fr.getStringWidth(recText)/2;
     fr.drawStringWithShadow(recText, x, y, ColorUtil.getRGB(Color.WHITE));
     
@@ -125,16 +126,16 @@ public class GeneralTab implements ITabPanel {
   }
 
   public void updatePowerBarTooltip(List<String> text) {
-    text.add("Local Buffer");
-    text.add("Upkeep: " + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));    
+    text.add(Lang.localize("gui.machine.localbuffer"));
+    text.add(Lang.localize("gui.machine.upkeep") + " " + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));    
     int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored()/2;
     int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);       
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));    
   }
   
   private void updateSendPowerBarTooltip(List<String> text) {
-    text.add("Send/Recieve Buffer");
-    text.add("Max IO: " + PowerDisplayUtil.formatPowerPerTick(Config.transceiverMaxIoRF));
+    text.add(Lang.localize("gui.machine.sendReceivebuffer"));
+    text.add(Lang.localize("itemGasConduit.tooltip.maxIo") + " " + PowerDisplayUtil.formatPowerPerTick(Config.transceiverMaxIoRF));
     int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored()/2;
     int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));    

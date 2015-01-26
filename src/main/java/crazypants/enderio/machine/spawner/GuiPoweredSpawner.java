@@ -14,6 +14,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
@@ -58,9 +59,9 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     int left = getGuiLeft();
     int top = getGuiTop();
 
-    String txt = "Spawn";
+    String txt = Lang.localize("gui.machine.poweredspawner.spawn");
     if(!spawner.isSpawnMode()) {
-      txt = "Capture";
+      txt = Lang.localize("gui.machine.poweredspawner.capture");
     }
     FontRenderer fr = getFontRenderer();
     int x = left + xSize / 2 - fr.getStringWidth(txt) / 2;

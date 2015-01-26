@@ -644,8 +644,8 @@ enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=太陽能發電產生
 enderio.gui.enabled=啟用
 enderio.gui.disabled=停用
 enderio.gui.send=發送
-enderio.gui.recieve=接收
-enderio.gui.sendRecieve=發送和接收
+enderio.gui.receive=接收
+enderio.gui.sendReceive=發送和接收
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=紅石模式
