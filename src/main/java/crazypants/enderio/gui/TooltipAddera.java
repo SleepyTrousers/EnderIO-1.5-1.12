@@ -130,7 +130,7 @@ public class TooltipAddera {
   }
 
   private static boolean addStirlinGeneratorTooltip(ItemTooltipEvent evt) {
-    if(evt.entityPlayer.openContainer instanceof StirlingGeneratorContainer) {
+    if(evt.entityPlayer != null && evt.entityPlayer.openContainer instanceof StirlingGeneratorContainer) {
       AbstractMachineEntity te = ((StirlingGeneratorContainer)evt.entityPlayer.openContainer).getTileEntity();
       if(te instanceof TileEntityStirlingGenerator) {
         TileEntityStirlingGenerator gen = (TileEntityStirlingGenerator) te;
