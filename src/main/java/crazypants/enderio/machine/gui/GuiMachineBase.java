@@ -52,7 +52,9 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   protected GuiMachineBase(T machine, Container par1Container) {
     super(par1Container);
     tileEntity = machine;
-
+    
+    xSize = getXSize();
+    ySize = getYSize();
     int x = getXSize() - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));

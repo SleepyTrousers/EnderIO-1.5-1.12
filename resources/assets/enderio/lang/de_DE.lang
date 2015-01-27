@@ -432,8 +432,8 @@ enderio.darksteel.upgrade.nightVision.disabled=Nachtsicht Inaktiv
 enderio.gui.enabled=Aktiviert
 enderio.gui.disabled=Deaktiviert
 enderio.gui.send=Senden
-enderio.gui.recieve=Empfangen
-enderio.gui.sendRecieve=Senden & Empfangen
+enderio.gui.receive=Empfangen
+enderio.gui.sendReceive=Senden & Empfangen
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Redstone-Modus

@@ -2,6 +2,7 @@
 
 //Power
 enderio.power.rf=RF
+enderio.power.tmb=тик/мВ
 enderio.power.tick=/тик
 enderio.power.maxOutput=Макс. выход
 enderio.power.generates=Генерирует
@@ -334,7 +335,7 @@ enderio.trans.item=Предмет
 enderio.trans.fluid=Жидкость
 enderio.trans.rail=Рельс
 
-enderio.trans.recieving=Получение
+enderio.trans.receiving=Получение
 enderio.trans.sending=Отправка
 
 tile.blockPowerMonitor.name=Индикатор мощности
@@ -414,6 +415,7 @@ tile.blockVacuumChest.tooltip.detailed.line2=в свой инвентарь
 
 tile.blockPoweredSpawner.name=Электрический спаунер
 tile.blockPoweredSpawner.tooltip.empty=Пустой
+enderio.tile.blockPoweredSpawner.tooltip.none=Нет
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Объедините со сломанным
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=спаунером в наковальне
 tile.blockPoweredSpawner.tooltip.detailed.line1=Подайте питание, чтобы
@@ -689,12 +691,14 @@ enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1==Генерирует
 enderio.gui.simple.in=Макс. вход:
 enderio.gui.simple.out=Макс. выход:
 
-enderio.gui.enabled=Включено
+enderio.gui.available=Доступно
 enderio.gui.disabled=Выключено
-enderio.gui.send=Отправлять
-enderio.gui.recieve=Получать
-enderio.gui.sendRecieve=Отправлять и получать
+enderio.gui.enabled=Включено
+enderio.gui.max=Макс: 
 enderio.gui.progress=Прогресс {0,number}%
+enderio.gui.receive=Получать
+enderio.gui.send=Отправлять
+enderio.gui.sendReceive=Отправлять и получать
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Режим красного камня
@@ -703,6 +707,17 @@ enderio.gui.tooltip.redstoneControlMode.on=Активен по сигналу
 enderio.gui.tooltip.redstoneControlMode.off=Активен без сигнала
 enderio.gui.tooltip.redstoneControlMode.never=Всегда выключен
 
+enderio.gui.machine.button.storelevel=Отдать 1
+enderio.gui.machine.tooltip.storelevel=уровень опыта игрока
+enderio.gui.machine.button.storelevels=Отдать 10
+enderio.gui.machine.tooltip.storelevels=уровней опыта игрока
+enderio.gui.machine.button.storeall=Отдать весь
+enderio.gui.machine.tooltip.storeall=опыт игрока
+enderio.gui.machine.button.retrievelevel=Забрать 1
+enderio.gui.machine.tooltip.retrievelevel=уровень опыта игрока
+enderio.gui.machine.button.retrievelevels=Забрать 10
+enderio.gui.machine.tooltip.retrievelevels=уровней опыта игрока
+enderio.gui.machine.button.retrieveall=Забрать весь опыт
 enderio.gui.machine.ioMode.overlay.tooltip=Настроить вход/выход
 enderio.gui.machine.ioMode.none=Нет
 enderio.gui.machine.ioMode.pull=Тянуть
@@ -711,6 +726,16 @@ enderio.gui.machine.ioMode.disabled=Отключен
 enderio.gui.machine.ioMode.pullPush=Толкать/Тянуть
 enderio.gui.machine.ioMode.pullPush.colored=%sТолкать %s/ %sТянуть
 enderio.gui.machine.ioMode=Режим: %s
+enderio.gui.machine.poweredspawner.capture=Захватить
+enderio.gui.machine.poweredspawner.spawn=Призывать
+enderio.gui.machine.receivefilter=Фильтр приёма
+enderio.gui.machine.sendfilter=Фильтр отправки
+enderio.gui.machine.sendReceivebuffer=Буфер отправки/приёма
+enderio.gui.machine.localbuffer=Местный буфер
+enderio.gui.machine.upkeep=Upkeep:
+enderio.gui.machine.bufferingstacks=Буферизация стаков
+enderio.gui.machine.bufferingsingle=Буферизация одиночных предметов
+enderio.gui.machine.percraft=за создание
 enderio.gui.machine.side=Сторона: %s
 enderio.gui.machine.side.north=Север
 enderio.gui.machine.side.south=Юг

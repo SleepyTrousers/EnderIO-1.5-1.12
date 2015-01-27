@@ -136,7 +136,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
         tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));
 
         if(!isEmpty(recieve)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.recieving"), Util.TAB + Util.ALIGNRIGHT
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
               + EnumChatFormatting.WHITE, recieve));
         }
         if(!isEmpty(send)) {

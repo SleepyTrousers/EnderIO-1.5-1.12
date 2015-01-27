@@ -624,8 +624,8 @@ enderio.enderio.gui.disabled=禁用
 enderio.gui.enabled=启用
 enderio.gui.disabled=禁用
 enderio.gui.send=发送
-enderio.gui.recieve=接收
-enderio.gui.sendRecieve=发送和接收
+enderio.gui.receive=接收
+enderio.gui.sendReceive=发送和接收
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=红石模式

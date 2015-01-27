@@ -300,7 +300,7 @@ enderio.trans.power=전력
 enderio.trans.item=아이템
 enderio.trans.fluid=유체
 
-enderio.trans.recieving=수신
+enderio.trans.receiving=수신
 enderio.trans.sending=송신
 
 tile.blockPowerMonitor.name=전력 모니터
@@ -625,8 +625,8 @@ enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
 enderio.gui.enabled=활성화
 enderio.gui.disabled=비활성화
 enderio.gui.send=발신
-enderio.gui.recieve=수신
-enderio.gui.sendRecieve=수신 & 발신
+enderio.gui.receive=수신
+enderio.gui.sendReceive=수신 & 발신
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=레드스톤 모드

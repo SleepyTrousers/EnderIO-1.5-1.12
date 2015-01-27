@@ -2,6 +2,7 @@
 
 //Power
 enderio.power.rf=RF
+enderio.power.tmb=t/mB
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
 enderio.power.generates=Generates
@@ -334,7 +335,7 @@ enderio.trans.item=Item
 enderio.trans.fluid=Fluid
 enderio.trans.rail=Rail
 
-enderio.trans.recieving=Recieving
+enderio.trans.receiving=Receiving
 enderio.trans.sending=Sending
 
 tile.blockPowerMonitor.name=Power Monitor
@@ -414,6 +415,7 @@ tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
 
 tile.blockPoweredSpawner.name=Powered Spawner
 tile.blockPoweredSpawner.tooltip.empty=Empty
+enderio.tile.blockPoweredSpawner.tooltip.none=None
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
 tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
@@ -689,12 +691,14 @@ enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from 
 enderio.gui.simple.in=Max In:
 enderio.gui.simple.out=Max Out:
 
-enderio.gui.enabled=Enabled
+enderio.gui.available=Available
 enderio.gui.disabled=Disabled
-enderio.gui.send=Send
-enderio.gui.recieve=Receive
-enderio.gui.sendRecieve=Send & Receive
+enderio.gui.enabled=Enabled
+enderio.gui.max=Max: 
 enderio.gui.progress=Progress {0,number}%
+enderio.gui.receive=Receive
+enderio.gui.send=Send
+enderio.gui.sendReceive=Send & Receive 
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Redstone Mode
@@ -703,6 +707,17 @@ enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
 enderio.gui.tooltip.redstoneControlMode.never=Never active
 
+enderio.gui.machine.button.storelevel=Store 1
+enderio.gui.machine.tooltip.storelevel=level of player XP
+enderio.gui.machine.button.storelevels=Store 10
+enderio.gui.machine.tooltip.storelevels=levels of player XP
+enderio.gui.machine.button.storeall=Store all
+enderio.gui.machine.tooltip.storeall=player XP
+enderio.gui.machine.button.retrievelevel=Retrieve 1
+enderio.gui.machine.tooltip.retrievelevel=player XP level
+enderio.gui.machine.button.retrievelevels=Retrieve 10
+enderio.gui.machine.tooltip.retrievelevels=player XP levels
+enderio.gui.machine.button.retrieveall=Retrieve all
 enderio.gui.machine.ioMode.overlay.tooltip=Configure IO
 enderio.gui.machine.ioMode.none=None
 enderio.gui.machine.ioMode.pull=Pull
@@ -711,6 +726,16 @@ enderio.gui.machine.ioMode.disabled=Disabled
 enderio.gui.machine.ioMode.pullPush=Push / Pull
 enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
 enderio.gui.machine.ioMode=Mode: %s
+enderio.gui.machine.poweredspawner.capture=Capture
+enderio.gui.machine.poweredspawner.spawn=Spawn
+enderio.gui.machine.receivefilter=Receive Filter
+enderio.gui.machine.sendfilter=Send Filter
+enderio.gui.machine.sendReceivebuffer=Send/Receive Buffer
+enderio.gui.machine.localbuffer=Local Buffer
+enderio.gui.machine.upkeep=Upkeep:
+enderio.gui.machine.bufferingstacks=Buffering item stacks
+enderio.gui.machine.bufferingsingle=Buffering single items
+enderio.gui.machine.percraft=Per Craft
 enderio.gui.machine.side=Side: %s
 enderio.gui.machine.side.north=North
 enderio.gui.machine.side.south=South

@@ -2,6 +2,7 @@ package crazypants.enderio.machine.gui;
 
 import java.awt.Rectangle;
 import java.util.List;
+import net.minecraft.util.StatCollector;
 
 import net.minecraft.inventory.Container;
 
@@ -37,7 +38,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   }
 
   protected String getPowerOutputLabel() {
-    return "Max: ";
+    return StatCollector.translateToLocal("enderio.gui.max");
   }
   
   protected int getPowerOutputValue() {

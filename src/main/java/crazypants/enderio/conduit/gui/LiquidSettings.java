@@ -263,7 +263,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     if(isEnder && isFilterVisible()) {
 
       if(conduit.getConnectionMode(gui.getDir()) == ConnectionMode.IN_OUT) {
-        String inOutStr = inOutShowIn ? "Extract" : "Insert";
+        String inOutStr = inOutShowIn ? Lang.localize("gui.conduit.ioMode.input") : Lang.localize("gui.conduit.ioMode.output");
         int x = gui.getGuiLeft() + gui.getXSize() - 20 - 5 - gui.getFontRenderer().getStringWidth(inOutStr);
         int y = top;
         gui.getFontRenderer().drawString(inOutStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
