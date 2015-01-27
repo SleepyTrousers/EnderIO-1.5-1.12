@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import net.minecraft.block.Block;
@@ -894,8 +892,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if (cond == null) {
       return AECableType.NONE;
     } else {
-      ConnectionMode mode = cond.getConnectionMode(dir);
-      return mode == ConnectionMode.DISABLED ? AECableType.NONE : AECableType.SMART;
+      return cond.isConnectedTo(dir) ? AECableType.SMART : AECableType.NONE;
     }
   }
   

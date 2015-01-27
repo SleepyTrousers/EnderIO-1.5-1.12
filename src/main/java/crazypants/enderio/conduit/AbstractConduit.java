@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +26,9 @@ import crazypants.util.BlockCoord;
 
 public abstract class AbstractConduit implements IConduit {
 
-  protected final Set<ForgeDirection> conduitConnections = new HashSet<ForgeDirection>();
+  protected final Set<ForgeDirection> conduitConnections = EnumSet.noneOf(ForgeDirection.class);
 
-  protected final Set<ForgeDirection> externalConnections = new HashSet<ForgeDirection>();
+  protected final Set<ForgeDirection> externalConnections = EnumSet.noneOf(ForgeDirection.class);
 
   public static final float STUB_WIDTH = 0.2f;
 
@@ -51,8 +51,6 @@ public abstract class AbstractConduit implements IConduit {
   private boolean clientStateDirty = true;
 
   private boolean dodgyChangeSinceLastCallFlagForBundle = true;
-
-  private int lastNumConections = -1;
 
   protected boolean connectionsDirty = true;
 
@@ -194,11 +192,7 @@ public abstract class AbstractConduit implements IConduit {
     if(bundle == null) {
       return null;
     }
-    TileEntity te = bundle.getEntity();
-    if(te == null) {
-      return null;
-    }
-    return new BlockCoord(te.xCoord, te.yCoord, te.zCoord);
+    return bundle.getLocation();
   }
 
   @Override
@@ -225,13 +219,11 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void conduitConnectionAdded(ForgeDirection fromDirection) {
     conduitConnections.add(fromDirection);
-    connectionsChanged();
   }
 
   @Override
   public void conduitConnectionRemoved(ForgeDirection fromDirection) {
     conduitConnections.remove(fromDirection);
-    connectionsChanged();
   }
 
   @Override
@@ -275,13 +267,11 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void externalConnectionAdded(ForgeDirection fromDirection) {
     externalConnections.add(fromDirection);
-    connectionsChanged();
   }
 
   @Override
   public void externalConnectionRemoved(ForgeDirection fromDirection) {
     externalConnections.remove(fromDirection);
-    connectionsChanged();
   }
 
   @Override
@@ -428,7 +418,8 @@ public abstract class AbstractConduit implements IConduit {
     connectionsDirty = false;
   }
 
-  protected void connectionsChanged() {
+  @Override
+  public void connectionsChanged() {
     collidablesDirty = true;
     clientStateDirty = true;
     dodgyChangeSinceLastCallFlagForBundle = true;
@@ -463,6 +454,7 @@ public abstract class AbstractConduit implements IConduit {
       if(neighbour != null && neighbour.canConnectToConduit(dir.getOpposite(), this)) {
         conduitConnections.add(dir);
         neighbour.conduitConnectionAdded(dir.getOpposite());
+        neighbour.connectionsChanged();
       }
     }
 
@@ -485,6 +477,7 @@ public abstract class AbstractConduit implements IConduit {
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
       if(neighbour != null) {
         neighbour.conduitConnectionRemoved(dir.getOpposite());
+        neighbour.connectionsChanged();
       }
     }
     conduitConnections.clear();
@@ -513,7 +506,7 @@ public abstract class AbstractConduit implements IConduit {
 
     // Check for changes to external connections, connections to conduits are
     // handled by the bundle
-    Set<ForgeDirection> newCons = new HashSet<ForgeDirection>();
+    Set<ForgeDirection> newCons = EnumSet.noneOf(ForgeDirection.class);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if(!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
         newCons.add(dir);
@@ -560,8 +553,6 @@ public abstract class AbstractConduit implements IConduit {
     }
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
-    CollidableCache cc = CollidableCache.instance;
-
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       Collection<CollidableComponent> col = getCollidables(dir);
       if(col != null) {

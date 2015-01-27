@@ -124,6 +124,10 @@ public class ConduitUtil {
     if(con.getNetwork() != null) { //this should have been destroyed when destroying the neighbours network but lets just make sure
       con.getNetwork().destroyNetwork();
     }
+    con.connectionsChanged();
+    if(neighbour != null) {
+      neighbour.connectionsChanged();
+    }
   }
 
   public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
@@ -138,6 +142,8 @@ public class ConduitUtil {
       if(neighbour.getNetwork() != null) {
         neighbour.getNetwork().destroyNetwork();
       }
+      con.connectionsChanged();
+      neighbour.connectionsChanged();
       return true;
     }
     return false;
