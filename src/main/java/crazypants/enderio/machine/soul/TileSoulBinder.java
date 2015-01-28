@@ -2,7 +2,6 @@ package crazypants.enderio.machine.soul;
 
 import java.util.List;
 
-import scala.xml.persistent.SetStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,7 +9,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -22,7 +20,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
@@ -45,7 +42,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   
   private ICapacitor capacitor;
   
-  private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
+  private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
   
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));
@@ -174,15 +171,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     return POWER_PER_TICK_THREE;
   }
 
-  @Override
-  public int getProgressScaled(int scale) {
-    int res = super.getProgressScaled(scale);
-    if(currentTask != null) {
-      res = Math.max(1, res);                  
-    }
-    return res;
-  }
-  
   @Override
   protected boolean doPull(ForgeDirection dir) {
     boolean res = super.doPull(dir);

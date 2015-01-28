@@ -4,12 +4,10 @@ import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -17,7 +15,6 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.alloy.VanillaSmeltingRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
@@ -40,8 +37,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(),
       POWER_PER_TICK_THREE);
 
-  private int axeIndex = 6;
-  private int shearsIndex = 7;
+  private final int axeIndex = 6;
+  private final int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
 
   private ICapacitor capacitor;
@@ -92,15 +89,6 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
       return POWER_PER_TICK_TWO;
     }
     return POWER_PER_TICK_THREE;
-  }
-
-  @Override
-  public int getProgressScaled(int scale) {
-    int res = super.getProgressScaled(scale);
-    if(currentTask != null) {
-      res = Math.max(1, res);
-    }
-    return res;
   }
 
   @Override
