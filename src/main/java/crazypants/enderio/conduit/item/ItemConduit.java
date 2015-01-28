@@ -35,6 +35,7 @@ import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
+import crazypants.util.ItemUtil;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -250,8 +251,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       return item;
     } else if(network == null) {
       return item;
+    } else {
+      IItemFilter filter = inputFilters.get(from);
+      ItemConduitNetwork network = (ItemConduitNetwork) getNetwork();
+      if(filter != null && !filter.doesItemPassFilter(network.getInventory(this, from.getOpposite()), item)) {
+        return item;
+      }
     }
-
     return network.sendItems(this, item, from);
   }
 
