@@ -1,15 +1,22 @@
 package crazypants.enderio.entity;
 
+import java.util.Calendar;
+
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.Calendar;
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.util.EntityUtil;
 
 public class EntityWitherSkeleton extends EntitySkeleton {
   public EntityWitherSkeleton(World world) {
@@ -53,5 +60,34 @@ public class EntityWitherSkeleton extends EntitySkeleton {
   @Override
   public int getSkeletonType() {
     return 1;
+  }
+
+  @Override
+  public void onDeath(DamageSource source) {
+    super.onDeath(source);
+    if(source.damageType.equals("player")) {
+      EntityPlayer player = (EntityPlayer) source.getEntity();
+      ItemStack stack = player.getCurrentEquippedItem();
+      if(stack != null && stack.hasTagCompound()) {
+        Item cleaver = GameRegistry.findItem("TConstruct", "cleaver");
+        int beheading = stack.getTagCompound().getCompoundTag("InfiTool").getInteger("Beheading");
+        if(stack.getItem() == cleaver) {
+          beheading += 2;
+        }
+        System.out.println(beheading);
+        if(beheading > 0 && worldObj.rand.nextInt(100) < beheading * 10) {
+          EntityUtil.spawnItemInWorldWithRandomMotion(worldObj, new ItemStack(Items.skull, 1, 1), posX, posY, posZ);
+        }
+      }
+    }
+    if(source.getEntity() instanceof EntityLivingBase) {
+      int lootingLevel = EnchantmentHelper.getLootingModifier((EntityLivingBase) source.getEntity());
+      if(worldObj.rand.nextInt(Math.max(1, 1 - lootingLevel)) == 0) {
+        Item necroticBone = GameRegistry.findItem("TConstruct", "materials");
+        if(necroticBone != null) {
+          EntityUtil.spawnItemInWorldWithRandomMotion(worldObj, new ItemStack(necroticBone, 1, 8), posX, posY, posZ);
+        }
+      }
+    }
   }
 }

@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import crazypants.vecmath.Vector3d;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import crazypants.vecmath.Vector3d;
 
 public class EntityUtil {
 
@@ -65,5 +65,30 @@ public class EntityUtil {
     }
     return collidingBoundingBoxes;
   }
-  
+
+  public static void spawnItemInWorldWithRandomMotion(World world, ItemStack item, int x, int y, int z) {
+    if(item != null) {
+      spawnItemInWorldWithRandomMotion(world, item, x + 0.5, y + 0.5, z + 0.5);
+    }
+  }
+
+  public static void spawnItemInWorldWithRandomMotion(World world, ItemStack item, double x, double y, double z) {
+    if(item != null) {
+      spawnItemInWorldWithRandomMotion(new EntityItem(world, x, y, z, item));
+    }
+  }
+
+  public static void spawnItemInWorldWithRandomMotion(EntityItem entity) {
+    entity.delayBeforeCanPickup = 10;
+
+    float f = (entity.worldObj.rand.nextFloat() * 0.1f) - 0.05f;
+    float f1 = (entity.worldObj.rand.nextFloat() * 0.1f) - 0.05f;
+    float f2 = (entity.worldObj.rand.nextFloat() * 0.1f) - 0.05f;
+
+    entity.motionX += f;
+    entity.motionY += f1;
+    entity.motionZ += f2;
+
+    entity.worldObj.spawnEntityInWorld(entity);
+  }
 }
