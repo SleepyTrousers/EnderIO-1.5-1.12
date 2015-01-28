@@ -906,4 +906,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public boolean displayPower() {
     return true;
   }
+
+  public void rotate(ForgeDirection axis) {
+	  //Could try to rotate cached values, but it's easier to just re-compute everything;
+	  //   even if rotated, should still only connect where it can connect.
+	  for(IConduit conduit:this.conduits) {
+		  conduit.onAddedToBundle();
+	  }
+  }
+  
 }

@@ -5,7 +5,9 @@ import net.minecraft.block.BlockLadder;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import codechicken.lib.math.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
@@ -13,6 +15,8 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.machine.enchanter.TileEnchanter;
+import crazypants.util.Rotation;
 
 public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider {
   
@@ -61,4 +65,13 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
+  
+  //Apparently, ladders don't inherit a working RotateBlock from vanilla, so we have to add our own
+  @Override
+  public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
+	world.setBlockMetadataWithNotify(x, y, z, 
+			Rotation.newSide(world.getBlockMetadata(x, y, z), axis), 3);
+	return true;
+  }
+
 }

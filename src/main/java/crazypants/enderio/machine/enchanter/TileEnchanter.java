@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
+import crazypants.util.Rotation;
 
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
@@ -272,6 +273,10 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   @Override
   public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
     return false;
+  }
+  
+  public void rotate(ForgeDirection axis) {
+	  this.facing=Rotation.newSide(this.facing, axis);
   }
 
 }

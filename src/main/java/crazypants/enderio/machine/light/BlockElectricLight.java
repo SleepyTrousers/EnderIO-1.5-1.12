@@ -256,4 +256,15 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
     return true;
   }
+
+  @Override
+  public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
+	TileEntity t = world.getTileEntity(x, y, z);
+    if(t instanceof TileElectricLight) {
+      TileElectricLight te = (TileElectricLight) t;
+      te.rotate(axis);
+    }
+	return false;
+  }
+  
 }

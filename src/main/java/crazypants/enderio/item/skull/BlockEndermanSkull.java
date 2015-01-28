@@ -118,4 +118,9 @@ public class BlockEndermanSkull extends BlockEio {
   public int damageDropped(int meta) {
     return meta;
   }
+  
+  public boolean rotateBlock(World w, int x, int y, int z, ForgeDirection axis) {
+	  TileEndermanSkull skull=(TileEndermanSkull) w.getTileEntity(x, y, z);
+	  return skull.rotate(axis);
+  }
 }
