@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.killera;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -487,13 +488,15 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     xpCon.writeToNBT(nbtRoot);
   }
 
+  private static UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
+  private static GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
+
   private class Attackera extends FakePlayer {
 
     ItemStack prevWeapon;
 
     public Attackera() {
-      super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), new GameProfile(null,
-          BlockKillerJoe.USERNAME + ":" + getLocation()));
+      super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), DUMMY_PROFILE);
       posX = xCoord + 0.5;
       posY = yCoord + 0.5;
       posZ = zCoord + 0.5;
