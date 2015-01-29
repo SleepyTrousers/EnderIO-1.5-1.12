@@ -1,5 +1,6 @@
 package crazypants.gui;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.Timer;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -22,6 +24,8 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
+  
+  private Field timer = null;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -94,18 +98,44 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   public void removeOverlay(IGuiOverlay overlay) {
     overlays.remove(overlay);
   }
+  
+  private int realMx, realMy;
 
   @Override
   protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
-    ttMan.drawTooltips(this, mouseX, mouseY);
+
+    Timer t = null;
+    try {
+      if(timer == null) {
+        timer = Minecraft.class.getDeclaredField("timer");
+        timer.setAccessible(true);
+      }
+      t = (Timer) timer.get(this.mc);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return;
+    }
+
+    GL11.glPushMatrix();
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    for (IGuiOverlay overlay : overlays) {
+      if(overlay != null && overlay.isVisible()) {
+        overlay.draw(realMx, realMy, t.renderPartialTicks);
+      }
+    }
+    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GL11.glPopMatrix();
+
+    ttMan.drawTooltips(this, realMx, realMy);
   }
 
   @Override
   public void drawScreen(int par1, int par2, float par3) {
 
-    int mx = par1;
-    int my = par2;
+    int mx = realMx = par1;
+    int my = realMy = par2;
     for(IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible() && isMouseInOverlay(par1, par2, overlay)) {
         mx = -5000;
@@ -114,18 +144,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     }
 
     super.drawScreen(mx, my, par3);
-
-    GL11.glPushMatrix();
-    GL11.glTranslatef(guiLeft, guiTop, 0.0F);
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
-    for(IGuiOverlay overlay : overlays) {
-      if(overlay != null && overlay.isVisible()) {
-        overlay.draw(par1, par2, par3);
-      }
-    }
-    GL11.glEnable(GL11.GL_DEPTH_TEST);
-    GL11.glPopMatrix();
   }
 
   private boolean isMouseInOverlay(int mouseX, int mouseY, IGuiOverlay overlay) {

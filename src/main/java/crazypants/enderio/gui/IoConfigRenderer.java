@@ -230,6 +230,7 @@ public class IoConfigRenderer {
     if(!updateCamera(partialTick, vp.x, vp.y, vp.width, vp.height)) {
       return;
     }
+    GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
     applyCamera(partialTick);
     TravelController.instance.setSelectionEnabled(false);
     renderScene();
@@ -237,6 +238,7 @@ public class IoConfigRenderer {
     renderSelection();
 
     renderOverlay(par1, par2);
+    GL11.glPopAttrib();
   }
 
   private void renderSelection() {
@@ -287,6 +289,7 @@ public class IoConfigRenderer {
 
     mx -= vpx;
     my -= vpy;
+    
     if(mx >= x && mx <= x + IconEIO.IO_WHATSIT.width &&
         my >= y && my <= y + IconEIO.IO_WHATSIT.height) {
       RenderUtil.renderQuad2D(x, y, 0, IconEIO.IO_WHATSIT.width, IconEIO.IO_WHATSIT.height, new Vector4f(0.4f,0.4f,0.4f,0.6f));
@@ -297,7 +300,6 @@ public class IoConfigRenderer {
 
     GL11.glColor3f(1, 1, 1);
     IconEIO.IO_WHATSIT.renderIcon(x, y, true);
-
 
     if(selection != null) {
       IconEIO ioIcon = null;
