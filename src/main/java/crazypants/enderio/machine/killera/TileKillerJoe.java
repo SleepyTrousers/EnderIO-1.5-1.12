@@ -31,7 +31,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
-import crazypants.enderio.machine.wireless.WirelessChargerController;
+import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
@@ -45,7 +45,7 @@ import crazypants.vecmath.Vector3d;
 
 public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector, IHaveExperience {
 
-  private static int IO_MB_TICK = 250;
+  private static final int IO_MB_TICK = 250;
 
   protected AxisAlignedBB killBounds;
 
@@ -54,6 +54,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   protected AxisAlignedBB hooverBounds;
 
   protected FakePlayer attackera;
+
+  protected WirelessChargedLocation chargedLocation;
 
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
 
@@ -69,7 +71,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private float prevSwingProgress;
 
-  private ExperienceContainer xpCon = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
+  private final ExperienceContainer xpCon = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
   
   private boolean hadSword;
 
@@ -204,7 +206,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     frontFaceAndSides = new int[]{this.facing,ForgeDirection.ROTATION_MATRIX[0][this.facing],ForgeDirection.ROTATION_MATRIX[1][this.facing]};
   }
 
-  private static double[][] faceMidPoints = new double[][]{{0.5D,0.0D,0.5D},{0.5D,1.0D,0.5D},{0.5D,0.5D,0.0D},{0.5D,0.5D,1.0D},{0.0D,0.5D,0.5D},{1.0D,0.5D,0.5D}};
+  private static final double[][] faceMidPoints = new double[][]{{0.5D,0.0D,0.5D},{0.5D,1.0D,0.5D},{0.5D,0.5D,0.0D},{0.5D,0.5D,1.0D},{0.0D,0.5D,0.5D},{1.0D,0.5D,0.5D}};
 
   //-------------------------------  XP
 
@@ -307,6 +309,13 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       attackera = new Attackera();
     }
     return attackera;
+  }
+
+  WirelessChargedLocation getChargedLocation() {
+    if(chargedLocation == null) {
+      chargedLocation = new WirelessChargedLocation(this);
+    }
+    return chargedLocation;
   }
 
   private AxisAlignedBB getKillBounds() {
@@ -488,8 +497,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     xpCon.writeToNBT(nbtRoot);
   }
 
-  private static UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
-  private static GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
+  private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
+  private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
 
   private class Attackera extends FakePlayer {
 
@@ -519,7 +528,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         }
         prevWeapon = cur == null ? null : cur.copy();
       }
-      WirelessChargerController.instance.chargePlayersItems(this);      
+
+      getChargedLocation().chargeItems(inventory.mainInventory);
     }
   }
   
