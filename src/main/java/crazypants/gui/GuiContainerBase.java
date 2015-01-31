@@ -14,6 +14,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Timer;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -26,17 +28,25 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
 
-  private Field timer = null;
+  private Field timer;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
   }
 
   @Override
+  @SuppressWarnings("CallToPrintStackTrace")
   public void initGui() {
     super.initGui();
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
+    }
+
+    try {
+      timer = ReflectionHelper.findField(Minecraft.class, "timer", "field_71428_T");
+      timer.setAccessible(true);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -102,19 +112,18 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   private int realMx, realMy;
 
   @Override
+  @SuppressWarnings({"CallToPrintStackTrace", "UseSpecificCatch"})
   protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
 
-    Timer t = null;
-    try {
-      if(timer == null) {
-        timer = Minecraft.class.getDeclaredField("timer");
-        timer.setAccessible(true);
+    float renderPartialTicks = 0.0f;
+    if(timer != null) {
+      try {
+        Timer t = (Timer) timer.get(this.mc);
+        renderPartialTicks = t.renderPartialTicks;
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-      t = (Timer) timer.get(this.mc);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return;
     }
 
     GL11.glPushMatrix();
@@ -122,7 +131,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     for (IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible()) {
-        overlay.draw(realMx, realMy, t.renderPartialTicks);
+        overlay.draw(realMx, realMy, renderPartialTicks);
       }
     }
     GL11.glEnable(GL11.GL_DEPTH_TEST);
