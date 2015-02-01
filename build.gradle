@@ -106,7 +106,12 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
-build.dependsOn sourceJar, deobfJar, apiJar
+task exportJavadoc(type: Javadoc) {
+    include 'crazypants/enderio/api/**/*'
+    source = sourceSets.main.allSource
+}
+
+build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
 
 publishing {
     tasks.publish.dependsOn 'build'
