@@ -90,7 +90,7 @@ public class ItemUtil {
         ItemStack contents = sidedInv.getStackInSlot(slot);
         ItemStack toInsert = item.copy();
         toInsert.stackSize = Math.min(toInsert.stackSize, sidedInv.getInventoryStackLimit());
-        toInsert.stackSize = Math.min(toInsert.stackSize, toInsert.getMaxStackSize()); // some inventories like filing cap
+        toInsert.stackSize = Math.min(toInsert.stackSize, toInsert.getMaxStackSize()); // some inventories like using itemstacks with invalid stack sizes
         toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
         int inserted = 0;
         if(contents == null) {
@@ -127,7 +127,7 @@ public class ItemUtil {
       if(!isStackFull(contents)) {
         ItemStack toInsert = item.copy();
         toInsert.stackSize = Math.min(toInsert.stackSize, inv.getInventoryStackLimit());
-        toInsert.stackSize = Math.min(toInsert.stackSize, toInsert.getMaxDamage()); // some inventories like filing cap
+        toInsert.stackSize = Math.min(toInsert.stackSize, toInsert.getMaxDamage()); // some inventories like using itemstacks with invalid stack sizes
         toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
         int inserted = 0;
         if(contents == null) {

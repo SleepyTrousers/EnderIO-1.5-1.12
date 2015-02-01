@@ -9,7 +9,6 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -224,22 +223,28 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof AbstractMachineEntity && shouldDropDefaultItem(world, player, x, y, z)) {
-        AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
-        int meta = damageDropped(world.getBlockMetadata(x, y, z));
-        ItemStack itemStack = new ItemStack(this, 1, meta);
-        machineEntity.writeToItemStack(itemStack);
-
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
+        dropAsItem(world, x, y, z, (AbstractMachineEntity) te);
+        world.removeTileEntity(x, y, z);
       }
     }
     return super.removedByPlayer(world, player, x, y, z, doHarvest);
+  }
+
+  @Override
+  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof AbstractMachineEntity) {
+      dropAsItem(world, x, y, z, (AbstractMachineEntity) te);
+    }
+    super.breakBlock(world, x, y, z, block, meta);
+  }
+
+  private void dropAsItem(World world, int x, int y, int z, AbstractMachineEntity te) {
+    AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
+    int meta = damageDropped(world.getBlockMetadata(x, y, z));
+    ItemStack itemStack = new ItemStack(this, 1, meta);
+    machineEntity.writeToItemStack(itemStack);
+    dropBlockAsItem(world, x, y, z, itemStack);
   }
 
   @Override
