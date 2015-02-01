@@ -18,6 +18,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import crazypants.enderio.Log;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
@@ -26,7 +28,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
 
-  private Field timer = null;
+  private static Field timerField = null;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -37,6 +39,17 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super.initGui();
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
+    }
+    if(timerField == null) {
+      try {
+        if(timerField == null) {
+          timerField = ReflectionHelper.findField(Minecraft.class, "field_71428_T", "timer", "Q");
+          timerField.setAccessible(true);
+        }
+      } catch (Exception e) {
+        Log.error("Failed to initialize timer reflection for IO config.");
+        e.printStackTrace();
+      }
     }
   }
 
@@ -107,11 +120,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     Timer t = null;
     try {
-      if(timer == null) {
-        timer = Minecraft.class.getDeclaredField("timer");
-        timer.setAccessible(true);
-      }
-      t = (Timer) timer.get(this.mc);
+      t = (Timer) timerField.get(this.mc);
     } catch (Exception e) {
       e.printStackTrace();
       return;
