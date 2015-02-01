@@ -92,7 +92,7 @@ public class FacadeRenderer implements IItemRenderer {
       GL11.glDepthFunc(GL11.GL_LEQUAL);
 
     } else {
-      renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getIconFromDamage(0));
+      renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getIconFromDamage(item.getItemDamage()));
       renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
       renderBlocks.clearOverrideBlockTexture();
     }

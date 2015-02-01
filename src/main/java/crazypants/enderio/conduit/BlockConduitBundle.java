@@ -36,6 +36,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
@@ -307,11 +308,35 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
     return result;
   }
-  
+
+  @Override
+  public float getBlockHardness(World world, int x, int y, int z) {
+    IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
+    return te != null && te.getFacadeType() == FacadeType.HARDENED ? blockHardness * 10 : blockHardness;
+  }
+
+  @Override
+  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+    float resist = getExplosionResistance(par1Entity);
+    IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
+    return te != null && te.getFacadeType() == FacadeType.HARDENED ? resist * 10 : resist;
+  }
+
   @SubscribeEvent
   public void onBreakSpeed(BreakSpeed event) {
-    if (event.block == this && event.entityPlayer.getCurrentEquippedItem() == null) {
-      event.newSpeed *= 3;
+    if(event.block == this) {
+      ItemStack held = event.entityPlayer.getCurrentEquippedItem();
+      if(held == null || held.getItem().getHarvestLevel(held, "pickaxe") == -1) {
+        event.newSpeed += 2;
+      }
+      IConduitBundle te = (IConduitBundle) event.entity.worldObj.getTileEntity(event.x, event.y, event.z);
+      if(te != null && te.getFacadeType() == FacadeType.HARDENED) {
+        if(!ConduitUtil.isSolidFacadeRendered(te, event.entityPlayer)) {
+          event.newSpeed *= 6;
+        } else {
+          event.newSpeed *= 2;
+        }
+      }
     }
   }
   
@@ -366,11 +391,12 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     List<ItemStack> drop = new ArrayList<ItemStack>();
     if(ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
-      ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
+      ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
       PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
       drop.add(fac);
       te.setFacadeId(null);
       te.setFacadeMetadata(0);
+      te.setFacadeType(FacadeType.BASIC);
     }
 
     if(breakBlock) {
@@ -616,6 +642,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
     bundle.setFacadeId(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()));
     bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
+    bundle.setFacadeType(FacadeType.values()[player.getCurrentEquippedItem().getItemDamage()]);
     if(!player.capabilities.isCreativeMode) {
       stack.stackSize--;
     }

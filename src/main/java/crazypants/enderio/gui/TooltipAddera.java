@@ -290,15 +290,19 @@ public class TooltipAddera {
     if(itemstack.getItem() == null) {
       return;
     }
-    String unlock = null;
+    String unloc = null;
     //    Block blk = Block.getBlockFromItem(itemstack.getItem());
     //    if(blk != null && blk != Blocks.air) {
     //      unlock = blk.getUnlocalizedName();
     //    }
-    if(unlock == null) {
-      unlock = itemstack.getItem().getUnlocalizedName();
+    
+    if (itemstack.getItem() instanceof IResourceTooltipProvider) {
+      unloc = ((IResourceTooltipProvider)itemstack.getItem()).getUnlocalizedNameForTooltip(itemstack);
     }
-    addDetailedTooltipFromResources(list, unlock);
+    if(unloc == null) {
+      unloc = itemstack.getItem().getUnlocalizedName(itemstack);
+    }
+    addDetailedTooltipFromResources(list, unloc);
   }
 
   private static class BallTipProvider implements IAdvancedTooltipProvider {

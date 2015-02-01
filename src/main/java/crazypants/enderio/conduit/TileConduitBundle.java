@@ -25,6 +25,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -50,6 +51,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   private Block facadeId = null;
   private int facadeMeta = 0;
+  private FacadeType facadeType = FacadeType.BASIC;
 
   private boolean facadeChanged;
 
@@ -100,6 +102,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     nbtRoot.setTag("conduits", conduitTags);
     if(facadeId != null) {
       nbtRoot.setString("facadeId", Block.blockRegistry.getNameForObject(facadeId));
+      nbtRoot.setString("facadeType", facadeType.name());
     } else {
       nbtRoot.setString("facadeId", "null");
     }
@@ -126,8 +129,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     String fs = nbtRoot.getString("facadeId");
     if(fs == null || "null".equals(fs)) {
       facadeId = null;
+      facadeType = FacadeType.BASIC;
     } else {
       facadeId = Block.getBlockFromName(fs);
+      facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
     }
     facadeMeta = nbtRoot.getInteger("facadeMeta");
 
@@ -164,10 +169,20 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void setFacadeMetadata(int meta) {
     facadeMeta = meta;
   }
+  
+  @Override
+  public void setFacadeType(FacadeType type) {
+    facadeType = type;
+  }
 
   @Override
   public int getFacadeMetadata() {
     return facadeMeta;
+  }
+  
+  @Override
+  public FacadeType getFacadeType() {
+    return facadeType;
   }
 
   @Override
