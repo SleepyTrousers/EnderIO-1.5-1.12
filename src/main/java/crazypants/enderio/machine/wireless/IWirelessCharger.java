@@ -10,7 +10,7 @@ public interface IWirelessCharger {
 
   BlockCoord getLocation();
 
-  boolean chargeItems(ItemStack[] armorInventory);
+  boolean chargeItems(ItemStack[] items);
 
   int takeEnergy(int max);
 

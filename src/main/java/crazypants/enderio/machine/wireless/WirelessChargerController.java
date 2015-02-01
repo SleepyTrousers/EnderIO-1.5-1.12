@@ -26,7 +26,8 @@ public class WirelessChargerController {
     MinecraftForge.EVENT_BUS.register(WirelessChargerController.instance);
   }
 
-  private Map<Integer, Map<BlockCoord, IWirelessCharger>> perWorldChargers = new HashMap<Integer, Map<BlockCoord, IWirelessCharger>>();
+  private final Map<Integer, Map<BlockCoord, IWirelessCharger>> perWorldChargers = new HashMap<Integer, Map<BlockCoord, IWirelessCharger>>();
+  private int changeCount;
 
   private WirelessChargerController() {
   }
@@ -34,9 +35,10 @@ public class WirelessChargerController {
   public void registerCharger(IWirelessCharger charger) {
     if(charger == null) {
       return;
-    }    
+    }
     Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getWorld());
     chargers.put(charger.getLocation(), charger);
+    changeCount++;
   }
 
   public void deregisterCharger(IWirelessCharger capBank) {
@@ -45,6 +47,7 @@ public class WirelessChargerController {
     }
     Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorld());
     chargers.remove(capBank.getLocation());
+    changeCount++;
   }
 
   @SubscribeEvent
@@ -53,6 +56,19 @@ public class WirelessChargerController {
       return;
     }
     chargePlayersItems(event.player);
+  }
+
+  public int getChangeCount() {
+    return changeCount;
+  }
+
+  public void getChargers(World world, BlockCoord bc, Collection<IWirelessCharger> res) {
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(world);
+    for (IWirelessCharger wc : chargers.values()) {
+      if(wc.getLocation().distanceSquared(bc) <= RANGE_SQ) {
+        res.add(wc);
+      }
+    }
   }
 
   public void chargePlayersItems(EntityPlayer player) {
