@@ -132,7 +132,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       facadeType = FacadeType.BASIC;
     } else {
       facadeId = Block.getBlockFromName(fs);
-      facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
+      if(nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+        facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
+      }
     }
     facadeMeta = nbtRoot.getInteger("facadeMeta");
 
