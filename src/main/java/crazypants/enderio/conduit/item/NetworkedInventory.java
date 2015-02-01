@@ -92,7 +92,6 @@ public class NetworkedInventory {
   }
 
   public void onTick(long tick) {
-    int transfered;
     if(tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
       //do nothing     
     } else {
