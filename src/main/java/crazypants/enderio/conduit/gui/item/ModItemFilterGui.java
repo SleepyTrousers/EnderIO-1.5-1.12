@@ -20,20 +20,23 @@ import crazypants.render.RenderUtil;
 
 public class ModItemFilterGui implements IItemFilterGui {
 
-  
-  private IItemConduit itemConduit;
-  private GuiExternalConnection gui;
+  private static final int MOD_NAME_COLOR = ColorUtil.getRGB(Color.white);
+
+  private final IItemConduit itemConduit;
+  private final GuiExternalConnection gui;
   
   boolean isInput;
 
-  private ModItemFilter filter;
+  private final ModItemFilter filter;
   
-  private Rectangle[] inputBounds;
+  private final Rectangle[] inputBounds;
   
-  private IconButtonEIO[] deleteButs;
+  private final IconButtonEIO[] deleteButs;
   
-  private int inputOffsetX;
-  private int tfWidth;
+  private final int inputOffsetX;
+  private final int tfWidth;
+  private final int tfTextureX;
+  private final int tfTextureY;
   
   public ModItemFilterGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
     this.gui = gui;
@@ -44,18 +47,22 @@ public class ModItemFilterGui implements IItemFilterGui {
     if(isInput) {
       filter = (ModItemFilter) itemConduit.getInputFilter(gui.getDir());
       inputOffsetX = 50;
-      tfWidth = 86;
+      tfWidth = 96;
+      tfTextureX = 120;
+      tfTextureY = 214;
     } else {
       filter = (ModItemFilter) itemConduit.getOutputFilter(gui.getDir());
       inputOffsetX = 32;
-      tfWidth = 104;
+      tfWidth = 114;
+      tfTextureX = 120;
+      tfTextureY = 238;
     }
     
     
     inputBounds = new Rectangle[] {
-        new Rectangle(inputOffsetX,48,16,16),
-        new Rectangle(inputOffsetX,69,16,16),
-        new Rectangle(inputOffsetX,90,16,16)
+        new Rectangle(inputOffsetX,47,16,16),
+        new Rectangle(inputOffsetX,68,16,16),
+        new Rectangle(inputOffsetX,89,16,16)
       };
     
     deleteButs = new IconButtonEIO[inputBounds.length];    
@@ -98,11 +105,9 @@ public class ModItemFilterGui implements IItemFilterGui {
     RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
     for(Rectangle r : inputBounds) {
       //slot
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 238, 18, 18);
+      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 214, 18, 18);
       //text box
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, 24, 238, 4, 18);
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 42, gui.getGuiTop() + r.y - 1, 120, 238, tfWidth, 18);
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 42 + tfWidth, gui.getGuiTop() + r.y - 1, 38, 238, 4, 18);      
+      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
     }    
     
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
@@ -110,17 +115,10 @@ public class ModItemFilterGui implements IItemFilterGui {
       String mod = filter.getModAt(i);
       if(mod != null) {
         Rectangle r = inputBounds[i];
-        fr.drawStringWithShadow(mod, gui.getGuiLeft() + r.x  + 41, gui.getGuiTop() + r.y + 4 , ColorUtil.getRGB(Color.white));
+        mod = fr.trimStringToWidth(mod, tfWidth - 6);
+        fr.drawStringWithShadow(mod, gui.getGuiLeft() + r.x + 41, gui.getGuiTop() + r.y + 4, MOD_NAME_COLOR);
       }
     }
-    
-    RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");    
-    int edge = inputBounds[0].x + tfWidth + 46;
-    gui.drawTexturedModalRect(gui.getGuiLeft() + edge, gui.getGuiTop() + inputBounds[0].y, edge, 20, 30, 60);
-    for(Rectangle r : inputBounds) {
-      gui.drawTexturedModalRect(gui.getGuiLeft() + edge - 1, gui.getGuiTop() + r.y - 1, 41, 238, 1, 18);
-    }
-    
   }
   
   @Override
