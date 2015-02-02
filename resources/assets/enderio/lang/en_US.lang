@@ -207,6 +207,7 @@ enderio.powderGold.name=Gold Powder
 enderio.powderCopper.name=Copper Powder
 enderio.powderTin.name=Tin Powder
 enderio.powderEnder.name=Ender Pearl Powder
+enderio.powderObsidian.name=Obsidian Powder
 enderio.ingotEnderiumBase.name=Enderium Base
 
 //Capacitors

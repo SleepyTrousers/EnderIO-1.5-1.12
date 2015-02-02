@@ -9,6 +9,7 @@ import appeng.api.AEApi;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
 import crazypants.enderio.conduit.me.MEUtil;
@@ -18,7 +19,6 @@ import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
-
 import static crazypants.enderio.ModObject.*;
 
 public class ConduitRecipes {
@@ -42,7 +42,8 @@ public class ConduitRecipes {
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
 
     //Recipes
-    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemConduitFacade, 1, 0), "bbb", "b b", "bbb", 'b', conduitBinder);
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.BASIC.ordinal()), "bbb", "b b", "bbb", 'b', conduitBinder);
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.HARDENED.ordinal()), " o ", "oFo", " o ", 'F', EnderIO.itemConduitFacade, 'o', "dustObsidian"));
 
     int numConduits = Config.numConduitsPerRecipe;
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedGlass);
