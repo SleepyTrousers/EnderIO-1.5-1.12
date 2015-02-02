@@ -53,7 +53,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    if(getEnergyStored() <= 0) {
+    if(getEnergyStored() <= 0 || !redstoneCheckPassed) {
       return false;
     }
     if(dist == null) {
