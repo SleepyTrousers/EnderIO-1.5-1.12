@@ -49,14 +49,14 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {   
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {   
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileTransceiver) {
         ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
       }
     }        
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   @Override

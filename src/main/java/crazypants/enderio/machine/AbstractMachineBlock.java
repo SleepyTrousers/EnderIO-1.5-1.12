@@ -224,9 +224,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof AbstractMachineEntity && shouldDropDefaultItem(world, player, x, y, z)) {
         dropAsItem(world, x, y, z, (AbstractMachineEntity) te);
-        world.removeTileEntity(x, y, z);
       }
     }
+    world.removeTileEntity(x, y, z);
     return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
