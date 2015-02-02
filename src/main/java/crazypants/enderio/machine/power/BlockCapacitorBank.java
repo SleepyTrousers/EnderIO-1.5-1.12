@@ -346,7 +346,6 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       TileCapacitorBank cb = (TileCapacitorBank) te;
       Util.dropItems(world, cb, x, y, z, true);
     }
-    world.removeTileEntity(x, y, z);
   }
 
   @Override

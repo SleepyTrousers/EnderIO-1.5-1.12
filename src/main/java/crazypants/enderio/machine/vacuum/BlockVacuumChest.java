@@ -1,10 +1,6 @@
 package crazypants.enderio.machine.vacuum;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +11,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.tool.ToolUtil;
 
@@ -32,9 +29,9 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
     super(ModObject.blockVacuumChest.unlocalisedName, TileVacuumChest.class);
     setBlockTextureName("enderio:blockVacuumChest");
   }
-  
+
   @Override
-  protected void init() {  
+  protected void init() {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_VACUUM_CHEST, this);
   }
@@ -53,53 +50,31 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
     }
     return true;
   }
-  
+
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvested) {
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileVacuumChest) {
-        TileVacuumChest cb = (TileVacuumChest) te;
-        if(!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
-          ItemStack itemStack = createItemStackWithInventory(cb);          
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
-        }
-      }
-    }
-    return super.removedByPlayer(world, player, x, y, z, harvested);
+  protected boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
   }
 
   @Override
-  public int quantityDropped(Random p_149745_1_) {    
-    return 0;
-  }
-
-  private ItemStack createItemStackWithInventory(TileVacuumChest cb) {
-    ItemStack stack = new ItemStack(this);
-    stack.stackTagCompound = new NBTTagCompound();
-    cb.writeContentsToNBT(stack.stackTagCompound);
-    return stack;
+  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+    drop.stackTagCompound = new NBTTagCompound();
+    ((TileVacuumChest) te).writeContentsToNBT(drop.stackTagCompound);
   }
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placedBy, ItemStack stack) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(stack != null && stack.stackTagCompound != null && te instanceof TileVacuumChest) {  
-        ((TileVacuumChest)te).readContentsFromNBT(stack.stackTagCompound);
+      if(stack != null && stack.stackTagCompound != null && te instanceof TileVacuumChest) {
+        ((TileVacuumChest) te).readContentsFromNBT(stack.stackTagCompound);
         world.markBlockForUpdate(x, y, z);
       }
     }
   }
 
   @Override
-  public int getRenderType() {    
+  public int getRenderType() {
     return renderId;
   }
 
@@ -124,12 +99,6 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
       return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }
     return null;
-  }
-
-  @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-    super.breakBlock(world, x, y, z, block, p_149749_6_);
-    world.removeTileEntity(x, y, z);
   }
 
   @Override

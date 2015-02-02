@@ -146,11 +146,4 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-      super.breakBlock(world, x, y, z, block, p_149749_6_);
-      world.removeTileEntity(x, y, z);
-  }
-
-
 }

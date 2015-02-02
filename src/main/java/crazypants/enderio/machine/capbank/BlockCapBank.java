@@ -482,7 +482,6 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         Util.dropItems(world, cb.getInventory(), x, y, z, true);
       }
     }
-    world.removeTileEntity(x, y, z);
   }
 
   @Override

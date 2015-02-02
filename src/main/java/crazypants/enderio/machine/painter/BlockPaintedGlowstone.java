@@ -28,14 +28,16 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
-public class BlockPaintedGlowstone extends Block implements ITileEntityProvider, IPaintedBlock, IFacade {
+public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade {
    
   public static int renderId = -1;
 
@@ -50,15 +52,15 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
   private Random rand = new Random();
 
   protected BlockPaintedGlowstone() {
-    super(Material.glass);
+    super(ModObject.blockPaintedGlowstone.unlocalisedName, TileEntityPaintedBlock.class, Material.glass);
     setCreativeTab(null);
-    setBlockName(ModObject.blockPaintedGlowstone.unlocalisedName);
     setStepSound(soundTypeGlass);
     setHardness(0.7F);
     setLightLevel(1.0f);
   }
 
-  private void init() {
+  @Override
+  protected void init() {
     GameRegistry.registerBlock(this, BlockItemPaintedGlowstone.class, ModObject.blockPaintedGlowstone.unlocalisedName);
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedGlowstone.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
@@ -207,29 +209,11 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
     super.onBlockPlacedBy(world, x, y, z, player, stack);
   }
 
-  /**
-   * Remove the tile entity too.
-   */
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getTileEntity(x, y, z);
-
-      if(te instanceof TileEntityPaintedBlock) {
-        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-
-        ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
-
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
-      } 
-    }
-    world.removeTileEntity(x, y, z);
+  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+    TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+    ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
+    drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
   }
 
   @Override

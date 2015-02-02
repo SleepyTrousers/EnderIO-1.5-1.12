@@ -42,7 +42,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   IIcon sideIcon;
   IIcon advancedSideIcon;
   IIcon advancedIcon;
-  
+
   IIcon borderIcon;
   IIcon advancedBorderIcon;
 
@@ -104,7 +104,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   public IIcon getBorderIcon(int i, int meta) {
     return meta == 0 ? borderIcon : advancedBorderIcon;
   }
-  
+
   @Override
   public int getRenderType() {
     return renderId;
@@ -146,19 +146,13 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-    super.breakBlock(world, x, y, z, block, p_149749_6_);
-    world.removeTileEntity(x, y, z);
-  }
-
-  @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-	TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();

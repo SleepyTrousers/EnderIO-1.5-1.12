@@ -272,8 +272,6 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     return true;
   }
 
-
-
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new ContainerHyperCube();
@@ -293,11 +291,4 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
-  @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-    super.breakBlock(world, x, y, z, block, p_149749_6_);
-    world.removeTileEntity(x, y, z);
-  }
-
 }

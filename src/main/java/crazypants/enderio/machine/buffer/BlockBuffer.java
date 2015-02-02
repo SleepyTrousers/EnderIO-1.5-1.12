@@ -38,11 +38,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     res.init();
     return res;
   }
-  
+
   private static final String[] textureNames = new String[] { "blockBufferItem", "blockBufferPower", "blockBufferOmni", "blockBufferCreative" };
   @SideOnly(Side.CLIENT)
   private IIcon[] textures;
-  
+
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class);
   }
@@ -77,7 +77,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   protected int getGuiId() {
     return GuiHandler.GUI_ID_BUFFER;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
@@ -87,7 +87,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       textures[i] = iIconRegister.registerIcon("enderio:" + textureNames[i]);
     }
   }
-  
+
   @Override
   protected String getMachineFrontIconKey(boolean active) {
     return getSideIconKey(active);
@@ -97,7 +97,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   public IIcon getIcon(int blockSide, int blockMeta) {
     return blockSide > 1 ? textures[blockMeta] : super.getIcon(blockSide, blockMeta);
   }
-  
+
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -105,7 +105,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       TileBuffer tef = (TileBuffer) te;
       if(tef.getSourceBlock() != null) {
         return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
-      } else if (blockSide > 1){
+      } else if(blockSide > 1) {
         return textures[world.getBlockMetadata(x, y, z)];
       }
     }
@@ -126,30 +126,6 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     }
   }
 
-  @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    return Lists.newArrayList();
-  }
-
-  @Override
-  protected boolean shouldDropDefaultItem(World world, EntityPlayer player, int x, int y, int z) {
-    return false;
-  }
-
-  @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileBuffer) {
-        TileBuffer cb = (TileBuffer) te;
-        if(!player.capabilities.isCreativeMode) {
-          dropBlockAsItem(world, x, y, z, createDrop(cb));
-        }
-      }
-    }
-    return super.removedByPlayer(world, player, x, y, z, willHarvest);
-  }
-  
   // TODO refactor machines so all have this functionality
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {

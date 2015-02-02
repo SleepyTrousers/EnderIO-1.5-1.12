@@ -91,31 +91,19 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvested) {
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileEnchanter && !player.capabilities.isCreativeMode) {
-        dropAsItem(world, x, y, z, (TileEnchanter) te);
-        world.removeTileEntity(x, y, z);
-      }
-    }
-    return super.removedByPlayer(world, player, x, y, z, harvested);
-  }
-
-  @Override
   public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEnchanter) {
-      dropAsItem(world, x, y, z, (TileEnchanter) te);
+      dropItems(world, x, y, z, (TileEnchanter) te);
     }
     super.breakBlock(world, x, y, z, block, meta);
-    world.removeTileEntity(x, y, z);
   }
 
-  private void dropAsItem(World world, int x, int y, int z, TileEnchanter te) {
-    ItemStack itemStack = new ItemStack(this);
-    dropBlockAsItem(world, x, y, z, itemStack);
+  protected boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
 
+  private void dropItems(World world, int x, int y, int z, TileEnchanter te) {
     if(te.getStackInSlot(0) != null) {
       Util.dropItems(world, te.getStackInSlot(0), x, y, z, true);
     }

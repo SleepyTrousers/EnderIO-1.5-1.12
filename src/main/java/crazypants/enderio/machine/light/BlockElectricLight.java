@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.tool.ToolUtil;
@@ -178,17 +179,19 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
     ItemStack stack = player.getCurrentEquippedItem();
-    if (stack == null) {
+    if(stack == null) {
       return false;
     }
     ITool tool = ToolUtil.getEquippedTool(player);
     if(tool != null && tool.canUse(stack, player, x, y, z) && player.isSneaking() && !world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileElectricLight) {
+      if(te instanceof TileElectricLight) {
         ((TileElectricLight) te).onBlockRemoved();
         world.setBlockToAir(x, y, z);
         if(!player.capabilities.isCreativeMode) {
-          dropBlockAsItem(world, x, y, z, createDrop((TileElectricLight) te));
+          ItemStack drop = new ItemStack(this);
+          processDrop(world, x, y, z, (TileEntityEio) te, drop);
+          dropBlockAsItem(world, x, y, z, drop);
         }
         tool.used(stack, player, x, y, z);
       }
@@ -199,55 +202,32 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
-    TileEntity t = world.getTileEntity(x, y, z);
-    TileElectricLight te = null;
-    if(t instanceof TileElectricLight) {
-      te = (TileElectricLight) t;
-    }
-    if(t != null) {
-      te.onBlockRemoved();
-      world.removeTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileElectricLight) {
+      ((TileElectricLight) te).onBlockRemoved();
     }
   }
 
   @Override
-  public int quantityDropped(Random r) {
-    return 0;
-  }
-
-  private ItemStack createDrop(TileElectricLight te) {
-    int meta = te.isInvereted() ? 1 : 0;
-    if(!te.isRequiresPower()) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+    TileElectricLight light = (TileElectricLight) te;
+    int meta = light.isInvereted() ? 1 : 0;
+    if(!light.isRequiresPower()) {
       meta += 2;
-    } else if (te.isWireless()) {
+    } else if(light.isWireless()) {
       meta += 4;
     }
-    ItemStack st = new ItemStack(this, 1, meta);
-    return st;
+    drop.setItemDamage(meta);
   }
 
-  @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileElectricLight) {
-        TileElectricLight cb = (TileElectricLight) te;                
-        if(!player.capabilities.isCreativeMode) {
-          dropBlockAsItem(world, x, y, z, createDrop(cb));
-        }
-      }
-    }
-    return super.removedByPlayer(world, player, x, y, z, willHarvest);
-  }
-  
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te != null && te instanceof TileElectricLight) {
-      return createDrop((TileElectricLight) te);
+    ItemStack stack = new ItemStack(this);
+    if(te instanceof TileElectricLight) {
+      processDrop(world, x, y, z, (TileEntityEio) te, stack);
     }
-    return new ItemStack(this);
+    return stack;
   }
 
   /* IRedstoneConnectable */

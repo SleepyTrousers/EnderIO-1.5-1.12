@@ -1,8 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -14,7 +12,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.DyeColor;
 
-public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements ITileEntityProvider {
+public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
 
   public static BlockPowerMonitor create() {
 

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,22 +16,23 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider,
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio implements IGuiHandler, IResourceTooltipProvider,
     IWailaInfoProvider {
 
   public static int renderId;
@@ -52,8 +52,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected final ModObject modObject;
 
-  protected final Class<T> teClass;
-
   static {
     PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketItemBuffer.class, PacketItemBuffer.class, PacketHandler.nextID(), Side.SERVER);
@@ -62,12 +60,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
-    super(mat);
+    super(mo.unlocalisedName, teClass, mat);
     modObject = mo;
-    this.teClass = teClass;
     setHardness(2.0F);
     setStepSound(soundTypeMetal);
-    setBlockName(mo.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHarvestLevel("pickaxe", 0);
     random = new Random();
@@ -81,16 +77,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
-    try {
-      return teClass.newInstance();
-    } catch (Exception e) {
-      FMLCommonHandler.instance().raiseException(e, "Could not create tile entity from class " + teClass, true);
-      return null;
-    }
   }
 
   @Override
@@ -210,41 +196,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public int quantityDropped(Random r) {
-    return 0;
-  }
-  
-  protected boolean shouldDropDefaultItem(World world, EntityPlayer player, int x, int y, int z) {
-    return true;
+  protected boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
-    if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof AbstractMachineEntity && shouldDropDefaultItem(world, player, x, y, z)) {
-        dropAsItem(world, x, y, z, (AbstractMachineEntity) te);
-      }
-    }
-    world.removeTileEntity(x, y, z);
-    return super.removedByPlayer(world, player, x, y, z, doHarvest);
-  }
-
-  @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof AbstractMachineEntity) {
-      dropAsItem(world, x, y, z, (AbstractMachineEntity) te);
-    }
-    super.breakBlock(world, x, y, z, block, meta);
-  }
-
-  private void dropAsItem(World world, int x, int y, int z, AbstractMachineEntity te) {
-    AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
-    int meta = damageDropped(world.getBlockMetadata(x, y, z));
-    ItemStack itemStack = new ItemStack(this, 1, meta);
-    machineEntity.writeToItemStack(itemStack);
-    dropBlockAsItem(world, x, y, z, itemStack);
+  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack stack) {
+    ((AbstractMachineEntity) te).writeToItemStack(stack);
   }
 
   @Override

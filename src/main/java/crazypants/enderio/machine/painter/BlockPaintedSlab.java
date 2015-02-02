@@ -219,7 +219,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
         }
       }
     }
-    return super.removedByPlayer(world, player, x, y, z, doHarvest);
+    return super.removedByPlayer(world, player, x, y, z, false);
   }
 
   @Override

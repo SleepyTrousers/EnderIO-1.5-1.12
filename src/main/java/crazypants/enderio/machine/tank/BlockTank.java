@@ -135,11 +135,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
-    return new TileTank(var2);
-  }
-
-  @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileTank)) {

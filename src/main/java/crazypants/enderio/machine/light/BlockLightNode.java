@@ -62,7 +62,6 @@ public class BlockLightNode extends BlockEio {
     if(te != null) {
       te.onBlockRemoved();
     }
-    world.removeTileEntity(x, y, z);
   }
 
   @Override
