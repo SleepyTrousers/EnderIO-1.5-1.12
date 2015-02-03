@@ -18,6 +18,7 @@ import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
@@ -85,7 +86,13 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     ConduitDisplayMode.setDisplayMode(equipped, newMode);
     return equipped;
   }
-  
+
+  @Override
+  public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
+    Block block = player.worldObj.getBlock(x, y, z);
+    return block == EnderIO.blockConduitBundle;
+  }
+
   @Override
   public boolean isFull3D() {
     return true;
