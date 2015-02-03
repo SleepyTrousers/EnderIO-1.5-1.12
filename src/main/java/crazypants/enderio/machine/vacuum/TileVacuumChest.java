@@ -193,7 +193,6 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
     readContentsFromNBT(nbtRoot);
   }
 
@@ -212,7 +211,6 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
     writeContentsToNBT(nbtRoot);
   }
 
