@@ -2,16 +2,18 @@ package crazypants.enderio.machine.alloy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.AchievementList;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.util.Util;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer {
 
-  private EntityPlayer thePlayer;
-  private TileAlloySmelter smelter;
+  private final EntityPlayer thePlayer;
+  private final TileAlloySmelter smelter;
 
   public ContainerAlloySmelter(InventoryPlayer playerInv, TileAlloySmelter te) {
     super(playerInv, te);
@@ -85,18 +87,21 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
     @Override
     protected void onCrafting(ItemStack output) {
       output.onCrafting(thePlayer.worldObj, thePlayer, numResults);
-      if(output != null) {
-        if(!thePlayer.worldObj.isRemote) {
-          ItemStack outputSized = output.copy();
-          outputSized.stackSize = numResults;
-          float experience = smelter.getExperienceForOutput(outputSized);
-          Util.giveExperience(thePlayer, experience);
-        }
-
+      if(!thePlayer.worldObj.isRemote) {
+        ItemStack outputSized = output.copy();
+        outputSized.stackSize = numResults;
+        float experience = smelter.getExperienceForOutput(outputSized);
+        Util.giveExperience(thePlayer, experience);
       }
       numResults = 0;
-    }
 
+      if(output.getItem() == Items.iron_ingot) {
+        thePlayer.addStat(AchievementList.acquireIron, 1);
+      }
+      if(output.getItem() == Items.cooked_fished) {
+        thePlayer.addStat(AchievementList.cookFish, 1);
+      }
+    }
   }
 
 }
