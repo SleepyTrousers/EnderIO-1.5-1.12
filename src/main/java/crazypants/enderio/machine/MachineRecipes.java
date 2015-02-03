@@ -146,6 +146,7 @@ public class MachineRecipes {
     GameRegistry.addRecipe(convertRecipe);
 
     GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
+    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
 
     //painter
     ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
