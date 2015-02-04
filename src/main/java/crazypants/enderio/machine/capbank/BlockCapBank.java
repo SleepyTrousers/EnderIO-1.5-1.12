@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.capbank;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -9,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +28,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -151,7 +150,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(!(te instanceof TileCapBank)) {
       return false;
     }
-    
+
     TileCapBank tcb = (TileCapBank) te;
     ForgeDirection faceHit = ForgeDirection.getOrientation(side);
 
@@ -195,7 +194,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);
   }
-  
+
   @Override
   public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
@@ -422,19 +421,6 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileCapBank) {
-        TileCapBank cb = (TileCapBank) te;
-        ret.add(createItemStack(world, x, y, z, cb));
-      }
-    }
-    return ret;
-  }
-
-  @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -446,12 +432,12 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
-  protected ItemStack createItemStack(World world, int x, int y, int z, TileCapBank cb) {
-    int meta = damageDropped(world.getBlockMetadata(x, y, z));
-    ItemStack itemStack = new ItemStack(this, 1, meta);
-    itemStack.stackTagCompound = new NBTTagCompound();
-    cb.writeCommonNBT(itemStack.stackTagCompound);
-    return itemStack;
+  @Override
+  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+    drop.stackTagCompound = new NBTTagCompound();
+    if(te != null) {
+      ((TileCapBank) te).writeCommonNBT(drop.stackTagCompound);
+    }
   }
 
   @Override
@@ -459,15 +445,12 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(!(te instanceof TileCapBank)) {
-        super.breakBlock(world, x, y, z, par5, par6);
         return;
       }
       TileCapBank cb = (TileCapBank) te;
       cb.onBreakBlock();
-      if(world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-        Util.dropItems(world, cb.getInventory(), x, y, z, true);
-      }
     }
+    super.breakBlock(world, x, y, z, par5, par6);
   }
 
   @Override
@@ -562,7 +545,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   /* IRedstoneConnectable */
-  
+
   @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
     return true;
