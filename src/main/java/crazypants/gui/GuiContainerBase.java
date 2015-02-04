@@ -2,6 +2,7 @@ package crazypants.gui;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,12 +19,21 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+
+import codechicken.nei.VisiblityData;
+import codechicken.nei.api.INEIGuiHandler;
+import codechicken.nei.api.TaggedInventoryArea;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
-public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen {
+@Optional.InterfaceList({
+    @Optional.Interface(iface = "codechicken.nei.api.INEIGuiHandler", modid = "NotEnoughItems")
+})
+public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen, INEIGuiHandler {
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
@@ -330,4 +340,33 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     actionPerformed(guiButton);
   }
 
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public VisiblityData modifyVisiblity(GuiContainer gc, VisiblityData vd) {
+    return vd;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public Iterable<Integer> getItemSpawnSlots(GuiContainer gc, ItemStack is) {
+    return null;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gc) {
+    return Collections.<TaggedInventoryArea>emptyList();
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean handleDragNDrop(GuiContainer gc, int i, int i1, ItemStack is, int i2) {
+    return false;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    return false;
+  }
 }
