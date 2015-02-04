@@ -39,21 +39,6 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-      if(!world.isRemote) {
-        Util.dropItems(world, new ItemStack(this), x, y, z, true);
-      }
-      breakBlock(world, x, y, z, this, 0);
-      world.setBlockToAir(x, y, z);
-      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
-      return true;
-    }
-    return false;
-  }
-
-  @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
     centerOn = iIconRegister.registerIcon("enderio:blockWirelessChargerOn");
     centerOff = iIconRegister.registerIcon("enderio:blockWirelessChargerOff");

@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +37,8 @@ public class BlockFusedQuartz extends BlockEio {
     FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
     GLASS("fusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame", "enderio:fusedGlassItem"),
     ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
-    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame", "enderio:fusedGlassItem");
+    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame",
+        "enderio:fusedGlassItem");
 
     final String unlocalisedName;
     final String blockIcon;
@@ -49,13 +51,13 @@ public class BlockFusedQuartz extends BlockEio {
       this.blockIcon = blockIcon;
       this.itemIcon = itemIcon;
     }
-    
+
     public boolean connectTo(int otherMeta) {
-      if (otherMeta == ordinal() || Config.clearGlassConnectToFusedQuartz) {
+      if(otherMeta == ordinal() || Config.clearGlassConnectToFusedQuartz) {
         return true;
       }
-      
-      switch(this) {
+
+      switch (this) {
       case FUSED_QUARTZ:
         return otherMeta == ENLIGHTENED_FUSED_QUARTZ.ordinal();
       case ENLIGHTENED_FUSED_QUARTZ:
@@ -65,7 +67,7 @@ public class BlockFusedQuartz extends BlockEio {
       case ENLIGHTENED_GLASS:
         return otherMeta == GLASS.ordinal();
       }
-      
+
       return false;
     }
   }
@@ -180,13 +182,13 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {    
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     if(side == ForgeDirection.UP) { //stop drips
-      return false;  
+      return false;
     }
-    return true;    
+    return true;
   }
-  
+
   @Override
   public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
     return true;
@@ -225,33 +227,9 @@ public class BlockFusedQuartz extends BlockEio {
     return frameIcons[meta];
   }
 
-  /**
-   * Remove the tile entity too.
-   */
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getTileEntity(x, y, z);
-
-      if(te instanceof TileEntityPaintedBlock) {
-        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-
-        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlock(), tef.getSourceBlockMetadata());
-        if(itemStack != null) {
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
-        }
-      }
-
-    }
-
-    super.breakBlock(world, x, y, z, par5, par6);
+  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+    return false;
   }
 
   private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, Block sourceBlock, int sourceBlockMetadata) {

@@ -80,36 +80,17 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
+  public int getRenderType() {
+    return renderId;
+  }
 
-    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
-      return true;
-    }
-
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && !entityPlayer.isSneaking()) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof AbstractMachineEntity) {
-        ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
-        world.markBlockForUpdate(x, y, z);
-        return true;
-      }
-    }
-
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);
     }
     return true;
   }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
-  }
-
+  
   @Override
   public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
     return false;
@@ -196,13 +177,15 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  protected boolean doNormalDrops(World world, int x, int y, int z) {
+  public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }
 
   @Override
   protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack stack) {
-    ((AbstractMachineEntity) te).writeToItemStack(stack);
+    if(te != null) {
+      ((AbstractMachineEntity) te).writeToItemStack(stack);
+    }
   }
 
   @Override

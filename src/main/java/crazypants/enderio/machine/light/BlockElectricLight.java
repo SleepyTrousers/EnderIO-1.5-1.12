@@ -175,30 +175,6 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
-  
-  @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-    ItemStack stack = player.getCurrentEquippedItem();
-    if(stack == null) {
-      return false;
-    }
-    ITool tool = ToolUtil.getEquippedTool(player);
-    if(tool != null && tool.canUse(stack, player, x, y, z) && player.isSneaking() && !world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileElectricLight) {
-        ((TileElectricLight) te).onBlockRemoved();
-        world.setBlockToAir(x, y, z);
-        if(!player.capabilities.isCreativeMode) {
-          ItemStack drop = new ItemStack(this);
-          processDrop(world, x, y, z, (TileEntityEio) te, drop);
-          dropBlockAsItem(world, x, y, z, drop);
-        }
-        tool.used(stack, player, x, y, z);
-      }
-      return true;
-    }
-    return false;
-  }
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
@@ -211,6 +187,9 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   @Override
   protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
     TileElectricLight light = (TileElectricLight) te;
+    if(light == null) {
+      return;
+    }
     int meta = light.isInvereted() ? 1 : 0;
     if(!light.isRequiresPower()) {
       meta += 2;

@@ -37,29 +37,23 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-
-    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
-      return true;
-    }
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, x, y, z);
-    }
-    return true;
+    }    return super.openGui(world, x, y, z, entityPlayer, side);
   }
 
   @Override
-  protected boolean doNormalDrops(World world, int x, int y, int z) {
+  public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }
 
   @Override
   protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
     drop.stackTagCompound = new NBTTagCompound();
-    ((TileVacuumChest) te).writeContentsToNBT(drop.stackTagCompound);
+    if(te != null) {
+      ((TileVacuumChest) te).writeContentsToNBT(drop.stackTagCompound);
+    }
   }
 
   @Override

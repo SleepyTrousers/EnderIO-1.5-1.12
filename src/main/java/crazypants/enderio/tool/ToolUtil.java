@@ -13,8 +13,10 @@ import net.minecraft.world.World;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.item.ItemYetaWrench;
 
@@ -35,6 +37,11 @@ public class ToolUtil {
   public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer) {
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
     if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
+      if(entityPlayer.capabilities.isCreativeMode && block instanceof BlockEio) {
+        ((BlockEio) block).dropAsItem(world, x, y, z, (TileEntityEio) world.getTileEntity(x, y, z));
+      } else if(!(block instanceof BlockEio) || ((BlockEio) block).doNormalDrops(world, x, y, z)) {
+        block.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+      }
       block.removedByPlayer(world, entityPlayer, x, y, z, true);
       tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
       return true;

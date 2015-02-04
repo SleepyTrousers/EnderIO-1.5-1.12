@@ -119,13 +119,6 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
-      return true;
-    }
-
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileCapacitorBank)) {
       return false;
@@ -145,7 +138,12 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
       return true;
     }
-
+    
+    return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);
+  }
+  
+  @Override
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
     }

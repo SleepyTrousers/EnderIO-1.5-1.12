@@ -57,6 +57,11 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
+  
+  @Override
+  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+    return false;
+  }
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {}

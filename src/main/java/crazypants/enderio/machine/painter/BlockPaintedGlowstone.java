@@ -212,8 +212,10 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   @Override
   protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
     TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-    ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
-    drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
+    if(tef != null) {
+      ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
+      drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
+    }
   }
 
   @Override

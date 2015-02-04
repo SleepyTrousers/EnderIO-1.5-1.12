@@ -87,19 +87,14 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.canUiBeAccessed(entityPlayer)) {
-        if(!world.isRemote) {
-          entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
-        }
+        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        if(world.isRemote) {
+        if(world.isRemote && !entityPlayer.isSneaking()) {
           entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
               + Lang.localize("gui.travelAccessable.privateBlock2")));
         }

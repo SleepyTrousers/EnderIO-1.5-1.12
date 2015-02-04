@@ -69,21 +69,9 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     }
     world.markBlockForUpdate(x, y, z);
   }
-
+  
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null) {
-      if(entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-        removedByPlayer(world, entityPlayer, x, y, z, false);
-        tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
-        return true;
-      }
-    }
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, x, y, z);
     }
@@ -99,7 +87,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     super.breakBlock(world, x, y, z, block, meta);
   }
 
-  protected boolean doNormalDrops(World world, int x, int y, int z) {
+  public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }
 

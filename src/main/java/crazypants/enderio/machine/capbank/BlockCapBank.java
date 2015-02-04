@@ -151,11 +151,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(!(te instanceof TileCapBank)) {
       return false;
     }
-
-    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
-      return true;
-    }
-
+    
     TileCapBank tcb = (TileCapBank) te;
     ForgeDirection faceHit = ForgeDirection.getOrientation(side);
 
@@ -170,11 +166,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       return true;
     }
 
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
-
-    if(ToolUtil.isToolEquipped(entityPlayer)) {
+    if(!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer)) {
 
       IoMode ioMode = tcb.getIoMode(faceHit);
       if(faceHit.offsetY == 0) {
@@ -201,6 +193,16 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       return true;
     }
 
+    return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);
+  }
+  
+  @Override
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
+
+  @Override
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAP_BANK, world, x, y, z);
     }
@@ -433,31 +435,15 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileCapBank) {
         TileCapBank cb = (TileCapBank) te;
         cb.moveInventoryToNetwork();
-
-        ItemStack itemStack = createItemStack(world, x, y, z, cb);
-
-        //Clear in the inventory as its now in the item stack
-        for (int i = 0; i < cb.getInventory().length; i++) {
-          cb.getInventory()[i] = null;
-        }
-
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-
-        world.spawnEntityInWorld(entityitem);
       }
     }
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   protected ItemStack createItemStack(World world, int x, int y, int z, TileCapBank cb) {

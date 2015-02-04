@@ -116,28 +116,22 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       }
     }
   }
-
+  
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.canUiBeAccessed(entityPlayer)) {
-        if(!world.isRemote) {
-          entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
-        }
+        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        if(world.isRemote) {
+        if(world.isRemote && !entityPlayer.isSneaking()) {
           entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
               + Lang.localize("gui.travelAccessable.privateBlock2")));
         }
       }
-      return true;
     }
-    return false;
+    return true;
   }
 
   @Override
@@ -170,6 +164,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
     TileTravelAnchor anchor = (TileTravelAnchor) te;
 
+    if(anchor == null) {
+      return;
+    }
+
     ItemStack itemStack = new ItemStack(this);
     Block srcBlk = anchor.getSourceBlock();
     if(srcBlk != null) {
@@ -179,7 +177,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
-  protected boolean doNormalDrops(World world, int x, int y, int z) {
+  public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }
 

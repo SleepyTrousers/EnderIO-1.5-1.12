@@ -37,7 +37,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
   }
 
   public TileTank() {
-    super(new SlotDefinition(0, 1, 2, 3, -1, -1));
+    this(0);
   }
 
   @Override

@@ -80,6 +80,11 @@ public class BlockIngotStorage extends BlockEio implements IAdvancedTooltipProvi
   public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
     return true;
   }
+  
+  @Override
+  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+    return false;
+  }
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {

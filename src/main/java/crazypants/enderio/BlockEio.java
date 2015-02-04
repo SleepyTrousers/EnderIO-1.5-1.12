@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -14,10 +12,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.tool.ToolUtil;
 
 public abstract class BlockEio extends Block {
 
@@ -75,8 +76,40 @@ public abstract class BlockEio extends Block {
   }
 
   /* Subclass Helpers */
+  
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-  protected boolean doNormalDrops(World world, int x, int y, int z) {
+    if(shouldWrench(world, x, y, z, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
+    }
+
+    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
+    if(tool != null && !entityPlayer.isSneaking()) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof AbstractMachineEntity) {
+        ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
+        world.markBlockForUpdate(x, y, z);
+        return true;
+      }
+    }
+
+    if(entityPlayer.isSneaking()) {
+      return false;
+    }
+    
+    return openGui(world, x, y, z, entityPlayer, side);
+  }
+
+  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+    return true;
+  }
+
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+    return false;
+  }
+
+  public boolean doNormalDrops(World world, int x, int y, int z) {
     return true;
   }
 
@@ -84,10 +117,12 @@ public abstract class BlockEio extends Block {
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityEio && ((TileEntityEio) te).shouldDrop()) {
-      if(!world.isRemote && (!player.capabilities.isCreativeMode) && !doNormalDrops(world, x, y, z)) {
-        dropAsItem(world, x, y, z, (AbstractMachineEntity) te);
+      if(!world.isRemote && !player.capabilities.isCreativeMode && !doNormalDrops(world, x, y, z)) {
+        dropAsItem(world, x, y, z, (TileEntityEio) te);
+        ((TileEntityEio) te).preventDrops();
+      } else if(player.capabilities.isCreativeMode) {
+        ((TileEntityEio) te).preventDrops();
       }
-      ((TileEntityEio) te).preventDrops();
     }
     return super.removedByPlayer(world, player, x, y, z, false);
   }
@@ -95,13 +130,14 @@ public abstract class BlockEio extends Block {
   @Override
   public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityEio && ((TileEntityEio) te).shouldDrop()) {
+    if(te instanceof TileEntityEio && ((TileEntityEio) te).shouldDrop() && !doNormalDrops(world, x, y, z)) {
       dropAsItem(world, x, y, z, (TileEntityEio) te);
+      ((TileEntityEio)te).preventDrops();
     }
     super.breakBlock(world, x, y, z, block, meta);
   }
 
-  protected void dropAsItem(World world, int x, int y, int z, TileEntityEio te) {
+  public void dropAsItem(World world, int x, int y, int z, TileEntityEio te) {
     int meta = damageDropped(world.getBlockMetadata(x, y, z));
     ItemStack itemStack = new ItemStack(this, 1, meta);
     processDrop(world, x, y, z, te, itemStack);

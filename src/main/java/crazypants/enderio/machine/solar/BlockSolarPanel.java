@@ -78,22 +78,6 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-      if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
-        int meta = world.getBlockMetadata(x, y, z);
-        ItemStack is = new ItemStack(this, 1, meta);
-        Util.dropItems(world, is, x, y, z, true);
-      }
-      removedByPlayer(world, entityPlayer, x, y, z, true);
-      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
-      return true;
-    }
-    return false;
-  }
-
-  @Override
   public IIcon getIcon(int side, int meta) {
     if(side == ForgeDirection.UP.ordinal()) {
       return meta == 0 ? blockIcon : advancedIcon;

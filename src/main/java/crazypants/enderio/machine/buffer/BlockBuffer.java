@@ -126,6 +126,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     }
   }
 
+  @Override
+  public int damageDropped(int meta) {
+    return meta;
+  }
+
   // TODO refactor machines so all have this functionality
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
