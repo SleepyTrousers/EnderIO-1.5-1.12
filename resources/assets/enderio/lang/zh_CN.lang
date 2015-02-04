@@ -824,7 +824,7 @@ enderio.combustionGenerator.output=产能速率:
 enderio.stirlingGenerator.output=产能速率:
 enderio.stirlingGenerator.burnRate=燃烧速率:
 enderio.stirlingGenerator.upgradeslot=升级栏
-enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
+enderio.stirlingGenerator.upgrades={0} 提供 {2}{1,number,#.#}x{3} 的效率
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=只有
