@@ -1,5 +1,6 @@
 package crazypants.enderio.item.skull;
 
+import cpw.mods.fml.common.Optional;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,8 +14,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 
-public class BlockEndermanSkull extends BlockEio {
+@Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
+public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser {
 
   public static int renderId = -1;
 
@@ -117,5 +120,11 @@ public class BlockEndermanSkull extends BlockEio {
   @Override
   public int damageDropped(int meta) {
     return meta;
+  }
+
+  @Override
+  @Optional.Method(modid = "Thaumcraft")
+  public boolean canStabaliseInfusion(World world, int x, int y, int z) {
+    return true;
   }
 }
