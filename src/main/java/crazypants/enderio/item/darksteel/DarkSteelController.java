@@ -53,9 +53,9 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private final Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();  
-  private final Map<String, Boolean> speedActiveMap = new HashMap<String, Boolean>();
-  private final Map<String, Boolean> stepAssistActiveMap = new HashMap<String, Boolean>();
+  private final Map<UUID, Boolean> glideActiveMap = new HashMap<UUID, Boolean>();
+  private final Map<UUID, Boolean> speedActiveMap = new HashMap<UUID, Boolean>();
+  private final Map<UUID, Boolean> stepAssistActiveMap = new HashMap<UUID, Boolean>();
   
   private boolean nightVisionActive = false;
   private boolean removeNightvision = false;
@@ -66,13 +66,13 @@ public class DarkSteelController {
   }
 
   public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
-    if(player.getGameProfile().getName() != null) {
-      glideActiveMap.put(player.getGameProfile().getName(), isGlideActive);
+    if(player.getGameProfile().getId() != null) {
+      glideActiveMap.put(player.getGameProfile().getId(), isGlideActive);
     }
   }
 
   public boolean isGlideActive(EntityPlayer player) {
-    Boolean isActive = glideActiveMap.get(player.getGameProfile().getName());
+    Boolean isActive = glideActiveMap.get(player.getGameProfile().getId());
     if(isActive == null) {
       return false;
     }
@@ -80,13 +80,13 @@ public class DarkSteelController {
   }
   
   public void setSpeedActive(EntityPlayer player, boolean isSpeedActive) {
-    if(player.getGameProfile().getName() != null) {
-      speedActiveMap.put(player.getGameProfile().getName(), isSpeedActive);
+    if(player.getGameProfile().getId() != null) {
+      speedActiveMap.put(player.getGameProfile().getId(), isSpeedActive);
     }    
   }
   
   public boolean isSpeedActive(EntityPlayer player) {
-    Boolean isActive = speedActiveMap.get(player.getGameProfile().getName());
+    Boolean isActive = speedActiveMap.get(player.getGameProfile().getId());
     if(isActive == null) {
       return true;
     }
@@ -94,13 +94,13 @@ public class DarkSteelController {
   }
   
   public void setStepAssistActive(EntityPlayer player, boolean isActive) {
-    if(player.getGameProfile().getName() != null) {
-      stepAssistActiveMap.put(player.getGameProfile().getName(), isActive);
+    if(player.getGameProfile().getId() != null) {
+      stepAssistActiveMap.put(player.getGameProfile().getId(), isActive);
     }    
   }
   
   public boolean isStepAssistActive(EntityPlayer player) {
-    Boolean isActive = stepAssistActiveMap.get(player.getGameProfile().getName());
+    Boolean isActive = stepAssistActiveMap.get(player.getGameProfile().getId());
     if(isActive == null) {
       return true;
     }

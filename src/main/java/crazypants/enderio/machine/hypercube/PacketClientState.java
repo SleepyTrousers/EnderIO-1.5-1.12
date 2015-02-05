@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.hypercube;
 
+import crazypants.util.PlayerUtil;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
     selectedChannel = null;
     if(name != null && name.trim().length() > 0) {
       if(user != null && user.trim().length() > 0) {
-        selectedChannel = new Channel(name, user);
+        selectedChannel = new Channel(name, PlayerUtil.getPlayerUIDUnstable(user));
       } else {
         selectedChannel = new Channel(name, null);
       }

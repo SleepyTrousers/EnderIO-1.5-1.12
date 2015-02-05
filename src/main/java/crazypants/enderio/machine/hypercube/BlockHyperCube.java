@@ -3,7 +3,9 @@ package crazypants.enderio.machine.hypercube;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
+import crazypants.util.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -196,9 +198,9 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       return null;
     }
 
-    String user = null;
+    UUID user = null;
     if(!tag.getBoolean("channelIsPublic")) {
-      user = tag.getString("channelUser");
+      user = PlayerUtil.getPlayerUIDUnstable(tag.getString("channelUser"));
     }
     return new Channel(channelName, user);
 
@@ -241,7 +243,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       TileHyperCube cb = (TileHyperCube) te;
       cb.setEnergyStored(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
-        cb.setOwner(((EntityPlayerMP) player).getGameProfile().getName());
+        cb.setOwner(PlayerUtil.getPlayerUUID(((EntityPlayerMP) player).getGameProfile().getName()));
       }
       cb.setChannel(getChannelFromItem(stack));
       setIoOnTransciever(cb, stack);

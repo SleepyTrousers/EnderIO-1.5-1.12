@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 
+import crazypants.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -274,7 +275,7 @@ public class GuiHyperCube extends GuiContainerBase {
 
       Channel c;
       if(privateButton.isSelected()) {
-        c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getName());
+        c = new Channel(newChannelTF.getText(), PlayerUtil.getPlayerUUID(Minecraft.getMinecraft().thePlayer.getGameProfile().getName()));
       } else {
         c = new Channel(newChannelTF.getText(), null);
       }

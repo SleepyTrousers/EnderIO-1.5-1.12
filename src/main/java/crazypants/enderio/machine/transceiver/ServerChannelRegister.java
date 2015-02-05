@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import crazypants.util.PlayerUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -66,7 +67,7 @@ public class ServerChannelRegister extends ChannelRegister {
         }
         int oridinal = reader.nextInt();
 
-        Channel chan = new Channel(name, user, ChannelType.values()[oridinal]);
+        Channel chan = new Channel(name, PlayerUtil.getPlayerUIDUnstable(user), ChannelType.values()[oridinal]);
         instance.addChannel(chan);
 
         reader.endObject();
@@ -144,7 +145,7 @@ public class ServerChannelRegister extends ChannelRegister {
         writer.beginObject();
         writer.name("name").value(chan.getName());
         if(chan.getUser() != null) {
-          writer.name("user").value(chan.getUser());
+          writer.name("user").value(chan.getUser().toString());
         }
         writer.name("type").value(chan.getType().ordinal());
         writer.endObject();

@@ -2,6 +2,7 @@ package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Color;
 
+import crazypants.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -250,7 +251,7 @@ public class ChannelTab implements ITabPanel {
     }
     Channel c;
     if(privateButton.isSelected()) {
-      c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getName(), type);
+      c = new Channel(newChannelTF.getText(), PlayerUtil.getPlayerUUID(Minecraft.getMinecraft().thePlayer.getGameProfile().getName()), type);
     } else {
       c = new Channel(newChannelTF.getText(), null, type);
     }

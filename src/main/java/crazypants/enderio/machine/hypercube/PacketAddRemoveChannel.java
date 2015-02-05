@@ -2,6 +2,7 @@ package crazypants.enderio.machine.hypercube;
 
 import java.util.UUID;
 
+import crazypants.util.PlayerUtil;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -44,7 +45,7 @@ public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketA
     if(!isPublic) {
       user = ByteBufUtils.readUTF8String(data);
     }
-    channel = new Channel(name, user == null ? null : user);
+    channel = new Channel(name, PlayerUtil.getPlayerUIDUnstable(user));
   }
 
   @Override
