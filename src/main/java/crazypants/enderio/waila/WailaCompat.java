@@ -53,8 +53,9 @@ public class WailaCompat implements IWailaDataProvider {
     private WailaWorldWrapper(World wrapped) {
       super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
       this.wrapped = wrapped;
+      this.isRemote = wrapped.isRemote;
     }
-    
+
     @Override
     public Block getBlock(int x, int y, int z) {
       Block block = wrapped.getBlock(x, y, z);
