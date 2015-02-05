@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,6 +27,8 @@ import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
+
+import cpw.mods.fml.common.Optional;
 
 public class GuiExternalConnection extends GuiContainerBase {
 
@@ -69,9 +72,9 @@ public class GuiExternalConnection extends GuiContainerBase {
     ySize = 166 + 29;
     xSize = 206;
 
-    getContainer().setInputSlotsVisible(false);
-    getContainer().setOutputSlotsVisible(false);
-    getContainer().setInventorySlotsVisible(false);
+    container.setInputSlotsVisible(false);
+    container.setOutputSlotsVisible(false);
+    container.setInventorySlotsVisible(false);
 
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
@@ -94,6 +97,7 @@ public class GuiExternalConnection extends GuiContainerBase {
 
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
+        @SuppressWarnings("LeakingThisInConstructor")
         ITabPanel tab = TabFactory.instance.createPanelForConduit(this, con);
         if(tab != null) {
           conduits.add(con);
@@ -203,6 +207,20 @@ public class GuiExternalConnection extends GuiContainerBase {
 
   public ExternalConnectionContainer getContainer() {
     return container;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    if(tabs.size() > 0) {
+      int sx = (width - xSize) / 2;
+      int sy = (height - ySize) / 2;
+      int tabX = sx + xSize - 3;
+      int tabY = sy + tabYOffset;
+
+      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
+    }
+    return false;
   }
 
 }
