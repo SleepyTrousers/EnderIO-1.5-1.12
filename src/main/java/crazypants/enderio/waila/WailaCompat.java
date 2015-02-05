@@ -118,6 +118,8 @@ public class WailaCompat implements IWailaDataProvider {
     IWailaInfoProvider.fmt.setMaximumFractionDigits(1);
   }
 
+  // IGNORE deprecation, the new method requires forge 1234 which is too new for cauldron!
+  @SuppressWarnings("deprecation")
   @Override
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
     MovingObjectPosition pos = accessor.getPosition();
@@ -126,13 +128,13 @@ public class WailaCompat implements IWailaDataProvider {
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if(facade != null) {
-          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ, accessor.getPlayer());
+          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ);
           return ret;
         }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
       return accessor.getBlock().getPickBlock(accessor.getPosition(), accessor.getWorld(), accessor.getPosition().blockX, accessor.getPosition().blockY,
-          accessor.getPosition().blockZ, accessor.getPlayer());
+          accessor.getPosition().blockZ);
 
     }
     return null;
