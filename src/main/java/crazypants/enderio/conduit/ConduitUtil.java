@@ -46,6 +46,7 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
 
@@ -239,16 +240,16 @@ public class ConduitUtil {
 
   public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if (player == null) {
+    if(player == null) {
       return false;
     }
     ItemStack held = player.getCurrentEquippedItem();
-    if (held != null && held.getItem() instanceof IHideFacades) {
-      return ((IHideFacades)held.getItem()).shouldHideFacades(held, player);
+    if(held != null && held.getItem() instanceof IHideFacades) {
+      return ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
     }
-    return false;
+    return ToolUtil.isToolEquipped(player);
   }
-  
+
   public static boolean isConduitEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if(player == null) {
