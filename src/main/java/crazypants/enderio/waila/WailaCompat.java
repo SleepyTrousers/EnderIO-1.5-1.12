@@ -2,6 +2,7 @@ package crazypants.enderio.waila;
 
 import java.util.List;
 
+import mcp.mobius.waila.api.ITaggedList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -42,7 +43,6 @@ import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
-
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -126,13 +126,14 @@ public class WailaCompat implements IWailaDataProvider {
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if(facade != null) {
-          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ);
+          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ, accessor.getPlayer());
           return ret;
         }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
       return accessor.getBlock().getPickBlock(accessor.getPosition(), accessor.getWorld(), accessor.getPosition().blockX, accessor.getPosition().blockY,
-          accessor.getPosition().blockZ);
+          accessor.getPosition().blockZ, accessor.getPlayer());
+
     }
     return null;
   }
@@ -142,6 +143,7 @@ public class WailaCompat implements IWailaDataProvider {
     return currenttip;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 	
@@ -154,7 +156,9 @@ public class WailaCompat implements IWailaDataProvider {
     Block block = world.getBlock(x, y, z);
     TileEntity te = world.getTileEntity(x, y, z);
     Item item = Item.getItemFromBlock(block);
-
+    
+    // let's get rid of WAILA's default RF stuff, once that works
+    ((ITaggedList<String, String>) currenttip).removeEntries("RFEnergyStorage");
 
     if(te instanceof IIoConfigurable && block == accessor.getBlock()) {
       IIoConfigurable machine = (IIoConfigurable) te;
