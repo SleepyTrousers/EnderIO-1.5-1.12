@@ -11,8 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.gui.IconEIO;
 
 public class ConduitProbeOverlayRenderer {

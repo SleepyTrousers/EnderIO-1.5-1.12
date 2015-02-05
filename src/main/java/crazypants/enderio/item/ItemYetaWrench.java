@@ -23,6 +23,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
@@ -62,10 +63,20 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    if(world.isRemote) {
+      return false;
+    }
     Block block = world.getBlock(x, y, z);
+    if(block instanceof IRotatableFacade && !player.isSneaking() &&
+            (block != EnderIO.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
+      if(((IRotatableFacade)block).tryRotateFacade(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        player.swingItem();
+        return true;
+      }
+    }
     if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
       player.swingItem();
-      return !world.isRemote;
+      return true;
     }
     return false;
   }
@@ -114,7 +125,8 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   
   @Override
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
-    return true;
+    ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(stack);
+    return curMode != ConduitDisplayMode.NONE;
   }
   
   @Override
