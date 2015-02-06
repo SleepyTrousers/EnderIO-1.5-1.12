@@ -200,6 +200,11 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
+
+  @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     ItemStack stack = new ItemStack(this);

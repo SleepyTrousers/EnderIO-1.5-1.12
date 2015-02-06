@@ -11,7 +11,6 @@ import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -217,10 +216,10 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
       drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
     }
   }
-
+  
   @Override
-  public int quantityDropped(Random par1Random) {
-    return 0; // need to do custom dropping to maintain source metadata
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+      return false;
   }
 
   @Override
