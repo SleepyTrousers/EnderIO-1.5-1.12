@@ -562,6 +562,10 @@ enderio.gui.conduit.item.roundRobinEnabled=Round-Robin Aktiviert
 enderio.gui.conduit.item.roundRobinDisabled=Round-Robin Deaktiviert
 enderio.gui.conduit.item.priority=Priorität
 
+enderio.gui.conduit.item.filterupgrade=Item-Filter einsetzen
+enderio.gui.conduit.item.speedupgrade=Leitungsgeschwindigkeits-Upgrade oder -Downgrade einsetzen
+enderio.gui.conduit.item.speedupgrade2=Maximum der Upgrades ist 15; Maximum der Downgrades ist 1
+
 enderio.gui.conduit.redstone.signalColor=Signalfarbe
 enderio.gui.conduit.redstone.color=Farbe
 
