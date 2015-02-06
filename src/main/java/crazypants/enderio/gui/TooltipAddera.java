@@ -44,10 +44,10 @@ import crazypants.util.Lang;
 
 public class TooltipAddera {
 
-  public static TooltipAddera instance = new TooltipAddera();
+  public static final TooltipAddera instance = new TooltipAddera();
 
   //TODO: Need to decouple this stuff with a callback
-  private BallTipProvider btp = new BallTipProvider();
+  private final BallTipProvider btp = new BallTipProvider();
 
   static {
     MinecraftForge.EVENT_BUS.register(instance);
@@ -96,11 +96,11 @@ public class TooltipAddera {
     IGrindingMultiplier gb = CrusherRecipeManager.getInstance().getGrindballFromStack(evt.itemStack);
     if(gb != null) {
       btp.ball = gb;
-      TooltipAddera.instance.addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
+      addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
     }
 
     if(Config.addRegisterdNameTooltip) {
-      UniqueIdentifier uid = null;
+      UniqueIdentifier uid;
       Block block = Block.getBlockFromItem(evt.itemStack.getItem());
       if(block != null && block != Blocks.air) {
         uid = GameRegistry.findUniqueIdentifierFor(block);
@@ -259,19 +259,18 @@ public class TooltipAddera {
   }
 
   public static void addDetailedTooltipFromResources(List list, String unlocalizedName) {
-    addTooltipFromResources(list, unlocalizedName, ".tooltip.detailed.line");
+    addTooltipFromResources(list, unlocalizedName.concat(".tooltip.detailed.line"));
   }
 
   public static void addBasicTooltipFromResources(List list, String unlocalizedName) {
-    addTooltipFromResources(list, unlocalizedName, ".tooltip.basic.line");
+    addTooltipFromResources(list, unlocalizedName.concat(".tooltip.basic.line"));
   }
 
   public static void addCommonTooltipFromResources(List list, String unlocalizedName) {
-    addTooltipFromResources(list, unlocalizedName, ".tooltip.common.line");
+    addTooltipFromResources(list, unlocalizedName.concat(".tooltip.common.line"));
   }
 
-  public static void addTooltipFromResources(List list, String unlocalizedName, String tooltipTag) {
-    String keyBase = unlocalizedName + tooltipTag;
+  public static void addTooltipFromResources(List list, String keyBase) {
     boolean done = false;
     int line = 1;
     while (!done) {
