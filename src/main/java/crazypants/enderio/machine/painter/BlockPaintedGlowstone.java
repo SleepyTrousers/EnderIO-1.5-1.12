@@ -224,6 +224,11 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
+
+  @Override
   public int getRenderType() {    
     return renderId;
   }
