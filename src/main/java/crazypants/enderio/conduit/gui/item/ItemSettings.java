@@ -75,6 +75,8 @@ public class ItemSettings extends BaseSettingsPanel {
   private int priWidth = 32;
 
   private GuiToolTip priorityTooltip;
+  private GuiToolTip speedUpgradeTooltip;
+  private GuiToolTip filterUpgradeTooltip;
 
   private IItemFilterGui filterGui;
 
@@ -144,6 +146,9 @@ public class ItemSettings extends BaseSettingsPanel {
     priDownB = new IconButtonEIO(gui, ID_PRIORITY_DOWN, x, y, IconEIO.MINUS_BUT);
     priDownB.setSize(8, 8);
 
+    filterUpgradeTooltip = new GuiToolTip(new Rectangle(66 - 21 - 18 * 2, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.filterupgrade"));
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(66 - 21 - 18, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.speedupgrade"), Lang.localize("gui.conduit.item.speedupgrade2"));
+    
     gui.getContainer().addFilterListener(new FilterChangeListener() {
 
       @Override
@@ -293,6 +298,8 @@ public class ItemSettings extends BaseSettingsPanel {
       colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
     }
 
+    gui.addToolTip(filterUpgradeTooltip);
+
     if(mode == ConnectionMode.IN_OUT && !outputActive) {
       loopB.onGuiInit();
       loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));
@@ -301,6 +308,7 @@ public class ItemSettings extends BaseSettingsPanel {
     if((mode == ConnectionMode.IN_OUT && !outputActive) || mode == ConnectionMode.INPUT) {
       roundRobinB.onGuiInit();
       roundRobinB.setSelected(itemConduit.isRoundRobinEnabled(gui.getDir()));
+      gui.addToolTip(speedUpgradeTooltip);
     }
 
     if((mode == ConnectionMode.IN_OUT && outputActive) || mode == ConnectionMode.OUTPUT) {
@@ -410,7 +418,6 @@ public class ItemSettings extends BaseSettingsPanel {
       String str = itemConduit.getOutputPriority(gui.getDir()) + "";
       int sw = fr.getStringWidth(str);
       fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
-
     } else {
       //draw speed upgrade slot
       GL11.glColor3f(1, 1, 1);
@@ -442,6 +449,8 @@ public class ItemSettings extends BaseSettingsPanel {
     priUpB.detach();
     priDownB.detach();
     gui.removeToolTip(priorityTooltip);
+    gui.removeToolTip(speedUpgradeTooltip);
+    gui.removeToolTip(filterUpgradeTooltip);
     channelB.detach();
 
     if(filterGui != null) {
