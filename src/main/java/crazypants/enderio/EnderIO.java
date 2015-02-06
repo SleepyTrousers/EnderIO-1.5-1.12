@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.config.ConnectionHandler;
+import crazypants.enderio.config.MessageConfigSync;
 import crazypants.enderio.entity.SkeletonHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
@@ -471,6 +474,12 @@ public class EnderIO {
 
     PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(MessageConfigSync.class, MessageConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
+
+    if (event.getSide()==Side.SERVER)
+    {
+      FMLCommonHandler.instance().bus().register(new ConnectionHandler(new MessageConfigSync()));
+    }
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
