@@ -39,7 +39,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   
   private int id = 0;
   private IconButtonEIO createButton(int x, int y) {
-    return new ToggleButtonEIO(this, id, x, y, IconEIO.UNLOCKED, IconEIO.LOCKED).setSelected(getTileEntity().lockedSlots.contains(id++ + getTileEntity().minSupSlot)).setIconMargin(3, 3);
+    return new ToggleButtonEIO(this, id, x, y, IconEIO.FARM_UNLOCK, IconEIO.FARM_LOCK).setSelected(getTileEntity().lockedSlots.contains(id++ + getTileEntity().minSupSlot));
   }
 
   @Override
@@ -68,7 +68,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     
-    GL11.glEnable(GL11.GL_BLEND);    
+    GL11.glEnable(GL11.GL_BLEND);
     fr.drawString("SW", sx + 55, sy + 41, ColorUtil.getARGB(1f,1f,0.35f,1f), true);    
     fr.drawString("NW", sx + 55, sy + 59, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
     fr.drawString("SE", sx + 73, sy + 41, ColorUtil.getARGB(1f,1f,0.35f,1f), true);

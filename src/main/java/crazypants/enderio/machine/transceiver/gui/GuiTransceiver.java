@@ -204,7 +204,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
         IconEIO.INACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (i * 24));
         IconEIO icon = tabs.get(i).getIcon();
-        icon.renderIcon(tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 7, 10, 10, 0, false);
+        icon.renderIcon(tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 6, 11, 11, 0, false);
       }
     }
 
@@ -221,7 +221,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
     if(tabs.size() > 0) {
       IconEIO icon = tabs.get(activeTab).getIcon();
-      icon.renderIcon(tabX + 4, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 7, 10, 10, 0, false);
+      icon.renderIcon(tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
       tes.draw();
       tabs.get(activeTab).render(par1, par2, par3);
     } else {

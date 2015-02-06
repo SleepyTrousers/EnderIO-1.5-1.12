@@ -306,9 +306,9 @@ public class IoConfigRenderer {
       //    INPUT
       IoMode mode = selection.config.getIoMode(selection.face);
       if(mode == IoMode.PULL) {
-        ioIcon = IconEIO.INPUT_SMALL_INV;
+        ioIcon = IconEIO.INPUT;
       } else if(mode == IoMode.PUSH) {
-        ioIcon = IconEIO.OUTPUT_SMALL_INV;
+        ioIcon = IconEIO.OUTPUT;
       } else if(mode == IoMode.PUSH_PULL) {
         ioIcon = IconEIO.INPUT_OUTPUT;
       } else if(mode == IoMode.DISABLED) {
