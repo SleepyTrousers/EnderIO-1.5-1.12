@@ -127,7 +127,7 @@ public final class IconEIO {
   public final double width;
   public final double height;
 
-  public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgets.png");
+  public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgetsv2.png");
 
   public IconEIO(int x, int y) {
     this(x, y, 16, 16);

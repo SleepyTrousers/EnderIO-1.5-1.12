@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Gui;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.gui.IconEIO;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
@@ -31,7 +32,7 @@ public class ExperienceBarRenderer {
     int strX = x + length / 2 - fr.getStringWidth(text) / 2;
     fr.drawString(text, strX, y - 11, color, shadow);
 
-    RenderUtil.bindTexture("enderio:textures/gui/widgets.png");
+    RenderUtil.bindTexture(IconEIO.TEXTURE);
     GL11.glColor3f(1, 1, 1);
     int xpScaled = xpCont.getXpBarScaled(length - 2);
 
