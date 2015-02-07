@@ -167,6 +167,7 @@ tile.blockAlloySmelter.tooltip.detailed.line5=Geschw. und Energiespeicher erhöh
 
 tile.blockSolarPanel.name=Photovoltaikzelle
 tile.blockSolarPanel.advanced.name=Fortgeschrittene Photovoltaikzelle
+tile.blockSolarPanel.tooltip.common.line1=Solarenergie!
 tile.blockSolarPanel.tooltip.detailed.line1=Produziert Energie am Tag
 tile.blockSolarPanel.tooltip.detailed.line2=Braucht klare Sicht
 tile.blockSolarPanel.tooltip.detailed.line3=zum Himmel

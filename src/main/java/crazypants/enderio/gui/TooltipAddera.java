@@ -286,6 +286,20 @@ public class TooltipAddera {
     }
   }
 
+  public static void addCommonTooltipFromResources(List list, ItemStack itemstack) {
+    if(itemstack.getItem() == null) {
+      return;
+    }
+    String unloc = null;
+    if (itemstack.getItem() instanceof IResourceTooltipProvider) {
+      unloc = ((IResourceTooltipProvider)itemstack.getItem()).getUnlocalizedNameForTooltip(itemstack);
+    }
+    if(unloc == null) {
+      unloc = itemstack.getItem().getUnlocalizedName(itemstack);
+    }
+    addCommonTooltipFromResources(list, unloc);
+  }
+
   public static void addDetailedTooltipFromResources(List list, ItemStack itemstack) {
     if(itemstack.getItem() == null) {
       return;
