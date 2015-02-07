@@ -285,23 +285,29 @@ public class TooltipAddera {
     }
   }
 
+  private static String getUnlocalizedNameForTooltip(ItemStack itemstack) {
+    String unlocalizedNameForTooltip = null;
+    if (itemstack.getItem() instanceof IResourceTooltipProvider) {
+      unlocalizedNameForTooltip = ((IResourceTooltipProvider)itemstack.getItem()).getUnlocalizedNameForTooltip(itemstack);
+    }
+    if(unlocalizedNameForTooltip == null) {
+      unlocalizedNameForTooltip = itemstack.getItem().getUnlocalizedName(itemstack);
+    }
+    return unlocalizedNameForTooltip;
+  }
+
+  public static void addCommonTooltipFromResources(List list, ItemStack itemstack) {
+    if(itemstack.getItem() == null) {
+      return;
+    }
+    addCommonTooltipFromResources(list, getUnlocalizedNameForTooltip(itemstack));
+  }
+
   public static void addDetailedTooltipFromResources(List list, ItemStack itemstack) {
     if(itemstack.getItem() == null) {
       return;
     }
-    String unloc = null;
-    //    Block blk = Block.getBlockFromItem(itemstack.getItem());
-    //    if(blk != null && blk != Blocks.air) {
-    //      unlock = blk.getUnlocalizedName();
-    //    }
-    
-    if (itemstack.getItem() instanceof IResourceTooltipProvider) {
-      unloc = ((IResourceTooltipProvider)itemstack.getItem()).getUnlocalizedNameForTooltip(itemstack);
-    }
-    if(unloc == null) {
-      unloc = itemstack.getItem().getUnlocalizedName(itemstack);
-    }
-    addDetailedTooltipFromResources(list, unloc);
+    addDetailedTooltipFromResources(list, getUnlocalizedNameForTooltip(itemstack));
   }
 
   private static class BallTipProvider implements IAdvancedTooltipProvider {

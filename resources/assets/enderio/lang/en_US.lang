@@ -244,6 +244,7 @@ tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
+tile.blockSolarPanel.tooltip.common.line1=Solar power!
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
@@ -874,6 +875,10 @@ enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
 enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
 enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
 enderio.gui.conduit.item.priority=Priority
+
+enderio.gui.conduit.item.filterupgrade=Insert Item Filter
+enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Up-/ Downgrade
+enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color
