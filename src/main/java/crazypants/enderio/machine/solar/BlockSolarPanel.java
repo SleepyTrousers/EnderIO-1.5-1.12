@@ -140,9 +140,6 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
-      EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE);
-      storage.readFromNBT(WailaCompat.getNBTData());
-      tooltip.add(storage.getEnergyStored() + " / " + WailaCompat.getNBTData().getInteger("rfCap") + " RF");
       tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
           EnumChatFormatting.WHITE, efficiency * 100));
     }
