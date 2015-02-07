@@ -75,6 +75,14 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
+  public void clearAllIoModes() {
+    super.clearAllIoModes();
+    if(dist != null) {
+      dist.neighboursChanged();
+    }
+  }
+
+  @Override
   public boolean canInsertItem(int slot, ItemStack var2, int side) {
     return hasInventory() && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput() && isMachineItemValidForSlot(slot, var2);
   }

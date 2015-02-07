@@ -301,6 +301,23 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
   }
 
   @Override
+  public void clearAllIoModes() {
+    if(network != null) {
+      for(TileCapBank cb : network.getMembers()) {
+        cb.doClearAllIoModes();
+      }
+    } else {
+      doClearAllIoModes();
+    }
+  }
+
+  private void doClearAllIoModes() {
+    for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      setDefaultIoMode(dir);
+    }
+  }
+
+  @Override
   public IoMode getIoMode(ForgeDirection face) {
     if(faceModes == null) {
       return IoMode.NONE;

@@ -16,7 +16,6 @@ import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -42,7 +41,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
 
   private final GuiOverlayIoConfig configOverlay;
 
-  protected ToggleButtonEIO configB;
+  protected final GuiButtonIoConfig configB;
   
   protected IconButtonEIO recipeButton;
 
@@ -59,35 +58,16 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
 
-    y += 19;
-    configB = new ToggleButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP, IconEIO.IO_CONFIG_DOWN);
-    configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
-
-    configOverlay = new GuiOverlayIoConfig(machine) {
-
-      @Override
-      public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        configB.setSelected(visible);
-      }
-
-    };
+    configOverlay = new GuiOverlayIoConfig(machine);
     addOverlay(configOverlay);
-    
+
     y += 19;
-    
+    configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, machine, configOverlay);
+
+    y += 19;
     recipeButton = new IconButtonEIO(this, RECIPE_ID, x, y, IconEIO.RECIPE);
     recipeButton.visible = false;
     recipeButton.setIconMargin(3, 3);
-  }
-
-  @Override
-  protected void actionPerformed(GuiButton b) {
-    super.actionPerformed(b);
-    if(b.id == CONFIG_ID) {
-      boolean vis = !configOverlay.isVisible();
-      configOverlay.setVisible(vis);
-    }
   }
 
   @Override
