@@ -40,7 +40,8 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, x, y, z);
-    }    return super.openGui(world, x, y, z, entityPlayer, side);
+    }
+    return true;
   }
 
   @Override
