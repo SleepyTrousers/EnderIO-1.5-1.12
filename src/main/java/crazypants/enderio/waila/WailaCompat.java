@@ -1,5 +1,10 @@
 package crazypants.enderio.waila;
 
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
+import static crazypants.enderio.waila.IWailaInfoProvider.fmt;
+
 import java.util.List;
 
 import mcp.mobius.waila.api.ITaggedList;
@@ -40,12 +45,10 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerContainer;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
-import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
 
