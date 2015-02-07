@@ -60,8 +60,6 @@ public abstract class AbstractMachineContainer extends Container {
       addSlotToContainer(slot);      
       playerSlotLocations.put(slot, loc);
     }
-
-    
   }
 
   @Override

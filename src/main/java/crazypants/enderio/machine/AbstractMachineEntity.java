@@ -109,6 +109,16 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   @Override
+  public void clearAllIoModes() {
+    if(faceModes != null) {
+      faceModes = null;
+      forceClientUpdate = true;
+      notifyNeighbours = true;
+      updateBlock();
+    }
+  }
+
+  @Override
   public IoMode getIoMode(ForgeDirection face) {
     if(faceModes == null) {
       return IoMode.NONE;

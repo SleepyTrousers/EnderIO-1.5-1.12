@@ -49,14 +49,14 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {   
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {   
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileTransceiver) {
         ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
       }
     }        
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   @Override
@@ -136,7 +136,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
         tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));
 
         if(!isEmpty(recieve)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.recieving"), Util.TAB + Util.ALIGNRIGHT
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
               + EnumChatFormatting.WHITE, recieve));
         }
         if(!isEmpty(send)) {

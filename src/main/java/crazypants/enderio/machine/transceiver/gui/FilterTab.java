@@ -19,6 +19,7 @@ import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class FilterTab implements ITabPanel {
 
@@ -98,9 +99,9 @@ public class FilterTab implements ITabPanel {
       recGui.renderCustomOptions(0, par1, par2, par3);
     }
 
-    String txt = "Send Filter";
+    String txt = Lang.localize("gui.machine.sendfilter");
     if(!showSend) {
-      txt = "Receive Filter";
+      txt = Lang.localize("gui.machine.receivefilter");
     }
     FontRenderer fr = parent.getFontRenderer();
     int x = left + container.getFilterOffset().x;

@@ -2,6 +2,7 @@ package crazypants.enderio.item;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -17,17 +18,19 @@ import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.Lang;
 
-public class ItemYetaWrench extends Item implements ITool, IAdvancedTooltipProvider, InvocationHandler {
+public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
@@ -83,7 +86,13 @@ public class ItemYetaWrench extends Item implements ITool, IAdvancedTooltipProvi
     ConduitDisplayMode.setDisplayMode(equipped, newMode);
     return equipped;
   }
-  
+
+  @Override
+  public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
+    Block block = player.worldObj.getBlock(x, y, z);
+    return block == EnderIO.blockConduitBundle;
+  }
+
   @Override
   public boolean isFull3D() {
     return true;
@@ -107,29 +116,33 @@ public class ItemYetaWrench extends Item implements ITool, IAdvancedTooltipProvi
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
     return true;
   }
+  
+  @Override
+  public boolean showOverlay(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 
   /* IAdvancedTooltipProvider */
   
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings("rawtypes")
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    int line = 1;
-    String unloc = getUnlocalizedName() + ".tooltip.detailed.line", loc = null;
-    while (!(loc = Lang.localize(unloc + line, false)).equals(unloc + line++)) {
-      list.add(String.format(loc, Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode())));
-    }
   }
   
   @SuppressWarnings("rawtypes")
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    ; // none
   }
   
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    ; // none
+    ArrayList<String> tmp = new ArrayList<String>();
+    TooltipAddera.addDetailedTooltipFromResources(tmp, getUnlocalizedName());
+    String keyName = Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode());
+    for(String line : tmp) {
+      list.add(String.format(line, keyName));
+    }
   }
 
   /* InvocationHandler */

@@ -255,24 +255,12 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
-      return true;
-    }
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileHyperCube)) {
-      return false;
-    }
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
     }
     return true;
   }
-
-
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -293,11 +281,4 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
-  @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-    super.breakBlock(world, x, y, z, block, p_149749_6_);
-    world.removeTileEntity(x, y, z);
-  }
-
 }

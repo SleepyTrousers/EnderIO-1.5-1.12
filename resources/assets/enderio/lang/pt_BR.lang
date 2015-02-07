@@ -331,7 +331,7 @@ enderio.trans.item=Item
 enderio.trans.fluid=Fluido
 enderio.trans.rail=Trilho
 
-enderio.trans.recieving=Recebendo
+enderio.trans.receiving=Recebendo
 enderio.trans.sending=Enviando
 
 tile.blockPowerMonitor.name=Monitor de Força
@@ -672,8 +672,8 @@ enderio.gui.simple.out=Saída Máxima:
 enderio.gui.enabled=Ativado
 enderio.gui.disabled=Desativado
 enderio.gui.send=Enviar
-enderio.gui.recieve=Receber
-enderio.gui.sendRecieve=Enviar & Receber
+enderio.gui.receive=Receber
+enderio.gui.sendReceive=Enviar & Receber
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Modo de Redstone

@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.reservoir;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,10 +15,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
@@ -29,7 +27,7 @@ import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockReservoir extends BlockContainer implements IResourceTooltipProvider {
+public class BlockReservoir extends BlockEio implements IResourceTooltipProvider {
 
   public static BlockReservoir create() {
     BlockReservoir result = new BlockReservoir();
@@ -59,21 +57,8 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
   IIcon switchIcon;
 
   private BlockReservoir() {
-    super(Material.rock);
-    setHardness(0.5F);
+    super(ModObject.blockReservoir.unlocalisedName, TileReservoir.class, Material.rock);
     setStepSound(Block.soundTypeStone);
-    setBlockName(ModObject.blockReservoir.unlocalisedName);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
-    return new TileReservoir();
-  }
-
-  private void init() {
-    GameRegistry.registerBlock(this, ModObject.blockReservoir.unlocalisedName);
-    GameRegistry.registerTileEntity(TileReservoir.class, ModObject.blockReservoir.unlocalisedName + "TileEntity");
   }
 
   @Override
@@ -136,8 +121,7 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       }
     }
 
-    return false;
-
+    return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
 
   @Override

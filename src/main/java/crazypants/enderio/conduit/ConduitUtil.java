@@ -24,6 +24,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
 import crazypants.enderio.conduit.gas.IGasConduit;
@@ -123,6 +125,10 @@ public class ConduitUtil {
     if(con.getNetwork() != null) { //this should have been destroyed when destroying the neighbours network but lets just make sure
       con.getNetwork().destroyNetwork();
     }
+    con.connectionsChanged();
+    if(neighbour != null) {
+      neighbour.connectionsChanged();
+    }
   }
 
   public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
@@ -137,6 +143,8 @@ public class ConduitUtil {
       if(neighbour.getNetwork() != null) {
         neighbour.getNetwork().destroyNetwork();
       }
+      con.connectionsChanged();
+      neighbour.connectionsChanged();
       return true;
     }
     return false;
@@ -177,7 +185,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && ((ToolUtil.isToolEquipped(player) && (player == null || ToolUtil.getEquippedTool(player).shouldHideFacades(player.getCurrentEquippedItem(), player))) || isConduitEquipped(player) || isProbeEquipped(player));
+    return bundle.getFacadeId() != null && shouldHeldItemHideFacades(player);
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -187,10 +195,6 @@ public class ConduitUtil {
     }
     ItemStack equipped = player.getCurrentEquippedItem();
     if(equipped == null) {
-      return ConduitDisplayMode.ALL;
-    }
-
-    if(equipped.getItem() != EnderIO.itemYetaWench) {
       return ConduitDisplayMode.ALL;
     }
 
@@ -232,6 +236,18 @@ public class ConduitUtil {
       break;
     }
     return true;
+  }
+
+  public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
+    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
+    if(player == null) {
+      return false;
+    }
+    ItemStack held = player.getCurrentEquippedItem();
+    if(held != null && held.getItem() instanceof IHideFacades) {
+      return ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
+    }
+    return ToolUtil.isToolEquipped(player);
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {

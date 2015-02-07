@@ -21,7 +21,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer {
       new Point(72,16)
   };
   
-  public static final Point OUTPUT_SLOT = new Point(134, 48); 
+  public static final Point OUTPUT_SLOT = new Point(134, 49); 
   
   public ContainerSliceAndSplice(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);

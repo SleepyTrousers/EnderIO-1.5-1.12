@@ -25,6 +25,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -50,6 +51,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   private Block facadeId = null;
   private int facadeMeta = 0;
+  private FacadeType facadeType = FacadeType.BASIC;
 
   private boolean facadeChanged;
 
@@ -100,6 +102,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     nbtRoot.setTag("conduits", conduitTags);
     if(facadeId != null) {
       nbtRoot.setString("facadeId", Block.blockRegistry.getNameForObject(facadeId));
+      nbtRoot.setString("facadeType", facadeType.name());
     } else {
       nbtRoot.setString("facadeId", "null");
     }
@@ -126,8 +129,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     String fs = nbtRoot.getString("facadeId");
     if(fs == null || "null".equals(fs)) {
       facadeId = null;
+      facadeType = FacadeType.BASIC;
     } else {
       facadeId = Block.getBlockFromName(fs);
+      if(nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+        facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
+      }
     }
     facadeMeta = nbtRoot.getInteger("facadeMeta");
 
@@ -164,10 +171,20 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void setFacadeMetadata(int meta) {
     facadeMeta = meta;
   }
+  
+  @Override
+  public void setFacadeType(FacadeType type) {
+    facadeType = type;
+  }
 
   @Override
   public int getFacadeMetadata() {
     return facadeMeta;
+  }
+  
+  @Override
+  public FacadeType getFacadeType() {
+    return facadeType;
   }
 
   @Override
@@ -545,6 +562,24 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         }
       }
     }
+    
+    // Merge all internal conduit connectors into one box
+    BoundingBox conBB = null;
+    for (int i = 0; i < result.size(); i++) {
+      CollidableComponent cc = result.get(i);
+      if (cc.conduitType == null && cc.data == ConduitConnectorType.INTERNAL) {
+        conBB = conBB == null ? cc.bound : conBB.expandBy(cc.bound);
+        result.remove(i);
+        i--;
+        cachedConnectors.remove(cc);
+      }
+    }
+
+    if(conBB != null) {
+      CollidableComponent cc = new CollidableComponent(null, conBB, ForgeDirection.UNKNOWN, ConduitConnectorType.INTERNAL);
+      result.add(cc);
+      cachedConnectors.add(cc);
+    }
 
     // External Connectors
     Set<ForgeDirection> externalDirs = new HashSet<ForgeDirection>();
@@ -566,7 +601,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
 
     connectorsDirty = false;
-
   }
 
   private boolean axisOfConnectionsEqual(Set<ForgeDirection> cons) {
@@ -875,8 +909,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if (cond == null) {
       return AECableType.NONE;
     } else {
-      ConnectionMode mode = cond.getConnectionMode(dir);
-      return mode == ConnectionMode.DISABLED ? AECableType.NONE : AECableType.SMART;
+      return cond.isConnectedTo(dir) ? AECableType.SMART : AECableType.NONE;
     }
   }
   

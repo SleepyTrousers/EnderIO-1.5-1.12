@@ -13,6 +13,8 @@ public interface IIoConfigurable {
 
   public IoMode getIoMode(ForgeDirection face) ;
 
+  public void clearAllIoModes();
+
   BlockCoord getLocation();
 
 }

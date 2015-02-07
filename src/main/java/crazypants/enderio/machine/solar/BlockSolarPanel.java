@@ -42,7 +42,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   IIcon sideIcon;
   IIcon advancedSideIcon;
   IIcon advancedIcon;
-  
+
   IIcon borderIcon;
   IIcon advancedBorderIcon;
 
@@ -78,22 +78,6 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-      if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
-        int meta = world.getBlockMetadata(x, y, z);
-        ItemStack is = new ItemStack(this, 1, meta);
-        Util.dropItems(world, is, x, y, z, true);
-      }
-      removedByPlayer(world, entityPlayer, x, y, z, true);
-      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
-      return true;
-    }
-    return false;
-  }
-
-  @Override
   public IIcon getIcon(int side, int meta) {
     if(side == ForgeDirection.UP.ordinal()) {
       return meta == 0 ? blockIcon : advancedIcon;
@@ -104,7 +88,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   public IIcon getBorderIcon(int i, int meta) {
     return meta == 0 ? borderIcon : advancedBorderIcon;
   }
-  
+
   @Override
   public int getRenderType() {
     return renderId;
@@ -146,25 +130,16 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-    super.breakBlock(world, x, y, z, block, p_149749_6_);
-    world.removeTileEntity(x, y, z);
-  }
-
-  @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-	TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
-      EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE);
-      storage.readFromNBT(WailaCompat.getNBTData());
-      tooltip.add(storage.getEnergyStored() + " / " + WailaCompat.getNBTData().getInteger("rfCap") + " RF");
       tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
           EnumChatFormatting.WHITE, efficiency * 100));
     }

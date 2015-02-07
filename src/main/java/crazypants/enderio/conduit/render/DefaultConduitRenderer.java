@@ -80,7 +80,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
 
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = EnderIO.blockConduitBundle.getConnectorIcon();
+        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;
         for (Vertex c : corners) {

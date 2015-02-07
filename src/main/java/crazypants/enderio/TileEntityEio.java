@@ -11,6 +11,8 @@ import net.minecraft.tileentity.TileEntity;
  */
 public abstract class TileEntityEio extends TileEntity {
 
+  private boolean shouldDrop = true;
+  
   @Override
   public final void readFromNBT(NBTTagCompound root) {
     super.readFromNBT(root);
@@ -47,5 +49,13 @@ public abstract class TileEntityEio extends TileEntity {
   
   protected boolean isPoweredRedstone() {
     return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+  }
+  
+  public void preventDrops() {
+    shouldDrop = false;
+  }
+
+  public boolean shouldDrop() {
+    return shouldDrop;
   }
 }

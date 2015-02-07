@@ -92,7 +92,6 @@ public class NetworkedInventory {
   }
 
   public void onTick(long tick) {
-    int transfered;
     if(tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
       //do nothing     
     } else {
@@ -244,8 +243,7 @@ public class NetworkedInventory {
     return sendPriority;
   }
 
-  private void updateInventory() {
-
+  public final void updateInventory() {
     TileEntity te = world.getTileEntity(location.x, location.y, location.z);
     if(te instanceof ISidedInventory) {
       inv = (ISidedInventory) te;

@@ -186,13 +186,13 @@ public class ChannelTab implements ITabPanel {
     int top = parent.getGuiTop();
     int x = left + 59;
     int y = top + 36;
-    parent.drawCenteredString(parent.getFontRenderer(), "Available", x, y, ColorUtil.getRGB(Color.white));
+    parent.drawCenteredString(parent.getFontRenderer(), Lang.localize("gui.available"), x, y, ColorUtil.getRGB(Color.white));
     
     x = left + 199;
-    parent.drawCenteredString(parent.getFontRenderer(), "Send", x, y, ColorUtil.getRGB(Color.white));
+    parent.drawCenteredString(parent.getFontRenderer(), Lang.localize("gui.send"), x, y, ColorUtil.getRGB(Color.white));
     
     y += 56;
-    parent.drawCenteredString(parent.getFontRenderer(), "Recieve", x, y, ColorUtil.getRGB(Color.white));           
+    parent.drawCenteredString(parent.getFontRenderer(), Lang.localize("gui.receive"), x, y, ColorUtil.getRGB(Color.white));           
   }
 
   @Override

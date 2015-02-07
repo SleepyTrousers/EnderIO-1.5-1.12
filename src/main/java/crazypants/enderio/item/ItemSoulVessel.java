@@ -364,7 +364,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       if(mobName != null) {
         par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
       } else {
-        par3List.add("Empty");
+        par3List.add(Lang.localize("item.itemSoulVessel.tooltip.empty"));
       }
 
       float health = getHealthFromStack(par1ItemStack);

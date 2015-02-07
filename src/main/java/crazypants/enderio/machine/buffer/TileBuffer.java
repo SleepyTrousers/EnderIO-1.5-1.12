@@ -53,7 +53,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    if(getEnergyStored() <= 0) {
+    if(getEnergyStored() <= 0 || !redstoneCheckPassed) {
       return false;
     }
     if(dist == null) {
@@ -69,6 +69,14 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   @Override
   public void setIoMode(ForgeDirection faceHit, IoMode mode) {
     super.setIoMode(faceHit, mode);
+    if(dist != null) {
+      dist.neighboursChanged();
+    }
+  }
+
+  @Override
+  public void clearAllIoModes() {
+    super.clearAllIoModes();
     if(dist != null) {
       dist.neighboursChanged();
     }

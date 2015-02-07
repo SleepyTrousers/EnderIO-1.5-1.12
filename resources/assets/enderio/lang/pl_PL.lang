@@ -140,8 +140,8 @@ enderio.color.white=Biały
 enderio.gui.enabled=Włączony
 enderio.gui.disabled=Wyłączony
 enderio.gui.send=Wysyłaj
-enderio.gui.recieve=Odbieraj
-enderio.gui.sendRecieve=Wysyłaj i odbieraj
+enderio.gui.receive=Odbieraj
+enderio.gui.sendReceive=Wysyłaj i odbieraj
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Tryb włącznika

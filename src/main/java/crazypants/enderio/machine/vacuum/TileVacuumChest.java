@@ -11,17 +11,16 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 
-public class TileVacuumChest extends TileEntity implements  IEntitySelector, IInventory {
+public class TileVacuumChest extends TileEntityEio implements IEntitySelector, IInventory {
 
-  
   private static final double RANGE = Config.vacuumChestRange;
   private ItemStack[] inv = new ItemStack[27];
 
@@ -31,7 +30,7 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
       doHoover();
     }
   }
-  
+
   @Override
   public boolean isEntityApplicable(Entity entity) {
     if(entity.isDead) {
@@ -46,7 +45,6 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
     }
     return false;
   }
-  
 
   private void doHoover() {
 
@@ -65,9 +63,9 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
         hooverEntity(entity);
       } else {
         double speed = 0.06;
-        double distScale =  1.0 - Math.min(0.9, distance / (RANGE*RANGE));
+        double distScale = 1.0 - Math.min(0.9, distance / (RANGE * RANGE));
         distScale *= distScale;
-        
+
         entity.motionX += x / distance * distScale * speed;
         entity.motionY += y / distance * distScale * 0.2;
         entity.motionZ += z / distance * distScale * speed;
@@ -75,7 +73,7 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
 
     }
   }
-  
+
   private void hooverEntity(Entity entity) {
     if(!worldObj.isRemote) {
       if(entity instanceof EntityItem && !entity.isDead) {
@@ -91,9 +89,9 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
       }
     }
   }
-  
+
   private boolean isFull() {
-    for(ItemStack stack : inv) {
+    for (ItemStack stack : inv) {
       if(stack == null || stack.stackSize < stack.getMaxStackSize()) {
         return false;
       }
@@ -143,12 +141,12 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
 
   @Override
   public void setInventorySlotContents(int slot, ItemStack contents) {
-    
+
     if(slot < 0 || slot >= inv.length) {
       System.out.println("TileVacumChest.setInventorySlotContents: " + slot);
       return;
     }
-    
+
     if(contents == null) {
       inv[slot] = contents;
     } else {
@@ -164,9 +162,9 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
   public ItemStack getStackInSlotOnClosing(int var1) {
     return null;
   }
- 
+
   @Override
-  public String getInventoryName() {    
+  public String getInventoryName() {
     return ModObject.blockVacuumChest.unlocalisedName;
   }
 
@@ -176,16 +174,16 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer var1) {    
+  public boolean isUseableByPlayer(EntityPlayer var1) {
     return true;
   }
 
   @Override
-  public void openInventory() {    
+  public void openInventory() {
   }
 
   @Override
-  public void closeInventory() {    
+  public void closeInventory() {
   }
 
   @Override
@@ -194,11 +192,10 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);    
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
     readContentsFromNBT(nbtRoot);
   }
-  
+
   public void readContentsFromNBT(NBTTagCompound nbtRoot) {
     NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
     if(itemList != null) {
@@ -213,11 +210,10 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {    
-    super.writeToNBT(nbtRoot);
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
     writeContentsToNBT(nbtRoot);
-  } 
-  
+  }
+
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
     NBTTagList itemList = new NBTTagList();
     for (int i = 0; i < inv.length; i++) {
@@ -230,5 +226,5 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
     }
     nbtRoot.setTag("Items", itemList);
   }
-    
+
 }

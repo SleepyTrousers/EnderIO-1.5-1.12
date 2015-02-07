@@ -15,8 +15,6 @@ import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconButtonEIO;
-import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
@@ -25,6 +23,7 @@ import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkState;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
+import crazypants.enderio.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -69,8 +68,8 @@ public class GuiCapBank extends GuiContainerBase {
   private GuiTextField maxInputTF;
   private GuiTextField maxOutputTF;
 
-  private GuiOverlayIoConfig configOverlay;
-  private IconButtonEIO configB;
+  private final GuiOverlayIoConfig configOverlay;
+  private final GuiButtonIoConfig configB;
 
   private CapBankClientNetwork network;
 
@@ -144,10 +143,6 @@ public class GuiCapBank extends GuiContainerBase {
     });
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
 
-    y += 20;
-    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
-    configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
-
     List<BlockCoord> coords = new ArrayList<BlockCoord>();
     if(network != null && network.getMembers().size() < 200) {
       for (TileCapBank cb : network.getMembers()) {
@@ -160,13 +155,6 @@ public class GuiCapBank extends GuiContainerBase {
 
 
     configOverlay = new GuiOverlayIoConfig(coords) {
-
-      @Override
-      public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        configB.setIcon(visible ? IconEIO.IO_CONFIG_DOWN : IconEIO.IO_CONFIG_UP);
-      }
-
       @Override
       protected String getLabelForMode(IoMode mode) {
         if(mode == IoMode.PUSH) {
@@ -176,19 +164,11 @@ public class GuiCapBank extends GuiContainerBase {
         }
         return super.getLabelForMode(mode);
       }
-
     };
     addOverlay(configOverlay);
 
-  }
-
-  @Override
-  protected void actionPerformed(GuiButton b) {
-    super.actionPerformed(b);
-    if(b.id == CONFIG_ID) {
-      boolean vis = !configOverlay.isVisible();
-      configOverlay.setVisible(vis);
-    }
+    y += 20;
+    configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, te, configOverlay);
   }
 
   @Override
@@ -197,16 +177,13 @@ public class GuiCapBank extends GuiContainerBase {
 
     configB.onGuiInit();
 
-    int x = guiLeft + xSize - rightMargin - GuiPoweredMachineBase.BUTTON_SIZE;
-    int y = guiTop + inputY;
-
     FontRenderer fontRenderer = getFontRenderer();
 
     inputRsButton.onGuiInit();
     outputRsButton.onGuiInit();
 
-    x = guiLeft + inputX;
-    y = guiTop + inputY;
+    int x = guiLeft + inputX;
+    int y = guiTop + inputY;
     maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);

@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.Optional;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IGuiOverlay;
@@ -24,7 +27,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
-  private int tabYOffset = 4;
+  private final int tabYOffset = 4;
   GeneralTab generalTab;
 
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
@@ -201,7 +204,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
         IconEIO.INACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (i * 24));
         IconEIO icon = tabs.get(i).getIcon();
-        icon.renderIcon(tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 7, 10, 10, 0, false);
+        icon.renderIcon(tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 6, 11, 11, 0, false);
       }
     }
 
@@ -218,7 +221,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
     if(tabs.size() > 0) {
       IconEIO icon = tabs.get(activeTab).getIcon();
-      icon.renderIcon(tabX + 4, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 7, 10, 10, 0, false);
+      icon.renderIcon(tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
       tes.draw();
       tabs.get(activeTab).render(par1, par2, par3);
     } else {
@@ -232,5 +235,19 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   
   public ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    if(tabs.size() > 0) {
+      int sx = (width - xSize) / 2;
+      int sy = (height - ySize) / 2;
+      int tabX = sx + xSize - 3;
+      int tabY = sy + tabYOffset;
+
+      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
+    }
+    return false;
   }
 }

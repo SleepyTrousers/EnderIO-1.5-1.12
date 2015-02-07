@@ -1,8 +1,9 @@
 package crazypants.enderio.conduit;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.me.MEUtil;
 
@@ -45,20 +46,31 @@ public enum ConduitDisplayMode {
     return res;
   }
 
+  private static final String NBT_KEY = "enderio.displaymode";
+
   public static ConduitDisplayMode getDisplayMode(ItemStack equipped) {
-    if(equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
+    if(equipped == null || !(equipped.getItem() instanceof IConduitControl)) {
       return ALL;
     }
-    int index = equipped.getItemDamage();
+    initDisplayModeTag(equipped);
+    int index = equipped.stackTagCompound.getInteger(NBT_KEY);
     index = MathHelper.clamp_int(index, 0, ConduitDisplayMode.values().length - 1);
     return ConduitDisplayMode.values()[index];
   }
 
   public static void setDisplayMode(ItemStack equipped, ConduitDisplayMode mode) {
-    if(mode == null || equipped == null) {
+    if(mode == null || equipped == null || !(equipped.getItem() instanceof IConduitControl)) {
       return;
     }
-    equipped.setItemDamage(mode.ordinal());
+    initDisplayModeTag(equipped);
+    equipped.stackTagCompound.setInteger(NBT_KEY, mode.ordinal());
+  }
+
+  private static void initDisplayModeTag(ItemStack stack) {
+    if (stack.stackTagCompound == null) {
+      stack.stackTagCompound = new NBTTagCompound();
+      stack.stackTagCompound.setInteger(NBT_KEY, ConduitDisplayMode.ALL.ordinal());
+    }
   }
 
   public ConduitDisplayMode next() {

@@ -341,7 +341,7 @@ public class LiquidConduit extends AbstractTankConduit {
   // -----------------------------
 
   @Override
-  protected void connectionsChanged() {
+  public void connectionsChanged() {
     super.connectionsChanged();
     updateTank();
   }

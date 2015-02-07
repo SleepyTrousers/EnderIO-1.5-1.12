@@ -36,6 +36,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
 
   <preference oreDictionary="dustObsidian">
     <itemStack modID="ThermalFoundation" itemName="material" itemMeta="4" />
+    <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="8" />
   </preference>
 
   <preference oreDictionary="dustIron">

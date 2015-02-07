@@ -2,6 +2,7 @@
 
 //Power
 enderio.power.rf=RF
+enderio.power.tmb=t/mB
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
 enderio.power.generates=Generates
@@ -20,10 +21,13 @@ item.enderio.itemEnderface.name=Enderface
 enderio.blockConduitBundle=Conduit Bundle
 enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
+item.enderio.itemConduitFacade.hardened.name=Hardened Conduit Facade
+enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=R-Click on a conduit to place
 item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
 item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
+item.enderio.itemConduitFacade.hardened.tooltip=Hardened: Resists breaking and explosions
 
 enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
@@ -86,6 +90,11 @@ item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
+
+item.itemExtractSpeedDowngrade.name=Item Conduit Speed Downgrade
+item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
+item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
+item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
 
 enderio.itemGasConduit.name=Gas Conduit
 
@@ -198,6 +207,7 @@ enderio.powderGold.name=Gold Powder
 enderio.powderCopper.name=Copper Powder
 enderio.powderTin.name=Tin Powder
 enderio.powderEnder.name=Ender Pearl Powder
+enderio.powderObsidian.name=Obsidian Powder
 enderio.ingotEnderiumBase.name=Enderium Base
 
 //Capacitors
@@ -328,7 +338,7 @@ enderio.trans.item=Item
 enderio.trans.fluid=Fluid
 enderio.trans.rail=Rail
 
-enderio.trans.recieving=Recieving
+enderio.trans.receiving=Receiving
 enderio.trans.sending=Sending
 
 tile.blockPowerMonitor.name=Power Monitor
@@ -345,7 +355,7 @@ tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
 tile.blockEnchanter.name=Enchanter
 tile.blockEnchanter.tooltip.detailed.line1=Uses XP to combine items
 tile.blockEnchanter.tooltip.detailed.line2=and a book and quill to
-tile.blockEnchanter.tooltip.detailed.line2=created enchanted books
+tile.blockEnchanter.tooltip.detailed.line3=created enchanted books
 
 tile.blockCombustionGenerator.name=Combustion Generator
 tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to generate power
@@ -408,6 +418,7 @@ tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
 
 tile.blockPoweredSpawner.name=Powered Spawner
 tile.blockPoweredSpawner.tooltip.empty=Empty
+enderio.tile.blockPoweredSpawner.tooltip.none=None
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
 tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
@@ -535,6 +546,7 @@ item.itemSoulVessel.name=Soul Vial
 enderio.item.itemSoulVessel.tooltip.health=Health:
 enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
 enderio.item.itemSoulVessel.tooltip.color=Color:
+enderio.item.itemSoulVessel.tooltip.empty=Empty
 item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
@@ -682,11 +694,14 @@ enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from 
 enderio.gui.simple.in=Max In:
 enderio.gui.simple.out=Max Out:
 
-enderio.gui.enabled=Enabled
+enderio.gui.available=Available
 enderio.gui.disabled=Disabled
+enderio.gui.enabled=Enabled
+enderio.gui.max=Max: 
+enderio.gui.progress=Progress {0,number}%
+enderio.gui.receive=Receive
 enderio.gui.send=Send
-enderio.gui.recieve=Receive
-enderio.gui.sendRecieve=Send & Receive
+enderio.gui.sendReceive=Send & Receive 
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Redstone Mode
@@ -695,7 +710,20 @@ enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
 enderio.gui.tooltip.redstoneControlMode.never=Never active
 
+enderio.gui.machine.button.storelevel=Store 1
+enderio.gui.machine.tooltip.storelevel=level of player XP
+enderio.gui.machine.button.storelevels=Store 10
+enderio.gui.machine.tooltip.storelevels=levels of player XP
+enderio.gui.machine.button.storeall=Store all
+enderio.gui.machine.tooltip.storeall=player XP
+enderio.gui.machine.button.retrievelevel=Retrieve 1
+enderio.gui.machine.tooltip.retrievelevel=player XP level
+enderio.gui.machine.button.retrievelevels=Retrieve 10
+enderio.gui.machine.tooltip.retrievelevels=player XP levels
+enderio.gui.machine.button.retrieveall=Retrieve all
 enderio.gui.machine.ioMode.overlay.tooltip=Configure IO
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift click to reset all sides
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=to their default setting
 enderio.gui.machine.ioMode.none=None
 enderio.gui.machine.ioMode.pull=Pull
 enderio.gui.machine.ioMode.push=Push
@@ -703,6 +731,16 @@ enderio.gui.machine.ioMode.disabled=Disabled
 enderio.gui.machine.ioMode.pullPush=Push / Pull
 enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
 enderio.gui.machine.ioMode=Mode: %s
+enderio.gui.machine.poweredspawner.capture=Capture
+enderio.gui.machine.poweredspawner.spawn=Spawn
+enderio.gui.machine.receivefilter=Receive Filter
+enderio.gui.machine.sendfilter=Send Filter
+enderio.gui.machine.sendReceivebuffer=Send/Receive Buffer
+enderio.gui.machine.localbuffer=Local Buffer
+enderio.gui.machine.upkeep=Upkeep:
+enderio.gui.machine.bufferingstacks=Buffering item stacks
+enderio.gui.machine.bufferingsingle=Buffering single items
+enderio.gui.machine.percraft=Per Craft
 enderio.gui.machine.side=Side: %s
 enderio.gui.machine.side.north=North
 enderio.gui.machine.side.south=South
@@ -813,6 +851,10 @@ enderio.gui.conduit.ioMode.disabled=Disabled
 enderio.gui.conduit.ioMode.notSet=Default
 tile.blockConduitBundle.name=Conduit Connector
 
+enderio.gui.conduit.button.clear=Clear
+enderio.gui.conduit.button.merge=Merge
+enderio.gui.conduit.button.show=Show
+enderio.gui.conduit.button.snap=Snapshot
 enderio.gui.conduit.item.insertionFilter=Insert
 enderio.gui.conduit.item.extractionFilter=Extract
 enderio.gui.conduit.item.sigCol=Signal Color
@@ -900,15 +942,15 @@ enderio.config.fluid.tooltip=Pure liquid energy!
 enderio.config.spawner=PoweredSpawner Settings
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
-//Keybinds/Waila/NEI
+//Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Dark Steel Armor
 enderio.category.tools=Tools
 enderio.keybind.glidertoggle=Glider Toggle
-enderio.keybind.soundlocator=Sound Locator
-enderio.keybind.nightvision=Night Vision
 enderio.keybind.gogglesofrevealing=Goggles of Revealing
-enderio.keybind.stepassist=Step Assist
+enderio.keybind.nightvision=Night Vision
+enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.speed=Speed
+enderio.keybind.stepassist=Step Assist
 enderio.keybind.yetawrenchmode=Yeta Wrench Mode
 enderio.nei.alloysmelter=Alloy Smelter
 enderio.nei.enchanter=Enchanter
@@ -916,3 +958,9 @@ enderio.nei.sagmill=SAG Mill
 enderio.nei.slicensplice=Slice'N'Splice
 enderio.nei.soulbinder=Soul Binder
 enderio.nei.vat=Vat
+enderio.tooltip.burntime=Burn Time:
+enderio.tooltip.oredict=Ore Dictionary:
+enderio.tooltip.meta=Meta:
+enderio.tooltip.uid=UID:
+enderio.tooltip.anvilupgrades=Anvil Upgrades:
+enderio.waila.config.hiddenfacades=Sneaky Facades

@@ -1,12 +1,15 @@
 package crazypants.enderio;
 
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.EnderIO.MOD_NAME;
+import static crazypants.enderio.EnderIO.VERSION;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import crazypants.enderio.entity.SkeletonHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,11 +26,11 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
@@ -63,6 +66,7 @@ import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.entity.SkeletonHandler;
 import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
@@ -150,11 +154,8 @@ import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.EntityUtil;
-import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.EnderIO.MOD_NAME;
-import static crazypants.enderio.EnderIO.VERSION;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
@@ -629,6 +630,7 @@ public class EnderIO {
     return Config.xpJuiceName;
   }
 
+  @SuppressWarnings("unchecked")
   private void addModIntegration() {
 
     if(Loader.isModLoaded("TConstruct")) {

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -14,6 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.me.MEUtil;
@@ -21,15 +23,12 @@ import crazypants.enderio.gui.IconEIO;
 
 public class YetaWrenchOverlayRenderer {
 
-  private ItemYetaWrench wrench;
-
   private IconEIO[] onIcons;
   private IconEIO[] offIcons;
   private Point[] iconOffsets;
   private Map<ConduitDisplayMode, Integer> indices = new EnumMap<ConduitDisplayMode, Integer>(ConduitDisplayMode.class);
 
-  public YetaWrenchOverlayRenderer(ItemYetaWrench wrench) {
-    this.wrench = wrench;
+  public YetaWrenchOverlayRenderer() {
     MinecraftForge.EVENT_BUS.register(this);
   }
 
@@ -42,9 +41,10 @@ public class YetaWrenchOverlayRenderer {
   }
 
   private ItemStack getEquippedWrench() {
-    ItemStack equipped = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
-    if(equipped != null && equipped.getItem() == wrench) {
-      return equipped;
+    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    ItemStack equipped = player.getCurrentEquippedItem();
+    if(equipped != null && equipped.getItem() instanceof IConduitControl) {
+      return ((IConduitControl) equipped.getItem()).showOverlay(equipped, player) ? equipped : null;
     }
     return null;
   }

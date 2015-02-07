@@ -15,6 +15,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.GogglesOfRevealingUpgrade;
@@ -143,7 +144,7 @@ public class KeyTracker {
     if(equipped == null) {
       return;
     }
-    if(equipped.getItem() == EnderIO.itemYetaWench) {
+    if(equipped.getItem() instanceof IConduitControl) {
       ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
       if(curMode == null) {
         curMode = ConduitDisplayMode.ALL;

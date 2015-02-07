@@ -1,6 +1,8 @@
 package crazypants.gui;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,18 +12,33 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Timer;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
+import codechicken.nei.VisiblityData;
+import codechicken.nei.api.INEIGuiHandler;
+import codechicken.nei.api.TaggedInventoryArea;
+
+import crazypants.enderio.Log;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
-public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen {
+@Optional.InterfaceList({
+    @Optional.Interface(iface = "codechicken.nei.api.INEIGuiHandler", modid = "NotEnoughItems")
+})
+public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen, INEIGuiHandler {
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
+
+  private static Field timerField = null;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -30,14 +47,25 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public void initGui() {
     super.initGui();
-    for(IGuiOverlay overlay : overlays) {
+    for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
+    }
+    if(timerField == null) {
+      try {
+        if(timerField == null) {
+          timerField = ReflectionHelper.findField(Minecraft.class, "field_71428_T", "timer", "Q");
+          timerField.setAccessible(true);
+        }
+      } catch (Exception e) {
+        Log.error("Failed to initialize timer reflection for IO config.");
+        e.printStackTrace();
+      }
     }
   }
 
   @Override
   protected void keyTyped(char par1, int par2) {
-    if (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+    if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
       //this.mc.thePlayer.closeScreen();
       if(hideOverlays()) {
         return;
@@ -47,7 +75,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   public boolean hideOverlays() {
-    for(IGuiOverlay overlay : overlays) {
+    for (IGuiOverlay overlay : overlays) {
       if(overlay.isVisible()) {
         overlay.setVisible(false);
         return true;
@@ -55,7 +83,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     }
     return false;
   }
-
 
   @Override
   public void addToolTip(GuiToolTip toolTip) {
@@ -67,7 +94,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
     int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
     int b = Mouse.getEventButton();
-    for(IGuiOverlay overlay : overlays) {
+    for (IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible() && overlay.handleMouseInput(x, y, b)) {
         return;
       }
@@ -76,10 +103,10 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   @Override
-  protected boolean func_146978_c(int p_146978_1_, int p_146978_2_, int p_146978_3_, int p_146978_4_, int p_146978_5_, int p_146978_6_)  {
+  protected boolean func_146978_c(int p_146978_1_, int p_146978_2_, int p_146978_3_, int p_146978_4_, int p_146978_5_, int p_146978_6_) {
     int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
     int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-    for(IGuiOverlay overlay : overlays) {
+    for (IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible() && overlay.isMouseInBounds(x, y)) {
         return false;
       }
@@ -95,48 +122,77 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     overlays.remove(overlay);
   }
 
+  private int realMx, realMy;
+
   @Override
   protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
-    ttMan.drawTooltips(this, mouseX, mouseY);
+
+    Timer t = null;
+    try {
+      t = (Timer) timerField.get(this.mc);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return;
+    }
+
+    GL11.glPushMatrix();
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    for (IGuiOverlay overlay : overlays) {
+      if(overlay != null && overlay.isVisible()) {
+        overlay.draw(realMx, realMy, t.renderPartialTicks);
+      }
+    }
+    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GL11.glPopMatrix();
+
+    ttMan.drawTooltips(this, realMx, realMy);
   }
 
   @Override
   public void drawScreen(int par1, int par2, float par3) {
 
-    int mx = par1;
-    int my = par2;
-    for(IGuiOverlay overlay : overlays) {
+    int mx = realMx = par1;
+    int my = realMy = par2;
+    for (IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible() && isMouseInOverlay(par1, par2, overlay)) {
         mx = -5000;
         my = -5000;
+        this.drawItemStack(this.mc.thePlayer.inventory.getItemStack(), par1 - this.guiLeft - 8, par2 - this.guiTop - 8, null);
       }
     }
 
     super.drawScreen(mx, my, par3);
+  }
 
-    GL11.glPushMatrix();
-    GL11.glTranslatef(guiLeft, guiTop, 0.0F);
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
-    for(IGuiOverlay overlay : overlays) {
-      if(overlay != null && overlay.isVisible()) {
-        overlay.draw(par1, par2, par3);
-      }
+  // copied from super with hate
+  private void drawItemStack(ItemStack stack, int mouseX, int mouseY, String str)
+  {
+    GL11.glTranslatef(0.0F, 0.0F, 32.0F);
+    this.zLevel = 200.0F;
+    itemRender.zLevel = 200.0F;
+    FontRenderer font = null;
+    if(stack != null) {
+      font = stack.getItem().getFontRenderer(stack);
     }
-    GL11.glEnable(GL11.GL_DEPTH_TEST);
-    GL11.glPopMatrix();
+    if(font == null) {
+      font = fontRendererObj;
+    }
+    itemRender.renderItemAndEffectIntoGUI(font, this.mc.getTextureManager(), stack, mouseX, mouseY);
+    itemRender.renderItemOverlayIntoGUI(font, this.mc.getTextureManager(), stack, mouseX, mouseY, str);
+    this.zLevel = 0.0F;
+    itemRender.zLevel = 0.0F;
   }
 
   private boolean isMouseInOverlay(int mouseX, int mouseY, IGuiOverlay overlay) {
     int x = mouseX - getGuiLeft();
     int y = mouseY - getGuiTop();
-    if(overlay.getBounds().contains(x,y)) {
+    if(overlay.getBounds().contains(x, y)) {
       return true;
     }
     return false;
   }
-
 
   @Override
   public void removeToolTip(GuiToolTip toolTip) {
@@ -275,13 +331,42 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   @Override
-  public int getOverlayOffsetX() {  
+  public int getOverlayOffsetX() {
     return 0;
   }
-  
+
   @Override
   public void doActionPerformed(GuiButton guiButton) {
-    actionPerformed(guiButton); 
+    actionPerformed(guiButton);
   }
 
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public VisiblityData modifyVisiblity(GuiContainer gc, VisiblityData vd) {
+    return vd;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public Iterable<Integer> getItemSpawnSlots(GuiContainer gc, ItemStack is) {
+    return null;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gc) {
+    return Collections.<TaggedInventoryArea>emptyList();
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean handleDragNDrop(GuiContainer gc, int i, int i1, ItemStack is, int i2) {
+    return false;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    return false;
+  }
 }

@@ -81,7 +81,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if(gen.isActive()) {
-        txt = gen.tickPerBucketOfFuel / 1000 + " t/Mb";
+        txt = gen.tickPerBucketOfFuel / 1000 + " " + Lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }

@@ -135,15 +135,18 @@ public class MachineRecipes {
 
     //capacitor bank
 
-    ItemStack capBank = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
-    GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', Items.iron_ingot, 'c', capacitor, 'm', Blocks.redstone_block);
-    capBank = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
-    GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor2, 'm', Blocks.redstone_block);
-    capBank = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
-    GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor3, 'm', vibCry);
+    ItemStack capBank1 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
+    GameRegistry.addShapedRecipe(capBank1, "bcb", "cmc", "bcb", 'b', Items.iron_ingot, 'c', capacitor, 'm', Blocks.redstone_block);
+    ItemStack capBank2 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
+    GameRegistry.addShapedRecipe(capBank2, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor2, 'm', Blocks.redstone_block);
+    ItemStack capBank3 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
+    GameRegistry.addShapedRecipe(capBank3, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor3, 'm', vibCry);
 
     ConvertOldRecipe convertRecipe = new ConvertOldRecipe();
     GameRegistry.addRecipe(convertRecipe);
+
+    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
+    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
 
     //painter
     ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);

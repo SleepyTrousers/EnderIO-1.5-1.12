@@ -389,28 +389,28 @@ public class GuiHyperCube extends GuiContainerBase {
 
     x = 163;
     if(itemMode.isRecieveEnabled()) {
-      IconEIO.INPUT.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.INPUT_OLD.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
     x += 18;
     if(powerMode.isRecieveEnabled()) {
-      IconEIO.INPUT.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.INPUT_OLD.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
     x += 18;
     if(fluidMode.isRecieveEnabled()) {
-      IconEIO.INPUT.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.INPUT_OLD.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
 
     x = 163;
     if(itemMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+      IconEIO.OUTPUT_OLD.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
     x += 18;
     if(powerMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+      IconEIO.OUTPUT_OLD.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
     x += 18;
     if(fluidMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+      IconEIO.OUTPUT_OLD.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
 
   }

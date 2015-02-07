@@ -44,10 +44,10 @@ import crazypants.util.Lang;
 
 public class TooltipAddera {
 
-  public static TooltipAddera instance = new TooltipAddera();
+  public static final TooltipAddera instance = new TooltipAddera();
 
   //TODO: Need to decouple this stuff with a callback
-  private BallTipProvider btp = new BallTipProvider();
+  private final BallTipProvider btp = new BallTipProvider();
 
   static {
     MinecraftForge.EVENT_BUS.register(instance);
@@ -62,7 +62,7 @@ public class TooltipAddera {
       if(!addStirlinGeneratorTooltip(evt)) {
         int time = TileEntityFurnace.getItemBurnTime(evt.itemStack);
         if(time > 0) {
-          evt.toolTip.add("Burn time " + time);
+          evt.toolTip.add(Lang.localize("tooltip.burntime") + " " + time);
         }
       }
     }
@@ -96,11 +96,11 @@ public class TooltipAddera {
     IGrindingMultiplier gb = CrusherRecipeManager.getInstance().getGrindballFromStack(evt.itemStack);
     if(gb != null) {
       btp.ball = gb;
-      TooltipAddera.instance.addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
+      addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
     }
 
     if(Config.addRegisterdNameTooltip) {
-      UniqueIdentifier uid = null;
+      UniqueIdentifier uid;
       Block block = Block.getBlockFromItem(evt.itemStack.getItem());
       if(block != null && block != Blocks.air) {
         uid = GameRegistry.findUniqueIdentifierFor(block);
@@ -108,7 +108,7 @@ public class TooltipAddera {
         uid = GameRegistry.findUniqueIdentifierFor(evt.itemStack.getItem());
       }
       if(uid != null) {
-        evt.toolTip.add(EnumChatFormatting.AQUA + "UID: " + uid.toString() + " Meta: " + evt.itemStack.getItemDamage());
+        evt.toolTip.add(EnumChatFormatting.AQUA + Lang.localize("tooltip.uid") + " " + uid.toString() + " " + Lang.localize("tooltip.meta") + " " + evt.itemStack.getItemDamage());
       }
     }
 
@@ -116,9 +116,9 @@ public class TooltipAddera {
       int[] ids = OreDictionary.getOreIDs(evt.itemStack);
       if(ids != null && ids.length > 0) {
         if(ids.length == 1) {
-          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary: " + OreDictionary.getOreName(ids[0]));
+          evt.toolTip.add(EnumChatFormatting.AQUA + Lang.localize("tooltip.oredict") + " " + OreDictionary.getOreName(ids[0]));
         } else {
-          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary:");
+          evt.toolTip.add(EnumChatFormatting.AQUA + Lang.localize("tooltip.oredict"));
           for (int id : ids) {
             String name = OreDictionary.getOreName(id);
             evt.toolTip.add(EnumChatFormatting.AQUA + "  " + name);
@@ -130,7 +130,7 @@ public class TooltipAddera {
   }
 
   private static boolean addStirlinGeneratorTooltip(ItemTooltipEvent evt) {
-    if(evt.entityPlayer.openContainer instanceof StirlingGeneratorContainer) {
+    if(evt.entityPlayer != null && evt.entityPlayer.openContainer instanceof StirlingGeneratorContainer) {
       AbstractMachineEntity te = ((StirlingGeneratorContainer)evt.entityPlayer.openContainer).getTileEntity();
       if(te instanceof TileEntityStirlingGenerator) {
         TileEntityStirlingGenerator gen = (TileEntityStirlingGenerator) te;
@@ -259,19 +259,18 @@ public class TooltipAddera {
   }
 
   public static void addDetailedTooltipFromResources(List list, String unlocalizedName) {
-    addTooltipFromResources(list, unlocalizedName, ".tooltip.detailed.line");
+    addTooltipFromResources(list, unlocalizedName.concat(".tooltip.detailed.line"));
   }
 
   public static void addBasicTooltipFromResources(List list, String unlocalizedName) {
-    addTooltipFromResources(list, unlocalizedName, ".tooltip.basic.line");
+    addTooltipFromResources(list, unlocalizedName.concat(".tooltip.basic.line"));
   }
 
   public static void addCommonTooltipFromResources(List list, String unlocalizedName) {
-    addTooltipFromResources(list, unlocalizedName, ".tooltip.common.line");
+    addTooltipFromResources(list, unlocalizedName.concat(".tooltip.common.line"));
   }
 
-  public static void addTooltipFromResources(List list, String unlocalizedName, String tooltipTag) {
-    String keyBase = unlocalizedName + tooltipTag;
+  public static void addTooltipFromResources(List list, String keyBase) {
     boolean done = false;
     int line = 1;
     while (!done) {
@@ -290,15 +289,19 @@ public class TooltipAddera {
     if(itemstack.getItem() == null) {
       return;
     }
-    String unlock = null;
+    String unloc = null;
     //    Block blk = Block.getBlockFromItem(itemstack.getItem());
     //    if(blk != null && blk != Blocks.air) {
     //      unlock = blk.getUnlocalizedName();
     //    }
-    if(unlock == null) {
-      unlock = itemstack.getItem().getUnlocalizedName();
+    
+    if (itemstack.getItem() instanceof IResourceTooltipProvider) {
+      unloc = ((IResourceTooltipProvider)itemstack.getItem()).getUnlocalizedNameForTooltip(itemstack);
     }
-    addDetailedTooltipFromResources(list, unlock);
+    if(unloc == null) {
+      unloc = itemstack.getItem().getUnlocalizedName(itemstack);
+    }
+    addDetailedTooltipFromResources(list, unloc);
   }
 
   private static class BallTipProvider implements IAdvancedTooltipProvider {

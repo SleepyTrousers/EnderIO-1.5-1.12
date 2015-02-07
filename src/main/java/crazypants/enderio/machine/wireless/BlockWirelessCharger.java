@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.wireless;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -11,11 +12,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.Util;
 
 public class BlockWirelessCharger extends BlockEio implements IResourceTooltipProvider /* IGuiHandler */{
 
@@ -36,21 +35,6 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
   protected BlockWirelessCharger() {
     super(ModObject.blockWirelessCharger.unlocalisedName, TileWirelessCharger.class);
     setLightOpacity(1);
-  }
-
-  @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-      if(!world.isRemote) {
-        Util.dropItems(world, new ItemStack(this), x, y, z, true);
-      }
-      breakBlock(world, x, y, z, this, 0);
-      world.setBlockToAir(x, y, z);
-      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
-      return true;
-    }
-    return false;
   }
 
   @Override
@@ -117,6 +101,31 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
+
+  @Override
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    super.onBlockPlacedBy(world, x, y, z, player, stack);
+
+    if(stack.stackTagCompound != null) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileWirelessCharger) {
+        ((TileWirelessCharger) te).readCustomNBT(stack.stackTagCompound);
+      }
+    }
+  }
+
+  @Override
+  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+    drop.stackTagCompound = new NBTTagCompound();
+    if(te instanceof TileWirelessCharger) {
+      ((TileWirelessCharger) te).writeCustomNBT(drop.stackTagCompound);
+    }
   }
 
 }

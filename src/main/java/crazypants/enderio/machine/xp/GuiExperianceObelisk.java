@@ -15,6 +15,7 @@ import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiExperianceObelisk extends GuiMachineBase<TileExperienceOblisk> {
   
@@ -42,38 +43,38 @@ public class GuiExperianceObelisk extends GuiMachineBase<TileExperienceOblisk> {
     p = new IconButtonEIO(this, 800, x, y, IconEIO.SINGLE_PLUS);
     p.setSize(bw, bw);
     p.setIconMargin(2, 2);
-    p.setToolTip("Store 1", "level of player XP");
+    p.setToolTip(Lang.localize("gui.machine.button.storelevel"), Lang.localize("gui.machine.tooltip.storelevel"));
 
     x += spacing + bw;
     pp = new IconButtonEIO(this, 801, x, y, IconEIO.DOUBLE_PLUS);
     pp.setSize(bw, bw);
     pp.setIconMargin(2, 2);
-    pp.setToolTip("Store 10", "levels of player XP");
+    pp.setToolTip(Lang.localize("gui.machine.button.storelevels"), Lang.localize("gui.machine.tooltip.storelevels"));
 
     x += spacing + bw;
     ppp = new IconButtonEIO(this, 802, x, y, IconEIO.TRIPLE_PLUS);
     ppp.setSize(bw, bw);
     ppp.setIconMargin(2, 2);
-    ppp.setToolTip("Store all", "player XP");
+    ppp.setToolTip(Lang.localize("gui.machine.button.storeall"), Lang.localize("gui.machine.tooltip.storeall"));
 
     x = startX;
     y = 75;
     m = new IconButtonEIO(this, 803, x, y, IconEIO.SINGLE_MINUS);
     m.setSize(bw, bw);
     m.setIconMargin(2, 2);
-    m.setToolTip("Retrieve 1", "player XP level");
+    m.setToolTip(Lang.localize("gui.machine.button.retrievelevel"), Lang.localize("gui.machine.tooltip.retrievelevel"));
 
     x += spacing + bw;
     mm = new IconButtonEIO(this, 804, x, y, IconEIO.DOUBLE_MINUS);
     mm.setSize(bw, bw);
     mm.setIconMargin(2, 2);
-    mm.setToolTip("Retrieve 10", "player XP levels");
+    mm.setToolTip(Lang.localize("gui.machine.button.retrievelevels"), Lang.localize("gui.machine.tooltip.retrievelevels"));
 
     x += spacing + bw;
     mmm = new IconButtonEIO(this, 805, x, y, IconEIO.TRIPLE_MINUS);
     mmm.setSize(bw, bw);
     mmm.setIconMargin(2, 2);
-    mmm.setToolTip("Retrieve all");
+    mmm.setToolTip(Lang.localize("gui.machine.button.retrieveall"));
   }
 
   @Override

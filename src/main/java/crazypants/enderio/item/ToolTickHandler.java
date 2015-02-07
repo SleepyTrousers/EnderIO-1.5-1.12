@@ -2,6 +2,7 @@ package crazypants.enderio.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Mouse;
@@ -12,6 +13,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.network.PacketHandler;
 
@@ -47,8 +49,8 @@ public class ToolTickHandler {
           }          
           if(stack.getItem() == EnderIO.itemConduitProbe) {            
             changeConduitProbeMode(stack);              
-          } else if(stack.getItem() ==EnderIO.itemYetaWench) {          
-            changeYetaWrenchMode(stack);
+          } else if(stack.getItem() instanceof IConduitControl) {          
+            changeDisplayMode(stack, player);
           }
         }
         slotSelected = -1;
@@ -57,7 +59,10 @@ public class ToolTickHandler {
     }
   }
 
-  private void changeYetaWrenchMode(ItemStack stack) {
+  private void changeDisplayMode(ItemStack stack, EntityPlayer player) {
+    if (!((IConduitControl)stack.getItem()).showOverlay(stack, player)) {
+      return;
+    }
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(stack);
     if(curMode == null) {
       curMode = ConduitDisplayMode.ALL;
@@ -85,7 +90,7 @@ public class ToolTickHandler {
 
   private boolean isToolSelected(EntityClientPlayerMP player) {
     return player != null && player.getCurrentEquippedItem() != null && 
-        (player.getCurrentEquippedItem().getItem() == EnderIO.itemYetaWench || player.getCurrentEquippedItem().getItem() == EnderIO.itemConduitProbe);
+        (player.getCurrentEquippedItem().getItem() instanceof IConduitControl || player.getCurrentEquippedItem().getItem() == EnderIO.itemConduitProbe);
   }
 
 }

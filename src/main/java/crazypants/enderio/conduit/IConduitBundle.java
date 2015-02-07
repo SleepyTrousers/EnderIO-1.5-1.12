@@ -16,6 +16,7 @@ import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerHandler;
@@ -93,12 +94,16 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, II
 
   void setFacadeId(Block block, boolean triggerUpdate);
 
-  Block getFacadeId();
-
   void setFacadeMetadata(int meta);
 
+  void setFacadeType(FacadeType type);
+
+  Block getFacadeId();
+
   int getFacadeMetadata();
-  
+
+  FacadeType getFacadeType();
+
   World getWorld();
 
   void setGridNode(Object node);

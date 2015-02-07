@@ -140,7 +140,7 @@ public class BaseSettingsPanel implements ITabPanel {
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);
-    IconEIO icon = new IconEIO(10, 60, 64, 20);
+    IconEIO icon = new IconEIO(10, 48, 64, 16);
     icon.renderIcon(x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;

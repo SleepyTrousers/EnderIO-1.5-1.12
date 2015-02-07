@@ -134,6 +134,8 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
 
+    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), Lang.localize("gui.conduit.item.priority"));
+    
     x = priLeft + priWidth + 9;    
     priUpB = new IconButtonEIO(gui, ID_PRIORITY_UP, x, y, IconEIO.ADD_BUT);
     priUpB.setSize(8, 8);
@@ -141,8 +143,6 @@ public class ItemSettings extends BaseSettingsPanel {
     y += 8;
     priDownB = new IconButtonEIO(gui, ID_PRIORITY_DOWN, x, y, IconEIO.MINUS_BUT);
     priDownB.setSize(8, 8);
-
-    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 20), Lang.localize("gui.conduit.item.priority"));
 
     gui.getContainer().addFilterListener(new FilterChangeListener() {
 

@@ -35,6 +35,7 @@ import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
+import crazypants.util.ItemUtil;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -250,8 +251,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       return item;
     } else if(network == null) {
       return item;
+    } else {
+      IItemFilter filter = inputFilters.get(from);
+      ItemConduitNetwork network = (ItemConduitNetwork) getNetwork();
+      if(filter != null && !filter.doesItemPassFilter(network.getInventory(this, from.getOpposite()), item)) {
+        return item;
+      }
     }
-
     return network.sendItems(this, item, from);
   }
 
@@ -404,26 +410,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public int getMaximumExtracted(ForgeDirection dir) {
-    int numUpgrades = getNumSpeedUpgrades(dir);
-    //int res = (int)Math.pow(4, numUpgrades);
-    int res = 4 + (numUpgrades * 4);
-    return res;
+    ItemStack stack = speedUpgrades.get(dir);
+    if(stack == null) {
+      return SpeedUpgrade.BASE_MAX_EXTRACTED;
+    }
+    SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(stack);
+    return speedUpgrade.getMaximumExtracted(stack.stackSize);
   }
 
   @Override
   public float getTickTimePerItem(ForgeDirection dir) {
-    int numUpgrades = getNumSpeedUpgrades(dir);
     float maxExtract = 10f / getMaximumExtracted(dir);
     return maxExtract;
-
-  }
-
-  private int getNumSpeedUpgrades(ForgeDirection dir) {
-    ItemStack stack = speedUpgrades.get(dir);
-    if(stack == null) {
-      return 0;
-    }
-    return stack.stackSize;
   }
 
   @Override

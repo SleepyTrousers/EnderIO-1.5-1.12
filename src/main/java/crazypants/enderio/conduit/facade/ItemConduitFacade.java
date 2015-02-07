@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,14 +21,27 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.util.Util;
+import crazypants.util.Lang;
 
-public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider {
+public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider {
+
+  public static enum FacadeType {
+    BASIC,
+    HARDENED;
+
+    public String getUnlocName(Item me) {
+      return this == BASIC ? me.getUnlocalizedName() : me.getUnlocalizedName() + ".hardened";
+    }
+  }
+
+  private IIcon[] icons;
 
   public static ItemConduitFacade create() {
     ItemConduitFacade result = new ItemConduitFacade();
@@ -39,22 +53,52 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
 
   protected ItemConduitFacade() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName("enderio." + ModObject.itemConduitFacade.name());
     setMaxStackSize(64);
+    setHasSubtypes(true);
   }
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemConduitFacade.unlocalisedName);
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
+    for (FacadeType t : FacadeType.values()) {
+      list.add(new ItemStack(item, 1, t.ordinal()));
+    }
+  }
+
+  @Override
+  public String getUnlocalizedName(ItemStack stack) {
+    return FacadeType.values()[stack.getItemDamage()].getUnlocName(this);
+  }
+
+  @Override
+  public String getUnlocalizedName() {
+    return "item.enderio." + ModObject.itemConduitFacade.name();
+  }
+
   @Override
   public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
+    icons = new IIcon[FacadeType.values().length];
+    icons[0] = itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
+    icons[1] = IIconRegister.registerIcon("enderio:conduitFacadeHardened");
     overlayIcon = IIconRegister.registerIcon("enderio:conduitFacadeOverlay");
   }
 
   public IIcon getOverlayIcon() {
     return overlayIcon;
+  }
+
+  @Override
+  public IIcon getIconFromDamage(int damage) {
+    return icons[damage % icons.length];
+  }
+
+  @Override
+  public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+    return getIconFromDamage(stack.getItemDamage());
   }
 
   @Override
@@ -77,6 +121,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
       IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
       bundle.setFacadeId(PainterUtil.getSourceBlock(itemStack));
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
+      bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
       if(!player.capabilities.isCreativeMode) {
         itemStack.stackSize--;
       }
@@ -91,7 +136,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
   public boolean isFull3D() {
     return true;
   }
- 
+
   public ItemStack createItemStackForSourceBlock(Block id, int itemDamage) {
     if(id == null) {
       id = EnderIO.blockConduitFacade;
@@ -101,34 +146,45 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
     return result;
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(item, par2EntityPlayer, list, par4);
-
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    return getUnlocalizedName();
+  }
+
+  @SuppressWarnings("rawtypes")
   @Override
   @SideOnly(Side.CLIENT)
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
 
-
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     if(PainterUtil.getSourceBlock(itemstack) == null) {
-      list.add("Not Painted");
+      list.add(Lang.localize("item.itemConduitFacade.tooltip.notpainted"));
     } else {
       list.add(PainterUtil.getTooltTipText(itemstack));
     }
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    if(itemstack.getItemDamage() == FacadeType.HARDENED.ordinal()) {
+      list.add("");
+      list.add(Lang.localize(getUnlocalizedName(itemstack) + ".tooltip", false));
+    }
   }
 
   public final class FacadePainterRecipe extends BasicPainterTemplate {
@@ -156,11 +212,11 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
       }
       return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
     }
-    
+
     @Override
     public boolean isValidTarget(ItemStack target) {
       return target != null && target.getItem() == ItemConduitFacade.this;
-    }  
+    }
   }
-  
+
 }

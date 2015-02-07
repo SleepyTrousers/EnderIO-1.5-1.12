@@ -39,6 +39,7 @@ import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
@@ -119,8 +120,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-    boolean renderedFacade = !renderFacade(x, y, z, rb, bundle, player);
-    boolean renderConduit = !renderedFacade && (BlockConduitBundle.theRenderPass == 0 || rb.hasOverrideBlockTexture());
+    boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
+    boolean renderConduit = !renderedFacade;
 
     if(renderConduit) {
       BlockCoord loc = bundle.getLocation();
@@ -138,31 +139,32 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   }
 
   private boolean renderFacade(int x, int y, int z, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
-    boolean res = true;
+    boolean res = false;
     if(bundle.hasFacade()) {
 
       Block facadeId = bundle.getFacadeId();
       if(ConduitUtil.isFacadeHidden(bundle, player)) {
+        Tessellator.instance.setColorOpaque_F(1, 1, 1);
         bundle.setFacadeId(null, false);
         bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
 
         BlockConduitFacade facb = EnderIO.blockConduitFacade;
         facb.setBlockOverride(bundle);
         facb.setBlockBounds(0, 0, 0, 1, 1, 1);
-        rb.setRenderBoundsFromBlock(facb);
-        rb.renderStandardBlock(facb, x, y, z);
+        if(!rb.hasOverrideBlockTexture()) {
+          rb.setRenderBoundsFromBlock(facb);
+          rb.renderStandardBlock(facb, x, y, z);
+        }
         facb.setBlockOverride(null);
 
         bundle.setFacadeId(facadeId, false);
-
-        
       } else if(facadeId != null) {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
-        res = !isFacadeOpaque;
+        res = isFacadeOpaque;
 
         if((isFacadeOpaque && BlockConduitBundle.theRenderPass == 0) ||
-            (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1)) {
+            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1))) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);
           try {
@@ -178,7 +180,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         }
       }
 
-
     } else {
       bundle.setFacadeRenderAs(FacadeRenderState.NONE);
     }
@@ -190,7 +191,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     Tessellator tessellator = Tessellator.instance;
     tessellator.setColorOpaque_F(1, 1, 1);
     tessellator.addTranslation((float) x, (float) y, (float) z);
-    
+
     // Conduits
     Set<ForgeDirection> externals = new HashSet<ForgeDirection>();
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
@@ -244,30 +245,27 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         }
 
       } else if(ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL && !rb.hasOverrideBlockTexture()) {
-        IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon();
+        IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         CubeRenderer.render(component.bound, tex);
       }
     }
+    //render these after the 'normal' conduits so help with proper blending
+    for (BoundingBox wireBound : wireBounds) {
+      Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.25f);
+      CubeRenderer.render(wireBound, EnderIO.blockConduitFacade.getIcon(0, 0));
+    }
 
-    if(!rb.hasOverrideBlockTexture()) {
-      //render these after the 'normal' conduits so help with proper blending
-      for (BoundingBox wireBound : wireBounds) {
-        Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.25f);
-        CubeRenderer.render(wireBound, EnderIO.blockConduitFacade.getIcon(0, 0));
-      }
-
-      Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
-      // External connection terminations
-      for (ForgeDirection dir : externals) {
-        renderExternalConnection(dir);
-      }
+    Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
+    // External connection terminations
+    for (ForgeDirection dir : externals) {
+      renderExternalConnection(dir);
     }
     tessellator.addTranslation(-(float) x, -(float) y, -(float) z);
 
   }
 
   private void renderExternalConnection(ForgeDirection dir) {
-    IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon();
+    IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
       CubeRenderer.render(bb, tex, true);

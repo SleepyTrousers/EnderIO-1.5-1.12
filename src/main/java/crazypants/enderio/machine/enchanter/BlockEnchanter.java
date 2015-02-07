@@ -17,6 +17,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.Util;
 
@@ -68,21 +69,9 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     }
     world.markBlockForUpdate(x, y, z);
   }
-
+  
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null) {
-      if(entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-        removedByPlayer(world, entityPlayer, x, y, z, false);
-        tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
-        return true;
-      }
-    }
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, x, y, z);
     }
@@ -90,31 +79,25 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvested) {
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileEnchanter) {
-        TileEnchanter enchanter = (TileEnchanter) te;
-        if(!player.capabilities.isCreativeMode) {
-          ItemStack itemStack = new ItemStack(this);
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
-
-          if(enchanter.getStackInSlot(0) != null) {
-            Util.dropItems(world, enchanter.getStackInSlot(0), x, y, z, true);
-          }
-          if(enchanter.getStackInSlot(1) != null) {
-            Util.dropItems(world, enchanter.getStackInSlot(1), x, y, z, true);
-          }
-        }
-      }
+  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEnchanter) {
+      dropItems(world, x, y, z, (TileEnchanter) te);
     }
-    return super.removedByPlayer(world, player, x, y, z, harvested);
+    super.breakBlock(world, x, y, z, block, meta);
+  }
+
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
+
+  private void dropItems(World world, int x, int y, int z, TileEnchanter te) {
+    if(te.getStackInSlot(0) != null) {
+      Util.dropItems(world, te.getStackInSlot(0), x, y, z, true);
+    }
+    if(te.getStackInSlot(1) != null) {
+      Util.dropItems(world, te.getStackInSlot(1), x, y, z, true);
+    }
   }
 
   @Override
@@ -154,13 +137,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     }
     return null;
   }
-
-  @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-    super.breakBlock(world, x, y, z, block, p_149749_6_);
-    world.removeTileEntity(x, y, z);
-  }
-
+  
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();

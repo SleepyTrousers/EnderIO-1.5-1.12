@@ -102,7 +102,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 4000, gen.getCoolantTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
-        txt = gen.getNumTicksPerMbCoolant() + " t/MB";
+        txt = gen.getNumTicksPerMbCoolant() + " " + Lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
       }
@@ -124,7 +124,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       RenderUtil.renderGuiTank(gen.getFuelTank().getFluid(), 4000, gen.getFuelTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
-        txt = gen.getNumTicksPerMbFuel() + " t/MB";
+        txt = gen.getNumTicksPerMbFuel() + " " + Lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
       }

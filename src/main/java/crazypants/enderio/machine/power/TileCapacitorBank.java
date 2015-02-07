@@ -143,6 +143,18 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
     setIoMode(faceHit, mode, true);
   }
 
+  @Override
+  public void clearAllIoModes() {
+    if(faceModes != null) {
+      faceModes = null;
+      receptorsDirty = true;
+      getController().masterReceptorsDirty = true;
+      notifyNeighbours = true;
+      render = true;
+      updateBlock();
+    }
+  }
+
   public void setIoMode(ForgeDirection faceHit, IoMode mode, boolean updateReceptors) {
     if(mode == IoMode.NONE && faceModes == null) {
       return;

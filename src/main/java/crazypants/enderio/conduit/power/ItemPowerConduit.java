@@ -41,7 +41,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     return new PowerConduit(stack.getItemDamage());
   }
 
@@ -56,5 +56,9 @@ public class ItemPowerConduit extends AbstractItemConduit {
     ICapacitor cap = PowerConduit.getCapacitors()[itemStack.getItemDamage()];
     list.add(PREFIX + PowerDisplayUtil.formatPower(cap.getMaxEnergyExtracted()) + POSTFIX);
   }
-
+  
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 }

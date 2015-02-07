@@ -117,8 +117,8 @@ enderio.itemEnderface.noSync=Le Masque d'Ender n'est pas synchronisé avec l'End
 enderio.gui.enabled=Activé
 enderio.gui.disabled=Désactivé
 enderio.gui.send=Envoyer
-enderio.gui.recieve=Recevoir
-enderio.gui.sendRecieve=Envoyer & Recevoir
+enderio.gui.receive=Recevoir
+enderio.gui.sendReceive=Envoyer & Recevoir
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Mode Redstone

@@ -418,6 +418,16 @@ addOreDictionaryTooltips=true
       </output>
     </recipe>
 
+    <recipe name="EmeraldOre" energyCost="3000">
+      <input>
+        <itemStack oreDictionary="oreEmerald" />
+      </input>
+      <output>
+        <itemStack modID="minecraft" itemName="emerald" number="1" />
+        <itemStack modID="minecraft" itemName="emerald" number="1" chance="0.25" />
+      </output>
+    </recipe>
+
     <recipe name="LapisLazuliOre" energyCost="3000">
       <input>
         <itemStack oreDictionary="oreLapis" />
@@ -850,7 +860,7 @@ addOreDictionaryTooltips=true
       </output>
     </recipe>
     
-    <recipe name="Dense Diamon Ore" energyCost="2400">
+    <recipe name="Dense Diamond Ore" energyCost="2400">
       <input>
         <itemStack oreDictionary="denseoreDiamond" number="1" />
       </input>

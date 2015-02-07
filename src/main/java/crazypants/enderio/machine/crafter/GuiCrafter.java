@@ -16,6 +16,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
 
@@ -28,8 +29,8 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
     int x = getXSize() - 5 - 16;
     int y = 43;
     bufferSizeB = new ToggleButtonEIO(this, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
-    bufferSizeB.setSelectedToolTip("Buffering item stacks");
-    bufferSizeB.setUnselectedToolTip("Buffering single items");
+    bufferSizeB.setSelectedToolTip(Lang.localize("gui.machine.bufferingstacks"));
+    bufferSizeB.setUnselectedToolTip(Lang.localize("gui.machine.bufferingsingle"));
     bufferSizeB.setSelected(te.isBufferStacks());
   }
 
@@ -71,7 +72,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   @Override
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation()
-        + " Per Craft");
+        + " " + Lang.localize("gui.machine.percraft"));
     super.updatePowerBarTooltip(text);
   }
 

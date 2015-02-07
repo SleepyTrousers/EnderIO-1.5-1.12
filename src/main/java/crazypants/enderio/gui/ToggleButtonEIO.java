@@ -6,8 +6,8 @@ import crazypants.gui.IGuiScreen;
 public class ToggleButtonEIO extends IconButtonEIO {
 
   private boolean selected;
-  private IconEIO unselectedIcon;
-  private IconEIO selectedIcon;
+  private final IconEIO unselectedIcon;
+  private final IconEIO selectedIcon;
 
   private String[] selectedTooltip;
   private String[] unselectedTooltip;
@@ -52,12 +52,15 @@ public class ToggleButtonEIO extends IconButtonEIO {
 
   @Override
   public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
-    boolean result = super.mousePressed(par1Minecraft, par2, par3);
-    if(result) {
-      setSelected(!selected);
+    if(super.mousePressed(par1Minecraft, par2, par3)) {
+      return toggleSelected();
     }
-    return result;
+    return false;
+  }
 
+  protected boolean toggleSelected() {
+    setSelected(!selected);
+    return true;
   }
 
   public void setSelectedToolTip(String... tt) {

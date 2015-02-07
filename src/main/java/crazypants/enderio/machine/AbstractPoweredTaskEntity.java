@@ -22,6 +22,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected boolean startFailed = false;  
   
   protected int lastProgressScaled = -1;
+  protected int ticksSinceLastProgressUpdate;
 
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
@@ -124,6 +125,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected void sendTaskProgressPacket() {
     PacketHandler.sendToAllAround(new PacketCurrentTaskProgress(this), this);
+    ticksSinceLastProgressUpdate = 0;
   }
 
   protected boolean checkProgress(boolean redstoneChecksPassed) {
@@ -140,7 +142,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     }
     
     int curScaled = getProgressScaled(16);
-    if(curScaled != lastProgressScaled) {
+    if(++ticksSinceLastProgressUpdate >= 20 || curScaled != lastProgressScaled) {
       sendTaskProgressPacket();
       lastProgressScaled = curScaled;
     }

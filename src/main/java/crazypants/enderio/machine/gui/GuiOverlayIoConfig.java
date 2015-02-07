@@ -11,6 +11,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
+import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.gui.IGuiScreen;
@@ -21,6 +22,7 @@ import crazypants.util.BlockCoord;
 public class GuiOverlayIoConfig implements IGuiOverlay {
 
   private boolean visible = false;
+  private ToggleButtonEIO configB;
 
   private IGuiScreen screen;
 
@@ -37,6 +39,10 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
   public GuiOverlayIoConfig(Collection<BlockCoord> bc) {
     coords.addAll(bc);
+  }
+
+  public void setConfigB(ToggleButtonEIO configB) {
+    this.configB = configB;
   }
 
   @Override
@@ -98,7 +104,9 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   @Override
   public void setVisible(boolean visible) {
     this.visible = visible;
-
+    if(configB != null) {
+      configB.setSelected(visible);
+    }
   }
 
   @Override

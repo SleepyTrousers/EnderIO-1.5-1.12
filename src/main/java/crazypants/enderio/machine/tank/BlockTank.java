@@ -3,8 +3,10 @@ package crazypants.enderio.machine.tank;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +15,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,21 +47,31 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   protected BlockTank() {
     super(ModObject.blockTank, TileTank.class);
     setStepSound(Block.soundTypeGlass);
+    setLightOpacity(0);
   }
-
+  
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemTank.class, ModObject.blockTank.unlocalisedName);
-    if(teClass != null) {
-      GameRegistry.registerTileEntity(teClass, ModObject.blockTank.unlocalisedName + "TileEntity");
-    }
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TANK, this);
-    setLightOpacity(0);
+    GameRegistry.registerBlock(this, BlockItemTank.class, modObject.unlocalisedName);
+    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
+    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
   }
 
   @Override
   public int damageDropped(int par1) {
     return par1;
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list) {
+    list.add(new ItemStack(this, 1, 0));
+    list.add(new ItemStack(this, 1, 1));
+  }
+  
+  @Override
+  public TileEntity createTileEntity(World world, int metadata) {
+    return new TileTank(metadata);
   }
 
   @Override
@@ -132,11 +143,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       }
     }
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
-    return new TileTank(var2);
   }
 
   @Override

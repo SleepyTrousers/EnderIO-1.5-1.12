@@ -130,7 +130,7 @@ public class CrusherRecipeManager {
   public void addCustomRecipes(String xmlDef) {
     RecipeConfig config;
     try {
-      config = RecipeConfigParser.parse(xmlDef, null);
+      config = RecipeConfigParser.parse(xmlDef, new GrindingBallTagHandler());
     } catch (Exception e) {
       Log.error("Error parsing custom xml");
       return;
