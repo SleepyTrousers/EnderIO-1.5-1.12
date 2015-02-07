@@ -66,14 +66,14 @@ public final class IMC {
   /**
    * Key for an ItemStack message to add an item to the Painters paint source
    * whitelist. Calls
-   * {@link PaintSourceValidator#addToWhitelist(net.minecraft.item.ItemStack) 
+   * {@link PaintSourceValidator#addToWhitelist(net.minecraft.item.ItemStack)}
    */
   public static final String PAINTER_WHITELIST_ADD = "painter:whitelist:add";
 
   /**
    * Key for an ItemStack message to add an item to the Painters paint source
    * blacklist. Calls
-   * {@link PaintSourceValidator#addToBlacklist(net.minecraft.item.ItemStack) 
+   * {@link PaintSourceValidator#addToBlacklist(net.minecraft.item.ItemStack)}
    */
   public static final String PAINTER_BLACKLIST_ADD = "painter:blacklist:add";
 
