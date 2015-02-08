@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
@@ -12,6 +13,7 @@ import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -34,6 +36,7 @@ public class GuiVacuumChest extends GuiContainerBase {
   private static final int ID_RANGE_DOWN = 4712;
   private static final int ID_WHITELIST  = 4713;
   private static final int ID_MATCHMETA  = 4714;
+  private static final int ID_REDSTONE   = 4715;
 
   private final TileVacuumChest te;
 
@@ -42,6 +45,7 @@ public class GuiVacuumChest extends GuiContainerBase {
   private final IconButtonEIO rangeDownB;
   private final ToggleButtonEIO whiteListB;
   private final ToggleButtonEIO useMetaB;
+  private final RedstoneModeButton rsB;
   private final String headerChest;
   private final String headerFilter;
   private final String headerRange;
@@ -65,6 +69,10 @@ public class GuiVacuumChest extends GuiContainerBase {
     y += 8;
     rangeDownB = new IconButtonEIO(this, ID_RANGE_DOWN, x, y, IconEIO.MINUS_BUT);
     rangeDownB.setSize(8, 8);
+
+    x = xSize - 16 - 7;
+    y = 104;
+    rsB = new RedstoneModeButton(this, ID_REDSTONE, x, y, te, new BlockCoord(te));
 
     x = FILTER_LEFT + TileVacuumChest.FILTER_SLOTS*18 + 2;
     y = 86;
@@ -102,6 +110,7 @@ public class GuiVacuumChest extends GuiContainerBase {
 
     rangeUpB.onGuiInit();
     rangeDownB.onGuiInit();
+    rsB.onGuiInit();
     addToolTip(rangeTooltip);
 
     filterChanged();

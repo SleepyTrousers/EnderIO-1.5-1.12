@@ -19,11 +19,14 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.IRedstoneModeControlable;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
+import net.minecraft.block.Block;
 
-public class TileVacuumChest extends TileEntityEio implements IEntitySelector, IInventory {
+public class TileVacuumChest extends TileEntityEio implements IEntitySelector, IInventory, IRedstoneModeControlable {
 
   public static final int ITEM_ROWS = 3;
   public static final int ITEM_SLOTS = 9*ITEM_ROWS;
@@ -34,11 +37,31 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   private ItemFilter filter;
   private ItemStack filterItem;
 
+  protected RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
+  protected boolean redstoneCheckPassed;
+  private boolean redstoneStateDirty = true;
+
   @Override
   public void updateEntity() {
-    if(!isFull()) {
+    if(redstoneStateDirty) {
+      updateRedstoneStatus();
+    }
+    if(redstoneCheckPassed && !isFull()) {
       doHoover();
     }
+  }
+
+  private void updateRedstoneStatus() {
+    boolean prevRedstoneCheckPassed = redstoneCheckPassed;
+    redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
+    redstoneStateDirty = false;
+    if(redstoneCheckPassed != prevRedstoneCheckPassed) {
+      updateBlock();
+    }
+  }
+
+  public void onNeighborBlockChange(Block blockId) {
+    redstoneStateDirty = true;
   }
 
   @Override
@@ -268,8 +291,21 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   }
 
   @Override
+  public RedstoneControlMode getRedstoneControlMode() {
+    return redstoneControlMode;
+  }
+
+  @Override
+  public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
+    this.redstoneControlMode = redstoneControlMode;
+    redstoneStateDirty = true;
+    updateBlock();
+  }
+
+  @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     readContentsFromNBT(nbtRoot);
+    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
   }
 
   public void readContentsFromNBT(NBTTagCompound nbtRoot) {
@@ -301,11 +337,18 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
       filterItem = null;
       filter = null;
     }
+
+    int rsContr = nbtRoot.getInteger("redstoneControlMode");
+    if(rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
+      rsContr = 0;
+    }
+    redstoneControlMode = RedstoneControlMode.values()[rsContr];
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     writeContentsToNBT(nbtRoot);
+    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
   }
 
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
@@ -325,6 +368,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
       filterItem.writeToNBT(filterNBT);
       nbtRoot.setTag("filter", filterNBT);
     }
+    nbtRoot.setInteger("redstoneControlMode", redstoneControlMode.ordinal());
   }
 
 }

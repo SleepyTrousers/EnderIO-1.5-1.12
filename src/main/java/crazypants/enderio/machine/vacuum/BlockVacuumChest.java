@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.vacuum;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.BlockEio;
@@ -13,10 +15,11 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 
-public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
+public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
 
   public static BlockVacuumChest create() {
     PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.class,PacketVaccumChest.class,PacketHandler.nextID(), Side.SERVER);
@@ -30,6 +33,19 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   protected BlockVacuumChest() {
     super(ModObject.blockVacuumChest.unlocalisedName, TileVacuumChest.class);
     setBlockTextureName("enderio:blockVacuumChest");
+  }
+
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
+  }
+
+  @Override
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
+    TileEntity ent = world.getTileEntity(x, y, z);
+    if(ent instanceof TileVacuumChest) {
+      ((TileVacuumChest) ent).onNeighborBlockChange(blockId);
+    }
   }
 
   @Override
