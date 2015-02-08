@@ -149,10 +149,11 @@ import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.MessageTileNBT;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
-import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.util.EntityUtil;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -189,6 +190,7 @@ public class EnderIO {
 
   //Teleporting
   public static BlockTravelAnchor blockTravelPlatform;
+  public static BlockTelePad blockTelePad;
   public static ItemTravelStaff itemTravelStaff;
 
   // Painter
@@ -335,11 +337,12 @@ public class EnderIO {
     blockVacuumChest = BlockVacuumChest.create();
 
     blockTransceiver = BlockTransceiver.create();
-    
+
     blockBuffer = BlockBuffer.create();
 
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
+    blockTelePad = BlockTelePad.create();
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();

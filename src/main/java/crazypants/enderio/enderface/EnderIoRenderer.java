@@ -13,7 +13,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;

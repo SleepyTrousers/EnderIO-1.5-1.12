@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.api.teleport;
 
 import crazypants.enderio.config.Config;
 

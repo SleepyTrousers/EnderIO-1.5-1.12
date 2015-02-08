@@ -16,6 +16,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;

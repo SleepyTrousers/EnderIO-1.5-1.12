@@ -1,13 +1,16 @@
-package crazypants.enderio.teleport;
-
-import java.util.UUID;
+package crazypants.enderio.api.teleport;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.util.BlockCoord;
 
 public interface ITravelAccessable {
+
+  public enum AccessMode {
+    PUBLIC,
+    PRIVATE,
+    PROTECTED
+  }
 
   boolean canBlockBeAccessed(EntityPlayer playerName);
 

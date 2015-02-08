@@ -26,12 +26,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.teleport.IItemOfTravel;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.TravelSource;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 

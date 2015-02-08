@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.teleport.anchor;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -17,6 +17,9 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.teleport.TravelController;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;

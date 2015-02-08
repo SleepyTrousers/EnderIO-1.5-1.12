@@ -95,6 +95,7 @@ public enum ModObject {
   itemXpTransfer,
 
   blockTravelAnchor,
+  blockTelePad,
   itemTravelStaff,
   itemMagnet,
   itemGliderWing,

@@ -7,7 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.Log;
-import crazypants.enderio.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.IItemOfTravel;
 
 public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainStaff, IMessage> {
 

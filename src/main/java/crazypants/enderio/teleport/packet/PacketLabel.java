@@ -7,8 +7,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.teleport.ITravelAccessable;
-import crazypants.enderio.teleport.TileTravelAnchor;
+import crazypants.enderio.api.teleport.ITravelAccessable;
 
 public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMessage> {
 

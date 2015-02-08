@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.api.teleport;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -8,6 +8,6 @@ public interface IItemOfTravel extends IEnergyContainerItem {
 
   boolean isActive(EntityPlayer ep, ItemStack equipped);
 
-  void extractInternal(ItemStack equipped, int powerUse2);
+  void extractInternal(ItemStack equipped, int power);
 
 }

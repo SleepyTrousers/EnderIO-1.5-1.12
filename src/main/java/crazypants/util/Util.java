@@ -21,6 +21,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.common.base.Charsets;
@@ -497,6 +498,19 @@ public class Util {
       return result;
     }
     return result;
+  }
+
+  public static ForgeDirection getDirFromOffset(int xOff, int yOff, int zOff) {
+    if(xOff != 0 && yOff == 0 && zOff == 0) {
+      return xOff < 0 ? ForgeDirection.WEST : ForgeDirection.EAST;
+    }
+    if(zOff != 0 && yOff == 0 && xOff == 0) {
+      return zOff < 0 ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
+    }
+    if(yOff != 0 && xOff == 0 && zOff == 0) {
+      return yOff < 0 ? ForgeDirection.DOWN : ForgeDirection.UP;
+    }
+    return ForgeDirection.UNKNOWN;
   }
   
   // copied from WAILA source to avoid API dependency

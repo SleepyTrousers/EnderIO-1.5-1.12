@@ -18,10 +18,10 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.enderface.te.MeProxy;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.ITravelAccessable;
 import crazypants.util.Lang;
 
 public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {

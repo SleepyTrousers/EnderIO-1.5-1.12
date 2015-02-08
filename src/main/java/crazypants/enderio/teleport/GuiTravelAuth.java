@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.MessageTileNBT;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;

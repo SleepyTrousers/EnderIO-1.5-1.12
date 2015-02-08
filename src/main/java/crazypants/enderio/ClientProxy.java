@@ -125,10 +125,10 @@ import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.enderio.material.MachinePartRenderer;
 import crazypants.enderio.material.Material;
-import crazypants.enderio.teleport.BlockTravelAnchor;
-import crazypants.enderio.teleport.TileTravelAnchor;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.render.IconUtil;
 
 public class ClientProxy extends CommonProxy {

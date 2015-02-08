@@ -57,7 +57,6 @@ public class PowerDistributor {
       appliedCount++;
     }
     return transmitted;
-
   }
 
   private void checkReceptors(World worldObj) {

@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.teleport.anchor;
 
 import java.util.Random;
 
@@ -23,6 +23,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -30,6 +31,11 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.ConnectionHandler;
+import crazypants.enderio.teleport.ContainerTravelAccessable;
+import crazypants.enderio.teleport.ContainerTravelAuth;
+import crazypants.enderio.teleport.GuiTravelAccessable;
+import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;

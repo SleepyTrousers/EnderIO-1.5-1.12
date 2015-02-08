@@ -11,10 +11,11 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.gui.GuiContainerBase;
