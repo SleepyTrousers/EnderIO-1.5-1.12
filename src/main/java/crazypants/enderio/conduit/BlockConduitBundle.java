@@ -619,11 +619,13 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
     IConduitItem equipped = (IConduitItem) stack.getItem();
     if(!bundle.hasType(equipped.getBaseConduitType())) {
-      bundle.addConduit(equipped.createConduit(stack, player));
-      if(!player.capabilities.isCreativeMode) {
-        world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
-            (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
-        player.getCurrentEquippedItem().stackSize--;
+      if(!world.isRemote) {
+        bundle.addConduit(equipped.createConduit(stack, player));
+        if(!player.capabilities.isCreativeMode) {
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
+              (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
+          player.getCurrentEquippedItem().stackSize--;
+        }
       }
       return true;
     }
