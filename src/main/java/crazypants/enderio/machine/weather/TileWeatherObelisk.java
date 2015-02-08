@@ -89,7 +89,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   private boolean canBeActive = true;
   
   private static int biggestPowerReq = Math.max(Math.max(Config.weatherObeliskClearPower, Config.weatherObeliskThunderPower), Config.weatherObeliskRainPower);
-  private static final BasicCapacitor cap = new BasicCapacitor(biggestPowerReq / 25, biggestPowerReq);
+  private static final BasicCapacitor cap = new BasicCapacitor(biggestPowerReq / 200, biggestPowerReq);
   
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0));
@@ -160,7 +160,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
       if(isActive()) {
         if(getEnergyStored() > getPowerUsePerTick()) {
           int remaining = activeTask.power - powerUsed;
-          int toUse = Math.min(remaining, getPowerUsePerTick() / 8);
+          int toUse = Math.min(remaining, getPowerUsePerTick());
           setEnergyStored(getEnergyStored() - toUse);
           powerUsed += toUse;
           res = true;
