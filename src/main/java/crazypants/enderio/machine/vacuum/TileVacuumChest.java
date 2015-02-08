@@ -80,7 +80,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();
 
-        int numInserted = ItemUtil.doInsertItem(this, stack);
+        int numInserted = ItemUtil.doInsertItem(this, stack, null);
         stack.stackSize -= numInserted;
         item.setEntityItemStack(stack);
         if(stack.stackSize == 0) {
