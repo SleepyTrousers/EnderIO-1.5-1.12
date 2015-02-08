@@ -21,14 +21,13 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-
 import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
-
 import crazypants.enderio.Log;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
+import crazypants.render.RenderUtil;
 
 @Optional.InterfaceList({
     @Optional.Interface(iface = "codechicken.nei.api.INEIGuiHandler", modid = "NotEnoughItems")
@@ -37,8 +36,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
-
-  private static Field timerField = null;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -50,17 +47,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
     }
-    if(timerField == null) {
-      try {
-        if(timerField == null) {
-          timerField = ReflectionHelper.findField(Minecraft.class, "field_71428_T", "timer", "Q");
-          timerField.setAccessible(true);
-        }
-      } catch (Exception e) {
-        Log.error("Failed to initialize timer reflection for IO config.");
-        e.printStackTrace();
-      }
-    }
+
   }
 
   @Override
@@ -128,24 +115,20 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
 
-    Timer t = null;
-    try {
-      t = (Timer) timerField.get(this.mc);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return;
-    }
-
-    GL11.glPushMatrix();
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
-    for (IGuiOverlay overlay : overlays) {
-      if(overlay != null && overlay.isVisible()) {
-        overlay.draw(realMx, realMy, t.renderPartialTicks);
+    Timer t = RenderUtil.getTimer();
+    
+    if(t != null) {
+      GL11.glPushMatrix();
+      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+      GL11.glDisable(GL11.GL_DEPTH_TEST);
+      for (IGuiOverlay overlay : overlays) {
+        if(overlay != null && overlay.isVisible()) {
+          overlay.draw(realMx, realMy, t.renderPartialTicks);
+        }
       }
+      GL11.glEnable(GL11.GL_DEPTH_TEST);
+      GL11.glPopMatrix();
     }
-    GL11.glEnable(GL11.GL_DEPTH_TEST);
-    GL11.glPopMatrix();
 
     ttMan.drawTooltips(this, realMx, realMy);
   }

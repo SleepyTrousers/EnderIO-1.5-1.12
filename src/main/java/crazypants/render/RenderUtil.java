@@ -25,10 +25,13 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glShadeModel;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 
+import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -45,6 +48,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Timer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -53,6 +57,8 @@ import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import crazypants.enderio.Log;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
@@ -105,6 +111,33 @@ public class RenderUtil {
     MATRIX_BUFFER.put((float) mat.m33);
     MATRIX_BUFFER.rewind();
     GL11.glLoadMatrix(MATRIX_BUFFER);
+  }
+  
+  private static Field timerField = initTimer();
+  
+  private static Field initTimer() {
+    Field f = null;
+    try {
+      f = ReflectionHelper.findField(Minecraft.class, "field_71428_T", "timer", "Q");
+      f.setAccessible(true);
+    } catch (Exception e) {
+      Log.error("Failed to initialize timer reflection for IO config.");
+      e.printStackTrace();
+    }
+    return f;
+  }
+  
+  @Nullable
+  public static Timer getTimer() {
+    if(timerField == null) {
+      return null;
+    }
+    try {
+      return (Timer) timerField.get(Minecraft.getMinecraft());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   public static TextureManager engine() {

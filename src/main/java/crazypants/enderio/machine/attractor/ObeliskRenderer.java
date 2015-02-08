@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.attractor;
 
+import static org.lwjgl.opengl.GL11.glDepthMask;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslated;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -14,6 +21,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.Timer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
@@ -24,11 +32,11 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
-import static org.lwjgl.opengl.GL11.*;
 
 public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
@@ -49,41 +57,41 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
 
   @Override
   public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-    return type != ItemRenderType.INVENTORY;
+    return helper == ItemRendererHelper.ENTITY_BOBBING || helper == ItemRendererHelper.ENTITY_ROTATION;
   }
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 
-    if(type == ItemRenderType.INVENTORY) {
-
-      GL11.glPushMatrix();
-      GL11.glTranslatef(-2, 3, 0);
-      GL11.glScalef(10F, 10F, 10F);
-      GL11.glTranslatef(1.0F, 0.5F, 1.0F);
-      GL11.glScalef(1.0F, 1.0F, -1F);
-      GL11.glRotatef(210F, 1.0F, 0.0F, 0.0F);
-      GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-
-      GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-      renderInventoryBlock(EnderIO.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
-      GL11.glPopMatrix();
-
-      GL11.glPushMatrix();
-      float scale = 0.4f;
-      GL11.glScalef(scale, scale, scale);
-      GL11.glTranslatef(12, 2f, 0);
-      RenderItem ri = new RenderItem();
-      ri.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine,
-          getFloatingItem(null), 0, 0);
-      GL11.glPopMatrix();
-      GL11.glEnable(GL11.GL_LIGHTING);
-    } else {
+    GL11.glPushMatrix();
+    switch(type) {
+    case ENTITY:
       GL11.glTranslatef(0, 0.25f, 0);
-      GL11.glScalef(1.5f, 1.5f, 1.5f);
-      renderInventoryBlock(EnderIO.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
+      break;
+    case EQUIPPED:
+      GL11.glRotatef(22, 0, 0, 1);
+      GL11.glRotatef(-10, 1, 0, 0);
+      GL11.glTranslatef(0.3f, -0.4f, -0.4f);
+      break;
+    case EQUIPPED_FIRST_PERSON:
+      GL11.glTranslatef(0.75f, 0, 0);
+      break;
+    case INVENTORY:
+      GL11.glTranslatef(8, 9, 0);
+      GL11.glScalef(12F, 12F, 12F);
+      GL11.glScalef(1.0F, 1.0F, -1F);
+      GL11.glRotatef(210F, 1, 0, 0);
+      GL11.glRotatef(-45F, 0, 1, 0);
+      break;
+    default:
+      break;
     }
-
+    
+    renderInventoryBlock(EnderIO.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
+    Timer t = RenderUtil.getTimer();
+    renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t.renderPartialTicks);
+    GL11.glPopMatrix();
+    GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   private EntityItem ei = null;
@@ -100,23 +108,29 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     Tessellator.instance.setColorOpaque_F(f, f, f);
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 
+    renderItemStack((T) te, world, x, y, z, tick);
+  }
+
+  private void renderItemStack(T te, World world, double x, double y, double z, float tick) {
     if(ei == null) {
       ei = new EntityItem(world, 0, 0, 0, getFloatingItem((T) te));
     }
 
-    rand.setSeed(te.xCoord + te.yCoord + te.zCoord);
-    rand.nextBoolean();
-    
-    ei.setEntityItemStack(getFloatingItem((T) te));
-    ei.hoverStart = (float) world.getTotalWorldTime() * 0.05f + (tick * 0.05f) + rand.nextFloat();
+    ei.setEntityItemStack(getFloatingItem(te));
+    ei.hoverStart = (float) world.getTotalWorldTime() * 0.05f + (tick * 0.05f);
 
     glPushMatrix();
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
     glScalef(1.1f, 1.1f, 1.1f);
     glDepthMask(true);
-    
-    if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
-      glRotatef(rand.nextFloat() * 360f, 0, 1, 0);
+
+    if(te != null) {
+      rand.setSeed(te.xCoord + te.yCoord + te.zCoord);
+      rand.nextBoolean();
+      if(Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+        glRotatef(rand.nextFloat() * 360f, 0, 1, 0);
+      }
+      ei.hoverStart += rand.nextFloat();
     }
 
     RenderManager.instance.renderEntityWithPosYaw(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);

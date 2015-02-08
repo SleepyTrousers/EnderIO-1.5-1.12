@@ -16,11 +16,6 @@ import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 
-/**
- * To avoid integrated server crashes when calling client-only methods
- * 
- * @author Garrett Spicer-Davis
- */
 public class ClientUtil {
 
   public static void doFluidLevelUpdate(int x, int y, int z, PacketFluidLevel pkt) {
