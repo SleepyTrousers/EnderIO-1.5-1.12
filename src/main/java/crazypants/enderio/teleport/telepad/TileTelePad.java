@@ -18,7 +18,7 @@ import crazypants.util.Util;
 
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver {
 
-  private boolean inNetwork;
+  boolean inNetwork;
 
   private EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
 
@@ -50,7 +50,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         if(fromBlock) {
           ((TileTelePad) te).updateConnectedState(false);
         }
-        if(con != ForgeDirection.UNKNOWN) {
+        if(con != ForgeDirection.UNKNOWN && !((TileTelePad) te).inNetwork) {
           connections.add(con);
         }
       } else {

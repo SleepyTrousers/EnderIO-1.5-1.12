@@ -1,7 +1,5 @@
 package crazypants.enderio.teleport.anchor;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -42,6 +40,7 @@ import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
@@ -74,6 +73,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     if(!Config.travelAnchorEnabled) {
       setCreativeTab(null);
     }
+  }
+
+  protected BlockTravelAnchor(String unlocalisedName, Class<TileTelePad> teClass) {
+    super(unlocalisedName, teClass);
   }
 
   @Override
