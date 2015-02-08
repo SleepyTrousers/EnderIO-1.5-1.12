@@ -10,9 +10,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public final class BlockCoord {
 
-  public final int x;
-  public final int y;
-  public final int z;
+  public int x;
+  public int y;
+  public int z;
 
   public BlockCoord(int x, int y, int z) {
     this.x = x;

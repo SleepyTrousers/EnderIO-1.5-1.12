@@ -19,6 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -31,6 +32,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.TileEnderIO;
@@ -392,14 +394,14 @@ public class TravelController {
       }
       return false;
     }
-    sendTravelEvent(coord, source, requiredPower, conserveMomentum);
-    for (int i = 0; i < 6; ++i) {
-      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
-          player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
-          (rand.nextDouble() - 0.5D) * 2.0D);
+    if(sendTravelEvent(player, coord, source, requiredPower, conserveMomentum)) {
+      for (int i = 0; i < 6; ++i) {
+        player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
+            player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
+            (rand.nextDouble() - 0.5D) * 2.0D);
+      }
     }
     return true;
-
   }
 
   public int getRequiredPower(EntityPlayer player, TravelSource source, BlockCoord coord) {
@@ -610,9 +612,19 @@ public class TravelController {
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+  private boolean sendTravelEvent(EntityPlayer player, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+
+    TeleportEntityEvent evt = new TeleportEntityEvent(player, source, bc.x, bc.y, bc.z);
+    if(MinecraftForge.EVENT_BUS.post(evt)) {
+      return false;
+    }
+    bc.x = evt.targetX;
+    bc.y = evt.targetY;
+    bc.z = evt.targetZ;
+
     PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, conserveMomentum);
     PacketHandler.INSTANCE.sendToServer(p);
+    return true;
   }
 
   @SideOnly(Side.CLIENT)
