@@ -4,13 +4,13 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.weather.TileWeatherObelisk.Task;
+import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
 
 public class PacketFinishWeather extends PacketActivateWeather {
 
   public PacketFinishWeather() {}
   
-  public PacketFinishWeather(TileWeatherObelisk te, Task task) {
+  public PacketFinishWeather(TileWeatherObelisk te, WeatherTask task) {
     super(te, task);
   }
   
@@ -20,7 +20,8 @@ public class PacketFinishWeather extends PacketActivateWeather {
     public IMessage onMessage(PacketFinishWeather message, MessageContext ctx) {
       TileWeatherObelisk te = message.getTileEntity(EnderIO.proxy.getClientWorld());
       if(te != null) {
-        te.activateClientParticles(Task.values()[message.taskid]);
+        te.activateClientParticles(WeatherTask.values()[message.taskid]);
+        te.powerUsed = 0;
       }
       return null;
     }

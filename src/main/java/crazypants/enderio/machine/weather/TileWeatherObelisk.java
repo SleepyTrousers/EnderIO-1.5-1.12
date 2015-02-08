@@ -4,35 +4,38 @@ import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntitySmokeFX;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.storage.WorldInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
-  enum Task {
-    // TODO placeholder power vals
-    CLEAR(1000, new ItemStack(Items.cake), Color.YELLOW) {
+  public enum WeatherTask {
+    CLEAR(Config.weatherObeliskClearPower, Color.YELLOW) {
       @Override
       void complete(TileEntity te) {
         rain(te, false);
         thunder(te, false);
       }
     },
-    RAIN(1000, new ItemStack(Items.water_bucket), new Color(120, 120, 255)) {
+    RAIN(Config.weatherObeliskRainPower, new Color(120, 120, 255)) {
       @Override
       void complete(TileEntity te) {
         rain(te, true);
         thunder(te, false);
       }
     },
-    STORM(1000, new ItemStack(Items.lava_bucket), Color.DARK_GRAY) {
+    STORM(Config.weatherObeliskThunderPower, Color.DARK_GRAY) {
       @Override
       void complete(TileEntity te) {
         rain(te, true);
@@ -41,12 +44,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     };
 
     final int power;
-    final ItemStack requiredItem;
+    private ItemStack requiredItem;
     final Color color;
 
-    Task(int power, ItemStack requiredItem, Color color) {
+    WeatherTask(int power, Color color) {
       this.power = power;
-      this.requiredItem = requiredItem;
       this.color = color;
     }
 
@@ -63,16 +65,35 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     boolean isValid(ItemStack item) {
       return item != null && ItemStack.areItemStacksEqual(item, this.requiredItem);
     }
+    
+    public ItemStack requiredItem() {
+      return requiredItem;
+    }
+    
+    public void setRequiredItem(ItemStack item) {
+      this.requiredItem = item;
+    }
+    
+    public static boolean worldIsState(WeatherTask task, WorldInfo world) {
+      if(world.isRaining()) {
+        return world.isThundering() ? task == STORM : task == RAIN;
+      }
+      return task == CLEAR;
+    }
   }
 
   int powerUsed = 0;
-  Task activeTask = null;
+  WeatherTask activeTask = null;
 
   private Color particleColor;
   private boolean canBeActive = true;
-
+  
+  private static int biggestPowerReq = Math.max(Math.max(Config.weatherObeliskClearPower, Config.weatherObeliskThunderPower), Config.weatherObeliskRainPower);
+  private static final BasicCapacitor cap = new BasicCapacitor(biggestPowerReq / 25, biggestPowerReq);
+  
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0));
+    setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
   public void updateEntity() {
@@ -100,7 +121,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    for (Task task : Task.values()) {
+    for (WeatherTask task : WeatherTask.values()) {
       if(task.isValid(itemstack)) {
         return true;
       }
@@ -119,6 +140,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   }
 
   @Override
+  public ICapacitor getCapacitor() {
+    return cap;
+  }
+
+  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean res = false;
 
@@ -134,7 +160,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
       if(isActive()) {
         if(getEnergyStored() > getPowerUsePerTick()) {
           int remaining = activeTask.power - powerUsed;
-          int toUse = Math.min(remaining, getPowerUsePerTick());
+          int toUse = Math.min(remaining, getPowerUsePerTick() / 8);
           setEnergyStored(getEnergyStored() - toUse);
           powerUsed += toUse;
           res = true;
@@ -155,7 +181,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   public void startTask(int taskid) {
     if(activeTask == null && taskid >= 0) {
       powerUsed = 0;
-      Task task = Task.values()[taskid];
+      WeatherTask task = WeatherTask.values()[taskid];
       if(task.isValid(inventory[slotDefinition.minInputSlot])) {
         activeTask = task;
         decrStackSize(slotDefinition.minInputSlot, 1);
@@ -169,7 +195,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   private int activeParticleTicks = 0;
 
-  public void activateClientParticles(Task task) {
+  public void activateClientParticles(WeatherTask task) {
     activeParticleTicks = 20;
     particleColor = task.color;
   }

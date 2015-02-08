@@ -255,7 +255,7 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
-    ObeliskRenderer<TileWeatherObelisk> twr = new ObeliskRenderer<TileWeatherObelisk>(new ItemStack(Items.diamond));
+    ObeliskRenderer<TileWeatherObelisk> twr = new ObeliskRenderer<TileWeatherObelisk>(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()));
     BlockWeatherObelisk.renderId = BlockAttractor.renderId;
     ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);

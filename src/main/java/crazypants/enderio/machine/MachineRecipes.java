@@ -206,9 +206,8 @@ public class MachineRecipes {
     ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
     ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
-    GameRegistry
-        .addShapedRecipe(mJMonitor, "sms", "sMs", "sps", 's', electricSteel, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
-            'r', redstoneConduit);
+    GameRegistry.addShapedRecipe(mJMonitor, "sms", "sMs", "sps", 's', electricSteel, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
+        'r', redstoneConduit);
 
     //Enchanter
     ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
@@ -235,20 +234,23 @@ public class MachineRecipes {
     //Attractor
     ItemStack attractor = new ItemStack(EnderIO.blockAttractor);
     ItemStack attractorCrystal = new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal());
-    GameRegistry
-        .addShapedRecipe(attractor, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', attractorCrystal, 'e', energeticAlloy);
+    GameRegistry.addShapedRecipe(attractor, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', attractorCrystal, 'e', energeticAlloy);
 
     //Aversion
     ItemStack aversion = new ItemStack(EnderIO.blockSpawnGuard);
     ItemStack tormentedEnderman = new ItemStack(EnderIO.blockEndermanSkull, 1, BlockEndermanSkull.SkullType.TORMENTED.ordinal());
-    GameRegistry
-        .addShapedRecipe(aversion, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', tormentedEnderman, 'e', energeticAlloy);
+    GameRegistry.addShapedRecipe(aversion, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', tormentedEnderman, 'e', energeticAlloy);
 
     //Experience
     ItemStack xp = new ItemStack(EnderIO.blockExperianceOblisk);
     ItemStack xpItem = new ItemStack(EnderIO.itemXpTransfer);
-    GameRegistry
-        .addShapedRecipe(xp, " x ", " s ", "sms", 's', soularium, 'm', machineChassi, 'x', xpItem);
+    GameRegistry.addShapedRecipe(xp, " x ", " s ", "sms", 's', soularium, 'm', machineChassi, 'x', xpItem);
+
+    //Weather
+    ItemStack weather = new ItemStack(EnderIO.blockWeatherObelisk);
+    ItemStack weatherItem = new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal());
+    GameRegistry.addShapedRecipe(weather, " x ", "ese", "sbs", 'x', weatherItem, 'e', energeticAlloy, 's', soularium, 'b', new ItemStack(EnderIO.blockCapBank,
+        1, CapBankType.getMetaFromType(CapBankType.SIMPLE)));
 
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);

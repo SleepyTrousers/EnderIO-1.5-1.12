@@ -471,6 +471,8 @@ public class EnderIO {
   @EventHandler
   public void load(FMLInitializationEvent event) {
 
+    Config.init();
+    
     instance = this;
 
     PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);

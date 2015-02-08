@@ -15,6 +15,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.vecmath.VecmathUtil;
 
 public final class Config {
@@ -67,6 +68,7 @@ public final class Config {
   public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
   public static final Section sectionRailConfig = new Section("Rail", "railconfig");
   public static final Section sectionEnchantments = new Section("Enchantments", "enchantments");
+  public static final Section sectionWeather = new Section("Weather", "weather");
   public static final Section sectionMisc = new Section("Misc", "misc");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
@@ -397,6 +399,13 @@ public final class Config {
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
   
+  public static String weatherObeliskClearItem = "minecraft:cake";
+  public static String weatherObeliskRainItem = "minecraft:water_bucket";
+  public static String weatherObeliskThunderItem = "minecraft:lava_bucket";
+  public static int weatherObeliskClearPower = 1000000;
+  public static int weatherObeliskRainPower = 250000;
+  public static int weatherObeliskThunderPower = 500000;
+
   //Loot Defaults
   public static boolean lootDarkSteel = true;
   public static boolean lootItemConduitProbe = true;
@@ -1103,7 +1112,20 @@ public final class Config {
         "When true slimes wont be allowed to spawn at all. Only added to aid testing in super flat worlds.");    
     spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttractor.name, spawnGuardStopAllSquidSpawning, 
         "When true no squid will be spawned.");
-    
+
+    weatherObeliskClearItem = config.get(sectionWeather.name, "weatherObeliskClearItem", weatherObeliskClearItem,
+        "The item required to set the world to clear weather.").getString();
+    weatherObeliskRainItem = config.get(sectionWeather.name, "weatherObeliskRainItem", weatherObeliskRainItem,
+        "The item required to set the world to rainy weather.").getString();
+    weatherObeliskThunderItem = config.get(sectionWeather.name, "weatherObeliskThunderItem", weatherObeliskThunderItem,
+        "The item required to set the world to thundering weather.").getString();
+    weatherObeliskClearPower = config.get(sectionWeather.name, "weatherObeliskClearPower", weatherObeliskClearPower,
+        "The power required to set the world to clear weather").getInt();
+    weatherObeliskRainPower = config.get(sectionWeather.name, "weatherObeliskRainPower", weatherObeliskRainPower,
+        "The power required to set the world to rainy weather").getInt();
+    weatherObeliskThunderPower = config.get(sectionWeather.name, "weatherObeliskThunderPower", weatherObeliskThunderPower,
+        "The power required to set the world to thundering weather").getInt();
+
     // Loot Config
     lootDarkSteel = config.getBoolean("lootDarkSteel", sectionLootConfig.name, lootDarkSteel, "Adds Darksteel Ingots to loot tables");
     lootItemConduitProbe = config.getBoolean("lootItemConduitProbe", sectionLootConfig.name, lootItemConduitProbe, "Adds ItemConduitProbe to loot tables");
@@ -1150,12 +1172,31 @@ public final class Config {
             "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
   }
 
+  public static void init() {
+    WeatherTask.CLEAR.setRequiredItem(getStackForString(weatherObeliskClearItem));
+    WeatherTask.RAIN.setRequiredItem(getStackForString(weatherObeliskRainItem));
+    WeatherTask.STORM.setRequiredItem(getStackForString(weatherObeliskThunderItem));
+  }
+
   public static void postInit() {
-    for (int i = 0; i < Config.hoeStrings.length; i++) {
-      String[] data = hoeStrings[i].split(":");
-      ItemStack hoe = GameRegistry.findItemStack(data[0], data[1], 1);
-      if (hoe!=null) farmHoes.add(hoe);
+    for (String s : hoeStrings) {
+      ItemStack hoe = getStackForString(s);
+      if(hoe != null) {
+        farmHoes.add(hoe);
+      }
     }
+  }
+
+  public static ItemStack getStackForString(String s) {
+    String[] nameAndMeta = s.split(";");
+    int meta = nameAndMeta.length == 1 ? 0 : Integer.parseInt(nameAndMeta[1]);
+    String[] data = nameAndMeta[0].split(":");
+    ItemStack stack = GameRegistry.findItemStack(data[0], data[1], 1);
+    if(stack == null) {
+      return null;
+    }
+    stack.setItemDamage(meta);
+    return stack;
   }
   
   private Config() {

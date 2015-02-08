@@ -1,5 +1,11 @@
 package crazypants.enderio.material;
 
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
+import static crazypants.util.OreDictionaryHelper.hasCopper;
+import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
+import static crazypants.util.OreDictionaryHelper.hasTin;
+
 import java.util.ArrayList;
 
 import net.minecraft.init.Blocks;
@@ -9,16 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.util.OreDictionaryHelper;
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-
-import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
-import static crazypants.util.OreDictionaryHelper.hasCopper;
-import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
-import static crazypants.util.OreDictionaryHelper.hasTin;
 
 
 public class MaterialRecipes {
@@ -170,6 +172,11 @@ public class MaterialRecipes {
     } else {
       GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', Blocks.glowstone);
     }
+
+    // Weather Crystal
+    ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
+    GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main, WeatherTask.CLEAR
+        .requiredItem(), WeatherTask.RAIN.requiredItem(), WeatherTask.STORM.requiredItem()));
 
     if(Config.reinforcedObsidianEnabled) {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);

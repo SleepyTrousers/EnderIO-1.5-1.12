@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

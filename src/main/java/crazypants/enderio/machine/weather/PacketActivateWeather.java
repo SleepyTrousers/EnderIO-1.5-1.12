@@ -14,7 +14,7 @@ public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk>
 
   int taskid;
 
-  public PacketActivateWeather(TileWeatherObelisk te, TileWeatherObelisk.Task task) {
+  public PacketActivateWeather(TileWeatherObelisk te, TileWeatherObelisk.WeatherTask task) {
     super(te);
     this.taskid = task == null ? -1 : task.ordinal();
   }

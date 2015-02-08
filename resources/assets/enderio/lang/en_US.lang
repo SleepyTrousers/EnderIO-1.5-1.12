@@ -449,6 +449,11 @@ tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
 tile.blockExperienceObelisk.tooltip.detailed.line2=Can output liquid XP to
 tile.blockExperienceObelisk.tooltip.detailed.line3=adjacent tanks
 
+tile.blockWeatherObelisk.name=Weather Obelisk
+tile.blockWeatherObelisk.tooltip.detailed.line1=Changes the current weather
+tile.blockWeatherObelisk.tooltip.detailed.line2=Requires a lot of power and
+tile.blockWeatherObelisk.tooltip.detailed.line3=a catalyst item
+
 tile.blockBuffer.item.name=Item Buffer
 tile.blockBuffer.power.name=Power Buffer
 tile.blockBuffer.omni.name=Omni Buffer

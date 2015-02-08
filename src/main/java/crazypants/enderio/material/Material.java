@@ -11,7 +11,8 @@ public enum Material {
   VIBRANT_CYSTAL("vibrantCrystal", true),
   DRAK_GRINDING_BALL("darkGrindingBall"),
   ENDER_CRYSTAL("enderCrystal", true),
-  ATTRACTOR_CRYSTAL("attractorCrystal", true);
+  ATTRACTOR_CRYSTAL("attractorCrystal", true),
+  WEATHER_CRYSTAL("weatherCrystal", true);
 
   public final String unlocalisedName;
   public final String iconKey;
