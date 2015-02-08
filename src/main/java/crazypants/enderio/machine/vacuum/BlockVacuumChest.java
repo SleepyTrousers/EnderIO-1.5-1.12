@@ -7,17 +7,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.tool.ToolUtil;
+import crazypants.enderio.network.PacketHandler;
 
 public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 
   public static BlockVacuumChest create() {
+    PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.class,PacketVaccumChest.class,PacketHandler.nextID(), Side.SERVER);
     BlockVacuumChest res = new BlockVacuumChest();
     res.init();
     return res;

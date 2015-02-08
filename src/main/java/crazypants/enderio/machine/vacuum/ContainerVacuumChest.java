@@ -8,20 +8,20 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerVacuumChest extends Container {
 
-  private int numRows = 3;
+  final Slot filterSlot;
+  Runnable filterChangedCB;
 
-  public ContainerVacuumChest(EntityPlayer player, InventoryPlayer inventory, TileVacuumChest te) {
-
+  public ContainerVacuumChest(EntityPlayer player, InventoryPlayer inventory, final TileVacuumChest te) {
     int x = 8;
-    int y = 17;
+    int y = 18;
     int index = -1;
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < TileVacuumChest.ITEM_ROWS; ++i) {
       for (int j = 0; j < 9; ++j) {
         addSlotToContainer(new Slot(te, ++index, x + j * 18, y + i * 18));
       }
     }
 
-    y = 84;
+    y = 124;
     // add players inventory
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 9; ++j) {
@@ -31,6 +31,9 @@ public class ContainerVacuumChest extends Container {
     for (int i = 0; i < 9; ++i) {
       addSlotToContainer(new Slot(inventory, i, x + i * 18, y + 58));
     }
+
+    filterSlot = new FilterSlot(new InventoryFilterUpgrade(te));
+    addSlotToContainer(filterSlot);
   }
 
   @Override
@@ -38,6 +41,7 @@ public class ContainerVacuumChest extends Container {
     return true;
   }
 
+  @Override
   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
     ItemStack itemstack = null;
     Slot slot = (Slot) this.inventorySlots.get(par2);
@@ -46,11 +50,11 @@ public class ContainerVacuumChest extends Container {
       ItemStack itemstack1 = slot.getStack();
       itemstack = itemstack1.copy();
 
-      if(par2 < this.numRows * 9) {
-        if(!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true)) {
+      if(par2 < TileVacuumChest.ITEM_SLOTS) {
+        if(!this.mergeItemStack(itemstack1, TileVacuumChest.ITEM_SLOTS, this.inventorySlots.size()-1, true)) {
           return null;
         }
-      } else if(!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false)) {
+      } else if(!this.mergeItemStack(itemstack1, 0, TileVacuumChest.ITEM_SLOTS, false)) {
         return null;
       }
 
@@ -63,4 +67,32 @@ public class ContainerVacuumChest extends Container {
     return itemstack;
   }
 
+  void setFilterChangedCB(Runnable filterChangedCB) {
+    this.filterChangedCB = filterChangedCB;
+  }
+
+  void filterChanged() {
+    if(filterChangedCB != null) {
+      filterChangedCB.run();
+    }
+  }
+
+  class FilterSlot extends Slot {
+    InventoryFilterUpgrade inv;
+
+    FilterSlot(InventoryFilterUpgrade inv) {
+      super(inv, 0, 8, 86);
+      this.inv = inv;
+    }
+
+    @Override
+    public void onSlotChanged() {
+      filterChanged();
+    }
+
+    @Override
+    public boolean isItemValid(ItemStack stack) {
+      return inv.isItemValidForSlot(0, stack);
+    }
+  }
 }

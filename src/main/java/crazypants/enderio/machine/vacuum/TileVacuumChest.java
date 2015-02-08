@@ -12,8 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
@@ -21,8 +25,14 @@ import crazypants.util.ItemUtil;
 
 public class TileVacuumChest extends TileEntityEio implements IEntitySelector, IInventory {
 
-  private static final double RANGE = Config.vacuumChestRange;
-  private ItemStack[] inv = new ItemStack[27];
+  public static final int ITEM_ROWS = 3;
+  public static final int ITEM_SLOTS = 9*ITEM_ROWS;
+  public static final int FILTER_SLOTS = 5;
+
+  private final ItemStack[] inv = new ItemStack[ITEM_SLOTS];
+  private int range = Config.vacuumChestRange;
+  private ItemFilter filter;
+  private ItemStack filterItem;
 
   @Override
   public void updateEntity() {
@@ -48,29 +58,31 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   private void doHoover() {
 
+    int rangeSqr = range*range;
     BoundingBox bb = new BoundingBox(getLocation());
     AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    aabb = aabb.expand(RANGE, RANGE, RANGE);
+    aabb = aabb.expand(range, range, range);
     List<EntityItem> interestingItems = worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);
 
     for (EntityItem entity : interestingItems) {
-      double x = (xCoord + 0.5D - entity.posX);
-      double y = (yCoord + 0.5D - entity.posY);
-      double z = (zCoord + 0.5D - entity.posZ);
+      if(filter == null || filter.doesItemPassFilter(entity.getEntityItem())) {
+        double x = (xCoord + 0.5D - entity.posX);
+        double y = (yCoord + 0.5D - entity.posY);
+        double z = (zCoord + 0.5D - entity.posZ);
 
-      double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance < 1.25) {
-        hooverEntity(entity);
-      } else {
-        double speed = 0.06;
-        double distScale = 1.0 - Math.min(0.9, distance / (RANGE * RANGE));
-        distScale *= distScale;
+        double distance = Math.sqrt(x * x + y * y + z * z);
+        if(distance < 1.25) {
+          hooverEntity(entity);
+        } else {
+          double speed = 0.06;
+          double distScale = 1.0 - Math.min(0.9, distance / rangeSqr);
+          distScale *= distScale;
 
-        entity.motionX += x / distance * distScale * speed;
-        entity.motionY += y / distance * distScale * 0.2;
-        entity.motionZ += z / distance * distScale * speed;
+          entity.motionX += x / distance * distScale * speed;
+          entity.motionY += y / distance * distScale * 0.2;
+          entity.motionZ += z / distance * distScale * speed;
+        }
       }
-
     }
   }
 
@@ -191,6 +203,70 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
     return true;
   }
 
+  public boolean isItemValidForFilter(ItemStack itemstack) {
+    return itemstack != null && itemstack.getItem() == EnderIO.itemBasicFilterUpgrade && itemstack.getItemDamage() == 0;
+  }
+
+  public int getRange() {
+    return range;
+  }
+
+  private int limitRange(int range) {
+    return Math.max(1, Math.min(Config.vacuumChestRange, range));
+  }
+
+  public void setRange(int range) {
+    this.range = limitRange(range);
+    updateBlock();
+  }
+
+  public ItemStack getFilterItem() {
+    return filterItem;
+  }
+
+  public void setFilterItem(ItemStack filterItem) {
+    IItemFilter newFilter = FilterRegister.getFilterForUpgrade(filterItem);
+    if(newFilter == null || newFilter instanceof ItemFilter) {
+      this.filterItem = filterItem;
+      this.filter = (ItemFilter)newFilter;
+      updateBlock();
+    }
+  }
+
+  public void setFilterBlacklist(boolean isBlacklist) {
+    if(filter != null) {
+      filter.setBlacklist(isBlacklist);
+      updateFilterItem();
+    }
+  }
+
+  public void setFilterMatchMeta(boolean matchMeta) {
+    if(filter != null) {
+      filter.setMatchMeta(matchMeta);
+      updateFilterItem();
+    }
+  }
+
+  public boolean hasItemFilter() {
+    return filter != null;
+  }
+
+  public ItemFilter getItemFilter() {
+    return filter;
+  }
+
+  public void setItemFilterSlot(int slot, ItemStack stack) {
+    if(slot >= 0 && slot < FILTER_SLOTS && filter != null) {
+      filter.setInventorySlotContents(slot, stack);
+      updateFilterItem();
+    }
+  }
+
+  private void updateFilterItem() {
+    FilterRegister.writeFilterToStack(filter, filterItem);
+    updateBlock();
+  }
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     readContentsFromNBT(nbtRoot);
@@ -206,6 +282,24 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
           inv[slot] = ItemStack.loadItemStackFromNBT(itemStack);
         }
       }
+    }
+    if(nbtRoot.hasKey("range")) {
+      range = limitRange(nbtRoot.getInteger("range"));
+    } else {
+      range = Config.vacuumChestRange;
+    }
+    if(nbtRoot.hasKey("filter")) {
+      NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag("filter");
+      filterItem = ItemStack.loadItemStackFromNBT(filterTag);
+      IItemFilter flt = FilterRegister.getFilterForUpgrade(filterItem);
+      if(flt instanceof ItemFilter) {
+        filter = (ItemFilter)flt;
+      } else {
+        filterItem = null;
+      }
+    } else {
+      filterItem = null;
+      filter = null;
     }
   }
 
@@ -225,6 +319,12 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
       }
     }
     nbtRoot.setTag("Items", itemList);
+    nbtRoot.setInteger("range", range);
+    if(filterItem != null) {
+      NBTTagCompound filterNBT = new NBTTagCompound();
+      filterItem.writeToNBT(filterNBT);
+      nbtRoot.setTag("filter", filterNBT);
+    }
   }
 
 }
