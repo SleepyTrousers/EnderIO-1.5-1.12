@@ -35,7 +35,7 @@ public interface ITravelAccessable {
   
   void setLabel(String label);
 
-  String getPlacedBy();
+  UUID getPlacedBy();
 
   void setPlacedBy(EntityPlayer player);
 

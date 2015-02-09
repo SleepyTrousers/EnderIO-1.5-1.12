@@ -5,9 +5,9 @@ import java.util.UUID;
 public class Channel {
 
   final String name;
-  final String user;
+  final UUID user;
 
-  Channel(String name, String uuid) {
+  Channel(String name, UUID uuid) {
     this.name = trim(name);
     this.user = uuid;
   }

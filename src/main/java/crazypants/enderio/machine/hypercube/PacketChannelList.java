@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.hypercube;
 
+import crazypants.util.PlayerUtil;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -16,16 +17,16 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
 
   private boolean isPrivate;
   private List<Channel> channels;
-  private String userId;
+  private UUID userId;
 
   public PacketChannelList() {
   }
 
   public PacketChannelList(EntityPlayer player, boolean isPrivate) {
-    this(player.getGameProfile().getName(), isPrivate);
+    this(PlayerUtil.getPlayerUUID(player.getGameProfile().getName()), isPrivate);
   }
 
-  public PacketChannelList(String uuid, boolean isPrivate) {
+  public PacketChannelList(UUID uuid, boolean isPrivate) {
     this.userId = uuid;
     this.isPrivate = isPrivate;
     if(isPrivate && uuid == null) {
@@ -50,7 +51,8 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void toBytes(ByteBuf buffer) {
     buffer.writeBoolean(isPrivate);
     if(isPrivate) {
-      ByteBufUtils.writeUTF8String(buffer, userId.toString());
+      buffer.writeLong(userId.getMostSignificantBits());
+      buffer.writeLong(userId.getLeastSignificantBits());
     }
     buffer.writeInt(channels.size());
     for (Channel channel : channels) {
@@ -63,7 +65,10 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void fromBytes(ByteBuf buffer) {
     isPrivate = buffer.readBoolean();
     if(isPrivate) {
-      userId = ByteBufUtils.readUTF8String(buffer);
+      long long1=buffer.readLong();
+      long long2=buffer.readLong();
+
+      userId = new UUID(long1,long2);
     } else {
       userId = null;
     }

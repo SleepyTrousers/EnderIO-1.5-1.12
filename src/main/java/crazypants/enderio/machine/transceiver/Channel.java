@@ -1,6 +1,10 @@
 package crazypants.enderio.machine.transceiver;
 
+import crazypants.util.PlayerUtil;
 import net.minecraft.nbt.NBTTagCompound;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.UUID;
 
 
 public class Channel {
@@ -10,19 +14,19 @@ public class Channel {
       return null;
     }
     String name = root.getString("name");
-    String user = null;
+    UUID user = null;
     if(root.hasKey("user")) {
-      user = root.getString("user");
+      user = PlayerUtil.getPlayerUIDUnstable(root.getString("user"));
     }
     ChannelType type = ChannelType.values()[root.getShort("type")];
     return new Channel(name, user, type);
   }
   
   private final String name;
-  final String user;
+  final UUID user;
   final ChannelType type;
 
-  public Channel(String name, String user, ChannelType type) {
+  public Channel(String name, UUID user, ChannelType type) {
     this.name = trim(name);
     this.user = user;
     this.type = type;
@@ -38,8 +42,8 @@ public class Channel {
     } 
     root.setString("name", name);
     root.setShort("type", (short)type.ordinal());
-    if(user != null && user.length() > 0) {
-      root.setString("user", user);
+    if(user != null ) {
+      root.setString("user", user.toString());
     }        
   }
   
@@ -96,7 +100,7 @@ public class Channel {
     return type;
   }
 
-  public String getUser() {
+  public UUID getUser() {
     return user;
   }
 
