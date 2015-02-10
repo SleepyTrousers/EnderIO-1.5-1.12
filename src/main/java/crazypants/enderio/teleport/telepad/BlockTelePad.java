@@ -109,7 +109,7 @@ public class BlockTelePad extends BlockTravelAnchor {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       if(ID == GuiHandler.GUI_ID_TELEPAD) {
-        return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);
+        return new GuiTelePad(player.inventory, (ITravelAccessable) te, world);
       } else {
         return new GuiTravelAuth(player, (ITravelAccessable) te, world);
       }

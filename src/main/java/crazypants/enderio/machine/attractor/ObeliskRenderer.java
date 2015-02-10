@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -91,7 +92,6 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     Timer t = RenderUtil.getTimer();
     renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t.renderPartialTicks);
     GL11.glPopMatrix();
-    GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   private EntityItem ei = null;
@@ -152,7 +152,6 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     Tessellator.instance.draw();
     GL11.glEnable(GL11.GL_LIGHTING);
-
   }
 
   @Override

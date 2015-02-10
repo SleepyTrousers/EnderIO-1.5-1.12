@@ -24,7 +24,7 @@ public class HyperCubeRegister {
   private final List<Channel> publicChannels = new ArrayList<Channel>();
   private final List<Channel> publicChannelsRO = Collections.unmodifiableList(publicChannels);
 
-  private final Map<String, List<Channel>> userChannels = new HashMap<String, List<Channel>>();
+  private final Map<UUID, List<Channel>> userChannels = new HashMap<UUID, List<Channel>>();
 
   //private Configuration config;
   private HyperCubeConfig conf;
@@ -45,7 +45,7 @@ public class HyperCubeRegister {
     userChannels.putAll(conf.getUserChannels());
   }
 
-  public synchronized List<Channel> getChannelsForUser(String user) {
+  public synchronized List<Channel> getChannelsForUser(UUID user) {
     List<Channel> result = userChannels.get(user);
     if(result == null) {
       result = new ArrayList<Channel>();

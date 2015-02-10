@@ -1,7 +1,6 @@
 package crazypants.enderio.teleport;
 
 import java.awt.Color;
-import java.util.UUID;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -73,7 +72,7 @@ public class GuiTravelAuth extends GuiContainerBase {
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
+  public void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/travelAuth.png");
     int sx = (width - xSize) / 2;

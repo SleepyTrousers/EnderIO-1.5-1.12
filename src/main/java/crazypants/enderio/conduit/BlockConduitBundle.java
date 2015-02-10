@@ -53,6 +53,7 @@ import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
@@ -62,7 +63,7 @@ import crazypants.util.IFacade;
 import crazypants.util.Util;
 
 @Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
-public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRedNetOmniNode {
+public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRotatableFacade, IRedNetOmniNode {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
   private static final String KEY_CONNECTOR_ICON_EXTERNAL = "enderIO:conduitConnectorExternal";
@@ -96,7 +97,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   private IIcon lastRemovedComponetIcon = null;
 
-  private Random rand = new Random();
+  private final Random rand = new Random();
 
   protected BlockConduitBundle() {
     super(ModObject.blockConduitBundle.unlocalisedName, TileConduitBundle.class);
@@ -255,10 +256,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return false;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() != null) {
-      return true;
-    }
-    return false;
+    return con.hasFacade();
   }
 
   @Override
@@ -475,9 +473,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return;
     }
     IConduitBundle te = (IConduitBundle) tile;
-    if(te != null) {
-      te.onBlockRemoved();
-    }
+    te.onBlockRemoved();
     world.removeTileEntity(x, y, z);
   }
 
@@ -492,7 +488,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z,
-      EntityPlayer player, int par6, float par7, float par8, float par9) {
+      EntityPlayer player, int side, float par7, float par8, float par9) {
 
     IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
     if(bundle == null) {
@@ -502,7 +498,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     ItemStack stack = player.getCurrentEquippedItem();
     if(stack != null && stack.getItem() == EnderIO.itemConduitFacade && !bundle.hasFacade()) {
       //add facade
-      return handleFacadeClick(world, x, y, z, player, bundle, stack);
+      return handleFacadeClick(world, x, y, z, player, side, bundle, stack);
 
     } else if(ConduitUtil.isConduitEquipped(player)) {
       // Add conduit
@@ -619,33 +615,58 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
     IConduitItem equipped = (IConduitItem) stack.getItem();
     if(!bundle.hasType(equipped.getBaseConduitType())) {
-      bundle.addConduit(equipped.createConduit(stack, player));
-      if(!player.capabilities.isCreativeMode) {
-        world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
-            (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
-        player.getCurrentEquippedItem().stackSize--;
+      if(!world.isRemote) {
+        bundle.addConduit(equipped.createConduit(stack, player));
+        if(!player.capabilities.isCreativeMode) {
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
+              (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
+          player.getCurrentEquippedItem().stackSize--;
+        }
       }
       return true;
     }
     return false;
   }
 
-  private boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+  private boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, int side, IConduitBundle bundle, ItemStack stack) {
     // Add facade
     if(player.isSneaking()) {
       return false;
     }
 
-    if(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()) == null) {
+    Block facadeID = PainterUtil.getSourceBlock(player.getCurrentEquippedItem());
+    if(facadeID == null) {
       return false;
     }
 
-    bundle.setFacadeId(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()));
-    bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
+    int facadeMeta = PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem());
+    facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
+
+    bundle.setFacadeId(facadeID);
+    bundle.setFacadeMetadata(facadeMeta);
     bundle.setFacadeType(FacadeType.values()[player.getCurrentEquippedItem().getItemDamage()]);
     if(!player.capabilities.isCreativeMode) {
       stack.stackSize--;
     }
+    world.markBlockForUpdate(x, y, z);
+    bundle.getEntity().markDirty();
+    return true;
+  }
+
+  @Override
+  public boolean tryRotateFacade(World world, int x, int y, int z, ForgeDirection axis) {
+    IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
+    if(bundle == null) {
+      return false;
+    }
+
+    int oldMeta = bundle.getFacadeMetadata();
+    int newMeta = PainterUtil.rotateFacadeMetadata(bundle.getFacadeId(), oldMeta, axis);
+    if(newMeta == oldMeta) {
+      return false;
+    }
+
+    bundle.setFacadeMetadata(newMeta);
     world.markBlockForUpdate(x, y, z);
     bundle.getEntity().markDirty();
     return true;

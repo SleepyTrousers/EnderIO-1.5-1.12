@@ -1,6 +1,5 @@
 package crazypants.gui;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,12 +18,10 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
-import crazypants.enderio.Log;
+import cpw.mods.fml.common.Optional;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 import crazypants.render.RenderUtil;
@@ -293,6 +290,22 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public int getYSize() {
     return ySize;
+  }
+  
+  public void setGuiLeft(int i) {
+    guiLeft = i;
+  }
+
+  public void setGuiTop(int i) {
+    guiTop = i;
+  }
+
+  public void setXSize(int i) {
+    xSize = i;
+  }
+
+  public void setYSize(int i) {
+    ySize = i;
   }
 
   @Override

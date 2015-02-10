@@ -1,18 +1,18 @@
 package crazypants.enderio.machine.hypercube;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
+import com.mojang.authlib.GameProfile;
+import crazypants.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -114,7 +114,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
 
   private Channel channel = null;
   private Channel registeredChannel = null;
-  private String owner;
+  private UUID owner;
 
   private boolean init = true;
 
@@ -183,7 +183,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
     HyperCubeRegister.instance.register(this);
   }
 
-  public void setOwner(String owner) {
+  public void setOwner(UUID owner) {
     this.owner = owner;
   }
 
@@ -252,7 +252,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
       return;
     } // else is server, do all logic only on the server
 
-    
+
 
     // Pay upkeep cost
     storedEnergyRF -= ENERGY_UPKEEP;
@@ -260,7 +260,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
     storedEnergyRF -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
 
     // update power status
-    storedEnergyRF = Math.max(storedEnergyRF, 0);    
+    storedEnergyRF = Math.max(storedEnergyRF, 0);
 
     milliBucketsTransfered = 0;
 
@@ -293,7 +293,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
     boolean stillConnected = canMaintainConnection();
     if(isConnected != stillConnected) {
       fluidHandlersDirty = true;
-      isConnected = stillConnected;      
+      isConnected = stillConnected;
       requiresClientSync = true;
     }
     updateFluidHandlers();
@@ -307,10 +307,10 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
     }
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
-    
+
     boolean powerChanged = lastSyncPowerStored != storedEnergyRF && worldObj.getTotalWorldTime() % 21 == 0;
     if(powerChanged) {
-      lastSyncPowerStored = storedEnergyRF;        
+      lastSyncPowerStored = storedEnergyRF;
       EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
     }
 
@@ -423,9 +423,9 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   }
 
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) { 
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
     if(getModeForChannel(SubChannel.POWER) == IoMode.RECIEVE) {
-      return 0;  
+      return 0;
     }
     return internalCapacitor.getMaxEnergyReceived();
   }
@@ -442,7 +442,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());    
+    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
   }
 
   @Override
@@ -813,25 +813,25 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    
-    int energy; 
+
+    int energy;
     if(nbtRoot.hasKey("storedEnergy")) {
       energy = (int)(nbtRoot.getFloat("storedEnergy") * 10);
     } else {
       energy = nbtRoot.getInteger("storedEnergyRF");
     }
     setEnergyStored(energy);
-    
-    
+
+
     String channelName = nbtRoot.getString("channelName");
-    String channelUser = nbtRoot.getString("channelUser");
+    UUID channelUser = PlayerUtil.getPlayerUIDUnstable(nbtRoot.getString("channelUser"));
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
+      channel = new Channel(channelName,channelUser);
     } else {
       channel = null;
     }
 
-    owner = nbtRoot.getString("owner");
+    owner = PlayerUtil.getPlayerUIDUnstable(nbtRoot.getString("owner"));
 
     for (SubChannel subChannel : SubChannel.values()) {
       String key = "subChannel" + subChannel.ordinal();

@@ -1,5 +1,7 @@
 package crazypants.enderio.api.teleport;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.util.BlockCoord;
@@ -38,7 +40,7 @@ public interface ITravelAccessable {
   
   void setLabel(String label);
 
-  String getPlacedBy();
+  UUID getPlacedBy();
 
   void setPlacedBy(EntityPlayer player);
 

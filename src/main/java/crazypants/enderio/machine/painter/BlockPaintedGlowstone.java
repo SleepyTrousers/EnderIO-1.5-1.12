@@ -10,7 +10,6 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,12 +30,13 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
-public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade {
+public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade, IRotatableFacade {
    
   public static int renderId = -1;
 
@@ -48,7 +48,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
 
   private IIcon lastRemovedComponetIcon = null;
 
-  private Random rand = new Random();
+  private final Random rand = new Random();
 
   protected BlockPaintedGlowstone() {
     super(ModObject.blockPaintedGlowstone.unlocalisedName, TileEntityPaintedBlock.class, Material.glass);
@@ -196,16 +196,20 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    Block b = PainterUtil.getSourceBlock(stack);
+  public boolean tryRotateFacade(World world, int x, int y, int z, ForgeDirection axis) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      tef.setSourceBlock(b);
-      tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
+      int oldMeta = tef.getSourceBlockMetadata();
+      int newMeta = PainterUtil.rotateFacadeMetadata(tef.getSourceBlock(), oldMeta, axis);
+      if(oldMeta != newMeta) {
+        tef.setSourceBlockMetadata(newMeta);
+        world.markBlockForUpdate(x, y, z);
+        tef.markDirty();
+        return true;
+      }
     }
-    world.markBlockForUpdate(x, y, z);
-    super.onBlockPlacedBy(world, x, y, z, player, stack);
+    return false;
   }
 
   @Override
