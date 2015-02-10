@@ -14,7 +14,8 @@ public enum ConduitDisplayMode {
   FLUID,
   ITEM,
   GAS, 
-  ME;
+  ME,
+  NONE;
 
   public static ConduitDisplayMode next(ConduitDisplayMode mode) {
     int index = mode.ordinal() + 1;

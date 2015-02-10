@@ -2,6 +2,8 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import crazypants.enderio.TileEntityEio;
 
 public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableTileEntity {
@@ -28,6 +30,12 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
       nbtRoot.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock));
     }
     nbtRoot.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
+  }
+
+  @Override
+  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    super.onDataPacket(net, pkt);
+    updateBlock();
   }
 
   @Override

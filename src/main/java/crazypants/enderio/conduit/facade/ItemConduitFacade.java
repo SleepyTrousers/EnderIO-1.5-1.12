@@ -119,8 +119,11 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
       world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
       IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
-      bundle.setFacadeId(PainterUtil.getSourceBlock(itemStack));
-      bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
+      Block facadeID = PainterUtil.getSourceBlock(itemStack);
+      int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
+      facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
+      bundle.setFacadeId(facadeID);
+      bundle.setFacadeMetadata(facadeMeta);
       bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
       if(!player.capabilities.isCreativeMode) {
         itemStack.stackSize--;
