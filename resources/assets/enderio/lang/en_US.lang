@@ -834,6 +834,7 @@ enderio.stirlingGenerator.output=Generating:
 enderio.stirlingGenerator.burnRate=Burn Rate:
 enderio.stirlingGenerator.upgradeslot=Upgrade slot
 enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
+enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
