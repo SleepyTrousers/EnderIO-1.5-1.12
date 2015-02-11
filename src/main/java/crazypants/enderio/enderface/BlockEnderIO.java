@@ -23,6 +23,7 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ITravelAccessable;
 import crazypants.util.Lang;
+import net.minecraftforge.common.UsernameCache;
 
 public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
@@ -95,7 +96,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         if(world.isRemote && !entityPlayer.isSneaking()) {
-          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
+          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + UsernameCache.getLastKnownUsername(ta.getPlacedBy()) + " "
               + Lang.localize("gui.travelAccessable.privateBlock2")));
         }
       }

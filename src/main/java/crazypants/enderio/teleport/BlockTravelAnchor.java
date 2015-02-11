@@ -38,6 +38,7 @@ import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
+import net.minecraftforge.common.UsernameCache;
 
 public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
 
@@ -126,7 +127,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         if(world.isRemote && !entityPlayer.isSneaking()) {
-          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
+          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + UsernameCache.getLastKnownUsername(ta.getPlacedBy()) + " "
               + Lang.localize("gui.travelAccessable.privateBlock2")));
         }
       }
