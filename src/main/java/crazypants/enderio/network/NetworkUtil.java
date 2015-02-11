@@ -22,8 +22,7 @@ public class NetworkUtil {
       } else {
         byte[] buffer = new byte[size];
         dataIn.readBytes(buffer);
-        // TODO I have no idea what I'm doing (byte = 8 bits = buffer.length * 8 ???)
-        return CompressedStreamTools.func_152457_a(buffer, new NBTSizeTracker(buffer.length * 8));
+        return CompressedStreamTools.func_152457_a(buffer, NBTSizeTracker.field_152451_a);
       }
     } catch (IOException e) {
       FMLCommonHandler.instance().raiseException(e, "Custom Packet", true);
