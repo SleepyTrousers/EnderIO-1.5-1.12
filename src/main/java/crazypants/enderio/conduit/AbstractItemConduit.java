@@ -87,13 +87,13 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           System.out.println("AbstractItemConduit.onItemUse: Bundle null");
           return false;
         }
-        IConduit con = createConduit(stack, player);
-        if(con == null) {
-          System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-          return false;
-        }
-        if(bundle.getConduit(con.getBaseConduitType()) == null) {
+        if(!bundle.hasType(getBaseConduitType())) {
           if(!world.isRemote) {
+            IConduit con = createConduit(stack, player);
+            if(con == null) {
+              System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
+              return false;
+            }
             bundle.addConduit(con);
             if(!player.capabilities.isCreativeMode) {
               stack.stackSize--;
