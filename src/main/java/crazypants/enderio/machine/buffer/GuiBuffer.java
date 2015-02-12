@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -27,25 +29,26 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     super(te, new ContainerBuffer(par1InventoryPlayer, te));
     redstoneButton.setPosition(isFull() ? 153 : 120, 24);
     configB.setPosition(isFull() ? 153 : 120, 42);
+
+    FontRenderer fnt = Minecraft.getMinecraft().fontRenderer;
+    
+    if(te.hasPower()) {
+      int x = (isFull() ? 20 : 58);
+      int y = guiTop + 27;
+
+      maxInput = new GuiTextField(getFontRenderer(), x, y, 60, 12);
+      y += 28;
+      maxOutput = new GuiTextField(getFontRenderer(), x, y, 60, 12);
+    }
   }
 
   @Override
   public void initGui() {
     super.initGui();
 
-    int x = guiLeft + (isFull() ? 20 : 58);
-    int y = guiTop + 27;
-    maxInput = new GuiTextField(getFontRenderer(), x, y, 60, 12);
-    maxInput.setCanLoseFocus(true);
     maxInput.setMaxStringLength(10);
-    maxInput.setFocused(false);
     maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
-
-    y += 28;
-    maxOutput = new GuiTextField(getFontRenderer(), x, y, 60, 12);
-    maxOutput.setCanLoseFocus(true);
     maxOutput.setMaxStringLength(10);
-    maxOutput.setFocused(getTileEntity().hasPower());
     maxOutput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxOutput()));
   }
 
@@ -57,8 +60,6 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     }
 
     if(getTileEntity().hasPower()) {
-      maxInput.textboxKeyTyped(par1, par2);
-      maxOutput.textboxKeyTyped(par1, par2);
       updateInputOutput();
     }
   }
@@ -88,23 +89,6 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   protected void sendUpdateToServer() {
     PacketHandler.INSTANCE.sendToServer(new PacketBufferIO(getTileEntity(), lastInput, lastOutput));
-  }
-
-  @Override
-  protected void mouseClicked(int par1, int par2, int par3) {
-    super.mouseClicked(par1, par2, par3);
-    if(getTileEntity().hasPower()) {
-      maxInput.mouseClicked(par1, par2, par3);
-      maxOutput.mouseClicked(par1, par2, par3);
-    }
-  }
-
-  @Override
-  public void updateScreen() {
-    if(getTileEntity().hasPower()) {
-      maxInput.updateCursorCounter();
-      maxOutput.updateCursorCounter();
-    }
   }
 
   @Override
@@ -144,6 +128,8 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     RenderUtil.bindTexture(isFull() ? TEXTURE_FULL : TEXTURE_SIMPLE);
@@ -173,9 +159,6 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
       getFontRenderer().drawStringWithShadow(Lang.localize("gui.simple.in"), sx, sy, 0xFFFFFF);
       getFontRenderer().drawStringWithShadow(Lang.localize("gui.simple.out"), sx, sy + 27, 0xFFFFFF);
-
-      maxInput.drawTextBox();
-      maxOutput.drawTextBox();
     }
   }
 

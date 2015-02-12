@@ -169,6 +169,22 @@ public class GuiCapBank extends GuiContainerBase {
 
     y += 20;
     configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, te, configOverlay);
+    
+    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    
+    x = inputX;
+    y = inputY;
+    maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
+    maxInputTF.setCanLoseFocus(true);
+    maxInputTF.setMaxStringLength(10);
+    maxInputTF.setFocused(false);
+
+    x = outputX;
+    y = outputY;
+    maxOutputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
+    maxOutputTF.setCanLoseFocus(true);
+    maxOutputTF.setMaxStringLength(10);
+    maxOutputTF.setFocused(true);
   }
 
   @Override
@@ -177,24 +193,8 @@ public class GuiCapBank extends GuiContainerBase {
 
     configB.onGuiInit();
 
-    FontRenderer fontRenderer = getFontRenderer();
-
     inputRsButton.onGuiInit();
     outputRsButton.onGuiInit();
-
-    int x = guiLeft + inputX;
-    int y = guiTop + inputY;
-    maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
-    maxInputTF.setCanLoseFocus(true);
-    maxInputTF.setMaxStringLength(10);
-    maxInputTF.setFocused(false);
-
-    x = guiLeft + outputX;
-    y = guiTop + outputY;
-    maxOutputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
-    maxOutputTF.setCanLoseFocus(true);
-    maxOutputTF.setMaxStringLength(10);
-    maxOutputTF.setFocused(true);
   }
 
   @Override
@@ -203,8 +203,6 @@ public class GuiCapBank extends GuiContainerBase {
     if(par1 == 'e') {
       super.keyTyped(par1, 1);
     }
-    maxInputTF.textboxKeyTyped(par1, par2);
-    maxOutputTF.textboxKeyTyped(par1, par2);
     updateInputOutput();
   }
 
@@ -242,21 +240,9 @@ public class GuiCapBank extends GuiContainerBase {
   }
 
   @Override
-  protected void mouseClicked(int par1, int par2, int par3) {
-    super.mouseClicked(par1, par2, par3);
-    maxInputTF.mouseClicked(par1, par2, par3);
-    maxOutputTF.mouseClicked(par1, par2, par3);
-  }
-
-  @Override
-  public void updateScreen() {
-    maxInputTF.updateCursorCounter();
-    maxOutputTF.updateCursorCounter();
-  }
-
-  @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    
     requestStateUpdate();
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -273,9 +259,6 @@ public class GuiCapBank extends GuiContainerBase {
       GuiButton guibutton = (GuiButton) buttonList.get(i);
       guibutton.drawButton(mc, 0, 0);
     }
-
-    maxInputTF.drawTextBox();
-    maxOutputTF.drawTextBox();
 
     int midX = sx + xSize / 2;
 

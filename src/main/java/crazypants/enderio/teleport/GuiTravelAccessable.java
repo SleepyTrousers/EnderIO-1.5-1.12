@@ -111,9 +111,6 @@ public class GuiTravelAccessable extends GuiContainerBase {
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
 
-    tf.xPosition = getGuiLeft() + 30;
-    tf.yPosition = getGuiTop() + 10;
-    tf.setCanLoseFocus(false);
     tf.setMaxStringLength(32);
     tf.setFocused(true);
     String txt = te.getLabel();
@@ -134,19 +131,16 @@ public class GuiTravelAccessable extends GuiContainerBase {
       }
       this.mc.thePlayer.closeScreen();
     }
-    tf.textboxKeyTyped(par1, par2);
   }
 
   @Override
   public void updateScreen() {
     super.updateScreen();
-    tf.updateCursorCounter();
   }
 
   @Override
   public void mouseClicked(int x, int y, int par3) {
     super.mouseClicked(x, y, par3);
-    tf.mouseClicked(x, y, par3);
   }
 
   @Override
@@ -171,8 +165,6 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     x = sx + col2x - fontRenderer.getStringWidth(publicStr) / 2;
     fontRenderer.drawStringWithShadow(publicStr, x, y, col);
-
-    tf.drawTextBox();
     checkLabelForChange();
 
   }
@@ -205,7 +197,6 @@ public class GuiTravelAccessable extends GuiContainerBase {
     BlockCoord bc = te.getLocation();
     PacketLabel p = new PacketLabel(bc.x, bc.y, bc.z, te.getLabel());
     PacketHandler.INSTANCE.sendToServer(p);
-
   }
 
   @Override

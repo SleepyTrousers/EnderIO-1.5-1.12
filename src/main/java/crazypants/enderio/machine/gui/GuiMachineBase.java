@@ -84,6 +84,8 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     for (int i = 0; i < buttonList.size(); ++i) {

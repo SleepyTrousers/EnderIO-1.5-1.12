@@ -85,7 +85,7 @@ public class BlockTelePad extends BlockTravelAnchor {
       if (tp.inNetwork) {
         if (!tp.isMaster()) {
           TileTelePad master = tp.getMaster();
-          openGui(world, master.xCoord, master.yCoord, master.zCoord, entityPlayer, side);
+          return openGui(world, master.xCoord, master.yCoord, master.zCoord, entityPlayer, side);
         }
       } else {
         return false;

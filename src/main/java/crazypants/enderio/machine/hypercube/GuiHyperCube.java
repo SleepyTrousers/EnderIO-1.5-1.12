@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 
-import crazypants.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -29,6 +28,7 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
+import crazypants.util.PlayerUtil;
 
 public class GuiHyperCube extends GuiContainerBase {
 
@@ -165,6 +165,12 @@ public class GuiHyperCube extends GuiContainerBase {
     publicChannelList.addSelectionListener(selectionListener);
     privateChannelList.addSelectionListener(selectionListener);
 
+    y = 12;
+    x = 8;
+    newChannelTF = new GuiTextField(Minecraft.getMinecraft().fontRenderer, x, y, 103, 16);
+    newChannelTF.setCanLoseFocus(false);
+    newChannelTF.setMaxStringLength(32);
+    newChannelTF.setFocused(true);
   }
 
   private void updateIoButtons() {
@@ -212,16 +218,6 @@ public class GuiHyperCube extends GuiContainerBase {
     super.initGui();
 
     buttonList.clear();
-
-    int x = guiLeft + 203;
-    int y = guiTop + 12;
-
-    y = guiTop + 12;
-    x = guiLeft + 8;
-    newChannelTF = new GuiTextField(getFontRenderer(), x, y, 103, 16);
-    newChannelTF.setCanLoseFocus(false);
-    newChannelTF.setMaxStringLength(32);
-    newChannelTF.setFocused(true);
 
     privateButton.onGuiInit();
     addButton.onGuiInit();
@@ -322,6 +318,7 @@ public class GuiHyperCube extends GuiContainerBase {
 
   @Override
   protected void keyTyped(char par1, int par2) {
+    super.keyTyped(par1, par2);
     if(par2 == 1) {
       for (IGuiOverlay overlay : overlays) {
         if(overlay.isVisible()) {
@@ -331,24 +328,13 @@ public class GuiHyperCube extends GuiContainerBase {
       }
       this.mc.thePlayer.closeScreen();
     }
-    newChannelTF.textboxKeyTyped(par1, par2);
     addButton.enabled = newChannelTF.getText().trim().length() > 0;
   }
 
   @Override
-  protected void mouseClicked(int par1, int par2, int par3) {
-    super.mouseClicked(par1, par2, par3);
-    newChannelTF.mouseClicked(par1, par2, par3);
-  }
-
-  @Override
-  public void updateScreen() {
-    newChannelTF.updateCursorCounter();
-  }
-
-  @Override
   protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-
+    super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
+    
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/hyperCube.png");
     int sx = (width - xSize) / 2;
@@ -367,7 +353,6 @@ public class GuiHyperCube extends GuiContainerBase {
     selectPrivateB.enabled = chanSel;
     deletePrivateB.enabled = chanSel;
 
-    newChannelTF.drawTextBox();
     publicChannelList.drawScreen(mouseX, mouseY, partialTick);
     privateChannelList.drawScreen(mouseX, mouseY, partialTick);
 

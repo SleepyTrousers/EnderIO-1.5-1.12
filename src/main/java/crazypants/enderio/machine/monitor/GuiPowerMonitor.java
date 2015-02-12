@@ -47,7 +47,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
   private CheckBoxEIO enabledB;
 
   private GuiTextField startTF;
-
   private GuiTextField endTF;
 
   private String titleStr;
@@ -103,6 +102,22 @@ public class GuiPowerMonitor extends GuiContainerBase {
     enabledB.setUnselectedToolTip(Lang.localize("gui.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
 
+
+    x = MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
+    int y = MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
+    startTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
+    startTF.setCanLoseFocus(true);
+    startTF.setMaxStringLength(3);
+    startTF.setFocused(true);
+    startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
+
+    y = y + getFontRenderer().FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
+    x = MARGIN + getFontRenderer().getStringWidth(engineTxt5);
+    endTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
+    endTF.setCanLoseFocus(true);
+    endTF.setMaxStringLength(3);
+    endTF.setFocused(false);
+    endTF.setText(INT_NF.format(te.asPercentInt(te.stopLevel)));
   }
 
   @Override
@@ -111,42 +126,11 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
     buttonList.clear();
     //enabledB.onGuiInit();
-
-    int x = guiLeft + MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
-    int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
-    startTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
-    startTF.setCanLoseFocus(true);
-    startTF.setMaxStringLength(3);
-    startTF.setFocused(true);
-    startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
-
-    y = y + getFontRenderer().FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
-    x = guiLeft + MARGIN + getFontRenderer().getStringWidth(engineTxt5);
-    endTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
-    endTF.setCanLoseFocus(true);
-    endTF.setMaxStringLength(3);
-    endTF.setFocused(false);
-    endTF.setText(INT_NF.format(te.asPercentInt(te.stopLevel)));
-
   }
 
   @Override
   public boolean doesGuiPauseGame() {
     return false;
-  }
-
-  @Override
-  protected void keyTyped(char par1, int par2) {
-    super.keyTyped(par1, par2);
-    startTF.textboxKeyTyped(par1, par2);
-    endTF.textboxKeyTyped(par1, par2);
-
-  }
-
-  @Override
-  public void updateScreen() {
-    startTF.updateCursorCounter();
-    endTF.updateCursorCounter();
   }
 
   @Override
@@ -157,10 +141,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
   @Override
   protected void mouseClicked(int x, int y, int par3) {
     super.mouseClicked(x, y, par3);
-
-    startTF.mouseClicked(x, y, par3);
-    endTF.mouseClicked(x, y, par3);
-
+    
     x = (x - guiLeft);
     y = (y - guiTop);
     if(x > 200 && x < 220) {
@@ -178,6 +159,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
   @Override
   protected void drawGuiContainerBackgroundLayer(float ptick, int mouseX, int mouseY) {
   
+    super.drawGuiContainerBackgroundLayer(ptick, mouseX, mouseY);
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/powerMonitor.png");
     int sx = (width - xSize) / 2;
@@ -290,10 +272,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
     txt = engineTxt3;
     x += MARGIN + endTF.getWidth() + 10;
     fontRenderer.drawString(txt, x, y, rgb, false);
-
-    startTF.drawTextBox();
-    endTF.drawTextBox();
-
   }
 
   private void renderInfoTab(int sx, int sy) {

@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
@@ -17,6 +18,8 @@ import net.minecraft.util.Timer;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import com.google.common.collect.Lists;
 
 import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
@@ -33,6 +36,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
+  protected List<GuiTextField> textFields = Lists.newArrayList();
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -44,18 +48,33 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
     }
-
+    for (GuiTextField f : textFields) {
+      f.xPosition += getGuiLeft();
+      f.yPosition += getGuiTop();
+      f.setFocused(f == textFields.get(0));
+    }
   }
 
   @Override
   protected void keyTyped(char par1, int par2) {
+    GuiTextField focused = null;
+    for (GuiTextField f : textFields) {
+      if (f.isFocused()) {
+        focused = f;
+      }
+    }
     if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
-      //this.mc.thePlayer.closeScreen();
       if(hideOverlays()) {
         return;
       }
+      if (focused == null) {
+        this.mc.thePlayer.closeScreen();
+      }
     }
-    super.keyTyped(par1, par2);
+
+    if(focused != null) {
+      focused.textboxKeyTyped(par1, par2);
+    }
   }
 
   public boolean hideOverlays() {
@@ -71,6 +90,15 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public void addToolTip(GuiToolTip toolTip) {
     ttMan.addToolTip(toolTip);
+  }
+  
+  @Override
+  public void updateScreen() {
+    super.updateScreen();
+    
+    for (GuiTextField f : textFields) {
+      f.updateCursorCounter();
+    }
   }
 
   @Override
@@ -96,6 +124,14 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       }
     }
     return super.func_146978_c(p_146978_1_, p_146978_2_, p_146978_3_, p_146978_4_, p_146978_5_, p_146978_6_);
+  }
+  
+  @Override
+  protected void mouseClicked(int x, int y, int p_73864_3_) {
+    super.mouseClicked(x, y, p_73864_3_);
+    for (GuiTextField f : textFields) {
+      f.mouseClicked(x, y, p_73864_3_);
+    }
   }
 
   public void addOverlay(IGuiOverlay overlay) {
@@ -128,6 +164,13 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     }
 
     ttMan.drawTooltips(this, realMx, realMy);
+  }
+  
+  @Override
+  protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    for (GuiTextField f : textFields) {
+      f.drawTextBox();
+    }
   }
 
   @Override

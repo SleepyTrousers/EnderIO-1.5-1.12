@@ -27,6 +27,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private TileTelePad master = null;
 
   private boolean autoUpdate = false;
+  
+  private BlockCoord target;
 
   @Override
   public void updateEntity() {
