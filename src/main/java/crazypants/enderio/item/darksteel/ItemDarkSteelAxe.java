@@ -175,7 +175,10 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @Override
   public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+    if (world.isRemote) {
+      return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+    }
+    return false;
   }
 
   private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage, boolean isMultiharvest) {

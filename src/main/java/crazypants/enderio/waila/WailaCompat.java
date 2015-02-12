@@ -157,7 +157,7 @@ public class WailaCompat implements IWailaDataProvider {
     TileEntity te = world.getTileEntity(x, y, z);
     Item item = Item.getItemFromBlock(block);
 
-    // let's get rid of WAILA's default RF stuff, once that works
+    // let's get rid of WAILA's default RF stuff, only supported on WAILA 1.5.9+
     ((ITaggedList<String, String>) currenttip).removeEntries("RFEnergyStorage");
 
     if(te instanceof IIoConfigurable && block == accessor.getBlock()) {
@@ -204,7 +204,7 @@ public class WailaCompat implements IWailaDataProvider {
       info.getWailaInfo(currenttip, player, world, pos.blockX, pos.blockY, pos.blockZ);
     }
 
-    else {
+    else { 
       if(block instanceof IAdvancedTooltipProvider) {
         TooltipAddera.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
       } else if(item instanceof IAdvancedTooltipProvider) {

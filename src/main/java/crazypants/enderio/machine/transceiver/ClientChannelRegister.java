@@ -1,11 +1,7 @@
 package crazypants.enderio.machine.transceiver;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 import crazypants.util.PlayerUtil;
-
-import java.util.UUID;
-
 
 public class ClientChannelRegister extends ChannelRegister {
 

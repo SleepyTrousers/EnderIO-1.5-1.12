@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.attractor;
 
-import static org.lwjgl.opengl.GL11.glDepthMask;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslated;
-
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -15,7 +8,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
@@ -38,6 +30,7 @@ import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
+import static org.lwjgl.opengl.GL11.*;
 
 public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
@@ -120,6 +113,8 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     ei.hoverStart = (float) world.getTotalWorldTime() * 0.05f + (tick * 0.05f);
 
     glPushMatrix();
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    RenderHelper.enableStandardItemLighting();
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
     glScalef(1.1f, 1.1f, 1.1f);
     glDepthMask(true);
@@ -134,6 +129,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     }
 
     RenderManager.instance.renderEntityWithPosYaw(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+    glPopAttrib();
     glPopMatrix();
   }
   
