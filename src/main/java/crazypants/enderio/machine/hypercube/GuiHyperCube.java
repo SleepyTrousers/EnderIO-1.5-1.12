@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,6 +14,7 @@ import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
@@ -58,7 +58,7 @@ public class GuiHyperCube extends GuiContainerBase {
   private IconButtonEIO addButton;
   private ToggleButtonEIO privateButton;
 
-  private GuiTextField newChannelTF;
+  private TextFieldEIO newChannelTF;
 
   private GuiChannelList publicChannelList;
   private GuiChannelList privateChannelList;
@@ -167,10 +167,11 @@ public class GuiHyperCube extends GuiContainerBase {
 
     y = 12;
     x = 8;
-    newChannelTF = new GuiTextField(Minecraft.getMinecraft().fontRenderer, x, y, 103, 16);
+    newChannelTF = new TextFieldEIO(Minecraft.getMinecraft().fontRenderer, x, y, 103, 16);
     newChannelTF.setCanLoseFocus(false);
     newChannelTF.setMaxStringLength(32);
     newChannelTF.setFocused(true);
+    textFields.add(newChannelTF);
   }
 
   private void updateIoButtons() {

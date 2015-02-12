@@ -5,7 +5,6 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
 
@@ -15,6 +14,7 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.gui.IGuiOverlay;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
@@ -34,7 +34,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private CheckBoxEIO privateCB;
   private CheckBoxEIO protectedCB;
 
-  private GuiTextField tf;
+  private TextFieldEIO tf;
 
   private String publicStr;
   private String privateStr;
@@ -62,7 +62,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tf = new GuiTextField(fr, 7, 12, 90, 16);
+    tf = new TextFieldEIO(fr, 28, 10, 90, 16);
 
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
@@ -85,6 +85,8 @@ public class GuiTravelAccessable extends GuiContainerBase {
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
     ySize = 185;
+    
+    textFields.add(tf);
   }
 
   @Override
@@ -167,6 +169,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
     fontRenderer.drawStringWithShadow(publicStr, x, y, col);
     checkLabelForChange();
 
+    super.drawGuiContainerBackgroundLayer(f, i, j);
   }
 
   private void checkLabelForChange() {

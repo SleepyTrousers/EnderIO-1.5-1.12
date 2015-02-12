@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
@@ -27,7 +28,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   private World world;
   private TileTelePad te;
 
-  private GuiTextField x, y, z;
+  private TextFieldEIO x, y, z;
 
   public GuiTelePad(InventoryPlayer playerInv, TileTelePad te, World world) {
     super(new ContainerTelePad(playerInv));
@@ -36,9 +37,9 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    x = new GuiTextField(fr, 7, 12, 90, 16);
-    y = new GuiTextField(fr, 7, 32, 90, 16);
-    z = new GuiTextField(fr, 7, 52, 90, 16);
+    x = new TextFieldEIO(fr, 20, 10, 120, 16).setCharFilter(TextFieldEIO.FILTER_COORDS);
+    y = new TextFieldEIO(fr, 20, 35, 120, 16).setCharFilter(TextFieldEIO.FILTER_COORDS);
+    z = new TextFieldEIO(fr, 20, 60, 120, 16).setCharFilter(TextFieldEIO.FILTER_COORDS);
 
     textFields.addAll(Lists.newArrayList(x, y, z));
 
@@ -69,6 +70,14 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     
+    FontRenderer fnt = getFontRenderer();
+
+    String[] text = { "X", "Y", "Z" };
+    for (int i = 0; i < text.length; i++) {
+      GuiTextField f = textFields.get(i);
+      fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 5, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2), 0x000000);
+    }
+
     super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);
   }
 

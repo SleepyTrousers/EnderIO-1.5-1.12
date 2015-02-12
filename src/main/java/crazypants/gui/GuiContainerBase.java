@@ -26,6 +26,7 @@ import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import cpw.mods.fml.common.Optional;
 import crazypants.enderio.gui.IGuiOverlay;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 import crazypants.render.RenderUtil;
 
@@ -36,7 +37,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
-  protected List<GuiTextField> textFields = Lists.newArrayList();
+  protected List<TextFieldEIO> textFields = Lists.newArrayList();
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -48,10 +49,8 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
     }
-    for (GuiTextField f : textFields) {
-      f.xPosition += getGuiLeft();
-      f.yPosition += getGuiTop();
-      f.setFocused(f == textFields.get(0));
+    for (TextFieldEIO f : textFields) {
+      f.init(this);
     }
   }
 

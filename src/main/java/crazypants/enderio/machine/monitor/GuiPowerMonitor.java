@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.CheckBoxEIO;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
@@ -46,8 +47,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
   private CheckBoxEIO enabledB;
 
-  private GuiTextField startTF;
-  private GuiTextField endTF;
+  private TextFieldEIO startTF;
+  private TextFieldEIO endTF;
 
   private String titleStr;
 
@@ -105,19 +106,24 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
     x = MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
     int y = MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
-    startTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
+    startTF = new TextFieldEIO(getFontRenderer(), x, y, 28, 14);
     startTF.setCanLoseFocus(true);
     startTF.setMaxStringLength(3);
     startTF.setFocused(true);
+    startTF.setVisible(false);
     startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
 
     y = y + getFontRenderer().FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
-    x = MARGIN + getFontRenderer().getStringWidth(engineTxt5);
-    endTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
+    x = 5 + MARGIN + getFontRenderer().getStringWidth(engineTxt5);
+    endTF = new TextFieldEIO(getFontRenderer(), x, y, 28, 14);
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
     endTF.setFocused(false);
+    endTF.setVisible(false);
     endTF.setText(INT_NF.format(te.asPercentInt(te.stopLevel)));
+    
+    textFields.add(startTF);
+    textFields.add(endTF);
   }
 
   @Override
@@ -148,9 +154,13 @@ public class GuiPowerMonitor extends GuiContainerBase {
       if(y > 9 && y < 27) {
         isRedstoneMode = false;
         enabledB.detach();
+        startTF.setVisible(false);
+        endTF.setVisible(false);
       } else if(y > 34 && y < 53) {
         isRedstoneMode = true;
         enabledB.onGuiInit();
+        startTF.setVisible(true);
+        endTF.setVisible(true);
       }
     }
 
@@ -159,7 +169,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
   @Override
   protected void drawGuiContainerBackgroundLayer(float ptick, int mouseX, int mouseY) {
   
-    super.drawGuiContainerBackgroundLayer(ptick, mouseX, mouseY);
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/powerMonitor.png");
     int sx = (width - xSize) / 2;
@@ -177,7 +186,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
     }
 
     checkForModifications();
-
+    super.drawGuiContainerBackgroundLayer(ptick, mouseX, mouseY);
   }
 
   private void checkForModifications() {

@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -16,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.RedstoneModeButton;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -65,8 +65,8 @@ public class GuiCapBank extends GuiContainerBase {
   private RedstoneModeButton inputRsButton;
   private RedstoneModeButton outputRsButton;
 
-  private GuiTextField maxInputTF;
-  private GuiTextField maxOutputTF;
+  private TextFieldEIO maxInputTF;
+  private TextFieldEIO maxOutputTF;
 
   private final GuiOverlayIoConfig configOverlay;
   private final GuiButtonIoConfig configB;
@@ -172,19 +172,22 @@ public class GuiCapBank extends GuiContainerBase {
     
     FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
     
-    x = inputX;
+    x = inputX - 24;
     y = inputY;
-    maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
+    maxInputTF = new TextFieldEIO(fontRenderer, x, y, 68, 16);
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setFocused(false);
 
-    x = outputX;
+    x = outputX - 24;
     y = outputY;
-    maxOutputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
+    maxOutputTF = new TextFieldEIO(fontRenderer, x, y, 68, 16);
     maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setFocused(true);
+    
+    textFields.add(maxInputTF);
+    textFields.add(maxOutputTF);
   }
 
   @Override
@@ -241,7 +244,6 @@ public class GuiCapBank extends GuiContainerBase {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
     requestStateUpdate();
 
@@ -282,7 +284,8 @@ public class GuiCapBank extends GuiContainerBase {
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;
     drawString(fontRenderer, str, x, y, -1);
-
+    
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   @Override
