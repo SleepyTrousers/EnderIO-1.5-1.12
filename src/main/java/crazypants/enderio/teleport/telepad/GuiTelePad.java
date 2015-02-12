@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport.telepad;
 
+import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
@@ -14,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
+import crazypants.enderio.gui.TextFieldEIO.ICharFilter;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
@@ -21,6 +23,18 @@ import crazypants.util.Lang;
 
 public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
+  private class CoordCharFilter implements ICharFilter {
+    private final TextFieldEIO f;
+    public CoordCharFilter(TextFieldEIO f) {
+      this.f = f;
+    }
+    
+    @Override
+    public boolean passesFilter(char c) {
+      return (c== '-' && Strings.isNullOrEmpty(f.getText())) || TextFieldEIO.FILTER_NUMERIC.passesFilter(c);
+    }
+  }
+  
   private static final int ID_SWITCH_BUTTON = 99;
 
   ToggleTravelButton switchButton;
@@ -37,9 +51,13 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    x = new TextFieldEIO(fr, 20, 10, 120, 16).setCharFilter(TextFieldEIO.FILTER_COORDS);
-    y = new TextFieldEIO(fr, 20, 35, 120, 16).setCharFilter(TextFieldEIO.FILTER_COORDS);
-    z = new TextFieldEIO(fr, 20, 60, 120, 16).setCharFilter(TextFieldEIO.FILTER_COORDS);
+    x = new TextFieldEIO(fr, 20, 10, 120, 16);
+    y = new TextFieldEIO(fr, 20, 35, 120, 16);
+    z = new TextFieldEIO(fr, 20, 60, 120, 16);
+    
+    x.setCharFilter(new CoordCharFilter(x));
+    y.setCharFilter(new CoordCharFilter(y));
+    z.setCharFilter(new CoordCharFilter(z));
 
     textFields.addAll(Lists.newArrayList(x, y, z));
 
@@ -48,12 +66,11 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     this.ySize += 19;
   }
-
+  
   @Override
   public void initGui() {
     super.initGui();
     switchButton.onGuiInit();
-
   }
 
   @Override

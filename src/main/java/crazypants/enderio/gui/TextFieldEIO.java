@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import joptsimple.internal.Strings;
 import crazypants.gui.IGuiScreen;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
@@ -10,18 +11,11 @@ public class TextFieldEIO extends GuiTextField {
 
     boolean passesFilter(char c);
   }
-
+  
   public static final ICharFilter FILTER_NUMERIC = new ICharFilter() {
     @Override
     public boolean passesFilter(char c) {
       return Character.isDigit(c);
-    }
-  };
-
-  public static final ICharFilter FILTER_COORDS = new ICharFilter() {
-    @Override
-    public boolean passesFilter(char c) {
-      return c == '-' || FILTER_NUMERIC.passesFilter(c);
     }
   };
 

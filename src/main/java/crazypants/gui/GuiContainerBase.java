@@ -71,6 +71,16 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       }
     }
 
+    if (par1 == '\t') {
+      for (int i = 0; i < textFields.size(); i++) {
+        TextFieldEIO f = textFields.get(i);
+        if (f.isFocused()) {
+          textFields.get((i + 1) % textFields.size()).setFocused(true);
+          f.setFocused(false);
+          return;
+        }
+      }
+    }
     if(focused != null) {
       focused.textboxKeyTyped(par1, par2);
     }
