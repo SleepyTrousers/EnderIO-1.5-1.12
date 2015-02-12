@@ -13,9 +13,9 @@ import crazypants.util.ArrayInventory;
 
 public class ContainerTravelAccessable extends Container {
 
-  private ITravelAccessable ta;
-  private TileEntity te;
-  private World world;
+  ITravelAccessable ta;
+  TileEntity te;
+  World world;
 
   public ContainerTravelAccessable(InventoryPlayer playerInv, final ITravelAccessable travelAccessable, World world) {
     ta = travelAccessable;

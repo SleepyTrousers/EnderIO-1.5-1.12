@@ -47,9 +47,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       TileEntity te = bc.getTileEntity(worldObj);
       ForgeDirection con = Util.getDirFromOffset(xCoord - bc.x, 0, zCoord - bc.z);
       if(te instanceof TileTelePad) {
-        if(fromBlock) {
+        // let's find the master and let him do the work
+        if(((TileTelePad) te).isMaster() && fromBlock) {
           ((TileTelePad) te).updateConnectedState(false);
+          return;
         }
+        // otherwise we either are the master or this is a secondary call, so update connections
         if(con != ForgeDirection.UNKNOWN && !((TileTelePad) te).inNetwork) {
           connections.add(con);
         }
@@ -80,6 +83,10 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public boolean isMaster() {
     return connections.size() == 4;
+  }
+  
+  public TileTelePad getMaster() {
+    return master;
   }
 
   private boolean formNetwork() {

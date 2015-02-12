@@ -45,12 +45,16 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private int col1x;
   private int col2x;
 
-  private World world;
+  protected World world;
 
   public GuiTravelAccessable(InventoryPlayer playerInv, ITravelAccessable te, World world) {
-    super(new ContainerTravelAccessable(playerInv, te, world));
-    this.te = te;
-    this.world = world;
+    this(new ContainerTravelAccessable(playerInv, te, world));
+  }
+
+  public GuiTravelAccessable(ContainerTravelAccessable container) {
+    super(container);
+    this.te = container.ta;
+    this.world = container.world;
 
     publicStr = Lang.localize("gui.travelAccessable.public");
     privateStr = Lang.localize("gui.travelAccessable.private");

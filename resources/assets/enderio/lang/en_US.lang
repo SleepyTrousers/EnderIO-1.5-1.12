@@ -845,6 +845,9 @@ enderio.gui.travelAccessable.unauthorised=You are not allowed to access this blo
 enderio.gui.travelAccessable.enterCode=Access Code Required
 enderio.gui.travelAccessable.ok=Authorise
 
+enderio.gui.telepad.configure.travel=Travel Settings
+enderio.gui.telepad.configure.telepad=Telepad Settings
+
 //Spawn Gurad
 enderio.gui.spawnGurad.showRange=Show Range
 enderio.gui.spawnGurad.range=Range:

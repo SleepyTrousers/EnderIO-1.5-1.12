@@ -24,5 +24,4 @@ public interface IGuiScreen {
   
   void doActionPerformed(GuiButton but);
 
-
 }

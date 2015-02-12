@@ -109,7 +109,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   private int realMx, realMy;
 
   @Override
-  protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+  public final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
 
     Timer t = RenderUtil.getTimer();
