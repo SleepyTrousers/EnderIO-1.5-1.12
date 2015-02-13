@@ -199,6 +199,7 @@ public class GuiExternalConnection extends GuiContainerBase {
       tes.draw();
     }
 
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   public ForgeDirection getDir() {

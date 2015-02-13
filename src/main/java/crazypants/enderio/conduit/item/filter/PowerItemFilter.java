@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
+import crazypants.gui.GhostSlot;
 
 /**
  *
@@ -80,8 +81,7 @@ public class PowerItemFilter implements IItemFilter {
   }
 
   @Override
-  public List<Slot> getSlots(int xOffset, int yOffset) {
-    return Collections.emptyList();
+  public void createGhostSlots(List<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
   }
 
   @Override

@@ -98,6 +98,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
         tabs.get(i).deactivate();
       }
     }
+    ghostSlots.clear();
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
@@ -190,7 +191,6 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     int sx = (width - xSize) / 2;

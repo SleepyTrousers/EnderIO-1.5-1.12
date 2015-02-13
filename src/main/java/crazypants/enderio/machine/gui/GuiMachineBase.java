@@ -96,6 +96,8 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     }
 
     renderSlotHighlights();
+
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   public void renderSlotHighlights() {

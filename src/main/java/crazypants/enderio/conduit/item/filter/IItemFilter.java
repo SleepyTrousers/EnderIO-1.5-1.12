@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.gui.GhostSlot;
 
 public interface IItemFilter {
 
@@ -27,7 +27,7 @@ public interface IItemFilter {
 
   boolean isSticky();
 
-  List<Slot> getSlots(int xOffset, int yOffset);
+  void createGhostSlots(List<GhostSlot> slots, int xOffset, int yOffset, Runnable cb);
 
   int getSlotCount();
 

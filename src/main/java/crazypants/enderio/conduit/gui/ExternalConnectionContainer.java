@@ -17,33 +17,22 @@ import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
 import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public class ExternalConnectionContainer extends Container {
 
-  private InventoryPlayer playerInv;
-  private IConduitBundle bundle;
-  private ForgeDirection dir;
-  private IItemConduit itemConduit;
+  private final IItemConduit itemConduit;
 
   private int speedUpgradeSlotLimit = 15;
-  private IItemFilter inputFilter;
-  private IItemFilter outputFilter;
 
   private int outputFilterUpgradeSlot = 36;
   private int inputFilterUpgradeSlot = 37;
   private int speedUpgradeSlot = 38;
-  private int startFilterSlot = 39;
 
   private List<Point> slotLocations = new ArrayList<Point>();
 
   List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
 
   public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
-    this.playerInv = playerInv;
-    this.bundle = bundle;
-    this.dir = dir;
-
     int x;
     int y;
 
@@ -67,7 +56,6 @@ public class ExternalConnectionContainer extends Container {
 
     itemConduit = bundle.getConduit(IItemConduit.class);
     if(itemConduit != null) {
-
       x = 10;
       y = 47;
       InventoryFilterUpgrade fi = new InventoryFilterUpgrade(itemConduit, dir, false);
@@ -96,48 +84,14 @@ public class ExternalConnectionContainer extends Container {
         }
       });
       slotLocations.add(new Point(x, y));
-
-      addFilterSlots(dir);
     }
-
   }
   
   public void addFilterListener(FilterChangeListener list) {
     filterListeners.add(list);
   }
 
-  private void addFilterSlots(ForgeDirection dir) {
-
-    List<Slot> slots;
-    inputFilter = itemConduit.getInputFilter(dir);
-    if(inputFilter != null && inputFilter.getSlotCount() > 0) {
-      slots = inputFilter.getSlots(33, 69);
-      for (Slot slot : slots) {
-        addSlotToContainer(slot);
-        slotLocations.add(new Point(slot.xDisplayPosition, slot.yDisplayPosition));
-      }
-    }
-
-    outputFilter = itemConduit.getOutputFilter(dir);
-    if(outputFilter != null && outputFilter.getSlotCount() > 0) {
-      slots = outputFilter.getSlots(33, 69);
-      for (Slot slot : slots) {
-        addSlotToContainer(slot);
-        slotLocations.add(new Point(slot.xDisplayPosition, slot.yDisplayPosition));
-      }
-    }
-  }
-
   protected void filterChanged() {
-    int slotsToRemove = inventorySlots.size() - startFilterSlot;
-    for (int i = 0; i < slotsToRemove; i++) {
-      int removeIndex = inventorySlots.size() - 1;
-      inventorySlots.remove(removeIndex);
-      inventoryItemStacks.remove(removeIndex);
-      slotLocations.remove(removeIndex);
-    }
-    addFilterSlots(dir);
-
     for (FilterChangeListener list : filterListeners) {
       list.onFilterChanged();
     }
@@ -149,31 +103,14 @@ public class ExternalConnectionContainer extends Container {
     }
     setSlotsVisible(visible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
     setSlotsVisible(visible, speedUpgradeSlot, speedUpgradeSlot + 1);
-
-    if(inputFilter == null || inputFilter.getSlotCount() == 0) {
-      return;
-    }
-    int startIndex = startFilterSlot;
-    int endIndex = inputFilter.getSlotCount() + startIndex;
-    setSlotsVisible(visible, startIndex, endIndex);
-
   }
 
   public void setOutputSlotsVisible(boolean visible) {
-
     if(itemConduit == null) {
       return;
     }
     
     setSlotsVisible(visible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
-
-    if(outputFilter == null || outputFilter.getSlotCount() == 0) {
-      return;
-    }
-    int startIndex = startFilterSlot + (inputFilter == null ? 0 : inputFilter.getSlotCount());
-    int endIndex = startIndex + outputFilter.getSlotCount();
-    setSlotsVisible(visible, startIndex, endIndex);
-
   }
 
   public void setInventorySlotsVisible(boolean visible) {
@@ -205,12 +142,6 @@ public class ExternalConnectionContainer extends Container {
       SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(st);
       speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
     }
-    if(par4EntityPlayer.worldObj != null) {
-      if(par1 >= startFilterSlot && itemConduit != null) {
-        itemConduit.setInputFilter(dir, inputFilter);
-        itemConduit.setOutputFilter(dir, outputFilter);
-      }     
-    }
     try {
       return super.slotClick(par1, par2, par3, par4EntityPlayer);
     } catch (Exception e) {
@@ -226,9 +157,8 @@ public class ExternalConnectionContainer extends Container {
   }
 
   private class FilterSlot extends Slot {
+    final boolean isInput;
 
-    boolean isInput;
-    
     public FilterSlot(IInventory par1iInventory, int par2, int par3, int par4, boolean isInput) {
       super(par1iInventory, par2, par3, par4);
       this.isInput = isInput;

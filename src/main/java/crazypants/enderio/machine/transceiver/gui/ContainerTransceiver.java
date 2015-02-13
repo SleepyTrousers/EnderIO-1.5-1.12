@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Point;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -28,9 +25,6 @@ public class ContainerTransceiver extends AbstractMachineContainer {
   static final Point FILTER_OFFSET = new Point(PLAYER_INV_OFFSET.x, 30);
 
   private TileTransceiver trans;
-
-  private Map<Slot, Point> sendFilterLocs;
-  private Map<Slot, Point> recFilterLocs;
 
   public ContainerTransceiver(InventoryPlayer inventory, TileTransceiver te) {
     super(inventory, te);
@@ -61,22 +55,6 @@ public class ContainerTransceiver extends AbstractMachineContainer {
       });
     }
     setItemSlotLocations(getItemInventoryOffset());
-
-    List<Slot> sendFilterSlots = trans.getSendItemFilter().getSlots(0, 0);
-    sendFilterLocs = new HashMap<Slot, Point>();
-    for (Slot slot : sendFilterSlots) {
-      addSlotToContainer(slot);
-      sendFilterLocs.put(slot, new Point(slot.xDisplayPosition, slot.yDisplayPosition));
-    }
-    List<Slot> recFilterSlots = trans.getReceiveItemFilter().getSlots(0, 0);
-    recFilterLocs = new HashMap<Slot, Point>();
-    for (Slot slot : recFilterSlots) {
-      addSlotToContainer(slot);
-      recFilterLocs.put(slot, new Point(slot.xDisplayPosition, slot.yDisplayPosition));
-    }
-    setSendFilterSlotsVisible(false);
-    setReceiveFilterSlotsVisible(false);
-
   }
 
   public void setPlayerInventoryVisible(boolean visible) {
@@ -90,25 +68,6 @@ public class ContainerTransceiver extends AbstractMachineContainer {
   public void setBufferSlotsVisible(boolean visible) {
     Point itemOffset = visible ? getItemInventoryOffset() : HIDDEN_OFFSET;       
     setItemSlotLocations(itemOffset);
-  }
-
-  public void setSendFilterSlotsVisible(boolean visible) {
-    setFilterSlotsVisible(sendFilterLocs, visible);
-  }
-
-  public void setReceiveFilterSlotsVisible(boolean visible) {
-    setFilterSlotsVisible(recFilterLocs, visible);
-  }
-
-  public void setFilterSlotsVisible(Map<Slot, Point> slots, boolean visible) {
-    Point offset = HIDDEN_OFFSET;
-    if(visible) {
-      offset = FILTER_OFFSET;
-    }
-    for (Entry<Slot, Point> entry : slots.entrySet()) {
-      entry.getKey().xDisplayPosition = offset.x + entry.getValue().x + 1;
-      entry.getKey().yDisplayPosition = offset.y + entry.getValue().y + 1;
-    }
   }
 
   private void setItemSlotLocations(Point offset) {
@@ -164,7 +123,7 @@ public class ContainerTransceiver extends AbstractMachineContainer {
 
   @Override
   protected int getIndexOfFirstPlayerInvSlot(SlotDefinition slotDef) {
-    return slotDef.getNumSlots() + sendFilterLocs.size() + recFilterLocs.size();
+    return slotDef.getNumSlots();
   }
 
   public static class FilterSlot extends Slot {
