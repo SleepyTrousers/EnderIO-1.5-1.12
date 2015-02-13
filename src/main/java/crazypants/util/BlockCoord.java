@@ -1,5 +1,7 @@
 package crazypants.util;
 
+import com.google.common.base.Strings;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -13,11 +15,15 @@ public final class BlockCoord {
   public int x;
   public int y;
   public int z;
-
+  
   public BlockCoord(int x, int y, int z) {
     this.x = x;
     this.y = y;
     this.z = z;
+  }
+
+  public BlockCoord() {
+    this(0, 0, 0);
   }
 
   public BlockCoord(TileEntity tile) {
@@ -29,13 +35,17 @@ public final class BlockCoord {
   }
 
   public BlockCoord(BlockCoord bc) {
-    x = bc.x;
-    y = bc.y;
-    z = bc.z;
+    this(bc.x, bc.y, bc.z);
   }
 
   public BlockCoord getLocation(ForgeDirection dir) {
     return new BlockCoord(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+  }
+  
+  public BlockCoord(String x, String y, String z) {
+    this(Strings.isNullOrEmpty(x) ? 0 : Integer.parseInt(x),
+         Strings.isNullOrEmpty(y) ? 0 : Integer.parseInt(y),
+         Strings.isNullOrEmpty(z) ? 0 : Integer.parseInt(z));
   }
 
   public int distanceSquared(BlockCoord other) {

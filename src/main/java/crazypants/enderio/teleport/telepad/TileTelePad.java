@@ -11,14 +11,15 @@ import cofh.api.energy.EnergyStorage;
 
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 
-public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver {
+public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad {
 
-  boolean inNetwork;
+  private boolean inNetwork;
 
   private EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
 
@@ -27,8 +28,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private TileTelePad master = null;
 
   private boolean autoUpdate = false;
-  
-  private BlockCoord target;
+
+  private BlockCoord target = new BlockCoord();
 
   @Override
   public void updateEntity() {
@@ -83,14 +84,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
   }
 
-  public boolean isMaster() {
-    return connections.size() == 4;
-  }
-  
-  public TileTelePad getMaster() {
-    return master;
-  }
-
   private boolean formNetwork() {
     List<TileTelePad> temp = Lists.newArrayList();
     if(isMaster()) {
@@ -134,6 +127,74 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
     }
     return ret;
+  }
+
+  /* ITelePad */
+
+  @Override
+  public boolean isMaster() {
+    return connections.size() == 4;
+  }
+
+  @Override
+  public TileTelePad getMaster() {
+    return master;
+  }
+
+  @Override
+  public boolean inNetwork() {
+    return inNetwork;
+  }
+
+  @Override
+  public int getX() {
+    if (inNetwork) {
+      return master.target.x;
+    }
+    return target.x;
+  }
+
+  @Override
+  public int getY() {
+    if (inNetwork) {
+      return master.target.y;
+    }
+    return target.y;
+  }
+
+  @Override
+  public int getZ() {
+    if (inNetwork) {
+      return master.target.z;
+    }
+    return target.z;
+  }
+
+  @Override
+  public ITelePad setX(int x) {
+    if(inNetwork()) {
+      target.x = x;
+      return master;
+    }
+    return null;
+  }
+
+  @Override
+  public ITelePad setY(int y) {
+    if(inNetwork()) {
+      target.y = y;
+      return master;
+    }
+    return null;
+  }
+
+  @Override
+  public ITelePad setZ(int z) {
+    if(inNetwork()) {
+      target.z = z;
+      return master;
+    }
+    return null;
   }
 
   @Override

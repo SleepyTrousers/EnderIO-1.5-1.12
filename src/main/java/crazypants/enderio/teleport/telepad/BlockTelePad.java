@@ -31,6 +31,7 @@ public class BlockTelePad extends BlockTravelAnchor {
   public static BlockTelePad create() {
     BlockTelePad ret = new BlockTelePad();
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpdateCoords.class, PacketUpdateCoords.class, PacketHandler.nextID(), Side.SERVER);
     ret.init();
     return ret;
   }
@@ -55,7 +56,7 @@ public class BlockTelePad extends BlockTravelAnchor {
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
-    if(te != null && te.inNetwork) {
+    if(te != null && te.inNetwork()) {
       return connected;
     }
     return unconnected;
@@ -82,7 +83,7 @@ public class BlockTelePad extends BlockTravelAnchor {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileTelePad) {
       TileTelePad tp = (TileTelePad) te;
-      if (tp.inNetwork) {
+      if (tp.inNetwork()) {
         if (!tp.isMaster()) {
           TileTelePad master = tp.getMaster();
           return openGui(world, master.xCoord, master.yCoord, master.zCoord, entityPlayer, side);

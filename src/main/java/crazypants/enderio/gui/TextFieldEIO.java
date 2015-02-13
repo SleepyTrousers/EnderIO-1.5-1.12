@@ -1,9 +1,8 @@
 package crazypants.enderio.gui;
 
-import joptsimple.internal.Strings;
-import crazypants.gui.IGuiScreen;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
+import crazypants.gui.IGuiScreen;
 
 public class TextFieldEIO extends GuiTextField {
 
@@ -11,7 +10,7 @@ public class TextFieldEIO extends GuiTextField {
 
     boolean passesFilter(char c);
   }
-  
+
   public static final ICharFilter FILTER_NUMERIC = new ICharFilter() {
     @Override
     public boolean passesFilter(char c) {
@@ -54,10 +53,15 @@ public class TextFieldEIO extends GuiTextField {
   }
 
   @Override
-  public boolean textboxKeyTyped(char c, int p_146201_2_) {
-    if(filter == null || filter.passesFilter(c) || c == '\b') {
-      return super.textboxKeyTyped(c, p_146201_2_);
+  public boolean textboxKeyTyped(char c, int key) {
+    if(filter == null || filter.passesFilter(c) || isSpecialChar(c, key)) {
+      return super.textboxKeyTyped(c, key);
     }
     return false;
+  }
+
+  public static boolean isSpecialChar(char c, int key) {
+    // taken from the giant switch statement in GuiTextField
+    return c == 1 || c == 3 || c == 22 || c == 24 || key == 14 || key == 199 || key == 203 || key == 205 || key == 207 || key == 211;
   }
 }

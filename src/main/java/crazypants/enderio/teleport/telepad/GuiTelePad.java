@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
 
+import org.apache.commons.lang3.tuple.Triple;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Lists;
@@ -19,6 +20,7 @@ import crazypants.enderio.gui.TextFieldEIO.ICharFilter;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
 public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
@@ -55,9 +57,9 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
     y = new TextFieldEIO(fr, 20, 35, 120, 16);
     z = new TextFieldEIO(fr, 20, 60, 120, 16);
     
-    x.setCharFilter(new CoordCharFilter(x));
-    y.setCharFilter(new CoordCharFilter(y));
-    z.setCharFilter(new CoordCharFilter(z));
+    x.setCharFilter(new CoordCharFilter(x)).setText(Integer.toString(te.getX()));
+    y.setCharFilter(new CoordCharFilter(y)).setText(Integer.toString(te.getY()));
+    z.setCharFilter(new CoordCharFilter(z)).setText(Integer.toString(te.getZ()));
 
     textFields.addAll(Lists.newArrayList(x, y, z));
 
@@ -76,6 +78,23 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   @Override
   public void updateScreen() {
     super.updateScreen();
+  }
+  
+  @Override
+  protected void keyTyped(char par1, int par2) {
+    super.keyTyped(par1, par2);
+    updateCoords();
+  }
+
+  private void updateCoords() {
+    Triple<String, String, String> texts = Triple.of(x.getText(), y.getText(), z.getText());
+    BlockCoord bc = new BlockCoord(texts.getLeft(), texts.getMiddle(), texts.getRight());
+    if(bc.x != te.getX() || bc.y != te.getY() || bc.z != te.getZ()) {
+      te.setX(bc.x);
+      te.setY(bc.y);
+      te.setZ(bc.z);
+      PacketHandler.INSTANCE.sendToServer(new PacketUpdateCoords(te, bc));
+    }
   }
 
   @Override
