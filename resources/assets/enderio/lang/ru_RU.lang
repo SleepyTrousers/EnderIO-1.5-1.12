@@ -21,11 +21,13 @@ item.enderio.itemEnderface.name=Лицо Края
 enderio.blockConduitBundle=Связка труб
 enderio.blockConduitFacade=Фасад для труб
 item.enderio.itemConduitFacade.name=Фасад для труб
+item.enderio.itemConduitFacade.hardened.name=Закалённый фасад для труб
 enderio.item.itemConduitFacade.tooltip.notpainted=Не покрашен
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Окрашивается в покрасочном механизме
 item.enderio.itemConduitFacade.tooltip.detailed.line2=ПКМ по трубе, чтобы поставить
 item.enderio.itemConduitFacade.tooltip.detailed.line3=Скрыт, когда гаечный ключ или труба
 item.enderio.itemConduitFacade.tooltip.detailed.line4=экипированы
+item.enderio.itemConduitFacade.hardened.tooltip=Закалён: Выдерживает удары и взрывы
 
 enderio.itemPowerConduit.name=Энергетическая труба
 enderio.itemPowerConduitEnhanced.name=Расширенная энергетическая труба
@@ -156,6 +158,7 @@ enderio.pulsatingCrystal.name=Пульсирующий кристалл
 enderio.vibrantCrystal.name=Вибрирующий кристалл
 enderio.enderCrystal.name=Кристалл Края
 enderio.attractorCrystal.name=Привлекающий кристалл
+enderio.weatherCrystal.name=Погодный кристалл
 enderio.darkGrindingBall.name=Шарик тёмной стали
 enderio.darkGrindingBall.tooltip.detailed.line1=Измельчающий шарик для дробилки
 enderio.darkGrindingBall.tooltip.detailed.line2=Основной выход
@@ -205,6 +208,7 @@ enderio.powderGold.name=Золотой порошок
 enderio.powderCopper.name=Медный порошок
 enderio.powderTin.name=Оловянный порошок
 enderio.powderEnder.name=Порошок из жемчуга Края
+enderio.powderObsidian.name=Обсидиановый порошок
 enderio.ingotEnderiumBase.name=Основа Края
 
 //Capacitors
@@ -241,6 +245,7 @@ tile.blockAlloySmelter.tooltip.detailed.line5=скорость и хранили
 
 tile.blockSolarPanel.name=Фотовольтовая ячейка
 tile.blockSolarPanel.advanced.name=Продвинутая фотовольтовая ячейка
+tile.blockSolarPanel.tooltip.common.line1=Солнечная энергия!
 tile.blockSolarPanel.tooltip.detailed.line1=Производит энергию в светлое время суток
 tile.blockSolarPanel.tooltip.detailed.line2=Должна иметь чистое пространство
 tile.blockSolarPanel.tooltip.detailed.line3=к небу
@@ -446,6 +451,11 @@ tile.blockExperienceObelisk.tooltip.detailed.line1=Содержит опыт
 tile.blockExperienceObelisk.tooltip.detailed.line2=Может отдавать жидкий опыт
 tile.blockExperienceObelisk.tooltip.detailed.line3=присоединённым резервуарам
 
+tile.blockWeatherObelisk.name=Погодный обелиск
+tile.blockWeatherObelisk.tooltip.detailed.line1=Изменяет текущую погоду
+tile.blockWeatherObelisk.tooltip.detailed.line2=Требует много энергии и
+tile.blockWeatherObelisk.tooltip.detailed.line3=предмет в качестве катализатора
+
 tile.blockBuffer.item.name=Предметный буфер
 tile.blockBuffer.power.name=Энергобуфер
 tile.blockBuffer.omni.name=Универсальный буфер
@@ -572,9 +582,11 @@ item.darkSteel_axe.name=Тёмный топор
 
 enderio.item.tooltip.showDetails=<Зажмите Shift>
 enderio.item.darkSteel.tooltip.durability=Прочность:
+enderio.item.darkSteel.tooltip.lvs=уровней
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность при питании
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
+enderio.item.darkSteel_pickaxe.tooltip.cost=стоит
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
 
@@ -719,6 +731,8 @@ enderio.gui.machine.button.retrievelevels=Забрать 10
 enderio.gui.machine.tooltip.retrievelevels=уровней опыта игрока
 enderio.gui.machine.button.retrieveall=Забрать весь опыт
 enderio.gui.machine.ioMode.overlay.tooltip=Настроить вход/выход
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift-клик, чтобы сбросить все стороны
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=на настройки по-умолчанию
 enderio.gui.machine.ioMode.none=Нет
 enderio.gui.machine.ioMode.pull=Тянуть
 enderio.gui.machine.ioMode.push=Толкать
@@ -870,6 +884,10 @@ enderio.gui.conduit.item.roundRobinEnabled=Цикл включён
 enderio.gui.conduit.item.roundRobinDisabled=Цикл отключен
 enderio.gui.conduit.item.priority=Приоритет
 
+enderio.gui.conduit.item.filterupgrade=Вставить предметный фильтр
+enderio.gui.conduit.item.speedupgrade=Вставить улучшения скорости/понижение скорости
+enderio.gui.conduit.item.speedupgrade2=Макс. кол-во улучшений 15; Макс. кол-во понижений 1
+
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
 enderio.gui.conduit.redstone.signalStrengh=Сильный сигнал
@@ -881,6 +899,12 @@ enderio.gui.conduit.fluid.whitelist=Белый список
 enderio.gui.conduit.fluid.blacklist=Чёрный список
 
 enderio.gui.conduit.gas.autoExtract=Авто-извлечение
+
+//Weather
+enderio.gui.weather.task.clear=Ясная погода
+enderio.gui.weather.task.rain=Дождливая погода
+enderio.gui.weather.task.storm=Гроза
+enderio.gui.weather.requireditem=Требуется предмет: %s
 
 //Enchants
 enchantment.enderio.soulBound=Печать души

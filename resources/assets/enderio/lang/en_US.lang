@@ -245,7 +245,7 @@ tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
-tile.blockSolarPanel.tooltip.common.line1=Solar power!
+tile.blockSolarPanel.tooltip.common.line1=Solar Power!
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
@@ -582,9 +582,11 @@ item.darkSteel_axe.name=Dark Axe
 
 enderio.item.tooltip.showDetails=<Hold Shift>
 enderio.item.darkSteel.tooltip.durability=Durability:
+enderio.item.darkSteel.tooltip.lvs=lvs
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.darkSteel_pickaxe.tooltip.cost=cost
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 

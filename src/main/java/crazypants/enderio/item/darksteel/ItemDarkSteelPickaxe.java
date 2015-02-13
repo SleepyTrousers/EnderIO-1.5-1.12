@@ -209,7 +209,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   private boolean useObsidianEffeciency(ItemStack item, Block block) {
     boolean useObsidianSpeed = false;
     int energy = getEnergyStored(item);
-    if(energy > 0) {
+    if(energy > Config.darkSteelPickPowerUseObsidian) {
       useObsidianSpeed = block == Blocks.obsidian;
       if(!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
         try {
@@ -284,7 +284,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
           + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " "
           + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-      list.add(EnumChatFormatting.WHITE + "     (cost "
+      list.add(EnumChatFormatting.WHITE + "     " + "(" + Lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
           + PowerDisplayUtil.abrevation() + ")");
     }
