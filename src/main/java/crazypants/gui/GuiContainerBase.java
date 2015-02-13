@@ -1,6 +1,5 @@
 package crazypants.gui;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -20,11 +19,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
-import crazypants.enderio.Log;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 import crazypants.render.RenderUtil;
@@ -36,6 +33,9 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
+  protected List<GhostSlot> ghostSlots = new ArrayList<GhostSlot>();
+
+  protected GhostSlot hoverGhostSlot;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -112,6 +112,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   private int realMx, realMy;
 
   @Override
+  protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+    drawGhostSlots(mouseX, mouseY);
+  }
+
+  @Override
   protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
 
@@ -135,7 +140,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   @Override
   public void drawScreen(int par1, int par2, float par3) {
-
+    hoverGhostSlot = null;
     int mx = realMx = par1;
     int my = realMy = par2;
     for (IGuiOverlay overlay : overlays) {
@@ -147,6 +152,13 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     }
 
     super.drawScreen(mx, my, par3);
+
+    if(hoverGhostSlot != null && mc.thePlayer.inventory.getItemStack() == null) {
+      ItemStack stack = hoverGhostSlot.getStack();
+      if(stack != null) {
+        renderToolTip(stack, par1, par2);
+      }
+    }
   }
 
   // copied from super with hate
@@ -168,13 +180,93 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     itemRender.zLevel = 0.0F;
   }
 
+  protected void drawFakeItemsStart() {
+    zLevel = 100.0F;
+    itemRender.zLevel = 100.0F;
+    GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+    GL11.glEnable(GL11.GL_LIGHTING);
+    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    RenderHelper.enableGUIStandardItemLighting();
+  }
+
+  protected void drawFakeItemStack(int x, int y, ItemStack stack) {
+    itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.renderEngine, stack, x, y);
+  }
+
+  protected void drawFakeItemHover(int x, int y) {
+    GL11.glDisable(GL11.GL_LIGHTING);
+    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    GL11.glColorMask(true, true, true, false);
+    drawGradientRect(x, y, x + 16, y + 16, 0x80FFFFFF, 0x80FFFFFF);
+    GL11.glColorMask(true, true, true, true);
+    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GL11.glEnable(GL11.GL_LIGHTING);
+  }
+
+  protected void drawFakeItemsEnd() {
+    GL11.glPopAttrib();
+    itemRender.zLevel = 0.0F;
+    zLevel = 0.0F;
+  }
+
+  protected void drawGhostSlots(int mouseX, int mouseY) {
+    if(ghostSlots.isEmpty()) {
+      return;
+    }
+    int sx = getGuiLeft();
+    int sy = getGuiTop();
+    drawFakeItemsStart();
+    try {
+      hoverGhostSlot = null;
+      for(GhostSlot slot : ghostSlots) {
+        ItemStack stack = slot.getStack();
+        if(slot.isVisible()) {
+          if(stack != null) {
+            drawFakeItemStack(slot.x + sx, slot.y + sy, stack);
+          }
+          if(slot.isMouseOver(mouseX - sx, mouseY - sy)) {
+            hoverGhostSlot = slot;
+          }
+        }
+      }
+      if(hoverGhostSlot != null) {
+        // draw hover last to prevent it from affecting rendering of other slots ...
+        drawFakeItemHover(hoverGhostSlot.x + sx, hoverGhostSlot.y + sy);
+      }
+    } finally {
+      drawFakeItemsEnd();
+    }
+  }
+
+  protected GhostSlot getGhostSlot(int mouseX, int mouseY) {
+    mouseX -= getGuiLeft();
+    mouseY -= getGuiTop();
+    for(GhostSlot slot : ghostSlots) {
+      if(slot.isVisible() && slot.isMouseOver(mouseX, mouseY)) {
+        return slot;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  protected void mouseClicked(int mouseX, int mouseY, int button) {
+    if(!ghostSlots.isEmpty()) {
+      GhostSlot slot = getGhostSlot(mouseX, mouseY);
+      if(slot != null) {
+        ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+        slot.putStack(st);
+        return;
+      }
+    }
+    super.mouseClicked(mouseX, mouseY, button);
+  }
+
   private boolean isMouseInOverlay(int mouseX, int mouseY, IGuiOverlay overlay) {
     int x = mouseX - getGuiLeft();
     int y = mouseY - getGuiTop();
-    if(overlay.getBounds().contains(x, y)) {
-      return true;
-    }
-    return false;
+    return overlay.getBounds().contains(x, y);
   }
 
   @Override
