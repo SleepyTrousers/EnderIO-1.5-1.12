@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -120,5 +121,18 @@ public final class BlockCoord {
 
   public static BlockCoord readFromBuf(ByteBuf buf) {
     return new BlockCoord(buf.readInt(), buf.readInt(), buf.readInt());
+  }
+  
+  public void writeToNBT(NBTTagCompound tag) {
+    tag.setInteger("bc:x", x);
+    tag.setInteger("bc:y", y);
+    tag.setInteger("bc:z", z);
+  }
+  
+  public BlockCoord readFromNBT(NBTTagCompound tag) {
+    x = tag.getInteger("bc:x");
+    y = tag.getInteger("bc:y");
+    z = tag.getInteger("bc:z");
+    return this;
   }
 }

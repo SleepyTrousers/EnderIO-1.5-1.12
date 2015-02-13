@@ -5,6 +5,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
@@ -41,6 +44,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(autoUpdate && worldObj != null) {
       updateConnectedState(true);
       autoUpdate = false;
+    }
+    if (isMaster() && !worldObj.isRemote) {
+      System.out.println(inNetwork() + "  " + this);
     }
   }
 
@@ -129,6 +135,39 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return ret;
   }
 
+  @Override
+  public boolean canUpdate() {
+    return true;
+  }
+
+  @Override
+  protected void writeCustomNBT(NBTTagCompound root) {
+    super.writeCustomNBT(root);
+    energy.writeToNBT(root);
+    target.writeToNBT(root);
+  }
+
+  @Override
+  protected void readCustomNBT(NBTTagCompound root) {
+    super.readCustomNBT(root);
+    energy.readFromNBT(root);
+    target = new BlockCoord().readFromNBT(root);
+    autoUpdate = true;
+  }
+
+  @Override
+  public Packet getDescriptionPacket() {
+    S35PacketUpdateTileEntity pkt = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
+    pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
+    return pkt;
+  }
+
+  @Override
+  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    super.onDataPacket(net, pkt);
+    this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
+  }
+
   /* ITelePad */
 
   @Override
@@ -196,25 +235,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     return null;
   }
-
-  @Override
-  public boolean canUpdate() {
-    return true;
-  }
-
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    super.writeCustomNBT(root);
-    energy.writeToNBT(root);
-  }
-
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    super.readCustomNBT(root);
-    energy.readFromNBT(root);
-    autoUpdate = true;
-  }
-
+  
   /* ITravelAccessable overrides */
 
   @Override

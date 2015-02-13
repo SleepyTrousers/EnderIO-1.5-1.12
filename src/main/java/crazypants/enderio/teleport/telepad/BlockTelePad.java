@@ -1,7 +1,9 @@
 package crazypants.enderio.teleport.telepad;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
@@ -83,6 +85,7 @@ public class BlockTelePad extends BlockTravelAnchor {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileTelePad) {
       TileTelePad tp = (TileTelePad) te;
+      System.out.println(tp.inNetwork() + "  " + tp);
       if (tp.inNetwork()) {
         if (!tp.isMaster()) {
           TileTelePad master = tp.getMaster();
@@ -103,6 +106,12 @@ public class BlockTelePad extends BlockTravelAnchor {
       }
     }
     return true;
+  }
+  
+  @Override
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
+    super.onBlockPlacedBy(world, x, y, z, entity, par6ItemStack);
+    ((TileTelePad) world.getTileEntity(x, y, z)).updateConnectedState(true);
   }
 
   @Override

@@ -87,8 +87,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   }
 
   private void updateCoords() {
-    Triple<String, String, String> texts = Triple.of(x.getText(), y.getText(), z.getText());
-    BlockCoord bc = new BlockCoord(texts.getLeft(), texts.getMiddle(), texts.getRight());
+    BlockCoord bc = new BlockCoord(x.getText(), y.getText(), z.getText());
     if(bc.x != te.getX() || bc.y != te.getY() || bc.z != te.getZ()) {
       te.setX(bc.x);
       te.setY(bc.y);
