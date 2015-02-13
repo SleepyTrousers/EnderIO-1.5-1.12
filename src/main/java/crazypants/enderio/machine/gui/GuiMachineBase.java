@@ -151,33 +151,42 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     addToolTip(tt);
   }
 
-  private void updateProgressTooltips(int progress) {
-    if(lastProgressTooltipValue == progress || progressTooltips == null) {
+  private void updateProgressTooltips(int scaledProgress, float progress) {
+    if(lastProgressTooltipValue == scaledProgress || progressTooltips == null) {
       return;
     }
-    lastProgressTooltipValue = progress;
+    lastProgressTooltipValue = scaledProgress;
 
-    if(progress < 0) {
+    if(scaledProgress < 0) {
       for(GuiToolTip tt : progressTooltips) {
         tt.setVisible(false);
       }
       return;
     }
 
-    String msg = MessageFormat.format(Lang.localize("gui.progress"), progress);
+    String msg = formatProgressTooltip(scaledProgress, progress);
+    String[] tooltip = msg.split("\\|");
     for(GuiToolTip tt : progressTooltips) {
-      tt.setToolTipText(msg);
+      tt.setToolTipText(tooltip);
       tt.setVisible(true);
     }
+  }
+
+  protected String formatProgressTooltip(int scaledProgress, float progress) {
+    return MessageFormat.format(Lang.localize("gui.progress"), scaledProgress);
+  }
+
+  protected int scaleProgressForTooltip(float progress) {
+    return (int)(progress * 100);
   }
 
   protected boolean shouldRenderProgress() {
     float progress = tileEntity.getProgress();
     if(progress > 0 && progress < 1) {
-      updateProgressTooltips((int)(progress * 100));
+      updateProgressTooltips(scaleProgressForTooltip(progress), progress);
       return true;
     } else {
-      updateProgressTooltips(-1);
+      updateProgressTooltips(-1, -1);
       return false;
     }
   }
