@@ -892,7 +892,7 @@ enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
 enderio.gui.conduit.item.priority=Priority
 
 enderio.gui.conduit.item.filterupgrade=Insert Item Filter
-enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Up-/ Downgrade
+enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
 enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
