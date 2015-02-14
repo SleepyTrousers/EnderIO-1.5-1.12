@@ -39,6 +39,8 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
         return !c.getUpgradeSlot().getHasStack() && super.shouldDraw();
       }
     });
+
+    addProgressTooltip(80, 52, 14, 14);
   }
 
   private static float getFactor(Capacitors upgrade) {
@@ -63,6 +65,23 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   }
 
   @Override
+  protected String formatProgressTooltip(int scaledProgress, float remaining) {
+    int totalBurnTime = getTileEntity().totalBurnTime;
+    int remainingTicks = (int)(remaining * totalBurnTime);
+    int remainingSecs = remainingTicks / 20;
+    int remainingRF = getTileEntity().getPowerUsePerTick() * remainingTicks;
+    return MessageFormat.format(Lang.localize("stirlingGenerator.remaining"),
+            remaining, remainingSecs / 60, remainingSecs % 60, remainingRF);
+  }
+
+  @Override
+  protected int scaleProgressForTooltip(float progress) {
+    int totalBurnTime = getTileEntity().totalBurnTime;
+    int scale = Math.max(100, (totalBurnTime+19)/20);
+    return (int)(progress * scale);
+  }
+
+  @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/stirlingGenerator.png");
@@ -72,7 +91,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     int scaled;
 
-    if(getTileEntity().getProgress() < 1 && getTileEntity().getProgress() > 0) {
+    if(shouldRenderProgress()) {
       scaled = getTileEntity().getProgressScaled(12);
       drawTexturedModalRect(sx + 80, sy + 64 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }

@@ -191,7 +191,7 @@ public class DarkSteelRecipeManager {
       for (IDarkSteelUpgrade up : applyableUpgrades) {
         list.add(EnumChatFormatting.DARK_AQUA + "" + "" + Lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
         list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
-            + " lvs");
+            + " " + Lang.localize("item.darkSteel.tooltip.lvs"));
       }
     }
   }

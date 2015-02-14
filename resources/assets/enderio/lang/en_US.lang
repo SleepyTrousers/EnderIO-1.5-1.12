@@ -245,7 +245,7 @@ tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
-tile.blockSolarPanel.tooltip.common.line1=Solar power!
+tile.blockSolarPanel.tooltip.common.line1=Solar Power!
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
@@ -592,9 +592,11 @@ item.darkSteel_axe.name=Dark Axe
 
 enderio.item.tooltip.showDetails=<Hold Shift>
 enderio.item.darkSteel.tooltip.durability=Durability:
+enderio.item.darkSteel.tooltip.lvs=lvs
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.darkSteel_pickaxe.tooltip.cost=cost
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
@@ -828,6 +830,12 @@ enderio.gui.alloy.mode.all=All Smelting
 enderio.gui.alloy.mode.alloy=Alloys Only
 enderio.gui.alloy.mode.furnace=Furnace Only
 
+//Vacuum chest
+enderio.gui.vacuum.range=Suction strength
+enderio.gui.vacuum.header.chest=Vacuum Chest
+enderio.gui.vacuum.header.filter=Item filter
+enderio.gui.vacuum.header.range=Range
+
 //Vat
 enderio.vat.outputTank=Output Tank
 enderio.vat.inputTank=Input Tank
@@ -844,6 +852,7 @@ enderio.stirlingGenerator.output=Generating:
 enderio.stirlingGenerator.burnRate=Burn Rate:
 enderio.stirlingGenerator.upgradeslot=Upgrade slot
 enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
+enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
@@ -896,7 +905,7 @@ enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
 enderio.gui.conduit.item.priority=Priority
 
 enderio.gui.conduit.item.filterupgrade=Insert Item Filter
-enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Up-/ Downgrade
+enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
 enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
 
 enderio.gui.conduit.redstone.signalColor=Signal Color

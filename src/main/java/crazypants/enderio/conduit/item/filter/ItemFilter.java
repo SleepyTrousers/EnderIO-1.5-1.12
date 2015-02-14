@@ -66,6 +66,10 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
+    return doesItemPassFilter(item);
+  }
+
+  public boolean doesItemPassFilter(ItemStack item) {
     if(!isValid()) {
       return true;
     }
@@ -88,7 +92,7 @@ public class ItemFilter implements IInventory, IItemFilter {
           matched = false;
         }        
       }
-      if(!matched && isOreDicMatch(i, item)) {
+      if(!matched && useOreDict && isOreDicMatch(i, item)) {
         matched = true;
       }
       if(matched) {
@@ -99,10 +103,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     return matched;
   }
 
-  private boolean isOreDicMatch(int filterItemIndex, ItemStack item) {    
-    if(!useOreDict || item == null) {
-      return false;
-    }
+  private boolean isOreDicMatch(int filterItemIndex, ItemStack item) {
     int[] ids1 = getCachedIds(filterItemIndex);
     if(ids1 == null || ids1.length == 0) {
       return false;

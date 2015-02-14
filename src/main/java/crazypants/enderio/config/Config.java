@@ -325,7 +325,7 @@ public final class Config {
 
   public static int painterEnergyPerTaskRF = 2000;
 
-  public static double vacuumChestRange = 6;
+  public static int vacuumChestRange = 6;
 
   public static boolean useModMetals = true;
 
@@ -647,7 +647,7 @@ public final class Config {
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
 
-    vacuumChestRange = config.get(sectionEfficiency.name, "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getDouble(vacuumChestRange);
+    vacuumChestRange = config.get(sectionEfficiency.name, "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getInt(vacuumChestRange);
 
     if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
