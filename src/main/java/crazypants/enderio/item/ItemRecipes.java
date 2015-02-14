@@ -26,37 +26,38 @@ public class ItemRecipes {
     // Wrench
     ItemStack wrench = new ItemStack(EnderIO.itemYetaWench, 1, 0);
     GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
-    
+
     //Magnet
-    ItemStack magnet = new ItemStack(EnderIO.itemMagnet, 1, 0);    
+    ItemStack magnet = new ItemStack(EnderIO.itemMagnet, 1, 0);
     EnderIO.itemMagnet.setEnergy(magnet, 0);
     GameRegistry.addShapedRecipe(magnet, "scc", "  v", "scc", 's', electricalSteel, 'c', conductiveIron, 'v', vibCry);
 
-    //Dark Steel        
+    //Dark Steel
     GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelHelmet.createItemStack(), "sss", "s s", 's', darkSteel);
     GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelChestplate.createItemStack(), "s s", "sss", "sss", 's', darkSteel);
     GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelLeggings.createItemStack(), "sss", "s s", "s s", 's', darkSteel);
     GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelBoots.createItemStack(), "s s", "s s", 's', darkSteel);
-    
+
     ItemStack wing = new ItemStack(DarkSteelItems.itemGliderWing,1,0);
     GameRegistry.addShapedRecipe(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.leather);
     GameRegistry.addShapedRecipe(new ItemStack(DarkSteelItems.itemGliderWing,1,1), " s ", "wsw", "   ", 's', darkSteel, 'w', wing);
-    
-    
+
+    GameRegistry.addShapedRecipe(DarkSteelItems.itemDarkSteelShears.createItemStack(), " s", "s ", 's', darkSteel);
+
     ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
     GameRegistry.addShapedRecipe(dspp, "ss", 's', darkSteel);
-    
+
     ItemStack dsppSilent = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 1);
     GameRegistry.addShapedRecipe(dsppSilent, "p", "w", 'p', dspp, 'w', Blocks.wool);
-    
+
     //Soul Vessel
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemSoulVessel), " s ", "q q", " q ", 's', soularium, 'q', new ItemStack(EnderIO.blockFusedQuartz,1,0));
-     
+
     //XP Rod
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemXpTransfer), "  s", " v ", "s  ", 's', soularium, 'v', enAlloy);
 
   }
-  
+
   public static void addOreDictionaryRecipes() {
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
     GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "stickWood"));

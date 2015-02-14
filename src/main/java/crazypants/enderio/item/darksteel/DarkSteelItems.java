@@ -1,13 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
-
-import crazypants.enderio.config.Config;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.ChestGenHooks;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
 
 public class DarkSteelItems {
 
@@ -20,6 +19,7 @@ public class DarkSteelItems {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
+  public static ItemDarkSteelShears itemDarkSteelShears;
 
   private DarkSteelItems() {
   }
@@ -35,6 +35,8 @@ public class DarkSteelItems {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
+    itemDarkSteelShears = ItemDarkSteelShears.create();
+
   }
 
   public static void addLoot() {
@@ -63,5 +65,6 @@ public class DarkSteelItems {
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelSword, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
   }
 }
