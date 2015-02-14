@@ -21,7 +21,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
   public GuiAugmentedTravelAccessible(InventoryPlayer playerInv, TileTelePad te, World world) {
     super(playerInv, te, world);
     this.te = te;
-    switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, 150, 10, IconEIO.IO_WHATSIT);
+    switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(Lang.localize("gui.telepad.configure.telepad"));
   }
   

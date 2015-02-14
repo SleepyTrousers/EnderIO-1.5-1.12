@@ -8,6 +8,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -71,14 +72,14 @@ public class TravelController {
   private double fovRad;
 
   private double tanFovRad;
-  
+
   private final List<UniqueIdentifier> blackList = new ArrayList<GameRegistry.UniqueIdentifier>();
 
   private TravelController() {
     String[] blackListNames = Config.travelStaffBlinkBlackList;
-    for(String name : blackListNames) {
-      blackList.add(new UniqueIdentifier(name));  
-    }    
+    for (String name : blackListNames) {
+      blackList.add(new UniqueIdentifier(name));
+    }
   }
 
   public void addBlockToBlinkBlackList(String blockName) {
@@ -145,7 +146,7 @@ public class TravelController {
         if(pos != null) {
           Block hitBlock = player.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
           if(isBlackListedBlock(player, pos, hitBlock)) {
-            maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(pos.blockX + 0.5, pos.blockY + 0.5, pos.blockZ + 0.5)) - 1.5 - lookComp);            
+            maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(pos.blockX + 0.5, pos.blockY + 0.5, pos.blockZ + 0.5)) - 1.5 - lookComp);
           }
         }
       }
@@ -153,9 +154,9 @@ public class TravelController {
       eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
 
       Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
-      double sampleDistance = 1.5;      
-      double teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance; 
-      
+      double sampleDistance = 1.5;
+      double teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance;
+
       while (teleDistance < maxDistance) {
         sample.set(look);
         sample.scale(sampleDistance);
@@ -193,7 +194,8 @@ public class TravelController {
     if(ui == null) {
       return false;
     }
-    return blackList.contains(ui) && (hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
+    return blackList.contains(ui)
+        && (hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
   private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
@@ -257,9 +259,9 @@ public class TravelController {
     lookAt.add(eye);
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
-    float fov = Minecraft.getMinecraft().gameSettings.fovSetting;        
+    float fov = Minecraft.getMinecraft().gameSettings.fovSetting;
     Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth,
-        mc.displayHeight);       
+        mc.displayHeight);
     currentView.setProjectionMatrix(pr);
     currentView.setViewMatrix(mv);
     currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
@@ -302,8 +304,8 @@ public class TravelController {
           openEnderIO(null, player.worldObj, player);
         } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
           input.jump = false;
-          try{ 
-            ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer", "field_71101_bC");
+          try {
+            ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");
           } catch (Exception e) {
             //ignore
           }
@@ -359,7 +361,7 @@ public class TravelController {
     return false;
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source,boolean conserveMomentum) {
+  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source, boolean conserveMomentum) {
     return travelToLocation(player, source, selectedCoord, conserveMomentum);
   }
 
@@ -394,7 +396,7 @@ public class TravelController {
       }
       return false;
     }
-    if(sendTravelEvent(player, coord, source, requiredPower, conserveMomentum)) {
+    if(doClientTeleport(player, coord, source, requiredPower, conserveMomentum)) {
       for (int i = 0; i < 6; ++i) {
         player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
             player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
@@ -461,12 +463,12 @@ public class TravelController {
       if(!canBlinkTo(bc, w, start, target)) {
         return false;
       }
-    }   
+    }
 
     Block block = w.getBlock(bc.x, bc.y, bc.z);
     if(block == null || block.isAir(w, bc.x, bc.y, bc.z)) {
       return true;
-    }    
+    }
     final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, bc.x, bc.y, bc.z);
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
   }
@@ -516,10 +518,10 @@ public class TravelController {
       return;
     }
 
-    double closestDistance = Double.MAX_VALUE;    
+    double closestDistance = Double.MAX_VALUE;
     for (BlockCoord bc : candidates.keySet()) {
-      if(!bc.equals(onBlockCoord)) {        
-        
+      if(!bc.equals(onBlockCoord)) {
+
         double d = addRatio(bc);
         if(d < closestDistance) {
           selectedCoord = bc;
@@ -529,22 +531,21 @@ public class TravelController {
     }
 
     if(selectedCoord != null) {
-      
+
       Vector3d blockCenter = new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5);
-      Vector2d blockCenterPixel = currentView.getScreenPoint(blockCenter);            
-      
+      Vector2d blockCenterPixel = currentView.getScreenPoint(blockCenter);
+
       Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
       screenMidPixel.scale(0.5);
 
-      
       double pixDist = blockCenterPixel.distance(screenMidPixel);
       double rat = pixDist / Minecraft.getMinecraft().displayHeight;
       if(rat != rat) {
         rat = 0;
-      }      
+      }
       if(rat > 0.07) {
         selectedCoord = null;
-      }      
+      }
 
     }
   }
@@ -573,12 +574,12 @@ public class TravelController {
     double mix = MathHelper.clamp_float((start - ratio) / (start - end), 0, 1);
     double scale = 1;
     if(mix > 0) {
-      
-      Vector3d eyePoint = Util.getEyePositionEio(EnderIO.proxy.getClientPlayer());      
+
+      Vector3d eyePoint = Util.getEyePositionEio(EnderIO.proxy.getClientPlayer());
       scale = tanFovRad * eyePoint.distance(loc);
-      
+
       //Using this scale will give us the block full screen, we will make it 20% of the screen
-      scale *= Config.travelAnchorZoomScale;      
+      scale *= Config.travelAnchorZoomScale;
 
       //only apply 70% of the scaling so more distance targets are still smaller than closer targets
       float nf = 1 - MathHelper.clamp_float((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
@@ -586,7 +587,7 @@ public class TravelController {
 
       scale = (scale * mix) + (1 - mix);
       scale = Math.max(1, scale);
-      
+
     }
     return scale;
   }
@@ -597,9 +598,9 @@ public class TravelController {
     mid.scale(0.5);
     double d = sp.distance(mid);
     if(d != d) {
-      d = 0f;  
-     }
-    float ratio = (float) d / Minecraft.getMinecraft().displayWidth;                
+      d = 0f;
+    }
+    float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
     candidates.put(bc, ratio);
     return d;
   }
@@ -612,9 +613,9 @@ public class TravelController {
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private boolean sendTravelEvent(EntityPlayer player, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+  public boolean doClientTeleport(Entity entity, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
-    TeleportEntityEvent evt = new TeleportEntityEvent(player, source, bc.x, bc.y, bc.z);
+    TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z);
     if(MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
     }
@@ -622,7 +623,7 @@ public class TravelController {
     bc.y = evt.targetY;
     bc.z = evt.targetZ;
 
-    PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, conserveMomentum);
+    PacketTravelEvent p = new PacketTravelEvent(entity, bc.x, bc.y, bc.z, powerUse, conserveMomentum, source);
     PacketHandler.INSTANCE.sendToServer(p);
     return true;
   }

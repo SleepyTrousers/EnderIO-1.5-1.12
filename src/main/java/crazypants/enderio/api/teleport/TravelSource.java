@@ -6,7 +6,8 @@ public enum TravelSource {
 
   BLOCK(0, Config.travelAnchorMaxDistance),
   STAFF(Config.travelStaffPowerPerBlockRF, Config.travelStaffMaxDistance),
-  STAFF_BLINK(Config.travelStaffPowerPerBlockRF, Config.travelStaffMaxBlinkDistance);
+  STAFF_BLINK(Config.travelStaffPowerPerBlockRF, Config.travelStaffMaxBlinkDistance),
+  TELEPAD(0, 0);
 
   public static int getMaxDistance() {
     return STAFF.maxDistanceTravelledSq;

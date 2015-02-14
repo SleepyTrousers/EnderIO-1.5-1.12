@@ -3,20 +3,26 @@ package crazypants.enderio.teleport.telepad;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 
@@ -237,6 +243,53 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   public void setCoords(BlockCoord coords) {
     if(inNetwork()) {
       target = new BlockCoord(coords);
+    }
+  }
+  
+  @Override
+  public void teleportSpecific(Entity entity) {
+    if(!inNetwork()) {
+      return;
+    }
+    if(isMaster()) {
+      if(getRange().isVecInside(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ))) {
+        teleport(entity);
+      }
+    } else {
+      master.teleportSpecific(entity);
+    }
+  }
+
+  @Override
+  public void teleportAll() {
+    if(!inNetwork()) {
+      return;
+    }
+    if(isMaster()) {
+      for (Entity e : getEntitiesInRange()) {
+        if(!teleport(e)) {
+          return;
+        }
+      }
+    } else {
+      master.teleportAll();
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  private List<Entity> getEntitiesInRange() {
+    return worldObj.getEntitiesWithinAABB(Entity.class, getRange());
+  }
+  
+  private AxisAlignedBB getRange() {
+    return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+  }
+  
+  private boolean teleport(Entity entity) {
+    if (entity.worldObj.isRemote) {
+      return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
+    } else {
+      return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false);
     }
   }
   

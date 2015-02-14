@@ -497,6 +497,9 @@ tile.blockTravelAnchor.tooltip.detailed.line6=Can be painted in the Painting Mac
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
 
+tile.blockTelePad.name=Telepad Block
+enderio.gui.telepad.teleport=Teleport!
+
 item.itemTravelStaff.name=Staff of Traveling
 item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
 item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be

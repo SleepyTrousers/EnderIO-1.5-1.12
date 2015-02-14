@@ -2,6 +2,7 @@ package crazypants.enderio.api.teleport;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.Entity;
 import crazypants.util.BlockCoord;
 
 public interface ITelePad extends ITravelAccessable {
@@ -90,4 +91,22 @@ public interface ITelePad extends ITravelAccessable {
    *          The coords to set this telepad to.
    */
   void setCoords(BlockCoord coords);
+
+  /**
+   * Teleports a specific entity to the destination if:
+   * <ul>
+   * <li>The entity is in range (standing on top)</li>
+   * <li>There is sufficient power to perform the operation</li>
+   * </ul>
+   * 
+   * @param entity
+   *          The entity to teleport
+   */
+  void teleportSpecific(Entity entity);
+
+  /**
+   * Teleports all entities in range (in no particular order) until either there
+   * are none left or the power runs out.
+   */
+  void teleportAll();
 }
