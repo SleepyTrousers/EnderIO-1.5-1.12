@@ -173,7 +173,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       sb.append("\n");
 
       ItemConduitNetwork icn = (ItemConduitNetwork) conduit.getNetwork();
-      if(mode.acceptsInput()) {
+      if(icn != null && mode.acceptsInput()) {
         color = "\u00A79 ";
         sb.append(color);
 
@@ -202,7 +202,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
           }
         }
       }
-      if(mode.acceptsOutput()) {
+      if(icn != null && mode.acceptsOutput()) {
         color = "\u00A79 ";
         sb.append(color);
 
