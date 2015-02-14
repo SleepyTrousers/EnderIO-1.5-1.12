@@ -821,9 +821,9 @@ enderio.gui.alloy.mode.alloy=Alloys Only
 enderio.gui.alloy.mode.furnace=Furnace Only
 
 //Vacuum chest
-enderio.gui.vacuum.range=Suction strength
+enderio.gui.vacuum.range=Suction Strength
 enderio.gui.vacuum.header.chest=Vacuum Chest
-enderio.gui.vacuum.header.filter=Item filter
+enderio.gui.vacuum.header.filter=Item Filter
 enderio.gui.vacuum.header.range=Range
 
 //Vat
