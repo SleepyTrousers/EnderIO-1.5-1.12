@@ -285,7 +285,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " "
           + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
       list.add(EnumChatFormatting.WHITE + "     " + "(" + Lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
-          + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
+          + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " "
           + PowerDisplayUtil.abrevation() + ")");
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
