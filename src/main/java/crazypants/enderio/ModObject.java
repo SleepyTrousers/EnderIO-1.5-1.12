@@ -96,7 +96,7 @@ public enum ModObject {
 
   blockTravelAnchor,
   blockTelePad,
-  itemCoordsCard,
+  itemCoordSelector,
   itemTravelStaff,
   itemMagnet,
   itemGliderWing,

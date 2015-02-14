@@ -28,18 +28,18 @@ import crazypants.util.Lang;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class ItemCoordsCard extends Item implements IResourceTooltipProvider {
+public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
 
-  public static ItemCoordsCard create() {
-    ItemCoordsCard ret = new ItemCoordsCard();
-    GameRegistry.registerItem(ret, ModObject.itemCoordsCard.unlocalisedName);
+  public static ItemCoordSelector create() {
+    ItemCoordSelector ret = new ItemCoordSelector();
+    GameRegistry.registerItem(ret, ModObject.itemCoordSelector.unlocalisedName);
     return ret;
   }
 
-  private ItemCoordsCard() {
+  private ItemCoordSelector() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemCoordsCard.unlocalisedName);
-    setTextureName("EnderIO:" + ModObject.itemCoordsCard.unlocalisedName);
+    setUnlocalizedName(ModObject.itemCoordSelector.unlocalisedName);
+    setTextureName("EnderIO:" + ModObject.itemCoordSelector.unlocalisedName);
     setMaxStackSize(1);
   }
 
@@ -86,11 +86,6 @@ public class ItemCoordsCard extends Item implements IResourceTooltipProvider {
     if (!rayTraceCoords(stack, world, player)) {
       return false;
     }
-    
-    if(world.isRemote) {
-      sendItemUsePacket(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-      return true;
-    }
 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITelePad) {
@@ -101,7 +96,7 @@ public class ItemCoordsCard extends Item implements IResourceTooltipProvider {
         if(!bc.equals(cur)) {
           tp.setCoords(getCoords(stack));
           if(!world.isRemote) {
-            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordsCard.chat.setCoords", bc.chatString())));
+            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
           }
         } else {
           return false;
@@ -110,6 +105,12 @@ public class ItemCoordsCard extends Item implements IResourceTooltipProvider {
         BlockTravelAnchor.sendPrivateChatMessage(player, tp.getPlacedBy());
       }
     }
+    
+    
+    if(world.isRemote) {
+      sendItemUsePacket(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+    
     return true;
   }
 
@@ -153,7 +154,7 @@ public class ItemCoordsCard extends Item implements IResourceTooltipProvider {
 
   private void onCoordsChanged(EntityPlayer player, BlockCoord bc) {
     if(!player.worldObj.isRemote) {
-      player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordsCard.chat.newCoords", bc.chatString())));
+      player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
     }
   }
 
