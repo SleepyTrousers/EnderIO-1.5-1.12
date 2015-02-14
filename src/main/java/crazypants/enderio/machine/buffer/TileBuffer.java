@@ -63,7 +63,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
     if (!isCreative()) {
       setEnergyStored(getEnergyStored() - transmitted);
     }
-    return transmitted > 0;
+    return false;
   }
 
   @Override
@@ -106,7 +106,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     return hasPower() && getIoMode(from).canRecieveInput() ? super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
   }
-  
+
   @Override
   public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
     return 0;
