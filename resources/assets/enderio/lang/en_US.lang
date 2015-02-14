@@ -398,6 +398,7 @@ enderio.farm.note.noSeeds=No Seeds
 enderio.farm.note.noAxe=No Axe
 enderio.farm.note.noHoe=No Hoe
 enderio.farm.note.noPower=No Power
+enderio.farm.gui.baseUse=Base Use:
 
 tile.blockTank.name=Fluid Tank
 tile.blockTank.advanced.name=Pressurized Fluid Tank
@@ -706,7 +707,7 @@ enderio.gui.simple.out=Max Out:
 enderio.gui.available=Available
 enderio.gui.disabled=Disabled
 enderio.gui.enabled=Enabled
-enderio.gui.max=Max: 
+enderio.gui.max=Max:
 enderio.gui.progress=Progress {0,number}%
 enderio.gui.receive=Receive
 enderio.gui.send=Send
