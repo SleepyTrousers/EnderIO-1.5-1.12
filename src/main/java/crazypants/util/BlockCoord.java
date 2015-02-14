@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -107,6 +108,15 @@ public final class BlockCoord {
   @Override
   public String toString() {
     return "BlockCoord [x=" + x + ", y=" + y + ", z=" + z + "]";
+  }
+
+  public String chatString() {
+    return String.format(
+        "x%s%d%s y%s%d%s z%s%d",
+        EnumChatFormatting.GREEN, x, EnumChatFormatting.WHITE,
+        EnumChatFormatting.GREEN, y, EnumChatFormatting.WHITE,
+        EnumChatFormatting.GREEN, z
+        );
   }
 
   public boolean equals(int xCoord, int yCoord, int zCoord) {

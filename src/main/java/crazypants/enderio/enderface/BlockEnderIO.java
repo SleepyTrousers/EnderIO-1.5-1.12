@@ -1,12 +1,10 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -22,8 +20,7 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.enderface.te.MeProxy;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Lang;
-import net.minecraftforge.common.UsernameCache;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
 public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
@@ -95,10 +92,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
       if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        if(world.isRemote && !entityPlayer.isSneaking()) {
-          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + UsernameCache.getLastKnownUsername(ta.getPlacedBy()) + " "
-              + Lang.localize("gui.travelAccessable.privateBlock2")));
-        }
+        BlockTravelAnchor.sendPrivateChatMessage(entityPlayer, ta.getPlacedBy());
       }
       return true;
     }

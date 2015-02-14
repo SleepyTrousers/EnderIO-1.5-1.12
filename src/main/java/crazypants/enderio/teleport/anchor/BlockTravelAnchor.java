@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport.anchor;
 
+import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -9,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -127,7 +130,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       }
     }
   }
-  
+
   @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -136,13 +139,18 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        if(world.isRemote && !entityPlayer.isSneaking()) {
-          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + UsernameCache.getLastKnownUsername(ta.getPlacedBy()) + " "
-              + Lang.localize("gui.travelAccessable.privateBlock2")));
-        }
+        sendPrivateChatMessage(entityPlayer, ta.getPlacedBy());
       }
     }
     return true;
+  }
+
+  public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
+    if(player.worldObj.isRemote && !player.isSneaking()) {
+      player.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " "
+          + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner) + EnumChatFormatting.WHITE + " "
+          + Lang.localize("gui.travelAccessable.privateBlock2")));
+    }
   }
 
   @Override

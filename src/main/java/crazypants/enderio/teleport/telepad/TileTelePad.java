@@ -45,9 +45,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       updateConnectedState(true);
       autoUpdate = false;
     }
-    if (isMaster() && !worldObj.isRemote) {
-      System.out.println(inNetwork() + "  " + this);
-    }
   }
 
   public void updateConnectedState(boolean fromBlock) {
@@ -234,6 +231,13 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       return master;
     }
     return null;
+  }
+
+  @Override
+  public void setCoords(BlockCoord coords) {
+    if(inNetwork()) {
+      target = new BlockCoord(coords);
+    }
   }
   
   /* ITravelAccessable overrides */

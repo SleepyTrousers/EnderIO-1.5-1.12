@@ -2,7 +2,9 @@ package crazypants.enderio.api.teleport;
 
 import javax.annotation.Nullable;
 
-public interface ITelePad {
+import crazypants.util.BlockCoord;
+
+public interface ITelePad extends ITravelAccessable {
 
   /**
    * If this piece of the telepad is the master, meaning it is connected on all
@@ -10,7 +12,7 @@ public interface ITelePad {
    * 
    * @return True if this TE is the master TE, false otherwise.
    */
-  public boolean isMaster();
+  boolean isMaster();
 
   /**
    * Gets the master telepad that this one is connected to.
@@ -19,7 +21,7 @@ public interface ITelePad {
    *         it is the master.
    */
   @Nullable
-  public ITelePad getMaster();
+  ITelePad getMaster();
 
   /**
    * If this telepad piece is in a network, meaning it is connected and in a
@@ -27,7 +29,7 @@ public interface ITelePad {
    * 
    * @return True if this TE is in a network, false otherwise.
    */
-  public boolean inNetwork();
+  boolean inNetwork();
 
   /**
    * The X coordinate stored in this telepad network. Always 0 if this is
@@ -35,7 +37,7 @@ public interface ITelePad {
    * 
    * @return The target X coordinate.
    */
-  public int getX();
+  int getX();
 
   /**
    * The Y coordinate stored in this telepad network. Always 0 if this is
@@ -43,7 +45,7 @@ public interface ITelePad {
    * 
    * @return The target Y coordinate.
    */
-  public int getY();
+  int getY();
 
   /**
    * The Z coordinate stored in this telepad network. Always 0 if this is
@@ -51,7 +53,7 @@ public interface ITelePad {
    * 
    * @return The target Z coordinate.
    */
-  public int getZ();
+  int getZ();
 
   /**
    * Sets the target X coordinate of the network. Has no effect if
@@ -59,7 +61,7 @@ public interface ITelePad {
    * 
    * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  public ITelePad setX(int x);
+  ITelePad setX(int x);
 
   /**
    * Sets the target Y coordinate of the network. Has no effect if
@@ -67,7 +69,7 @@ public interface ITelePad {
    * 
    * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  public ITelePad setY(int y);
+  ITelePad setY(int y);
 
   /**
    * Sets the target Z coordinate of the network. Has no effect if
@@ -75,5 +77,17 @@ public interface ITelePad {
    * 
    * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  public ITelePad setZ(int z);
+  ITelePad setZ(int z);
+
+  /**
+   * Util method to set all coords using a {@link BlockCoord} object.
+   * 
+   * @see #setX(int)
+   * @see #setY(int)
+   * @see #setZ(int)
+   * 
+   * @param coords
+   *          The coords to set this telepad to.
+   */
+  void setCoords(BlockCoord coords);
 }

@@ -505,6 +505,13 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
+item.itemCoordsCard.name=Coords Card
+item.itemCoordsCard.tooltip.detailed.line1=Stores coordinates of a block.
+item.itemCoordsCard.tooltip.detailed.line2=Right click on block to select
+item.itemCoordsCard.tooltip.detailed.line3=the block adjacent on that side.
+item.itemCoordsCard.tooltip.detailed.line4=Shift right click on block to
+item.itemCoordsCard.tooltip.detailed.line5=select that specific block.
+
 //Painter
 tile.blockPainter.name=Painting Machine
 enderio.blockPainter.paintedWith=Painted with:
