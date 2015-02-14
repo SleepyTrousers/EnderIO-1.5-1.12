@@ -1,5 +1,7 @@
 package crazypants.vecmath;
 
+import net.minecraft.util.Vec3;
+
 public class Vector3d {
 
   public double x;
@@ -140,6 +142,7 @@ public class Vector3d {
     z = Math.abs(z);
   }
 
-
-
+  public Vec3 getVec3() {
+    return Vec3.createVectorHelper(x, y, z);
+  }
 }

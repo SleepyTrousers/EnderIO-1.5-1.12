@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -48,6 +49,10 @@ public final class BlockCoord {
     this(Strings.isNullOrEmpty(x) ? 0 : Integer.parseInt(x),
          Strings.isNullOrEmpty(y) ? 0 : Integer.parseInt(y),
          Strings.isNullOrEmpty(z) ? 0 : Integer.parseInt(z));
+  }
+
+  public BlockCoord(MovingObjectPosition mop) {
+    this(mop.blockX, mop.blockY, mop.blockZ);
   }
 
   public int distanceSquared(BlockCoord other) {
@@ -111,10 +116,14 @@ public final class BlockCoord {
   }
 
   public String chatString() {
+    return chatString(EnumChatFormatting.WHITE);
+  }
+
+  public String chatString(EnumChatFormatting defaultColor) {
     return String.format(
         "x%s%d%s y%s%d%s z%s%d",
-        EnumChatFormatting.GREEN, x, EnumChatFormatting.WHITE,
-        EnumChatFormatting.GREEN, y, EnumChatFormatting.WHITE,
+        EnumChatFormatting.GREEN, x, defaultColor,
+        EnumChatFormatting.GREEN, y, defaultColor,
         EnumChatFormatting.GREEN, z
         );
   }

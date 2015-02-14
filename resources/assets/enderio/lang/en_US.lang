@@ -507,10 +507,13 @@ enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 item.itemCoordsCard.name=Coords Card
 item.itemCoordsCard.tooltip.detailed.line1=Stores coordinates of a block.
-item.itemCoordsCard.tooltip.detailed.line2=Right click on block to select
+item.itemCoordsCard.tooltip.detailed.line2=Right click at block to select
 item.itemCoordsCard.tooltip.detailed.line3=the block adjacent on that side.
-item.itemCoordsCard.tooltip.detailed.line4=Shift right click on block to
+item.itemCoordsCard.tooltip.detailed.line4=Shift right click at a block to
 item.itemCoordsCard.tooltip.detailed.line5=select that specific block.
+item.itemCoordsCard.tooltip.detailed.line6=Can select from a distance.
+enderio.itemCoordsCard.chat.newCoords=New Coords: %s
+enderio.itemCoordsCard.chat.setCoords=Set Coords: %s
 
 //Painter
 tile.blockPainter.name=Painting Machine

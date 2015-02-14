@@ -93,7 +93,7 @@ public class BlockTelePad extends BlockTravelAnchor {
       }
 
       // from here out we know that we are connected and are the master
-      if(tp.canUiBeAccessed(entityPlayer)) {
+      if(tp.canBlockBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, x, y, z);
       } else {
         sendPrivateChatMessage(entityPlayer, tp.getPlacedBy());
