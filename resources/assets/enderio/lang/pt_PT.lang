@@ -21,7 +21,7 @@ enderio.blockConduitBundle=Conjunto de Condutos
 enderio.blockConduitFacade=Fachada de Condutos
 item.enderio.itemConduitFacade.name=Fachada de Condutos
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Pintada na Máquina de Pintura
-item.enderio.itemConduitFacade.tooltip.detailed.line2=Clique direito num conduto para colocar
+item.enderio.itemConduitFacade.tooltip.detailed.line2=Clica com o botão direito num conduto para colocar
 item.enderio.itemConduitFacade.tooltip.detailed.line3=Escondida quando uma chave ou conduto
 item.enderio.itemConduitFacade.tooltip.detailed.line4=está equipada
 
@@ -58,7 +58,7 @@ enderio.itemConduitFilterUpgrade=Melhoria para condutos de itens
 
 
 enderio.itemConduitFilterUpgrade.configured=Configurado
-enderio.itemConduitFilterUpgrade.clearConfigMethod=Coloque em uma grade de crafting para limpar
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Coloque em uma grade de criação para limpar
 enderio.itemConduitFilterUpgrade.clearConfigWarning=Isso vai limpar todas as configurações de filtragem!
 
 item.itemExistingItemFilter.name=Filtro de Itens Existentes
@@ -100,7 +100,7 @@ entity.witherSkeleton.name=Esqueleto Wither
 
 //Materials
 enderio.itemMaterial.name=Materiais
-enderio.silicon.name=Silício
+enderio.silicon.name=Silicone
 enderio.conduitBinder.name=Capa de Conduto
 enderio.binderComposite.name=Composto de Capa
 enderio.phasedIronNugget.name=Pepita de Ferro Pulsante
@@ -157,7 +157,7 @@ enderio.darkGrindingBall.tooltip.detailed.line3=Saída Bônus
 enderio.darkGrindingBall.tooltip.detailed.line4=Redução de Poder
 
 tile.blockReinforcedObsidian.name=Obsidiana Reforçada
-tile.blockReinforcedObsidian.tooltip.common.line1=Á Prova De Wither
+tile.blockReinforcedObsidian.tooltip.common.line1=À Prova De Wither
 
 //Quartz / Glass
 tile.blockFusedQuartz.name=Quartzo Fundido
@@ -309,7 +309,7 @@ tile.blockSagMill.tooltipPrefix=Contém
 
 tile.blockHyperCube.name=Transceptor Dimensional (Deprecado)
 tile.blockHyperCube.tooltip.detailed.line1=Converta em um novo modelo colocando-o
-tile.blockHyperCube.tooltip.detailed.line2=na grade de crafting
+tile.blockHyperCube.tooltip.detailed.line2=na grade de criação
 
 tile.blockTransceiver.name=Transceptor Dimensional
 tile.blockTransceiver.tooltip.detailed.line1=Transporta itens, fluidos e energia
@@ -331,8 +331,8 @@ enderio.trans.item=Item
 enderio.trans.fluid=Fluido
 enderio.trans.rail=Trilho
 
-enderio.trans.receiving=Recebendo
-enderio.trans.sending=Enviando
+enderio.trans.receiving=A receber
+enderio.trans.sending=A enviar
 
 tile.blockPowerMonitor.name=Monitor de Força
 tile.blockPowerMonitor.tooltip.detailed.line1=Mostra detalhes do uso e
@@ -465,7 +465,7 @@ tile.blockDarkSteelAnvil.slightlyDamaged.name=Bigorna de Aço Negro Levemente Da
 tile.blockDarkSteelAnvil.veryDamaged.name=Bigorna de Aço Negro Muito Danificada
 tile.blockDarkSteelAnvil.tooltip.common.line1=Resistente a Danos
 tile.blockDarkSteelAnvil.tooltip.detailed.line1=Dura muito mais do que
-tile.blockDarkSteelAnvil.tooltip.detailed.line2=a bigorna vanilla
+tile.blockDarkSteelAnvil.tooltip.detailed.line2=a bigorna do Minecraft vanilla
 
 tile.blockDarkSteelLadder.name=Escadas de Aço Negro
 tile.blockDarkSteelLadder.tooltip.common.line1=Mais rápida que escadas comuns
@@ -521,7 +521,7 @@ item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Roda do Mouse ou '%s' para
 item.itemYetaWrench.tooltip.detailed.line7=renderizar apenas um tipo de conduto
 
 item.itemMagnet.name=Eletroímã
-item.itemMagnet.tooltip.detailed.line1=Puxa itens próximos pra você
+item.itemMagnet.tooltip.detailed.line1=Puxa itens próximos para ti
 item.itemMagnet.tooltip.detailed.line2=Shift-Clique direito pra ativar / desativar
 item.itemMagnet.tooltip.detailed.line3=Deve ter energia, estar ativo e
 item.itemMagnet.tooltip.detailed.line4=estar na hotbar para funcionar
@@ -531,8 +531,8 @@ item.enderio.itemConduitProbe.tooltip.detailed.line1=No modo sonda clique direit
 item.enderio.itemConduitProbe.tooltip.detailed.line2=para mostrar detalhes sobre sua rede
 item.enderio.itemConduitProbe.tooltip.detailed.line3=No modo copiar/colar Shift-Clique direito para
 item.enderio.itemConduitProbe.tooltip.detailed.line4=copiar a configuração de um conjunto de condutos
-item.enderio.itemConduitProbe.tooltip.detailed.line5=Clique direito para colar
-item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Roda do Mouse ou 'Y' para mudar o modo
+item.enderio.itemConduitProbe.tooltip.detailed.line5=Clica com o botão direito para colar
+item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Roda do Rato ou 'Y' para mudar o modo
 
 item.itemSoulVessel.name=Frasco de Almas
 enderio.item.itemSoulVessel.tooltip.health=Saúde: 
@@ -769,10 +769,10 @@ enderio.gui.machine.vat.dump.2=Despejar no Tanque de Saída
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Refrigerante
 enderio.combustionGenerator.fuelTank=Combustível
-enderio.combustionGenerator.output=Gerando:
+enderio.combustionGenerator.output=A Gerar:
 
 //Stirling Gen
-enderio.stirlingGenerator.output=Gerando:
+enderio.stirlingGenerator.output=A Gerar:
 enderio.stirlingGenerator.burnRate=Taxa de Queima:
 
 //Travel Blocks
@@ -781,7 +781,7 @@ enderio.gui.travelAccessable.privateBlock2=pode mudar as configurações desse b
 enderio.gui.travelAccessable.public=Público
 enderio.gui.travelAccessable.private=Privado
 enderio.gui.travelAccessable.protected=Protegido
-enderio.gui.travelAccessable.unauthorised=Você não tem permissão para acessar esse bloco.
+enderio.gui.travelAccessable.unauthorised=Tu não tens permissão para acessar esse bloco.
 enderio.gui.travelAccessable.enterCode=Código de Acesso Requerido
 enderio.gui.travelAccessable.ok=Autorizar
 
@@ -839,13 +839,13 @@ enderio.config.power=Configurações de Energia
 enderio.config.power.tooltip=Tantos números pra Mudar...
 
 enderio.config.recipe=Configurações de Receita
-enderio.config.recipe.tooltip=Config ALL the things!
+enderio.config.recipe.tooltip=Configura TUDO isto!
 
 enderio.config.item=Habilitação de Itens
-enderio.config.item.tooltip=Se você não gosta de alguns dos meus incríveis itens :(
+enderio.config.item.tooltip=Se tu não gostas de alguns dos meus incríveis itens :(
 
 enderio.config.efficiency=Configurações de Eficiência
-enderio.config.efficiency.tooltip=Pra onde os números vão?
+enderio.config.efficiency.tooltip=Para onde os números vão?
 
 enderio.config.personal=Configurações Pessoais
 enderio.config.personal.tooltip=Não vou contar pra ninguém, prometo.
