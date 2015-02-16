@@ -6,12 +6,14 @@ import java.util.Random;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.util.IProgressTile;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver {
+public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IProgressTile {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
@@ -19,8 +21,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected final Random random = new Random();
 
   protected int ticksSinceCheckedRecipe = 0;
-  protected boolean startFailed = false;  
-  
+  protected boolean startFailed = false;
+
   protected int lastProgressScaled = -1;
   protected int ticksSinceLastProgressUpdate;
 
@@ -71,6 +73,16 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return currentTask == null ? 0 : currentTask.getProgress();
   }
 
+  @Override
+  public TileEntity getTileEntity() {
+    return this;
+  }
+
+  @Override
+  public void setProgress(float progress) {
+    this.currentTask = progress < 0 ? null : new PoweredTaskProgress(progress);
+  }
+
   public IPoweredTask getCurrentTask() {
     return currentTask;
   }
@@ -81,21 +93,21 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     }
     return lastCompletedRecipe.getExperienceForOutput(output);
   }
-  
+
   public boolean getRedstoneChecksPassed() {
     return redstoneCheckPassed;
   }
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-    
-    if(!redstoneChecksPassed) {      
+
+    if(!redstoneChecksPassed) {
       return false;
     }
 
     boolean requiresClientSync = false;
     // Process any current items
-    requiresClientSync |= checkProgress(redstoneChecksPassed);    
+    requiresClientSync |= checkProgress(redstoneChecksPassed);
 
     if(currentTask != null || !hasPower() || !hasInputStacks()) {
       return requiresClientSync;
@@ -113,18 +125,18 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
-      boolean started = startNextTask(nextRecipe, chance);      
-      sendTaskProgressPacket();        
-      startFailed = !started;                        
+      boolean started = startNextTask(nextRecipe, chance);
+      sendTaskProgressPacket();
+      startFailed = !started;
     } else {
       startFailed = true;
     }
-    
+
     return requiresClientSync;
   }
 
   protected void sendTaskProgressPacket() {
-    PacketHandler.sendToAllAround(new PacketCurrentTaskProgress(this), this);
+    PacketHandler.sendToAllAround(new PacketProgress(this), this);
     ticksSinceLastProgressUpdate = 0;
   }
 
@@ -140,13 +152,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
       taskComplete();
       return false;
     }
-    
+
     int curScaled = getProgressScaled(16);
     if(++ticksSinceLastProgressUpdate >= 20 || curScaled != lastProgressScaled) {
       sendTaskProgressPacket();
       lastProgressScaled = curScaled;
     }
-    
+
     return false;
   }
 
@@ -156,7 +168,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   public int usePower(int wantToUse) {
     int used = Math.min(getEnergyStored(), wantToUse);
-    setEnergyStored( Math.max(0, getEnergyStored() - used));
+    setEnergyStored(Math.max(0, getEnergyStored() - used));
     if(currentTask != null) {
       currentTask.update(used);
     }

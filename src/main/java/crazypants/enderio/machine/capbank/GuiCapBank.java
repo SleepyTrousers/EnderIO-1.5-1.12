@@ -175,17 +175,15 @@ public class GuiCapBank extends GuiContainerBase {
     x = inputX - 24;
     y = inputY;
     maxInputTF = new TextFieldEIO(fontRenderer, x, y, 68, 16);
-    maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
-    maxInputTF.setFocused(false);
-
+    maxInputTF.setCharFilter(TextFieldEIO.FILTER_NUMERIC);
+    
     x = outputX - 24;
     y = outputY;
     maxOutputTF = new TextFieldEIO(fontRenderer, x, y, 68, 16);
-    maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
-    maxOutputTF.setFocused(true);
-    
+    maxOutputTF.setCharFilter(TextFieldEIO.FILTER_NUMERIC);
+
     textFields.add(maxInputTF);
     textFields.add(maxOutputTF);
   }
@@ -288,6 +286,7 @@ public class GuiCapBank extends GuiContainerBase {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);

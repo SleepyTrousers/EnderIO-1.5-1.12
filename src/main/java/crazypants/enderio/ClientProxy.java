@@ -129,6 +129,7 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.render.IconUtil;
 
 public class ClientProxy extends CommonProxy {
@@ -423,6 +424,8 @@ public class ClientProxy extends CommonProxy {
 
       });
     }
+
+    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 
   @Override

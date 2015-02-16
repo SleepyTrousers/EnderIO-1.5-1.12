@@ -94,7 +94,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
         BlockCoord bc = getCoords(stack);
         BlockCoord cur = new BlockCoord(tp.getX(), tp.getY(), tp.getZ());
         if(!bc.equals(cur)) {
-          tp.setCoords(getCoords(stack));
+          tp.setCoords(bc);
           if(!world.isRemote) {
             player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
           }
@@ -119,7 +119,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     Vector3d headVec = Util.getEyePositionEio(player);
     Vec3 start = headVec.getVec3();
     Vec3 lookVec = player.getLook(1.0F);
-    double reach = 200;
+    double reach = 500;
     headVec.add(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
     MovingObjectPosition mop = world.rayTraceBlocks(start, headVec.getVec3());
     if (mop == null) {

@@ -15,9 +15,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public final class BlockCoord {
 
-  public int x;
-  public int y;
-  public int z;
+  public final int x;
+  public final int y;
+  public final int z;
   
   public BlockCoord(int x, int y, int z) {
     this.x = x;
@@ -147,11 +147,8 @@ public final class BlockCoord {
     tag.setInteger("bc:y", y);
     tag.setInteger("bc:z", z);
   }
-  
-  public BlockCoord readFromNBT(NBTTagCompound tag) {
-    x = tag.getInteger("bc:x");
-    y = tag.getInteger("bc:y");
-    z = tag.getInteger("bc:z");
-    return this;
+
+  public static BlockCoord readFromNBT(NBTTagCompound tag) {
+    return new BlockCoord(tag.getInteger("bc:x"), tag.getInteger("bc:y"), tag.getInteger("bc:z"));
   }
 }

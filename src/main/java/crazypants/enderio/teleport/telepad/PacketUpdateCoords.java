@@ -46,9 +46,9 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
   public IMessage onMessage(PacketUpdateCoords message, MessageContext ctx) {
     TileTelePad te = message.getTileEntity(message.getWorld(ctx));
     if(te != null) {
-      te.setX(targetX);
-      te.setY(targetY);
-      te.setZ(targetZ);
+      te.setX(message.targetX);
+      te.setY(message.targetY);
+      te.setZ(message.targetZ);
     }
     return null;
   }

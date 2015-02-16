@@ -619,10 +619,8 @@ public class TravelController {
     if(MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
     }
-    bc.x = evt.targetX;
-    bc.y = evt.targetY;
-    bc.z = evt.targetZ;
 
+    bc = new BlockCoord(evt.targetX, evt.targetY, evt.targetZ);
     PacketTravelEvent p = new PacketTravelEvent(entity, bc.x, bc.y, bc.z, powerUse, conserveMomentum, source);
     PacketHandler.INSTANCE.sendToServer(p);
     return true;

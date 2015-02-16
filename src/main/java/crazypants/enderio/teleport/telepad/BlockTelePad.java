@@ -31,6 +31,8 @@ public class BlockTelePad extends BlockTravelAnchor {
     BlockTelePad ret = new BlockTelePad();
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpdateCoords.class, PacketUpdateCoords.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
     ret.init();
     return ret;
   }
@@ -82,7 +84,6 @@ public class BlockTelePad extends BlockTravelAnchor {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileTelePad) {
       TileTelePad tp = (TileTelePad) te;
-      System.out.println(tp.inNetwork() + "  " + tp);
       if (tp.inNetwork()) {
         if (!tp.isMaster()) {
           TileTelePad master = tp.getMaster();

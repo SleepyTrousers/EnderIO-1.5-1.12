@@ -83,6 +83,8 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
 
     if(player != null) {
       player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
+    } else {
+      toTp.setPosition(x, y, z);
     }
 
     toTp.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);

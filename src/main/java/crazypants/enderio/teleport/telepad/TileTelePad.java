@@ -2,6 +2,7 @@ package crazypants.enderio.teleport.telepad;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Queue;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,17 +17,23 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
 
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.machine.PacketPowerStorage;
+import crazypants.enderio.machine.PacketProgress;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 import crazypants.util.BlockCoord;
+import crazypants.util.IProgressTile;
 import crazypants.util.Util;
 
-public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad {
+public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
 
   private boolean inNetwork;
 
@@ -40,6 +47,13 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private BlockCoord target = new BlockCoord();
 
+  private int lastSyncPowerStored;
+
+  private Queue<Entity> toTeleport = Queues.newLinkedBlockingQueue();
+  private int powerUsed;
+  private int maxPower;
+  private int lastSyncPowerUsed;
+
   @Override
   public void updateEntity() {
     super.updateEntity();
@@ -50,6 +64,43 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(autoUpdate && worldObj != null) {
       updateConnectedState(true);
       autoUpdate = false;
+    }
+    if(!worldObj.isRemote) {
+      if(active()) {
+        System.out.println(maxPower);
+        if(powerUsed >= maxPower) {
+          teleport(toTeleport.poll());
+          powerUsed = 0;
+        } else {
+          powerUsed += energy.extractEnergy(energy.getMaxExtract(), false);
+        }
+        if(worldObj.getTotalWorldTime() % 5 == 0) {
+          updateQueuedEntities();
+        }
+      }
+
+      boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && worldObj.getTotalWorldTime() % 5 == 0);
+      if(powerChanged) {
+        lastSyncPowerStored = getEnergyStored();
+        PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
+      }
+      boolean progressChanged = (lastSyncPowerUsed != powerUsed);
+      if(progressChanged) {
+        lastSyncPowerUsed = getEnergyStored();
+        PacketHandler.sendToAllAround(new PacketProgress(this), this);
+      }
+    }
+  }
+
+  private void updateQueuedEntities() {
+    List<Entity> toRemove = Lists.newArrayList();
+    for (Entity e : toTeleport) {
+      if(!isEntityInRange(e)) {
+        toRemove.add(e);
+      }
+    }
+    for (Entity e : toRemove) {
+      dequeueTeleport(e);
     }
   }
 
@@ -89,6 +140,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       updateBlock();
       if(inNetwork) {
         master = this;
+        if(target.equals(new BlockCoord())) {
+          target = new BlockCoord(this);
+        }
       }
     }
   }
@@ -154,7 +208,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   protected void readCustomNBT(NBTTagCompound root) {
     super.readCustomNBT(root);
     energy.readFromNBT(root);
-    target = new BlockCoord().readFromNBT(root);
+    target = BlockCoord.readFromNBT(root);
     autoUpdate = true;
   }
 
@@ -169,6 +223,43 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
     super.onDataPacket(net, pkt);
     this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
+  }
+
+  public int getPowerScaled(int scale) {
+    return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
+  }
+
+  public int getProgressScaled(int scale) {
+    return (int) (getProgress() * scale);
+  }
+
+  private int getPowerForTeleport() {
+    return new BlockCoord(this).distance(target) * 10;
+  }
+
+  public boolean active() {
+    return !toTeleport.isEmpty();
+  }
+
+  public Entity getCurrentTarget() {
+    return toTeleport.peek();
+  }
+
+  /* IProgressTile */
+
+  @Override
+  public float getProgress() {
+    return ((float) powerUsed) / ((float) maxPower);
+  }
+
+  @Override
+  public void setProgress(float progress) {
+    this.powerUsed = progress < 0 ? 0 : (int) (((float) maxPower) * progress);
+  }
+
+  @Override
+  public TileEntity getTileEntity() {
+    return this;
   }
 
   /* ITelePad */
@@ -190,7 +281,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getX() {
-    if (inNetwork) {
+    if(inNetwork) {
       return master.target.x;
     }
     return target.x;
@@ -198,7 +289,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getY() {
-    if (inNetwork) {
+    if(inNetwork) {
       return master.target.y;
     }
     return target.y;
@@ -206,7 +297,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getZ() {
-    if (inNetwork) {
+    if(inNetwork) {
       return master.target.z;
     }
     return target.z;
@@ -215,7 +306,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public ITelePad setX(int x) {
     if(inNetwork()) {
-      target.x = x;
+      setCoords(new BlockCoord(x, target.y, target.z));
       return master;
     }
     return null;
@@ -224,7 +315,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public ITelePad setY(int y) {
     if(inNetwork()) {
-      target.y = y;
+      setCoords(new BlockCoord(target.x, y, target.z));
       return master;
     }
     return null;
@@ -233,7 +324,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public ITelePad setZ(int z) {
     if(inNetwork()) {
-      target.z = z;
+      setCoords(new BlockCoord(target.x, target.y, z));
       return master;
     }
     return null;
@@ -242,18 +333,23 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public void setCoords(BlockCoord coords) {
     if(inNetwork()) {
-      target = new BlockCoord(coords);
+      if(isMaster()) {
+        this.target = coords;
+        this.maxPower = getPowerForTeleport();
+      } else {
+        this.master.setCoords(coords);
+      }
     }
   }
-  
+
   @Override
   public void teleportSpecific(Entity entity) {
     if(!inNetwork()) {
       return;
     }
     if(isMaster()) {
-      if(getRange().isVecInside(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ))) {
-        teleport(entity);
+      if(isEntityInRange(entity)) {
+        enqueueTeleport(entity);
       }
     } else {
       master.teleportSpecific(entity);
@@ -267,32 +363,60 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     if(isMaster()) {
       for (Entity e : getEntitiesInRange()) {
-        if(!teleport(e)) {
-          return;
-        }
+        enqueueTeleport(e);
       }
     } else {
       master.teleportAll();
     }
   }
-  
+
   @SuppressWarnings("unchecked")
   private List<Entity> getEntitiesInRange() {
     return worldObj.getEntitiesWithinAABB(Entity.class, getRange());
   }
-  
+
+  private boolean isEntityInRange(Entity entity) {
+    return getRange().isVecInside(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
+  }
+
   private AxisAlignedBB getRange() {
     return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
   }
-  
-  private boolean teleport(Entity entity) {
-    if (entity.worldObj.isRemote) {
-      return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
-    } else {
-      return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false);
+
+  public static final String TELEPORTING_KEY = "eio:teleporting";
+
+  void enqueueTeleport(Entity entity) {
+    entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
+    toTeleport.add(entity);
+    if(entity.worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketTeleport(Type.BEGIN, this, entity.getEntityId()));
     }
   }
-  
+
+  void dequeueTeleport(Entity entity) {
+    toTeleport.remove(entity);
+    entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
+    if(!worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.END, this, entity.getEntityId()));
+    }
+    if(!active()) {
+      powerUsed = 0;
+    }
+  }
+
+  private boolean teleport(Entity entity) {
+    entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
+    if(entity.worldObj.isRemote) {
+      return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
+    } else {
+      if(PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false)) {
+        dequeueTeleport(entity);
+        return true;
+      }
+      return false;
+    }
+  }
+
   /* ITravelAccessable overrides */
 
   @Override
