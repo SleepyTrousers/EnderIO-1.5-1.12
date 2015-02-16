@@ -1,5 +1,6 @@
 package crazypants.gui;
 
+import java.util.List;
 import net.minecraft.client.gui.GuiButton;
 
 public interface IGuiScreen {
@@ -24,5 +25,6 @@ public interface IGuiScreen {
   
   void doActionPerformed(GuiButton but);
 
+  List<GhostSlot> getGhostSlots();
 
 }

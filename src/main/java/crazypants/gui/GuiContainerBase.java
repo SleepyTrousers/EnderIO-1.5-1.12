@@ -251,6 +251,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   @Override
+  public List<GhostSlot> getGhostSlots() {
+    return ghostSlots;
+  }
+
+  @Override
   protected void mouseClicked(int mouseX, int mouseY, int button) {
     if(!ghostSlots.isEmpty()) {
       GhostSlot slot = getGhostSlot(mouseX, mouseY);

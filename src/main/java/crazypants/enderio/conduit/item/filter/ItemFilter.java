@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -16,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
-import crazypants.gui.TemplateSlot;
+import crazypants.gui.GhostSlot;
 
 public class ItemFilter implements IInventory, IItemFilter {
 
@@ -340,9 +339,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public List<Slot> getSlots(int xOffset, int yOffset) {
-    List<Slot> result = new ArrayList<Slot>();
-    
+  public void createGhostSlots(List<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
     int topY = yOffset;
     int leftX = xOffset;
     int index = 0;    
@@ -351,13 +348,12 @@ public class ItemFilter implements IInventory, IItemFilter {
       for (int col = 0; col < 5; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 20;
-        result.add(new TemplateSlot(this, index, x, y));        
+        slots.add(new ItemFilterGhostSlot(index, x, y, cb));
         index++;
       }
-    }    
-    return result;
+    }
   }
-  
+
   @Override
   public int getSlotCount() { 
     return getSizeInventory();
@@ -381,7 +377,31 @@ public class ItemFilter implements IInventory, IItemFilter {
 //        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ", isAdvanced=" + isAdvanced + "]";
     return "ItemFilter [isAdvanced=" + isAdvanced + ", items=" + Arrays.toString(items)  + "]";
   }
-  
-  
 
+  class ItemFilterGhostSlot extends GhostSlot {
+    private final int slot;
+    private final Runnable cb;
+
+    ItemFilterGhostSlot(int slot, int x, int y, Runnable cb) {
+      this.x = x;
+      this.y = y;
+      this.slot = slot;
+      this.cb = cb;
+    }
+
+    @Override
+    protected void putStack(ItemStack stack) {
+      if(stack != null) {
+        stack = stack.copy();
+        stack.stackSize = 1;
+      }
+      items[slot] = stack;
+      cb.run();
+    }
+
+    @Override
+    protected ItemStack getStack() {
+      return items[slot];
+    }
+  }
 }
