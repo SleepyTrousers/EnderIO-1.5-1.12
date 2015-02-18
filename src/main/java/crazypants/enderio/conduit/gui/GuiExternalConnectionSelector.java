@@ -11,8 +11,10 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -20,6 +22,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.BlockCoord;
 
+@SideOnly(Side.CLIENT)
 public class GuiExternalConnectionSelector extends GuiScreen {
 
   Set<ForgeDirection> cons;
@@ -36,8 +39,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
             cons.add(dir);
           }
         }
-        
-      } else {        
+
+      } else {
         cons.addAll(con.getExternalConnections());
       }
     }

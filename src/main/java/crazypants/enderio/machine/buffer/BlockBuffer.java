@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -46,7 +46,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   protected void init() {
     GameRegistry.registerBlock(this, BlockItemBuffer.class, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    CommonProxy.guiHandler.registerGuiHandler(getGuiId(), this);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
@@ -60,6 +60,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileBuffer) {

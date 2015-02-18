@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -22,6 +24,7 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
@@ -101,7 +104,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     RenderUtil.bindTexture(GUI_TEXTURE);
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     TileVat vat = getTileEntity();
-    
+
     if(shouldRenderProgress()) {
       int scaled = vat.getProgressScaled(14) + 1;
       drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);

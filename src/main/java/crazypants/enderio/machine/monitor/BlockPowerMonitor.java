@@ -6,6 +6,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -30,10 +31,11 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerPowerMonitor();    
+    return new ContainerPowerMonitor();
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePowerMonitor) {

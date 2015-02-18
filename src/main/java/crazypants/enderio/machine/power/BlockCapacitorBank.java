@@ -20,13 +20,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -40,7 +41,7 @@ import crazypants.util.Lang;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
+public class BlockCapacitorBank extends BlockEio implements ISidedGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
 
   public static int renderId = -1;
 
@@ -74,7 +75,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       GameRegistry.registerTileEntity(teClass, name + "TileEntity");
     }
 
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
     setLightOpacity(255);
   }
 
@@ -160,6 +161,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {

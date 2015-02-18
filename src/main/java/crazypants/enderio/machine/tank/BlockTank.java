@@ -22,8 +22,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -54,7 +54,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   protected void init() {
     GameRegistry.registerBlock(this, BlockItemTank.class, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    CommonProxy.guiHandler.registerGuiHandler(getGuiId(), this);
   }
 
   @Override
@@ -156,6 +156,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileTank)) {

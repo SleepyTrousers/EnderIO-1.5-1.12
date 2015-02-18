@@ -76,6 +76,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(ItemStack item, int arg1, EntityPlayer arg2, ItemStack arg3, int arg4) {
      if(containsSoul(item)) {
        return filledIcon;

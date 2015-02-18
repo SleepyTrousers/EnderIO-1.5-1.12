@@ -11,6 +11,8 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -26,6 +28,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBase {
 
   public static final Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
@@ -42,7 +45,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   private final GuiOverlayIoConfig configOverlay;
 
   protected final GuiButtonIoConfig configB;
-  
+
   protected IconButtonEIO recipeButton;
 
   protected List<GuiToolTip> progressTooltips;
@@ -51,7 +54,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   protected GuiMachineBase(T machine, Container par1Container) {
     super(par1Container);
     tileEntity = machine;
-    
+
     xSize = getXSize();
     ySize = getYSize();
     int x = getXSize() - 5 - BUTTON_SIZE;
@@ -136,11 +139,11 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, width, height, col);
     GL11.glDisable(GL11.GL_BLEND);
   }
-  
+
   protected boolean isConfigOverlayEnabled() {
     return configOverlay.isVisible();
   }
-  
+
   protected T getTileEntity() {
     return tileEntity;
   }

@@ -11,7 +11,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.Optional;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.ITabPanel;
@@ -21,6 +22,7 @@ import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.render.RenderUtil;
 
+@SideOnly(Side.CLIENT)
 public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   private static final int TAB_HEIGHT = 24;
@@ -33,13 +35,13 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te));
 
-    generalTab = new GeneralTab(this); 
+    generalTab = new GeneralTab(this);
     tabs.add(generalTab);
     FilterTab filterTab = new FilterTab(this);
     tabs.add(filterTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
-    tabs.add(new ChannelTab(this, ChannelType.FLUID));  
+    tabs.add(new ChannelTab(this, ChannelType.FLUID));
     if(Config.enderRailEnabled) {
       tabs.add(new ChannelTab(this, ChannelType.RAIL));
     }
@@ -47,7 +49,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   @Override
   protected void updatePowerBarTooltip(List<String> text) {
-    generalTab.updatePowerBarTooltip(text);    
+    generalTab.updatePowerBarTooltip(text);
   }
 
   @Override
@@ -132,7 +134,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   public int getPowerY() {
     return super.getPowerY();
   }
-  
+
   @Override
   public int getPowerWidth() {
     return POWER_WIDTH;
@@ -148,7 +150,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     return 246;
   }
 
-  
+
   @Override
   public String getPowerOutputLabel() {
     return super.getPowerOutputLabel();
@@ -228,11 +230,11 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
       tes.draw();
     }
   }
-  
+
   public TileTransceiver getTransciever() {
     return getTileEntity();
   }
-  
+
   public ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
   }

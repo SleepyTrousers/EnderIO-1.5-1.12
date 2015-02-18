@@ -121,7 +121,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           if(Math.random() > Config.brokenSpawnerDropChance) {
             return;
           }
-          
+
           ItemStack equipped = evt.getPlayer().getCurrentEquippedItem();
           if(equipped != null) {
             for (UniqueIdentifier uid : toolBlackList) {
@@ -218,6 +218,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePoweredSpawner) {

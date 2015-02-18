@@ -8,6 +8,8 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
@@ -17,6 +19,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
+@SideOnly(Side.CLIENT)
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
   private static final int LOCK_ID = 1234;
@@ -24,12 +27,12 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine));
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
   public void initGui() {
     super.initGui();
-    
+
     int x = getGuiLeft() + 36;
     int y = getGuiTop()  + 43;
     
@@ -57,7 +60,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
       }
     }
   }
-  
+
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -68,18 +71,18 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-    
+
     GL11.glEnable(GL11.GL_BLEND);
     fr.drawString("SW", sx + 55, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);    
     fr.drawString("NW", sx + 55, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
     fr.drawString("SE", sx + 73, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
     fr.drawString("NE", sx + 73, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);        
     GL11.glDisable(GL11.GL_BLEND);
-    
+
     RenderUtil.bindTexture("enderio:textures/gui/farmStation.png");
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-  
+
   @Override
   protected void actionPerformed(GuiButton b) {
     if (b.id >= LOCK_ID+TileFarmStation.minSupSlot && b.id <= LOCK_ID+TileFarmStation.maxSupSlot) {

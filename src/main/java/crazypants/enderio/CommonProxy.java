@@ -14,13 +14,15 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.render.ConduitRenderer;
 
-public class CommonProxy {
+abstract public class CommonProxy {
 
   private static final DecimalFormat FORMAT = new DecimalFormat("########0.000");
 
   protected long serverTickCount = 0;
   protected long clientTickCount = 0;
   protected final TickTimer tickTimer = new TickTimer();
+
+  public static GuiHandler guiHandler = new GuiHandler();
 
   public CommonProxy() {
   }

@@ -2,8 +2,6 @@ package crazypants.enderio.machine.soul;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,26 +9,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.farm.BlockFarmStation;
-import crazypants.enderio.machine.farm.PacketFarmAction;
-import crazypants.enderio.machine.farm.PacketUpdateNotification;
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.painter.GuiPainter;
-import crazypants.enderio.machine.painter.PainterContainer;
-import crazypants.enderio.machine.painter.TileEntityPainter;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
 
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
-  
+
   public static int renderId;
-  
+
   public static BlockSoulBinder create() {
     PacketDrainPlayerXP.register();
     PacketExperianceContainer.register();
@@ -44,11 +35,11 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   IIcon creeperSkullIcon;
   IIcon endermanSkullIcon;
   IIcon endermanSkullIconOn;
-  
+
   protected BlockSoulBinder() {
     super(ModObject.blockSoulBinder, TileSoulBinder.class);
-  }  
-  
+  }
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -59,6 +50,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileSoulBinder) {
@@ -81,15 +73,15 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   public boolean isOpaqueCube() {
     return false;
   }
-  
+
   @Override
   public int getLightOpacity() {
     return 0;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {    
+  public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
     zombieSkullIcon = iIconRegister.registerIcon("enderio:skullZombie");
     creeperSkullIcon = iIconRegister.registerIcon("enderio:skullCreeper");
@@ -99,7 +91,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {   
+  protected String getMachineFrontIconKey(boolean active) {
     return "enderio:blockSoulMachineBlank";
   }
 
@@ -107,16 +99,17 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   protected String getSideIconKey(boolean active) {
     return "enderio:blockSoulMachineBlank";
   }
-  
+
+  @Override
   protected String getTopIconKey(boolean active) {
     return "enderio:blockSoulMachineTop";
   }
 
   @Override
-  public int getRenderType() {    
+  public int getRenderType() {
     return renderId;
   }
-  
+
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
@@ -128,18 +121,18 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
       for (int i = 0; i < 2; i++) {
         float xOffset = -0.2F - rand.nextFloat() * 0.6F;
         float yOffset = -0.1F + rand.nextFloat() * 0.2F;
-        float zOffset = -0.2F - rand.nextFloat() * 0.6F;        
-        
+        float zOffset = -0.2F - rand.nextFloat() * 0.6F;
+
         EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("spell", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
         //EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("instantSpell", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
         if(fx != null) {
-          fx.setRBGColorF(0.2f, 0.2f, 0.8f);          
+          fx.setRBGColorF(0.2f, 0.2f, 0.8f);
           //fx.setRBGColorF(0.1f, 0.4f, 0.1f);
           fx.motionY *= 0.5f;
         }
 
       }
     }
-  }  
+  }
 
 }

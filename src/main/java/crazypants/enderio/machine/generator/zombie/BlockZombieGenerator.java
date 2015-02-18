@@ -15,15 +15,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.FluidUtil;
-import crazypants.util.Util;
 import crazypants.util.Lang;
+import crazypants.util.Util;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
@@ -86,6 +86,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new GuiZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(x, y, z));
   }

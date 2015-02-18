@@ -6,12 +6,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiTank extends GuiMachineBase<TileTank> {
 
   private TileTank entity;
@@ -19,7 +22,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   public GuiTank(InventoryPlayer par1InventoryPlayer, TileTank te) {
     super(te, new ContainerTank(par1InventoryPlayer, te));
     entity = te;
-    
+
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 16, 47), "") {
 
       @Override
@@ -51,9 +54,9 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
+
     RenderUtil.bindBlockTexture();
-    RenderUtil.renderGuiTank(entity.tank, guiLeft + 80, guiTop + 21, zLevel, 16,47);    
+    RenderUtil.renderGuiTank(entity.tank, guiLeft + 80, guiTop + 21, zLevel, 16,47);
 
   }
 

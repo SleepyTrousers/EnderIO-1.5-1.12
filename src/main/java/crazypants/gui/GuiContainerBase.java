@@ -26,6 +26,8 @@ import codechicken.nei.api.TaggedInventoryArea;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
@@ -34,6 +36,7 @@ import crazypants.render.RenderUtil;
 @Optional.InterfaceList({
     @Optional.Interface(iface = "codechicken.nei.api.INEIGuiHandler", modid = "NotEnoughItems")
 })
+@SideOnly(Side.CLIENT)
 public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen, INEIGuiHandler {
 
   protected ToolTipManager ttMan = new ToolTipManager();
@@ -177,7 +180,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     drawForegroundImpl(mouseX, mouseY);
 
     Timer t = RenderUtil.getTimer();
-    
+
     if(t != null) {
       GL11.glPushMatrix();
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -353,7 +356,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
       while (iterator.hasNext())
       {
-        String s = (String) iterator.next();
+        String s = iterator.next();
         int l = font.getStringWidth(s);
 
         if(l > k)
@@ -398,7 +401,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
       for (int k2 = 0; k2 < par1List.size(); ++k2)
       {
-        String s1 = (String) par1List.get(k2);
+        String s1 = par1List.get(k2);
         font.drawStringWithShadow(s1, i1, j1, -1);
 
         if(k2 == 0)

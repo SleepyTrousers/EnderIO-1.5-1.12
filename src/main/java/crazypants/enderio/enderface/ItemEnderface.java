@@ -6,15 +6,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
 
-public class ItemEnderface extends Item implements IGuiHandler {
+public class ItemEnderface extends Item implements ISidedGuiHandler {
 
   public static final String KEY_IO_SET = "enderFaceIoSet";
   public static final String KEY_IO_X = "enderFaceIoX";
@@ -36,7 +36,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemEnderface.unlocalisedName);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }
 
   @Override
@@ -69,6 +69,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new GuiEnderface(player, world, x, y, z);
   }

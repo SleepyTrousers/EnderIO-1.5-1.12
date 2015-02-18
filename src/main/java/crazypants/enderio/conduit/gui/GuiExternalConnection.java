@@ -15,6 +15,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gas.IGasConduit;
@@ -28,8 +31,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
 
-import cpw.mods.fml.common.Optional;
-
+@SideOnly(Side.CLIENT)
 public class GuiExternalConnection extends GuiContainerBase {
 
   private static final int TAB_HEIGHT = 24;

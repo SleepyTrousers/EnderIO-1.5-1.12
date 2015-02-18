@@ -13,6 +13,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.TextFieldEIO;
@@ -34,6 +36,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
+@SideOnly(Side.CLIENT)
 public class GuiCapBank extends GuiContainerBase {
 
   private static final CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);

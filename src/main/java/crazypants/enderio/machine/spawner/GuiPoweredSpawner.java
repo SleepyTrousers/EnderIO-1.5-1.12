@@ -8,6 +8,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -16,6 +18,7 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
   private IconButtonEIO modeB;
@@ -55,7 +58,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     TilePoweredSpawner spawner = getTileEntity();
-    
+
     int left = getGuiLeft();
     int top = getGuiTop();
 

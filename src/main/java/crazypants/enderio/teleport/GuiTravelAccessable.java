@@ -12,6 +12,8 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.TextFieldEIO;
@@ -24,6 +26,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiTravelAccessable extends GuiContainerBase {
 
   private static final int ID_PUBLIC = 0;

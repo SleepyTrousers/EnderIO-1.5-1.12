@@ -1,7 +1,18 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -15,14 +26,8 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
+@SideOnly(Side.CLIENT)
 public class GuiVacuumChest extends GuiContainerBase {
 
   private static final int RANGE_LEFT  = 145;
@@ -195,6 +200,7 @@ public class GuiVacuumChest extends GuiContainerBase {
     fr.drawString(str, sx + RANGE_LEFT + RANGE_WIDTH - sw - 5, sy + RANGE_TOP + 5, ColorUtil.getRGB(Color.black));
   }
 
+  @SideOnly(Side.CLIENT)
   class FilterGhostSlot extends GhostSlot {
     final int slot;
     FilterGhostSlot(int slot, int x, int y) {

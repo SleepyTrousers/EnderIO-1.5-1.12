@@ -11,6 +11,8 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.network.MessageTileNBT;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
@@ -18,18 +20,19 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiTravelAuth extends GuiContainerBase {
 
   private final String title;
   private final ITravelAccessable ta;
-  
+
   private boolean failed = false;
   private final EntityPlayer player;
 
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
     super(new ContainerTravelAuth(player.inventory));
     this.ta = te;
-    title = Lang.localize("gui.travelAccessable.enterCode");  
+    title = Lang.localize("gui.travelAccessable.enterCode");
     this.player = player;
   }
 

@@ -52,6 +52,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);

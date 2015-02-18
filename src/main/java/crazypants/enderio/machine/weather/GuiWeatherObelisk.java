@@ -12,6 +12,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -19,19 +21,20 @@ import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
   private static final ResourceLocation texture = new ResourceLocation("enderio:textures/gui/weatherObelisk.png");
   private static final NumberFormat fmt = NumberFormat.getNumberInstance();
-  
+
   public GuiWeatherObelisk(InventoryPlayer inventory, TileWeatherObelisk tileEntity) {
     super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity));
-    
+
     addProgressTooltip(79, 29, 18, 31);
   }
 
   @Override
-  public void initGui() {    
+  public void initGui() {
     super.initGui();
 
     int x = (xSize / 2) - (BUTTON_SIZE / 2);
@@ -58,7 +61,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
       refreshButtons();
     }
   }
-  
+
   @SuppressWarnings("unchecked")
   private void refreshButtons() {
     for (GuiButton button : (List<GuiButton>) buttonList) {
@@ -88,37 +91,37 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     if(shouldRenderProgress() && getTileEntity().activeTask != null) {
       int barHeight = getTileEntity().progress;
       Color color = getTileEntity().activeTask.color;
-      GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+      GL11.glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-  
+
   @Override
   protected int getPowerHeight() {
     return super.getPowerHeight() + 20;
   }
-  
+
   @Override
   protected int getPowerU() {
     return super.getPowerU();
   }
-  
+
   @Override
   protected int getPowerV() {
     return 34;
   }
-  
+
   @Override
   protected int getPowerX() {
     return super.getPowerX();
   }
-  
+
   @Override
   protected int getPowerY() {
     return super.getPowerY();
   }
-  
+
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);

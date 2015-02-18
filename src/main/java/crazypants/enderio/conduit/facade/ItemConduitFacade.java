@@ -100,6 +100,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
     return getIconFromDamage(stack.getItemDamage());
   }

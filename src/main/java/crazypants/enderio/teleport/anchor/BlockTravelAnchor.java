@@ -17,12 +17,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -47,7 +48,7 @@ import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
-public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
+public class BlockTravelAnchor extends BlockEio implements ISidedGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
 
   public static int renderId = -1;
 
@@ -85,8 +86,8 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   protected void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
@@ -167,6 +168,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {

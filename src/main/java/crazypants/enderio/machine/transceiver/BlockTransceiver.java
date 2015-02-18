@@ -70,6 +70,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     return new GuiTransceiver(player.inventory, (TileTransceiver) te);

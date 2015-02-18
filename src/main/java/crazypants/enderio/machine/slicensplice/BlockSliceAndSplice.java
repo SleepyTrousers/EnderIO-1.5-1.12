@@ -14,7 +14,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
 
@@ -38,6 +37,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileSliceAndSplice) {
@@ -58,12 +58,12 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
     }
     return "enderio:sliceAndSpliceFront";
   }
-  
+
   @Override
   protected String getSideIconKey(boolean active) {
     return "enderio:blockSoulMachineSide";
   }
-  
+
   @Override
   protected String getTopIconKey(boolean active) {
     return "enderio:blockSoulMachineTop";
@@ -79,7 +79,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     TileSliceAndSplice te = (TileSliceAndSplice) world.getTileEntity(x, y, z);
     if(isActive(world, x, y, z) && te != null) {
-      
+
       ForgeDirection front = ForgeDirection.values()[te.facing];
 
       for (int i = 0; i < 2; i++) {
@@ -88,7 +88,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
         double v = 0.05;
         double vx = 0;
         double vz = 0;
-        
+
         if(front == ForgeDirection.NORTH || front == ForgeDirection.SOUTH) {
           px += world.rand.nextFloat() * 0.9 - 0.45;
           vz += front == ForgeDirection.NORTH ? -v : v;
