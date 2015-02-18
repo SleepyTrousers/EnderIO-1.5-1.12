@@ -1,5 +1,7 @@
 package crazypants.util;
 
+import java.util.IllegalFormatException;
+
 import net.minecraft.util.StatCollector;
 
 public class Lang {
@@ -14,7 +16,12 @@ public class Lang {
     if(appendEIO) {
       s = prefix + s;
     }
-    return String.format(StatCollector.translateToLocal(s), (Object[]) args);
+    String ret = StatCollector.translateToLocal(s);
+    try {
+      return String.format(ret, (Object[]) args);
+    } catch (IllegalFormatException e) {
+      return ret;
+    }
   }
 
   public static String[] localizeList(String string) {

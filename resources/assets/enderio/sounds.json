@@ -44,5 +44,11 @@
 	  "darksteel/modules/jump/jump4",
 	  "darksteel/modules/jump/jump5"
 	]
+  },
+  "telepad.active": {
+    "category": "block",
+    "sounds" : [
+      "telepad/active"
+    ]
   }
 }

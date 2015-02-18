@@ -12,6 +12,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
@@ -19,8 +20,13 @@ import cofh.api.energy.EnergyStorage;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.machine.PacketProgress;
 import crazypants.enderio.network.PacketHandler;
@@ -53,6 +59,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private int powerUsed;
   private int maxPower;
   private int lastSyncPowerUsed;
+  
+  private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
+  private MachineSound activeSound = null;
 
   @Override
   public void updateEntity() {
@@ -65,7 +74,22 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       updateConnectedState(true);
       autoUpdate = false;
     }
-    if(!worldObj.isRemote) {
+    if(worldObj.isRemote) {
+      if(active()) {
+        if(activeSound == null) {
+          activeSound = new MachineSound(activeRes, xCoord, yCoord, zCoord, 0.01f, 1);
+          playSound();
+        }
+        activeSound.setVolume(Math.min(activeSound.getVolume() + 0.01f, 0.5f));
+      } else if(!active() && activeSound != null) {
+        if(activeSound.getVolume() > 0) {
+          activeSound.setVolume(activeSound.getVolume() - 0.1f);
+        } else {
+          activeSound.endPlaying();
+          activeSound = null;
+        }
+      }
+    } else {
       if(active()) {
         System.out.println(maxPower);
         if(powerUsed >= maxPower) {
@@ -90,6 +114,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         PacketHandler.sendToAllAround(new PacketProgress(this), this);
       }
     }
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void playSound() {
+    FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound);
   }
 
   private void updateQueuedEntities() {
@@ -234,7 +263,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private int getPowerForTeleport() {
-    return new BlockCoord(this).distance(target) * 10;
+    return new BlockCoord(this).distance(target) * 1000;
   }
 
   public boolean active() {
