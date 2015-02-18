@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 
@@ -24,21 +26,21 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
     BASIC_INV("item.itemLightInverted", true, false, false),
     WIRELESS("item.itemWirelessLight", false, true, true),
     WIRELESS_INV("item.itemWirelessLightInverted", true, true, true);
-    
+
     final String unlocName;
     final boolean isInverted;
     final boolean isPowered;
     final boolean isWireless;
-    
+
     private Type(String unlocName, boolean isInverted, boolean isPowered, boolean isWireless) {
       this.unlocName = unlocName;
       this.isInverted = isInverted;
       this.isPowered = isPowered;
       this.isWireless = isWireless;
     }
-    
+
   }
-  
+
   public BlockItemElectricLight(Block block) {
     super(block, block);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -53,6 +55,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for(Type type : Type.values()) {
       par3List.add(new ItemStack(this,1,type.ordinal()));
@@ -68,7 +71,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
       ForgeDirection onFace = ForgeDirection.values()[side].getOpposite();
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileElectricLight) {
-        TileElectricLight el = ((TileElectricLight) te); 
+        TileElectricLight el = ((TileElectricLight) te);
         el.setFace(onFace);
         Type t= Type.values()[metadata];
         el.setInverted(t.isInverted);
@@ -80,7 +83,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {    
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName(itemStack);
   }
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -24,7 +25,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
-    
+
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();
     return gen;
@@ -125,6 +126,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     // If active, randomly throw some smoke around
     if(isActive(world, x, y, z)) {

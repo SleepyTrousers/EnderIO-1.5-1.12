@@ -37,14 +37,16 @@ public class ItemFusedQuartzFrame extends Item {
     GameRegistry.registerItem(this, ModObject.itemFusedQuartzFrame.unlocalisedName);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe(this));
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
     list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
   }
 
@@ -97,6 +99,6 @@ public class ItemFusedQuartzFrame extends Item {
     public boolean isValidTarget(ItemStack target) {
       return target != null && target.getItem() == i;
     }
-    
+
   }
 }

@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,9 +11,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import com.google.common.collect.Lists;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -94,11 +89,13 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int blockSide, int blockMeta) {
     return blockSide > 1 ? textures[blockMeta] : super.getIcon(blockSide, blockMeta);
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileBuffer) {

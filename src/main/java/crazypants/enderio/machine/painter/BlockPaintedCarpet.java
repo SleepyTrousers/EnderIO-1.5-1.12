@@ -63,6 +63,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
     ItemStack stack = new ItemStack(item);
     PainterUtil.setSourceBlock(stack, Blocks.stone, 0);
@@ -160,6 +161,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {

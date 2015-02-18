@@ -16,6 +16,8 @@ import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -30,6 +32,7 @@ import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vertex;
 
+@SideOnly(Side.CLIENT)
 public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
@@ -60,7 +63,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     boolean scaleX = facing != 4 && facing != 5;
     float scx;
     float scz;
-    
+
     IIcon override = renderer.overrideBlockTexture;
 
     //middle chunk
@@ -106,12 +109,12 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       tex = EnderIO.blockCombustionGenerator.getIcon(4,0);
     } else {
       tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
-    } 
-    
+    }
+
     if (override != null) {
       tex = override;
     }
-    
+
     TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, tex, world != null);
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);

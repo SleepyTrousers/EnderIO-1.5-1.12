@@ -37,7 +37,7 @@ import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
 public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade, IRotatableFacade {
-   
+
   public static int renderId = -1;
 
   public static BlockPaintedGlowstone create() {
@@ -70,9 +70,10 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
     list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
@@ -86,7 +87,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
       if(tef.getSourceBlock() != null) {
         return tef.getSourceBlock().colorMultiplier(world, x, y, z);
       }
-    }    
+    }
     return super.colorMultiplier(world, x, y, z);
   }
 
@@ -168,11 +169,12 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {    
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return true;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -183,7 +185,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     }
     return Blocks.anvil.getIcon(world, x, y, z, blockSide);
   }
-   
+
   @SideOnly(Side.CLIENT)
   @Override
   public void registerBlockIcons(IIconRegister IIconRegister) {
@@ -220,14 +222,14 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
       drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
     }
   }
-  
+
   @Override
   public boolean doNormalDrops(World world, int x, int y, int z) {
       return false;
   }
 
   @Override
-  public int getRenderType() {    
+  public int getRenderType() {
     return renderId;
   }
 
@@ -244,7 +246,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
       if(paintSource == null) {
         return new ResultStack[0];
       }
-      
+
       if (paintSource.getItem() == Item.getItemFromBlock(Blocks.glowstone)) {
         ItemStack stack = new ItemStack(Blocks.glowstone);
         stack.stackTagCompound = new NBTTagCompound();
@@ -252,10 +254,10 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
         stack.stackTagCompound.setBoolean(tagName, true);
         return new ResultStack[] { new ResultStack(stack) };
       }
-      
+
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-    
+
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
       if (event.itemStack != null && Block.getBlockFromItem(event.itemStack.getItem()) == Blocks.glowstone && event.itemStack.stackTagCompound != null) {

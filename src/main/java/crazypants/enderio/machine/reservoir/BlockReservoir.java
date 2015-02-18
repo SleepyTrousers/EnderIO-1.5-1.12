@@ -82,8 +82,8 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
       } else {
         // Handle empty containers
 
-        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;        
-        if(available != null && available.amount > 0) {          
+        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
+        if(available != null && available.amount > 0) {
           ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
           if(current.getItem() == Items.bucket) {
             filled = new ItemStack(Items.water_bucket);
@@ -187,6 +187,7 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:reservoir");
     for (MbFace face : MbFace.values()) {
@@ -201,7 +202,7 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
     if (y < 0 || y >= 256) { // getTileEntity is not safe for out of bounds coords
       return false;
     }
-    
+
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileReservoir)) {
       return true;
@@ -214,6 +215,7 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     // used to render the block in the world
     TileEntity te = world.getTileEntity(x, y, z);
