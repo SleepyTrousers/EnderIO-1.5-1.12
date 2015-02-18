@@ -56,6 +56,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:" + ModObject.blockDarkSteelPressurePlate.unlocalisedName);
   }
@@ -69,6 +70,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {

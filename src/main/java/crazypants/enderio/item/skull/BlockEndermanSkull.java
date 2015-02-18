@@ -1,6 +1,5 @@
 package crazypants.enderio.item.skull;
 
-import cpw.mods.fml.common.Optional;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,12 +8,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.crafting.IInfusionStabiliser;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import thaumcraft.api.crafting.IInfusionStabiliser;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
 public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser {
@@ -22,22 +22,22 @@ public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser 
   public static int renderId = -1;
 
   public enum SkullType {
-    
+
     BASE("base",false),
     REANIMATED("reanimated",true),
     TORMENTED("tormented",false),
     REANIMATED_TORMENTED("reanimatedTormented",true);
-    
+
     final String name;
     final boolean showEyes;
-    
-    
+
+
     SkullType(String name, boolean showEyes) {
       this.name = name;
       this.showEyes = showEyes;
     }
   }
-  
+
   public static BlockEndermanSkull create() {
     BlockEndermanSkull res = new BlockEndermanSkull();
     res.init();
@@ -53,18 +53,19 @@ public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser 
     super(ModObject.blockEndermanSkull.unlocalisedName, TileEndermanSkull.class, Material.circuits);
     setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
   }
-  
-  
+
+
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, ItemEndermanSkull.class, name);    
-    GameRegistry.registerTileEntity(teClass, name + "TileEntity");    
+    GameRegistry.registerBlock(this, ItemEndermanSkull.class, name);
+    GameRegistry.registerTileEntity(teClass, name + "TileEntity");
   }
 
 
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     frontIcon = iIconRegister.registerIcon("enderio:endermanSkullFront");
     frontIconEyes = iIconRegister.registerIcon("enderio:endermanSkullFrontEyes");
@@ -86,18 +87,22 @@ public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser 
     return sideIcon;
   }
 
+  @Override
   public int getRenderType() {
     return renderId;
   }
 
+  @Override
   public boolean isOpaqueCube() {
     return false;
   }
 
+  @Override
   public boolean renderAsNormalBlock() {
     return false;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public String getItemIconName() {
     return "enderio:endermanSkull";
@@ -105,9 +110,9 @@ public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser 
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    
-    int inc = MathHelper.floor_double((double)(player.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
-    float facingYaw = -22.5f * inc;   
+
+    int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
+    float facingYaw = -22.5f * inc;
     TileEndermanSkull te = (TileEndermanSkull) world.getTileEntity(x, y, z);
     te.setYaw(facingYaw);
     if(world.isRemote) {

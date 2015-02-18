@@ -11,12 +11,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 
+@SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
   private ResourceLocation texName = null;

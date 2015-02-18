@@ -15,6 +15,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
@@ -26,6 +28,7 @@ import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector4d;
 import crazypants.vecmath.Vertex;
 
+@SideOnly(Side.CLIENT)
 public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);

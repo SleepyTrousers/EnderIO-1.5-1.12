@@ -1,13 +1,8 @@
 package crazypants.enderio.machine.transceiver.render;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -18,20 +13,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.CustomCubeRenderer;
 import crazypants.render.CustomRenderBlocks;
-import crazypants.render.IRenderFace;
-import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vertex;
 
+@SideOnly(Side.CLIENT)
 public class TransceiverRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private IModel model;
@@ -64,7 +57,7 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
     int l1 = l % 65536;
     int l2 = l / 65536;
     Tessellator.instance.setColorOpaque_F(f, f, f);
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 
     model.render(trans, x, y, z);
     if(trans.isActive()) {
@@ -78,26 +71,26 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
     GL11.glDisable(GL11.GL_LIGHTING);
     Tessellator.instance.startDrawingQuads();
     Tessellator.instance.setColorOpaque_F(f, f, f);
-    
+
 
     RenderUtil.bindBlockTexture();
     CustomRenderBlocks rb = new CustomRenderBlocks(te.getWorldObj());
     double scale = 0.88;
     BoundingBox pushPullBounds = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
     BoundingBox disabledBounds = BoundingBox.UNIT_CUBE.scale(1.01, 1.01, 1.01);
-    
+
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       IoMode mode = trans.getIoMode(dir);
       if(mode != null) {
         if(mode == IoMode.DISABLED) {
-          rb.setRenderBounds(disabledBounds.minX, disabledBounds.minY, disabledBounds.minZ, 
+          rb.setRenderBounds(disabledBounds.minX, disabledBounds.minY, disabledBounds.minZ,
               disabledBounds.maxX, disabledBounds.maxY, disabledBounds.maxZ);
         } else {
-          rb.setRenderBounds(pushPullBounds.minX, pushPullBounds.minY, pushPullBounds.minZ, 
-              pushPullBounds.maxX, pushPullBounds.maxY, pushPullBounds.maxZ);      
+          rb.setRenderBounds(pushPullBounds.minX, pushPullBounds.minY, pushPullBounds.minZ,
+              pushPullBounds.maxX, pushPullBounds.maxY, pushPullBounds.maxZ);
         }
         IIcon icon = EnderIO.blockTransceiver.getOverlayIconForMode(mode);
-        if(icon != null) {          
+        if(icon != null) {
           rb.doDefaultRenderFace(dir, EnderIO.blockTransceiver, 0, 0, 0, icon);
         }
       }

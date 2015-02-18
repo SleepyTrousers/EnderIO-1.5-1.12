@@ -23,7 +23,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
@@ -105,6 +104,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean isFull3D() {
     return true;
   }
@@ -122,30 +122,30 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
   }
-  
+
   @Override
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(stack);
     return curMode != ConduitDisplayMode.NONE;
   }
-  
+
   @Override
   public boolean showOverlay(ItemStack stack, EntityPlayer player) {
     return true;
   }
 
   /* IAdvancedTooltipProvider */
-  
+
   @SuppressWarnings("rawtypes")
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
   }
-  
+
   @SuppressWarnings("rawtypes")
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
   }
-  
+
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
@@ -158,7 +158,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   /* InvocationHandler */
-  
+
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     System.out.println("ItemYetaWrench.invoke: method = " + method.getName());

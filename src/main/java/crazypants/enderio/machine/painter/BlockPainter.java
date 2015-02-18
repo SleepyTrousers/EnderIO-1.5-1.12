@@ -24,7 +24,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   }
 
   private IIcon invisibleIcon;
-  
+
   private BlockPainter() {
     super(ModObject.blockPainter, TileEntityPainter.class);
   }
@@ -41,6 +41,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     return new GuiPainter(player.inventory, (TileEntityPainter) te);
@@ -50,7 +51,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   protected int getGuiId() {
     return GuiHandler.GUI_ID_PAINTER;
   }
-  
+
   public IIcon getInvisibleIcon() {
     return invisibleIcon;
   }
@@ -61,7 +62,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {    
+  public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
     invisibleIcon = iIconRegister.registerIcon("enderio:invisblePaint");
   }

@@ -14,6 +14,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -43,6 +45,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
     int index = 0;
     for (ItemConduitSubtype subtype : subtypes) {
@@ -108,6 +111,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, subtypes.length - 1);
     return icons[damage];
@@ -122,6 +126,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < subtypes.length; ++j) {
       par3List.add(new ItemStack(this, 1, j));

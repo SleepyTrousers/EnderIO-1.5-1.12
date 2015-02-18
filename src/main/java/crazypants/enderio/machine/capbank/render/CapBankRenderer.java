@@ -18,6 +18,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
@@ -32,6 +34,7 @@ import crazypants.render.CubeRenderer;
 import crazypants.render.CustomCubeRenderer;
 import crazypants.render.RenderUtil;
 
+@SideOnly(Side.CLIENT)
 public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private ConnectedTextureRenderer connectedTexRenderer;
@@ -86,7 +89,7 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     return BlockCapBank.renderId;
   }
 
-  //------- Item 
+  //------- Item
   @Override
   public boolean handleRenderType(ItemStack item, ItemRenderType type) {
     return true;

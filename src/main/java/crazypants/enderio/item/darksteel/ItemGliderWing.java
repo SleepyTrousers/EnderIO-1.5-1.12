@@ -2,24 +2,20 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.util.Lang;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 
 public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
@@ -46,6 +42,7 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, 1);
     if(damage == 0) {
@@ -55,6 +52,7 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister register) {
     itemIcon = register.registerIcon("enderio:itemGliderWing");
     wingsIcon = register.registerIcon("enderio:itemGliderWings");
@@ -71,6 +69,7 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < 2; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
@@ -82,7 +81,7 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
     return getUnlocalizedName(itemStack);
   }
 
- 
+
 //  @Override
 //  @SideOnly(Side.CLIENT)
 //  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
@@ -91,5 +90,5 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 //    }
 //
 //  }
-  
+
 }

@@ -27,7 +27,7 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
 
   protected ItemModItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemModItemFilter.unlocalisedName);    
+    setUnlocalizedName(ModObject.itemModItemFilter.unlocalisedName);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
@@ -46,6 +46,7 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
     itemIcon = IIconRegister.registerIcon("enderio:modItemFilter");
   }
@@ -54,15 +55,15 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {          
-    if(FilterRegister.isFilterSet(par1ItemStack)) {      
-      if(TooltipAddera.instance.showAdvancedTooltips()) {        
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    if(FilterRegister.isFilterSet(par1ItemStack)) {
+      if(TooltipAddera.instance.showAdvancedTooltips()) {
         par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
         par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
-      }      
+      }
     }
   }
 

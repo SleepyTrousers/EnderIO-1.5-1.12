@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -22,6 +21,8 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -131,6 +132,7 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
 import crazypants.render.IconUtil;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
   // @formatter:off
@@ -224,7 +226,7 @@ public class ClientProxy extends CommonProxy {
 
     BlockSolarPanel.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new SolarPanelRenderer());
-    
+
     EnchanterModelRenderer emr = new EnchanterModelRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), emr);
@@ -259,7 +261,7 @@ public class ClientProxy extends CommonProxy {
     BlockWeatherObelisk.renderId = BlockAttractor.renderId;
     ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
-    
+
     if(Config.useCombustionGenModel) {
       CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);

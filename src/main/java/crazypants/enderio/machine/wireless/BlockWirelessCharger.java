@@ -38,6 +38,7 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     centerOn = iIconRegister.registerIcon("enderio:blockWirelessChargerOn");
     centerOff = iIconRegister.registerIcon("enderio:blockWirelessChargerOff");

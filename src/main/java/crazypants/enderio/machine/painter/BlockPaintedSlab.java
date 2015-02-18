@@ -68,14 +68,16 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     PainterUtil.setSourceBlock(result, source, damage);
     return result;
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
     list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -269,7 +271,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
       Block blk = Block.getBlockFromItem(target.getItem());
       return blk instanceof BlockSlab;
     }
-    
+
   }
 
 }

@@ -57,9 +57,10 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     PainterUtil.setSourceBlock(result, id, damage);
     return result;
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
     list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
@@ -171,6 +172,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {

@@ -49,7 +49,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     setStepSound(Block.soundTypeGlass);
     setLightOpacity(0);
   }
-  
+
   @Override
   protected void init() {
     GameRegistry.registerBlock(this, BlockItemTank.class, modObject.unlocalisedName);
@@ -64,11 +64,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list) {
     list.add(new ItemStack(this, 1, 0));
     list.add(new ItemStack(this, 1, 1));
   }
-  
+
   @Override
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileTank(metadata);
@@ -110,9 +111,9 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
         FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
         for (FluidContainerData data : datas) {
-          if(data != null && data.fluid != null && data.fluid.getFluid() != null && 
-              data.fluid.getFluid().getName() != null && data.emptyContainer != null &&               
-              data.fluid.getFluid().getName().equals(available.getFluid().getName()) && 
+          if(data != null && data.fluid != null && data.fluid.getFluid() != null &&
+              data.fluid.getFluid().getName() != null && data.emptyContainer != null &&
+              data.fluid.getFluid().getName().equals(available.getFluid().getName()) &&
               data.emptyContainer.isItemEqual(item)) {
             res = data.filledContainer.copy();
             filled = FluidContainerRegistry.getFluidForFilledItem(res);
@@ -174,6 +175,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
 
     // used to render the block in the world
@@ -193,6 +195,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int blockSide, int blockMeta) {
     int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
     return iconBuffer[0][blockSide + offset];
@@ -206,10 +209,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return "enderio:blockTank";
   }
 
+  @Override
   protected String getSideIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
 
+  @Override
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
@@ -237,12 +242,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       return super.getExplosionResistance(par1Entity);
     }
   }
-  
+
   @Override
   public boolean hasComparatorInputOverride() {
     return true;
   }
-  
+
   @Override
   public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
     TileEntity te = w.getTileEntity(x, y, z);
@@ -287,7 +292,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       FluidStack stored = tank.tank.getFluid();
       String fluid = stored == null ? Lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
       int amount = stored == null ? 0 : stored.amount;
-      
+
       tooltip.add(String.format("%s%s : %s (%d %s)", EnumChatFormatting.WHITE, Lang.localize("tooltip.fluidStored"), fluid, amount, Lang.localize("fluid.millibucket.abr")));
     }
   }

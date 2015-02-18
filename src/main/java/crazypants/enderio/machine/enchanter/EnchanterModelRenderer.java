@@ -12,8 +12,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.render.RenderUtil;
 
+@SideOnly(Side.CLIENT)
 public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private static final String TEXTURE = "enderio:models/BookStand.png";
@@ -31,11 +34,11 @@ public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements
     int l1 = l % 65536;
     int l2 = l / 65536;
     Tessellator.instance.setColorOpaque_F(f, f, f);
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    renderModel(gen.getFacing());    
+    renderModel(gen.getFacing());
     GL11.glPopMatrix();
   }
 

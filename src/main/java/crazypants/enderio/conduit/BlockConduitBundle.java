@@ -337,14 +337,15 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       }
     }
   }
-  
+
   @Override
+  @SideOnly(Side.CLIENT)
   public int getRenderBlockPass() {
     return 1;
   }
-  
+
   public static volatile int theRenderPass;
-  
+
   @Override
   public boolean canRenderInPass(int pass) {
     theRenderPass = pass;
@@ -760,6 +761,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int
       y, int z) {
 
@@ -851,7 +853,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
     IConduitBundle bundle = (IConduitBundle) te;
     List<RaytraceResult> hits = new ArrayList<RaytraceResult>();
-    
+
     if (player == null) {
       player = EnderIO.proxy.getClientPlayer();
     }
