@@ -1,6 +1,6 @@
 package crazypants.util;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StatCollector;
 
 public class Lang {
   
@@ -14,7 +14,7 @@ public class Lang {
     if(appendEIO) {
       s = prefix + s;
     }
-    return I18n.format(s, (Object[]) args);
+    return String.format(StatCollector.translateToLocal(s), (Object[]) args);
   }
 
   public static String[] localizeList(String string) {
