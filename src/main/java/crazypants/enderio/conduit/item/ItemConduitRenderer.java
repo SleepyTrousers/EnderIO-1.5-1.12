@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -28,6 +29,10 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
       float worldLight, RenderBlocks rb) {
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
 
+    if (BlockConduitBundle.theRenderPass == 1) {
+      return;
+    }
+    
     IItemConduit pc = (IItemConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       DyeColor inChannel = null;
@@ -62,10 +67,9 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
           Tessellator.instance.setColorOpaque_I(outChannel.getColor());
           ConnectionModeGeometry.renderModeConnector(dir, offset, outTex, false);
         }
+        
         Tessellator.instance.setColorOpaque_F(1f, 1f, 1f);
       }
     }
-
   }
-
 }
