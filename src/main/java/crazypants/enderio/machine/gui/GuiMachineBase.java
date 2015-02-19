@@ -153,7 +153,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     addToolTip(tt);
   }
 
-  private void updateProgressTooltips(int scaledProgress, float progress) {
+  protected final void updateProgressTooltips(int scaledProgress, float progress) {
     if(lastProgressTooltipValue == scaledProgress || progressTooltips == null) {
       return;
     }

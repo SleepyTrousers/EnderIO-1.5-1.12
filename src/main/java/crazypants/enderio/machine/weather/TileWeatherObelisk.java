@@ -83,6 +83,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   }
 
   int powerUsed = 0;
+  int progress = 0; // client only
   WeatherTask activeTask = null;
 
   private Color particleColor;
@@ -136,7 +137,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   @Override
   public float getProgress() {
-    return isActive() ? (float) powerUsed / (float) activeTask.power : 0;
+    return isActive() ? worldObj.isRemote ? progress : (float) powerUsed / (float) activeTask.power : 0;
   }
 
   @Override
@@ -189,7 +190,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     } else if(activeTask != null && taskid == -1) {
       activeTask = null;
       powerUsed = 0;
-      PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.dimensionId);
+      if(!worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.dimensionId);
+      }
     }
   }
 
