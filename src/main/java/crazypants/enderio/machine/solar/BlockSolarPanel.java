@@ -14,18 +14,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.EnergyStorage;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.enderio.waila.WailaCompat;
 import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -78,6 +75,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int meta) {
     if(side == ForgeDirection.UP.ordinal()) {
       return meta == 0 ? blockIcon : advancedIcon;
@@ -103,6 +101,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register) {
     blockIcon = register.registerIcon("enderio:solarPanelTop");
     advancedIcon = register.registerIcon("enderio:solarPanelAdvancedTop");

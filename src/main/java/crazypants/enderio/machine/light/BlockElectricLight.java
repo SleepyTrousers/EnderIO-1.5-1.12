@@ -1,12 +1,7 @@
 package crazypants.enderio.machine.light;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,8 +17,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.tool.ToolUtil;
 import crazypants.vecmath.Vector3f;
 
 public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
@@ -63,6 +56,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
     blockIconOff = iIconRegister.registerIcon("enderio:blockElectricLightFaceOff");
@@ -215,7 +209,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   /* IRedstoneConnectable */
-  
+
   @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
     return true;

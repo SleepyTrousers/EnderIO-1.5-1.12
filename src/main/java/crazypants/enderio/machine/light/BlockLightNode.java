@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 
@@ -21,7 +23,7 @@ public class BlockLightNode extends BlockEio {
 
   public BlockLightNode() {
     super(ModObject.blockLightNode.unlocalisedName, TileLightNode.class, Material.air);
-    setCreativeTab(null);    
+    setCreativeTab(null);
     setBlockBounds(0, 0, 0, 0, 0, 0);
   }
 
@@ -88,12 +90,13 @@ public class BlockLightNode extends BlockEio {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
   }
 
   @Override
-  public int quantityDropped(Random p_149745_1_) {    
+  public int quantityDropped(Random p_149745_1_) {
     return 0;
   }
 

@@ -27,8 +27,8 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.util.Util;
 import crazypants.util.Lang;
+import crazypants.util.Util;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -63,6 +63,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
     for (FacadeType t : FacadeType.values()) {
       list.add(new ItemStack(item, 1, t.ordinal()));
@@ -80,6 +81,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
     icons = new IIcon[FacadeType.values().length];
     icons[0] = itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
@@ -92,6 +94,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     return icons[damage % icons.length];
   }

@@ -138,10 +138,10 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
       return true;
     }
-    
+
     return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);
   }
-  
+
   @Override
   protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
@@ -200,6 +200,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
     Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
     return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
@@ -318,12 +319,12 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
           if(te instanceof TileCapacitorBank) {
             if(((TileCapacitorBank)te).isMaxSize()) {
               ((EntityPlayer)player).addChatComponentMessage(new ChatComponentText("Capacitor bank is at maximum size"));
-            }            
-          }          
+            }
+          }
         }
-        
+
       }
-      
+
     }
     world.markBlockForUpdate(x, y, z);
   }
@@ -370,12 +371,12 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     }
     return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
   }
-  
+
   @Override
   public boolean hasComparatorInputOverride() {
     return true;
   }
-  
+
   @Override
   public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
     TileEntity te = w.getTileEntity(x, y, z);
@@ -391,7 +392,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if (te instanceof TileCapacitorBank) {
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
-            
+
       tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, fmt.format(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, fmt.format(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));

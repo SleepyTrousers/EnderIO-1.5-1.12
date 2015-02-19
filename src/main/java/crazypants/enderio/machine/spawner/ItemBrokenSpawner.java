@@ -18,9 +18,9 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemBrokenSpawner extends Item {
-  
+
   private static final String[] CREATIVE_TYPES = new String[] {
-    "Skeleton", 
+    "Skeleton",
     "Zombie",
     "Spider",
     "CaveSpider",
@@ -28,14 +28,14 @@ public class ItemBrokenSpawner extends Item {
       "Enderman",
       "Chicken"
   };
-  
+
   public static String getMobTypeFromStack(ItemStack stack) {
     if(stack == null || stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("mobType")) {
       return null;
     }
     return stack.stackTagCompound.getString("mobType");
   }
-  
+
   public static ItemStack createStackForMobType(String mobType) {
     if(mobType == null) {
       return null;
@@ -45,14 +45,14 @@ public class ItemBrokenSpawner extends Item {
     res.stackTagCompound.setString("mobType", mobType);
     return res;
   }
-  
-  
+
+
   public static ItemBrokenSpawner create() {
     ItemBrokenSpawner result = new ItemBrokenSpawner();
     result.init();
     return result;
   }
-  
+
 
   protected ItemBrokenSpawner() {
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -63,7 +63,7 @@ public class ItemBrokenSpawner extends Item {
   }
 
   @Override
-  public boolean isDamageable() {  
+  public boolean isDamageable() {
     return false;
   }
 
@@ -72,16 +72,18 @@ public class ItemBrokenSpawner extends Item {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister iIconRegister) {
-    itemIcon = iIconRegister.registerIcon("enderio:itemBrokenSpawner");    
+    itemIcon = iIconRegister.registerIcon("enderio:itemBrokenSpawner");
   }
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for(String mobType : CREATIVE_TYPES) {
       par3List.add(createStackForMobType(mobType));
-    }    
+    }
   }
 
 

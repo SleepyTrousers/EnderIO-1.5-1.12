@@ -16,7 +16,7 @@ import crazypants.enderio.ModObject;
 
 public class ItemFrankenSkull extends Item {
 
-  private final IIcon[] icons;  
+  private final IIcon[] icons;
 
   public static ItemFrankenSkull create() {
     ItemFrankenSkull alloy = new ItemFrankenSkull();
@@ -28,7 +28,7 @@ public class ItemFrankenSkull extends Item {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemFrankenSkull.unlocalisedName);    
+    setUnlocalizedName(ModObject.itemFrankenSkull.unlocalisedName);
     icons = new IIcon[FrankenSkull.values().length];
   }
 
@@ -37,26 +37,29 @@ public class ItemFrankenSkull extends Item {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, icons.length - 1);
     return icons[damage];
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {    
+  @SideOnly(Side.CLIENT)
+  public void registerIcons(IIconRegister IIconRegister) {
     for (int i = 0; i < icons.length; i++) {
       icons[i] = IIconRegister.registerIcon(FrankenSkull.values()[i].iconKey);
-    }    
+    }
   }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);    
-    return FrankenSkull.values()[i].unlocalisedName;    
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);
+    return FrankenSkull.values()[i].unlocalisedName;
   }
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < FrankenSkull.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
@@ -66,10 +69,10 @@ public class ItemFrankenSkull extends Item {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean hasEffect(ItemStack par1ItemStack, int pass) {
-    int meta = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1); 
+    int meta = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);
     return FrankenSkull.values()[meta].isAnimated;
   }
-  
-  
+
+
 
 }

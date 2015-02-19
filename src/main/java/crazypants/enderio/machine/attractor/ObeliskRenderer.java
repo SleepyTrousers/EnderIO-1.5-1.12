@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
@@ -29,6 +28,8 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -38,12 +39,13 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
 
+@SideOnly(Side.CLIENT)
 public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private VertXForm xform = new VertXForm();
   private VertXForm2 xform2 = new VertXForm2();
   private ItemStack floatingStack;
-  
+
   private Random rand = new Random();
 
   public ObeliskRenderer(ItemStack itemStack) {
@@ -86,7 +88,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     default:
       break;
     }
-    
+
     renderInventoryBlock(EnderIO.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
     Timer t = RenderUtil.getTimer();
     renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t.renderPartialTicks);
@@ -106,18 +108,18 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     int l1 = l % 65536;
     int l2 = l / 65536;
     Tessellator.instance.setColorOpaque_F(f, f, f);
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 
     renderItemStack((T) te, world, x, y, z, tick);
   }
 
   private void renderItemStack(T te, World world, double x, double y, double z, float tick) {
     if(ei == null) {
-      ei = new EntityItem(world, 0, 0, 0, getFloatingItem((T) te));
+      ei = new EntityItem(world, 0, 0, 0, getFloatingItem(te));
     }
 
     ei.setEntityItemStack(getFloatingItem(te));
-    ei.hoverStart = (float) world.getTotalWorldTime() * 0.05f + (tick * 0.05f);
+    ei.hoverStart = world.getTotalWorldTime() * 0.05f + (tick * 0.05f);
 
     glPushMatrix();
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
@@ -136,7 +138,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     RenderManager.instance.renderEntityWithPosYaw(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
     glPopMatrix();
   }
-  
+
   /**
    * @param te CAN BE NULL
    */
@@ -161,7 +163,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     BoundingBox bb = BoundingBox.UNIT_CUBE;
 
     Tessellator.instance.addTranslation(x, y, z);
-    
+
     IIcon icon = EnderIO.blockAttractor.getOnIcon();
     if(world != null) {
       icon = block.getIcon(world, x, y, z, 0);

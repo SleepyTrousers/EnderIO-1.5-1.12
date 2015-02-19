@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vat;
 
+import static crazypants.util.FluidUtil.isValidFluid;
+
 import java.util.Random;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -25,8 +27,6 @@ import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-import static crazypants.util.FluidUtil.isValidFluid;
-
 public class BlockVat extends AbstractMachineBlock<TileVat> {
 
   public static int renderId;
@@ -50,6 +50,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:vatFront");
     blockIconSingle = iIconRegister.registerIcon("enderio:vatFrontSingle");
@@ -71,6 +72,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     // used to render the block in the world
     TileEntity te = world.getTileEntity(x, y, z);
@@ -100,6 +102,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int blockSide, int blockMeta) {
     if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
       return topIcon;
@@ -232,6 +235,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     // If active, randomly throw some smoke around
     if(isActive(world, x, y, z)) {

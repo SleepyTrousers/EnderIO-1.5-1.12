@@ -56,13 +56,14 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedFenceGate.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
     list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
-  
+
   @SideOnly(Side.CLIENT)
   @Override
   public boolean addHitEffects(World world, MovingObjectPosition target,
@@ -162,6 +163,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -241,7 +243,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-    
+
   }
 
 }

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -24,10 +25,10 @@ import crazypants.util.Util;
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
   public static BlockTransceiver create() {
-    
+
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.CLIENT);    
+    PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketChannelList.class, PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannelList.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
@@ -35,7 +36,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     ConnectionHandler ch = new ConnectionHandler();
     FMLCommonHandler.instance().bus().register(ch);
     MinecraftForge.EVENT_BUS.register(ch);
-    
+
     BlockTransceiver res = new BlockTransceiver();
     res.init();
     return res;
@@ -49,13 +50,13 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {   
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileTransceiver) {
         ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
       }
-    }        
+    }
     return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
@@ -79,8 +80,9 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     return GuiHandler.GUI_ID_TRANSCEIVER;
   }
 
-  
+
   @Override
+  @SideOnly(Side.CLIENT)
   protected void registerOverlayIcons(IIconRegister iIconRegister) {
     overlayIconPull = iIconRegister.registerIcon("enderio:transcieverOverlayPull");
     overlayIconPush = iIconRegister.registerIcon("enderio:transcieverOverlayPush");
@@ -89,7 +91,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
     selectedFaceIcon= iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
   }
-  
+
   @Override
   protected String getMachineFrontIconKey(boolean active) {
     if(active) {
@@ -97,7 +99,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     }
     return "enderio:alloySmelterFront";
   }
-  
+
   @Override
   public int getRenderType() {
     return -1;
@@ -114,9 +116,10 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   }
 
   @Override
-  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {    
+  @SideOnly(Side.CLIENT)
+  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
   }
-  
+
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -146,11 +149,11 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
       }
     }
   }
-  
+
   private boolean isEmpty(String str) {
     return "[]".equals(str);
   }
-  
+
   private String buildString(List<Channel> channels) {
     StringBuilder sb = new StringBuilder();
     for (Channel c : channels) {
@@ -161,5 +164,5 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     }
     return sb.toString();
   }
-  
+
 }

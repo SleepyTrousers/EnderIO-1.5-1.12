@@ -1,6 +1,5 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +9,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.UsernameCache;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,7 +23,6 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ITravelAccessable;
 import crazypants.util.Lang;
-import net.minecraftforge.common.UsernameCache;
 
 public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
@@ -131,6 +130,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
     frameIcon = iIconRegister.registerIcon("enderio:enderIOFrame");

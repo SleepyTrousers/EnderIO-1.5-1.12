@@ -14,12 +14,15 @@ import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 
+@SideOnly(Side.CLIENT)
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private static final String TEXTURE = "enderio:models/ZombieJar.png";
@@ -70,13 +73,13 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
       double scaleX = absFac.x == 0 ? 0.95 : 1 - facingOffset / 2;
       double scaleY = 0.85 * fullness;
       double scaleZ = absFac.z == 0 ? 0.95 : 1 - facingOffset / 2;
-      
+
       bb = bb.scale(scaleX, 0.85 * fullness, scaleZ);
-      
+
       float ty = -(0.85f - (bb.maxY - bb.minY)) / 2;
       Vector3d transOffset = ForgeDirectionOffsets.offsetScaled(facingDir, -facingOffset);
       bb = bb.translate((float) transOffset.x, ty, (float) transOffset.z);
-      
+
       int brightness;
       if(gen.getWorldObj() == null) {
         brightness = 15 << 20 | 15 << 4;
@@ -84,13 +87,13 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
         brightness = gen.getWorldObj().getLightBrightnessForSkyBlocks(gen.xCoord, gen.yCoord, gen.zCoord, 0);
       }
       tes.setBrightness(brightness);
-      
+
       CubeRenderer.render(bb, icon);
 
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GL11.glDisable(GL11.GL_LIGHTING);           
+      GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_CULL_FACE);
       GL11.glDepthMask(false);
       tes.draw();

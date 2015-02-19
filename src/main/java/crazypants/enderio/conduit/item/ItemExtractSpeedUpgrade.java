@@ -21,7 +21,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
 
   private final IIcon[] icons;
 
-  public static ItemExtractSpeedUpgrade create() {    
+  public static ItemExtractSpeedUpgrade create() {
     ItemExtractSpeedUpgrade result = new ItemExtractSpeedUpgrade();
     result.init();
     return result;
@@ -42,6 +42,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, icons.length - 1);
     return icons[damage];
@@ -62,6 +63,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < UPGRADES.length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));

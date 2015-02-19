@@ -16,6 +16,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -26,6 +28,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vector4f;
 
+@SideOnly(Side.CLIENT)
 public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
   private final Vector4f selectedColor;

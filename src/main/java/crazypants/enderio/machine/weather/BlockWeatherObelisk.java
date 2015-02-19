@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -22,7 +23,7 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
     PacketHandler.INSTANCE.registerMessage(PacketFinishWeather.Handler.class, PacketFinishWeather.class, PacketHandler.nextID(), Side.CLIENT);
     return ret;
   }
-  
+
   private BlockWeatherObelisk() {
     super(ModObject.blockWeatherObelisk, TileWeatherObelisk.class);
     setObeliskBounds();
@@ -37,7 +38,7 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
   }
-  
+
   @Override
   public boolean renderAsNormalBlock() {
     return false;
@@ -47,12 +48,12 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
   public boolean isOpaqueCube() {
     return false;
   }
-  
+
   @Override
   public int getLightOpacity() {
     return 0;
   }
-  
+
   @Override
   public int getRenderType() {
     return renderId;
@@ -80,8 +81,9 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
-  
+
   @Override
+  @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     ; // no active smoke
   }

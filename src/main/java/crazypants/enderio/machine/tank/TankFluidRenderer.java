@@ -7,22 +7,25 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 
+@SideOnly(Side.CLIENT)
 public class TankFluidRenderer extends TileEntitySpecialRenderer {
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
-    
+
     TileTank tank = (TileTank)te;
     if(tank.tank.getFluidAmount() <= 0) {
       return;
-    }    
-    renderTankFluid(tank.tank, (float)x, (float)y, (float)z);    
+    }
+    renderTankFluid(tank.tank, (float)x, (float)y, (float)z);
   }
-  
+
   public static void renderTankFluid(FluidTankEio tank, float x, float y, float z) {
     if(tank == null || tank.getFluid() == null) {
       return;
@@ -41,15 +44,15 @@ public class TankFluidRenderer extends TileEntitySpecialRenderer {
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      
+
       RenderUtil.bindBlockTexture();
-      
+
       Tessellator.instance.startDrawingQuads();
       Tessellator.instance.addTranslation(x, y, z);
       CubeRenderer.render(bb, icon);
       Tessellator.instance.addTranslation(-x, -y, -z);
       Tessellator.instance.draw();
-      
+
       GL11.glPopAttrib();
     }
   }
