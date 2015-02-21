@@ -158,8 +158,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       if(paintSource == null) {
         return new ResultStack[0];
       }
-      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(MachineRecipeInput.getInputForSlot(0, inputs).copy(),
-          Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
+      ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);
+      target = target.copy();
+      target.stackSize = 1;
+      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(target, Block.getBlockFromItem(paintSource.getItem()),
+          paintSource.getItemDamage())) };
     }
   }
 
