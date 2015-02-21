@@ -1,15 +1,18 @@
 package crazypants.enderio.machine.crafter;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.network.PacketHandler;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
 
   public static BlockCrafter create() {
+    PacketHandler.INSTANCE.registerMessage(PacketCrafter.class,PacketCrafter.class,PacketHandler.nextID(), Side.SERVER);
     BlockCrafter res = new BlockCrafter();
     res.init();
     return res;
