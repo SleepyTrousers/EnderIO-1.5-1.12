@@ -390,7 +390,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     @Override
-    protected void putStack(ItemStack stack) {
+    public void putStack(ItemStack stack) {
       if(stack != null) {
         stack = stack.copy();
         stack.stackSize = 1;
@@ -400,7 +400,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     @Override
-    protected ItemStack getStack() {
+    public ItemStack getStack() {
       return items[slot];
     }
   }

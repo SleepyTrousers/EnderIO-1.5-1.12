@@ -14,10 +14,13 @@ import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
-  
+
+  private static final int LOCK_ID = 1234;
+
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine));
   }
@@ -30,25 +33,23 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     int x = getGuiLeft() + 36;
     int y = getGuiTop()  + 36;
     
-    buttonList.add(createButton(x, y));
-    buttonList.add(createButton(x + 52, y));
-    buttonList.add(createButton(x, y + 20));
-    buttonList.add(createButton(x + 52, y + 20));
-    id = 0;
+    buttonList.add(createLockButton(TileFarmStation.minSupSlot + 0, x, y));
+    buttonList.add(createLockButton(TileFarmStation.minSupSlot + 1, x + 52, y));
+    buttonList.add(createLockButton(TileFarmStation.minSupSlot + 2, x, y + 20));
+    buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
   }
   
-  private int id = 0;
-  private IconButtonEIO createButton(int x, int y) {
-    return new ToggleButtonEIO(this, id, x, y, IconEIO.FARM_UNLOCK, IconEIO.FARM_LOCK).setSelected(getTileEntity().lockedSlots.contains(id++ + getTileEntity().minSupSlot));
+  private IconButtonEIO createLockButton(int slot, int x, int y) {
+    return new ToggleButtonEIO(this, LOCK_ID+slot, x, y, IconEIO.FARM_UNLOCK, IconEIO.FARM_LOCK).setSelected(getTileEntity().isSlotLocked(slot));
   }
 
   @Override
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
 
-    if(inventorySlots.inventorySlots.size() >= getTileEntity().maxSupSlot && !isConfigOverlayEnabled()) {
-      for (int i : getTileEntity().lockedSlots) {
-        if (i < inventorySlots.inventorySlots.size()) { // hack to allow old broken farms to be opened
+    if(!isConfigOverlayEnabled()) {
+      for(int i=TileFarmStation.minSupSlot ; i<=TileFarmStation.maxSupSlot ; i++) {
+        if(getTileEntity().isSlotLocked(i)) {
           Slot slot = inventorySlots.getSlot(i);
           GL11.glEnable(GL11.GL_BLEND);
           RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
@@ -81,8 +82,8 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   
   @Override
   protected void actionPerformed(GuiButton b) {
-    if (b instanceof ToggleButtonEIO) { 
-      getTileEntity().toggleLockedState(b.id);
+    if (b.id >= LOCK_ID+TileFarmStation.minSupSlot && b.id <= LOCK_ID+TileFarmStation.maxSupSlot) {
+      getTileEntity().toggleLockedState(b.id - LOCK_ID);
     }
     super.actionPerformed(b);
   }
@@ -92,7 +93,8 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     return false;
   }
   
+  @Override
   protected String getPowerOutputLabel() {
-    return "Base Use: ";
+    return Lang.localize("farm.gui.baseUse");
   }
 }

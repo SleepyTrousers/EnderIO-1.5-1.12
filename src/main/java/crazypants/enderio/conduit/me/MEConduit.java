@@ -12,6 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.AEApi;
+import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
@@ -119,6 +120,18 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   public void setPlayerID(int playerID) {
     this.playerID = playerID;
+  }
+
+  @Override
+  public int getChannelsInUse() {
+    int channelsInUse = 0;
+    IGridNode node = getNode();
+    if(node != null) {
+      for (IGridConnection gc : node.getConnections()) {
+        channelsInUse = Math.max(channelsInUse, gc.getUsedChannels());
+      }
+    }
+    return channelsInUse;
   }
 
   @Override
