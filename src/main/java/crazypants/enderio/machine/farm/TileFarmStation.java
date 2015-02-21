@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.BitSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -10,8 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -39,6 +36,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public enum ToolType {
     HOE { 
+      @Override
       boolean match(ItemStack item) {
         for (ItemStack stack : Config.farmHoes) {
           if (stack.getItem() == item.getItem()) {
@@ -83,15 +81,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   private BlockCoord lastScanned;
   private EntityPlayerMP farmerJoe;
 
-  private int farmSize = Config.farmDefaultSize;
+  private static final int minToolSlot = 0;
+  private static final int maxToolSlot = 1;
 
-  private int minToolSlot = 0;
-  private int maxToolSlot = 1;
-
-  int minSupSlot = maxToolSlot + 1;
-  int maxSupSlot = minSupSlot + 4;
+  public static final int minSupSlot = maxToolSlot + 1;
+  public static final int maxSupSlot = minSupSlot + 4;
   
-  List<Integer> lockedSlots = new ArrayList<Integer>();
+  private final BitSet lockedSlots = new BitSet();
 
   private final int upgradeBonusSize = 2;
 
@@ -108,7 +104,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   public int getFarmSize() {
-    return farmSize + getUpgradeDist();
+    return Config.farmDefaultSize + getUpgradeDist();
   }
 
   public void actionPerformed(boolean isAxe) {
@@ -408,7 +404,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         }
       }
     }
-    return;
   }
 
   private boolean isOutputFull() {
@@ -424,10 +419,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public boolean hasSeed(ItemStack seeds, BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    if(inv != null && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds)) {
-      return true;
-    }
-    return false;
+    return inv != null && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
   }
 
   public ItemStack takeSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
@@ -555,19 +547,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     return new BlockCoord(nextX, lastScanned.y, nextZ);
   }
   
-  public void toggleLockedState(int buttonID) {
+  public void toggleLockedState(int slot) {
     if (worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketFarmLockedSlot(this, buttonID));
+      PacketHandler.INSTANCE.sendToServer(new PacketFarmLockedSlot(this, slot));
     }
-    buttonID += minSupSlot;
-    if (lockedSlots.contains(buttonID)) {
-      lockedSlots.remove((Integer) buttonID); // hard cast otherwise it removes by index
-    } else {
-      lockedSlots.add(buttonID);
-    }
+    lockedSlots.flip(slot);
   }
+
   public boolean isSlotLocked(int slot) {
-    return lockedSlots.contains(slot);
+    return lockedSlots.get(slot);
   }
 
   @Override
@@ -627,11 +615,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     currentTask = createTask();
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    lockedSlots.clear();
     for (int i : nbtRoot.getIntArray("lockedSlots")) {
-      lockedSlots.add(i);
+      lockedSlots.set(i);
     }
   }
-  
+
   IPoweredTask createTask() {
     return new ContinuousTask(getPowerUsePerTick());
   }
@@ -640,11 +634,18 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("isActive", isActive());
-    int[] locked = new int[lockedSlots.size()];
-    for (int i = 0; i < lockedSlots.size(); i++) {
-      locked[i] = lockedSlots.get(i);
+  }
+
+  @Override
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
+    if(!lockedSlots.isEmpty()) {
+      int[] locked = new int[lockedSlots.cardinality()];
+      for (int i=0,bit=-1; (bit=lockedSlots.nextSetBit(bit+1)) >= 0; i++) {
+        locked[i] = bit;
+      }
+      nbtRoot.setIntArray("lockedSlots", locked);
     }
-    nbtRoot.setIntArray("lockedSlots", locked);
   }
 
 }

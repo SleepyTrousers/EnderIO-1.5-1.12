@@ -46,7 +46,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   }
   
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
+    text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
     text.add(PowerDisplayUtil.formatStoredPower(getTileEntity().getEnergyStored(), getTileEntity().getCapacitor().getMaxEnergyStored()));
   }
