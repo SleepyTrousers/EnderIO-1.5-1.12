@@ -209,12 +209,12 @@ public class GuiVacuumChest extends GuiContainerBase {
     }
 
     @Override
-    protected void putStack(ItemStack stack) {
+    public void putStack(ItemStack stack) {
       PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(te, slot, stack));
     }
 
     @Override
-    protected ItemStack getStack() {
+    public ItemStack getStack() {
       ItemFilter itemFilter = te.getItemFilter();
       if(itemFilter != null) {
         return itemFilter.getStackInSlot(slot);

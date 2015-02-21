@@ -10,17 +10,19 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.gui.GhostSlot;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
 
-  private ToggleButtonEIO bufferSizeB;
+  private final ToggleButtonEIO bufferSizeB;
 
   public GuiCrafter(InventoryPlayer par1InventoryPlayer, TileCrafter te) {
     super(te, new ContainerCrafter(par1InventoryPlayer, te));
@@ -38,6 +40,22 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   public void initGui() {
     super.initGui();
     bufferSizeB.onGuiInit();
+    ((ContainerCrafter) inventorySlots).addCrafterSlots(ghostSlots);
+  }
+
+  @Override
+  protected void mouseClickMove(int mouseX, int mouseY, int button, long par4) {
+    if(!ghostSlots.isEmpty()) {
+      GhostSlot slot = getGhostSlot(mouseX, mouseY);
+      if(slot != null) {
+        ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+        // don't replace already set slots while dragging an item
+        if(st == null || slot.getStack() == null) {
+          slot.putStack(st);
+        }
+      }
+    }
+    super.mouseClickMove(mouseX, mouseY, button, par4);
   }
 
   @Override
@@ -55,7 +73,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   }
 
   @Override
-  public int getXSize() {
+  public final int getXSize() {
     return 219;
   }
   
