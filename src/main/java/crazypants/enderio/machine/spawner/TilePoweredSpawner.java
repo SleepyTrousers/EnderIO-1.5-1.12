@@ -74,7 +74,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
         return;
       }
       String name = logic.getEntityNameToSpawn();
-      if(name == NULL_ENTITY_NAME) {
+      if(NULL_ENTITY_NAME.equals(name)) {
         return;
       }
       ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntityStub(logic.getEntityNameToSpawn());
@@ -378,7 +378,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
     Entity createEntity(boolean forceAlive) {
       Entity ent = EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());     
-      if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && ent instanceof EntityLiving) {
+      if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
          ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, getSpawnerWorld().getTotalWorldTime());
         ((EntityLiving) ent).func_110163_bv();
       }
