@@ -153,9 +153,10 @@ import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.util.EntityUtil;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
@@ -335,7 +336,7 @@ public class EnderIO {
     blockVacuumChest = BlockVacuumChest.create();
 
     blockTransceiver = BlockTransceiver.create();
-    
+
     blockBuffer = BlockBuffer.create();
 
     blockEnderIo = BlockEnderIO.create();
@@ -472,7 +473,7 @@ public class EnderIO {
   public void load(FMLInitializationEvent event) {
 
     Config.init();
-    
+
     instance = this;
 
     PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
@@ -553,14 +554,13 @@ public class EnderIO {
     TeleportRecipes.addRecipes();
 
     proxy.load();
-
   }
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
     Config.postInit();
-    
+
     //Regsiter the enchants
     Enchantments.getInstance();
 
@@ -621,7 +621,7 @@ public class EnderIO {
     try {
       Field getField = Class.forName("openblocks.Config").getField("xpFluidId");
       openBlocksXPJuiceName = (String) getField.get(null);
-    }catch(Exception e) {
+    } catch (Exception e) {
     }
 
     if(openBlocksXPJuiceName != null && !Config.xpJuiceName.equals(openBlocksXPJuiceName)) {
@@ -651,7 +651,8 @@ public class EnderIO {
         Log.info("Failed to registered Capacitor Banks as Tinkers Construct Flux Upgrades");
       }
     }
-
+    
+    ThaumcraftCompat.load();
   }
 
   @EventHandler

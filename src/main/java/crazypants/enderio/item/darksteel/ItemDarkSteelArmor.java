@@ -30,6 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import forestry.api.apiculture.IArmorApiarist;
