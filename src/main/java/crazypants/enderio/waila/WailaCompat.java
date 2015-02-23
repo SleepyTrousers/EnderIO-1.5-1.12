@@ -1,10 +1,5 @@
 package crazypants.enderio.waila;
 
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
-import static crazypants.enderio.waila.IWailaInfoProvider.fmt;
-
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -48,11 +43,13 @@ import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
+import static crazypants.enderio.waila.IWailaInfoProvider.*;
+
 public class WailaCompat implements IWailaDataProvider {
 
   private class WailaWorldWrapper extends World {
     private final World wrapped;
-
+    
     private WailaWorldWrapper(World wrapped) {
       super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
       this.wrapped = wrapped;
@@ -78,8 +75,22 @@ public class WailaCompat implements IWailaDataProvider {
     }
 
     @Override
-    public TileEntity getTileEntity(int p_147438_1_, int p_147438_2_, int p_147438_3_) {
-      return wrapped.getTileEntity(p_147438_1_, p_147438_2_, p_147438_3_);
+    public TileEntity getTileEntity(int x, int y, int z) {
+      int meta = getBlockMetadata(x, y, z);
+      if(!getBlock(x, y, z).hasTileEntity(meta)) {
+        return null;
+      }
+      TileEntity te = getBlock(x, y, z).createTileEntity(this, meta);
+      if(te == null) {
+        return null;
+      }
+
+      te.setWorldObj(this);
+      te.xCoord = x;
+      te.yCoord = y;
+      te.zCoord = z;
+
+      return te;
     }
 
     @Override
