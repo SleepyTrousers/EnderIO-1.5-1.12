@@ -167,3 +167,35 @@ curse {
     changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
 }
+
+task checkTranslations << {
+    Map<String, String> mapen = new HashMap<String, String>()
+    (new File('resources/assets/enderio/lang/en_US.lang')).eachLine {
+        def (value1, value2) = it.tokenize( '=' )
+        if (value1 == null || value2 == null) {return}
+        mapen.put(value1, value2)
+    }
+    
+    new File('resources/assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
+        if (!langfile.getName().contains("en_US")) {
+	        Map<String, String> map = new HashMap<String, String>()
+	        File outfile = new File("${langfile}.txt")
+	        Writer outwriter = outfile.newWriter("UTF8")
+	        outwriter.write("\n// Additional translations:\n")
+	        outwriter << langfile.filterLine {
+	            def (value1, value2) = it.tokenize( '=' )
+	            if (value1 == null || value2 == null) {return false}
+	            map.put(value1, value2)
+	            return !mapen.containsKey(value1)
+	        }
+	        
+	        outwriter.append("\n// Missing translations:\n")
+	        for (e in mapen) {
+	            if (!map.containsKey(e.key)) {
+	                outwriter.append(e.key + "=" + e.value + "\n")
+	            }
+	        }
+        println "Created translation report ${outfile}"
+        }
+    }
+}
