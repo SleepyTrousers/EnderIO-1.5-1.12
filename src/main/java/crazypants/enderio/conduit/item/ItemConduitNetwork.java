@@ -8,21 +8,14 @@ import java.util.Map;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
-
-  private long timeAtLastApply;
 
   final List<NetworkedInventory> inventories = new ArrayList<NetworkedInventory>();
   private final Map<BlockCoord, List<NetworkedInventory>> invMap = new HashMap<BlockCoord, List<NetworkedInventory>>();
@@ -33,15 +26,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   private boolean doingSend = false;
 
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
-
   public ItemConduitNetwork() {
-    super(IItemConduit.class);
-  }
-
-  @Override
-  public Class<IItemConduit> getBaseConduitType() {
-    return IItemConduit.class;
+    super(IItemConduit.class, IItemConduit.class);
   }
 
   @Override
@@ -146,7 +132,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     for (NetworkedInventory source : invs) {
 
       if(source.con.getLocation().equals(con.getLocation())) {
-        if(source != null && source.sendPriority != null) {
+        if(source.sendPriority != null) {
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
             if(input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
@@ -174,38 +160,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return result;
   }
 
-  private boolean isRemote(ItemConduit itemConduit) {
-    World world = itemConduit.getBundle().getEntity().getWorldObj();
-    if(world != null && world.isRemote) {
-      return true;
-    }
-    return false;
-  }
-
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-    long curTime = world.getTotalWorldTime();
-    if(curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      tickHandler.tick = world.getTotalWorldTime();
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-    }
-  }
-
-  private void doTick(long tick) {
-
+  public void doNetworkTick() {
     for (NetworkedInventory ni : inventories) {
       if(requiresSort) {
         ni.updateInsertOrder();
       }
-      ni.onTick(tick);
+      ni.onTick();
     }
     requiresSort = false;
 
@@ -216,19 +177,5 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   static int MAX_SLOT_CHECK_PER_TICK = 64;
-
-  private class InnerTickHandler implements TickListener {
-
-    long tick;
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick(tick);
-    }
-  }
 
 }
