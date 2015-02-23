@@ -5,15 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
@@ -22,8 +17,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     super(LiquidConduit.class);
   }
 
-  private long timeAtLastApply;
-
   private int ticksEmpty = 0;
 
   private int maxFlowsPerTick = 10;
@@ -31,15 +24,13 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   private boolean printFlowTiming = false;
 
-  private int pushToken = 0;
+  private int lastPushToken = 0;
 
   private int inputVolume;
 
   private int outputVolume;
 
   private boolean inputLocked = false;
-
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public boolean lockNetworkForFill() {
     if(inputLocked) {
@@ -54,24 +45,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote || liquidType == null) {
-      return;
-    }
-
-    long curTime = world.getTotalWorldTime();
-    if(curTime > 0 && curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-    }
-  }
-
-  private void doTick() {
-
+  public void doNetworkTick() {
     List<LiquidConduit> cons = getConduits();
     if(cons == null || cons.isEmpty()) {
       return;
@@ -114,7 +88,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   int getNextPushToken() {
-    return ++pushToken;
+    return ++lastPushToken;
   }
 
   private boolean doFlow() {
@@ -385,19 +359,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
       this.tank = tank;
       this.bc = bc;
       this.dir = dir;
-    }
-
-  }
-
-  private class InnerTickHandler implements TickListener {
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick();
     }
   }
 

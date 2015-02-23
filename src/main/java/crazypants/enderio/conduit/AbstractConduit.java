@@ -437,9 +437,6 @@ public abstract class AbstractConduit implements IConduit {
             bundle.getEntity().getBlockType());
       }
     }
-    if(getNetwork() != null) {
-      getNetwork().onUpdateEntity(this);
-    }
   }
 
   @Override

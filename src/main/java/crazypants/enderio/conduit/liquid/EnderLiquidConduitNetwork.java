@@ -29,12 +29,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   boolean filling;
 
   public EnderLiquidConduitNetwork() {
-    super(EnderLiquidConduit.class);
-  }
-
-  @Override
-  public Class<ILiquidConduit> getBaseConduitType() {
-    return ILiquidConduit.class;
+    super(EnderLiquidConduit.class, ILiquidConduit.class);
   }
 
   public void connectionChanged(EnderLiquidConduit con, ForgeDirection conDir) {

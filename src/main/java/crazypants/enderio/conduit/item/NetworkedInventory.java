@@ -91,7 +91,7 @@ public class NetworkedInventory {
     return con.getOutputPriority(conDir);
   }
 
-  public void onTick(long tick) {
+  public void onTick() {
     if(tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
       //do nothing     
     } else {

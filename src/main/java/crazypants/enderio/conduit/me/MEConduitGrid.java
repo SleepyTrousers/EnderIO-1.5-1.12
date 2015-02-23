@@ -14,7 +14,7 @@ import appeng.api.util.DimensionalCoord;
 
 public class MEConduitGrid implements IGridBlock {
 
-  private IMEConduit conduit;
+  private final IMEConduit conduit;
 
   public MEConduitGrid(IMEConduit conduit) {
     this.conduit = conduit;
