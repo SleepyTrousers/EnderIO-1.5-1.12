@@ -14,16 +14,15 @@ public class ClientNetworkManager {
     return instance;
   }
 
-  private Map<Integer, CapBankClientNetwork> networks = new HashMap<Integer, CapBankClientNetwork>();
+  private final Map<Integer, CapBankClientNetwork> networks = new HashMap<Integer, CapBankClientNetwork>();
 
   ClientNetworkManager() {
   }
 
   public void destroyNetwork(int id) {
-    CapBankClientNetwork res = networks.get(id);
+    CapBankClientNetwork res = networks.remove(id);
     if(res != null) {
       res.destroyNetwork();
-      networks.remove(res);
     }
   }
 
@@ -32,13 +31,13 @@ public class ClientNetworkManager {
     network.setState(world, state);
   }
 
-  public void updateEnergy(int id, long energyStored, float avChange) {
+  public void updateEnergy(int id, long energyStored, float avgInput, float avgOutput) {
     CapBankClientNetwork res = networks.get(id);
     if(res == null) {
       return;
     }
     res.setEnergyStored(energyStored);
-    res.setAverageChangePerTick(avChange);
+    res.setAverageIOPerTick(avgInput, avgOutput);
   }
 
   public CapBankClientNetwork getOrCreateNetwork(int id) {

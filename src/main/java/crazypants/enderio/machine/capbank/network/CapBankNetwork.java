@@ -50,12 +50,14 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   private long energyStored;
   private long prevEnergyStored = -1;
+  private long energyReceived;
+  private long energySend;
 
   private long maxEnergyStored;
 
   private CapBankType type;
 
-  private Set<BlockCoord> redstoneRecievers = new HashSet<BlockCoord>();
+  private final Set<BlockCoord> redstoneRecievers = new HashSet<BlockCoord>();
 
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
   private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
@@ -63,9 +65,10 @@ public class CapBankNetwork implements ICapBankNetwork {
   private boolean inputRedstoneConditionMet = true;
   private boolean outputRedstoneConditionMet = true;
 
-  private TickListener tickListener;
+  private final TickListener tickListener = new TickReciever();
 
-  private PerTickIntAverageCalculator powerTracker = new PerTickIntAverageCalculator(2);
+  private final PerTickIntAverageCalculator powerTrackerIn = new PerTickIntAverageCalculator(2);
+  private final PerTickIntAverageCalculator powerTrackerOut = new PerTickIntAverageCalculator(2);
 
   private final InventoryImpl inventory = new InventoryImpl();
 
@@ -81,8 +84,6 @@ public class CapBankNetwork implements ICapBankNetwork {
     if(world.isRemote) {
       throw new UnsupportedOperationException();
     }
-
-    tickListener = new TickReciever();
 
     type = cap.getType();
     inputControlMode = cap.getInputControlMode();
@@ -223,10 +224,11 @@ public class CapBankNetwork implements ICapBankNetwork {
     if(energyStored != prevEnergyStored) {
       distributeEnergyToBanks();
     }
-    if(prevEnergyStored != -1) {
-      powerTracker.tick((int) (energyStored - prevEnergyStored));
-    }
+    powerTrackerIn.tick(energyReceived);
+    powerTrackerOut.tick(energySend);
     prevEnergyStored = energyStored;
+    energyReceived = 0;
+    energySend = 0;
 
     if(firstUpate) {
       if(!capBanks.isEmpty()) {
@@ -265,9 +267,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       totalSent += sent;
       available -= sent;
     }
-    if(!type.isCreative()) {
-      addEnergy(-totalSent);
-    }
+    addEnergy(-totalSent);
   }
 
   protected int getEnergyAvailableForTick(int limit) {
@@ -316,9 +316,7 @@ public class CapBankNetwork implements ICapBankNetwork {
 
         }
         if(used > 0) {
-          if(!type.isCreative()) {
-            addEnergy(-used);
-          }
+          addEnergy(-used);
           chargedItem = true;
           available -= used;
         }
@@ -344,11 +342,21 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   @Override
   public float getAverageChangePerTick() {
-    return powerTracker.getAverage();
+    return powerTrackerIn.getAverage() - powerTrackerOut.getAverage();
   }
 
   @Override
-  public int recieveEnergy(int maxReceive, boolean simulate) {
+  public float getAverageInputPerTick() {
+    return powerTrackerIn.getAverage();
+  }
+
+  @Override
+  public float getAverageOutputPerTick() {
+    return powerTrackerOut.getAverage();
+  }
+
+  @Override
+  public int receiveEnergy(int maxReceive, boolean simulate) {
     if(maxReceive <= 0 || !inputRedstoneConditionMet) {
       return 0;
     }
@@ -360,20 +368,25 @@ public class CapBankNetwork implements ICapBankNetwork {
     int res = Math.min(maxReceive, (int) spaceAvailable);
     res = Math.min(res, getMaxInput());
     if(!simulate) {
-      if(!type.isCreative()) {
-        addEnergy(res);
-      }
+      addEnergy(res);
     }
     return res;
   }
 
   @Override
   public void addEnergy(int energy) {
-    energyStored += energy;
-    if(energyStored > maxEnergyStored) {
-      energyStored = maxEnergyStored;
-    } else if(energyStored < 0) {
-      energyStored = 0;
+    if(energy > 0) {
+      energyReceived += energy;
+    } else {
+      energySend -= energy;
+    }
+    if(!type.isCreative()) {
+      energyStored += energy;
+      if(energyStored > maxEnergyStored) {
+        energyStored = maxEnergyStored;
+      } else if(energyStored < 0) {
+        energyStored = 0;
+      }
     }
   }
 

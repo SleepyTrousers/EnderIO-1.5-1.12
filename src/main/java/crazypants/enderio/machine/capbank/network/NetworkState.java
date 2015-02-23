@@ -15,14 +15,11 @@ public class NetworkState {
   private final RedstoneControlMode inputMode;
   private final RedstoneControlMode outputMode;
   private final BlockCoord invImplLoc;
-  private final float averageChange;
-
-  public NetworkState() {
-    this(0, 0, 0, 0, 0, RedstoneControlMode.IGNORE, RedstoneControlMode.IGNORE, null, 0);
-  }
+  private final float averageInput;
+  private final float averageOutput;
 
   public NetworkState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput, RedstoneControlMode inputMode,
-      RedstoneControlMode outputMode, BlockCoord invImplLoc, float averageChange) {
+      RedstoneControlMode outputMode, BlockCoord invImplLoc, float averageInput, float averageOutput) {
     this.energyStored = energyStored;
     this.maxEnergyStored = maxEnergyStored;
     this.maxIO = maxIO;
@@ -31,7 +28,8 @@ public class NetworkState {
     this.inputMode = inputMode;
     this.outputMode = outputMode;
     this.invImplLoc = invImplLoc;
-    this.averageChange = averageChange;
+    this.averageInput = averageInput;
+    this.averageOutput = averageOutput;
   }
 
   public NetworkState(ICapBankNetwork network) {
@@ -48,7 +46,8 @@ public class NetworkState {
     } else {
       invImplLoc = null;
     }
-    averageChange = network.getAverageChangePerTick();
+    averageInput = network.getAverageInputPerTick();
+    averageOutput = network.getAverageOutputPerTick();
   }
 
   public long getEnergyStored() {
@@ -83,8 +82,12 @@ public class NetworkState {
     return invImplLoc;
   }
 
-  public float getAverageChange() {
-    return averageChange;
+  public float getAverageInput() {
+    return averageInput;
+  }
+
+  public float getAverageOutput() {
+    return averageOutput;
   }
 
   public void writeToBuf(ByteBuf buf) {
@@ -99,13 +102,14 @@ public class NetworkState {
     if(invImplLoc != null) {
       invImplLoc.writeToBuf(buf);
     }
-    buf.writeFloat(averageChange);
+    buf.writeFloat(averageInput);
+    buf.writeFloat(averageOutput);
   }
 
   public static NetworkState readFromBuf(ByteBuf buf) {
     return new NetworkState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt(),
         RedstoneControlMode.values()[buf.readShort()], RedstoneControlMode.values()[buf.readShort()],
-        buf.readBoolean() ? BlockCoord.readFromBuf(buf) : null, buf.readFloat());
+        buf.readBoolean() ? BlockCoord.readFromBuf(buf) : null, buf.readFloat(), buf.readFloat());
   }
 
   @Override
