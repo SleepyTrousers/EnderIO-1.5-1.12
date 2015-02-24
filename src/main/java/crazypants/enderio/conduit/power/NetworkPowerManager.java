@@ -455,9 +455,7 @@ public class NetworkPowerManager {
         long use = (int) Math.ceil(ratio * entry.canExtract);
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
-        if(!entry.capBank.isCreative()) {
-          entry.capBank.addEnergy((int) -use);
-        }
+        entry.capBank.addEnergy((int) -use);
         trackerRecieve(entry.emmiter, (int) use, true);
         amount -= use;
         if(amount == 0) {
@@ -476,9 +474,7 @@ public class NetworkPowerManager {
         long add = (int) Math.ceil(ratio * entry.canFill);
         add = Math.min(add, entry.canFill);
         add = Math.min(add, amount);
-        if(!entry.capBank.isCreative()) {
-          entry.capBank.addEnergy((int) add);
-        }
+        entry.capBank.addEnergy((int) add);
         trackerSend(entry.emmiter, (int) add, true);
         amount -= add;
         if(amount == 0) {
