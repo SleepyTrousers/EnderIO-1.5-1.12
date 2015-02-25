@@ -304,6 +304,8 @@ enderio.capbank.change=I/O
 enderio.capbank.iodisplay.stable=I/O
 enderio.capbank.iodisplay.gain=In
 enderio.capbank.iodisplay.loss=Out
+enderio.capbank.iodisplay.input=Input
+enderio.capbank.iodisplay.output=Output
 
 tile.blockWirelessCharger.name=Wireless Charger
 tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby

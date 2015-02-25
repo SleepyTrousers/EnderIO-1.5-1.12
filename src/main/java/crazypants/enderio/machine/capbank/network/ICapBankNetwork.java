@@ -31,7 +31,7 @@ public interface ICapBankNetwork extends IPowerStorage {
   @Override
   void addEnergy(int energy);
 
-  int recieveEnergy(int maxReceive, boolean simulate);
+  int receiveEnergy(int maxReceive, boolean simulate);
 
   @Override
   long getMaxEnergyStoredL();
@@ -49,6 +49,10 @@ public interface ICapBankNetwork extends IPowerStorage {
   void setMaxInput(int max);
 
   float getAverageChangePerTick();
+
+  float getAverageInputPerTick();
+
+  float getAverageOutputPerTick();
 
   void removeReceptors(Collection<EnergyReceptor> receptors);
 

@@ -2,7 +2,6 @@ package crazypants.enderio.machine.capbank;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -360,7 +359,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     }
 
     if(faceDisplayTypes == null) {
-      faceDisplayTypes = new HashMap<ForgeDirection, InfoDisplayType>();
+      faceDisplayTypes = new EnumMap<ForgeDirection, InfoDisplayType>(ForgeDirection.class);
     }
 
     if(type == InfoDisplayType.NONE) {
@@ -678,7 +677,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     if(mode == IoMode.DISABLED || mode == IoMode.PUSH) {
       return 0;
     }
-    return network.recieveEnergy(maxReceive, simulate);
+    return network.receiveEnergy(maxReceive, simulate);
   }
 
   @Override
