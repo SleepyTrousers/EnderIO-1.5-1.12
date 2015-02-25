@@ -57,8 +57,11 @@ public final class PainterUtil {
     Block sourceId = PainterUtil.getSourceBlock(item);
     int meta = PainterUtil.getSourceBlockMetadata(item);    
     if(sourceId != null) {
-      ItemStack is = new ItemStack(Item.getItemFromBlock(sourceId), 1, meta);
-      sourceName = is.getDisplayName();
+      Item itemFromBlock = Item.getItemFromBlock(sourceId);
+      if (itemFromBlock != null) {
+        ItemStack is = new ItemStack(itemFromBlock, 1, meta);
+        sourceName = is.getDisplayName();
+      }
     }
     return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
   }
