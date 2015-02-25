@@ -22,6 +22,7 @@ public final class FarmersRegistry {
     addIC2();
     addMFR();
     addThaumcraft();
+    addBoP();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -134,9 +135,10 @@ public final class FarmersRegistry {
     Block saplingBlock = GameRegistry.findBlock(mod, blockName);
     if(saplingBlock != null) {
       FarmersCommune.joinCommune(new TreeFarmer(saplingBlock,
-          GameRegistry.findBlock(mod, "tree"),
-          GameRegistry.findBlock(mod, "willow"),
-          GameRegistry.findBlock(mod, "Dark Tree")));
+              GameRegistry.findBlock(mod, "tree"),
+              GameRegistry.findBlock(mod, "willow"),
+              GameRegistry.findBlock(mod, "Saguaro"),
+              GameRegistry.findBlock(mod, "Dark Tree")));
     }
     blockName = "Rare Sapling";
     saplingBlock = GameRegistry.findBlock(mod, blockName);
@@ -188,6 +190,34 @@ public final class FarmersRegistry {
     CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.end_stone, GameRegistry.findBlock(mod, "decorativeBlock1"));
     if(farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
+    }
+  }
+
+  //Support for Biomes o' Plenty plants
+  private static void addBoP() {
+    String mod = "BiomesOPlenty";
+    String blockName = "saplings";
+    String blockColorizedName = "colorizedSaplings";
+
+    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    Block colorizedSaplingBlock = GameRegistry.findBlock(mod, blockColorizedName);
+
+    if (saplingBlock != null) {
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock,
+              GameRegistry.findBlock(mod, "logs1"),
+              GameRegistry.findBlock(mod, "logs2"),
+              GameRegistry.findBlock(mod, "logs3"),
+              GameRegistry.findBlock(mod, "logs4"),
+              GameRegistry.findBlock(mod, "bamboo")));
+    }
+
+    if (colorizedSaplingBlock != null){
+      FarmersCommune.joinCommune(new TreeFarmer(colorizedSaplingBlock,
+              GameRegistry.findBlock(mod, "logs1"),
+              GameRegistry.findBlock(mod, "logs2"),
+              GameRegistry.findBlock(mod, "logs3"),
+              GameRegistry.findBlock(mod, "logs4"),
+              GameRegistry.findBlock(mod, "bamboo")));
     }
   }
 

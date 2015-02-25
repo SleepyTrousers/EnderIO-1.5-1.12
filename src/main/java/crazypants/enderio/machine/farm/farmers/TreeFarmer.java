@@ -8,7 +8,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -126,11 +125,9 @@ public class TreeFarmer implements IFarmerJoe {
       if(!isWood(blk)) { //leaves
         isWood = Config.farmAxeDamageOnLeafBreak;
         int leaveMeta = farm.getBlockMeta(coord);
-        if(TreeHarvestUtil.canDropApples(blk, leaveMeta)) {
-          if(farm.getWorldObj().rand.nextInt(200) == 0) {
-            res.drops.add(new EntityItem(farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
-          }
-        }        
+        if(TreeHarvestUtil.canDropFood(blk, leaveMeta)) {
+          res.drops.add(TreeHarvestUtil.dropFoodAsItemWithChance(farm.getWorldObj(), bc, blk, leaveMeta));
+        }
       } 
       farm.actionPerformed(isWood);      
       if(isWood) {
