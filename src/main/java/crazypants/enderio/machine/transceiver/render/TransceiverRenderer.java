@@ -31,14 +31,14 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
 
   private BoundingBox bb;
 
-  private boolean adjustForItem = false;
+  private boolean alternateModel = false;
 
   public TransceiverRenderer() {
     float scale = 0.7f;
     if(Config.useAlternateTesseractModel) {
       model = new TransceiverModelAlt();
       scale = 0.8f;
-      adjustForItem = true;
+      alternateModel = true;
     } else {
       model = new TransceiverModel();
     }
@@ -114,14 +114,16 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    if(adjustForItem) {
+    if(!alternateModel) {
       switch (type) {
       case ENTITY:
         renderItem(0f, 0f, 0f);
         return;
       case EQUIPPED:
+        renderItem(0.5f, 0.5f, 0.5f);
+        return;
       case EQUIPPED_FIRST_PERSON:
-        renderItem(0f, 1f, 1f);
+        renderItem(0.5f, 0.5f, 0.5f);
         return;
       case INVENTORY:
         renderItem(0f, 0f, 0f);
@@ -131,7 +133,23 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
         return;
       }
     } else {
-      renderItem(0, 0, 0);
+      switch (type) {
+      case ENTITY:
+        renderItem(0f, 0f, 0f);
+        return;
+      case EQUIPPED:
+        renderItem(0f, 1f, 1f);
+        return;
+      case EQUIPPED_FIRST_PERSON:
+        renderItem(0f, 1f, 0f);
+        return;
+      case INVENTORY:
+        renderItem(0f, 1f, 0f);
+        return;
+      default:
+        renderItem(0f, 0f, 0f);
+        return;
+      }
     }
   }
 

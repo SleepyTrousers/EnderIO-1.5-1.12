@@ -30,6 +30,9 @@ public class BrokenSpawnerRenderer implements IItemRenderer {
       GL11.glScalef(0.5f, 0.5f, 0.5f);
     }
 
+    if(type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+      GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+
     RenderBlocks rb = (RenderBlocks) data[0];
     rb.setOverrideBlockTexture(EnderIO.itemBrokenSpawner.getIconFromDamage(0));
     rb.renderBlockAsItem(Blocks.stone, 0, 1);

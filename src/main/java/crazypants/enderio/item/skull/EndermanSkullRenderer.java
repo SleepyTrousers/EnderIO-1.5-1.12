@@ -39,11 +39,11 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
     System.out.println("EndermanSkullRenderer.renderInventoryBlock: ");
-    
+
     renderWorldBlock(null, 0, 0, 0, block, modelId, renderer);
   }
 
-  
+
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
     int meta = 0;
@@ -52,13 +52,13 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     }
     return renderWorldBlock(world, x, y, z, block, modelId, renderer, meta);
   }
-  
+
 
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer, int meta) {
     Tessellator tes = Tessellator.instance;
     tes.addTranslation(x, y, z);
     tes.setColorOpaque_F(1, 1, 1);
-    
+
     int brightness;
     if(world == null) {
       brightness = 15 << 20 | 15 << 4;
@@ -66,13 +66,13 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
       brightness = world.getLightBrightnessForSkyBlocks(x, y, z, 0);
     }
     tes.setBrightness(brightness);
-    
+
 
     IIcon[] icons = new IIcon[6];
     for(int i=0;i<icons.length;i++) {      
       icons[i] = block.getIcon(i, meta);              
     }
-    
+
     float yaw = 180;
     if(world != null) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -80,9 +80,9 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
         yaw = ((TileEndermanSkull)te).yaw;
       }
     }
-    
+
     VertexRotation rot = new VertexRotation(Math.toRadians(yaw), new Vector3d(0,1,0), new Vector3d(0.5,0,0.5));
-    
+
     float size = 0.25f;
     float height = 0.5f;
     BoundingBox bb = new BoundingBox(size, 0, size, 1 - size, height, 1 - size); 
@@ -95,7 +95,7 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
         renderBolts(rot, size);
       }
     }
-    
+
     tes.addTranslation(-x, -y, -z);
 
     return true;
@@ -106,24 +106,24 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     float boltSize = size/3;
     BoundingBox baseBolt = BoundingBox.UNIT_CUBE.scale(boltSize ,boltSize , boltSize);
     IIcon icon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
-    
+
     float offset = 0.15f;
     bb = baseBolt.translate(size + boltSize/2, -0.15f, offset);
     CubeRenderer.render(bb, icon, rot, true);
     bb = baseBolt.translate(size + boltSize/2, -0.15f, -offset);
     CubeRenderer.render(bb, icon, rot, true);
-    
+
     bb = baseBolt.translate( -(size + boltSize/2), -0.15f, offset);
     CubeRenderer.render(bb, icon, rot, true);
     bb = baseBolt.translate( -(size + boltSize/2), -0.15f, -offset);
     CubeRenderer.render(bb, icon, rot, true);
-    
-    
+
+
     bb = baseBolt.translate( -offset, -0.15f, -(size + boltSize/2));
     CubeRenderer.render(bb, icon, rot, true);
     bb = baseBolt.translate( offset, -0.15f, -(size + boltSize/2));
     CubeRenderer.render(bb, icon, rot, true);
-    
+
     bb = baseBolt.translate( offset, -0.15f, (size + boltSize/2)); 
     CubeRenderer.render(bb, icon, rot, true);
     bb = baseBolt.translate( -offset, -0.15f, (size + boltSize/2)); 
@@ -161,6 +161,8 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     if(type == ItemRenderType.INVENTORY) {
       yTrans = -0.25f;
       scale = 1.8f;
+      GL11.glRotatef(180, 0, 1, 0);
+      GL11.glRotatef(-90, 0, 1, 0);
     } else if(type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
       scale = 1.8f;
       yTrans = 0f;
@@ -171,10 +173,10 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     GL11.glTranslatef(xTrans, yTrans, zTrans);
     RenderUtil.bindBlockTexture();
     renderWorldBlock(null, 0, 0, 0, EnderIO.blockEndermanSkull, getRenderId(), (RenderBlocks)data[0], item.getItemDamage());
-    
+
     Tessellator.instance.draw();
     GL11.glPopMatrix();
-    
+
   }
-  
+
 }

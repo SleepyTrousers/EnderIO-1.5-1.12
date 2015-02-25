@@ -2,6 +2,8 @@ package crazypants.enderio.machine;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
@@ -32,7 +34,7 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
   private AbstractMachineEntity curEnt;
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
-  
+
   private PaintedBlockRenderer paintedRenderer = new PaintedBlockRenderer(this.getRenderId(), null); // passthrough renderer for paintable machines
 
   @Override
@@ -48,6 +50,40 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
     Block block;
+
+    GL11.glRotatef(180, 0, 1, 0);
+    GL11.glRotatef(-90, 0, 1, 0);
+
+    switch (type)
+    {
+    case ENTITY:
+    {
+      GL11.glTranslatef(-0.5F, -0.4F, -0.5F);
+      break;
+    }
+    case EQUIPPED:
+    {
+      GL11.glTranslatef(-1F, 0F, 0F);
+      break;
+    }
+    case EQUIPPED_FIRST_PERSON:
+    {
+      GL11.glTranslatef(-1F, 0F, 0F);
+      break;
+    }
+    case INVENTORY:
+    {
+      GL11.glTranslatef(-1F, -0F, 0F);
+      break;
+    }
+    default:
+      break;
+    }
+
+
+    if(!(type == ItemRenderType.EQUIPPED) && !(type == ItemRenderType.EQUIPPED_FIRST_PERSON))
+      GL11.glTranslatef(0F, -0.1F, 0F);
+
     if ((block = PainterUtil.getSourceBlock(item)) != null) {
       paintedRenderer.renderInventoryBlock(block, PainterUtil.getSourceBlockMetadata(item), 0, (RenderBlocks)data[0]);
     } else {
@@ -81,7 +117,7 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
     } else {
       curEnt = null;
     }
-    
+
     if (te instanceof IPaintableTileEntity && ((IPaintableTileEntity) te).getSourceBlock() != null) {
       ccr.setOverrideTexture(IconUtil.blankTexture);
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);

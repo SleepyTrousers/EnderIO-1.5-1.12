@@ -7,9 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -33,7 +36,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vertex;
 
 @SideOnly(Side.CLIENT)
-public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
+public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
@@ -109,7 +112,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       tex = EnderIO.blockCombustionGenerator.getIcon(4,0);
     } else {
       tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
-    }
+    } 
 
     if (override != null) {
       tex = override;
@@ -233,6 +236,63 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
 
     }
 
+  }
+
+  @Override
+  public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    return true;
+  }
+
+  @Override
+  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    return true;
+  }	
+
+  @Override
+  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+
+    GL11.glRotatef(180, 0, 1, 0);
+    GL11.glRotatef(-90, 0, 1, 0);
+
+    switch (type)
+    {
+    case ENTITY:
+    {
+      renderItem(-0.5F, -0.5F, -0.5F);
+      break;
+    }
+    case EQUIPPED:
+    {
+      renderItem(-1F, 0F, 0F);
+      break;
+    }
+    case EQUIPPED_FIRST_PERSON:
+    {
+      renderItem(-1F, 0F, 0F);
+      break;
+    }
+    case INVENTORY:
+    {
+      renderItem(-1F, -0.1F, 0F);
+      break;
+    }
+    default:
+      break;
+    }
+  }
+
+  private RenderBlocks renderer = new RenderBlocks();
+
+  private void renderItem(float x, float y, float z) {
+    GL11.glPushMatrix();
+    GL11.glTranslatef(x, y, z);
+    Tessellator tes = Tessellator.instance;
+    GL11.glDisable(GL11.GL_LIGHTING);
+    tes.startDrawingQuads();
+    renderWorldBlock(null, 0, 0, 0, EnderIO.blockCombustionGenerator, 0, renderer);
+    tes.draw();
+    GL11.glEnable(GL11.GL_LIGHTING);
+    GL11.glPopMatrix();
   }
 
 }
