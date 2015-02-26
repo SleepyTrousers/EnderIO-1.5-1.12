@@ -193,7 +193,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
     long spawnTime = ent.getEntityData().getLong(KEY_SPAWNED_BY_POWERED_SPAWNER);
     long livedFor = livingUpdate.entity.worldObj.getTotalWorldTime() - spawnTime;
-    if(livedFor > 1200) { //after two minutes stop forcing it to be around 
+    if(livedFor > Config.poweredSpawnerDespawnTimeSeconds*20) {
       try {
         fieldpersistenceRequired.setBoolean(livingUpdate.entityLiving, false);
         ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);

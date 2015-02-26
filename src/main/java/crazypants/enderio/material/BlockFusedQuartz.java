@@ -7,11 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -158,6 +156,7 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Type.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
@@ -165,6 +164,7 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
     Block block = world.getBlock(x, y, z);
     int meta = world.getBlockMetadata(x, y, z);
@@ -195,6 +195,7 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     //This little oddity is so the standard rendering used for items and breaking effects
     //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.

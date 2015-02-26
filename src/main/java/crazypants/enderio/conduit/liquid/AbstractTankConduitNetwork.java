@@ -9,16 +9,11 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
   protected boolean fluidTypeLocked = false;
 
   protected AbstractTankConduitNetwork(Class<T> cl) {
-    super(cl);
+    super(cl, ILiquidConduit.class);
   }
 
   public FluidStack getFluidType() {
     return liquidType;
-  }
-
-  @Override
-  public Class<ILiquidConduit> getBaseConduitType() {
-    return ILiquidConduit.class;
   }
 
   @Override

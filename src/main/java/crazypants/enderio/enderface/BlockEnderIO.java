@@ -125,6 +125,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
     frameIcon = iIconRegister.registerIcon("enderio:enderIOFrame");

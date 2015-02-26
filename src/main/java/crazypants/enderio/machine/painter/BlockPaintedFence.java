@@ -65,10 +65,11 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List list) {
     list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
-  
+
   @SideOnly(Side.CLIENT)
   @Override
   public boolean addHitEffects(World world, MovingObjectPosition target,
@@ -177,6 +178,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -287,7 +289,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-    
+
   }
 
 }

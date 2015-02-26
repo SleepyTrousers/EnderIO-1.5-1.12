@@ -14,17 +14,17 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.GogglesOfRevealingUpgrade;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.JumpUpgrade;
 import crazypants.enderio.item.darksteel.PacketUpgradeState;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundDetectorUpgrade;
 import crazypants.enderio.item.darksteel.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.Lang;
 
 public class KeyTracker {

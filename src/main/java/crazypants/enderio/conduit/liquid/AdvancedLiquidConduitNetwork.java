@@ -9,9 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
@@ -24,25 +21,14 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
   private Iterator<LiquidOutput> outputIterator;
 
-  private int ticksActiveUnsynced;
-
   private boolean lastSyncedActive = false;
 
   private int lastSyncedVolume = -1;
-
-  private long timeAtLastApply;
-
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   private int ticksEmpty;
 
   public AdvancedLiquidConduitNetwork() {
     super(AdvancedLiquidConduit.class);
-  }
-
-  @Override
-  public Class<ILiquidConduit> getBaseConduitType() {
-    return ILiquidConduit.class;
   }
 
   @Override
@@ -108,24 +94,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-
-    long curTime = world.getTotalWorldTime();
-    if(curTime > 0 && curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-    }
-
-  }
-
-  private void doTick() {
+  public void doNetworkTick() {
     if(liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
       updateActiveState();
       return;
@@ -172,7 +141,6 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
             con.setActive(false);
           }
           lastSyncedActive = false;
-          ticksActiveUnsynced = 0;
         }
       }
       return;
@@ -325,17 +293,4 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     setConduitVolumes();
     lastSyncedVolume = tank.getFluidAmount();
   }
-
-  private class InnerTickHandler implements TickListener {
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick();
-    }
-  }
-
 }

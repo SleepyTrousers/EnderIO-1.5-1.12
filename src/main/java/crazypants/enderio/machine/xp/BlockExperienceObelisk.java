@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -25,15 +24,15 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   }
 
   public static int renderId;
-  
+
   private BlockExperienceObelisk() {
     super(ModObject.blockExperienceObelisk, TileExperienceOblisk.class);
     setObeliskBounds();
   }
-    
+
   @Override
   @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {    
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     return getIcon(blockSide, 0);
   }
 
@@ -55,14 +54,14 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   public boolean isOpaqueCube() {
     return false;
   }
-  
+
   @Override
   public int getLightOpacity() {
     return 0;
   }
-  
+
   @Override
-  public int getRenderType() {    
+  public int getRenderType() {
     return renderId;
   }
 
@@ -71,23 +70,23 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
 //    ItemXpTransfer.onActivated(player, world, x, y - 1, z, side);
 //    return true;
 //  }
-//  
+//
 //  @Override
 //  public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
 //    super.onBlockClicked(world, x, y, z, player);
-//        
+//
 //    // copypasta from ItemXpTransfer.transferFromPlayerToBlock
-//    
+//
 //    if(world.isRemote || player.experienceTotal <= 0) {
 //      return;
 //    }
-//    
+//
 //    y--;
 //    TileEntity te = world.getTileEntity(x, y, z);
 //    if(!(te instanceof IFluidHandler)) {
 //      return;
 //    }
-//    
+//
 //    IFluidHandler fh = (IFluidHandler) te;
 //    ForgeDirection dir = ForgeDirection.UP; // no side passed :(
 //    if(!fh.canFill(dir, EnderIO.fluidXpJuice)) {
@@ -95,14 +94,14 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
 //    }
 //
 //    int canTake = player.experienceTotal - XpUtil.getExperienceForLevel(player.experienceLevel - 1);
-//    
+//
 //    int fluidVolume = XpUtil.experianceToLiquid(canTake);
 //    FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
 //    int takenVolume = fh.fill(dir, fs, true);
 //    if(takenVolume <= 0) {
 //      return;
 //    }
-//    
+//
 //    int xpToTake = XpUtil.liquidToExperiance(takenVolume);
 //    XpUtil.addPlayerXP(player, -xpToTake);
 //    ItemXpTransfer.sendXPUpdate(player, world, x, y, z, false);
@@ -112,10 +111,10 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
-  
+
   //  @Override
   //  public void registerBlockIcons(IIconRegister iIconRegister) {
-  //    
+  //
   //    blockIcon = iIconRegister.registerIcon("enderio:blockAttractorSide");
   //  }
 
@@ -141,7 +140,8 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   }
 
   @Override
-  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {    
-  }  
-  
+  @SideOnly(Side.CLIENT)
+  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+  }
+
 }

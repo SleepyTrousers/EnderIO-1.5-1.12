@@ -36,7 +36,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   private final InventoryImpl inventory = new InventoryImpl();
 
-  private float aveChange;
+  private float avgInput;
+  private float avgOutput;
 
   private long lastPowerRequestTick = -1;
 
@@ -56,8 +57,10 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     if(lastPowerRequestTick == -1 || curTick - lastPowerRequestTick >= interval) {
       if(stateUpdateCount == 0) {
         PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
+        // the network state also contains the energy data
+      } else {
+        PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(capBank));
       }
-      PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(capBank));
       lastPowerRequestTick = curTick;
     }
   }
@@ -80,8 +83,9 @@ public class CapBankClientNetwork implements ICapBankNetwork {
         inventory.setCapBank((TileCapBank) te);
       }
     }
-    aveChange = state.getAverageChange();
-    
+    avgInput = state.getAverageInput();
+    avgOutput = state.getAverageOutput();
+
     stateUpdateCount++;
   }
 
@@ -190,11 +194,22 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   @Override
   public float getAverageChangePerTick() {
-    return aveChange;
+    return avgInput - avgOutput;
   }
 
-  public void setAverageChangePerTick(float aveChange) {
-    this.aveChange = aveChange;
+  @Override
+  public float getAverageInputPerTick() {
+    return avgInput;
+  }
+
+  @Override
+  public float getAverageOutputPerTick() {
+    return avgOutput;
+  }
+
+  public void setAverageIOPerTick(float input, float output) {
+    this.avgInput = input;
+    this.avgOutput = output;
   }
 
   @Override
@@ -211,7 +226,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public int recieveEnergy(int maxReceive, boolean simulate) {
+  public int receiveEnergy(int maxReceive, boolean simulate) {
     return 0;
   }
 

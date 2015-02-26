@@ -34,8 +34,8 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -49,6 +49,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.IBlockAccessWrapper;
 
+@SideOnly(Side.CLIENT)
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
   public ConduitBundleRenderer(float conduitScale) {
@@ -105,7 +106,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks rb) {
 
-    //If the MC renderer is told that an alpha pass is required ( see BlockConduitBundle.getRenderBlockPass() ) put 
+    //If the MC renderer is told that an alpha pass is required ( see BlockConduitBundle.getRenderBlockPass() ) put
     //nothing is actually added to the tessellator in this pass then the renderer will crash. We cant selectively
     //enable the alpha pass based on state so the only work around is to ensure we always render something in this
     //pass. Throwing in a polygon with a 0 area does the job
@@ -121,9 +122,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
     boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
-    boolean renderConduit = !renderedFacade;
+    boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit) {
+    if(renderConduit && BlockConduitBundle.theRenderPass == 0) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -141,7 +142,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   private boolean renderFacade(int x, int y, int z, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
     boolean res = false;
     if(bundle.hasFacade()) {
-
+      res = true;
       Block facadeId = bundle.getFacadeId();
       if(ConduitUtil.isFacadeHidden(bundle, player)) {
         Tessellator.instance.setColorOpaque_F(1, 1, 1);
@@ -156,12 +157,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
           rb.renderStandardBlock(facb, x, y, z);
         }
         facb.setBlockOverride(null);
-
         bundle.setFacadeId(facadeId, false);
       } else if(facadeId != null) {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
-        res = isFacadeOpaque;
 
         if((isFacadeOpaque && BlockConduitBundle.theRenderPass == 0) ||
             (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1))) {

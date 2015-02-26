@@ -316,6 +316,7 @@ public final class Config {
   public static int poweredSpawnerLevelTwoPowerPerTickRF = 500;
   public static int poweredSpawnerLevelThreePowerPerTickRF = 1500;
   public static int poweredSpawnerMaxPlayerDistance = 0;
+  public static int poweredSpawnerDespawnTimeSeconds = 120;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
   public static String[] brokenSpawnerToolBlacklist = new String[] {
@@ -1000,6 +1001,8 @@ public final class Config {
         "RF per tick for a level 3 spawner").getInt(poweredSpawnerLevelThreePowerPerTickRF);
     poweredSpawnerMaxPlayerDistance = config.get(sectionSpawner.name, "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
+    poweredSpawnerDespawnTimeSeconds = config.get(sectionSpawner.name, "poweredSpawnerDespawnTimeSeconds" , poweredSpawnerDespawnTimeSeconds,
+        "Number of seconds in which spawned entities are protected from despawning").getInt(poweredSpawnerDespawnTimeSeconds);
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
     brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,

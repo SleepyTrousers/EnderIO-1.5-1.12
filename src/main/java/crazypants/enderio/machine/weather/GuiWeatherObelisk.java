@@ -12,14 +12,11 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.Lang;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
@@ -87,9 +84,9 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     this.mc.renderEngine.bindTexture(texture);
 
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
-    
+
     if(shouldRenderProgress() && getTileEntity().activeTask != null) {
-      int barHeight = getTileEntity().getProgressScaled(31);
+      int barHeight = getTileEntity().progress;
       Color color = getTileEntity().activeTask.color;
       GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
@@ -128,6 +125,23 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     if (b.id >= 0 && b.id <= 2) {
       getTileEntity().startTask(b.id);
       PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity(), WeatherTask.values()[b.id]));
+    }
+  }
+
+  @Override
+  protected int scaleProgressForTooltip(float progress) {
+    return (int) (progress / ((float) ContainerWeatherObelisk.MAX_SCALE) * 100);
+  }
+
+  @Override
+  protected boolean shouldRenderProgress() {
+    int progress = getTileEntity().progress;
+    if(progress > 0) {
+      updateProgressTooltips(scaleProgressForTooltip(progress), progress);
+      return true;
+    } else {
+      updateProgressTooltips(-1, -1);
+      return false;
     }
   }
 }

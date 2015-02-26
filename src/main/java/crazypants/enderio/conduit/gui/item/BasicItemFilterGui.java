@@ -21,19 +21,19 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
   private static final int ID_STICKY = GuiExternalConnection.nextButtonId();    
   
-  private GuiContainerBase gui;
+  private final GuiContainerBase gui;
   
-  private ToggleButtonEIO useMetaB;
-  private ToggleButtonEIO useNbtB;
-  private IconButtonEIO whiteListB;
-  private ToggleButtonEIO useOreDictB;
-  private ToggleButtonEIO stickyB;
+  private final ToggleButtonEIO useMetaB;
+  private final ToggleButtonEIO useNbtB;
+  private final IconButtonEIO whiteListB;
+  private final ToggleButtonEIO useOreDictB;
+  private final ToggleButtonEIO stickyB;
     
-  boolean isAdvanced;
-  boolean isStickyModeAvailable;
+  final boolean isAdvanced;
+  final boolean isStickyModeAvailable;
   
-  private IItemFilterContainer filterContainer;
-  private ItemFilter filter;
+  private final IItemFilterContainer filterContainer;
+  private final ItemFilter filter;
   
   private int buttonIdOffset;
   private int xOffset;
@@ -58,8 +58,8 @@ public class BasicItemFilterGui implements IItemFilterGui {
     isAdvanced = filter.isAdvanced();
     
     int butLeft = xOffset + 92;
-    int x = butLeft ;
-    int y = yOffset;
+    int x = butLeft;
+    int y = yOffset + 1;
     whiteListB = new IconButtonEIO(gui, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
 
@@ -91,6 +91,15 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
   }
+
+  public void createFilterSlots() {
+    filter.createGhostSlots(gui.getGhostSlots(), xOffset+1, yOffset+1, new Runnable() {
+      @Override
+      public void run() {
+        sendFilterChange();
+      }
+    });
+  }
   
   @Override
   public void mouseClicked(int x, int y, int par3) {      
@@ -98,9 +107,8 @@ public class BasicItemFilterGui implements IItemFilterGui {
   
   @Override
   public void updateButtons() {
-    
     ItemFilter activeFilter = filter;
-    
+
     if(isAdvanced) {
       useNbtB.onGuiInit();
       useNbtB.setSelected(activeFilter.isMatchNBT());

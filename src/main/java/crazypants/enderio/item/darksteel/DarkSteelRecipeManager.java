@@ -19,6 +19,8 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
+import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
+import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.util.Lang;
 
 public class DarkSteelRecipeManager {
@@ -47,7 +49,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(SolarUpgrade.SOLAR_ONE);
     upgrades.add(SolarUpgrade.SOLAR_TWO);
     if(Loader.isModLoaded("Thaumcraft")) {
-      upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
+      ThaumcraftCompat.loadUpgrades(upgrades);
     }
     if(Loader.isModLoaded("Forestry")) {
       upgrades.add(NaturalistEyeUpgrade.INSTANCE);

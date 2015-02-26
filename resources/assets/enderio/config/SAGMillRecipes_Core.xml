@@ -1886,65 +1886,6 @@ addOreDictionaryTooltips=true
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Engineer's Toolbox">
-
-    <!-- Metals -->
-    <recipe name="NickelOre" energyCost="3600">
-      <input>
-        <itemStack oreDictionary="oreNickel" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustNickel" number="2" />
-        <itemStack oreDictionary="dustIron" number="1" chance="0.05" />
-      </output>
-    </recipe>
-    <recipe name="AluminumOre" energyCost="3600">
-      <input>
-        <itemStack oreDictionary="oreAluminum" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustAluminum" number="2" />
-      </output>
-    </recipe>
-
-    <!-- Alloys and Ingots -->
-    <recipe name="NickelIngot" energyCost="2400">
-      <input>
-        <itemStack oreDictionary="ingotNickel" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustNickel" number="1" />
-      </output>
-    </recipe>
-    <recipe name="AluminumIngot" energyCost="2400">
-      <input>
-        <itemStack oreDictionary="ingotAluminum" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustAluminum" number="1" />
-      </output>
-    </recipe>
-
-
-    <!-- Blocks -->
-    <recipe name="NickelBlock" energyCost="3600">
-      <input>
-        <itemStack oreDictionary="blockNickel" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustNickel" number="9" />
-      </output>
-    </recipe>
-    <recipe name="AluminumBlock" energyCost="3600">
-      <input>
-        <itemStack oreDictionary="blockAluminum" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustAluminum" number="9" />
-      </output>
-    </recipe>
-  </recipeGroup>
-
   <recipeGroup name="BigReactors">
     <!-- Metals -->
     <recipe name="YelloriteOre" energyCost="3600">

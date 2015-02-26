@@ -10,6 +10,8 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerWeatherObelisk extends AbstractMachineContainer {
 
+  public static final int MAX_SCALE = 31;
+  
   private int lastPowerUsed;
 
   public ContainerWeatherObelisk(InventoryPlayer playerInv, TileWeatherObelisk te) {
@@ -30,7 +32,7 @@ public class ContainerWeatherObelisk extends AbstractMachineContainer {
   public void updateProgressBar(int par1, int par2) {
     TileWeatherObelisk te = (TileWeatherObelisk) getTileEntity();
     if(par1 == 0) {
-      te.powerUsed = par2;
+      te.progress = par2;
     }
   }
 
@@ -43,7 +45,7 @@ public class ContainerWeatherObelisk extends AbstractMachineContainer {
 
       int powerUsed = te.powerUsed;
       if(powerUsed != lastPowerUsed) {
-        icrafting.sendProgressBarUpdate(this, 0, powerUsed);
+        icrafting.sendProgressBarUpdate(this, 0, te.getProgressScaled(MAX_SCALE));
       }
     }
 

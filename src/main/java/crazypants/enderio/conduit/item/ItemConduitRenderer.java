@@ -62,10 +62,9 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
           Tessellator.instance.setColorOpaque_I(outChannel.getColor());
           ConnectionModeGeometry.renderModeConnector(dir, offset, outTex, false);
         }
+        
         Tessellator.instance.setColorOpaque_F(1f, 1f, 1f);
       }
     }
-
   }
-
 }

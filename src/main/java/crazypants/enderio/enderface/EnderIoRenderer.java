@@ -12,6 +12,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.render.BoundingBox;
@@ -21,6 +23,7 @@ import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
 
+@SideOnly(Side.CLIENT)
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private TravelEntitySpecialRenderer selectionRenderer = new TravelEntitySpecialRenderer() {
@@ -42,7 +45,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
 
-    
+
     EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
     Matrix4d lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
 

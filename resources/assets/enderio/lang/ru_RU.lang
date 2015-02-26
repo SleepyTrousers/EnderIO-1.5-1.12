@@ -30,7 +30,7 @@ item.enderio.itemConduitFacade.tooltip.detailed.line4=экипированы
 item.enderio.itemConduitFacade.hardened.tooltip=Закалён: Выдерживает удары и взрывы
 
 enderio.itemPowerConduit.name=Энергетическая труба
-enderio.itemPowerConduitEnhanced.name=Расширенная энергетическая труба
+enderio.itemPowerConduitEnhanced.name=Улучшенная энергетическая труба
 enderio.itemPowerConduitEnder.name=Энергетическая труба Края
 
 enderio.itemRedstoneConduit.name=Красная труба
@@ -706,7 +706,7 @@ enderio.gui.simple.out=Макс. выход:
 enderio.gui.available=Доступно
 enderio.gui.disabled=Выключено
 enderio.gui.enabled=Включено
-enderio.gui.max=Макс: 
+enderio.gui.max=Макс:
 enderio.gui.progress=Прогресс {0,number}%
 enderio.gui.receive=Получать
 enderio.gui.send=Отправлять
@@ -820,6 +820,12 @@ enderio.gui.alloy.mode.all=Выплавка всех материалов
 enderio.gui.alloy.mode.alloy=Только сплавы
 enderio.gui.alloy.mode.furnace=Только обычные рецепты
 
+//Vacuum chest
+enderio.gui.vacuum.range=Сила всасывания
+enderio.gui.vacuum.header.chest=Вакуумный сундук
+enderio.gui.vacuum.header.filter=Предметный фильтр
+enderio.gui.vacuum.header.range=Дальность
+
 //Vat
 enderio.vat.outputTank=Выход чана
 enderio.vat.inputTank=Вход чана
@@ -829,13 +835,14 @@ enderio.gui.machine.vat.dump.2=Сбросить резервуар выхода
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Охладитель
 enderio.combustionGenerator.fuelTank=Топливо
-enderio.combustionGenerator.output=Генерирование:
+enderio.combustionGenerator.output=Генерирует:
 
 //Stirling Gen
 enderio.stirlingGenerator.output=Генерирование:
 enderio.stirlingGenerator.burnRate=Скорость сгорания:
 enderio.stirlingGenerator.upgradeslot=Слот улучшения
 enderio.stirlingGenerator.upgrades={0} даёт {2}{1,number,#.#}x{3} эффективности
+enderio.stirlingGenerator.remaining=Осталось {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Только

@@ -2,6 +2,7 @@ package crazypants.enderio.conduit;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +34,6 @@ import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
-import crazypants.enderio.conduit.geom.Offsets.Axis;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
@@ -224,7 +224,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public void updateEntity() {
-
     if(worldObj == null) {
       return;
     }
@@ -234,62 +233,74 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
 
     if(conduitsDirty) {
-      if(!worldObj.isRemote) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        markDirty();
-      }
-      conduitsDirty = false;
+      doConduitsDirty();
     }
 
     if(facadeChanged) {
-      //force re-calc of lighting for both client and server
-      ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord);
-      //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
-      worldObj.func_147451_t(xCoord, yCoord, zCoord);
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      facadeChanged = false;
+      doFacadeChanged();
     }
 
     //client side only, check for changes in rendering of the bundle
     if(worldObj.isRemote) {
+      updateEntityClient();
+    }
+  }
 
-      boolean markForUpdate = false;
-      if(clientUpdated) {
-        //TODO: This is not the correct solution here but just marking the block for a render update server side
-        //seems to get out of sync with the client sometimes so connections are not rendered correctly
+  private void doConduitsDirty() {
+    if(!worldObj.isRemote) {
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      markDirty();
+    }
+    conduitsDirty = false;
+  }
+
+  private void doFacadeChanged() {
+    //force re-calc of lighting for both client and server
+    ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord);
+    //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+    worldObj.func_147451_t(xCoord, yCoord, zCoord);
+    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EnderIO.blockConduitBundle);
+    facadeChanged = false;
+  }
+
+  private void updateEntityClient() {
+    boolean markForUpdate = false;
+    if(clientUpdated) {
+      //TODO: This is not the correct solution here but just marking the block for a render update server side
+      //seems to get out of sync with the client sometimes so connections are not rendered correctly
+      markForUpdate = true;
+      clientUpdated = false;
+    }
+
+    FacadeRenderState curRS = getFacadeRenderedAs();
+    FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
+
+    if(Config.updateLightingWhenHidingFacades) {
+      int curLO = getLightOpacity();
+      int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
+      if(curLO != shouldBeLO) {
+        setLightOpacity(shouldBeLO);
+        //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+        worldObj.func_147451_t(xCoord, yCoord, zCoord);
+      }
+    }
+
+    if(curRS != rs) {
+      setFacadeRenderAs(rs);
+      if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
         markForUpdate = true;
-        clientUpdated = false;
+      }
+    } else { //can do the else as only need to update once
+      ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
+      if(curMode != lastMode) {
+        markForUpdate = true;
+        lastMode = curMode;
       }
 
-      FacadeRenderState curRS = getFacadeRenderedAs();
-      FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
-
-      if(Config.updateLightingWhenHidingFacades) {
-        int curLO = getLightOpacity();
-        int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
-        if(curLO != shouldBeLO) {
-          setLightOpacity(shouldBeLO);
-          //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
-          worldObj.func_147451_t(xCoord, yCoord, zCoord);
-        }
-      }
-
-      if(curRS != rs) {
-        setFacadeRenderAs(rs);
-        if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
-          markForUpdate = true;
-        }
-      } else { //can do the else as only need to update once
-        ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
-        if(curMode != lastMode) {
-          markForUpdate = true;
-          lastMode = curMode;
-        }
-
-      }
-      if(markForUpdate) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      }
+    }
+    if(markForUpdate) {
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
   }
 
@@ -421,7 +432,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public Set<ForgeDirection> getAllConnections() {
-    Set<ForgeDirection> result = new HashSet<ForgeDirection>();
+    EnumSet<ForgeDirection> result = EnumSet.noneOf(ForgeDirection.class);
     for (IConduit con : conduits) {
       result.addAll(con.getConduitConnections());
     }
@@ -582,7 +593,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
 
     // External Connectors
-    Set<ForgeDirection> externalDirs = new HashSet<ForgeDirection>();
+    EnumSet<ForgeDirection> externalDirs = EnumSet.noneOf(ForgeDirection.class);
     for (IConduit con : conduits) {
       Set<ForgeDirection> extCons = con.getExternalConnections();
       if(extCons != null) {
@@ -603,20 +614,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     connectorsDirty = false;
   }
 
-  private boolean axisOfConnectionsEqual(Set<ForgeDirection> cons) {
-    Axis axis = null;
-    for (ForgeDirection dir : cons) {
-      if(axis == null) {
-        axis = Offsets.getAxisForDir(dir);
-      } else {
-        if(axis != Offsets.getAxisForDir(dir)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
   private void addConduitCores(List<CollidableComponent> result, IConduit con) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = con.getCollidableType();
@@ -631,43 +628,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
     }
   }
-
-  //  private boolean containsOnlySingleVerticalConnections() {
-  //    return getConnectionCount(ForgeDirection.UP) < 2 && getConnectionCount(ForgeDirection.DOWN) < 2;
-  //  }
-  //
-  //  private boolean containsOnlySingleHorizontalConnections() {
-  //    return getConnectionCount(ForgeDirection.WEST) < 2 && getConnectionCount(ForgeDirection.EAST) < 2 &&
-  //        getConnectionCount(ForgeDirection.NORTH) < 2 && getConnectionCount(ForgeDirection.SOUTH) < 2;
-  //  }
-  //
-  //  private boolean allDirectionsHaveSameConnectionCount() {
-  //    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-  //      boolean hasCon = conduits.get(0).isConnectedTo(dir);
-  //      for (int i = 1; i < conduits.size(); i++) {
-  //        if(hasCon != conduits.get(i).isConnectedTo(dir)) {
-  //          return false;
-  //        }
-  //      }
-  //    }
-  //    return true;
-  //  }
-
-  //  private boolean containsOnlyHorizontalConnections() {
-  //    for (IConduit con : conduits) {
-  //      for (ForgeDirection dir : con.getConduitConnections()) {
-  //        if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
-  //          return false;
-  //        }
-  //      }
-  //      for (ForgeDirection dir : con.getExternalConnections()) {
-  //        if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
-  //          return false;
-  //        }
-  //      }
-  //    }
-  //    return true;
-  //  }
 
   private int getConnectionCount(ForgeDirection dir) {
     if(dir == ForgeDirection.UNKNOWN) {
@@ -916,7 +876,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "appliedenergistics2")
   public void securityBreak() {
-    ;
   }
 
   @Override

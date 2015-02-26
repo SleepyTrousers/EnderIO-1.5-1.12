@@ -78,21 +78,20 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     }
   }
 
-  protected BlockTravelAnchor(String name, Class<? extends TileEntityEio> clazz) {
-    super(name, clazz);
+  public BlockTravelAnchor(String unlocalisedName, Class<? extends TileEntityEio> teClass) {
+    super(unlocalisedName, teClass);
   }
 
   @Override
   protected void init() {
     super.init();
-    if(getClass() == BlockTravelAnchor.class) {
-      EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
-      EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
-      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
-    }
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
     highlightOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorHighlight");
@@ -100,6 +99,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileTravelAnchor) {
@@ -144,7 +144,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     }
     return true;
   }
-
+  
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
     if(player.worldObj.isRemote && !player.isSneaking()) {
       player.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " "
@@ -152,7 +152,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
           + Lang.localize("gui.travelAccessable.privateBlock2")));
     }
   }
-
+  
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);

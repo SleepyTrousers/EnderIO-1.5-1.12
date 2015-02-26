@@ -22,12 +22,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   private boolean networkEnabled = true;
 
   public RedstoneConduitNetwork() {
-    super(IRedstoneConduit.class);
-  }
-
-  @Override
-  public Class<IRedstoneConduit> getBaseConduitType() {
-    return IRedstoneConduit.class;
+    super(IRedstoneConduit.class, IRedstoneConduit.class);
   }
 
   @Override
@@ -144,9 +139,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     StringBuilder sb = new StringBuilder();
     for (IRedstoneConduit con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      sb.append("<");
-      sb.append(te.xCoord + "," + te.yCoord + "," + te.zCoord);
-      sb.append(">");
+      sb.append("<").append(te.xCoord).append(",").append(te.yCoord).append(",").append(te.zCoord).append(">");
     }
     return sb.toString();
   }

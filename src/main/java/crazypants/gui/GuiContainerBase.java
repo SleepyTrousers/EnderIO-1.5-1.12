@@ -140,7 +140,12 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     }
     return super.func_146978_c(p_146978_1_, p_146978_2_, p_146978_3_, p_146978_4_, p_146978_5_, p_146978_6_);
   }
-  
+
+  @Override
+  public List<GhostSlot> getGhostSlots() {
+    return ghostSlots;
+  }
+
   @Override
   protected void mouseClicked(int x, int y, int p_73864_3_) {
     for (GuiTextField f : textFields) {

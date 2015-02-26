@@ -9,9 +9,6 @@ import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
 
@@ -29,17 +26,8 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
 
   private int lastSyncedVolume = -1;
 
-  private long timeAtLastApply;
-
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
-
   public GasConduitNetwork() {
     super(GasConduit.class);
-  }
-
-  @Override
-  public Class<IGasConduit> getBaseConduitType() {
-    return IGasConduit.class;
   }
 
   @Override
@@ -97,24 +85,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
   }
 
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-
-    long curTime = world.getTotalWorldTime();
-    if(curTime > 0 && curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-    }
-
-  }
-
-  private void doTick() {
+  public void doNetworkTick() {
     if(gasType == null || outputs.isEmpty() || !tank.containsValidGas() || tank.isEmpty()) {
       updateActiveState();
       return;
@@ -292,18 +263,6 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
     }
     setConduitVolumes();
     lastSyncedVolume = tank.getStored();
-  }
-
-  private class InnerTickHandler implements TickListener {
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick();
-    }
   }
 
 }

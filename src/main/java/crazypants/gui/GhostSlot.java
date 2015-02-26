@@ -17,10 +17,10 @@ public class GhostSlot {
     return visible;
   }
 
-  protected ItemStack getStack() {
+  public ItemStack getStack() {
     return stack;
   }
 
-  protected void putStack(ItemStack stack) {
+  public void putStack(ItemStack stack) {
   }
 }

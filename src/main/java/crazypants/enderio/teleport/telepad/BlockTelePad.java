@@ -67,7 +67,7 @@ public class BlockTelePad extends BlockTravelAnchor {
   public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
     return unconnected;
   }
-  
+
   @Override
   public int getRenderType() {
     return 0;
@@ -84,8 +84,8 @@ public class BlockTelePad extends BlockTravelAnchor {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileTelePad) {
       TileTelePad tp = (TileTelePad) te;
-      if (tp.inNetwork()) {
-        if (!tp.isMaster()) {
+      if(tp.inNetwork()) {
+        if(!tp.isMaster()) {
           TileTelePad master = tp.getMaster();
           return openGui(world, master.xCoord, master.yCoord, master.zCoord, entityPlayer, side);
         }
@@ -102,7 +102,7 @@ public class BlockTelePad extends BlockTravelAnchor {
     }
     return true;
   }
-  
+
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
     super.onBlockPlacedBy(world, x, y, z, entity, par6ItemStack);

@@ -26,7 +26,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   public static BlockFluidEio create(Fluid fluid, Material material) {
     BlockFluidEio res = new BlockFluidEio(fluid, material);
     res.init();
-    fluid.setBlock(res);    
+    fluid.setBlock(res);
     return res;
   }
 
@@ -46,6 +46,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   protected IIcon[] icons;
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int meta) {
     return side != 0 && side != 1 ? this.icons[1] : this.icons[0];
   }

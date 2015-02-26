@@ -98,6 +98,8 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     }
 
     renderSlotHighlights();
+
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   public void renderSlotHighlights() {
@@ -153,7 +155,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     addToolTip(tt);
   }
 
-  private void updateProgressTooltips(int scaledProgress, float progress) {
+  protected final void updateProgressTooltips(int scaledProgress, float progress) {
     if(lastProgressTooltipValue == scaledProgress || progressTooltips == null) {
       return;
     }

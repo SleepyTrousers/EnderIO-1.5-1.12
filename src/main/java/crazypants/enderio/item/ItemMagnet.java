@@ -23,9 +23,9 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.ItemUtil;
 
 public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider {
-  
+
   private static final String ACTIVE_KEY = "magnetActive";
-  
+
   public static void setActive(ItemStack item, boolean active) {
     if(item == null) {
       return;
@@ -33,7 +33,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     NBTTagCompound nbt = ItemUtil.getOrCreateNBT(item);
     nbt.setBoolean(ACTIVE_KEY, active);
   }
-  
+
   public static boolean isActive(ItemStack item) {
     if(item == null) {
       return false;
@@ -44,29 +44,29 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     if(!item.stackTagCompound.hasKey(ACTIVE_KEY)) {
       return false;
     }
-    return item.stackTagCompound.getBoolean(ACTIVE_KEY);    
+    return item.stackTagCompound.getBoolean(ACTIVE_KEY);
   }
-  
-  public static boolean hasPower(ItemStack itemStack) {    
+
+  public static boolean hasPower(ItemStack itemStack) {
     return EnderIO.itemMagnet.getEnergyStored(itemStack) > 0;
   }
 
   public static void drainPerSecondPower(ItemStack itemStack) {
-    EnderIO.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);    
+    EnderIO.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);
   }
 
-  public static ItemMagnet create() {    
+  public static ItemMagnet create() {
     ItemMagnet result = new ItemMagnet();
-    result.init();    
-    FMLCommonHandler.instance().bus().register(new MagnetController());    
+    result.init();
+    FMLCommonHandler.instance().bus().register(new MagnetController());
     return result;
   }
 
-  
+
   protected ItemMagnet() {
     super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF/100);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemMagnet.unlocalisedName);    
+    setUnlocalizedName(ModObject.itemMagnet.unlocalisedName);
     setMaxDamage(16);
     setMaxStackSize(1);
     setHasSubtypes(true);
@@ -81,7 +81,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   public void registerIcons(IIconRegister IIconRegister) {
     itemIcon = IIconRegister.registerIcon("enderio:magnet");
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
@@ -93,7 +93,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     setEnergy(is, 0);
     par3List.add(is);
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
@@ -102,17 +102,18 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
         + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
     list.add(str);
   }
-  
+
   @Override
-  public boolean hasEffect(ItemStack item, int pass) {    
+  @SideOnly(Side.CLIENT)
+  public boolean hasEffect(ItemStack item, int pass) {
     return isActive(item);
   }
-  
+
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
     setEnergy(itemStack, 0);
   }
-  
+
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
     int res = super.receiveEnergy(container, maxReceive, simulate);
@@ -151,10 +152,10 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
 
   @Override
-  public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {           
-    if(player.isSneaking()) {      
+  public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+    if(player.isSneaking()) {
       setActive(equipped, !isActive(equipped));
-    } 
+    }
     return equipped;
   }
 

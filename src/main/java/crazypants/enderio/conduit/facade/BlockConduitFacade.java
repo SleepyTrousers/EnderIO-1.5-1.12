@@ -32,6 +32,7 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:conduitFacade");
   }

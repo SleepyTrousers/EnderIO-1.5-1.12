@@ -7,17 +7,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.network.PacketHandler;
 
 public class BlockCrusher extends AbstractMachineBlock {
 
   public static BlockCrusher create() {
     PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
-    
+
     BlockCrusher res = new BlockCrusher();
     res.init();
     return res;
@@ -59,8 +59,9 @@ public class BlockCrusher extends AbstractMachineBlock {
     }
     return "enderio:crusherFront";
   }
-  
+
   @Override
+  @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     TileCrusher te = (TileCrusher) world.getTileEntity(x, y, z);
     if(te != null && te.isActive()) {
@@ -73,7 +74,7 @@ public class BlockCrusher extends AbstractMachineBlock {
         double v = 0.05;
         double vx = 0;
         double vz = 0;
-        
+
         if(front == ForgeDirection.NORTH || front == ForgeDirection.SOUTH) {
           px += world.rand.nextFloat() * 0.8 - 0.4;
           vz += front == ForgeDirection.NORTH ? -v : v;

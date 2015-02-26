@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
-import crazypants.util.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -32,7 +32,7 @@ import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.tool.ToolUtil;
+import crazypants.util.PlayerUtil;
 import crazypants.util.Util;
 
 public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
@@ -79,6 +79,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:tesseractPortal");
   }

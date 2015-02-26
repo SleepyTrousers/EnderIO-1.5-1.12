@@ -11,10 +11,7 @@ import java.util.Set;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.Log;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.config.Config;
@@ -23,11 +20,10 @@ import crazypants.enderio.power.IPowerStorage;
 
 public class NetworkPowerManager {
 
-  private PowerConduitNetwork network;
+  private final PowerConduitNetwork network;
 
   int maxEnergyStored;
   int energyStored;
-  private int reserved;
 
   private int updateRenderTicks = 10;
   private int inactiveTicks = 100;
@@ -41,11 +37,9 @@ public class NetworkPowerManager {
 
   private final Map<IPowerConduit, PowerTracker> powerTrackers = new HashMap<IPowerConduit, PowerTracker>();
 
-  private PowerTracker networkPowerTracker = new PowerTracker();
+  private final PowerTracker networkPowerTracker = new PowerTracker();
 
   private final CapBankSupply capSupply = new CapBankSupply();
-
-  private InnerTickHandler applyPowerCallback = new InnerTickHandler();
 
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
     network = netowrk;
@@ -113,8 +107,11 @@ public class NetworkPowerManager {
   }
 
   public void applyRecievedPower() {
-    //want to do this after all conduits have updated so all connections have been checked etc
-    ConduitNetworkTickHandler.instance.addListener(applyPowerCallback);
+    try {
+      doApplyRecievedPower();
+    } catch (Exception e) {
+      Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
+    }
   }
 
   public void doApplyRecievedPower() {
@@ -458,9 +455,7 @@ public class NetworkPowerManager {
         long use = (int) Math.ceil(ratio * entry.canExtract);
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
-        if(!entry.capBank.isCreative()) {
-          entry.capBank.addEnergy((int) -use);
-        }
+        entry.capBank.addEnergy((int) -use);
         trackerRecieve(entry.emmiter, (int) use, true);
         amount -= use;
         if(amount == 0) {
@@ -479,9 +474,7 @@ public class NetworkPowerManager {
         long add = (int) Math.ceil(ratio * entry.canFill);
         add = Math.min(add, entry.canFill);
         add = Math.min(add, amount);
-        if(!entry.capBank.isCreative()) {
-          entry.capBank.addEnergy((int) add);
-        }
+        entry.capBank.addEnergy((int) add);
         trackerSend(entry.emmiter, (int) add, true);
         amount -= add;
         if(amount == 0) {
@@ -525,22 +518,6 @@ public class NetworkPowerManager {
 
     }
 
-  }
-
-  private class InnerTickHandler implements TickListener {
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      try {
-        doApplyRecievedPower();
-      } catch (Exception e) {
-        Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
-      }
-    }
   }
 
 }

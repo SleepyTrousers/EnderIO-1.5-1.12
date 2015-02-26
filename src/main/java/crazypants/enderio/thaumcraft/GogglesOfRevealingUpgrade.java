@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.thaumcraft;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.AbstractUpgrade;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 

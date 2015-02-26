@@ -4,9 +4,13 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,10 +21,6 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.World;
 
 public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
@@ -76,6 +76,7 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
     itemIcon = IIconRegister.registerIcon("enderio:existingItemFilter");
   }
@@ -84,7 +85,7 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {

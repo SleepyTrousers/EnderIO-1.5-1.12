@@ -81,6 +81,7 @@ public class MaterialRecipes {
     GameRegistry.addShapelessRecipe(new ItemStack(Blocks.glass), pureGlass);
     GameRegistry.addShapedRecipe(new ItemStack(Items.glass_bottle, 3, 0), "   ", "g g", " g ", 'g', pureGlass);
 
+    Material.registerOres(EnderIO.itemMaterial);
   }
 
   public static void addRecipes() {

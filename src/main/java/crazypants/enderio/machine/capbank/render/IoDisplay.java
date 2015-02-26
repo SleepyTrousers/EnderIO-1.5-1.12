@@ -6,16 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.capbank.CapBankType;
-import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -137,19 +133,32 @@ public class IoDisplay implements IInfoRenderer {
 
     nw.requestPowerUpdate(cb, 20);
 
-    int change = Math.round(nw.getAverageChangePerTick());
-    HeadingText heading = HeadingText.STABLE;
-    if(change > 0) {
-      heading = HeadingText.GAIN;
-    } else if(change < 0) {
-      heading = HeadingText.LOSS;
-    }
+    HeadingText heading1 = HeadingText.STABLE;
+    HeadingText heading2 = null;
+    String text1;
+    String text2 = "";
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-    String changeText = getChangeText(change, fr);
-
     float size = 0.15f * Math.min(info.width, info.height);
     float scale = size / fr.FONT_HEIGHT;
+    float offset;
+
+    if(info.height*3 >= info.width*4) {
+      heading1 = HeadingText.INPUT;
+      heading2 = HeadingText.OUTPUT;
+      text1 = getChangeText(nw.getAverageInputPerTick(), fr);
+      text2 = getChangeText(nw.getAverageOutputPerTick(), fr);
+      offset = -size*2.5f;
+    } else {
+      int change = Math.round(nw.getAverageChangePerTick());
+      if(change > 0) {
+        heading1 = HeadingText.GAIN;
+      } else if(change < 0) {
+        heading1 = HeadingText.LOSS;
+      }
+      text1 = getChangeText(change, fr);
+      offset = -size;
+    }
 
     ForgeDirection right = dir.getRotation(ForgeDirection.UP);
 
@@ -167,24 +176,40 @@ public class IoDisplay implements IInfoRenderer {
       GL11.glRotatef(90, 0, 1, 0);
     }
 
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glDisable(GL11.GL_LIGHTING);
+    OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+
+    offset = drawText(heading1, text1, offset, scale, size, fr);
+    if(heading2 != null) {
+      drawText(heading2, text2, offset, scale, size, fr);
+    }
+
+    GL11.glEnable(GL11.GL_LIGHTING);
+    GL11.glDisable(GL11.GL_BLEND);
+    GL11.glPopMatrix();
+  }
+
+  private float drawText(HeadingText heading, String text, float offset, float scale, float size, FontRenderer fr) {
     GL11.glPushMatrix();
-    GL11.glTranslatef(0, -size, 0);
+    GL11.glTranslatef(0, offset, 0);
     GL11.glScalef(scale, scale, scale);
     fr.drawString(heading.text, -fr.getStringWidth(heading.text) / 2, 0, 0);
     GL11.glPopMatrix();
+    offset += size * 1.5f;
 
     GL11.glPushMatrix();
-    GL11.glTranslatef(0, size / 2, 0);
+    GL11.glTranslatef(0, offset, 0);
     GL11.glScalef(scale, scale, scale);
-    fr.drawString(changeText, -fr.getStringWidth(changeText) / 2, 0, heading.color);
+    fr.drawString(text, -fr.getStringWidth(text) / 2, 0, heading.color);
     GL11.glPopMatrix();
+    offset += size * 1.5f;
 
-    GL11.glPopMatrix();
-
+    return offset;
   }
 
-  protected String getChangeText(int change, FontRenderer fr) {
-    change = Math.abs(change);
+  protected String getChangeText(float average, FontRenderer fr) {
+    int change = Math.round(Math.abs(average));
     String txt = PowerDisplayUtil.INT_NF.format(change);
     int width = fr.getStringWidth(txt);
     if(width > 38 && change > 1000) {
@@ -197,7 +222,9 @@ public class IoDisplay implements IInfoRenderer {
   static enum HeadingText {
     STABLE(ColorUtil.getRGB(0, 0, 0)),
     GAIN(ColorUtil.getRGB(0, 0.25f, 0)),
-    LOSS(ColorUtil.getRGB(0.25f, 0, 0));
+    LOSS(ColorUtil.getRGB(0.25f, 0, 0)),
+    INPUT(ColorUtil.getRGB(0, 0.25f, 0)),
+    OUTPUT(ColorUtil.getRGB(0.25f, 0, 0));
 
     final String text;
     final int color;

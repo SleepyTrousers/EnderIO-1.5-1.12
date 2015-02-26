@@ -12,11 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.AEApi;
+import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
-import appeng.api.util.AECableType;
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -122,21 +122,49 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
+  public int getChannelsInUse() {
+    int channelsInUse = 0;
+    IGridNode node = getNode();
+    if(node != null) {
+      for (IGridConnection gc : node.getConnections()) {
+        channelsInUse = Math.max(channelsInUse, gc.getUsedChannels());
+      }
+    }
+    return channelsInUse;
+  }
+
+  @Override
   @Method(modid = "appliedenergistics2")
   public boolean canConnectToExternal(ForgeDirection dir, boolean ignoreDisabled) {
     World world = getBundle().getWorld();
     BlockCoord pos = getLocation();
     TileEntity te = world.getTileEntity(pos.x + dir.offsetX, pos.y + dir.offsetY, pos.z + dir.offsetZ);
 
+    if(te instanceof TileConduitBundle) {
+      return false;
+    }
+
+    // because the AE2 API doesn't allow an easy query like "which side can connect to an ME cable" it needs this mess
     if(te instanceof IPartHost) {
       IPart part = ((IPartHost) te).getPart(dir.getOpposite());
       if(part == null) {
         part = ((IPartHost) te).getPart(ForgeDirection.UNKNOWN);
         return part != null;
       }
-      return part.getExternalFacingNode() != null;
+      if(part.getExternalFacingNode() != null) {
+        return true;
+      }
+      String name = part.getClass().getSimpleName();
+      return "PartP2PTunnelME".equals(name) || "PartQuartzFiber".endsWith(name) ||
+              "PartToggleBus".equals(name) || "PartInvertedToggleBus".equals(name);
     } else if(te instanceof IGridHost) {
-      return !(te instanceof TileConduitBundle) && ((IGridHost) te).getCableConnectionType(dir.getOpposite()) != AECableType.NONE;
+      IGridNode node = ((IGridHost) te).getGridNode(dir.getOpposite());
+      if(node == null) {
+        node = ((IGridHost) te).getGridNode(ForgeDirection.UNKNOWN);
+      }
+      if(node != null) {
+        return node.getGridBlock().getConnectableSides().contains(dir.getOpposite());
+      }
     }
     return false;
   }

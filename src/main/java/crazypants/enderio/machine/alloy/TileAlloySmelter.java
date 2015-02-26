@@ -12,7 +12,6 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
@@ -186,15 +185,19 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
     short mb = nbtRoot.getShort("mode");
-    mode = Mode.values()[mb];
+    Mode[] modes = Mode.values();
+    if(mb < 0 || mb >= modes.length) {
+      mb = 0;
+    }
+    mode = modes[mb];
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
     nbtRoot.setShort("mode", (short) mode.ordinal());
   }
 
