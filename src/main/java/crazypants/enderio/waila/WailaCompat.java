@@ -77,10 +77,11 @@ public class WailaCompat implements IWailaDataProvider {
     @Override
     public TileEntity getTileEntity(int x, int y, int z) {
       int meta = getBlockMetadata(x, y, z);
-      if(!getBlock(x, y, z).hasTileEntity(meta)) {
+      Block block = getBlock(x, y, z);
+      if(block == null || !block.hasTileEntity(meta)) {
         return null;
       }
-      TileEntity te = getBlock(x, y, z).createTileEntity(this, meta);
+      TileEntity te = block.createTileEntity(this, meta);
       if(te == null) {
         return null;
       }
@@ -161,7 +162,7 @@ public class WailaCompat implements IWailaDataProvider {
     EntityPlayer player = accessor.getPlayer();
     MovingObjectPosition pos = accessor.getPosition();
     int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
-    World world = new WailaWorldWrapper(player.worldObj);
+    World world = accessor.getWorld();
     Block block = world.getBlock(x, y, z);
     TileEntity te = world.getTileEntity(x, y, z);
     Item item = Item.getItemFromBlock(block);
