@@ -96,7 +96,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
       }
     } else {
-      System.out.println(toTeleport);
       if(active()) {
         if(powerUsed >= maxPower) {
           teleport(toTeleport.poll());

@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.render.RenderUtil;
-
 import static org.lwjgl.opengl.GL11.*;
 
 public class TeleportEntityRenderHandler {
@@ -37,9 +36,9 @@ public class TeleportEntityRenderHandler {
       glDepthMask(false);
       glTranslated(event.x, event.y, event.z);
       bb = bb.expand(0.5, 0, 0.5);
-      float speed = (1 - (e.getEntityData().getFloat(TileTelePad.PROGRESS_KEY) * 0.7f)) * 100;
-      float rot = ((e.ticksExisted + RenderUtil.getTimer().renderPartialTicks) % speed) * (360 / speed);
-      glRotatef(rot, 0, 1, 0);
+      float speed = e.getEntityData().getFloat(TileTelePad.PROGRESS_KEY) * 1.2f;
+      float rot = (e.getEntityData().getFloat("teleportrotation")) + speed;
+      glRotatef(rot + RenderUtil.getTimer().renderPartialTicks + e.ticksExisted, 0, 1, 0);
 
       double yMax = bb.maxY + 1;
 
@@ -102,6 +101,8 @@ public class TeleportEntityRenderHandler {
 
       GL11.glPopAttrib();
       GL11.glPopMatrix();
+      
+      e.getEntityData().setFloat("teleportrotation", rot);
     }
   }
 
