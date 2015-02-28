@@ -50,5 +50,12 @@
     "sounds" : [
       "telepad/active"
     ]
+  },
+  "telepad.teleport": {
+    "category": "block",
+    "sounds" : [
+        "telepad/teleport1",
+        "telepad/teleport2"
+    ]
   }
 }

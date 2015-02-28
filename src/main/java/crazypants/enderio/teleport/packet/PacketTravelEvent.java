@@ -67,19 +67,20 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
 
     int x = message.x, y = message.y, z = message.z;
 
-    TeleportEntityEvent evt = new TeleportEntityEvent(toTp, TravelSource.values()[message.source], x, y, z);
+    TravelSource source = TravelSource.values()[message.source];
+    TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z);
     if(!MinecraftForge.EVENT_BUS.post(evt)) {
-      doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion);
+      doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source);
     }
 
     return null;
   }
 
-  public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion) {
+  public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
     EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
-    toTp.worldObj.playSoundEffect(toTp.posX, toTp.posY, toTp.posZ, "mob.endermen.portal", 1.0F, 1.0F);
+    toTp.worldObj.playSoundEffect(toTp.posX, toTp.posY, toTp.posZ, source.sound, 1.0F, 1.0F);
 
-    toTp.playSound("mob.endermen.portal", 1.0F, 1.0F);
+    toTp.playSound(source.sound, 1.0F, 1.0F);
 
     if(player != null) {
       player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
@@ -87,7 +88,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
       toTp.setPosition(x, y, z);
     }
 
-    toTp.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);
+    toTp.worldObj.playSoundEffect(x, y, z, source.sound, 1.0F, 1.0F);
     toTp.fallDistance = 0;
 
     if(player != null) {

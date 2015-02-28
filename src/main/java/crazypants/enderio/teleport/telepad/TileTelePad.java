@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,7 +60,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private int powerUsed;
   private int maxPower;
   private int lastSyncPowerUsed;
-  
+
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
   private MachineSound activeSound = null;
 
@@ -80,7 +81,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
           activeSound = new MachineSound(activeRes, xCoord, yCoord, zCoord, 0.01f, 1);
           playSound();
         }
-        activeSound.setVolume(Math.min(activeSound.getVolume() + 0.01f, 0.5f));
+        activeSound.setVolume(Math.min(activeSound.getVolume() + 0.1f, 0.5f));
+        activeSound.setPitch(1 + getProgress());
       } else if(!active() && activeSound != null) {
         if(activeSound.getVolume() > 0) {
           activeSound.setVolume(activeSound.getVolume() - 0.1f);
@@ -91,12 +93,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
     } else {
       if(active()) {
-        System.out.println(maxPower);
         if(powerUsed >= maxPower) {
           teleport(toTeleport.poll());
           powerUsed = 0;
         } else {
-          powerUsed += energy.extractEnergy(energy.getMaxExtract(), false);
+          powerUsed += energy.extractEnergy(getUsage(), false);
         }
         if(worldObj.getTotalWorldTime() % 5 == 0) {
           updateQueuedEntities();
@@ -158,17 +159,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
             master.updateConnectedState(false);
           }
         }
-        if(te != null) {
-          // manually call this to avoid infinite recursion
-          worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord).onNeighborChange(worldObj, te.xCoord, te.yCoord, te.zCoord, xCoord, yCoord, zCoord);
-        }
       }
     }
     if(isMaster() && !inNetwork) {
       inNetwork = formNetwork();
       updateBlock();
       if(inNetwork) {
-        master = this;
         if(target.equals(new BlockCoord())) {
           target = new BlockCoord(this);
         }
@@ -190,7 +186,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         te.master = this;
         te.inNetwork = true;
         te.updateBlock();
+        te.updateNeighborTEs();
       }
+      this.master = this;
       return true;
     }
     return false;
@@ -202,9 +200,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     for (BlockCoord c : getSurroundingCoords()) {
       TileEntity te = c.getTileEntity(worldObj);
       if(te instanceof TileTelePad) {
-        ((TileTelePad) te).master = null;
-        ((TileTelePad) te).inNetwork = false;
-        ((TileTelePad) te).updateBlock();
+        TileTelePad telepad = (TileTelePad) te;
+        telepad.master = null;
+        telepad.inNetwork = false;
+        telepad.updateBlock();
+        telepad.updateNeighborTEs();
       }
     }
   }
@@ -219,6 +219,17 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
     }
     return ret;
+  }
+
+  private void updateNeighborTEs() {
+    BlockCoord bc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord neighbor = bc.getLocation(dir);
+      Block block = neighbor.getBlock(worldObj);
+      if(!(block instanceof BlockTelePad)) {
+        block.onNeighborChange(worldObj, neighbor.x, neighbor.y, neighbor.z, xCoord, yCoord, zCoord);
+      }
+    }
   }
 
   @Override
@@ -244,14 +255,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public Packet getDescriptionPacket() {
     S35PacketUpdateTileEntity pkt = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
-    pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
+//    pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
     return pkt;
   }
 
   @Override
   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
     super.onDataPacket(net, pkt);
-    this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
+//    this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
   }
 
   public int getPowerScaled(int scale) {
@@ -438,7 +449,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(entity.worldObj.isRemote) {
       return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
     } else {
-      if(PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false)) {
+      if(PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD)) {
         dequeueTeleport(entity);
         return true;
       }
@@ -504,5 +515,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
     return inNetwork && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
+  }
+
+  public int getUsage() {
+    return energy.getMaxReceive();
   }
 }

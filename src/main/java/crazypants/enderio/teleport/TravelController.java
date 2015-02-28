@@ -612,7 +612,7 @@ public class TravelController {
     }
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
-
+  
   public boolean doClientTeleport(Entity entity, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z);

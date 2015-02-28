@@ -108,13 +108,13 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   private String getPowerOutputLabel() {
     return StatCollector.translateToLocal("enderio.gui.max");
   }
-  
+
   protected int getPowerOutputValue() {
-    return 500;
+    return te.getUsage();
   }
   
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
+    text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
     text.add(PowerDisplayUtil.formatStoredPower(te.getEnergyStored(), te.getMaxEnergyStored()));
   }
@@ -138,10 +138,15 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   public void updateScreen() {
     super.updateScreen();
   }
-  
+
   @Override
   protected void keyTyped(char par1, int par2) {
     super.keyTyped(par1, par2);
+    for (TextFieldEIO tf : textFields) {
+      if("-".equals(tf.getText())) {
+        tf.setText("");
+      }
+    }
     updateCoords();
   }
 
