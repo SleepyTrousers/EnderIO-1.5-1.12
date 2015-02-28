@@ -1,9 +1,9 @@
 package crazypants.enderio.teleport.telepad;
 
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -11,30 +11,106 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.render.RenderUtil;
 
-public class TeleportEntityRenderHandler {
+import static org.lwjgl.opengl.GL11.*;
 
-  private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+public class TeleportEntityRenderHandler {
 
   @SubscribeEvent
   public void onEntityRender(RenderLivingEvent.Post event) {
+    
     EntityLivingBase e = event.entity;
-    float radius = e.width / 2.0F;
-    AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(-radius, 0, -radius, radius, e.height + 0.25, radius);
+    
+    if(e.getEntityData().getBoolean(TileTelePad.TELEPORTING_KEY)) {
 
-    GL11.glPushMatrix();
-    GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-    GL11.glDepthMask(false);
-    GL11.glDisable(GL11.GL_TEXTURE_2D);
-    GL11.glDisable(GL11.GL_LIGHTING);
-    GL11.glDisable(GL11.GL_CULL_FACE);
-    GL11.glDisable(GL11.GL_BLEND);
-    GL11.glTranslated(event.x, event.y, event.z);
-    bb = bb.expand(0.25, 0, 0.25);
-    GL11.glRotatef((e.ticksExisted + RenderUtil.getTimer().renderPartialTicks) * 4, 0, 1, 0);
-    if(event.entity.getEntityData().getBoolean(TileTelePad.TELEPORTING_KEY)) {
-      RenderGlobal.drawOutlinedBoundingBox(bb, 0xAA55FF);
+      float radius = e.width / 2.0F;
+      AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(-radius, 0, -radius, radius, e.height + 0.25, radius);
+
+      glPushMatrix();
+      glPushAttrib(GL_ALL_ATTRIB_BITS);
+      glDisable(GL_TEXTURE_2D);
+      glShadeModel(GL_SMOOTH);
+      glEnable(GL_BLEND);
+      OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE, GL_ZERO, GL_ONE);
+      glDisable(GL_ALPHA_TEST);
+      glEnable(GL_CULL_FACE);
+      glDisable(GL_LIGHTING);
+      glDepthMask(false);
+      glTranslated(event.x, event.y, event.z);
+      bb = bb.expand(0.5, 0, 0.5);
+      float speed = (1 - (e.getEntityData().getFloat(TileTelePad.PROGRESS_KEY) * 0.7f)) * 100;
+      float rot = ((e.ticksExisted + RenderUtil.getTimer().renderPartialTicks) % speed) * (360 / speed);
+      System.out.println(rot);
+      glRotatef(rot, 0, 1, 0);
+
+      double yMax = bb.maxY + 1;
+
+      Tessellator tes = Tessellator.instance;
+      tes.startDrawingQuads();
+
+      colorBot(tes);
+      tes.addVertex(bb.minX, bb.minY, bb.minZ);
+      tes.addVertex(bb.minX, bb.minY, bb.maxZ);
+      colorTop(tes);
+      tes.addVertex(bb.minX, yMax, bb.maxZ);
+      tes.addVertex(bb.minX, yMax, bb.minZ);
+      colorBot(tes);
+      tes.addVertex(bb.minX, bb.minY, bb.maxZ);
+      tes.addVertex(bb.minX, bb.minY, bb.minZ);
+      colorTop(tes);
+      tes.addVertex(bb.minX, yMax, bb.minZ);
+      tes.addVertex(bb.minX, yMax, bb.maxZ);
+      
+      colorBot(tes);
+      tes.addVertex(bb.maxX, bb.minY, bb.minZ);
+      tes.addVertex(bb.maxX, bb.minY, bb.maxZ);
+      colorTop(tes);
+      tes.addVertex(bb.maxX, yMax, bb.maxZ);
+      tes.addVertex(bb.maxX, yMax, bb.minZ);
+      colorBot(tes);
+      tes.addVertex(bb.maxX, bb.minY, bb.maxZ);
+      tes.addVertex(bb.maxX, bb.minY, bb.minZ);
+      colorTop(tes);
+      tes.addVertex(bb.maxX, yMax, bb.minZ);
+      tes.addVertex(bb.maxX, yMax, bb.maxZ);
+      
+      colorBot(tes);
+      tes.addVertex(bb.minX, bb.minY, bb.minZ);
+      tes.addVertex(bb.maxX, bb.minY, bb.minZ);
+      colorTop(tes);
+      tes.addVertex(bb.maxX, yMax, bb.minZ);
+      tes.addVertex(bb.minX, yMax, bb.minZ);
+      colorBot(tes);
+      tes.addVertex(bb.maxX, bb.minY, bb.minZ);
+      tes.addVertex(bb.minX, bb.minY, bb.minZ);
+      colorTop(tes);
+      tes.addVertex(bb.minX, yMax, bb.minZ);
+      tes.addVertex(bb.maxX, yMax, bb.minZ);
+      
+      colorBot(tes);
+      tes.addVertex(bb.minX, bb.minY, bb.maxZ);
+      tes.addVertex(bb.maxX, bb.minY, bb.maxZ);
+      colorTop(tes);
+      tes.addVertex(bb.maxX, yMax, bb.maxZ);
+      tes.addVertex(bb.minX, yMax, bb.maxZ);
+      colorBot(tes);
+      tes.addVertex(bb.maxX, bb.minY, bb.maxZ);
+      tes.addVertex(bb.minX, bb.minY, bb.maxZ);
+      colorTop(tes);
+      tes.addVertex(bb.minX, yMax, bb.maxZ);
+      tes.addVertex(bb.maxX, yMax, bb.maxZ);
+
+      tes.draw();
+
+      GL11.glPopAttrib();
+      GL11.glPopMatrix();
     }
-    GL11.glPopAttrib();
-    GL11.glPopMatrix();
+  }
+
+  private void colorBot(Tessellator tes) {
+    tes.setColorRGBA(100, 100, 255, 100);
+  }
+
+  private void colorTop(Tessellator tes) {
+    tes.setColorRGBA(150, 150, 255, 0);
   }
 }

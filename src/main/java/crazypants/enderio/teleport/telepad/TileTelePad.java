@@ -41,7 +41,7 @@ import crazypants.util.IProgressTile;
 import crazypants.util.Util;
 
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
-
+  
   private boolean inNetwork;
 
   private EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
@@ -63,6 +63,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
   private MachineSound activeSound = null;
+  
+  public static final String TELEPORTING_KEY = "eio:teleporting";
+  public static final String PROGRESS_KEY = "teleportprogress";
 
   @Override
   public void updateEntity() {
@@ -83,6 +86,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
         activeSound.setVolume(Math.min(activeSound.getVolume() + 0.1f, 0.5f));
         activeSound.setPitch(1 + getProgress());
+        updateQueuedEntities();
       } else if(!active() && activeSound != null) {
         if(activeSound.getVolume() > 0) {
           activeSound.setVolume(activeSound.getVolume() - 0.1f);
@@ -123,14 +127,20 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private void updateQueuedEntities() {
-    List<Entity> toRemove = Lists.newArrayList();
-    for (Entity e : toTeleport) {
-      if(!isEntityInRange(e)) {
-        toRemove.add(e);
+    if(worldObj.isRemote) {
+      if(active()) {
+        getCurrentTarget().getEntityData().setFloat(PROGRESS_KEY, getProgress());
       }
-    }
-    for (Entity e : toRemove) {
-      dequeueTeleport(e);
+    } else {
+      List<Entity> toRemove = Lists.newArrayList();
+      for (Entity e : toTeleport) {
+        if(!isEntityInRange(e)) {
+          toRemove.add(e);
+        }
+      }
+      for (Entity e : toRemove) {
+        dequeueTeleport(e);
+      }
     }
   }
 
@@ -273,8 +283,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return (int) (getProgress() * scale);
   }
 
-  private int getPowerForTeleport() {
-    return new BlockCoord(this).distance(target) * 1000;
+  private int calculateTeleportPower() {
+    return this.maxPower = new BlockCoord(this).distance(target) * 1000;
   }
 
   public boolean active() {
@@ -375,7 +385,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(inNetwork()) {
       if(isMaster()) {
         this.target = coords;
-        this.maxPower = getPowerForTeleport();
       } else {
         this.master.setCoords(coords);
       }
@@ -423,9 +432,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
   }
 
-  public static final String TELEPORTING_KEY = "eio:teleporting";
-
   void enqueueTeleport(Entity entity) {
+    calculateTeleportPower();
     entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
     toTeleport.add(entity);
     if(entity.worldObj.isRemote) {
