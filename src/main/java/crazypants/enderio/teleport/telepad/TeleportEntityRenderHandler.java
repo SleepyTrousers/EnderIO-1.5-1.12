@@ -39,7 +39,6 @@ public class TeleportEntityRenderHandler {
       bb = bb.expand(0.5, 0, 0.5);
       float speed = (1 - (e.getEntityData().getFloat(TileTelePad.PROGRESS_KEY) * 0.7f)) * 100;
       float rot = ((e.ticksExisted + RenderUtil.getTimer().renderPartialTicks) % speed) * (360 / speed);
-      System.out.println(rot);
       glRotatef(rot, 0, 1, 0);
 
       double yMax = bb.maxY + 1;

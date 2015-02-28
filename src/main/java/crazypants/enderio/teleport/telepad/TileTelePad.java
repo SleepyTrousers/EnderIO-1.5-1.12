@@ -56,7 +56,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private int lastSyncPowerStored;
 
-  private Queue<Entity> toTeleport = Queues.newLinkedBlockingQueue();
+  private Queue<Entity> toTeleport = Queues.newArrayDeque();
   private int powerUsed;
   private int maxPower;
   private int lastSyncPowerUsed;
@@ -96,6 +96,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
       }
     } else {
+      System.out.println(toTeleport);
       if(active()) {
         if(powerUsed >= maxPower) {
           teleport(toTeleport.poll());
@@ -131,16 +132,15 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       if(active()) {
         getCurrentTarget().getEntityData().setFloat(PROGRESS_KEY, getProgress());
       }
-    } else {
-      List<Entity> toRemove = Lists.newArrayList();
-      for (Entity e : toTeleport) {
-        if(!isEntityInRange(e)) {
-          toRemove.add(e);
-        }
+    }
+    List<Entity> toRemove = Lists.newArrayList();
+    for (Entity e : toTeleport) {
+      if(!isEntityInRange(e) || e.isDead) {
+        toRemove.add(e);
       }
-      for (Entity e : toRemove) {
-        dequeueTeleport(e);
-      }
+    }
+    for (Entity e : toRemove) {
+      dequeueTeleport(e);
     }
   }
 
@@ -433,6 +433,10 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   void enqueueTeleport(Entity entity) {
+    if(toTeleport.contains(entity)) {
+      return;
+    }
+
     calculateTeleportPower();
     entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
     toTeleport.add(entity);
