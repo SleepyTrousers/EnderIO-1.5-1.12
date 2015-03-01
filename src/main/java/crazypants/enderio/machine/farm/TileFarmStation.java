@@ -210,15 +210,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public void damageTool(ToolType type, Block blk, BlockCoord bc, int damage) {
 
+    ItemStack tool = getTool(type);
+    if(tool == null) {
+      return;
+    }
+
     float rand = worldObj.rand.nextFloat();
     if(rand >= Config.farmToolTakeDamageChance) {
       return;
     }
 
-    ItemStack tool = getTool(type);
-    if(tool == null) {
-      return;
-    }
     boolean canDamage = canDamage(tool);
     if(type == ToolType.AXE) {
       tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.x, bc.y, bc.z, farmerJoe);

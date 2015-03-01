@@ -104,10 +104,13 @@ public class TreeFarmer implements IFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
 
-    HarvestResult res = new HarvestResult();
-    if(!farm.hasAxe()) {
-      return res;
+    boolean hasAxe = farm.hasAxe();
+
+    if(!hasAxe) {
+      return null;
     }
+
+    HarvestResult res = new HarvestResult();
     harvester.harvest(farm, this, bc, res);
     Collections.sort(res.harvestedBlocks, comp);
 
@@ -116,7 +119,7 @@ public class TreeFarmer implements IFarmerJoe {
     // avoid calling this in a loop
     boolean hasShears = farm.hasShears();
 
-    for (int i = 0; i < res.harvestedBlocks.size() && farm.hasAxe(); i++) {
+    for (int i = 0; i < res.harvestedBlocks.size() && hasAxe; i++) {
       BlockCoord coord = res.harvestedBlocks.get(i);
       Block blk = farm.getBlock(coord);
 
@@ -126,10 +129,10 @@ public class TreeFarmer implements IFarmerJoe {
       boolean wasWood = isWood(blk);
       
       if (blk instanceof IShearable && hasShears) {
-        drops = ((IShearable)blk).onSheared(null, farm.getWorldObj(), bc.x, bc.y, bc.z, 0);
+        drops = ((IShearable)blk).onSheared(null, farm.getWorldObj(), coord.x, coord.y, coord.z, 0);
         wasSheared = true;
       } else {
-        drops = blk.getDrops(farm.getWorldObj(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.getAxeLootingValue());
+        drops = blk.getDrops(farm.getWorldObj(), coord.x, coord.y, coord.z, farm.getBlockMeta(coord), farm.getAxeLootingValue());
         wasAxed = true;
       }
       
@@ -152,15 +155,17 @@ public class TreeFarmer implements IFarmerJoe {
       farm.actionPerformed(wasWood || wasSheared);
       if(wasAxed) {
         farm.damageAxe(blk, coord);
+        hasAxe = farm.hasAxe();
       } else if (wasSheared) {
         farm.damageShears(blk, coord);
+        hasShears = farm.hasShears();
       }
       
       farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
       actualHarvests.add(coord);
     }
     
-    if (!farm.hasAxe()) {
+    if (!hasAxe) {
       farm.setNotification(TileFarmStation.NOTIFICATION_NO_AXE);
     }
     
