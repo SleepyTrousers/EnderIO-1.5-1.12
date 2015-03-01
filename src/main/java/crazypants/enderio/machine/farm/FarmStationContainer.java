@@ -17,8 +17,10 @@ public class FarmStationContainer extends AbstractMachineContainer {
   protected void addMachineSlots(InventoryPlayer playerInv) {
 
     Point[] points = new Point[] {
-      new Point(53, 12),
-      new Point(71, 12),
+      new Point(44, 12),
+      new Point(62, 12),
+      new Point(80, 12),
+
       new Point(53, 37),
       new Point(71, 37),
       new Point(53, 55),
@@ -42,7 +44,7 @@ public class FarmStationContainer extends AbstractMachineContainer {
 
         @Override
         public int getSlotStackLimit() {             
-          if(slot > 1 && slot < 6) {
+          if(slot > 2 && slot < 7) {
             int tier = ((TileFarmStation)tileEntity).tier;
             return (int) (16 * Math.pow(2, tier));
           }
