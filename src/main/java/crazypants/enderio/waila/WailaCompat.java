@@ -28,6 +28,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
@@ -42,7 +43,6 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
-
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -133,6 +133,10 @@ public class WailaCompat implements IWailaDataProvider {
     MovingObjectPosition pos = accessor.getPosition();
     if(config.getConfig("facades.hidden")) {
       if(accessor.getBlock() instanceof IFacade) {
+        // If facades are hidden, we need to ignore it
+        if(accessor.getTileEntity() instanceof IConduitBundle && ConduitUtil.isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
+          return null;
+        }
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if(facade != null) {
