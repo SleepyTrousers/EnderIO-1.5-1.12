@@ -14,7 +14,7 @@ public class SkeletonHandler {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void skeletonJoinWorld(LivingSpawnEvent event) {
-    if(isWitherSkele(event.entity)) {
+    if(!event.world.isRemote && isWitherSkele(event.entity)) {
       event.entity.setDead();
       event.world.spawnEntityInWorld(new EntityWitherSkeleton((EntitySkeleton) event.entity));
     }
@@ -22,7 +22,7 @@ public class SkeletonHandler {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void skeletonJoinWorld(EntityJoinWorldEvent event) {
-    if(isWitherSkele(event.entity)) {
+    if(!event.world.isRemote && isWitherSkele(event.entity) && !event.entity.isDead) {
       event.setCanceled(true);
       event.world.spawnEntityInWorld(new EntityWitherSkeleton((EntitySkeleton) event.entity));
     }
