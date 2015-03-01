@@ -98,16 +98,16 @@ public class ServerChannelRegister extends ChannelRegister {
     File dataFile = getDataFile();
     if(!createFolderAndWriteFile(channels, dataFile)) {
       dataFile = getFallbackDataFile();
-      Log.error("ServerChannelRegister: Attempting to write Dimensional Trasciever data to fallback location: " + dataFile.getAbsolutePath());
+      Log.error("ServerChannelRegister: Attempting to write Dimensional Transceiver data to fallback location: " + dataFile.getAbsolutePath());
       try {
         writeFile(copyChannels(), dataFile);
       } catch (Exception e) {
-        Log.error("ServerChannelRegister: Could not write Dimensional Trasciever data fallback location " + dataFile.getAbsolutePath()
-            + " channles not saved: " + e.getMessage());
+        Log.error("ServerChannelRegister: Could not write Dimensional Transceiver data fallback location " + dataFile.getAbsolutePath()
+            + " channels not saved: " + e.getMessage());
         return;
       }
     }
-    Log.info("ServerChannelRegister: Dimensional Trasciever data saved to " + dataFile.getAbsolutePath());
+    Log.info("ServerChannelRegister: Dimensional Transceiver data saved to " + dataFile.getAbsolutePath());
   }
 
   private static boolean createFolderAndWriteFile(EnumMap<ChannelType, List<Channel>> data, File dataFile) {
@@ -117,7 +117,7 @@ public class ServerChannelRegister extends ChannelRegister {
       writeFile(data, dataFile);
       return true;
     } catch (Exception e) {
-      Log.error("ServerChannelRegister: Could not write Dimensional Trasciever channels to " + dataFile.getAbsolutePath() + " : " + e);
+      Log.error("ServerChannelRegister: Could not write Dimensional Transceiver channels to " + dataFile.getAbsolutePath() + " : " + e);
       return false;
     }
   }
