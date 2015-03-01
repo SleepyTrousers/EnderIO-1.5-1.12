@@ -171,7 +171,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(!entsInBounds.isEmpty()) {
 
       for (EntityLivingBase ent : entsInBounds) {
-        if(!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable()) {
+        if(!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable() && ent.hurtResistantTime == 0) {
           if (ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.disableDamage) continue;  //Ignore players in creative, can't damage them;
           if (Config.killerJoeMustSee && !canJoeSee(ent)) continue;
           FakePlayer fakee = getAttackera();
@@ -182,8 +182,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           if(getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
             setInventorySlotContents(0, null);
           }
+          return false;
         }
-        return false;
       }
     }
     return false;
