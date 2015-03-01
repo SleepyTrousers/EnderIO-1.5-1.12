@@ -438,7 +438,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public boolean needSeeds(BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    return (inv == null || (inv.stackSize < 8));
+    return (inv == null || (inv.stackSize == 1 && isSlotLocked(slot)));
   }
 
   public ItemStack takeSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {

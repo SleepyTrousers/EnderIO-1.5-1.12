@@ -112,9 +112,9 @@ public class TreeFarmer implements IFarmerJoe {
     Collections.sort(res.harvestedBlocks, comp);
 
     List<BlockCoord> actualHarvests = new ArrayList<BlockCoord>();
-    
-    boolean needSeeds = farm.needSeeds(bc); // avoid calling these in a loop
-    boolean hasSheards = farm.hasShears();
+
+    // avoid calling this in a loop
+    boolean hasShears = farm.hasShears();
 
     for (int i = 0; i < res.harvestedBlocks.size() && farm.hasAxe(); i++) {
       BlockCoord coord = res.harvestedBlocks.get(i);
@@ -125,7 +125,7 @@ public class TreeFarmer implements IFarmerJoe {
       boolean wasAxed = false;
       boolean wasWood = isWood(blk);
       
-      if (blk instanceof IShearable && hasSheards && !needSeeds) {
+      if (blk instanceof IShearable && hasShears) {
         drops = ((IShearable)blk).onSheared(null, farm.getWorldObj(), bc.x, bc.y, bc.z, 0);
         wasSheared = true;
       } else {
