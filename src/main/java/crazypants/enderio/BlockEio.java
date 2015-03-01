@@ -138,7 +138,7 @@ public abstract class BlockEio extends Block {
   }
 
   public void dropAsItem(World world, int x, int y, int z, TileEntityEio te) {
-    int meta = damageDropped(world.getBlockMetadata(x, y, z));
+    int meta = damageDropped(te.getBlockMetadata());
     ItemStack itemStack = new ItemStack(this, 1, meta);
     processDrop(world, x, y, z, te, itemStack);
     dropBlockAsItem(world, x, y, z, itemStack);
