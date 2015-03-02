@@ -646,10 +646,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     int slotLayoutVersion = nbtRoot.getInteger("slotLayoutVersion");
     if (slotLayoutVersion < 1) {
-      for (int i = 9; i >= 2; i--) {
-        inventory[i+1] = inventory[i];
+      for (int i = inventory.length - 2; i >= 2; i--) {
+        if (inventory[i+1] == null) {
+          // Should always be true, but better safe than deleting items
+          inventory[i+1] = inventory[i];
+          inventory[i] = null;
+        }
       }
-      inventory[2] = null;
     }
   }
 
