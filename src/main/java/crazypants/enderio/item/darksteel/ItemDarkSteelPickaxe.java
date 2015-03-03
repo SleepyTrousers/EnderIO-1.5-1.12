@@ -97,20 +97,13 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   @Override
-  public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
-    applyDamage(par3EntityLivingBase, par1ItemStack, 2);
-    return true;
-  }
-
-  @Override
   public boolean onBlockDestroyed(ItemStack item, World world, Block block, int x, int y, int z, EntityLivingBase entLiving) {
     if(block.getBlockHardness(world, x, y, z) != 0.0D) {
       if(useObsidianEffeciency(item, block)) {
         extractEnergy(item, Config.darkSteelPickPowerUseObsidian, false);
       }
-      applyDamage(entLiving, item, 1);
     }
-    return true;
+    return super.onBlockDestroyed(item, world, block, x, y, z, entLiving);
   }
 
     @Override
@@ -151,25 +144,32 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 	return false;
     }
 
-  private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage) {
-
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
-      eu.extractEnergy(damage * Config.darkSteelPickPowerUsePerDamagePoint, false);
-
+  @Override
+  public void setDamage(ItemStack stack, int newDamage) {
+    int oldDamage = getDamage(stack);
+    if (newDamage <= oldDamage) {
+      super.setDamage(stack, newDamage);
     } else {
-      damage = stack.getItemDamage() + damage;
-      if(damage >= getMaxDamage()) {
-        stack.stackSize = 0;
+      int damage = newDamage - oldDamage;
+  
+      if (!absorbDamageWithEnergy(stack, damage * Config.darkSteelPickPowerUsePerDamagePoint)) {
+        super.setDamage(stack, newDamage);
       }
-      stack.setItemDamage(damage);
     }
-    if(eu != null) {
-      eu.writeToItem(stack);
-    }
-
   }
 
+  private boolean absorbDamageWithEnergy(ItemStack stack, int amount) {
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+      eu.extractEnergy(amount, false);
+      eu.writeToItem(stack);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  
   @Override
   public boolean canHarvestBlock(Block block, ItemStack item) {
     if(hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {

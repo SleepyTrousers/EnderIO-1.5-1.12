@@ -8,7 +8,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -141,7 +140,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
             worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
           }
         } else if(block == refBlock) { //other wise leaves
-          applyDamage(player, player.getCurrentEquippedItem(), 1, true);
+          extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
           usedPower = true;
         }
       }
@@ -160,20 +159,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
-    applyDamage(par3EntityLivingBase, par1ItemStack, 2, false);
-    return true;
-  }
-
-  @Override
-  public boolean onBlockDestroyed(ItemStack item, World world, Block block, int x, int y, int z, EntityLivingBase entLiving) {
-    if(block.getBlockHardness(world, x, y, z) != 0.0D) {
-      applyDamage(entLiving, item, 1, false);
-    }
-    return true;
-  }
-
-  @Override
   public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
     if (world.isRemote) {
       return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
@@ -181,21 +166,28 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return false;
   }
 
-  private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage, boolean isMultiharvest) {
+  @Override
+  public void setDamage(ItemStack stack, int newDamage) {
+    int oldDamage = getDamage(stack);
+    if (newDamage <= oldDamage) {
+      super.setDamage(stack, newDamage);
+    } else {
+      int damage = newDamage - oldDamage;
+  
+      if (!absorbDamageWithEnergy(stack, damage * Config.darkSteelAxePowerUsePerDamagePoint)) {
+        super.setDamage(stack, newDamage);
+      }
+    }
+  }
 
+  private boolean absorbDamageWithEnergy(ItemStack stack, int amount) {
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
     if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
-      int powerUse = isMultiharvest ? Config.darkSteelAxePowerUsePerDamagePointMultiHarvest : Config.darkSteelAxePowerUsePerDamagePoint;
-      eu.extractEnergy(damage * powerUse, false);
-    } else {
-      damage = stack.getItemDamage() + damage;
-      if(damage >= getMaxDamage()) {
-        stack.stackSize = 0;
-      }
-      stack.setItemDamage(damage);
-    }
-    if(eu != null) {      
+      eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
+      return true;
+    } else {
+      return false;
     }
   }
 
