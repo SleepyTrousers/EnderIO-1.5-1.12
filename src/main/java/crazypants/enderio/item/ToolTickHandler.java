@@ -19,42 +19,58 @@ import crazypants.enderio.network.PacketHandler;
 
 public class ToolTickHandler {
   protected int slotSelected = -1;
-  public static int dWheel;
+  protected int dWheel = 0;
 
+  /*
+   * At the beginning of the tick we see if there's a player holding a yeta wrench
+   * and sneaking. If so, then we'll "steal" the mouse wheel movement and store it
+   * for ourself. Other mods will not see it anymore. Minecraft itself will, as
+   * it uses the event system---which is not cleared by polling.
+   * 
+   * Because of that, Minecraft will happily change hotbar slots while we also 
+   * handle the wheel. So we need to undo that.
+   * 
+   * Later, we'll process the information: Once the wheel has moved at least 120
+   * units (that's one "tick" for mouse wheels that have "ticks"), we'll change
+   * the mode according to the direction of the scroll. If not, we'll continue to
+   * collect movement data.
+   * 
+   * If the wheel has been moved, but only a little bit, we keep recording the
+   * change. This case can only happen when the user has a "tick"-less mouse or a 
+   * touchpad that gives finer data.
+   */
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
-
-    if(event.phase == Phase.START) {
-      dWheel = Mouse.getDWheel() / 120;
+    if (event.phase == Phase.START) {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-      if(isToolSelected(player)
-          && player.isSneaking()) {
-        slotSelected = player.inventory.currentItem;
+      if(player != null && player.isSneaking() && isToolSelected(player)) {
+        if (slotSelected != -1) {
+          dWheel += Mouse.getDWheel();
+        } else {
+          dWheel = Mouse.getDWheel();
+          slotSelected = player.inventory.currentItem;
+        }
       } else {
         slotSelected = -1;
       }
-    } else {
-
+    } else if (slotSelected != -1) {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-      if(player != null) {
-        if(slotSelected > -1 && dWheel != Mouse.getDWheel()) {
+      if (player != null) {
+        ItemStack stack = player.inventory.getStackInSlot(slotSelected);
+        if (stack != null) {
           player.inventory.currentItem = slotSelected;
           Minecraft.getMinecraft().playerController.updateController();
 
-          ItemStack stack = player.inventory.getStackInSlot(slotSelected);
-          if(stack == null) {
-            slotSelected = -1;
-            return;
-          }          
-          if(stack.getItem() == EnderIO.itemConduitProbe) {            
-            changeConduitProbeMode(stack);              
-          } else if(stack.getItem() instanceof IConduitControl) {          
-            changeDisplayMode(stack, player);
+          if (Math.abs(dWheel) >= 120) {
+            if(stack.getItem() == EnderIO.itemConduitProbe) {            
+              changeConduitProbeMode(stack);              
+            } else if(stack.getItem() instanceof IConduitControl) {          
+              changeDisplayMode(stack, player);
+            }
+            dWheel = 0;
           }
         }
-        slotSelected = -1;
-
       }
     }
   }
@@ -63,23 +79,13 @@ public class ToolTickHandler {
     if (!((IConduitControl)stack.getItem()).showOverlay(stack, player)) {
       return;
     }
-    ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(stack);
-    if(curMode == null) {
-      curMode = ConduitDisplayMode.ALL;
+    ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(stack);
+    if(mode == null) {
+      mode = ConduitDisplayMode.ALL;
     }
-
-    int dif = dWheel - Mouse.getDWheel();
-    ConduitDisplayMode newMode = null;
-    if(dif < 0) {
-      newMode = curMode.next();
-      ConduitDisplayMode.setDisplayMode(stack, newMode);
-    } else if(dif > 0) {
-      newMode = curMode.previous();
-      ConduitDisplayMode.setDisplayMode(stack, newMode);
-    }
-    if(newMode != null) {
-      PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(slotSelected, newMode));
-    }
+    mode = dWheel < 0 ? mode.next() : mode.previous();
+    ConduitDisplayMode.setDisplayMode(stack, mode);
+    PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(slotSelected, mode));
   }
 
   private void changeConduitProbeMode(ItemStack stack) {
