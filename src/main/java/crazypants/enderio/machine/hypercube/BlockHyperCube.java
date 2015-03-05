@@ -123,32 +123,6 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
 
   }
 
-  @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileHyperCube) {
-        TileHyperCube hc = (TileHyperCube) te;
-        hc.onBreakBlock();
-        ItemStack itemStack = new ItemStack(this);
-        PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getEnergyStored());
-        setChannelOnItem(hc, itemStack);
-        setIoOnItem(hc, itemStack);
-        ret.add(itemStack);
-
-        ItemRecieveBuffer rb = hc.getRecieveBuffer();
-        for (int i = 0; i < rb.getSizeInventory(); i++) {
-          ItemStack stack = rb.getStackInSlot(i);
-          if(stack != null) {
-            ret.add(stack);
-          }
-        }
-      }
-    }
-    return ret;
-  }
-
   private void setChannelOnItem(TileHyperCube hc, ItemStack itemStack) {
     Channel chan = hc.getChannel();
     if(chan != null) {
