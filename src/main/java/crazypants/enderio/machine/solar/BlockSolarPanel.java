@@ -139,8 +139,12 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
-      tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
-          EnumChatFormatting.WHITE, efficiency * 100));
+      if(!solar.canSeeSun()) {
+        tooltip.add(EnumChatFormatting.RED + Lang.localize("tooltip.sunlightBlocked"));
+      } else {
+        tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
+            EnumChatFormatting.WHITE, efficiency * 100));
+      }
     }
   }
 
