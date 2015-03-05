@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -85,6 +86,7 @@ import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.drain.BlockDrain;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -302,6 +304,8 @@ public class EnderIO {
   public static ItemFrankenSkull itemFrankenSkull;
 
   public static BlockVacuumChest blockVacuumChest;
+  
+  public static BlockDrain blockDrain;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -344,6 +348,8 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
+
+    blockDrain = BlockDrain.create();
 
     blockTransceiver = BlockTransceiver.create();
 

@@ -110,6 +110,13 @@ public class MachineRecipes {
     ItemStack advTank = new ItemStack(EnderIO.blockTank, 1, 1);
     GameRegistry.addRecipe(new ShapedOreRecipe(advTank, "ibi", "bgb", "ibi", 'g', "blockGlassHardened", 'i', darkSteel, 'b', EnderIO.blockDarkIronBars));
 
+    //Drain
+    if (Config.drainEnabled) {
+      ItemStack drain = new ItemStack(EnderIO.blockDrain, 1, 0);
+      GameRegistry.addRecipe(new ShapedOreRecipe(drain, "btb", "pmp", "eve", 'm', machineChassi, 't', basicTank, 'p',
+          Blocks.piston, 'b', Items.bucket, 'e', electricSteel, 'v', Items.cauldron));
+    }
+
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);
     if(Config.useHardRecipes) {

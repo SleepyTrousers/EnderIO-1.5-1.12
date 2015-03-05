@@ -51,6 +51,7 @@ public enum ModObject {
   blockVat,
   blockFarmStation,
   blockTank,
+  blockDrain,
   blockCrafter,
   blockVacuumChest,
   blockWirelessCharger,

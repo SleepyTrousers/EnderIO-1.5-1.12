@@ -423,6 +423,12 @@ enderio.tank.tank=Tank
 enderio.tooltip.none=None
 enderio.tooltip.fluidStored=Fluid Stored
 
+tile.blockDrain.name=Powered Drain
+tile.blockDrain.tooltip.detailed.line1=Collects liquids that flow into it.
+tile.blockDrain.tooltip.detailed.line2=Upgrade with capacitors to increase
+tile.blockDrain.tooltip.detailed.line3=working speed.
+enderio.blockDrain.tooltip.disabledMessage=Note: The drain is disabled on this server.
+
 tile.blockCrafter.name=Crafter
 tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
 tile.blockCrafter.tooltip.detailed.line2=Consumes power per operation

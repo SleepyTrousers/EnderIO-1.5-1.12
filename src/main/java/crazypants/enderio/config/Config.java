@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.config.Configuration;
 import tterrag.core.common.event.ConfigFileChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -72,6 +73,7 @@ public final class Config {
   public static final Section sectionTelepad = new Section("Telepad", "telepad");
   public static final Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
   public static final Section sectionMisc = new Section("Misc", "misc");
+  public static final Section sectionDrain = new Section("Drain", "drain");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -466,6 +468,12 @@ public final class Config {
 
   public static boolean enableWaterFromBottles = true;
 
+  public static int drainContinuousEnergyUseRF = 10;
+  public static int drainPerBucketEnergyUseRF = 400;
+  public static int drainPerSourceBlockMoveEnergyUseRF = 250;
+  public static boolean drainAllowOnDedicatedServer = false;
+  public static boolean drainEnabled = false;
+
   public static boolean telepadLockDimension = true;
   public static boolean telepadLockCoords = true;
 
@@ -656,6 +664,19 @@ public final class Config {
 
     vatPowerUserPerTickRF = config.get(sectionPower.name, "vatPowerUserPerTickRF", vatPowerUserPerTickRF,
         "Power use (RF/t) used by the vat.").getInt(vatPowerUserPerTickRF);
+
+    drainContinuousEnergyUseRF = config.get(sectionDrain.name, "drainContinuousEnergyUseRF", drainContinuousEnergyUseRF,
+        "The amount of power used by a drain per tick.").getInt(drainContinuousEnergyUseRF);
+    drainPerBucketEnergyUseRF = config.get(sectionDrain.name, "drainPerBucketEnergyUseRF", drainPerBucketEnergyUseRF,
+        "The amount of power used by a drain per 1000mB of liquid collected.").getInt(drainPerBucketEnergyUseRF);
+    drainPerSourceBlockMoveEnergyUseRF = config.get(sectionDrain.name, "drainPerSourceBlockMoveEnergyUseRF",
+        drainPerSourceBlockMoveEnergyUseRF, "The amount of power used by a drain to move a source block by one meter.").getInt(
+        drainPerSourceBlockMoveEnergyUseRF);
+
+    drainAllowOnDedicatedServer = config.get(sectionDrain.name, "drainAllowOnDedicatedServer", drainAllowOnDedicatedServer,
+        "Allow the use of the drain on a dedicated server.").getBoolean(drainAllowOnDedicatedServer);
+
+    drainEnabled = drainAllowOnDedicatedServer || !FMLCommonHandler.instance().getSide().isClient();
 
     detailedPowerTrackingEnabled = config
         .get(
