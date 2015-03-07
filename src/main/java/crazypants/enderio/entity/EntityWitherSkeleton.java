@@ -74,7 +74,6 @@ public class EntityWitherSkeleton extends EntitySkeleton {
         if(stack.getItem() == cleaver) {
           beheading += 2;
         }
-        System.out.println(beheading);
         if(beheading > 0 && worldObj.rand.nextInt(100) < beheading * 10) {
           EntityUtil.spawnItemInWorldWithRandomMotion(worldObj, new ItemStack(Items.skull, 1, 1), posX, posY, posZ);
         }
