@@ -26,6 +26,70 @@ ore dictionary.
 -->
 
 <AlloySmelterRecipes>
-  
+    <recipeGroup name="TConstruct">
+        <recipe name="Aluminium Brass" energyCost="750">
+            <input>
+                <itemStack oreDictionary="ingotAluminium" number="3" />
+                <itemStack oreDictionary="ingotCopper" number="1" />
+            </input>
+            <output>
+                <itemStack oreDictionary="ingotAluminiumBrass" number="4" />
+            </output>
+        </recipe>
+
+        <recipe name="Alumite" energyCost="400">
+            <input>
+                <itemStack oreDictionary="ingotAluminium" number="5" />
+                <itemStack oreDictionary="ingotIron" number="2" />
+                <itemStack oreDictionary="dustObsidian" number="2" />
+            </input>
+            <output>
+                <itemStack oreDictionary="ingotAlumite" number="3" />
+            </output>
+        </recipe>
+
+        <recipe name="Alumite 2" energyCost="400">
+            <input>
+                <itemStack oreDictionary="ingotAluminium" number="5" />
+                <itemStack oreDictionary="ingotIron" number="2" />
+                <itemStack oreDictionary="ingotObsidian" number="2" />
+            </input>
+            <output>
+                <itemStack oreDictionary="ingotAlumite" number="3" />
+            </output>
+        </recipe>
+
+        <recipe name="Smelted Bronze" energyCost="750">
+            <input>
+                <itemStack oreDictionary="ingotCopper" number="3"/> 
+                <itemStack oreDictionary="ingotTin" number="1"/> 
+            </input>      
+            <output>
+                <itemStack oreDictionary="ingotBronze" number="4" />
+            </output>
+        </recipe>
+
+        <recipe name="Manyullin" energyCost="1000">
+            <input>
+                <itemStack oreDictionary="ingotCobalt" number="1"/> 
+                <itemStack oreDictionary="ingotArdite" number="1"/> 
+            </input>      
+            <output>
+                <itemStack oreDictionary="ingotManyullyn" number="1" />
+            </output>
+        </recipe>
+
+
+        <recipe name="Endstone" energyCost="500">
+            <input>
+                <itemStack modID="minecraft" itemName="ender_pearl" number="4" />
+                <itemStack modID="minecraft" itemName="obsidian" number="1" />
+            </input>
+            <output>
+                <itemStack modID="minecraft" itemName="end_stone" number="1" />
+            </output>
+        </recipe>
+
+    </recipeGroup>
 </AlloySmelterRecipes>  
 
