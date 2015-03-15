@@ -128,16 +128,19 @@ public class CrusherRecipeManager {
   }
 
   public void addCustomRecipes(String xmlDef) {
+    GrindingBallTagHandler th = new GrindingBallTagHandler();
     RecipeConfig config;
     try {
-      config = RecipeConfigParser.parse(xmlDef, new GrindingBallTagHandler());
+      config = RecipeConfigParser.parse(xmlDef, th);
     } catch (Exception e) {
       Log.error("Error parsing custom xml");
       return;
     }
 
+    balls.addAll(th.balls.values());
+    ballExcludes.addAll(th.excludes);
     if(config == null) {
-      Log.error("Could process custom XML");
+      Log.error("Could not process custom XML");
       return;
     }
     processConfig(config);

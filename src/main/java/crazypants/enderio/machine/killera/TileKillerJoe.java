@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
@@ -72,7 +73,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private float prevSwingProgress;
 
   private final ExperienceContainer xpCon = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
-  
+
   private boolean hadSword;
 
   public TileKillerJoe() {
@@ -108,7 +109,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     hooverXP();
     if(worldObj != null && !worldObj.isRemote) {
       getAttackera().onUpdate();
-      if (inventory[0] != null != hadSword) {
+      if(inventory[0] != null != hadSword) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         hadSword = inventory[0] != null;
       }
@@ -120,13 +121,14 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public ExperienceContainer getContainer() {
     return xpCon;
   }
-  
+
   private static final int[] slots = new int[1];
+
   @Override
   public int[] getAccessibleSlotsFromSide(int var1) {
     return slots;
   }
-  
+
   @Override
   public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
     if(isSideDisabled(side)) {
@@ -154,7 +156,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
       xpCon.setDirty(false);
     }
-    
+
     if(!redstoneCheckPassed) {
       return false;
     }
@@ -171,9 +173,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(!entsInBounds.isEmpty()) {
 
       for (EntityLivingBase ent : entsInBounds) {
-        if(!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable()) {
-          if (ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.disableDamage) continue;  //Ignore players in creative, can't damage them;
-          if (Config.killerJoeMustSee && !canJoeSee(ent)) continue;
+        if(!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable() && ent.hurtResistantTime == 0) {
+          if(ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage)
+            continue; //Ignore players in creative, can't damage them;
+          if(Config.killerJoeMustSee && !canJoeSee(ent))
+            continue;
           FakePlayer fakee = getAttackera();
           fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
           fakee.attackTargetEntityWithCurrentItem(ent);
@@ -182,8 +186,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           if(getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
             setInventorySlotContents(0, null);
           }
+          return false;
         }
-        return false;
       }
     }
     return false;
@@ -191,10 +195,13 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private boolean canJoeSee(EntityLivingBase ent)
   {
-    Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ);
-    for (int facing:frontFaceAndSides)
+    Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double) ent.getEyeHeight(), ent.posZ);
+    for (int facing : frontFaceAndSides)
     {
-      if (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.xCoord + faceMidPoints[facing][0], this.yCoord + faceMidPoints[facing][1], this.zCoord + faceMidPoints[facing][2]), entPos) == null) return true;
+      if(this.worldObj.rayTraceBlocks(
+          Vec3.createVectorHelper(this.xCoord + faceMidPoints[facing][0], this.yCoord + faceMidPoints[facing][1], this.zCoord + faceMidPoints[facing][2]),
+          entPos) == null)
+        return true;
     }
     return false;
   }
@@ -203,10 +210,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public void setFacing(short facing)
   {
     super.setFacing(facing);
-    frontFaceAndSides = new int[]{this.facing,ForgeDirection.ROTATION_MATRIX[0][this.facing],ForgeDirection.ROTATION_MATRIX[1][this.facing]};
+    frontFaceAndSides = new int[] { this.facing, ForgeDirection.ROTATION_MATRIX[0][this.facing], ForgeDirection.ROTATION_MATRIX[1][this.facing] };
   }
 
-  private static final double[][] faceMidPoints = new double[][]{{0.5D,0.0D,0.5D},{0.5D,1.0D,0.5D},{0.5D,0.5D,0.0D},{0.5D,0.5D,1.0D},{0.0D,0.5D,0.5D},{1.0D,0.5D,0.5D}};
+  private static final double[][] faceMidPoints = new double[][] { { 0.5D, 0.0D, 0.5D }, { 0.5D, 1.0D, 0.5D }, { 0.5D, 0.5D, 0.0D }, { 0.5D, 0.5D, 1.0D },
+      { 0.0D, 0.5D, 0.5D }, { 1.0D, 0.5D, 0.5D } };
 
   //-------------------------------  XP
 
@@ -386,30 +394,30 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   protected boolean doPull(ForgeDirection dir) {
     boolean res = super.doPull(dir);
-//    BlockCoord loc = getLocation().getLocation(dir);
-//    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-//    if(target != null) {
-//      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-//      if(infos != null) {
-//        for (FluidTankInfo info : infos) {
-//          if(info.fluid != null && info.fluid.amount > 0) {
-//            if(canFill(dir, info.fluid.getFluid())) {
-//              FluidStack canPull = info.fluid.copy();
-//              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-//              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-//              if(drained != null && drained.amount > 0) {
-//                int filled = fill(dir, drained, false);
-//                if(filled > 0) {
-//                  drained = target.drain(dir.getOpposite(), filled, true);
-//                  fill(dir, drained, true);
-//                  return res;
-//                }
-//              }
-//            }
-//          }
-//        }
-//      }
-//    }
+    //    BlockCoord loc = getLocation().getLocation(dir);
+    //    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+    //    if(target != null) {
+    //      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
+    //      if(infos != null) {
+    //        for (FluidTankInfo info : infos) {
+    //          if(info.fluid != null && info.fluid.amount > 0) {
+    //            if(canFill(dir, info.fluid.getFluid())) {
+    //              FluidStack canPull = info.fluid.copy();
+    //              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+    //              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
+    //              if(drained != null && drained.amount > 0) {
+    //                int filled = fill(dir, drained, false);
+    //                if(filled > 0) {
+    //                  drained = target.drain(dir.getOpposite(), filled, true);
+    //                  fill(dir, drained, true);
+    //                  return res;
+    //                }
+    //              }
+    //            }
+    //          }
+    //        }
+    //      }
+    //    }
     FluidUtil.doPull(this, dir, IO_MB_TICK);
     return res;
   }
@@ -531,6 +539,18 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
       getChargedLocation().chargeItems(inventory.mainInventory);
     }
+
+    // These do things with packets...which crash since the net handler is null. Potion effects are not needed anyways.
+    @Override
+    protected void onNewPotionEffect(PotionEffect p_70670_1_) {
+    }
+
+    @Override
+    protected void onChangedPotionEffect(PotionEffect p_70695_1_, boolean p_70695_2_) {
+    }
+
+    @Override
+    protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
+    }
   }
-  
 }

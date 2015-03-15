@@ -110,9 +110,6 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(player == null) {
       return false;
     }
-    if(itemstack.stackSize > 1) {
-      return false;
-    }
 
     Entity mob;
     NBTTagCompound root = itemstack.stackTagCompound;
@@ -161,9 +158,14 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       riddenByEntity = riddenByEntity.riddenByEntity;
     }
 
-
     if(player == null || !player.capabilities.isCreativeMode) {
-      itemstack.setTagCompound(null);
+      if(itemstack.stackSize > 1) {
+        itemstack.stackSize--;
+        player.inventory.addItemStackToInventory(new ItemStack(this));
+        player.inventoryContainer.detectAndSendChanges();
+      } else {
+        itemstack.setTagCompound(null);
+      }
     }
 
     return true;

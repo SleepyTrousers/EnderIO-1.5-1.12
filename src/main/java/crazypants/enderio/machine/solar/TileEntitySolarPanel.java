@@ -140,16 +140,14 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   private void collectEnergy() {
-    if(!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
-      return;
-    }
-
-    if(lastCollectionValue == -1 || (worldObj.getWorldTime() + checkOffset) % CHECK_INTERVAL == 0) {
-      float fromSun = calculateLightRatio();
-      lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
-    }
-    if(lastCollectionValue > 0) {
-      network.setEnergyStored(Math.min(lastCollectionValue + network.getEnergyStored(), network.getMaxEnergyStored()));
+    if(canSeeSun()) {
+      if(lastCollectionValue == -1 || (worldObj.getWorldTime() + checkOffset) % CHECK_INTERVAL == 0) {
+        float fromSun = calculateLightRatio();
+        lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
+      }
+      if(lastCollectionValue > 0) {
+        network.setEnergyStored(Math.min(lastCollectionValue + network.getEnergyStored(), network.getMaxEnergyStored()));
+      }
     }
   }
 
@@ -163,6 +161,10 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   float calculateLightRatio() {
     return calculateLightRatio(worldObj, xCoord, yCoord, zCoord);
+  }
+  
+  boolean canSeeSun() {
+    return worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
   }
 
   public static float calculateLightRatio(World world, int x, int y, int z) {

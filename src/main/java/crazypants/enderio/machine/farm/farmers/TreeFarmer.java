@@ -12,6 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.TileFarmStation;
@@ -103,44 +104,68 @@ public class TreeFarmer implements IFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
 
-    HarvestResult res = new HarvestResult();
-    if(!farm.hasAxe()) {
-      return res;
+    boolean hasAxe = farm.hasAxe();
+
+    if(!hasAxe) {
+      return null;
     }
+
+    HarvestResult res = new HarvestResult();
     harvester.harvest(farm, this, bc, res);
     Collections.sort(res.harvestedBlocks, comp);
 
     List<BlockCoord> actualHarvests = new ArrayList<BlockCoord>();
 
-    for (int i = 0; i < res.harvestedBlocks.size() && farm.hasAxe(); i++) {
+    // avoid calling this in a loop
+    boolean hasShears = farm.hasShears();
+
+    for (int i = 0; i < res.harvestedBlocks.size() && hasAxe; i++) {
       BlockCoord coord = res.harvestedBlocks.get(i);
       Block blk = farm.getBlock(coord);
 
-      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorldObj(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.getAxeLootingValue());
+      ArrayList<ItemStack> drops;
+      boolean wasSheared = false;
+      boolean wasAxed = false;
+      boolean wasWood = isWood(blk);
+      
+      if (blk instanceof IShearable && hasShears) {
+        drops = ((IShearable)blk).onSheared(null, farm.getWorldObj(), coord.x, coord.y, coord.z, 0);
+        wasSheared = true;
+      } else {
+        drops = blk.getDrops(farm.getWorldObj(), coord.x, coord.y, coord.z, farm.getBlockMeta(coord), farm.getAxeLootingValue());
+        wasAxed = true;
+      }
+      
       if(drops != null) {
         for (ItemStack drop : drops) {
           res.drops.add(new EntityItem(farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
         }
       }
-      boolean isWood = true;
-      if(!isWood(blk)) { //leaves
-        isWood = Config.farmAxeDamageOnLeafBreak;
+
+      if (wasAxed && !wasWood) {
+        wasAxed = Config.farmAxeDamageOnLeafBreak;
         int leaveMeta = farm.getBlockMeta(coord);
         if(TreeHarvestUtil.canDropApples(blk, leaveMeta)) {
           if(farm.getWorldObj().rand.nextInt(200) == 0) {
             res.drops.add(new EntityItem(farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
           }
-        }        
-      } 
-      farm.actionPerformed(isWood);      
-      if(isWood) {
-        farm.damageAxe(blk, coord);
+        }
       }
+      
+      farm.actionPerformed(wasWood || wasSheared);
+      if(wasAxed) {
+        farm.damageAxe(blk, coord);
+        hasAxe = farm.hasAxe();
+      } else if (wasSheared) {
+        farm.damageShears(blk, coord);
+        hasShears = farm.hasShears();
+      }
+      
       farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
       actualHarvests.add(coord);
     }
     
-    if (!farm.hasAxe()) {
+    if (!hasAxe) {
       farm.setNotification(TileFarmStation.NOTIFICATION_NO_AXE);
     }
     

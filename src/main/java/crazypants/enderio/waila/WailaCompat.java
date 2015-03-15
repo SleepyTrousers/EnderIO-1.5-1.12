@@ -28,6 +28,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
@@ -42,7 +43,6 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
-
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -77,10 +77,11 @@ public class WailaCompat implements IWailaDataProvider {
     @Override
     public TileEntity getTileEntity(int x, int y, int z) {
       int meta = getBlockMetadata(x, y, z);
-      if(!getBlock(x, y, z).hasTileEntity(meta)) {
+      Block block = getBlock(x, y, z);
+      if(block == null || !block.hasTileEntity(meta)) {
         return null;
       }
-      TileEntity te = getBlock(x, y, z).createTileEntity(this, meta);
+      TileEntity te = block.createTileEntity(this, meta);
       if(te == null) {
         return null;
       }
@@ -132,6 +133,10 @@ public class WailaCompat implements IWailaDataProvider {
     MovingObjectPosition pos = accessor.getPosition();
     if(config.getConfig("facades.hidden")) {
       if(accessor.getBlock() instanceof IFacade) {
+        // If facades are hidden, we need to ignore it
+        if(accessor.getTileEntity() instanceof IConduitBundle && ConduitUtil.isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
+          return null;
+        }
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if(facade != null) {
@@ -161,7 +166,7 @@ public class WailaCompat implements IWailaDataProvider {
     EntityPlayer player = accessor.getPlayer();
     MovingObjectPosition pos = accessor.getPosition();
     int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
-    World world = new WailaWorldWrapper(player.worldObj);
+    World world = accessor.getWorld();
     Block block = world.getBlock(x, y, z);
     TileEntity te = world.getTileEntity(x, y, z);
     Item item = Item.getItemFromBlock(block);
