@@ -32,18 +32,6 @@ import crazypants.util.Lang;
 
 public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
-  private class CoordCharFilter implements ICharFilter {
-    private final TextFieldEIO f;
-    public CoordCharFilter(TextFieldEIO f) {
-      this.f = f;
-    }
-    
-    @Override
-    public boolean passesFilter(char c) {
-      return (c== '-' && Strings.isNullOrEmpty(f.getText())) || TextFieldEIO.FILTER_NUMERIC.passesFilter(c);
-    }
-  }
-  
   private static final int ID_SWITCH_BUTTON = 95;
   private static final int ID_TELEPORT_BUTTON = 96;
 
@@ -53,7 +41,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   private World world;
   private TileTelePad te;
 
-  private TextFieldEIO xTF, yTF, zTF;
+  private TextFieldEIO xTF, yTF, zTF, dimTF;
   
   private int powerX = 8;
   private int powerY = 9;
@@ -89,17 +77,19 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    int x = 38;
-    int y = 10;
-    xTF = new TextFieldEIO(fr, x, y, xSize - x * 2, 16);
-    yTF = new TextFieldEIO(fr, x, y + xTF.height + 2, xSize - x * 2, 16);
-    zTF = new TextFieldEIO(fr, x, y + (xTF.height * 2) + 4, xSize - x * 2, 16);
+    int x = 42;
+    int y = 8;
+    xTF = new TextFieldEIO(fr, x, y, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
+    yTF = new TextFieldEIO(fr, x, y + xTF.height + 2, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
+    zTF = new TextFieldEIO(fr, x, y + (xTF.height * 2) + 4, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
+    dimTF = new TextFieldEIO(fr, x, y + (xTF.height * 3) + 6, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
 
-    xTF.setCharFilter(new CoordCharFilter(xTF)).setText(Integer.toString(te.getX()));
-    yTF.setCharFilter(new CoordCharFilter(yTF)).setText(Integer.toString(te.getY()));
-    zTF.setCharFilter(new CoordCharFilter(zTF)).setText(Integer.toString(te.getZ()));
+    xTF.setText(Integer.toString(te.getX()));
+    yTF.setText(Integer.toString(te.getY()));
+    zTF.setText(Integer.toString(te.getZ()));
+    dimTF.setText(Integer.toString(te.getTargetDim()));
 
-    textFields.addAll(Lists.newArrayList(xTF, yTF, zTF));
+    textFields.addAll(Lists.newArrayList(xTF, yTF, zTF, dimTF));
 
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(Lang.localize("gui.telepad.configure.travel"));
@@ -142,22 +132,27 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   @Override
   protected void keyTyped(char par1, int par2) {
     super.keyTyped(par1, par2);
-    for (TextFieldEIO tf : textFields) {
-      if("-".equals(tf.getText())) {
-        tf.setText("");
-      }
-    }
     updateCoords();
   }
 
   private void updateCoords() {
-    BlockCoord bc = new BlockCoord(xTF.getText(), yTF.getText(), zTF.getText());
-    if(bc.x != te.getX() || bc.y != te.getY() || bc.z != te.getZ()) {
+    BlockCoord bc = new BlockCoord(getIntFromTextBox(xTF), getIntFromTextBox(yTF), getIntFromTextBox(zTF));
+    int targetDim = getIntFromTextBox(dimTF);
+    if(bc.x != te.getX() || bc.y != te.getY() || bc.z != te.getZ() || targetDim != te.getTargetDim()) {
       te.setX(bc.x);
       te.setY(bc.y);
       te.setZ(bc.z);
-      PacketHandler.INSTANCE.sendToServer(new PacketUpdateCoords(te, bc));
+      te.setTargetDim(targetDim);
+      PacketHandler.INSTANCE.sendToServer(new PacketUpdateCoords(te, bc, targetDim));
     }
+  }
+
+  private int getIntFromTextBox(TextFieldEIO tf) {
+    String text = tf.getText();
+    if("".equals(text) || "-".equals(text)) {
+      return 0;
+    }
+    return Integer.parseInt(text);
   }
 
   @Override
@@ -176,10 +171,10 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     FontRenderer fnt = getFontRenderer();
 
-    String[] text = { "X", "Y", "Z" };
+    String[] text = { "X", "Y", "Z", "DIM" };
     for (int i = 0; i < text.length; i++) {
       GuiTextField f = textFields.get(i);
-      fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 6, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2), 0x000000);
+      fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 10, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
     }
 
     Entity e = te.getCurrentTarget();

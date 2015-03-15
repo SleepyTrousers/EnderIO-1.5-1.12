@@ -93,19 +93,30 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       if(tp.canBlockBeAccessed(player)) {
         BlockCoord bc = getCoords(stack);
         BlockCoord cur = new BlockCoord(tp.getX(), tp.getY(), tp.getZ());
+        int dim = getDimension(stack);
+        int curDim = tp.getTargetDim();
+        
         if(!bc.equals(cur)) {
           tp.setCoords(bc);
           if(!world.isRemote) {
             player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
           }
-        } else {
+        }
+
+        if(dim != curDim) {
+          tp.setTargetDim(dim);
+          if(!world.isRemote) {
+            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setDimension", EnumChatFormatting.GREEN.toString(), Integer.toString(dim))));
+          }
+        }
+
+        if (bc.equals(cur) && dim == curDim) {
           return false;
         }
       } else {
         BlockTravelAnchor.sendPrivateChatMessage(player, tp.getPlacedBy());
       }
     }
-    
     
     if(world.isRemote) {
       sendItemUsePacket(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
@@ -137,14 +148,25 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[mop.sideHit];
       bc = bc.getLocation(dir);
     }
-
+    
+    int dim = world.provider.dimensionId;
+    int curDim = getDimension(stack);
+    
+    boolean changed = false;
+    
     if(!bc.equals(onStack)) {
       setCoords(stack, bc);
       onCoordsChanged(player, bc);
-      return true;
+      changed = true;
+    }
+
+    if (dim != curDim) {
+      setDimension(stack, world);
+      onDimensionChanged(player, getDimension(stack));
+      changed = true;
     }
     
-    return false;
+    return changed;
   }
 
   private void sendItemUsePacket(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
@@ -157,14 +179,28 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
     }
   }
+  
+  private void onDimensionChanged(EntityPlayer player, int dim) {
+    if(!player.worldObj.isRemote) {
+      player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.newDimension", EnumChatFormatting.GREEN.toString(), Integer.toString(dim))));
+    }
+  }
 
   public void setCoords(ItemStack stack, BlockCoord bc) {
     stack.stackTagCompound.setBoolean("default", false);
     bc.writeToNBT(stack.stackTagCompound);
   }
+  
+  public void setDimension(ItemStack stack, World world) {
+    stack.stackTagCompound.setInteger("dimension", world.provider.dimensionId);
+  }
 
   public BlockCoord getCoords(ItemStack stack) {
-    return new BlockCoord().readFromNBT(stack.stackTagCompound);
+    return BlockCoord.readFromNBT(stack.stackTagCompound);
+  }
+  
+  public int getDimension(ItemStack stack) {
+    return stack.stackTagCompound.getInteger("dimension");
   }
 
   @Override

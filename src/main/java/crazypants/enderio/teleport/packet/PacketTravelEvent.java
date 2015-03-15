@@ -76,7 +76,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     return null;
   }
 
-  public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
+  public static void doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
     EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
     toTp.worldObj.playSoundEffect(toTp.posX, toTp.posY, toTp.posZ, source.sound, 1.0F, 1.0F);
 
@@ -104,7 +104,5 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
         toTp.setCurrentItemOrArmor(0, item);
       }
     }
-
-    return true;
   }
 }

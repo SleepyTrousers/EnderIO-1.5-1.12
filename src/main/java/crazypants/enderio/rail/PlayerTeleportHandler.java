@@ -16,7 +16,7 @@ import crazypants.util.EntityUtil;
 
 public class PlayerTeleportHandler {
 
-  static PlayerTeleportHandler instance = new PlayerTeleportHandler();
+  public static final PlayerTeleportHandler instance = new PlayerTeleportHandler();
 
   List<TeleportAction> queue = new ArrayList<TeleportAction>();
 

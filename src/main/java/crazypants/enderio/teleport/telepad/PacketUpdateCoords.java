@@ -13,17 +13,18 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
     super();
   }
   
-  private int targetX, targetY, targetZ;
+  private int targetX, targetY, targetZ, targetDim;
   
-  public PacketUpdateCoords(TileTelePad te, int x, int y, int z) {
+  public PacketUpdateCoords(TileTelePad te, int x, int y, int z, int targetDim) {
     super(te);
     this.targetX = x;
     this.targetY = y;
     this.targetZ = z;
+    this.targetDim = targetDim;
   }
   
-  public PacketUpdateCoords(TileTelePad te, BlockCoord bc) {
-    this(te, bc.x, bc.y, bc.z);
+  public PacketUpdateCoords(TileTelePad te, BlockCoord bc, int targetDim) {
+    this(te, bc.x, bc.y, bc.z, targetDim);
   }
 
   @Override
@@ -32,6 +33,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
     buf.writeInt(targetX);
     buf.writeInt(targetY);
     buf.writeInt(targetZ);
+    buf.writeInt(targetDim);
   }
   
   @Override
@@ -40,6 +42,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
     targetX = buf.readInt();
     targetY = buf.readInt();
     targetZ = buf.readInt();
+    targetDim = buf.readInt();
   }
   
   @Override
@@ -49,6 +52,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
       te.setX(message.targetX);
       te.setY(message.targetY);
       te.setZ(message.targetZ);
+      te.setTargetDim(message.targetDim);
     }
     return null;
   }

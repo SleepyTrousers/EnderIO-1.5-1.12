@@ -522,6 +522,8 @@ item.itemCoordSelector.tooltip.detailed.line5=select that specific block.
 item.itemCoordSelector.tooltip.detailed.line6=Can select from a distance.
 enderio.itemCoordSelector.chat.newCoords=New Coords: %s
 enderio.itemCoordSelector.chat.setCoords=Set Coords: %s
+enderio.itemCoordSelector.chat.newDimension=New Dimension: %s%s
+enderio.itemCoordSelector.chat.setDimension=Set Dimension: %s%s
 
 //Painter
 tile.blockPainter.name=Painting Machine

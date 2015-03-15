@@ -57,9 +57,19 @@ public interface ITelePad extends ITravelAccessable {
   int getZ();
 
   /**
+   * The target dimension ID for the telepad. Defaults to the dimension the
+   * block is placed in.
+   * 
+   * @return An int dimension ID.
+   */
+  int getTargetDim();
+
+  /**
    * Sets the target X coordinate of the network. Has no effect if
    * {@link #inNetwork()} returns false.
    * 
+   * @param x
+   *          The X coord.
    * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
   ITelePad setX(int x);
@@ -68,6 +78,8 @@ public interface ITelePad extends ITravelAccessable {
    * Sets the target Y coordinate of the network. Has no effect if
    * {@link #inNetwork()} returns false.
    * 
+   * @param y
+   *          The Y coord.
    * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
   ITelePad setY(int y);
@@ -76,9 +88,21 @@ public interface ITelePad extends ITravelAccessable {
    * Sets the target Z coordinate of the network. Has no effect if
    * {@link #inNetwork()} returns false.
    * 
+   * @param z
+   *          The Z coord.
    * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
   ITelePad setZ(int z);
+
+  /**
+   * Sets the target dimension of the network. Has no effect if
+   * {@link #inNetwork()} returns false.
+   * 
+   * @param dimID
+   *          The dimension ID.
+   * @return The master telepad TE. DOES NOT ALWAYS return itself.
+   */
+  ITelePad setTargetDim(int dimID);
 
   /**
    * Util method to set all coords using a {@link BlockCoord} object.
