@@ -222,8 +222,12 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockBuffer), machRen);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSliceAndSplice), machRen);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPoweredSpawner), machRen);
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
+    
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSoulFuser), new SoulBinderRenderer());
 
     BlockSolarPanel.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new SolarPanelRenderer());
@@ -265,11 +269,13 @@ public class ClientProxy extends CommonProxy {
 
     if(Config.useCombustionGenModel) {
       CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);
       MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCombustionGenerator), cgmr);
+      ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);
+      
     } else {
       BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
       CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
+      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCombustionGenerator), cr);
       RenderingRegistry.registerBlockHandler(cr);
       if(!Config.combustionGeneratorUseOpaqueModel) {
         ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);

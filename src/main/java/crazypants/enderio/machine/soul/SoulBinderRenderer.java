@@ -4,8 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -18,13 +22,13 @@ import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
 import crazypants.util.ForgeDirectionOffsets;
 
-public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
+public class SoulBinderRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private float skullScale = 0.5f;
   private BoundingBox scaledBB = BoundingBox.UNIT_CUBE.scale(skullScale, skullScale, skullScale);
   private IIcon[] icons = new IIcon[6];
   private IIcon override = null;
-  
+
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 
@@ -40,7 +44,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 
     IIcon soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
     override = renderer.overrideBlockTexture;
-    
+
     //Horrible hack to get the MC lighting engine to set the correct values for me
     if(renderer != null && world != null) {
       renderer.setOverrideBlockTexture(IconUtil.blankTexture);
@@ -115,4 +119,55 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
     return BlockSoulBinder.renderId;
   }
 
+  @Override
+  public boolean handleRenderType(ItemStack item, ItemRenderType type) { 
+    return true;
+  }
+
+  @Override
+  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    return true;
+  }
+
+  private RenderBlocks renderBlocks;
+
+  @Override
+  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    Block block;
+
+    GL11.glRotatef(180, 0, 1, 0);
+    GL11.glRotatef(-90, 0, 1, 0);
+
+    switch (type)
+    {
+    case ENTITY:
+    {
+      GL11.glTranslatef(-0.5F, -0.4F, -0.5F);
+      break;
+    }
+    case EQUIPPED:
+    {
+      GL11.glTranslatef(-1F, 0F, 0F);
+      break;
+    }
+    case EQUIPPED_FIRST_PERSON:
+    {
+      GL11.glTranslatef(-1F, 0F, 0F);
+      break;
+    }
+    case INVENTORY:
+    {
+      GL11.glTranslatef(-1F, -0F, 0F);
+      break;
+    }
+    default:
+      break;
+    }
+
+
+    if(!(type == ItemRenderType.EQUIPPED) && !(type == ItemRenderType.EQUIPPED_FIRST_PERSON))
+      GL11.glTranslatef(0F, -0.1F, 0F);
+
+    renderInventoryBlock(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 0, (RenderBlocks)data[0]);
+  }
 }

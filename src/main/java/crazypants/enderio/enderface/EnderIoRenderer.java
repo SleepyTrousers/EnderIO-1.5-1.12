@@ -149,6 +149,9 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
     lookMat = VecmathUtil.createMatrixAsLookAt(RenderUtil.ZERO_V, new Vector3d(1, 0, 0), RenderUtil.UP_V);
 
+    if(!(type == ItemRenderType.EQUIPPED) && !(type == ItemRenderType.EQUIPPED_FIRST_PERSON))
+    	GL11.glTranslatef(0F, -0.1F, 0F);
+    
     render(0, 0, 0, lookMat, 0xF000F0);
 
   }

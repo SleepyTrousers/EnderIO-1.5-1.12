@@ -140,7 +140,23 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    renderItem(0, 0, 0);
+    switch (type) {
+    case ENTITY:
+      renderItem(-0.5f, -0.5f, -0.5f);
+      return;
+    case EQUIPPED:
+      renderItem(0f, 0f, 0f);
+      return;
+    case EQUIPPED_FIRST_PERSON:
+      renderItem(0f, 0f, 0f);
+      return;
+    case INVENTORY:
+      renderItem(0f, -0.1f, 0f);
+      return;
+    default:
+      renderItem(0f, 0f, 0f);
+      return;
+    }
   }
 
   private void renderItem(float x, float y, float z) {

@@ -13,6 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -106,7 +107,41 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     RenderUtil.bindBlockTexture();
     Tessellator tes = Tessellator.instance;
 
+    GL11.glRotatef(180, 0, 1, 0);
+    GL11.glRotatef(-90, 0, 1, 0);
+
+    switch (type)
+    {
+    case ENTITY:
+    {
+      GL11.glTranslatef(-0.5F, -0.4F, -0.5F);
+      break;
+    }
+    case EQUIPPED:
+    {
+      GL11.glTranslatef(-1F, 0F, 0F);
+      break;
+    }
+    case EQUIPPED_FIRST_PERSON:
+    {
+      GL11.glTranslatef(-1F, 0F, 0F);
+      break;
+    }
+    case INVENTORY:
+    {
+      GL11.glTranslatef(-1F, -0F, 0F);
+      break;
+    }
+    default:
+      break;
+    }
+
+
+    if(!(type == ItemRenderType.EQUIPPED) && !(type == ItemRenderType.EQUIPPED_FIRST_PERSON))
+      GL11.glTranslatef(0F, -0.1F, 0F);
+
     tes.startDrawingQuads();
+
     CubeRenderer.render(EnderIO.blockCapBank, item.getItemDamage());
     tes.draw();
 

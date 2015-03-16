@@ -40,7 +40,7 @@ public class PaintedItemRenderer implements IItemRenderer {
   public void renderEquipped(ItemStack item, RenderBlocks renderBlocks) {
 
     GL11.glPushMatrix();
-    GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+    GL11.glTranslatef(0F, 0.1F, 0F);
     renderToInventory(item, renderBlocks);
     GL11.glPopMatrix();
 
@@ -52,6 +52,7 @@ public class PaintedItemRenderer implements IItemRenderer {
       int meta;
       RenderUtil.bindBlockTexture();
       boolean renderOverlay = true;
+      GL11.glTranslatef(0F, -0.1F, 0F);
       if(block != null) {
         meta = PainterUtil.getSourceBlockMetadata(item);
       } else {

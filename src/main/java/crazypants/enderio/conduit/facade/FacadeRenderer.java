@@ -46,6 +46,7 @@ public class FacadeRenderer implements IItemRenderer {
   }
 
   private void renderEquipped(ItemStack item, RenderBlocks renderBlocks) {
+    GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     renderToInventory(item, renderBlocks);
   }
 

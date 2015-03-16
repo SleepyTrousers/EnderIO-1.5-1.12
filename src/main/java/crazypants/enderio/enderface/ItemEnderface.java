@@ -48,6 +48,8 @@ public class ItemEnderface extends Item implements IGuiHandler {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    //If this is true, the enderface looks enchanted but other
+    //creative tabs can blink or look weird!
     return true;
   }
 
@@ -76,43 +78,43 @@ public class ItemEnderface extends Item implements IGuiHandler {
   @Override
   public ItemStack onItemRightClick(ItemStack itemStack, World world, final EntityPlayer entityPlayer) {
 
-//    if(!world.isRemote) {
-//      return itemStack;
-//    }
-//
-//    NBTTagCompound tag = itemStack.getTagCompound();
-//    boolean tagsSet = tag != null && tag.getBoolean(KEY_IO_SET);
-//
-//    if(tag != null && tag.getBoolean(KEY_IO_SET)) {
-//
-//      int x = tag.getInteger(KEY_IO_X);
-//      int y = tag.getInteger(KEY_IO_Y);
-//      int z = tag.getInteger(KEY_IO_Z);
-//      int dimension = tag.getInteger(KEY_DIMENSION);
-//
-//      if(world.provider.dimensionId != dimension) {
-//        ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.wrongDimension"));
-//        entityPlayer.sendChatToPlayer(c);
-//        return itemStack;
-//      }
-//
-//      Chunk c = world.getChunkFromBlockCoords(x, z);
-//      if(c == null || !c.isChunkLoaded) {
-//        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.tooFar"));
-//        entityPlayer.sendChatToPlayer(cm);
-//        return itemStack;
-//      }
-//      int blockId = world.getBlockId(x, y, z);
-//      if(blockId != EnderIO.blockEnderIo.blockID) {
-//        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.destroyed"));
-//        entityPlayer.sendChatToPlayer(cm);
-//        return itemStack;
-//      }
-//      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
-//      return itemStack;
-//    }
-//    ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.noSync"));
-//    entityPlayer.sendChatToPlayer(cm);
+    //    if(!world.isRemote) {
+    //      return itemStack;
+    //    }
+    //
+    //    NBTTagCompound tag = itemStack.getTagCompound();
+    //    boolean tagsSet = tag != null && tag.getBoolean(KEY_IO_SET);
+    //
+    //    if(tag != null && tag.getBoolean(KEY_IO_SET)) {
+    //
+    //      int x = tag.getInteger(KEY_IO_X);
+    //      int y = tag.getInteger(KEY_IO_Y);
+    //      int z = tag.getInteger(KEY_IO_Z);
+    //      int dimension = tag.getInteger(KEY_DIMENSION);
+    //
+    //      if(world.provider.dimensionId != dimension) {
+    //        ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.wrongDimension"));
+    //        entityPlayer.sendChatToPlayer(c);
+    //        return itemStack;
+    //      }
+    //
+    //      Chunk c = world.getChunkFromBlockCoords(x, z);
+    //      if(c == null || !c.isChunkLoaded) {
+    //        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.tooFar"));
+    //        entityPlayer.sendChatToPlayer(cm);
+    //        return itemStack;
+    //      }
+    //      int blockId = world.getBlockId(x, y, z);
+    //      if(blockId != EnderIO.blockEnderIo.blockID) {
+    //        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.destroyed"));
+    //        entityPlayer.sendChatToPlayer(cm);
+    //        return itemStack;
+    //      }
+    //      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
+    //      return itemStack;
+    //    }
+    //    ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.noSync"));
+    //    entityPlayer.sendChatToPlayer(cm);
     return itemStack;
   }
 

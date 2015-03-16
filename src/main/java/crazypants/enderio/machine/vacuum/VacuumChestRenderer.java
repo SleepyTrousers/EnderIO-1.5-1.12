@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vacuum;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,7 +21,7 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
     Tessellator.instance.startDrawingQuads();
     CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.6, 0.6, 0.6), EnderIO.blockHyperCube.getIcon(0, 0));
-    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.90, 0.90,0.90), EnderIO.blockVacuumChest.getIcon(0, 0));
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(1, 1, 1), EnderIO.blockVacuumChest.getIcon(0, 0));
     Tessellator.instance.draw();
   }
 
@@ -82,6 +84,9 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    if(type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+      GL11.glTranslatef(0, 0.1F, 0);
+    GL11.glTranslatef(0, -0.1F, 0);
     renderInventoryBlock(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 0, (RenderBlocks)data[0]);    
   }
 
