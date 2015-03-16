@@ -18,6 +18,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.util.ItemUtil;
 
 public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer {
 
@@ -94,7 +95,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
         if(inventory[9] == null) {
           inventory[9] = stack;
           iter.remove();
-        } else if(ItemStack.areItemStacksEqual(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
+        } else if(ItemUtil.areStackMergable(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
           inventory[9].stackSize += stack.stackSize;
           iter.remove();
         }
@@ -137,41 +138,121 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   private void craftRecipe() {
-    List<ItemStack> required = new ArrayList<ItemStack>();
-    craftingGrid.copyRequiredInputs(required);
-    for (ItemStack req : required) {
-      for (int i = 0; i < 9 && req.stackSize > 0; i++) {
-        ItemStack avail = inventory[i];
-        if(avail != null && avail.stackSize > 0 && avail.isItemEqual(req)) {
-          req.stackSize--;
-          avail = avail.copy();
-          avail.stackSize--;
-          if(avail.stackSize <= 0) {
-            ItemStack used = avail.getItem().getContainerItem(avail);
-            if(used != null) {
-              if(used.isItemEqual(avail)) {
-                avail.stackSize++;
-              } else {
-                containerItems.add(used.copy());
-                avail = null;
-              }
-            }
-          }
-          if(avail != null && avail.stackSize == 0) {
-            avail = null;
-          }
-          setInventorySlotContents(i, avail);
+
+    // (1) Find the items to craft with and put a copy into a temp crafting grid;
+    //     also record what was used to destroy it later
+    InventoryCrafting inv = new InventoryCrafting(new Container() {
+      @Override
+      public boolean canInteractWith(EntityPlayer var1) {
+        return false;
+      }
+    }, 3, 3);
+
+    ItemStack[] shadowInventory = new ItemStack[9];
+    for (int i = 0; i < 9; i++) {
+      shadowInventory[i] = inventory[i] == null ? null : inventory[i].copy();
+    }
+    
+    for (int j = 0; j < 9; j++) {
+      ItemStack req = craftingGrid.getStackInSlot(j);
+      for (int i = 0; i < 9 && req != null; i++) {
+        if (shadowInventory[i] != null && shadowInventory[i].stackSize > 0 && shadowInventory[i].isItemEqual(req)) {
+          req = null;
+          shadowInventory[i].stackSize--;
+          ItemStack craftingItem = shadowInventory[i].copy();
+          craftingItem.stackSize = 1;
+          inv.setInventorySlotContents(j, craftingItem);
         }
       }
     }
-    ItemStack output = craftingGrid.getOutput().copy();
-    if(inventory[9] == null) {
-      setInventorySlotContents(9, output);
+
+    // (2) Try to craft with the temp grid
+    ItemStack output = CraftingManager.getInstance().findMatchingRecipe(inv, worldObj);
+    
+    // (3) If we got a result, ...
+    if (output != null) {
+
+      // (3a) ... remove the used up items and ...
+      for (int i = 0; i < 9; i++) {
+        while (shadowInventory[i] != null && inventory[i] != null && shadowInventory[i].stackSize < inventory[i].stackSize) {
+          setInventorySlotContents(i, eatOneItemForCrafting(inventory[i].copy()));
+        }
+      }
+
+      // (3b) ... put the result into its slot
+      if (inventory[9] == null) {
+        setInventorySlotContents(9, output);
+      } else if (ItemUtil.areStackMergable(inventory[9], output)) {
+        ItemStack cur = inventory[9].copy();
+        cur.stackSize += output.stackSize;
+        if (cur.stackSize > cur.getMaxStackSize()) {
+          // we check beforehand that there is enough free space, but some mod may return different
+          // amounts based on the nbt of the input items (e.g. magical wood)
+          ItemStack overflow = cur.copy();
+          overflow.stackSize = cur.stackSize - cur.getMaxStackSize();
+          cur.stackSize = cur.getMaxStackSize();
+          containerItems.add(overflow);
+        }
+        setInventorySlotContents(9, cur);
+      } else {
+        // some mod may return different nbt based on the nbt of the input items (e.g. TE machines?)
+        containerItems.add(output);
+      }
     } else {
-      ItemStack cur = inventory[9].copy();
-      cur.stackSize += output.stackSize;
-      setInventorySlotContents(9, cur);
+      // Crafting failed. This is not supposed to happen, but if a recipe is nbt-sensitive, it can.
+      // To avoid being stuck in a dead loop, we flush the non-working input items.
+      for (int j = 0; j < 9; j++) {
+        if (shadowInventory[j] != null) {
+          setInventorySlotContents(j, shadowInventory[j].stackSize > 0 ? shadowInventory[j] : null);
+        }
+        if (craftingGrid.getStackInSlot(j) != null) {
+          containerItems.add(craftingGrid.getStackInSlot(j));
+        }
+      }
     }
+  }
+
+  private ItemStack eatOneItemForCrafting(ItemStack avail) {
+    // 101 special cases for container items
+    if (avail.getItem().hasContainerItem(avail)) {
+      ItemStack used = avail.getItem().getContainerItem(avail);
+      if (used == null) {
+        // The promised container item does not exist
+        avail.stackSize--;
+      } else if (used.isItemStackDamageable() && used.getItemDamage() > used.getMaxDamage()) {
+        // Container item was used up
+        used = null;
+        avail.stackSize--;
+      } else if (used.isItemEqual(avail)) {
+        if (used.isItemStackDamageable()) {
+          // Container item is the same, but may have a different damage value
+          if (avail.stackSize == 1) {
+            // itemstack was used up, container item can replace it
+            avail = used;
+          } else {
+            // itemstack was not used up, container item goes into overflow
+            // (impossible case with vanilla and mods that play by the rules)
+            containerItems.add(used.copy());
+            avail.stackSize--;
+          }
+        } else {
+          // Container item is exactly the same: item should not be used up
+          // Nothing to do here
+        }
+      } else {
+        // Container item is different (e.g. bucket for lava bucket) and goes into the overflow
+        containerItems.add(used.copy());
+        avail.stackSize--;
+      }
+    } else {
+      // no container item, use up one item of the stack
+      avail.stackSize--;
+    }
+
+    if (avail.stackSize == 0) {
+      avail = null;
+    }
+    return avail;
   }
 
   private boolean canMergeOutput() {
@@ -179,7 +260,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       return true;
     }
     ItemStack output = craftingGrid.getOutput();
-    if(!inventory[9].isItemEqual(output)) {
+    if(!ItemUtil.areStackMergable(inventory[9], output)) {
       return false;
     }
     return output.getMaxStackSize() >= (inventory[9].stackSize + output.stackSize);
