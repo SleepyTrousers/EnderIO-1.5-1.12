@@ -282,7 +282,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     }
     if(worldObj != null) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, blockType);
+      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
     }
   }
 
