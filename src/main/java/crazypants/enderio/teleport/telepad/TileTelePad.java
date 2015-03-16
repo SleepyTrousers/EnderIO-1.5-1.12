@@ -70,6 +70,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
   private MachineSound activeSound = null;
   
+  private boolean redstoneActivePrev;
+  
   public static final String TELEPORTING_KEY = "eio:teleporting";
   public static final String PROGRESS_KEY = "teleportprogress";
 
@@ -93,7 +95,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(targetDim == Integer.MIN_VALUE) {
       targetDim = worldObj.provider.dimensionId;
     }
-
+    
     if(worldObj.isRemote) {
       if(active()) {
         if(activeSound == null) {
@@ -155,7 +157,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
     }
     for (Entity e : toRemove) {
-      dequeueTeleport(e);
+      dequeueTeleport(e, true);
     }
   }
 
@@ -195,6 +197,18 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
       }
     }
+  }
+
+  public void updateRedstoneState() {
+    if(!inNetwork()) {
+      return;
+    }
+
+    boolean redstone = isPoweredRedstone();
+    if(!master.redstoneActivePrev && redstone) {
+      teleportAll();
+    }
+    master.redstoneActivePrev = redstone;
   }
 
   private boolean formNetwork() {
@@ -268,6 +282,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     energy.writeToNBT(root);
     target.writeToNBT(root);
     root.setInteger("targetDim", targetDim);
+    root.setBoolean("redstoneActive", redstoneActivePrev);
   }
 
   @Override
@@ -276,6 +291,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     energy.readFromNBT(root);
     target = BlockCoord.readFromNBT(root);
     targetDim = root.getInteger("targetDim");
+    redstoneActivePrev = root.getBoolean("redstoneActive");
     autoUpdate = true;
   }
 
@@ -434,7 +450,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     if(isMaster()) {
       if(isEntityInRange(entity)) {
-        enqueueTeleport(entity);
+        enqueueTeleport(entity, true);
       }
     } else {
       master.teleportSpecific(entity);
@@ -448,7 +464,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     if(isMaster()) {
       for (Entity e : getEntitiesInRange()) {
-        enqueueTeleport(e);
+        enqueueTeleport(e, true);
       }
     } else {
       master.teleportAll();
@@ -468,7 +484,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
   }
 
-  void enqueueTeleport(Entity entity) {
+  void enqueueTeleport(Entity entity, boolean sendUpdate) {
     if(toTeleport.contains(entity)) {
       return;
     }
@@ -476,16 +492,24 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     calculateTeleportPower();
     entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
     toTeleport.add(entity);
-    if(entity.worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketTeleport(Type.BEGIN, this, entity.getEntityId()));
+    if(sendUpdate) {
+      if(entity.worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(Type.BEGIN, this, entity.getEntityId()));
+      } else {
+        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.BEGIN, this, entity.getEntityId()));
+      }
     }
   }
 
-  void dequeueTeleport(Entity entity) {
+  void dequeueTeleport(Entity entity, boolean sendUpdate) {
     toTeleport.remove(entity);
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
-    if(!worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.END, this, entity.getEntityId()));
+    if(sendUpdate) {
+      if(worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(Type.END, this, entity.getEntityId()));
+      } else {
+        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.END, this, entity.getEntityId()));
+      }
     }
     if(!active()) {
       powerUsed = 0;
@@ -505,7 +529,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private boolean serverTeleport(Entity entity) {
-    dequeueTeleport(entity);
+    dequeueTeleport(entity, true);
     if(entity.worldObj.provider.dimensionId != targetDim) {
       MinecraftServer server = MinecraftServer.getServer();
       int currentDim = entity.worldObj.provider.dimensionId;

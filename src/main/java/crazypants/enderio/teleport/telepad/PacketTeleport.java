@@ -49,9 +49,9 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
     TileEntity te = message.getTileEntity(world);
     if(te instanceof TileTelePad) {
       if(message.type == Type.BEGIN) {
-        ((TileTelePad) te).enqueueTeleport(world.getEntityByID(message.entityId));
+        ((TileTelePad) te).enqueueTeleport(world.getEntityByID(message.entityId), false);
       } else {
-        ((TileTelePad) te).dequeueTeleport(world.getEntityByID(message.entityId));
+        ((TileTelePad) te).dequeueTeleport(world.getEntityByID(message.entityId), false);
       }
     }
     return null;

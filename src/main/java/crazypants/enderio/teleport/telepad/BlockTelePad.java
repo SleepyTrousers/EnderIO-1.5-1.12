@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport.telepad;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,6 +72,12 @@ public class BlockTelePad extends BlockTravelAnchor {
   @Override
   public int getRenderType() {
     return 0;
+  }
+  
+  @Override
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block changedTo) {
+    super.onNeighborBlockChange(world, x, y, z, changedTo);
+    ((TileTelePad) world.getTileEntity(x, y, z)).updateRedstoneState();
   }
 
   @Override
