@@ -49,10 +49,12 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   public void initGui() {
     super.initGui();
 
-    maxInput.setMaxStringLength(10);
-    maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
-    maxOutput.setMaxStringLength(10);
-    maxOutput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxOutput()));
+    if(getTileEntity().hasPower()) {
+      maxInput.setMaxStringLength(10);
+      maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
+      maxOutput.setMaxStringLength(10);
+      maxOutput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxOutput()));
+    }
   }
 
   @Override
