@@ -1,6 +1,7 @@
 package crazypants.vecmath;
 
 import net.minecraft.util.Vec3;
+import net.minecraftforge.client.model.obj.Vertex;
 
 public class Vector3d {
 
@@ -26,6 +27,10 @@ public class Vector3d {
 
   public Vector3d(Vector3f corner) {
     this(corner.x, corner.y, corner.z);
+  }
+
+  public Vector3d(Vertex vert) {
+    this(vert.x, vert.y, vert.z);
   }
 
   public void set(double x, double y, double z) {

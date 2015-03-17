@@ -24,7 +24,6 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
-import crazypants.util.IProgressTile;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
@@ -191,6 +190,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public short getFacing() {
     return facing;
+  }
+  
+  public ForgeDirection getFacingDir() {
+    return ForgeDirection.getOrientation(facing);
   }
 
   public void setFacing(short facing) {

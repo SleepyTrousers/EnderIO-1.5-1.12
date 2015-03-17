@@ -2,6 +2,7 @@ package crazypants.enderio.machine.generator.combustion;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -15,6 +16,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
@@ -22,6 +24,8 @@ import crazypants.util.Util;
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
   public static int renderId = -1;
+  
+  private IIcon overlayPullNoCenter, overlayDisabledNoCenter;
 
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
@@ -108,6 +112,23 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     return false;
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
+  protected void registerOverlayIcons(IIconRegister iIconRegister) {
+    super.registerOverlayIcons(iIconRegister);
+    overlayPullNoCenter = iIconRegister.registerIcon("enderio:machineOverlayPullNoCenter");
+    overlayDisabledNoCenter = iIconRegister.registerIcon("enderio:machineOverlayDisabledNoCenter");
+  }
+
+  @Override
+  public IIcon getOverlayIconForMode(ForgeDirection face, IoMode mode) {
+    if(face.offsetY == 0) {
+      return super.getOverlayIconForMode(face, mode);
+    } else {
+      return mode == IoMode.PULL ? overlayPullNoCenter : overlayDisabledNoCenter;
+    }
+  }
+
   public IIcon getBackIcon() {
     return iconBuffer[0][2];
   }
@@ -123,6 +144,11 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   @Override
   public String getBackIconKey(boolean active) {
     return "enderio:blankMachinePanel";
+  }
+
+  @Override
+  protected String getModelIconKey(boolean active) {
+    return "enderio:combustionGenModel";
   }
 
   @Override

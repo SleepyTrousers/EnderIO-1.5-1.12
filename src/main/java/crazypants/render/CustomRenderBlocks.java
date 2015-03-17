@@ -21,6 +21,10 @@ public class CustomRenderBlocks extends RenderBlocks {
   private final List<IRenderFace> renderFaceCallbacks = new ArrayList<IRenderFace>();
   private IIcon overrideTexture;
 
+  public CustomRenderBlocks() {
+    super();
+  }
+  
   public CustomRenderBlocks(IBlockAccess par1iBlockAccess) {
     super(par1iBlockAccess);
   }

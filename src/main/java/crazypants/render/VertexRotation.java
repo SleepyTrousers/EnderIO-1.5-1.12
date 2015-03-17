@@ -35,6 +35,10 @@ public class VertexRotation implements VertexTransform {
     this.angle = angle;
     quat = Quat4d.makeRotate(angle, axis);
   }
+  
+  public double getAngle() {
+    return angle;
+  }
 
   public void setAxis(Vector3d axis) {
     this.axis.set(axis);

@@ -13,17 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.obj.GroupObject;
-import net.minecraftforge.client.model.techne.TechneModel;
 import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -85,7 +77,6 @@ import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
-import crazypants.enderio.machine.generator.combustion.CombustionGeneratorModelRenderer;
 import crazypants.enderio.machine.generator.combustion.CombustionGeneratorRenderer;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
@@ -140,15 +131,19 @@ import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.render.IconUtil;
-import crazypants.render.TechneUtil;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
   // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
-
-  { 3, 2, 0, 0, 0, 0 }, { 2, 3, 1, 1, 1, 1 }, { 1, 1, 3, 2, 5, 4 }, { 0, 0, 2, 3, 4, 5 }, { 4, 5, 4, 5, 3, 2 }, { 5, 4, 5, 4, 2, 3 } };
+    { 3, 2, 0, 0, 0, 0 }, 
+    { 2, 3, 1, 1, 1, 1 }, 
+    { 1, 1, 3, 2, 5, 4 }, 
+    { 0, 0, 2, 3, 4, 5 }, 
+    { 4, 5, 4, 5, 3, 2 }, 
+    { 5, 4, 5, 4, 2, 3 } 
+  };
   // @formatter:on
 
   static {
@@ -268,18 +263,9 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
 
-    if(Config.useCombustionGenModel) {
-      CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);
-      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCombustionGenerator), cgmr);
-    } else {
-      BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
-      CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
-      RenderingRegistry.registerBlockHandler(cr);
-      if(!Config.combustionGeneratorUseOpaqueModel) {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
-      }
-    }
+    BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
+    CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
+    RenderingRegistry.registerBlockHandler(cr);
 
     ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);

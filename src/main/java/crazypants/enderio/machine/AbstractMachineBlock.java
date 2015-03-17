@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -131,9 +132,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
     selectedFaceIcon = iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
   }
-
+  
   @SideOnly(Side.CLIENT)
-  public IIcon getOverlayIconForMode(IoMode mode) {
+  public IIcon getOverlayIconForMode(ForgeDirection face, IoMode mode) {
     if(mode == null) {
       return null;
     }

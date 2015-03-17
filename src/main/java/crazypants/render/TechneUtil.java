@@ -43,7 +43,6 @@ import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -65,6 +64,7 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.vecmath.Vector3d;
 
 /**
  * Slightly modified to fit the EnderIO source.
@@ -72,6 +72,25 @@ import crazypants.enderio.machine.AbstractMachineBlock;
  * @author RainWarrior
  */
 public class TechneUtil {
+
+  private static class DefaultVertexTransform implements VertexTransform {
+
+    private static DefaultVertexTransform INSTANCE = new DefaultVertexTransform();
+
+    @Override
+    public void apply(crazypants.vecmath.Vertex vertex) {
+    }
+
+    @Override
+    public void apply(Vector3d vec) {
+    }
+
+    @Override
+    public void applyToNormal(crazypants.vecmath.Vector3f vec) {
+    }
+  }
+
+  public static VertexTransform vt = DefaultVertexTransform.INSTANCE;
 
   private static final Tessellator tes = Tessellator.instance;
 
@@ -181,12 +200,20 @@ public class TechneUtil {
   }
 
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, Tessellator tes) {
+    renderWithIcon(model, icon, tes, null);
+  }
+
+  public static void renderWithIcon(List<GroupObject> model, IIcon icon, Tessellator tes, VertexTransform vt) {
     for (GroupObject go : model) {
       for (Face f : go.faces) {
         Vertex n = f.faceNormal;
         tes.setNormal(n.x, n.y, n.z);
         for (int i = 0; i < f.vertices.length; i++) {
-          Vertex v = f.vertices[i];
+          Vertex vert = f.vertices[i];
+          Vector3d v = new Vector3d(vert);
+          if(vt != null) {
+            vt.apply(v);
+          }
           TextureCoordinate t = f.textureCoordinates[i];
           tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
         }
@@ -202,9 +229,10 @@ public class TechneUtil {
     tes.startDrawingQuads();
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(0, -0.5f, 0);
-    renderWithIcon(model, icon, tes);
+    renderWithIcon(model, icon, tes, vt);
     tes.addTranslation(0, 0.5f, 0);
     tes.draw();
+    resetVT();
   }
 
   public static boolean renderWorldBlock(List<GroupObject> model, IBlockAccess world, int x, int y, int z, Block block) {
@@ -216,9 +244,14 @@ public class TechneUtil {
     tes.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(x + .5F, y + 0.0375f, z + .5F);
-    renderWithIcon(model, icon, tes);
+    renderWithIcon(model, icon, tes, vt);
     tes.addTranslation(-x - .5F, -y - 0.0375f, -z - .5F);
+    resetVT();
     return true;
+  }
+
+  private static void resetVT() {
+    vt = DefaultVertexTransform.INSTANCE;
   }
 
   private static IIcon getIconFor(Block block, IBlockAccess world, int x, int y, int z) {

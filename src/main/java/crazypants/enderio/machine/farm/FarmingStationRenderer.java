@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -9,19 +7,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.obj.GroupObject;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.machine.TechneModelRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.TechneUtil;
 
-public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
+public class FarmingStationRenderer extends TechneModelRenderer {
 
-  private List<GroupObject> model = TechneUtil.getModel("models/farm");
-
-  @Override
-  public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-    TechneUtil.renderInventoryBlock(model, block, metadata);
+  public FarmingStationRenderer() {
+    super("models/farm", BlockFarmStation.renderId);
   }
 
   @Override
@@ -40,19 +33,6 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
       }
     }
 
-    if(override != null) {
-      return TechneUtil.renderWorldBlock(model, override, world, x, y, z, block);
-    }
-    return TechneUtil.renderWorldBlock(model, world, x, y, z, block);
-  }
-
-  @Override
-  public boolean shouldRender3DInInventory(int modelId) {
-    return true;
-  }
-
-  @Override
-  public int getRenderId() {
-    return BlockFarmStation.renderId;
+    return super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
   }
 }

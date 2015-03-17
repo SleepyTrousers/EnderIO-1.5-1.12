@@ -17,6 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.render.RenderUtil;
 
 @SideOnly(Side.CLIENT)
+@Deprecated
 public class CombustionGeneratorModelRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private static final String TEXTURE = "enderio:models/combustionGenerator.png";
