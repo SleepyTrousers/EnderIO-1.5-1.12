@@ -113,7 +113,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     }
 
     ei.setEntityItemStack(getFloatingItem(te));
-    ei.hoverStart = world.getTotalWorldTime() * 0.05f + (tick * 0.05f);
+    ei.hoverStart = (float) ((world.getTotalWorldTime() * 0.05f + (tick * 0.05f)) % (Math.PI * 2));
     ei.age = 0;
 
     glPushMatrix();
