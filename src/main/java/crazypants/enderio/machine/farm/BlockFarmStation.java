@@ -30,7 +30,6 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   protected BlockFarmStation() {
     super(ModObject.blockFarmStation, TileFarmStation.class);
-    setBlockBounds(0, 0, 0, 1, 0.85f, 1);
   }
 
   @Override
@@ -64,6 +63,11 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   protected String getSideIconKey(boolean active) {
     return super.getBackIconKey(active);
+  }
+  
+  @Override
+  protected String getModelIconKey(boolean active) {
+    return "enderio:farmModel";
   }
 
   @Override

@@ -46,7 +46,9 @@ import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.obj.Face;
 import net.minecraftforge.client.model.obj.GroupObject;
 import net.minecraftforge.client.model.obj.TextureCoordinate;
@@ -61,6 +63,8 @@ import org.lwjgl.util.vector.Vector4f;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.AbstractMachineBlock;
 
 /**
  * Slightly modified to fit the EnderIO source.
@@ -137,6 +141,7 @@ public class TechneUtil {
 
           face.textureCoordinates[j] = new TextureCoordinate(pv.texturePositionX, pv.texturePositionY);
         }
+        face.faceNormal = face.calculateFaceNormal();
         obj.faces.add(face);
       }
       res.add(obj);
@@ -170,6 +175,11 @@ public class TechneUtil {
     return res;
   }
 
+  public static List<GroupObject> getModel(String modelPath) {
+    TechneModel tm = (TechneModel) AdvancedModelLoader.loadModel(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
+    return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1)));
+  }
+
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, Tessellator tes) {
     for (GroupObject go : model) {
       for (Face f : go.faces) {
@@ -178,27 +188,50 @@ public class TechneUtil {
         for (int i = 0; i < f.vertices.length; i++) {
           Vertex v = f.vertices[i];
           TextureCoordinate t = f.textureCoordinates[i];
-          tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 16));
+          tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
         }
       }
     }
   }
 
   public static void renderInventoryBlock(List<GroupObject> model, Block block, int metadata) {
-    RenderHelper.disableStandardItemLighting();
+    renderInventoryBlock(model, getIconFor(block, metadata), block, metadata);
+  }
+
+  public static void renderInventoryBlock(List<GroupObject> model, IIcon icon, Block block, int metadata) {
     tes.startDrawingQuads();
     tes.setColorOpaque_F(1, 1, 1);
-    renderWithIcon(model, block.getIcon(0, metadata), tes);
+    tes.addTranslation(0, -0.5f, 0);
+    renderWithIcon(model, icon, tes);
+    tes.addTranslation(0, 0.5f, 0);
     tes.draw();
-    RenderHelper.enableStandardItemLighting();
   }
 
   public static boolean renderWorldBlock(List<GroupObject> model, IBlockAccess world, int x, int y, int z, Block block) {
+    IIcon icon = getIconFor(block, world, x, y, z);
+    return renderWorldBlock(model, icon, world, x, y, z, block);
+  }
+
+  public static boolean renderWorldBlock(List<GroupObject> model, IIcon icon, IBlockAccess world, int x, int y, int z, Block block) {
     tes.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
     tes.setColorOpaque_F(1, 1, 1);
-    tes.addTranslation(x + .5F, y + .5F, z + .5F);
-    renderWithIcon(model, block.getIcon(0, world.getBlockMetadata(x, y, z)), tes);
-    tes.addTranslation(-x - .5F, -y - .5F, -z - .5F);
+    tes.addTranslation(x + .5F, y + 0.0375f, z + .5F);
+    renderWithIcon(model, icon, tes);
+    tes.addTranslation(-x - .5F, -y - 0.0375f, -z - .5F);
     return true;
+  }
+
+  private static IIcon getIconFor(Block block, IBlockAccess world, int x, int y, int z) {
+    if(block instanceof AbstractMachineBlock<?>) {
+      return ((AbstractMachineBlock<?>) block).getModelIcon(world, x, y, z);
+    }
+    return getIconFor(block, world.getBlockMetadata(x, y, z));
+  }
+
+  private static IIcon getIconFor(Block block, int metadata) {
+    if(block instanceof AbstractMachineBlock<?>) {
+      return ((AbstractMachineBlock<?>) block).getModelIcon();
+    }
+    return block.getIcon(0, metadata);
   }
 }

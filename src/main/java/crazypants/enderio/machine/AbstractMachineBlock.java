@@ -15,7 +15,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -26,10 +25,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio implements IGuiHandler, IResourceTooltipProvider,
@@ -100,7 +97,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
 
-    iconBuffer = new IIcon[1][12];
+    iconBuffer = new IIcon[2][12];
     String side = getSideIconKey(false);
     // first the 6 sides in OFF state
     iconBuffer[0][0] = iIconRegister.registerIcon(side);
@@ -117,6 +114,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     iconBuffer[0][9] = iIconRegister.registerIcon(getMachineFrontIconKey(true));
     iconBuffer[0][10] = iIconRegister.registerIcon(side);
     iconBuffer[0][11] = iIconRegister.registerIcon(side);
+    
+    iconBuffer[1][0] = iIconRegister.registerIcon(getModelIconKey(false));
+    iconBuffer[1][1] = iIconRegister.registerIcon(getModelIconKey(false));
 
     registerOverlayIcons(iIconRegister);
 
@@ -174,6 +174,18 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public IIcon getIcon(int blockSide, int blockMeta) {
     // This is used to render the block as an item
     return iconBuffer[0][blockSide];
+  }
+
+  public IIcon getModelIcon(IBlockAccess world, int x, int y, int z) {
+    return getModelIcon(((AbstractMachineEntity) world.getTileEntity(x, y, z)).isActive());
+  }
+
+  public IIcon getModelIcon() {
+    return getModelIcon(false);
+  }
+
+  private IIcon getModelIcon(boolean active) {
+    return active ? iconBuffer[1][1] : iconBuffer[1][0];
   }
 
   @Override
@@ -261,6 +273,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected String getTopIconKey(boolean active) {
     return "enderio:machineTop";
+  }
+
+  protected String getModelIconKey(boolean active) {
+    return getSideIconKey(active);
   }
 
   protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
