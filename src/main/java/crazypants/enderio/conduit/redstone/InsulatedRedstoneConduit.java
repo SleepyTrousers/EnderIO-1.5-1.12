@@ -379,7 +379,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
-    for(Class<?> connectable : connectableInterfaces.keySet()) {
+    for (Class<?> connectable : connectableInterfaces.keySet()) {
       if((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
         return connectableInterfaces.get(connectable);
       }
