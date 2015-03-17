@@ -204,8 +204,15 @@ public class TechneUtil {
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes) {
     renderWithIcon(model, icon, override, tes, null);
   }
-
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, VertexTransform vt) {
+    renderWithIcon(model, icon, override, tes, null, 0, 0, 0, vt);
+  }
+  
+  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z) {
+    renderWithIcon(model, icon, override, tes, world, x, y, z, null);
+  }
+
+  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z, VertexTransform vt) {
     for (GroupObject go : model) {
       for (Face f : go.faces) {
         Vertex n = f.faceNormal;
@@ -217,6 +224,13 @@ public class TechneUtil {
         }
         ForgeDirection down = normal.getRotation(right.getOpposite());
 
+        if(world != null && world.getBlock(x, y, z).getLightOpacity() > 0) {
+          int bx = x + normal.offsetX;
+          int by = y + normal.offsetY;
+          int bz = z + normal.offsetZ;
+          tes.setBrightness(world.getBlock(bx, by, bz).getMixedBrightnessForBlock(world, bx, by, bz));
+        }
+        
         for (int i = 0; i < f.vertices.length; i++) {
           Vertex vert = f.vertices[i];
           Vector3d v = new Vector3d(vert);
@@ -225,6 +239,7 @@ public class TechneUtil {
           }
 
           TextureCoordinate t = f.textureCoordinates[i];
+          
           if(override != null) {
 
             Vector3d tv = new Vector3d(v);
@@ -239,7 +254,6 @@ public class TechneUtil {
             if(normal != ForgeDirection.UP && normal != ForgeDirection.DOWN) {
               interpV = 1 - interpV;
             }
-
             tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpU * 16), override.getInterpolatedV(interpV * 16));
           } else {
             tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
@@ -282,7 +296,7 @@ public class TechneUtil {
     tes.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(x + .5F, y + 0.0375f, z + .5F);
-    renderWithIcon(model, icon, rb.overrideBlockTexture, tes, vt);
+    renderWithIcon(model, icon, rb.overrideBlockTexture, tes, world, x, y, z, vt);
     tes.addTranslation(-x - .5F, -y - 0.0375f, -z - .5F);
     resetVT();
     return true;

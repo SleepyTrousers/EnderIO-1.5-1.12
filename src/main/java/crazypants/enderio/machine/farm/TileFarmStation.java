@@ -13,6 +13,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
@@ -102,6 +103,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public String notification = "";
   public boolean sendNotification = false;
+  
+  private boolean wasActive;
 
   public TileFarmStation() {
     super(new SlotDefinition(7, 4, 1));
@@ -324,6 +327,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return false;
     }
     return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
+  }
+
+  @Override
+  public void updateEntity() {
+    super.updateEntity();
+    if(isActive() != wasActive) {
+      wasActive = isActive();
+      worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+    }
   }
 
   @Override
