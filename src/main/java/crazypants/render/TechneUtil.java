@@ -43,6 +43,7 @@ import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -53,6 +54,7 @@ import net.minecraftforge.client.model.obj.GroupObject;
 import net.minecraftforge.client.model.obj.TextureCoordinate;
 import net.minecraftforge.client.model.obj.Vertex;
 import net.minecraftforge.client.model.techne.TechneModel;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -199,52 +201,88 @@ public class TechneUtil {
     return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1)));
   }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, Tessellator tes) {
-    renderWithIcon(model, icon, tes, null);
+  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes) {
+    renderWithIcon(model, icon, override, tes, null);
   }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, Tessellator tes, VertexTransform vt) {
+  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, VertexTransform vt) {
     for (GroupObject go : model) {
       for (Face f : go.faces) {
         Vertex n = f.faceNormal;
         tes.setNormal(n.x, n.y, n.z);
+        ForgeDirection normal = getNormalFor(n);
+        ForgeDirection right = normal.getRotation(ForgeDirection.DOWN);
+        if(normal == right) {
+          right = ForgeDirection.EAST;
+        }
+        ForgeDirection down = normal.getRotation(right.getOpposite());
+
         for (int i = 0; i < f.vertices.length; i++) {
           Vertex vert = f.vertices[i];
           Vector3d v = new Vector3d(vert);
           if(vt != null) {
             vt.apply(v);
           }
+
           TextureCoordinate t = f.textureCoordinates[i];
-          tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
+          if(override != null) {
+
+            Vector3d tv = new Vector3d(v);
+            tv.add(0.5, 0, 0.5);
+
+            double interpU = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
+            double interpV = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
+
+            if(normal == ForgeDirection.SOUTH || normal == ForgeDirection.WEST) {
+              interpU = 1 - interpU;
+            }
+            if(normal != ForgeDirection.UP && normal != ForgeDirection.DOWN) {
+              interpV = 1 - interpV;
+            }
+
+            tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpU * 16), override.getInterpolatedV(interpV * 16));
+          } else {
+            tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
+          }
         }
       }
     }
   }
 
-  public static void renderInventoryBlock(List<GroupObject> model, Block block, int metadata) {
-    renderInventoryBlock(model, getIconFor(block, metadata), block, metadata);
+  private static ForgeDirection getNormalFor(Vertex n) {
+    if(n.x != 0) {
+      return n.x > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+    } else if(n.y != 0) {
+      return n.y > 0 ? ForgeDirection.UP : ForgeDirection.DOWN;
+    } else {
+      return n.z > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
+    }
   }
 
-  public static void renderInventoryBlock(List<GroupObject> model, IIcon icon, Block block, int metadata) {
+  public static void renderInventoryBlock(List<GroupObject> model, Block block, int metadata, RenderBlocks rb) {
+    renderInventoryBlock(model, getIconFor(block, metadata), block, metadata, rb);
+  }
+
+  public static void renderInventoryBlock(List<GroupObject> model, IIcon icon, Block block, int metadata, RenderBlocks rb) {
     tes.startDrawingQuads();
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(0, -0.5f, 0);
-    renderWithIcon(model, icon, tes, vt);
+    renderWithIcon(model, icon, rb.overrideBlockTexture, tes, vt);
     tes.addTranslation(0, 0.5f, 0);
     tes.draw();
     resetVT();
   }
 
-  public static boolean renderWorldBlock(List<GroupObject> model, IBlockAccess world, int x, int y, int z, Block block) {
+  public static boolean renderWorldBlock(List<GroupObject> model, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
     IIcon icon = getIconFor(block, world, x, y, z);
-    return renderWorldBlock(model, icon, world, x, y, z, block);
+    return renderWorldBlock(model, icon, world, x, y, z, block, rb);
   }
 
-  public static boolean renderWorldBlock(List<GroupObject> model, IIcon icon, IBlockAccess world, int x, int y, int z, Block block) {
+  public static boolean renderWorldBlock(List<GroupObject> model, IIcon icon, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
     tes.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(x + .5F, y + 0.0375f, z + .5F);
-    renderWithIcon(model, icon, tes, vt);
+    renderWithIcon(model, icon, rb.overrideBlockTexture, tes, vt);
     tes.addTranslation(-x - .5F, -y - 0.0375f, -z - .5F);
     resetVT();
     return true;

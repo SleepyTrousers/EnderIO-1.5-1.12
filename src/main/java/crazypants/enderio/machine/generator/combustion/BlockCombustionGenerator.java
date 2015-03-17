@@ -125,6 +125,9 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     if(face.offsetY == 0) {
       return super.getOverlayIconForMode(face, mode);
     } else {
+      if (mode == IoMode.NONE) {
+        return super.getOverlayIconForMode(face, mode);
+      }
       return mode == IoMode.PULL ? overlayPullNoCenter : overlayDisabledNoCenter;
     }
   }

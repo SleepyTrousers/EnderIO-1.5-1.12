@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -31,19 +30,13 @@ public class TechneModelRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
     TechneUtil.vt = this.vt;
-    TechneUtil.renderInventoryBlock(model, block, metadata);
+    TechneUtil.renderInventoryBlock(model, block, metadata, renderer);
   }
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    IIcon override = renderer.overrideBlockTexture;
-
-    TechneUtil.vt = this.vt;
-
-    if(override != null) {
-      return TechneUtil.renderWorldBlock(model, override, world, x, y, z, block);
-    }
-    return TechneUtil.renderWorldBlock(model, world, x, y, z, block);
+    TechneUtil.vt = this.vt;  
+    return TechneUtil.renderWorldBlock(model, world, x, y, z, block, renderer);
   }
 
   @Override
