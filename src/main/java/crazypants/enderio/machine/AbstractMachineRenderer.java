@@ -1,5 +1,7 @@
 package crazypants.enderio.machine;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,12 +18,22 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.CustomCubeRenderer;
+import crazypants.render.CustomRenderBlocks;
 import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
+import crazypants.vecmath.Vertex;
 
 public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
-  private OverlayRenderer overlayRenderer = new OverlayRenderer();
+  private OverlayRenderer overlayRenderer = new OverlayRenderer() {
+    @Override
+    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
+        boolean translateToXyz) {
+
+      ccr.getCustomRenderBlocks().doDefaultRenderFace(face, par1Block, x, y, z, texture);
+      super.renderFace(rb, face, par1Block, x, y, z, texture, refVertices, translateToXyz);
+    }
+  };
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
@@ -66,9 +78,9 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-
     TileEntity te = world.getTileEntity(x, y, z);
     AbstractMachineEntity machine = null;
+
     if(te instanceof AbstractMachineEntity) {
       machine = (AbstractMachineEntity) te;
     }
