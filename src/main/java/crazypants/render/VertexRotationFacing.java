@@ -5,6 +5,8 @@ import crazypants.vecmath.Vector3d;
 
 public class VertexRotationFacing extends VertexRotation {
 
+  private static final double ROTATION_AMOUNT = Math.PI / 2;
+
   private ForgeDirection defaultDir;
 
   public VertexRotationFacing(ForgeDirection defaultDir) {
@@ -12,18 +14,15 @@ public class VertexRotationFacing extends VertexRotation {
     this.defaultDir = defaultDir;
   }
 
-  // No I have no idea why this value works.
-  private double rotationAmount = 1.571;
-
   public void setRotation(ForgeDirection dir) {
     if(dir == defaultDir) {
       setAngle(0);
     } else if(dir == defaultDir.getOpposite()) {
-      setAngle(rotationAmount * 2);
+      setAngle(ROTATION_AMOUNT * 2);
     } else if(dir == defaultDir.getRotation(ForgeDirection.DOWN)) {
-      setAngle(rotationAmount);
+      setAngle(ROTATION_AMOUNT);
     } else {
-      setAngle(rotationAmount * 3);
+      setAngle(ROTATION_AMOUNT * 3);
     }
   }
 }
