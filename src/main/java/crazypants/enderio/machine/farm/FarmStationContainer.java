@@ -9,6 +9,18 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class FarmStationContainer extends AbstractMachineContainer {
 
+  private static final int ROW_TOOLS = 19;
+  private static final int ROW_IO = 44;
+
+  private static final int COL_TOOLS = 44;
+  private static final int COL_INPUT = 53;
+  private static final int COL_OUTPUT = 116;
+
+  private static final int SLOT_SIZE = 18;
+  private static final int ONE   = 0 * SLOT_SIZE;
+  private static final int TWO   = 1 * SLOT_SIZE;
+  private static final int THREE = 2 * SLOT_SIZE;
+
   public FarmStationContainer(InventoryPlayer inventory, TileFarmStation te) {
     super(inventory,te);
   }
@@ -17,19 +29,21 @@ public class FarmStationContainer extends AbstractMachineContainer {
   protected void addMachineSlots(InventoryPlayer playerInv) {
 
     Point[] points = new Point[] {
-      new Point(44, 12),
-      new Point(62, 12),
-      new Point(80, 12),
+      new Point(COL_TOOLS + ONE,    ROW_TOOLS),
+      new Point(COL_TOOLS + TWO,    ROW_TOOLS),
+      new Point(COL_TOOLS + THREE,  ROW_TOOLS),
 
-      new Point(53, 37),
-      new Point(71, 37),
-      new Point(53, 55),
-      new Point(71, 55),
+      new Point(COL_INPUT + ONE,    ROW_IO + ONE),
+      new Point(COL_INPUT + TWO,    ROW_IO + ONE),
+      new Point(COL_INPUT + ONE,    ROW_IO + TWO),
+      new Point(COL_INPUT + TWO,    ROW_IO + TWO),
 
-      new Point(116, 37),
-      new Point(134, 37),
-      new Point(116, 55),
-      new Point(134, 55),
+      new Point(COL_OUTPUT + ONE,   ROW_IO + ONE),
+      new Point(COL_OUTPUT + TWO,   ROW_IO + ONE),
+      new Point(COL_OUTPUT + THREE, ROW_IO + ONE),
+      new Point(COL_OUTPUT + ONE,   ROW_IO + TWO),
+      new Point(COL_OUTPUT + TWO,   ROW_IO + TWO),
+      new Point(COL_OUTPUT + THREE, ROW_IO + TWO),
     };
 
     int i=0;
@@ -53,6 +67,16 @@ public class FarmStationContainer extends AbstractMachineContainer {
       });
     }
 
+  }
+
+  @Override
+  public Point getPlayerInventoryOffset() {
+    return new Point(8,87);
+  }
+
+  @Override
+  public Point getUpgradeOffset() {
+    return new Point(12,63);
   }
 
 }
