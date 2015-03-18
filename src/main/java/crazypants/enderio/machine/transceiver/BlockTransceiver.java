@@ -84,12 +84,11 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   @Override
   @SideOnly(Side.CLIENT)
   protected void registerOverlayIcons(IIconRegister iIconRegister) {
-    overlayIconPull = iIconRegister.registerIcon("enderio:transcieverOverlayPull");
-    overlayIconPush = iIconRegister.registerIcon("enderio:transcieverOverlayPush");
-    overlayIconPushPull = iIconRegister.registerIcon("enderio:transcieverOverlayPushPull");
-    overlayIconDisabled = iIconRegister.registerIcon("enderio:transcieverOverlayDisabled");
-    overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
-    selectedFaceIcon= iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
+    super.registerOverlayIcons(iIconRegister);
+    overlayIconPull = iIconRegister.registerIcon("enderio:overlays/transcieverPull");
+    overlayIconPush = iIconRegister.registerIcon("enderio:overlays/transcieverPush");
+    overlayIconPushPull = iIconRegister.registerIcon("enderio:overlays/transcieverPushPull");
+    overlayIconDisabled = iIconRegister.registerIcon("enderio:overlays/transcieverDisabled");
   }
 
   @Override

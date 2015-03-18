@@ -3,6 +3,7 @@ package crazypants.enderio.enchantment;
 import java.util.ListIterator;
 import java.util.Map;
 
+import tterrag.core.api.common.enchant.IAdvancedEnchant;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -15,11 +16,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.config.Config;
+import crazypants.util.Lang;
 
-public class EnchantmentSoulBound extends Enchantment {
+@Interface(iface = "tterrag.core.api.common.enchant.IAdvancedEnchant", modid = "ttCore")
+public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
 
   public static EnchantmentSoulBound create(int id) {
     EnchantmentSoulBound res = new EnchantmentSoulBound(id);
@@ -134,4 +138,8 @@ public class EnchantmentSoulBound extends Enchantment {
 
   }
 
+  @Override
+  public String[] getTooltipDetails(ItemStack stack) {
+    return new String[] { Lang.localize("description.enchantment.enderio.soulBound", false) };
+  }
 }

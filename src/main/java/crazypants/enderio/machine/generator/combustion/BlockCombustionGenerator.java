@@ -24,8 +24,8 @@ import crazypants.util.Util;
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
   public static int renderId = -1;
-  
-  private IIcon overlayPullNoCenter, overlayDisabledNoCenter;
+
+  private IIcon overlayPullSides, overlayPullTopBottom, overlayDisabledNoCenter;
 
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
@@ -78,7 +78,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCombustionGenerator) {
-      return new ContainerCombustionEngine(player.inventory, (TileCombustionGenerator)te);
+      return new ContainerCombustionEngine(player.inventory, (TileCombustionGenerator) te);
     }
     return null;
   }
@@ -116,20 +116,17 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   @Override
   protected void registerOverlayIcons(IIconRegister iIconRegister) {
     super.registerOverlayIcons(iIconRegister);
-    overlayPullNoCenter = iIconRegister.registerIcon("enderio:machineOverlayPullNoCenter");
-    overlayDisabledNoCenter = iIconRegister.registerIcon("enderio:machineOverlayDisabledNoCenter");
+    overlayPullSides = iIconRegister.registerIcon("enderio:overlays/pullSides");
+    overlayPullTopBottom = iIconRegister.registerIcon("enderio:overlays/pullTopBottom");
+    overlayDisabledNoCenter = iIconRegister.registerIcon("enderio:overlays/disabledNoCenter");
   }
 
   @Override
-  public IIcon getOverlayIconForMode(ForgeDirection face, IoMode mode) {
-    if(face.offsetY == 0) {
-      return super.getOverlayIconForMode(face, mode);
-    } else {
-      if (mode == IoMode.NONE) {
-        return super.getOverlayIconForMode(face, mode);
-      }
-      return mode == IoMode.PULL ? overlayPullNoCenter : overlayDisabledNoCenter;
+  public IIcon getOverlayIconForMode(TileCombustionGenerator tile, ForgeDirection face, IoMode mode) {
+    if(face.offsetY == 0 || mode == IoMode.NONE) {
+      return super.getOverlayIconForMode(tile, face, mode);
     }
+    return mode == IoMode.PULL ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom : overlayDisabledNoCenter;
   }
 
   public IIcon getBackIcon() {
@@ -173,7 +170,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
       if(dir.offsetX == 1) {
         startX++;
-      } else if (dir.offsetZ == 1) {
+      } else if(dir.offsetZ == 1) {
         startZ++;
       }
 

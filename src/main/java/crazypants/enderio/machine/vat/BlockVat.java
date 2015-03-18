@@ -2,6 +2,7 @@ package crazypants.enderio.machine.vat;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -18,6 +19,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.VertexRotation;
 import crazypants.util.FluidUtil;
@@ -43,6 +45,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   protected IIcon topIcon;
   protected IIcon blockIconSingle;
   protected IIcon blockIconSingleOn;
+  protected IIcon[][] overlays;
 
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
@@ -85,7 +88,36 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     }
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
+  protected void registerOverlayIcons(IIconRegister iIconRegister) {
+    super.registerOverlayIcons(iIconRegister);
 
+    overlays = new IIcon[2][IoMode.values().length];
+
+    overlays[0][IoMode.PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pullSides");
+    overlays[0][IoMode.PUSH.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushSides");
+    overlays[0][IoMode.PUSH_PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushPullSides");
+    overlays[0][IoMode.DISABLED.ordinal()] = iIconRegister.registerIcon("enderio:overlays/disabledNoCenter");
+
+    overlays[1][IoMode.PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pullTopBottom");
+    overlays[1][IoMode.PUSH.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushTopBottom");
+    overlays[1][IoMode.PUSH_PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushPullTopBottom");
+    overlays[1][IoMode.DISABLED.ordinal()] = overlays[0][IoMode.DISABLED.ordinal()];
+  }
+
+  @Override
+  public IIcon getOverlayIconForMode(TileVat tile, ForgeDirection face, IoMode mode) {
+    ForgeDirection side = tile.getFacingDir().getRotation(ForgeDirection.DOWN);
+    if(mode == IoMode.DISABLED || face == side || face == side.getOpposite()) {
+      return super.getOverlayIconForMode(tile, face, mode);
+    } else {
+      if(face == ForgeDirection.UP) {
+        return overlays[1][mode.ordinal()];
+      }
+      return overlays[0][mode.ordinal()];
+    }
+  }
 
   @Override
   @SideOnly(Side.CLIENT)

@@ -25,6 +25,7 @@ public class OverlayRenderer implements IRenderFace {
     this.te = te;
   }
   
+  @SuppressWarnings("unchecked")
   @Override
   public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
       boolean translateToXyz) {
@@ -39,7 +40,7 @@ public class OverlayRenderer implements IRenderFace {
       Tessellator.instance.addTranslation((float) offset.x, (float) offset.y, (float) offset.z);
 
       IoMode mode = te.getIoMode(face);
-      IIcon tex = ((AbstractMachineBlock<?>) par1Block).getOverlayIconForMode(face, mode);
+      IIcon tex = ((AbstractMachineBlock<AbstractMachineEntity>) par1Block).getOverlayIconForMode(te, face, mode);
       if(tex != null) {
         ccr.getCustomRenderBlocks().doDefaultRenderFace(face, par1Block, x, y, z, tex);
       }

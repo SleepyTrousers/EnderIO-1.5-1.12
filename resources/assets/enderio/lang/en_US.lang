@@ -938,7 +938,7 @@ enderio.gui.weather.requireditem=Required Item: %s
 
 //Enchants
 enchantment.enderio.soulBound=Soulbound
-description.enchantment.enderio.soulBound=This enchantment prevents the item from being lost on death
+description.enchantment.enderio.soulBound=Prevents item from being lost on death
 
 //Configuration
 enderio.config.title=Ender IO Configuration

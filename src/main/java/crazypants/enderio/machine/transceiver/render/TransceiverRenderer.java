@@ -89,7 +89,7 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
           rb.setRenderBounds(pushPullBounds.minX, pushPullBounds.minY, pushPullBounds.minZ,
               pushPullBounds.maxX, pushPullBounds.maxY, pushPullBounds.maxZ);
         }
-        IIcon icon = EnderIO.blockTransceiver.getOverlayIconForMode(dir, mode);
+        IIcon icon = EnderIO.blockTransceiver.getOverlayIconForMode(trans, dir, mode);
         if(icon != null) {
           rb.doDefaultRenderFace(dir, EnderIO.blockTransceiver, 0, 0, 0, icon);
         }

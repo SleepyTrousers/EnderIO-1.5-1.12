@@ -15,8 +15,8 @@ public abstract class TileEntityEio extends TileEntity {
   public final void readFromNBT(NBTTagCompound root) {
     super.readFromNBT(root);
     readCustomNBT(root);
-
   }
+  
   @Override
   public final void writeToNBT(NBTTagCompound root) {
     super.writeToNBT(root);

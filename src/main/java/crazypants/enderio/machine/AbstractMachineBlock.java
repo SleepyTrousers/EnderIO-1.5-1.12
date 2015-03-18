@@ -125,16 +125,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @SideOnly(Side.CLIENT)
   protected void registerOverlayIcons(IIconRegister iIconRegister) {
-    overlayIconPull = iIconRegister.registerIcon("enderio:machineOverlayPull");
-    overlayIconPush = iIconRegister.registerIcon("enderio:machineOverlayPush");
-    overlayIconPushPull = iIconRegister.registerIcon("enderio:machineOverlayPushPull");
-    overlayIconDisabled = iIconRegister.registerIcon("enderio:machineOverlayDisabled");
-    overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
-    selectedFaceIcon = iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
+    overlayIconPull = iIconRegister.registerIcon("enderio:overlays/pull");
+    overlayIconPush = iIconRegister.registerIcon("enderio:overlays/push");
+    overlayIconPushPull = iIconRegister.registerIcon("enderio:overlays/pushPull");
+    overlayIconDisabled = iIconRegister.registerIcon("enderio:overlays/disabled");
+    overlayIconNone = iIconRegister.registerIcon("enderio:overlays/none");
+    selectedFaceIcon = iIconRegister.registerIcon("enderio:overlays/selectedFace");
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public IIcon getOverlayIconForMode(ForgeDirection face, IoMode mode) {
+  public IIcon getOverlayIconForMode(T tile, ForgeDirection face, IoMode mode) {
     if(mode == null) {
       return null;
     }

@@ -8,7 +8,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.ObjectArrays;
 
 import crazypants.render.CustomCubeRenderer;
-import crazypants.render.RenderUtil;
 import crazypants.render.TechneModelRenderer;
 import crazypants.render.VertexRotationFacing;
 import crazypants.render.VertexTransform;
