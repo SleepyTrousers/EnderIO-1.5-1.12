@@ -48,12 +48,12 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.obj.Face;
 import net.minecraftforge.client.model.obj.GroupObject;
 import net.minecraftforge.client.model.obj.TextureCoordinate;
 import net.minecraftforge.client.model.obj.Vertex;
 import net.minecraftforge.client.model.techne.TechneModel;
+import net.minecraftforge.client.model.techne.TechneModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -75,24 +75,9 @@ import crazypants.vecmath.Vector3d;
  */
 public class TechneUtil {
 
-  private static class DefaultVertexTransform implements VertexTransform {
-
-    private static DefaultVertexTransform INSTANCE = new DefaultVertexTransform();
-
-    @Override
-    public void apply(crazypants.vecmath.Vertex vertex) {
-    }
-
-    @Override
-    public void apply(Vector3d vec) {
-    }
-
-    @Override
-    public void applyToNormal(crazypants.vecmath.Vector3f vec) {
-    }
-  }
-
-  public static VertexTransform vt = DefaultVertexTransform.INSTANCE;
+  public static VertexTransform vt = null;
+  
+  private static final TechneModelLoader modelLoader = new TechneModelLoader();
 
   private static final Tessellator tes = Tessellator.instance;
 
@@ -197,7 +182,7 @@ public class TechneUtil {
   }
 
   public static List<GroupObject> getModel(String modelPath) {
-    TechneModel tm = (TechneModel) AdvancedModelLoader.loadModel(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
+    TechneModel tm = (TechneModel) modelLoader.loadInstance(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
     return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1)));
   }
 
@@ -303,7 +288,7 @@ public class TechneUtil {
   }
 
   private static void resetVT() {
-    vt = DefaultVertexTransform.INSTANCE;
+    vt = null;
   }
 
   private static IIcon getIconFor(Block block, IBlockAccess world, int x, int y, int z) {
