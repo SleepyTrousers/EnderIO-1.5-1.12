@@ -129,21 +129,9 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     return mode == IoMode.PULL ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom : overlayDisabledNoCenter;
   }
 
-  public IIcon getBackIcon() {
-    return iconBuffer[0][2];
-  }
-
   @Override
-  public String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:combustionGenFrontOn";
-    }
-    return "enderio:combustionGenFront";
-  }
-
-  @Override
-  public String getBackIconKey(boolean active) {
-    return "enderio:blankMachinePanel";
+  protected String getMachineFrontIconKey(boolean active) {
+    return getBackIconKey(active);
   }
 
   @Override
@@ -182,5 +170,4 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
       }
     }
   }
-
 }

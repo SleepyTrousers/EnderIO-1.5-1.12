@@ -43,7 +43,10 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
     }
 
     super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
-    ccr.renderBlock(world, block, x, y, z, overlay);
+
+    if(renderer.overrideBlockTexture == null) {
+      ccr.renderBlock(world, block, x, y, z, overlay);
+    }
 
     return true;
   }

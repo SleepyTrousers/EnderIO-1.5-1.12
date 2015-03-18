@@ -223,6 +223,8 @@ public class TechneUtil {
         for (int i = 0; i < f.vertices.length; i++) {
           Vertex vert = f.vertices[i];
           Vector3d v = new Vector3d(vert);
+          Vector3d tv = new Vector3d(v);
+          tv.add(0.5, 0, 0.5);
           if(vt != null) {
             vt.apply(v);
           }
@@ -233,9 +235,7 @@ public class TechneUtil {
           tes.setColorOpaque(c, c, c);
 
           if(override != null) {
-            Vector3d tv = new Vector3d(v);
-            tv.add(0.5, 0, 0.5);
-
+  
             double interpX = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
             double interpY = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
 
