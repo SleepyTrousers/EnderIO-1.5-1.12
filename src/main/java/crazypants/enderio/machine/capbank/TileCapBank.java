@@ -80,11 +80,6 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
   private boolean revalidateDisplayTypes;
   private int lastComparatorState;
 
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
-  }
-
   public CapBankType getType() {
     if(type == null) {
       type = CapBankType.getTypeFromMeta(getBlockMetadata());

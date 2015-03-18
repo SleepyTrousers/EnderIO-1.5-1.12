@@ -26,7 +26,7 @@ public class TileLightNode extends TileEntityEio {
     if(worldObj.isRemote) {
       return;
     }
-    if(worldObj.getWorldTime() % 42 == 0) {
+    if(shouldDoWorkThisTick(42)) {
       if(worldObj.getBlock(parentX, parentY, parentZ) != EnderIO.blockElectricLight) {
         worldObj.setBlockToAir(xCoord, yCoord, zCoord);
       }

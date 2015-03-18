@@ -131,7 +131,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   @Override
   protected boolean doPush(ForgeDirection dir) {
 
-    if(worldObj.getTotalWorldTime() % 20 != 0) {
+    if(!shouldDoWorkThisTick(20)) {
       return false;
     }
 

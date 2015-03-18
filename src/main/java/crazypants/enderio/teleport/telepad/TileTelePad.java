@@ -121,12 +121,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         } else {
           powerUsed += energy.extractEnergy(getUsage(), false);
         }
-        if(worldObj.getTotalWorldTime() % 5 == 0) {
+        if(shouldDoWorkThisTick(5)) {
           updateQueuedEntities();
         }
       }
 
-      boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && worldObj.getTotalWorldTime() % 5 == 0);
+      boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
       if(powerChanged) {
         lastSyncPowerStored = getEnergyStored();
         PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);

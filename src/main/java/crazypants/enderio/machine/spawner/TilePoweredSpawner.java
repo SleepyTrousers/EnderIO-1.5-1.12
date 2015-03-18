@@ -43,14 +43,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   private static final String NULL_ENTITY_NAME = "None";
 
-  private ICapacitor capacitor;
-
   private boolean isSpawnMode = true;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(1, 1, 1));
     logic.setEntityName(NULL_ENTITY_NAME);
-    capacitor = CAP_ONE;
   }
 
   public boolean isSpawnMode() {
@@ -84,10 +81,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void setCapacitor(Capacitors capacitorType) {
-    super.setCapacitor(capacitorType);
-    ICapacitor refCap;
-    switch (capacitorType) {
+  public void onCapacitorTypeChange() {
+    ICapacitor refCap = null;
+    switch (getCapacitorType()) {
     case BASIC_CAPACITOR:
       refCap = CAP_ONE;
       break;
@@ -97,19 +93,10 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     case ENDER_CAPACITOR:
       refCap = CAP_THREE;
       break;
-    default:
-      refCap = CAP_ONE;
-      break;
     }
     double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
-    capacitor = new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored());
+    setCapacitor(new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored()));
     forceClientUpdate = true;
-    setEnergyStored(getEnergyStored());
-  }
-
-  @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
   }
 
   @Override

@@ -41,11 +41,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
   private final int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
 
-  private ICapacitor capacitor;
-
   public TileSliceAndSplice() {
     super(new SlotDefinition(8, 1));
-    capacitor = CAP_ONE;
   }
 
   @Override
@@ -58,37 +55,19 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     return 1;
   }
 
-  public void setCapacitor(Capacitors capacitorType) {
-    switch (capacitorType) {
+  @Override
+  public void onCapacitorTypeChange() {
+    switch (getCapacitorType()) {
     case BASIC_CAPACITOR:
-      capacitor = CAP_ONE;
+      setCapacitor(CAP_ONE);
       break;
     case ACTIVATED_CAPACITOR:
-      capacitor = CAP_TWO;
+      setCapacitor(CAP_TWO);
       break;
     case ENDER_CAPACITOR:
-      capacitor = CAP_THREE;
-      break;
-    default:
-      capacitor = CAP_ONE;
+      setCapacitor(CAP_THREE);
       break;
     }
-    super.setCapacitor(capacitorType);
-  }
-
-  @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
-  }
-
-  @Override
-  public int getPowerUsePerTick() {
-    if(getCapacitorType().ordinal() == 0) {
-      return POWER_PER_TICK_ONE;
-    } else if(getCapacitorType().ordinal() == 1) {
-      return POWER_PER_TICK_TWO;
-    }
-    return POWER_PER_TICK_THREE;
   }
 
   @Override

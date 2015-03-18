@@ -122,7 +122,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
         setEnergyStored(getEnergyStored() + getPowerUsePerTick());        
       }
       burnTime--;
-      sendBurnTimePacket = worldObj.getTotalWorldTime() % 20 == 1 || burnTime == 0;    
+      sendBurnTimePacket = shouldDoWorkThisTick(20,-1) || burnTime == 0;    
     }
 
     transmitEnergy();
@@ -158,7 +158,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
       return false;
     }
 
-    if(worldObj.getTotalWorldTime() % 20 != 0) {
+    if(!shouldDoWorkThisTick(20)) {
       return false;
     }
 

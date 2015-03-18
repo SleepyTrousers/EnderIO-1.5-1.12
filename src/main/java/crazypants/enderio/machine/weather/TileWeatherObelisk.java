@@ -94,9 +94,13 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0));
-    setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
+  @Override
+  public void init() {
+	  setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
+  }
+  
   public void updateEntity() {
     super.updateEntity();
     if(worldObj.isRemote) {

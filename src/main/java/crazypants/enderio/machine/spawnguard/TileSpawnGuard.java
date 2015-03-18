@@ -23,7 +23,6 @@ import crazypants.render.BoundingBox;
 
 public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRanged {
 
-  private ICapacitor capacitor;
   private int powerPerTick;
   private int range;
   private int rangeSqu;
@@ -34,7 +33,6 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
   
   public TileSpawnGuard() {
     super(new SlotDefinition(12, 0));
-    setUpdrade(Capacitors.BASIC_CAPACITOR);    
   }
   
   @Override
@@ -72,18 +70,12 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
   }
 
   @Override
-  public void setCapacitor(Capacitors capacitorType) {
-    setUpdrade(capacitorType);
-    super.setCapacitor(capacitorType);
-  }
-
-  @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
-  }
-
-  private void setUpdrade(Capacitors capacitorType) {    
-    switch (capacitorType) {
+  public void onCapacitorTypeChange() {
+    switch (getCapacitorType()) {
+    case BASIC_CAPACITOR:
+    	range = Config.spawnGuardRangeLevelOne;
+    	powerPerTick = Config.spawnGuardPowerPerTickLevelOne;
+    	break;
     case ACTIVATED_CAPACITOR:
       range = Config.spawnGuardRangeLevelTwo;
       powerPerTick = Config.spawnGuardPowerPerTickLevelTwo;
@@ -92,14 +84,9 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
       range = Config.spawnGuardRangeLevelThree;
       powerPerTick = Config.spawnGuardPowerPerTickLevelThree;
       break;
-    case BASIC_CAPACITOR:
-    default:
-      range = Config.spawnGuardRangeLevelOne;
-      powerPerTick = Config.spawnGuardPowerPerTickLevelOne;
-      break;
     }
     rangeSqu = range * range;    
-    capacitor = new BasicCapacitor(powerPerTick * 8, capacitorType.capacitor.getMaxEnergyStored(), powerPerTick);
+    setCapacitor(new BasicCapacitor(powerPerTick * 8, getCapacitor().getMaxEnergyStored(), powerPerTick));
     
     BoundingBox bb = new BoundingBox(getLocation());
     bb = bb.scale(range + 0.5f, range + 0.5f, range + 0.5f).translate(0.5f, 0.5f, 0.5f);    

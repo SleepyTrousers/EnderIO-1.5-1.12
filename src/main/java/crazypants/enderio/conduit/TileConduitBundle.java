@@ -41,7 +41,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
@@ -302,11 +301,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(markForUpdate) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-  }
-
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(xCoord, yCoord, zCoord);
   }
 
   @Override

@@ -45,7 +45,7 @@ public class FarmStationContainer extends AbstractMachineContainer {
         @Override
         public int getSlotStackLimit() {             
           if(slot > 2 && slot < 7) {
-            int tier = ((TileFarmStation)tileEntity).tier;
+            int tier = ((TileFarmStation)tileEntity).getCapacitorType().ordinal();
             return (int) (16 * Math.pow(2, tier));
           }
           return 64;

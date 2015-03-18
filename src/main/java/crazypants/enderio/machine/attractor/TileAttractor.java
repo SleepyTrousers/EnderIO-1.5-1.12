@@ -56,24 +56,10 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private int tickCounter = 0;
   private int maxMobsAttracted = 20;
 
-  private ICapacitor capacitor;
-
   private boolean showingRange;
 
   public TileAttractor() {
     super(new SlotDefinition(12, 0));
-    setUpdrade(Capacitors.BASIC_CAPACITOR);
-  }
-
-  @Override
-  public void setCapacitor(Capacitors capacitorType) {
-    setUpdrade(capacitorType);
-    super.setCapacitor(capacitorType);
-  }
-
-  @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
   }
 
   @Override
@@ -103,8 +89,9 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     return worldObj;
   }
 
-  private void setUpdrade(Capacitors capacitorType) {
-    switch (capacitorType) {
+  @Override
+  public void onCapacitorTypeChange() {
+    switch (getCapacitorType()) {
     case ACTIVATED_CAPACITOR:
       range = Config.attractorRangeLevelTwo;
       powerPerTick = Config.attractorPowerPerTickLevelTwo;
@@ -124,7 +111,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     BoundingBox bb = new BoundingBox(new BlockCoord(this));
     bb = bb.scale(range, range, range);
     attractorBounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    capacitor = new BasicCapacitor(powerPerTick * 8, capacitorType.capacitor.getMaxEnergyStored(), powerPerTick);
+    setCapacitor(new BasicCapacitor(powerPerTick * 8, getCapacitor().getMaxEnergyStored(), powerPerTick));
   }
 
   @Override

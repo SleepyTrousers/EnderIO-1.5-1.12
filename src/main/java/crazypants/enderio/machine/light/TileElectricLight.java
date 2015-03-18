@@ -56,11 +56,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     energyStoredRF = 0;
   }
 
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
-  }
-
   public void onNeighborBlockChange(Block blockID) {
     init = true;
   }

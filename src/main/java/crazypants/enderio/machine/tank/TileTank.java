@@ -243,7 +243,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       tankDirty = false;
       return true;
     }
-    if(tankDirty && worldObj.getTotalWorldTime() % 10 == 0) {
+    if(tankDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketTank(this), this);
       worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
       tankDirty = false;
@@ -260,7 +260,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     if(!redstoneCheckPassed) {
       return false;
     }
-    if(worldObj.getTotalWorldTime() % 20 != 0) {
+    if(!shouldDoWorkThisTick(20)) {
       return false;
     }
     return drainFullContainer() || fillEmptyContainer();

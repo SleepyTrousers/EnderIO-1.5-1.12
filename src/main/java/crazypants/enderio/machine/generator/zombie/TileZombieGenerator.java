@@ -129,7 +129,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
         res = true;
       }
 
-      if(getEnergyStored() >= getCapacitor().getMaxEnergyStored()) {
+      if(getEnergyStored() >= getMaxEnergyStored()) {
         inPause = true;
       }
 

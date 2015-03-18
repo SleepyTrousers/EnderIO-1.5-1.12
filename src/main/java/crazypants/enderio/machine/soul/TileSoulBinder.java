@@ -40,13 +40,10 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   private static final BasicCapacitor CAP_THREE = new BasicCapacitor(POWER_PER_TICK_THREE * 2,
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_THREE);
   
-  private ICapacitor capacitor;
-  
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
   
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));
-    capacitor = CAP_ONE;
   }
 
   @Override
@@ -138,37 +135,19 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     return false;
   }
 
-  public void setCapacitor(Capacitors capacitorType) {    
-    switch (capacitorType) {
+  @Override
+  public void onCapacitorTypeChange() {
+    switch (getCapacitorType()) {
     case BASIC_CAPACITOR:
-      capacitor = CAP_ONE;
+      setCapacitor(CAP_ONE);
       break;
     case ACTIVATED_CAPACITOR:
-      capacitor = CAP_TWO;
+      setCapacitor(CAP_TWO);
       break;
     case ENDER_CAPACITOR:
-      capacitor = CAP_THREE;
-      break;
-    default:
-      capacitor = CAP_ONE;
+      setCapacitor(CAP_THREE);
       break;
     }
-    super.setCapacitor(capacitorType);
-  }
-  
-  @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
-  }
-
-  @Override
-  public int getPowerUsePerTick() {
-    if(getCapacitorType().ordinal() == 0) {
-      return POWER_PER_TICK_ONE;
-    } else if(getCapacitorType().ordinal() == 1) {
-      return POWER_PER_TICK_TWO;
-    }
-    return POWER_PER_TICK_THREE;
   }
 
   @Override

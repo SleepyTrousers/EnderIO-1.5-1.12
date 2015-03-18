@@ -24,14 +24,14 @@ import crazypants.enderio.tool.ToolUtil;
 
 public abstract class BlockEio extends Block {
 
-  protected final Class<? extends TileEntity> teClass;
+  protected final Class<? extends TileEntityEio> teClass;
   protected final String name;
 
-  protected BlockEio(String name, Class<? extends TileEntity> teClass) {
+  protected BlockEio(String name, Class<? extends TileEntityEio> teClass) {
     this(name, teClass, new Material(MapColor.ironColor));
   }
 
-  protected BlockEio(String name, Class<? extends TileEntity> teClass, Material mat) {
+  protected BlockEio(String name, Class<? extends TileEntityEio> teClass, Material mat) {
     super(mat);
     this.teClass = teClass;
     this.name = name;
@@ -58,7 +58,9 @@ public abstract class BlockEio extends Block {
   public TileEntity createTileEntity(World world, int metadata) {
     if(teClass != null) {
       try {
-        return teClass.newInstance();
+        TileEntityEio te = teClass.newInstance();
+        te.init();
+        return te;
       } catch (Exception e) {
         Log.error("Could not create tile entity for block " + name + " for class " + teClass);
       }
@@ -73,7 +75,7 @@ public abstract class BlockEio extends Block {
   }
 
   /* Subclass Helpers */
-  
+
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
@@ -94,7 +96,7 @@ public abstract class BlockEio extends Block {
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    
+
     return openGui(world, x, y, z, entityPlayer, side);
   }
 
@@ -117,7 +119,7 @@ public abstract class BlockEio extends Block {
     }
     return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
-  
+
   @Override
   public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
     super.harvestBlock(world, player, x, y, z, meta);
@@ -131,7 +133,7 @@ public abstract class BlockEio extends Block {
     }
     return Lists.newArrayList(getNBTDrop(world, x, y, z, (TileEntityEio) world.getTileEntity(x, y, z)));
   }
-  
+
   public ItemStack getNBTDrop(World world, int x, int y, int z, TileEntityEio te) {
     int meta = damageDropped(te.getBlockMetadata());
     ItemStack itemStack = new ItemStack(this, 1, meta);
@@ -141,4 +143,30 @@ public abstract class BlockEio extends Block {
 
   protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEio te, ItemStack drop) {
   }
+
+  protected TileEntityEio getTileEntityEio(World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (teClass.isInstance(te)) {
+      return (TileEntityEio)te;
+    }
+    return null;
+  }
+
+  protected boolean shouldDoWorkThisTick(World world, int x, int y, int z, int interval) {
+    TileEntityEio te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
+      return world.getTotalWorldTime() % interval == 0;
+    } else {
+      return te.shouldDoWorkThisTick(interval);
+    }
+  }
+  protected boolean shouldDoWorkThisTick(World world, int x, int y, int z, int interval, int offset) {
+    TileEntityEio te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
+      return (world.getTotalWorldTime() + offset) % interval == 0;
+    } else {
+      return te.shouldDoWorkThisTick(interval, offset);
+    }
+  }
+
 }

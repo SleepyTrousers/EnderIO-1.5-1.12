@@ -135,11 +135,6 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   }
 
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
-  }
-
-  @Override
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
@@ -308,7 +303,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
-    boolean powerChanged = lastSyncPowerStored != storedEnergyRF && worldObj.getTotalWorldTime() % 21 == 0;
+    boolean powerChanged = lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(21);
     if(powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
       EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
