@@ -9,7 +9,6 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
 
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger {
 
@@ -48,7 +47,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     if( (lastPowerUpdate == -1) || 
         (lastPowerUpdate == 0 && storedEnergyRF > 0) ||
         (lastPowerUpdate > 0 && storedEnergyRF == 0) ||
-        (lastPowerUpdate != storedEnergyRF && worldObj.getTotalWorldTime() % 20 == 0)
+        (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(20))
         ) {
       lastPowerUpdate = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketStoredEnergy(this), this);
@@ -146,11 +145,6 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   @Override
   public boolean canConnectEnergy(ForgeDirection from) {
     return true;
-  }
-
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
   }
 
   @Override

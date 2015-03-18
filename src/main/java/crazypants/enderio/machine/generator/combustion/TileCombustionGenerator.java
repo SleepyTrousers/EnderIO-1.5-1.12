@@ -170,19 +170,19 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
         generatedDirty = true;
       }
 
-      if(getEnergyStored() >= getCapacitor().getMaxEnergyStored()) {
+      if(getEnergyStored() >= getMaxEnergyStored()) {
         inPause = true;        
       }       
 
       transmitEnergy();
     }
 
-    if(tanksDirty && worldObj.getTotalWorldTime() % 10 == 0) {
+    if(tanksDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketCombustionTank(this), this);
       tanksDirty = false;
     }
     
-    if(generatedDirty && worldObj.getTotalWorldTime() % 10 == 0) {
+    if(generatedDirty && shouldDoWorkThisTick(10)) {
       generatedDirty = false;
       res = true;
     }

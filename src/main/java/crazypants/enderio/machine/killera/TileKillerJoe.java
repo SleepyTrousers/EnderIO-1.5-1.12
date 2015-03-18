@@ -144,7 +144,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
-    if(worldObj.getTotalWorldTime() % 10 != 0) {
+    if(!shouldDoWorkThisTick(10)) {
       return false;
     }
 

@@ -185,11 +185,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
     return res;
   }
 
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
-  }
-
   private IPowerInterface getReceptorForFace(ForgeDirection faceHit) {
     BlockCoord checkLoc = new BlockCoord(this).getLocation(faceHit);
     TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
@@ -264,7 +259,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
       setEnergyStored(getMaxEnergyStored() / 2);
     }
 
-    if(lastSyncPowerStored != getEnergyStored() && worldObj.getTotalWorldTime() % 10 == 0) {
+    if(lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(10)) {
       lastSyncPowerStored = getEnergyStored();
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this, 64);
     }

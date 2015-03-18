@@ -16,6 +16,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   // Power
   private Capacitors capacitorType;
+  private ICapacitor capacitor;
 
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
@@ -26,6 +27,12 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   }
 
   @Override
+  public void init() {
+    super.init();
+    onCapacitorTypeChange();
+  }
+
+  @Override
   public void updateEntity() {
 
     super.updateEntity();
@@ -33,7 +40,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     if(worldObj == null || worldObj.isRemote) { // sanity check
       return;
     }
-    boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && worldObj.getTotalWorldTime() % 5 == 0);
+    boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
     if(powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
@@ -84,9 +91,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public Capacitors getCapacitorType() {
     return capacitorType;
   }
-  
+
   public ICapacitor getCapacitor() {
-    return capacitorType.capacitor;
+    return capacitor != null ? capacitor : capacitorType.capacitor;
   }
 
   public int getEnergyStoredScaled(int scale) {
@@ -94,12 +101,22 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     return VecmathUtil.clamp(Math.round(scale * ((float) storedEnergyRF / getMaxEnergyStored())), 0, scale);
   }
 
-  public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;
-    forceClientUpdate = true;
+  protected void setCapacitor(ICapacitor capacitor) {
+    this.capacitor = capacitor;
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
   }
+
+  public void setCapacitor(Capacitors capacitorType) {
+    this.capacitorType = capacitorType;
+    this.capacitor = null;
+    onCapacitorTypeChange();
+    //Force a check that the new value is in bounds
+    setEnergyStored(getEnergyStored());
+    forceClientUpdate = true;
+  }
+
+  public void onCapacitorTypeChange() {}
 
   public int getPowerUsePerTick() {
     return getCapacitor().getMaxEnergyExtracted();

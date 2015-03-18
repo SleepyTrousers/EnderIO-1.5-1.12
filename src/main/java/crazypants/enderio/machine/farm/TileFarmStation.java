@@ -97,10 +97,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private final int upgradeBonusSize = 2;
 
-  private ICapacitor cap = new BasicCapacitor(200, 25000);
-
-  public int tier = 1;
-
   public String notification = "";
   public boolean sendNotification = false;
   
@@ -108,7 +104,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public TileFarmStation() {
     super(new SlotDefinition(7, 4, 1));
-    setCapacitor(Capacitors.BASIC_CAPACITOR);
   }
 
   public int getFarmSize() {
@@ -347,7 +342,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   protected boolean canTick(boolean redstoneChecksPassed) {
-    if(worldObj.getTotalWorldTime() % 2 != 0) {
+    if(!shouldDoWorkThisTick(2)) {
       return false;
     }
     if(getEnergyStored() < getPowerUsePerTick()) {
@@ -367,7 +362,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   protected void doTick() {
 
-    if (sendNotification && worldObj.getTotalWorldTime() % 20 == 0) {
+    if (sendNotification && shouldDoWorkThisTick(20)) {
       sendNotification = false;
       sendNotification();
     }
@@ -611,31 +606,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void setCapacitor(Capacitors capacitorType) {
-    super.setCapacitor(capacitorType);
-    tier = capacitorType.ordinal();
+  public void onCapacitorTypeChange() {
     currentTask = createTask();
 
     int ppt = getPowerUsePerTick();
-    switch (capacitorType.ordinal()) {
-    case 1:
-      cap = new BasicCapacitor(ppt * 40, 500000);
+    switch (getCapacitorType()) {
+    case BASIC_CAPACITOR:
+      setCapacitor(new BasicCapacitor(ppt * 40, 500000));
       break;
-    case 2:
-      cap = new BasicCapacitor(ppt * 40, 1000000);
+    case ACTIVATED_CAPACITOR:
+      setCapacitor(new BasicCapacitor(ppt * 40, 1000000));
       break;
-    default:
-      cap = new BasicCapacitor(ppt * 40, 250000);
+    case ENDER_CAPACITOR:
+      setCapacitor(new BasicCapacitor(ppt * 40, 250000));
       break;
     }
-    if(getEnergyStored() > getMaxEnergyStored()) {
-      setEnergyStored(getMaxEnergyStored());
-    }
-  }
-
-  @Override
-  public ICapacitor getCapacitor() {
-    return cap;
   }
 
   @Override

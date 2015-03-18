@@ -22,7 +22,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import net.minecraft.block.Block;
 
@@ -132,10 +131,6 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
       }
     }
     return true;
-  }
-
-  private BlockCoord getLocation() {
-    return new BlockCoord(this);
   }
 
   @Override

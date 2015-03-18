@@ -30,25 +30,17 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   private int lastCollectionValue = -1;
   
-  private int checkOffset;
   private static final int CHECK_INTERVAL = 100;
   
   EnergyStorage destroyedNetworkBuffer = null;
   
   protected SolarPanelNetwork network = new SolarPanelNetwork();
 
-  public TileEntitySolarPanel() {
-    checkOffset = (int) (Math.random() * 20);
-  }
-  
   public void onNeighborBlockChange() {
     receptorsDirty = true;
   }
 
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
-  }
+  
 
   // RF Power
 
@@ -108,7 +100,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
       network.onUpdate(this);
     }
     
-    if (!network.isValid() || (worldObj.getTotalWorldTime() % 20 == 0 && network.addToNetwork(this))) {
+    if (!network.isValid() || (shouldDoWorkThisTick(20, 1) && network.addToNetwork(this))) {
       findNetwork();
     }
   }
@@ -141,7 +133,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   private void collectEnergy() {
     if(canSeeSun()) {
-      if(lastCollectionValue == -1 || (worldObj.getWorldTime() + checkOffset) % CHECK_INTERVAL == 0) {
+      if(lastCollectionValue == -1 || shouldDoWorkThisTick(CHECK_INTERVAL)) {
         float fromSun = calculateLightRatio();
         lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
       }

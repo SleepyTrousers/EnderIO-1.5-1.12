@@ -26,8 +26,6 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
   private List<ItemStack> containerItems;
 
-  private ICapacitor capacitor;
-  
   private boolean bufferStacks = true;
 
   private long ticksSinceLastCraft = 0;
@@ -35,21 +33,14 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   public TileCrafter() {
     super(new SlotDefinition(9, 1));
     containerItems = new ArrayList<ItemStack>();    
-    setCapacitor(Capacitors.BASIC_CAPACITOR);    
   }
 
   @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
-  }
-
-  @Override
-  public void setCapacitor(Capacitors capacitorType) {    
-    ICapacitor refCap = capacitorType.capacitor;    
-    int maxUse = getPowerUsePerTick(capacitorType);
+  public void onCapacitorTypeChange() {
+    ICapacitor refCap = getCapacitor();
+    int maxUse = getPowerUsePerTick(getCapacitorType());
     int io = Math.max(maxUse, refCap.getMaxEnergyExtracted());
-    capacitor = new BasicCapacitor(io * 4, refCap.getMaxEnergyStored(), io);
-    super.setCapacitor(capacitorType);             
+    setCapacitor(new BasicCapacitor(io * 4, refCap.getMaxEnergyStored(), io));
   }
 
   @Override

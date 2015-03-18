@@ -501,7 +501,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(te instanceof TileCapBank) {
       TileCapBank cap = (TileCapBank) te;
       if(cap.getNetwork() != null) {
-        if(world.isRemote && world.getTotalWorldTime() % 20 == 0) {
+        if(world.isRemote && shouldDoWorkThisTick(world, x, y, z, 20)) {
           PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(cap));
         }
         ICapBankNetwork nw = cap.getNetwork();

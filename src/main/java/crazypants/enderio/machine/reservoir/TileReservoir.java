@@ -118,7 +118,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
         }
       }
     }
-    if(tankDirty && worldObj.getTotalWorldTime() % 2 == 0) {
+    if(tankDirty && shouldDoWorkThisTick(2)) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       tankDirty = false;
     }

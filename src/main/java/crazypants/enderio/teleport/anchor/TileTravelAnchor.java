@@ -17,7 +17,6 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
-import crazypants.util.BlockCoord;
 import crazypants.util.PlayerUtil;
 
 public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
@@ -57,11 +56,6 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   public void clearAuthorisedUsers() {
     authorisedUsers.clear();
-  }
-
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
   }
 
   private boolean checkPassword(ItemStack[] pwd) {

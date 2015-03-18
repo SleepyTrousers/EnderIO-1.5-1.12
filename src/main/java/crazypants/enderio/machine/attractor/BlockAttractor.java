@@ -109,7 +109,7 @@ public class BlockAttractor extends AbstractMachineBlock<TileAttractor> {
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    if(isActive(world, x, y, z) && world.getTotalWorldTime() % 5 == 0) {
+    if(isActive(world, x, y, z) && shouldDoWorkThisTick(world, x, y, z, 5)) {
       float startX = x + 1.0F;
       float startY = y + 0.85F;
       float startZ = z + 1.0F;
