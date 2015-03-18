@@ -118,6 +118,8 @@ public class TreeFarmer implements IFarmerJoe {
 
     // avoid calling this in a loop
     boolean hasShears = farm.hasShears();
+    boolean lowOnSaplings = farm.isLowOnSaplings(bc);
+    boolean fiftyFiftyToggle = false;
 
     for (int i = 0; i < res.harvestedBlocks.size() && hasAxe; i++) {
       BlockCoord coord = res.harvestedBlocks.get(i);
@@ -127,8 +129,9 @@ public class TreeFarmer implements IFarmerJoe {
       boolean wasSheared = false;
       boolean wasAxed = false;
       boolean wasWood = isWood(blk);
+      fiftyFiftyToggle = !fiftyFiftyToggle;
       
-      if (blk instanceof IShearable && hasShears) {
+      if (blk instanceof IShearable && hasShears && (!lowOnSaplings || fiftyFiftyToggle)) {
         drops = ((IShearable)blk).onSheared(null, farm.getWorldObj(), coord.x, coord.y, coord.z, 0);
         wasSheared = true;
       } else {
