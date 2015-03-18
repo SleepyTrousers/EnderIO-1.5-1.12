@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.google.common.collect.ObjectArrays;
 
 import crazypants.render.CustomCubeRenderer;
+import crazypants.render.RenderUtil;
 import crazypants.render.TechneModelRenderer;
 import crazypants.render.VertexRotationFacing;
 import crazypants.render.VertexTransform;
@@ -37,14 +38,15 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
     T te = (T) world.getTileEntity(x, y, z);
-
     if(te != null) {
       setFacingDir(te.getFacingDir());
       overlay.setTile(te);
-      ccr.renderBlock(world, block, x, y, z, overlay);
     }
 
-    return super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
+    super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
+    ccr.renderBlock(world, block, x, y, z, overlay);
+
+    return true;
   }
 
   private void setFacingDir(ForgeDirection dir) {

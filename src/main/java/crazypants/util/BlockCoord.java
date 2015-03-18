@@ -29,12 +29,16 @@ public final class BlockCoord {
     this(0, 0, 0);
   }
 
+  public BlockCoord(double x, double y, double z) {
+    this(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
+  }
+
   public BlockCoord(TileEntity tile) {
     this(tile.xCoord, tile.yCoord, tile.zCoord);
   }
   
   public BlockCoord(Entity e) {
-    this(MathHelper.floor_double(e.posX), MathHelper.floor_double(e.posY), MathHelper.floor_double(e.posZ));
+    this(e.posX, e.posY, e.posZ);
   }
 
   public BlockCoord(BlockCoord bc) {

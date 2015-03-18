@@ -3,12 +3,15 @@ package crazypants.enderio.machine;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.render.CustomCubeRenderer;
 import crazypants.render.CustomRenderBlocks;
 import crazypants.render.IRenderFace;
+import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vertex;
@@ -27,6 +30,11 @@ public class OverlayRenderer implements IRenderFace {
       boolean translateToXyz) {
 
     if(te != null && par1Block instanceof AbstractMachineBlock) {
+      BlockCoord bc = new BlockCoord(x, y, z);
+      if(par1Block.isOpaqueCube()) {
+        bc = bc.getLocation(face);
+      }
+      RenderUtil.setTesselatorBrightness(Minecraft.getMinecraft().theWorld, bc.x, bc.y, bc.z);
       Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, 0.001);
       Tessellator.instance.addTranslation((float) offset.x, (float) offset.y, (float) offset.z);
 
