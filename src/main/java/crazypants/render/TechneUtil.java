@@ -265,9 +265,9 @@ public class TechneUtil {
   public static void renderInventoryBlock(List<GroupObject> model, IIcon icon, Block block, int metadata, RenderBlocks rb) {
     tes.startDrawingQuads();
     tes.setColorOpaque_F(1, 1, 1);
-    tes.addTranslation(0, -0.5f, 0);
+    tes.addTranslation(0, -0.47f, 0);
     renderWithIcon(model, icon, rb.overrideBlockTexture, tes, vt);
-    tes.addTranslation(0, 0.5f, 0);
+    tes.addTranslation(0, 0.47f, 0);
     tes.draw();
     resetVT();
   }

@@ -63,6 +63,7 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
+    bb = bb.translate(0, -0.1f, 0);
 
     Tessellator.instance.startDrawingQuads();
 
