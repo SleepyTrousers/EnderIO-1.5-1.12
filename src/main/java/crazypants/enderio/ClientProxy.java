@@ -64,6 +64,7 @@ import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.item.skull.EndermanSkullRenderer;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
+import crazypants.enderio.machine.TechneMachineRenderer;
 import crazypants.enderio.machine.attractor.BlockAttractor;
 import crazypants.enderio.machine.attractor.ObeliskRenderer;
 import crazypants.enderio.machine.attractor.TileAttractor;
@@ -77,7 +78,6 @@ import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
-import crazypants.enderio.machine.generator.combustion.CombustionGeneratorRenderer;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.ZombieGeneratorRenderer;
@@ -115,7 +115,7 @@ import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
 import crazypants.enderio.machine.vat.BlockVat;
-import crazypants.enderio.machine.vat.VatRenderer;
+import crazypants.enderio.machine.vat.TileVat;
 import crazypants.enderio.machine.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.weather.TileWeatherObelisk;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
@@ -264,7 +264,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
 
     BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
-    CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
+    TechneMachineRenderer<TileCombustionGenerator> cr = new TechneMachineRenderer<TileCombustionGenerator>(EnderIO.blockCombustionGenerator, "models/combustionGen");
     RenderingRegistry.registerBlockHandler(cr);
 
     ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
@@ -276,9 +276,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), kjr);
 
     BlockVat.renderId = RenderingRegistry.getNextAvailableRenderId();
-    VatRenderer vr = new VatRenderer();
+    TechneMachineRenderer<TileVat> vr = new TechneMachineRenderer<TileVat>(EnderIO.blockVat, "models/vat");
     RenderingRegistry.registerBlockHandler(vr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockVat), vr);
 
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);

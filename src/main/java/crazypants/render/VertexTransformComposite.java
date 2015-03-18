@@ -8,7 +8,7 @@ import crazypants.vecmath.Vertex;
 
 public class VertexTransformComposite implements VertexTransform {
 
-  private final VertexTransform[] xforms;
+  public final VertexTransform[] xforms;
 
   public VertexTransformComposite(VertexTransform... xforms) {
     this.xforms = xforms;

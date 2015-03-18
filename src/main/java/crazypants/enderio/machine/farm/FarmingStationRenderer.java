@@ -7,9 +7,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import crazypants.enderio.machine.TechneModelRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.TechneModelRenderer;
 
 public class FarmingStationRenderer extends TechneModelRenderer {
 

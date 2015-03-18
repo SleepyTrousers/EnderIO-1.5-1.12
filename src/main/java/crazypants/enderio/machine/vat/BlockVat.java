@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.vat;
 
-import static crazypants.util.FluidUtil.isValidFluid;
-
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +23,8 @@ import crazypants.render.VertexRotation;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
+
+import static crazypants.util.FluidUtil.isValidFluid;
 
 public class BlockVat extends AbstractMachineBlock<TileVat> {
 
@@ -49,21 +48,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     super(ModObject.blockVat, TileVat.class);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    blockIcon = iIconRegister.registerIcon("enderio:vatFront");
-    blockIconSingle = iIconRegister.registerIcon("enderio:vatFrontSingle");
-    blockIconSingleOn = iIconRegister.registerIcon("enderio:vatFrontOnSingle");
-    onIcon = iIconRegister.registerIcon("enderio:vatFrontOn");
-
-    topIcon = iIconRegister.registerIcon("enderio:vatTop");
-
-    overlayIconPull = iIconRegister.registerIcon("enderio:vatOverlayPull");
-    overlayIconPush = iIconRegister.registerIcon("enderio:vatOverlayPush");
-    overlayIconPushPull = iIconRegister.registerIcon("enderio:vatOverlayPushPull");
-    overlayIconDisabled = iIconRegister.registerIcon("enderio:vatOverlayDisabled");
-    overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
+  protected String getModelIconKey(boolean active) {
+    return "enderio:vatModel";
   }
 
   @Override
