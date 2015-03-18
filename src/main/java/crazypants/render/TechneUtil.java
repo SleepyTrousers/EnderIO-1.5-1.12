@@ -191,15 +191,17 @@ public class TechneUtil {
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes) {
     renderWithIcon(model, icon, override, tes, null);
   }
+
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, VertexTransform vt) {
     renderWithIcon(model, icon, override, tes, null, 0, 0, 0, vt);
   }
-  
+
   public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z) {
     renderWithIcon(model, icon, override, tes, world, x, y, z, null);
   }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z, VertexTransform vt) {
+  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z,
+      VertexTransform vt) {
     for (GroupObject go : model) {
       for (Face f : go.faces) {
         Vertex n = f.faceNormal;
@@ -217,7 +219,7 @@ public class TechneUtil {
           int bz = z + normal.offsetZ;
           tes.setBrightness(world.getBlock(bx, by, bz).getMixedBrightnessForBlock(world, bx, by, bz));
         }
-        
+
         for (int i = 0; i < f.vertices.length; i++) {
           Vertex vert = f.vertices[i];
           Vector3d v = new Vector3d(vert);
@@ -236,6 +238,14 @@ public class TechneUtil {
 
             double interpX = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
             double interpY = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
+
+            // Handles verts outside block bounds. Modulo fails at 1.0.
+            while (interpX > 1) {
+              interpX--;
+            }
+            while (interpY > 1) {
+              interpY--;
+            }
 
             if(normal == ForgeDirection.SOUTH || normal == ForgeDirection.WEST) {
               interpX = 1 - interpX;
