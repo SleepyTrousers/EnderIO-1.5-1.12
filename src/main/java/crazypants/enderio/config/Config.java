@@ -289,6 +289,7 @@ public final class Config {
       "ThermalExpansion:tool.hoeInvar"
   };
   public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
+  public static int farmSaplingReserveAmount = 8;
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -972,6 +973,10 @@ public final class Config {
     hoeStrings = config.get(sectionFarm.name, "farmHoes", hoeStrings,
         "Use this to specify items that can be hoes in the farming station. Use the registry name (eg. modid:name).").getStringList();
 
+    farmSaplingReserveAmount = config.get(sectionFarm.name, "farmSaplingReserveAmount", farmSaplingReserveAmount,
+        "The amount saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
+        "saplings in store, it will only shear half the leaves. Set this to 0 to always shear leaves.").getInt(farmSaplingReserveAmount);
+    
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
 
