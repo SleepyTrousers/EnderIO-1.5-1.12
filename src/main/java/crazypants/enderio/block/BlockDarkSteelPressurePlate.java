@@ -50,7 +50,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   protected void init() {
-    GameRegistry.registerBlock(this, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
+    GameRegistry.registerBlock(this, BlockItemDarkSteelPressurePlate.class, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
     GameRegistry.registerTileEntity(TileEntityDarkSteelPressurePlate.class, ModObject.blockDarkSteelPressurePlate.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
   }
