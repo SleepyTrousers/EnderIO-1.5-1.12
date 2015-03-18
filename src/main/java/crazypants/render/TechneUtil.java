@@ -71,12 +71,14 @@ import crazypants.vecmath.Vector3d;
 /**
  * Slightly modified to fit the EnderIO source.
  * 
- * @author RainWarrior
+ * @author Based on RainWarrior's code <a
+ *         href=https://gist.github.com/RainWarrior
+ *         /39794c3548de9dcc7303>here.</a>
  */
 public class TechneUtil {
 
   public static VertexTransform vt = null;
-  
+
   private static final TechneModelLoader modelLoader = new TechneModelLoader();
 
   private static final Tessellator tes = Tessellator.instance;
@@ -223,24 +225,27 @@ public class TechneUtil {
             vt.apply(v);
           }
 
-          TextureCoordinate t = f.textureCoordinates[i];
-          
-          if(override != null) {
+          float factor = normal.offsetX != 0 ? 0.8f : normal.offsetZ != 0 ? 0.6f : normal.offsetY < 0 ? 0.5f : 1;
+          int c = (int) (0xFF * factor);
 
+          tes.setColorOpaque(c, c, c);
+
+          if(override != null) {
             Vector3d tv = new Vector3d(v);
             tv.add(0.5, 0, 0.5);
 
-            double interpU = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
-            double interpV = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
+            double interpX = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
+            double interpY = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
 
             if(normal == ForgeDirection.SOUTH || normal == ForgeDirection.WEST) {
-              interpU = 1 - interpU;
+              interpX = 1 - interpX;
             }
             if(normal != ForgeDirection.UP && normal != ForgeDirection.DOWN) {
-              interpV = 1 - interpV;
+              interpY = 1 - interpY;
             }
-            tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpU * 16), override.getInterpolatedV(interpV * 16));
+            tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpX * 16), override.getInterpolatedV(interpY * 16));
           } else {
+            TextureCoordinate t = f.textureCoordinates[i];
             tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
           }
         }
