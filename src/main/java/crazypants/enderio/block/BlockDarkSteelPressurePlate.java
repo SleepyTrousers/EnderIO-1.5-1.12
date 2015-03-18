@@ -1,7 +1,7 @@
 package crazypants.enderio.block;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
@@ -10,13 +10,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -83,28 +86,27 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityDarkSteelPressurePlate) {
-      TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) te;
-      ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
-      if(tepb.getSourceBlock() != null) {
-        PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
-      }
-
-      float f = 0.7F;
-      double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, stack);
-      entityitem.delayBeforeCanPickup = 10;
-      world.spawnEntityInWorld(entityitem);
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+    if(willHarvest) {
+      return true;
     }
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
 
   @Override
-  public int quantityDropped(int meta, int fortune, Random random) {
-    return 0; // for custom drops
+  public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+    super.harvestBlock(world, player, x, y, z, meta);
+    world.setBlockToAir(x, y, z);
+  }
+
+  @Override
+  public final ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) world.getTileEntity(x, y, z);
+    ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
+    if(tepb.getSourceBlock() != null) {
+      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+    }
+    return Lists.newArrayList(stack);
   }
 
   @Override
