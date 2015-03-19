@@ -1,6 +1,6 @@
 /*
 
-Copyright © 2014 RainWarrior
+Copyright Â© 2014 RainWarrior
 
 Permission is granted to anyone to use this software for any purpose,
 including commercial applications, and to alter it and redistribute it
