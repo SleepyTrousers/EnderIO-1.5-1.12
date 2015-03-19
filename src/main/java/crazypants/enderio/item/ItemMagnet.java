@@ -2,15 +2,19 @@ package crazypants.enderio.item;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cofh.api.energy.ItemEnergyContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,9 +24,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.tool.BaublesTool;
 import crazypants.util.ItemUtil;
+import cpw.mods.fml.common.Optional;
 
-public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider {
+@Optional.Interface(iface="baubles.api.IBauble", modid="Baubles", striprefs=true)
+public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, baubles.api.IBauble {
 
   private static final String ACTIVE_KEY = "magnetActive";
 
@@ -55,10 +62,12 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     EnderIO.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);
   }
 
+  static MagnetController controller = new MagnetController();
+
   public static ItemMagnet create() {
     ItemMagnet result = new ItemMagnet();
     result.init();
-    FMLCommonHandler.instance().bus().register(new MagnetController());
+    FMLCommonHandler.instance().bus().register(controller);
     return result;
   }
 
@@ -162,6 +171,53 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @Method(modid = "Baubles")
+  public BaubleType getBaubleType(ItemStack itemstack) {
+    return baubles.api.BaubleType.AMULET;
+  }
+
+  @Override
+  @Method(modid = "Baubles")
+  public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+    if (player instanceof EntityPlayer && hasPower(itemstack)) {
+      controller.doHoover((EntityPlayer) player);
+      if(!player.worldObj.isRemote && player.worldObj.getTotalWorldTime() % 20 == 0) {
+        ItemMagnet.drainPerSecondPower(itemstack);
+        IInventory baubles = BaublesTool.getInstance().getBaubles((EntityPlayer)player);
+        if (baubles != null) {
+          for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            if (baubles.getStackInSlot(i) == itemstack) {
+              baubles.setInventorySlotContents(i, itemstack);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @Override
+  @Method(modid = "Baubles")
+  public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
+  }
+
+  @Override
+  @Method(modid = "Baubles")
+  public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+  }
+
+  @Override
+  @Method(modid = "Baubles")
+  public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+    return isActive(itemstack);
+  }
+
+  @Override
+  @Method(modid = "Baubles")
+  public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
+    return true;
   }
 
 }
