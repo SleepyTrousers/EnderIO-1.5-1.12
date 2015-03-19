@@ -443,10 +443,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     return inv != null && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
   }
 
-  public boolean needSeeds(BlockCoord bc) {
+  public boolean isLowOnSaplings(BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    return (inv == null || (inv.stackSize == 1 && isSlotLocked(slot)));
+    return Config.farmSaplingReserveAmount > 0 && (inv == null || (inv.stackSize < Config.farmSaplingReserveAmount));
   }
 
   public ItemStack takeSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
