@@ -263,6 +263,8 @@ public final class Config {
   public static int farmContinuousEnergyUseRF = 40;
   public static int farmActionEnergyUseRF = 500;
   public static int farmAxeActionEnergyUseRF = 1000;
+  public static int farmBonemealActionEnergyUseRF = 160;
+  public static int farmBonemealTryEnergyUseRF = 80;
 
   public static int farmDefaultSize = 3;
   public static boolean farmAxeDamageOnLeafBreak = false;
@@ -949,6 +951,11 @@ public final class Config {
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getInt(farmActionEnergyUseRF);
     farmAxeActionEnergyUseRF = config.get(sectionFarm.name, "farmAxeActionEnergyUseRF", farmAxeActionEnergyUseRF,
         "The amount of power used by a farm per wood block 'chopped'").getInt(farmAxeActionEnergyUseRF);
+
+    farmBonemealActionEnergyUseRF = config.get(sectionFarm.name, "farmBonemealActionEnergyUseRF", farmBonemealActionEnergyUseRF,
+        "The amount of power used by a farm per bone meal used").getInt(farmBonemealActionEnergyUseRF);
+    farmBonemealTryEnergyUseRF = config.get(sectionFarm.name, "farmBonemealTryEnergyUseRF", farmBonemealTryEnergyUseRF,
+        "The amount of power used by a farm per bone meal try").getInt(farmBonemealTryEnergyUseRF);
 
     farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
