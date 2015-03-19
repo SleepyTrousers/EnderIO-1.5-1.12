@@ -90,8 +90,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   private static final int minToolSlot = 0;
   private static final int maxToolSlot = 2;
 
+  public static final int NUM_SUPPLY_SLOTS = 4;
+  
   public static final int minSupSlot = maxToolSlot + 1;
-  public static final int maxSupSlot = minSupSlot + 4;
+  public static final int maxSupSlot = maxToolSlot + NUM_SUPPLY_SLOTS;
 
   private final BitSet lockedSlots = new BitSet();
 
@@ -416,7 +418,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
           PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
           for (EntityItem ei : harvest.getDrops()) {
             if(ei != null) {
-              insertHarvestDrop(ei);
+              insertHarvestDrop(ei, bc);
               if(!ei.isDead) {
                 worldObj.spawnEntityInWorld(ei);
               }
@@ -443,10 +445,18 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     return inv != null && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
   }
 
-  public boolean isLowOnSaplings(BlockCoord bc) {
+  /*
+   * Returns a fuzzy boolean:
+   * 
+   * <=0 - break no leaves for saplings
+   *  50 - break half the leaves for saplings
+   *  90 - break 90% of the leaves for saplings
+   */
+  public int isLowOnSaplings(BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    return Config.farmSaplingReserveAmount > 0 && (inv == null || (inv.stackSize < Config.farmSaplingReserveAmount));
+    
+    return 90 * (Config.farmSaplingReserveAmount - (inv == null ? 0 : inv.stackSize)) / Config.farmSaplingReserveAmount;
   }
 
   public ItemStack takeSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
@@ -505,12 +515,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     return minSupSlot + 3;
   }
 
-  private void insertHarvestDrop(Entity entity) {
+  private void insertHarvestDrop(Entity entity, BlockCoord bc) {
     if(!worldObj.isRemote) {
       if(entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();
-        int numInserted = insertResult(stack);
+        int numInserted = insertResult(stack, bc);
         stack.stackSize -= numInserted;
         item.setEntityItemStack(stack);
         if(stack.stackSize == 0) {
@@ -521,13 +531,24 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
 
-  private int insertResult(ItemStack stack) {
+  private int insertResult(ItemStack stack, BlockCoord bc) {
 
+    int slot = bc != null ? getSupplySlotForCoord(bc) : minSupSlot;
+    int[] slots = new int[NUM_SUPPLY_SLOTS];
+    int k = 0;
+    for (int j = slot; j <= maxSupSlot; j++) {
+      slots[k++] = j;
+    }
+    for (int j = minSupSlot; j < slot; j++) {
+      slots[k++] = j;
+    }
+    
     int origSize = stack.stackSize;
     stack = stack.copy();
 
     int inserted = 0;
-    for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot && inserted < stack.stackSize; i++) {
+    for (int j = 0; j < slots.length && inserted < stack.stackSize; j++) {
+      int i = slots[j];
       ItemStack curStack = inventory[i];
       if(isItemValidForSlot(i, stack) && (curStack == null || curStack.stackSize < 16)) {
         if(curStack == null) {

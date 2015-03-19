@@ -974,8 +974,9 @@ public final class Config {
         "Use this to specify items that can be hoes in the farming station. Use the registry name (eg. modid:name).").getStringList();
 
     farmSaplingReserveAmount = config.get(sectionFarm.name, "farmSaplingReserveAmount", farmSaplingReserveAmount,
-        "The amount saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
-        "saplings in store, it will only shear half the leaves. Set this to 0 to always shear leaves.").getInt(farmSaplingReserveAmount);
+        "The amount of saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
+        "saplings in store, it will only shear part the leaves and break the others for spalings. Set this to 0 to " +
+        "always shear all leaves.").getInt(farmSaplingReserveAmount);
     
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
