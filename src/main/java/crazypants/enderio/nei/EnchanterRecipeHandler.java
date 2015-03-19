@@ -66,10 +66,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
           for (EnchanterRecipe recipe : recipes) {
             if(recipe.isValid() && recipe.getEnchantment().getName().equals(ench.getName())) {
-              EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
-              ItemStack output = new ItemStack(Items.enchanted_book);
-              Items.enchanted_book.addEnchantment(output, enchantment);
-              EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
+              EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe);
               arecipes.add(rec);
             }
           }
@@ -86,10 +83,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
       List<EnchanterRecipe> recipes = EnchanterRecipeManager.getInstance().getRecipes();
       for (EnchanterRecipe recipe : recipes) {
         if(recipe.isValid()) {
-          EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
-          ItemStack output = new ItemStack(Items.enchanted_book);
-          Items.enchanted_book.addEnchantment(output, enchantment);
-          EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
+          EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe);
           arecipes.add(rec);
         }
       }
@@ -103,10 +97,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
     List<EnchanterRecipe> recipes = EnchanterRecipeManager.getInstance().getRecipes();
     for (EnchanterRecipe recipe : recipes) {
       if(recipe.isValid()) {
-        EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
-        ItemStack output = new ItemStack(Items.enchanted_book);
-        Items.enchanted_book.addEnchantment(output, enchantment);
-        EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
+        EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe);
         if(rec.contains(rec.input, ingredient)) {
           rec.setIngredientPermutation(rec.input, ingredient);
           arecipes.add(rec);
@@ -121,9 +112,16 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
     GuiDraw.drawStringC(recipe.getEnchantName(), 83, 10, 0x808080, false);
 
-    int cost = TileEnchanter.getEnchantmentCost(recipe.recipe, 1);
+    int level = 1;
+    List<PositionedStack> ingredients = recipe.getIngredients();
+    if(ingredients != null && ingredients.size() == 2) {
+      ItemStack item = ingredients.get(1).item;
+      level = recipe.recipe.getLevelForStackSize(item.stackSize);
+    }
+
+    int cost = TileEnchanter.getEnchantmentCost(recipe.recipe, level);
     if(cost > 0) {
-      String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(cost) });
+      String s = I18n.format("container.repair.cost", new Object[] { cost });
       GuiDraw.drawStringC(s, 83, 46, 0x80FF20);
     }
 
@@ -142,32 +140,53 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
   public class EnchanterRecipeNEI extends TemplateRecipeHandler.CachedRecipe {
 
-    private ArrayList<PositionedStack> input;
-    private PositionedStack output;
-    private EnchantmentData enchData;
-    private EnchanterRecipe recipe;
+    private final ArrayList<PositionedStack> input;
+    private final PositionedStack output;
+    private final EnchanterRecipe recipe;
 
     public String getEnchantName() {
-      return StatCollector.translateToLocal(enchData.enchantmentobj.getName());
+      int maxLevel = recipe.getEnchantment().getMaxLevel();
+      if(maxLevel > 1) {
+        int cycle = cycleticks / 20;
+        int level = cycle % maxLevel + 1;
+        return recipe.getEnchantment().getTranslatedName(level);
+      }
+      return StatCollector.translateToLocal(recipe.getEnchantment().getName());
     }
 
     @Override
     public List<PositionedStack> getIngredients() {
-      return getCycledIngredients(cycleticks / 20, input);
+      int cycle = cycleticks / 20;
+      getCycledIngredients(cycle, input);
+      int maxLevel = recipe.getEnchantment().getMaxLevel();
+      if(maxLevel > 1) {
+        int level = cycle % maxLevel + 1;
+        input.get(1).item.stackSize *= level;
+      }
+      return input;
     }
 
     @Override
     public PositionedStack getResult() {
+      int cycle = cycleticks / 20;
+      output.setPermutationToRender(cycle % output.items.length);
       return output;
     }
 
-    public EnchanterRecipeNEI(EnchanterRecipe recipe, ItemStack result, EnchantmentData enchData) {
+    public EnchanterRecipeNEI(EnchanterRecipe recipe) {
       this.recipe = recipe;
       input = new ArrayList<PositionedStack>();
       input.add(new PositionedStack(new ItemStack(Items.writable_book), 22, 24));
       input.add(new PositionedStack(getInputs(recipe.getInput()), 71, 24));
-      output = new PositionedStack(result, 129, 24);
-      this.enchData = enchData;
+
+      int maxLevel = recipe.getEnchantment().getMaxLevel();
+      ItemStack[] outputItems = new ItemStack[maxLevel];
+      for(int level = 0; level < maxLevel; level++) {
+        EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), level+1);
+        outputItems[level] = new ItemStack(Items.enchanted_book);
+        Items.enchanted_book.addEnchantment(outputItems[level], enchantment);
+      }
+      output = new PositionedStack(outputItems, 129, 24);
     }
   }
 }
