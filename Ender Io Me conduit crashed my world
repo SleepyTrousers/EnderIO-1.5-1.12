@@ -1,0 +1,141 @@
+
+---- Minecraft Crash Report ----
+// My bad.
+
+Time: 3/19/15 3:38 PM
+Description: Ticking block entity
+
+java.lang.AbstractMethodError
+	at appeng.me.GridNode.FindConnections(GridNode.java:236)
+	at appeng.me.GridNode.updateState(GridNode.java:147)
+	at crazypants.enderio.conduit.me.MEConduit.updateEntity(MEConduit.java:171)
+	at crazypants.enderio.conduit.TileConduitBundle.func_145845_h(TileConduitBundle.java:233)
+	at net.minecraft.world.World.func_72939_s(World.java:1939)
+	at net.minecraft.world.WorldServer.func_72939_s(WorldServer.java:489)
+	at net.minecraft.server.MinecraftServer.func_71190_q(MinecraftServer.java:636)
+	at net.minecraft.server.MinecraftServer.func_71217_p(MinecraftServer.java:547)
+	at net.minecraft.server.integrated.IntegratedServer.func_71217_p(IntegratedServer.java:111)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:427)
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:685)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at appeng.me.GridNode.FindConnections(GridNode.java:236)
+	at appeng.me.GridNode.updateState(GridNode.java:147)
+	at crazypants.enderio.conduit.me.MEConduit.updateEntity(MEConduit.java:171)
+	at crazypants.enderio.conduit.TileConduitBundle.func_145845_h(TileConduitBundle.java:233)
+
+-- Block entity being ticked --
+Details:
+	Name: blockConduitBundleTileEntity // crazypants.enderio.conduit.TileConduitBundle
+	Block type: ID #471 (tile.blockConduitBundle // crazypants.enderio.conduit.BlockConduitBundle)
+	Block data value: 0 / 0x0 / 0b0000
+	Block location: World: (638,69,-11123), Chunk: (at 14,4,13 in 39,-696; contains blocks 624,0,-11136 to 639,255,-11121), Region: (1,-22; contains chunks 32,-704 to 63,-673, blocks 512,0,-11264 to 1023,255,-10753)
+	Actual block type: ID #471 (tile.blockConduitBundle // crazypants.enderio.conduit.BlockConduitBundle)
+	Actual block data value: 0 / 0x0 / 0b0000
+Stacktrace:
+	at net.minecraft.world.World.func_72939_s(World.java:1939)
+	at net.minecraft.world.WorldServer.func_72939_s(WorldServer.java:489)
+
+-- Affected level --
+Details:
+	Level name: Modded Survival
+	All players: 1 total; [EntityPlayerMP['ojas'/93, l='Modded Survival', x=639.31, y=69.00, z=-11124.13]]
+	Chunk stats: ServerChunkCache: 986 Drop: 0
+	Level seed: 2780832542338318663
+	Level generator: ID 00 - default, ver 1. Features enabled: true
+	Level generator options: 
+	Level spawn location: World: (-20,64,-120), Chunk: (at 12,4,8 in -2,-8; contains blocks -32,0,-128 to -17,255,-113), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)
+	Level time: 2233410 game time, 290479 day time
+	Level dimension: 0
+	Level storage version: 0x04ABD - Anvil
+	Level weather: Rain time: 76646 (now: false), thunder time: 9533 (now: true)
+	Level game mode: Game mode: survival (ID 0). Hardcore: false. Cheats: false
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.func_71190_q(MinecraftServer.java:636)
+	at net.minecraft.server.MinecraftServer.func_71217_p(MinecraftServer.java:547)
+	at net.minecraft.server.integrated.IntegratedServer.func_71217_p(IntegratedServer.java:111)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:427)
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:685)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.7.10
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.8.0_40, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 206971288 bytes (197 MB) / 642457600 bytes (612 MB) up to 2134114304 bytes (2035 MB)
+	JVM Flags: 6 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx2G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128m
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 0, tcache: 0, allocated: 12, tallocated: 94
+	FML: MCP v9.05 FML v7.10.85.1291 Minecraft Forge 10.13.2.1291 50 mods loaded, 50 mods active
+	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	FML{7.10.85.1291} [Forge Mod Loader] (forge-1.7.10-10.13.2.1291.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	Forge{10.13.2.1291} [Minecraft Forge] (forge-1.7.10-10.13.2.1291.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	AM2-Preloader{0.0.2} [AMCore] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	appliedenergistics2-core{rv1-stable-1} [AppliedEnergistics2 Core] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	CodeChickenCore{1.0.4.29} [CodeChicken Core] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	<CoFH ASM>{000} [CoFH ASM Data Initialization] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	NotEnoughItems{1.0.4.83} [Not Enough Items] (NotEnoughItems-1.7.10-1.0.4.83-universal.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	AnimationAPI{1.2.4} [AnimationAPI] (AnimationAPI-1.7.10-1.2.4.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	arsmagica2{1.4.0.008} [Ars Magica 2] (1.7.10_AM2-1.4.0.008.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	appliedenergistics2{rv1-stable-1} [Applied Energistics 2] (appliedenergistics2-rv1-stable-1.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	BiblioCraft{1.10.2} [BiblioCraft] (BiblioCraft[v1.10.2][MC1.7.10].jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	CoFHCore{1.7.10R3.0.0RC5} [CoFH Core] (CoFHCore-[1.7.10]3.0.0RC5-207.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	ThermalFoundation{1.7.10R1.0.0RC4} [Thermal Foundation] (ThermalFoundation-[1.7.10]1.0.0RC4-58.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	ThermalExpansion{1.7.10R4.0.0RC6} [Thermal Expansion] (ThermalExpansion-[1.7.10]4.0.0RC6-138.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	BigReactors{0.4.2A2} [Big Reactors] (BigReactors-0.4.2A2.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	AWWayofTime{v1.0.1g} [Blood Magic: Alchemical Wizardry] (Blood Magic-v1.1.0(1.7.10).jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	chisel{1.5.7} [Chisel] (Chisel-1.7.10-1.5.7.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded{1.7.10R2.8.0RC8} [MineFactory Reloaded] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	EnderIO{1.7.10-2.2.8.349} [Ender IO] (EnderIO-1.7.10-2.2.8.349.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	ExtraUtilities{1.1.0k} [Extra Utilities] (Extra-Utilities-Mod-1.7.10.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	FastCraft{1.11} [FastCraft] (fastcraft-1.11.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	iChunUtil{4.1.0} [iChunUtil] (iChunUtil-4.1.0.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	IronChest{6.0.62.742} [Iron Chest] (ironchest-1.7.10-6.0.62.742-universal.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	Mantle{1.7.10-0.3.2.jenkins184} [Mantle] (Mantle-1.7.10-0.3.2.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatAppliedEnergistics{1.7.10R2.8.0RC8} [MFR Compat: Applied Energistics] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatAtum{1.7.10R2.8.0RC8} [MFR Compat: Atum] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatBackTools{1.7.10R2.8.0RC8} [MFR Compat: BackTools] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatBuildCraft{1.7.10R2.8.0RC8} [MFR Compat: BuildCraft] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatChococraft{1.7.10R2.8.0RC8} [MFR Compat: Chococraft] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatExtraBiomes{1.7.10R2.8.0RC8} [MFR Compat: ExtraBiomes] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatForestry{1.7.10R2.8.0RC8} [MFR Compat: Forestry] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatForgeMicroblock{1.7.10R2.8.0RC8} [MFR Compat: ForgeMicroblock] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatIC2{1.7.10R2.8.0RC8} [MFR Compat: IC2] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatMystcraft{1.7.10R2.8.0RC8} [MFR Compat: Mystcraft] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatProjRed{1.7.10R2.8.0RC8} [MFR Compat ProjectRed] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatRailcraft{1.7.10R2.8.0RC8} [MFR Compat: Railcraft] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatRP2{1.7.10R2.8.0RC8} [MFR Compat: RP2] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatSufficientBiomes{1.7.10R2.8.0RC8} [MFR Compat: Sufficient Biomes] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatThaumcraft{1.7.10R2.8.0RC8} [MFR Compat: Thaumcraft] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatThermalExpansion{1.7.10R2.8.0RC8} [MFR Compat: Thermal Expansion] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	Waila{1.5.8} [Waila] (Waila-1.5.9_1.7.10.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	TConstruct{1.7.10-1.8.2.build858} [Tinkers' Construct] (TConstruct-1.7.10-1.8.2a.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatTConstruct{1.7.10R2.8.0RC8} [MFR Compat: Tinkers' Construct] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatTwilightForest{1.7.10R2.8.0RC8} [MFR Compat: TwilightForest] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	MineFactoryReloaded|CompatVanilla{1.7.10R2.8.0RC8} [MFR Compat: Vanilla] (MineFactoryReloaded-[1.7.10]2.8.0RC8-86.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	Morph{0.9.1} [Morph] (Morph-Beta-0.9.1.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	NetherOres{1.7.10R2.3.0RC4} [Nether Ores] (NetherOres-[1.7.10]2.3.0RC4-4.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	RedstoneArsenal{1.7.10R1.1.0RC4} [Redstone Arsenal] (RedstoneArsenal-[1.7.10]1.1.0RC4-54.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	ThermalDynamics{1.7.10R1.0.0RC5} [Thermal Dynamics] (ThermalDynamics-[1.7.10]1.0.0RC5-94.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	AE2 Version: stable rv1-stable-1 for Forge 10.13.0.1187
+	CoFHCore: -[1.7.10]3.0.0RC5-207
+	ThermalFoundation: -[1.7.10]1.0.0RC4-58
+	ThermalExpansion: -[1.7.10]4.0.0RC6-138
+	MineFactoryReloaded: -[1.7.10]2.8.0RC8-86
+	Mantle Environment: Environment healthy.
+	TConstruct Environment: Environment healthy.
+	NetherOres: Lacking version information.
+	RedstoneArsenal: -[1.7.10]1.1.0RC4-54
+	ThermalDynamics: -[1.7.10]1.0.0RC5-94
+	AE2 Integration: IC2:OFF, RotaryCraft:OFF, RC:OFF, BC:OFF, MJ6:ON, MJ5:ON, RF:ON, RFItem:ON, MFR:ON, DSU:ON, FZ:OFF, FMP:OFF, RB:OFF, CLApi:OFF, Waila:ON, InvTweaks:OFF, NEI:ON, CraftGuide:OFF, Mekanism:OFF, ImmibisMicroblocks:OFF, BetterStorage:OFF
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Player Count: 1 / 8; [EntityPlayerMP['ojas'/93, l='Modded Survival', x=639.31, y=69.00, z=-11124.13]]
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
