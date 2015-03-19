@@ -318,8 +318,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   @Override
   protected boolean checkProgress(boolean redstoneChecksPassed) {
-    if(canTick(redstoneChecksPassed) && redstoneChecksPassed) {
-      doTick();
+    if(redstoneChecksPassed) {
+      usePower();
+      if(canTick(redstoneChecksPassed)) {
+        doTick();
+      }
     }
     return false;
   }
@@ -331,10 +334,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(getEnergyStored() < getPowerUsePerTick()) {
       setNotification("noPower");
       return false;
-    }    
-    if(redstoneChecksPassed) {
-      usePower();
-    }   
+    }
     int curScaled = getProgressScaled(16);
     if(curScaled != lastProgressScaled) {
       sendTaskProgressPacket();
@@ -603,32 +603,25 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     tier = capacitorType.ordinal();
     currentTask = createTask();
     
-    int ppt = getPowerUsePerTick();
+    int ppt = calcPowerUsePerTick();
     switch (capacitorType.ordinal()) {
     case 1:
-      cap = new BasicCapacitor(ppt * 40, 500000);
+      cap = new BasicCapacitor(ppt * 40, 500000, ppt);
       break;
     case 2:
-      cap = new BasicCapacitor(ppt * 40, 1000000);
+      cap = new BasicCapacitor(ppt * 40, 1000000, ppt);
       break;
     default:
-      cap = new BasicCapacitor(ppt * 40, 250000);
+      cap = new BasicCapacitor(ppt * 40, 250000, ppt);
       break;
     }
     if(getEnergyStored() > getMaxEnergyStored()) {
       setEnergyStored(getMaxEnergyStored());
     }
-    
   }
 
-  @Override
-  public ICapacitor getCapacitor() {
-    return cap;
-  }
-
-  @Override
-  public int getPowerUsePerTick() {
-    return Math.round(Config.farmContinuousEnergyUseRF * (getFarmSize()/(float)Config.farmDefaultSize ));
+  private int calcPowerUsePerTick() {
+    return Math.round(Config.farmContinuousEnergyUseRF * (getFarmSize() / (float) Config.farmDefaultSize));
   }
 
   @Override
