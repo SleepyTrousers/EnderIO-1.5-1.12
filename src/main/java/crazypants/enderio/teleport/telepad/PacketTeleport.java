@@ -1,6 +1,7 @@
 package crazypants.enderio.teleport.telepad;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -48,10 +49,13 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
     World world = ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx);
     TileEntity te = message.getTileEntity(world);
     if(te instanceof TileTelePad) {
-      if(message.type == Type.BEGIN) {
-        ((TileTelePad) te).enqueueTeleport(world.getEntityByID(message.entityId), false);
-      } else {
-        ((TileTelePad) te).dequeueTeleport(world.getEntityByID(message.entityId), false);
+      Entity e = world.getEntityByID(message.entityId);
+      if(e != null) {
+        if(message.type == Type.BEGIN) {
+          ((TileTelePad) te).enqueueTeleport(e, false);
+        } else {
+          ((TileTelePad) te).dequeueTeleport(e, false);
+        }
       }
     }
     return null;
