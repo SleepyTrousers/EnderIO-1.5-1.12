@@ -55,6 +55,7 @@ public class KeyTracker {
   
   private KeyBinding yetaWrenchMode;  
   
+  private KeyBinding magnetKey;
   
   public KeyTracker() {
     glideKey = new KeyBinding(Lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, Lang.localize("category.darksteelarmor"));
@@ -74,6 +75,9 @@ public class KeyTracker {
     
     yetaWrenchMode = new KeyBinding(Lang.localize("keybind.yetawrenchmode"), Keyboard.KEY_Y, Lang.localize("category.tools"));
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
+
+    magnetKey = new KeyBinding(Lang.localize("keybind.magnet"), Keyboard.CHAR_NONE, Lang.localize("category.tools"));
+    ClientRegistry.registerKeyBinding(magnetKey);
   }
   
   @SubscribeEvent
@@ -85,6 +89,13 @@ public class KeyTracker {
     handleGoggles();
     handleStepAssist();
     handleSpeed();
+    handleMagnet();
+  }
+
+  private void handleMagnet() {
+    if(magnetKey.getIsKeyPressed()) {
+      MagnetController.handleKeypress();
+    }
   }
 
   private void handleSpeed() {

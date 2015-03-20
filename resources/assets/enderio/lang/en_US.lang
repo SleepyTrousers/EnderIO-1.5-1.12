@@ -995,6 +995,7 @@ enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.speed=Speed
 enderio.keybind.stepassist=Step Assist
 enderio.keybind.yetawrenchmode=Yeta Wrench Mode
+enderio.keybind.magnet=Toggle Electromagnet
 enderio.nei.alloysmelter=Alloy Smelter
 enderio.nei.enchanter=Enchanter
 enderio.nei.sagmill=SAG Mill
