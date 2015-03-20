@@ -1,21 +1,38 @@
 package crazypants.enderio.item;
 
+import static crazypants.enderio.EnderIO.itemMagnet;
+
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PacketMagnetState.SlotType;
+import crazypants.enderio.item.darksteel.PacketDarkSteelPowerPacket;
+import crazypants.enderio.item.darksteel.PacketUpgradeState;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.BaublesTool;
 
 public class MagnetController implements IEntitySelector {
 
+  public MagnetController() {
+    PacketHandler.INSTANCE.registerMessage(PacketMagnetState.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
+  }
+
+  
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     
@@ -88,4 +105,77 @@ public class MagnetController implements IEntitySelector {
     }        
   }
 
+  public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean isActive) {
+    ItemStack stack = null;
+    IInventory baubles = null;
+    int dropOff = -1;
+    switch (type) {
+    case INVENTORY:
+      stack = player.inventory.getStackInSlot(slot);
+      break;
+    case ARMOR:
+      return;
+    case BAUBLES:
+      baubles = BaublesTool.getInstance().getBaubles(player);
+      if (baubles != null) {
+        stack = baubles.getStackInSlot(slot);
+      }
+      break;
+    }
+    if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
+      return;
+    }
+    if (type == SlotType.BAUBLES) {
+      ItemStack[] inv = player.inventory.mainInventory;
+      for (int i = 0; i < inv.length && dropOff < 0; i++) {
+        if (inv[i] == null) {
+          dropOff = i;
+        }
+      }
+      if (dropOff < 0) {
+        return;
+      }
+    }
+    ItemMagnet.setActive(stack, isActive);
+    switch (type) {
+    case INVENTORY:
+      player.inventory.setInventorySlotContents(slot, stack);
+      player.inventory.markDirty();
+      break;
+    case ARMOR:
+      return;
+    case BAUBLES:
+      baubles.setInventorySlotContents(slot, null);
+      player.inventory.setInventorySlotContents(dropOff, stack);
+      player.inventory.markDirty();
+      break;
+    }
+  }
+
+  public static void handleKeypress() {
+    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    ItemStack[] inv = player.inventory.mainInventory;
+    for (int i = 0; i < 9; i++) {
+      if (inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {
+        boolean isActive = !ItemMagnet.isActive(inv[i]);
+        ItemMagnet.setActive(inv[i], isActive);
+        PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, i, isActive));
+        return;
+      }
+    }
+
+    IInventory baubles = BaublesTool.getInstance().getBaubles(player);
+    if (baubles != null) {
+      for (int i = 0; i < baubles.getSizeInventory(); i++) {
+        ItemStack stack = baubles.getStackInSlot(i);
+        if (stack != null && stack.getItem() != null && stack.getItem() == itemMagnet) {
+          ItemMagnet.setActive(stack, false);
+          PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.BAUBLES, i, false));
+          return;
+        }
+      }
+    }
+    
+  }
+  
 }
