@@ -31,7 +31,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     super.initGui();
     
     int x = getGuiLeft() + 36;
-    int y = getGuiTop()  + 36;
+    int y = getGuiTop()  + 43;
     
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 0, x, y));
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 1, x + 52, y));
@@ -70,10 +70,10 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     
     GL11.glEnable(GL11.GL_BLEND);
-    fr.drawString("SW", sx + 55, sy + 41, ColorUtil.getARGB(1f,1f,0.35f,1f), true);    
-    fr.drawString("NW", sx + 55, sy + 59, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
-    fr.drawString("SE", sx + 73, sy + 41, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
-    fr.drawString("NE", sx + 73, sy + 59, ColorUtil.getARGB(1f,1f,0.35f,1f), true);        
+    fr.drawString("SW", sx + 55, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);    
+    fr.drawString("NW", sx + 55, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
+    fr.drawString("SE", sx + 73, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
+    fr.drawString("NE", sx + 73, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);        
     GL11.glDisable(GL11.GL_BLEND);
     
     RenderUtil.bindTexture("enderio:textures/gui/farmStation.png");
@@ -97,4 +97,10 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   protected String getPowerOutputLabel() {
     return Lang.localize("farm.gui.baseUse");
   }
+  
+  @Override
+  protected int getPowerHeight() {
+    return super.getPowerHeight() + 3;
+  }
+
 }

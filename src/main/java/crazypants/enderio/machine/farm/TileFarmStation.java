@@ -49,12 +49,24 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
     },
 
-    AXE     { @Override
-    boolean match(ItemStack item) { return item.getItem().getHarvestLevel(item, "axe") >= 0;         }},
-    TREETAP { @Override
-    boolean match(ItemStack item) { return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap; }},
-    SHEARS  { @Override
-    boolean match(ItemStack item) { return item.getItem() instanceof ItemShears; }};
+    AXE     {
+      @Override
+      boolean match(ItemStack item) {
+        return item.getItem().getHarvestLevel(item, "axe") >= 0;
+      }
+    },
+    TREETAP {
+      @Override
+      boolean match(ItemStack item) {
+        return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap;
+      }
+    },
+    SHEARS  {
+      @Override
+      boolean match(ItemStack item) {
+        return item.getItem() instanceof ItemShears;
+      }
+    };
 
     public final boolean itemMatches(ItemStack item) {
       if (item == null) {
@@ -101,11 +113,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public String notification = "";
   public boolean sendNotification = false;
-  
+
   private boolean wasActive;
 
   public TileFarmStation() {
-    super(new SlotDefinition(7, 4, 1));
+    super(new SlotDefinition(7, 6, 1));
   }
 
   public int getFarmSize() {
@@ -308,19 +320,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return false;
     }
     if(i <= maxToolSlot) {
-        if (ToolType.isTool(stack)) {
-          int otherSlot = i == minToolSlot ? maxToolSlot : minToolSlot;
-          if (inventory[otherSlot] == null) {
-            return true;
-          } else { // let's make sure there's not one of this type in here already
-            for (ToolType type : ToolType.values()) {
-              if (type.itemMatches(inventory[otherSlot]) && type.itemMatches(stack)) {
-                return false;
-              }
+      if (ToolType.isTool(stack)) {
+        int otherSlot = i == minToolSlot ? maxToolSlot : minToolSlot;
+        if (inventory[otherSlot] == null) {
+          return true;
+        } else { // let's make sure there's not one of this type in here already
+          for (ToolType type : ToolType.values()) {
+            if (type.itemMatches(inventory[otherSlot]) && type.itemMatches(stack)) {
+              return false;
             }
-            return true;
           }
+          return true;
         }
+      }
       return false;
     }
     return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
@@ -662,13 +674,23 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     int slotLayoutVersion = nbtRoot.getInteger("slotLayoutVersion");
     if (slotLayoutVersion < 1) {
-      for (int i = inventory.length - 2; i >= 2; i--) {
+      // update from v0 (2+4+4+1) to v1 (3+4+4+1) by moving in+out+cap one back
+      for (int i = (3+4+4+1) - 2; i >= 2; i--) {
         if (inventory[i+1] == null) {
           // Should always be true, but better safe than deleting items
           inventory[i+1] = inventory[i];
           inventory[i] = null;
         }
       }
+      slotLayoutVersion = 1;
+    }
+    if (slotLayoutVersion < 2) {
+      // update from v1 (3+4+4+1) to v2 (3+4+6+1) by moving cap to new position
+      if (inventory[(3+4+6+1)-1] == null) {
+        inventory[(3+4+6+1)-1] = inventory[(3+4+4+1)-1];
+        inventory[(3+4+4+1)-3] = null;
+      }
+      slotLayoutVersion = 2;
     }
   }
 
@@ -692,7 +714,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       nbtRoot.setIntArray("lockedSlots", locked);
     }
-    nbtRoot.setInteger("slotLayoutVersion", 1);
+    nbtRoot.setInteger("slotLayoutVersion", 2);
   }
 
 }
