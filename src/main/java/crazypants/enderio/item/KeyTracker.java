@@ -4,10 +4,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 
 import org.lwjgl.input.Keyboard;
+
+import static crazypants.enderio.EnderIO.itemMagnet;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -16,6 +19,7 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.JumpUpgrade;
@@ -25,6 +29,7 @@ import crazypants.enderio.item.darksteel.SoundDetectorUpgrade;
 import crazypants.enderio.item.darksteel.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
+import crazypants.enderio.tool.BaublesTool;
 import crazypants.util.Lang;
 
 public class KeyTracker {
@@ -94,7 +99,28 @@ public class KeyTracker {
 
   private void handleMagnet() {
     if(magnetKey.getIsKeyPressed()) {
-      MagnetController.handleKeypress();
+      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      ItemStack[] inv = player.inventory.mainInventory;
+      for (int i = 0; i < 9; i++) {
+        if(inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {
+          boolean isActive = !ItemMagnet.isActive(inv[i]);
+          ItemMagnet.setActive(inv[i], isActive);
+          PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, i, isActive));
+          return;
+        }
+      }
+
+      IInventory baubles = BaublesTool.getInstance().getBaubles(player);
+      if(baubles != null) {
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+          ItemStack stack = baubles.getStackInSlot(i);
+          if(stack != null && stack.getItem() != null && stack.getItem() == itemMagnet) {
+            ItemMagnet.setActive(stack, false);
+            PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.BAUBLES, i, false));
+            return;
+          }
+        }
+      }
     }
   }
 

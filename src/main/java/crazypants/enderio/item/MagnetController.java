@@ -1,11 +1,7 @@
 package crazypants.enderio.item;
 
-import static crazypants.enderio.EnderIO.itemMagnet;
-
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -13,7 +9,6 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -21,10 +16,10 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
-import crazypants.enderio.item.darksteel.PacketDarkSteelPowerPacket;
-import crazypants.enderio.item.darksteel.PacketUpgradeState;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.BaublesTool;
+
+import static crazypants.enderio.EnderIO.itemMagnet;
 
 public class MagnetController implements IEntitySelector {
 
@@ -151,31 +146,4 @@ public class MagnetController implements IEntitySelector {
       break;
     }
   }
-
-  public static void handleKeypress() {
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    ItemStack[] inv = player.inventory.mainInventory;
-    for (int i = 0; i < 9; i++) {
-      if (inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {
-        boolean isActive = !ItemMagnet.isActive(inv[i]);
-        ItemMagnet.setActive(inv[i], isActive);
-        PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, i, isActive));
-        return;
-      }
-    }
-
-    IInventory baubles = BaublesTool.getInstance().getBaubles(player);
-    if (baubles != null) {
-      for (int i = 0; i < baubles.getSizeInventory(); i++) {
-        ItemStack stack = baubles.getStackInSlot(i);
-        if (stack != null && stack.getItem() != null && stack.getItem() == itemMagnet) {
-          ItemMagnet.setActive(stack, false);
-          PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.BAUBLES, i, false));
-          return;
-        }
-      }
-    }
-    
-  }
-  
 }
