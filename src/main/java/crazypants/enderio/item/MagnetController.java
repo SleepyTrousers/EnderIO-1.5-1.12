@@ -19,6 +19,7 @@ import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.PacketDarkSteelPowerPacket;
@@ -152,8 +153,9 @@ public class MagnetController implements IEntitySelector {
     }
   }
 
+  @SideOnly(Side.CLIENT)
   public static void handleKeypress() {
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     ItemStack[] inv = player.inventory.mainInventory;
     for (int i = 0; i < 9; i++) {
       if (inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {

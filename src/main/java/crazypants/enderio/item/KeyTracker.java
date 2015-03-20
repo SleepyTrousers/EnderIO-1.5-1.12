@@ -13,6 +13,8 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -27,6 +29,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class KeyTracker {
 
   public static final KeyTracker instance = new KeyTracker();
