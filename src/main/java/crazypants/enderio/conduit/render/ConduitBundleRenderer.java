@@ -124,7 +124,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
     boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit && BlockConduitBundle.theRenderPass == 0) {
+    if(renderConduit && (BlockConduitBundle.theRenderPass == 0 || rb.overrideBlockTexture != null)) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
