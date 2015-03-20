@@ -62,6 +62,7 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
+import crazypants.render.RenderUtil;
 import crazypants.util.IFacade;
 import crazypants.util.Util;
 
@@ -331,11 +332,10 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return 1;
   }
 
-  public static volatile int theRenderPass;
-
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean canRenderInPass(int pass) {
-    theRenderPass = pass;
+    RenderUtil.theRenderPass = pass;
     return pass == 0 || pass == 1;
   }
 

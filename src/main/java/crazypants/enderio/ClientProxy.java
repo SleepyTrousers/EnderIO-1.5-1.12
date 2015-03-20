@@ -129,7 +129,11 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.telepad.BlockTelePad;
+import crazypants.enderio.teleport.telepad.TelePadRenderer;
+import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.render.IconUtil;
 
 @SideOnly(Side.CLIENT)
@@ -333,6 +337,10 @@ public class ClientProxy extends CommonProxy {
 
     BlockTravelAnchor.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockTravelAnchor.renderId, EnderIO.blockTravelPlatform));
+
+    BlockTelePad.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new TelePadRenderer());
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());

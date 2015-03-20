@@ -20,6 +20,7 @@ import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.render.RenderUtil;
 
 public class BlockTelePad extends BlockTravelAnchor {
 
@@ -27,6 +28,10 @@ public class BlockTelePad extends BlockTravelAnchor {
   private IIcon unconnected;
   @SideOnly(Side.CLIENT)
   private IIcon connected;
+  @SideOnly(Side.CLIENT)
+  IIcon animationIcon;
+  
+  public static int renderId;
 
   public static BlockTelePad create() {
     BlockTelePad ret = new BlockTelePad();
@@ -51,8 +56,9 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
-    unconnected = iIconRegister.registerIcon("EnderIO:blockTelePad");
-    connected = iIconRegister.registerIcon("EnderIO:blockTelePadConnected");
+    unconnected = iIconRegister.registerIcon("enderio:blockTelePad");
+    connected = iIconRegister.registerIcon("enderio:telePadModel");
+    animationIcon = iIconRegister.registerIcon("enderio:telePadAnimation");
   }
 
   @Override
@@ -71,9 +77,22 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public int getRenderType() {
-    return 0;
+    return renderId;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int getRenderBlockPass() {
+    return 1;
   }
   
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean canRenderInPass(int pass) {
+    RenderUtil.theRenderPass = pass;
+    return pass <= 1;
+  }
+
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block changedTo) {
     super.onNeighborBlockChange(world, x, y, z, changedTo);

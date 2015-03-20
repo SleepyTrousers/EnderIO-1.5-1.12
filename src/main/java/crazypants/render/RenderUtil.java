@@ -1,30 +1,5 @@
 package crazypants.render;
 
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
-import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
-import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SMOOTH;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_ZERO;
-import static org.lwjgl.opengl.GL11.glDepthMask;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glPopAttrib;
-import static org.lwjgl.opengl.GL11.glPushAttrib;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glShadeModel;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-
 import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -69,6 +44,9 @@ import crazypants.vecmath.Vector4d;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
+import static net.minecraftforge.common.util.ForgeDirection.*;
+import static org.lwjgl.opengl.GL11.*;
+
 public class RenderUtil {
 
   public static final Vector4f DEFAULT_TEXT_SHADOW_COL = new Vector4f(0.33f, 0.33f, 0.33f, 0.33f);
@@ -112,9 +90,15 @@ public class RenderUtil {
     MATRIX_BUFFER.rewind();
     GL11.glLoadMatrix(MATRIX_BUFFER);
   }
-  
+
   private static Field timerField = initTimer();
-  
+
+  /**
+   * Non-thread-safe holder for the current render pass. You must update this in
+   * your block's canRenderInPass method for it to work properly!
+   */
+  public static volatile int theRenderPass = 0;
+
   private static Field initTimer() {
     Field f = null;
     try {
@@ -126,7 +110,7 @@ public class RenderUtil {
     }
     return f;
   }
-  
+
   @Nullable
   public static Timer getTimer() {
     if(timerField == null) {
@@ -354,12 +338,13 @@ public class RenderUtil {
     }
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges) {
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture,
+      boolean forceAllEdges) {
     renderConnectedTextureFace(blockAccess, block, x, y, z, face, texture, forceAllEdges, true, true);
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges,
-      boolean translateToXYZ, boolean applyFaceShading) {
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture,
+      boolean forceAllEdges, boolean translateToXYZ, boolean applyFaceShading) {
 
     if((blockAccess == null && !forceAllEdges) || face == null || texture == null) {
       return;
@@ -398,10 +383,10 @@ public class RenderUtil {
       float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
       float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
       float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
-      
-      xLen -= 2* (1 - block.getBlockBoundsMaxX()) - block.getBlockBoundsMinX();
-      yLen -= 2* (1 - block.getBlockBoundsMaxY()) - block.getBlockBoundsMinY();
-      zLen -= 2* (1 - block.getBlockBoundsMaxZ()) - block.getBlockBoundsMinZ();
+
+      xLen -= 2 * (1 - block.getBlockBoundsMaxX()) - block.getBlockBoundsMinX();
+      yLen -= 2 * (1 - block.getBlockBoundsMaxY()) - block.getBlockBoundsMinY();
+      zLen -= 2 * (1 - block.getBlockBoundsMaxZ()) - block.getBlockBoundsMinZ();
 
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
@@ -435,7 +420,8 @@ public class RenderUtil {
     return getNonConectedEdgesForFace(blockAccess, x, y, z, face, null);
   }
 
-  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IConnectedTextureRenderer render) {
+  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face,
+      IConnectedTextureRenderer render) {
 
     Block block = blockAccess.getBlock(x, y, z);
     if(block == null) {

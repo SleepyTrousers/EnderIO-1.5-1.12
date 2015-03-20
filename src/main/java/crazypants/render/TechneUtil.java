@@ -128,6 +128,8 @@ public class TechneUtil {
 
     Vector4f vec = new Vector4f();
     List<GroupObject> res = new ArrayList<GroupObject>();
+    
+
     for (ModelBox box : (List<ModelBox>) model.cubeList) {
       GroupObject obj = new GroupObject("", GL11.GL_QUADS);
       TexturedQuad[] quads = (TexturedQuad[]) ObfuscationReflectionHelper.getPrivateValue(ModelBox.class, box, "quadList", "field_78254_i");
@@ -147,6 +149,14 @@ public class TechneUtil {
 
           face.vertices[j] = new Vertex(vec.x / vec.w, vec.y / vec.w, vec.z / vec.w);
 
+          // Increase the interpolation scale by multiples of 2
+          while (pv.texturePositionX > uMult) {
+            uMult *= 2;
+          }  
+          while (pv.texturePositionY > vMult) {
+            vMult *= 2;
+          }
+
           face.textureCoordinates[j] = new TextureCoordinate(pv.texturePositionX, pv.texturePositionY);
         }
         face.faceNormal = face.calculateFaceNormal();
@@ -154,6 +164,7 @@ public class TechneUtil {
       }
       res.add(obj);
     }
+
     return res;
   }
 
@@ -169,6 +180,9 @@ public class TechneUtil {
     return bakeModel(model, scale, m, false);
   }
 
+  // Used in the second pass of baking to adjust UVs to the proper interpolation
+  private static int uMult = 1, vMult = 1;
+
   /**
    * Use this to convert TechneModel to it's static representation
    */
@@ -176,10 +190,26 @@ public class TechneUtil {
   public static List<GroupObject> bakeModel(TechneModel model, float scale, Matrix4f m, boolean rotateYFirst) {
     Map<String, ModelRenderer> parts = (Map<String, ModelRenderer>) ObfuscationReflectionHelper.getPrivateValue(TechneModel.class, model, "parts");
     List<GroupObject> res = Lists.newArrayList();
+
     for (Map.Entry<String, ModelRenderer> e : parts.entrySet()) {
       GroupObject obj = bakeModel(e.getValue(), scale, m, rotateYFirst).get(0);
       res.add(obj);
     }
+
+    // Second pass, adjust the UVs to be on a 0-1 interpolation scale
+    if(uMult + vMult != 2) {
+      for (GroupObject go : res) {
+        for (Face f : go.faces) {
+          for (TextureCoordinate tc : f.textureCoordinates) {
+            tc.u /= uMult;
+            tc.v /= vMult;
+          }
+        }
+      }
+    }
+
+    uMult = vMult = 1;
+
     return res;
   }
 
@@ -256,7 +286,7 @@ public class TechneUtil {
             tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpX * 16), override.getInterpolatedV(interpY * 16));
           } else {
             TextureCoordinate t = f.textureCoordinates[i];
-            tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 8));
+            tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 16));
           }
         }
       }
@@ -310,7 +340,7 @@ public class TechneUtil {
     if(block instanceof AbstractMachineBlock<?>) {
       return ((AbstractMachineBlock<?>) block).getModelIcon(world, x, y, z);
     }
-    return getIconFor(block, world.getBlockMetadata(x, y, z));
+    return block.getIcon(world, x, y, z, 0);
   }
 
   private static IIcon getIconFor(Block block, int metadata) {

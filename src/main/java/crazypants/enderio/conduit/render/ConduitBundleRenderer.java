@@ -111,7 +111,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     //enable the alpha pass based on state so the only work around is to ensure we always render something in this
     //pass. Throwing in a polygon with a 0 area does the job
     //See: https://github.com/MinecraftForge/MinecraftForge/issues/981
-    if(BlockConduitBundle.theRenderPass == 1) {
+    if(RenderUtil.theRenderPass == 1) {
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
@@ -124,7 +124,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
     boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit && (BlockConduitBundle.theRenderPass == 0 || rb.overrideBlockTexture != null)) {
+    if(renderConduit && (RenderUtil.theRenderPass == 0 || rb.overrideBlockTexture != null)) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -162,8 +162,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
 
-        if((isFacadeOpaque && BlockConduitBundle.theRenderPass == 0) ||
-            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1))) {
+        if((isFacadeOpaque && RenderUtil.theRenderPass == 0) ||
+            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && RenderUtil.theRenderPass == 1))) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);
           try {
