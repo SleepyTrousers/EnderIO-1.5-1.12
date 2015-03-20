@@ -356,7 +356,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       return false;
     } else if (i <= maxFirtSlot) {
-      return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
+      return Fertilizer.isFertilizer(stack);
     } else if (i <= maxSupSlot) {
       return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
     } else {
@@ -463,7 +463,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         }
       } else if (!isOpen(bc) && hasBonemeal() && bonemealCooldown-- <= 0) {
         // there's a block and it did not produce harvest. Try bonemealing it
-        if (inventory[minFirtSlot].getItem().onItemUse(inventory[minFirtSlot], farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f)) {
+        if (Fertilizer.getInstance(inventory[minFirtSlot]).apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
           PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
           if (inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = null;
