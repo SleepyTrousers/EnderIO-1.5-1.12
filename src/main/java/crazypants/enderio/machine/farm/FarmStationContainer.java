@@ -14,7 +14,8 @@ public class FarmStationContainer extends AbstractMachineContainer {
 
   private static final int COL_TOOLS = 44;
   private static final int COL_INPUT = 53;
-  private static final int COL_OUTPUT = 116;
+  private static final int COL_FERTILIZER = 116;
+  private static final int COL_OUTPUT = 107;
 
   private static final int SLOT_SIZE = 18;
   private static final int ONE   = 0 * SLOT_SIZE;
@@ -32,6 +33,9 @@ public class FarmStationContainer extends AbstractMachineContainer {
       new Point(COL_TOOLS + ONE,    ROW_TOOLS),
       new Point(COL_TOOLS + TWO,    ROW_TOOLS),
       new Point(COL_TOOLS + THREE,  ROW_TOOLS),
+
+      new Point(COL_FERTILIZER + ONE,   ROW_TOOLS),
+      new Point(COL_FERTILIZER + TWO,   ROW_TOOLS),
 
       new Point(COL_INPUT + ONE,    ROW_IO + ONE),
       new Point(COL_INPUT + TWO,    ROW_IO + ONE),

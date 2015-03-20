@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,10 +32,13 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.tool.ArrayMappingTool;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
+
+  private static final int TICKS_PER_WORK = 20;
 
   public enum ToolType {
     HOE {
@@ -66,6 +70,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       boolean match(ItemStack item) {
         return item.getItem() instanceof ItemShears;
       }
+    },
+    NONE  {
+      @Override
+      boolean match(ItemStack item) {
+        return false;
+      }
     };
 
     public final boolean itemMatches(ItemStack item) {
@@ -90,6 +100,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       return false;
     }
+
+    public static ToolType getToolType(ItemStack stack) {
+      for (ToolType type : values()) {
+        if (type.itemMatches(stack)) {
+          return type;
+        }
+      }
+      return NONE;
+    }
   }
 
   public static final String NOTIFICATION_NO_HOE = "noHoe";
@@ -99,13 +118,20 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   private BlockCoord lastScanned;
   private EntityPlayerMP farmerJoe;
 
+  public static final int NUM_TOOL_SLOTS = 3;
+
   private static final int minToolSlot = 0;
-  private static final int maxToolSlot = 2;
+  private static final int maxToolSlot = -1 + NUM_TOOL_SLOTS;
+
+  public static final int NUM_FERTILIZER_SLOTS = 2;
+
+  public static final int minFirtSlot = maxToolSlot + 1;
+  public static final int maxFirtSlot = maxToolSlot + NUM_FERTILIZER_SLOTS;
 
   public static final int NUM_SUPPLY_SLOTS = 4;
   
-  public static final int minSupSlot = maxToolSlot + 1;
-  public static final int maxSupSlot = maxToolSlot + NUM_SUPPLY_SLOTS;
+  public static final int minSupSlot = maxFirtSlot + 1;
+  public static final int maxSupSlot = maxFirtSlot + NUM_SUPPLY_SLOTS;
 
   private final BitSet lockedSlots = new BitSet();
 
@@ -117,7 +143,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   private boolean wasActive;
 
   public TileFarmStation() {
-    super(new SlotDefinition(7, 6, 1));
+    super(new SlotDefinition(9, 6, 1));
   }
 
   public int getFarmSize() {
@@ -321,21 +347,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     if(i <= maxToolSlot) {
       if (ToolType.isTool(stack)) {
-        int otherSlot = i == minToolSlot ? maxToolSlot : minToolSlot;
-        if (inventory[otherSlot] == null) {
-          return true;
-        } else { // let's make sure there's not one of this type in here already
-          for (ToolType type : ToolType.values()) {
-            if (type.itemMatches(inventory[otherSlot]) && type.itemMatches(stack)) {
-              return false;
-            }
+        for (int j = minToolSlot; j <= maxToolSlot; j++) {
+          if (ToolType.getToolType(stack).itemMatches(inventory[j])) {
+            return false;
           }
-          return true;
         }
+        return true;
       }
       return false;
+    } else if (i <= maxFirtSlot) {
+      return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
+    } else if (i <= maxSupSlot) {
+      return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
+    } else {
+      return false;
     }
-    return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
   }
 
   @Override
@@ -376,7 +402,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   protected void doTick() {
 
-    if (sendNotification && shouldDoWorkThisTick(20)) {
+    if (sendNotification && shouldDoWorkThisTick(TICKS_PER_WORK)) {
       sendNotification = false;
       sendNotification();
     }
@@ -424,21 +450,48 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
     if(!isOpen(bc)) {
       IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
-      if(harvest != null) {
-        if(harvest.getDrops() != null) {
-          PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
-          for (EntityItem ei : harvest.getDrops()) {
-            if(ei != null) {
-              insertHarvestDrop(ei, bc);
-              if(!ei.isDead) {
-                worldObj.spawnEntityInWorld(ei);
-              }
+      if(harvest != null && harvest.getDrops() != null) {
+        PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
+        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+        for (EntityItem ei : harvest.getDrops()) {
+          if(ei != null) {
+            insertHarvestDrop(ei, bc);
+            if(!ei.isDead) {
+              worldObj.spawnEntityInWorld(ei);
             }
           }
         }
+      } else if (!isOpen(bc) && hasBonemeal() && bonemealCooldown-- <= 0) {
+        // there's a block and it did not produce harvest. Try bonemealing it
+        if (inventory[minFirtSlot].getItem().onItemUse(inventory[minFirtSlot], farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f)) {
+          worldObj.playAuxSFX(2005, bc.x, bc.y, bc.z, 0);
+          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+          if (inventory[minFirtSlot].stackSize == 0) {
+            inventory[minFirtSlot] = null;
+          }
+          bonemealCooldown = 5;
+          usePower(Config.farmBonemealActionEnergyUseRF);
+        } else {
+          usePower(Config.farmBonemealTryEnergyUseRF);
+        }
       }
     }
+  }
+
+  private int bonemealCooldown = 5; // no need to persist this
+  
+  private boolean hasBonemeal() {
+    if (inventory[minFirtSlot] != null) {
+      return true;
+    }
+    for (int i = minFirtSlot + 1; i <= maxFirtSlot; i++) {
+      if (inventory[i] != null) {
+        inventory[minFirtSlot] = inventory[i];
+        inventory[i] = null;
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isOutputFull() {
@@ -673,24 +726,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       lockedSlots.set(i);
     }
     int slotLayoutVersion = nbtRoot.getInteger("slotLayoutVersion");
-    if (slotLayoutVersion < 1) {
-      // update from v0 (2+4+4+1) to v1 (3+4+4+1) by moving in+out+cap one back
-      for (int i = (3+4+4+1) - 2; i >= 2; i--) {
-        if (inventory[i+1] == null) {
-          // Should always be true, but better safe than deleting items
-          inventory[i+1] = inventory[i];
-          inventory[i] = null;
-        }
-      }
-      slotLayoutVersion = 1;
-    }
-    if (slotLayoutVersion < 2) {
-      // update from v1 (3+4+4+1) to v2 (3+4+6+1) by moving cap to new position
-      if (inventory[(3+4+6+1)-1] == null) {
-        inventory[(3+4+6+1)-1] = inventory[(3+4+4+1)-1];
-        inventory[(3+4+4+1)-3] = null;
-      }
-      slotLayoutVersion = 2;
+    if (slotLayoutVersion == 0) {
+      inventory = (new ArrayMappingTool<ItemStack>("TTSSSSOOOOC", "TTTBBSSSSOOOOOOC")).map(inventory);
+    } else if (slotLayoutVersion == 1) {
+      inventory = (new ArrayMappingTool<ItemStack>("TTTSSSSOOOOC", "TTTBBSSSSOOOOOOC")).map(inventory);
+    } else if (slotLayoutVersion == 2) {
+      inventory = (new ArrayMappingTool<ItemStack>("TTTSSSSOOOOOOC", "TTTBBSSSSOOOOOOC")).map(inventory);
     }
   }
 
@@ -714,7 +755,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       nbtRoot.setIntArray("lockedSlots", locked);
     }
-    nbtRoot.setInteger("slotLayoutVersion", 2);
+    nbtRoot.setInteger("slotLayoutVersion", 3);
   }
 
 }

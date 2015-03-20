@@ -25,6 +25,11 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
     this.coords = coords;
   }
 
+  public PacketFarmAction(BlockCoord bc) {
+    this.coords = new ArrayList<BlockCoord>(1);
+    this.coords.add(bc);
+  }
+
   @Override
   public void toBytes(ByteBuf buffer) {
     int size = coords.size();
