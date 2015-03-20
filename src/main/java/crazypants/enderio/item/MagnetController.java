@@ -65,7 +65,7 @@ public class MagnetController implements IEntitySelector {
         
     List<Entity> interestingItems = player.worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);        
     List<Entity> xp = player.worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, this);
-    if(xp != null) {
+    if(!xp.isEmpty()) {
       interestingItems.addAll(xp);
     }
 
