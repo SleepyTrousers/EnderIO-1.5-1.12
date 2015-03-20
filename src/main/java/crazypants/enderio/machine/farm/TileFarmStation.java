@@ -614,12 +614,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     for (int j = 0; j < slots.length && inserted < stack.stackSize; j++) {
       int i = slots[j];
       ItemStack curStack = inventory[i];
-      if(isItemValidForSlot(i, stack) && (curStack == null || curStack.stackSize < 16)) {
+      int inventoryStackLimit = getInventoryStackLimit(i);
+      if(isItemValidForSlot(i, stack) && (curStack == null || curStack.stackSize < inventoryStackLimit)) {
         if(curStack == null) {
+          if (stack.stackSize < inventoryStackLimit) {
           inventory[i] = stack.copy();
           inserted = stack.stackSize;
+          } else {
+            inventory[i] = stack.copy();
+            inserted = inventoryStackLimit;
+            inventory[i].stackSize = inserted;
+          }
         } else if(curStack.isItemEqual(stack)) {
-          inserted = Math.min(16 - curStack.stackSize, stack.stackSize);
+          inserted = Math.min(inventoryStackLimit - curStack.stackSize, stack.stackSize);
           inventory[i].stackSize += inserted;
         }
       }
@@ -755,6 +762,27 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       nbtRoot.setIntArray("lockedSlots", locked);
     }
     nbtRoot.setInteger("slotLayoutVersion", 3);
+  }
+
+  public int getInventoryStackLimit(int slot) {
+    if (slot >= minSupSlot && slot <= maxSupSlot) {
+      switch (getCapacitorType()) {
+      case BASIC_CAPACITOR:
+        return 16;
+      case ACTIVATED_CAPACITOR:
+        return 32;
+      case ENDER_CAPACITOR:
+        return 64;
+      }
+    }
+    return 64;
+  }
+
+  @Override
+  public int getInventoryStackLimit() {
+    // We return the (lowered) input slot limit here, so others who insert into us
+    // will behave nicely.
+    return getInventoryStackLimit(minSupSlot);
   }
 
 }

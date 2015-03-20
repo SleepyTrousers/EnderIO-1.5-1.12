@@ -367,7 +367,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     boolean hasSpace = false;
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < inventory[slot].getMaxStackSize();
+      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
     }
     if(!hasSpace) {
       return false;
@@ -569,6 +569,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return slotDefinition.getNumSlots();
   }
 
+  public int getInventoryStackLimit(int slot) {
+    return getInventoryStackLimit();
+  }
+
   @Override
   public int getInventoryStackLimit() {
     return 64;
@@ -608,8 +612,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       inventory[slot] = contents.copy();
     }
 
-    if(contents != null && contents.stackSize > getInventoryStackLimit()) {
-      contents.stackSize = getInventoryStackLimit();
+    if(contents != null && contents.stackSize > getInventoryStackLimit(slot)) {
+      contents.stackSize = getInventoryStackLimit(slot);
     }
   }
 
