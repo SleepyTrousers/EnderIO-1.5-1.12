@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -78,7 +79,17 @@ public class BlockTelePad extends BlockTravelAnchor {
   public int getRenderType() {
     return renderId;
   }
-  
+
+  @Override
+  public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+    AxisAlignedBB bb = super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
+    if(!te.inNetwork()) {
+      return bb;
+    }
+    return te.getBoundingBox();
+  }
+
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block changedTo) {
     super.onNeighborBlockChange(world, x, y, z, changedTo);

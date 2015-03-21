@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
@@ -54,6 +55,8 @@ public class TelePadRenderer extends TechneModelRenderer {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+    Tessellator.instance.startDrawingQuads();
     CubeRenderer.render(block, metadata);
+    Tessellator.instance.draw();
   }
 }

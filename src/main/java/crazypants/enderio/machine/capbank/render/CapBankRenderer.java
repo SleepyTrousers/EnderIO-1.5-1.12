@@ -115,6 +115,7 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
 
     tes.startDrawingQuads();
     tes.setColorRGBA_F(1, 1, 1, 1);
+    tes.addTranslation(0, -0.1f, 0);
     renderBorder(null, 0, 0, 0, item.getItemDamage());
     tes.draw();
 
@@ -130,7 +131,7 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
     //    key = new GaugeKey(ForgeDirection.EAST, FillGauge.Type.SINGLE);
     //    fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
-
+    tes.addTranslation(0, 0.1f, 0);
   }
 
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z, int meta) {

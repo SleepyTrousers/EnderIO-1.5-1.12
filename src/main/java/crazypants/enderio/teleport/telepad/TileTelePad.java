@@ -332,6 +332,19 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return toTeleport.peek();
   }
 
+  public AxisAlignedBB getBoundingBox() {
+    if(!inNetwork()) {
+      return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    }
+    TileTelePad master = getMaster();
+    return AxisAlignedBB.getBoundingBox(master.xCoord - 1, master.yCoord, master.zCoord - 1, master.xCoord + 2, master.yCoord + 1, master.zCoord + 2);
+  }
+
+  @Override
+  public AxisAlignedBB getRenderBoundingBox() {
+    return getBoundingBox();
+  }
+
   /* IProgressTile */
 
   @Override

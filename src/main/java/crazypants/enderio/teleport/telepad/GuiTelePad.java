@@ -3,7 +3,6 @@ package crazypants.enderio.teleport.telepad;
 import java.awt.Rectangle;
 import java.util.List;
 
-import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -21,7 +20,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
-import crazypants.enderio.gui.TextFieldEIO.ICharFilter;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;

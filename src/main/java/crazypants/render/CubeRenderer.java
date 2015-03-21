@@ -24,7 +24,7 @@ public final class CubeRenderer {
     for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       icons[dir.ordinal()] = block.getIcon(dir.ordinal(), meta);
     }
-    render(BoundingBox.UNIT_CUBE, icons, xForm, true);
+    render(BoundingBox.UNIT_CUBE.translate(0, -0.1f, 0), icons, xForm, true);
   }
   
   public static void render(BoundingBox bb, IIcon tex) {
