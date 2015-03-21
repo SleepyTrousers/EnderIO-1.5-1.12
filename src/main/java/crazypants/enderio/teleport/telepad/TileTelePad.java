@@ -35,7 +35,6 @@ import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.machine.PacketProgress;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.rail.PacketTeleportEffects;
 import crazypants.enderio.rail.TeleporterEIO;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;

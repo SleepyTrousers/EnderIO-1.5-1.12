@@ -1,6 +1,6 @@
 package crazypants.render;
 
-import java.util.List;
+import java.util.Collection;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -10,7 +10,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class TechneModelRenderer implements ISimpleBlockRenderingHandler {
 
-  private List<GroupObject> model;
+  private Collection<GroupObject> model;
   private int renderId;
 
   protected VertexTransform vt;
@@ -20,7 +20,15 @@ public class TechneModelRenderer implements ISimpleBlockRenderingHandler {
   }
 
   public TechneModelRenderer(String modelPath, int renderId, VertexTransform vt) {
-    model = TechneUtil.getModel(modelPath);
+    this(TechneUtil.getModelAll(modelPath), renderId, vt);
+  }
+  
+  public TechneModelRenderer(Collection<GroupObject> model, int renderId) {
+    this(model, renderId, null);
+  }
+
+  public TechneModelRenderer(Collection<GroupObject> model, int renderId, VertexTransform vt) {
+    this.model = model;
     this.renderId = renderId;
     this.vt = vt;
   }

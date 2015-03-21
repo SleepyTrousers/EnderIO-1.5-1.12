@@ -49,7 +49,9 @@ dependencies {
     exportedCompile 'cglib:cglib-nodep:3.1'
     
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
-    compile "mcp.mobius.waila:Waila:${waila_version}"
+    compile ("mcp.mobius.waila:Waila:${waila_version}") {
+        transitive = false
+    }
     compile "tterrag.core:ttCore:${ttCore_version}"
     compile "net.sengir.forestry:${forestry_version}:api"
 }

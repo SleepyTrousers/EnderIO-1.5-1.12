@@ -1,23 +1,36 @@
 package crazypants.enderio.teleport.telepad;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
+
+import com.google.common.collect.Lists;
+
 import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 import crazypants.render.TechneModelRenderer;
 import crazypants.render.TechneUtil;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
-  private List<GroupObject> glass = TechneUtil.getModel("models/telePadGlass");
+  public static final Map<String, GroupObject> all = TechneUtil.getModel("models/telePad");
 
   public TelePadRenderer() {
-    super("models/telePad", BlockTelePad.renderId);
+    super(getModel(), BlockTelePad.renderId);
+  }
+
+  private static Collection<GroupObject> getModel() {
+    Collection<GroupObject> model = Lists.newArrayList();
+    for (String s : all.keySet()) {
+      if(!s.equals("glass") && !s.contains("blade")) {
+        model.add(all.get(s));
+      }
+    }
+    return model;
   }
 
   @Override
@@ -28,11 +41,7 @@ public class TelePadRenderer extends TechneModelRenderer {
     if(te.inNetwork()) {
       renderer.overrideBlockTexture = null;
       if(te.isMaster()) {
-        if(RenderUtil.theRenderPass == 0) {
-          super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
-        } else {
-          TechneUtil.renderWorldBlock(glass, world, x, y, z, block, renderer);
-        }
+        super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
       } else {
         ret = false;
       }

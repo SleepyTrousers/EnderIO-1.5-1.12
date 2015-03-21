@@ -1,7 +1,5 @@
 package crazypants.enderio.machine;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.util.EnumChatFormatting;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.util.Lang;
@@ -85,5 +83,4 @@ public enum IoMode {
     }
     return values()[index];
   }
-
 }

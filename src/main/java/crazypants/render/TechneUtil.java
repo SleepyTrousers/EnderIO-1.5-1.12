@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package crazypants.render;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +62,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import crazypants.enderio.EnderIO;
@@ -168,15 +169,15 @@ public class TechneUtil {
     return res;
   }
 
-  public static List<GroupObject> bakeModel(TechneModel model) {
+  public static Map<String, GroupObject> bakeModel(TechneModel model) {
     return bakeModel(model, 1);
   }
 
-  public static List<GroupObject> bakeModel(TechneModel model, float scale) {
+  public static Map<String, GroupObject> bakeModel(TechneModel model, float scale) {
     return bakeModel(model, scale, new Matrix4f());
   }
 
-  public static List<GroupObject> bakeModel(TechneModel model, float scale, Matrix4f m) {
+  public static Map<String, GroupObject> bakeModel(TechneModel model, float scale, Matrix4f m) {
     return bakeModel(model, scale, m, false);
   }
 
@@ -187,18 +188,18 @@ public class TechneUtil {
    * Use this to convert TechneModel to it's static representation
    */
   @SuppressWarnings("unchecked")
-  public static List<GroupObject> bakeModel(TechneModel model, float scale, Matrix4f m, boolean rotateYFirst) {
+  public static Map<String, GroupObject> bakeModel(TechneModel model, float scale, Matrix4f m, boolean rotateYFirst) {
     Map<String, ModelRenderer> parts = (Map<String, ModelRenderer>) ObfuscationReflectionHelper.getPrivateValue(TechneModel.class, model, "parts");
-    List<GroupObject> res = Lists.newArrayList();
+    Map<String, GroupObject> res = Maps.newHashMap();
 
     for (Map.Entry<String, ModelRenderer> e : parts.entrySet()) {
       GroupObject obj = bakeModel(e.getValue(), scale, m, rotateYFirst).get(0);
-      res.add(obj);
+      res.put(e.getKey(), obj);
     }
 
     // Second pass, adjust the UVs to be on a 0-1 interpolation scale
     if(uMult + vMult != 2) {
-      for (GroupObject go : res) {
+      for (GroupObject go : res.values()) {
         for (Face f : go.faces) {
           for (TextureCoordinate tc : f.textureCoordinates) {
             tc.u /= uMult;
@@ -213,25 +214,36 @@ public class TechneUtil {
     return res;
   }
 
-  public static List<GroupObject> getModel(String modelPath) {
+  public static Map<String, GroupObject> getModel(String modelPath) {
     TechneModel tm = (TechneModel) modelLoader.loadInstance(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
     return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1)));
   }
+  
+  public static Collection<GroupObject> getModelAll(String modelPath) {
+    TechneModel tm = (TechneModel) modelLoader.loadInstance(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
+    return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1))).values();
+  }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes) {
+  public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes) {
     renderWithIcon(model, icon, override, tes, null);
   }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, VertexTransform vt) {
+  public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, VertexTransform vt) {
     renderWithIcon(model, icon, override, tes, null, 0, 0, 0, vt);
   }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z) {
+  public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z) {
     renderWithIcon(model, icon, override, tes, world, x, y, z, null);
   }
 
-  public static void renderWithIcon(List<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z,
+
+  public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z,
       VertexTransform vt) {
+    renderWithIcon(model, icon, override, tes, world, x, y, z, vt, true);
+  }
+  
+  public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z,
+      VertexTransform vt, boolean isbrh) {
     for (GroupObject go : model) {
       for (Face f : go.faces) {
         Vertex n = f.faceNormal;
@@ -243,7 +255,7 @@ public class TechneUtil {
         }
         ForgeDirection down = normal.getRotation(right.getOpposite());
 
-        if(world != null && world.getBlock(x, y, z).getLightOpacity() > 0) {
+        if(isbrh && world != null && world.getBlock(x, y, z).getLightOpacity() > 0) {
           int bx = x + normal.offsetX;
           int by = y + normal.offsetY;
           int bz = z + normal.offsetZ;
@@ -259,13 +271,15 @@ public class TechneUtil {
             vt.apply(v);
           }
 
-          float factor = normal.offsetX != 0 ? 0.6f : normal.offsetZ != 0 ? 0.8f : normal.offsetY < 0 ? 0.5f : 1;
-          int c = (int) (0xFF * factor);
+          if(isbrh) {
+            float factor = normal.offsetX != 0 ? 0.6f : normal.offsetZ != 0 ? 0.8f : normal.offsetY < 0 ? 0.5f : 1;
+            int c = (int) (0xFF * factor);
 
-          tes.setColorOpaque(c, c, c);
-
+            tes.setColorOpaque(c, c, c);
+          }
+          
           if(override != null) {
-  
+
             double interpX = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
             double interpY = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
 
@@ -303,11 +317,11 @@ public class TechneUtil {
     }
   }
 
-  public static void renderInventoryBlock(List<GroupObject> model, Block block, int metadata, RenderBlocks rb) {
+  public static void renderInventoryBlock(Collection<GroupObject> model, Block block, int metadata, RenderBlocks rb) {
     renderInventoryBlock(model, getIconFor(block, metadata), block, metadata, rb);
   }
 
-  public static void renderInventoryBlock(List<GroupObject> model, IIcon icon, Block block, int metadata, RenderBlocks rb) {
+  public static void renderInventoryBlock(Collection<GroupObject> model, IIcon icon, Block block, int metadata, RenderBlocks rb) {
     tes.startDrawingQuads();
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(0, -0.47f, 0);
@@ -317,12 +331,12 @@ public class TechneUtil {
     resetVT();
   }
 
-  public static boolean renderWorldBlock(List<GroupObject> model, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
+  public static boolean renderWorldBlock(Collection<GroupObject> model, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
     IIcon icon = getIconFor(block, world, x, y, z);
     return renderWorldBlock(model, icon, world, x, y, z, block, rb);
   }
 
-  public static boolean renderWorldBlock(List<GroupObject> model, IIcon icon, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
+  public static boolean renderWorldBlock(Collection<GroupObject> model, IIcon icon, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
     tes.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
     tes.setColorOpaque_F(1, 1, 1);
     tes.addTranslation(x + .5F, y + 0.0375f, z + .5F);

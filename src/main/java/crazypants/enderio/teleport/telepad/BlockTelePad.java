@@ -20,7 +20,6 @@ import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import crazypants.render.RenderUtil;
 
 public class BlockTelePad extends BlockTravelAnchor {
 
@@ -79,20 +78,7 @@ public class BlockTelePad extends BlockTravelAnchor {
   public int getRenderType() {
     return renderId;
   }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int getRenderBlockPass() {
-    return 1;
-  }
   
-  @Override
-  @SideOnly(Side.CLIENT)
-  public boolean canRenderInPass(int pass) {
-    RenderUtil.theRenderPass = pass;
-    return pass <= 1;
-  }
-
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block changedTo) {
     super.onNeighborBlockChange(world, x, y, z, changedTo);
