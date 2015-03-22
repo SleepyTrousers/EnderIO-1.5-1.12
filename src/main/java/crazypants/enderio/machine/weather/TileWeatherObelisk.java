@@ -62,18 +62,18 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
       te.getWorldObj().getWorldInfo().setThundering(state);
     }
 
-    boolean isValid(ItemStack item) {
+    public boolean isValid(ItemStack item) {
       return item != null && ItemStack.areItemStacksEqual(item, this.requiredItem);
     }
-    
+
     public ItemStack requiredItem() {
       return requiredItem;
     }
-    
+
     public void setRequiredItem(ItemStack item) {
       this.requiredItem = item;
     }
-    
+
     public static boolean worldIsState(WeatherTask task, WorldInfo world) {
       if(world.isRaining()) {
         return world.isThundering() ? task == STORM : task == RAIN;
@@ -88,19 +88,19 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
 
   private Color particleColor;
   private boolean canBeActive = true;
-  
+
   private static int biggestPowerReq = Math.max(Math.max(Config.weatherObeliskClearPower, Config.weatherObeliskThunderPower), Config.weatherObeliskRainPower);
   private static final BasicCapacitor cap = new BasicCapacitor(biggestPowerReq / 200, biggestPowerReq);
-  
+
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0));
   }
 
   @Override
   public void init() {
-	  setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
+    setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
-  
+
   public void updateEntity() {
     super.updateEntity();
     if(worldObj.isRemote) {
@@ -183,13 +183,32 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     return res;
   }
 
-  public void startTask(int taskid) {
+  /**
+   * If the task can be started based on the current inventory. Does not take
+   * into account the world's weather state.
+   * 
+   * @param task
+   *          The task to check
+   * @return True if the task can be started with the item in the inventory.
+   */
+  public boolean canStartTask(WeatherTask task) {
+    return activeTask == null && task.isValid(inventory[getSlotDefinition().minInputSlot]);
+  }
+
+  /**
+   * @param taskid
+   *          Ordinal value of the {@link WeatherTask} to start. -1 to stop the
+   *          current task.
+   * @return If the operation was successful.
+   */
+  public boolean startTask(int taskid) {
     if(activeTask == null && taskid >= 0) {
       powerUsed = 0;
       WeatherTask task = WeatherTask.values()[taskid];
-      if(task.isValid(inventory[slotDefinition.minInputSlot])) {
+      if(canStartTask(task)) {
         activeTask = task;
         decrStackSize(slotDefinition.minInputSlot, 1);
+        return true;
       }
     } else if(activeTask != null && taskid == -1) {
       activeTask = null;
@@ -197,7 +216,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
       if(!worldObj.isRemote) {
         PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.dimensionId);
       }
+      return true;
     }
+    return false;
   }
 
   private int activeParticleTicks = 0;
