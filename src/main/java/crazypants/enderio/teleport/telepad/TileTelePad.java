@@ -408,7 +408,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getX() {
-    if(inNetwork) {
+    if(inNetwork()) {
       return master.target.x;
     }
     return target.x;
@@ -416,7 +416,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getY() {
-    if(inNetwork) {
+    if(inNetwork()) {
       return master.target.y;
     }
     return target.y;
@@ -424,7 +424,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getZ() {
-    if(inNetwork) {
+    if(inNetwork()) {
       return master.target.z;
     }
     return target.z;
@@ -432,6 +432,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   
   @Override
   public int getTargetDim() {
+    if(inNetwork()) {
+      return master.targetDim;
+    }
     return targetDim;
   }
 
@@ -465,7 +468,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public ITelePad setTargetDim(int dimID) {
     if (inNetwork()) {
-      targetDim = dimID;
+      master.targetDim = dimID;
       coordsChanged = true;
       return master;
     }
