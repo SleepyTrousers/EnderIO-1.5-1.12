@@ -461,17 +461,28 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
             }
           }
         }
-      } else if (!isOpen(bc) && hasBonemeal() && bonemealCooldown-- <= 0) {
-        // there's a block and it did not produce harvest. Try bonemealing it
-        if (Fertilizer.getInstance(inventory[minFirtSlot]).apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
+        return;
+      }
+    }
+
+    if(!hasPower() && (Config.farmBonemealActionEnergyUseRF > 0 || Config.farmBonemealTryEnergyUseRF > 0)) {
+      setNotification("noPower");
+      return;
+    }
+
+    if (hasBonemeal() && bonemealCooldown-- <= 0) {
+      Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
+      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.x, bc.y, bc.z))) {
+        if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
           PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
           if (inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = null;
           }
-          bonemealCooldown = 5;
           usePower(Config.farmBonemealActionEnergyUseRF);
+          bonemealCooldown = 20;
         } else {
           usePower(Config.farmBonemealTryEnergyUseRF);
+          bonemealCooldown = 5;
         }
       }
     }
