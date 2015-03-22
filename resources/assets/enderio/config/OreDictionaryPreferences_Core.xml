@@ -111,9 +111,9 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
   <preference oreDictionary="ingotAluminum">    
     <itemStack modID="TConstruct" itemName="materials" itemMeta="11" />    
   </preference>
-  
-  <preference oreDictionary="ingotAluminuim">    
-    <itemStack modID="TConstruct" itemName="materials" itemMeta="11" />    
+
+  <preference oreDictionary="ingotAluminium">
+    <itemStack modID="TConstruct" itemName="materials" itemMeta="11" />
   </preference>
 
 
