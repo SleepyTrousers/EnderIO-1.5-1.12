@@ -56,6 +56,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private boolean autoUpdate = false;
 
+  private boolean coordsChanged = false;
+
   private BlockCoord target = new BlockCoord();
   private int targetDim = Integer.MIN_VALUE;
   
@@ -134,6 +136,10 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       if(progressChanged) {
         lastSyncPowerUsed = getEnergyStored();
         PacketHandler.sendToAllAround(new PacketProgress(this), this);
+      }
+      if(coordsChanged && inNetwork() && master != null && isMaster()) {
+        coordsChanged = false;
+        PacketHandler.sendToAllAround(new PacketUpdateCoords(master, master.getX(), master.getY(), master.getZ(), master.getTargetDim()), master);
       }
     }
   }
@@ -439,6 +445,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   public ITelePad setTargetDim(int dimID) {
     if (inNetwork()) {
       targetDim = dimID;
+      coordsChanged = true;
       return master;
     }
     return null;
@@ -449,6 +456,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(inNetwork()) {
       if(isMaster()) {
         this.target = coords;
+        this.coordsChanged = true;
       } else {
         this.master.setCoords(coords);
       }
