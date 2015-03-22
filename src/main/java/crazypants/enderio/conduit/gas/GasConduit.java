@@ -221,19 +221,31 @@ public class GasConduit extends AbstractGasTankConduit {
   // ------------------------------------------- Gas API
 
   @Override
-  public int receiveGas(ForgeDirection from, GasStack resource) {
-    if(network == null || !getConnectionMode(from).acceptsInput()) {
-      return 0;
-    }
-    return network.fill(from, resource, true);
+  @Deprecated
+  public int receiveGas(ForgeDirection side, GasStack stack) {
+    return receiveGas(side, stack, true);
   }
 
   @Override
-  public GasStack drawGas(ForgeDirection from, int maxDrain) {
-    if(network == null || !getConnectionMode(from).acceptsOutput()) {
+  public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer) {
+    if(network == null || !getConnectionMode(side).acceptsInput()) {
+      return 0;
+    }
+    return network.fill(side, stack, doTransfer);
+  }
+
+  @Override
+  @Deprecated
+  public GasStack drawGas(ForgeDirection side, int amount) {
+    return drawGas(side, amount, true);
+  }
+
+  @Override
+  public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer) {
+    if(network == null || !getConnectionMode(side).acceptsOutput()) {
       return null;
     }
-    return network.drain(from, maxDrain, true);
+    return network.drain(side, amount, doTransfer);
   }
 
   @Override
@@ -261,5 +273,4 @@ public class GasConduit extends AbstractGasTankConduit {
   public AbstractGasTankConduitNetwork<? extends AbstractGasTankConduit> getTankNetwork() {
     return network;
   }
-
 }

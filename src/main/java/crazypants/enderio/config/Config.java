@@ -354,7 +354,7 @@ public final class Config {
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
-  public static String isGasConduitEnabled = "auto";
+  public static boolean isGasConduitEnabled = true;
   public static boolean enableMEConduits = true;
 
   public static String[] soulVesselBlackList = new String[0];
@@ -1049,10 +1049,11 @@ public final class Config {
 
     killerJoeMustSee = config.get(sectionKiller.name, "killerJoeMustSee", killerJoeMustSee, "Set whether the Killer Joe can attack through blocks.").getBoolean();
 
-    isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
-        "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
-    enableMEConduits = config.getBoolean("enableMEConduits", sectionItems.name, enableMEConduits,
-        "Allows ME conduits. Only has an effect with AE2 installed.");
+    // Add deprecated comment
+    config.getString("isGasConduitEnabled", sectionItems.name, "auto", "Deprecated option. Use boolean \"gasConduitsEnabled\" below.");
+    isGasConduitEnabled = config.getBoolean("gasConduitEnabled", sectionItems.name, isGasConduitEnabled,
+        "If true, gas conduits will be enabled if the Mekanism Gas API is found. False to forcibly disable.");
+    enableMEConduits = config.getBoolean("enableMEConduits", sectionItems.name, enableMEConduits, "Allows ME conduits. Only has an effect with AE2 installed.");
     
     soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");

@@ -790,24 +790,39 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   // ---- Mekanism Gas Tubes
 
   @Override
+  @Method(modid = "MekanismAPI|gas")
   public int receiveGas(ForgeDirection side, GasStack stack) {
+    return receiveGas(side, stack, true);
+  }
+
+  @Override
+  @Method(modid = "MekanismAPI|gas")
+  public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer) {
     IGasConduit gc = getConduit(IGasConduit.class);
     if(gc != null) {
-      return gc.receiveGas(side, stack);
+      return gc.receiveGas(side, stack, doTransfer);
     }
     return 0;
   }
 
   @Override
+  @Method(modid = "MekanismAPI|gas")
   public GasStack drawGas(ForgeDirection side, int amount) {
+    return drawGas(side, amount, true);
+  }
+
+  @Override
+  @Method(modid = "MekanismAPI|gas")
+  public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer) {
     IGasConduit gc = getConduit(IGasConduit.class);
     if(gc != null) {
-      return gc.drawGas(side, amount);
+      return gc.drawGas(side, amount, doTransfer);
     }
     return null;
   }
 
   @Override
+  @Method(modid = "MekanismAPI|gas")
   public boolean canReceiveGas(ForgeDirection side, Gas type) {
     IGasConduit gc = getConduit(IGasConduit.class);
     if(gc != null) {
@@ -817,6 +832,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
+  @Method(modid = "MekanismAPI|gas")
   public boolean canDrawGas(ForgeDirection side, Gas type) {
     IGasConduit gc = getConduit(IGasConduit.class);
     if(gc != null) {

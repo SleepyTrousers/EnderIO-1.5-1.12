@@ -29,6 +29,7 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
 import crazypants.enderio.conduit.gas.GasConduit;
 import crazypants.enderio.conduit.gas.GasConduitRenderer;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
@@ -37,6 +38,7 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.me.MEConduit;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -159,8 +161,12 @@ public class ClientProxy extends CommonProxy {
     AdvancedLiquidConduit.initIcons();
     EnderLiquidConduit.initIcons();
     ItemConduit.initIcons();
-    GasConduit.initIcons();
-    MEConduit.initIcons();
+    if(GasUtil.isGasConduitEnabled()) {
+      GasConduit.initIcons();
+    }
+    if(MEUtil.isMEEnabled()) {
+      MEConduit.initIcons();
+    }
   }
 
   private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
@@ -364,7 +370,9 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
     conduitRenderers.add(new EnderLiquidConduitRenderer());
     conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
-    conduitRenderers.add(new GasConduitRenderer());
+    if(GasUtil.isGasConduitEnabled()) {
+      conduitRenderers.add(new GasConduitRenderer());
+    }
 
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);

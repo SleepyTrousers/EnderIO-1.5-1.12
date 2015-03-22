@@ -5,6 +5,7 @@ import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
@@ -16,11 +17,8 @@ public final class GasUtil {
 
   public static boolean isGasConduitEnabled() {
     if(!useCheckPerformed) {
-      String configOption = Config.isGasConduitEnabled;
-      if(configOption.equalsIgnoreCase("auto")) {
-        isGasConduitEnabled = Loader.isModLoaded("Mekanism");        
-      } else if(configOption.equalsIgnoreCase("true")) {
-        isGasConduitEnabled = true;
+      if(Config.isGasConduitEnabled) {
+        isGasConduitEnabled = Loader.isModLoaded("MekanismAPI|gas");        
       } else {
         isGasConduitEnabled = false;
       }
@@ -29,20 +27,24 @@ public final class GasUtil {
     return isGasConduitEnabled;
   }
 
+  @Method(modid = "MekanismAPI|gas")
   public static IGasHandler getExternalGasHandler(IBlockAccess world, BlockCoord bc) {
     IGasHandler con = getGasHandler(world, bc);
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
+  @Method(modid = "MekanismAPI|gas")
   public static IGasHandler getGasHandler(IBlockAccess world, BlockCoord bc) {
     return getGasHandler(world, bc.x, bc.y, bc.z);
   }
 
+  @Method(modid = "MekanismAPI|gas")
   public static IGasHandler getGasHandler(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     return getGasHandler(te);
   }
 
+  @Method(modid = "MekanismAPI|gas")
   public static IGasHandler getGasHandler(TileEntity te) {
     if(te instanceof IGasHandler) {
       return (IGasHandler) te;
@@ -50,6 +52,7 @@ public final class GasUtil {
     return null;
   }
 
+  @Method(modid = "MekanismAPI|gas")
   public static boolean isGasValid(GasStack gas) {
     if(gas != null) {
       String name = gas.getGas().getLocalizedName();
