@@ -91,8 +91,10 @@ import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.hypercube.HyperCubeRegister;
+import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
@@ -155,7 +157,6 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.util.EntityUtil;
 import static crazypants.enderio.EnderIO.*;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
@@ -250,6 +251,7 @@ public class EnderIO {
   public static BlockInhibitorObelisk blockInhibitorObelisk;
   public static BlockTransceiver blockTransceiver;
   public static BlockBuffer blockBuffer;
+  public static BlockInventoryPanel blockInventoryPanel;
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -342,6 +344,7 @@ public class EnderIO {
     blockTransceiver = BlockTransceiver.create();
 
     blockBuffer = BlockBuffer.create();
+    blockInventoryPanel = BlockInventoryPanel.create();
 
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();

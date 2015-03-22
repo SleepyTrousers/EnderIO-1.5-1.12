@@ -63,6 +63,7 @@ public enum ModObject {
   blockInhibitorObelisk,
   blockTransceiver,
   blockBuffer,
+  blockInventoryPanel,
 
   blockPoweredSpawner,
   itemBrokenSpawner,

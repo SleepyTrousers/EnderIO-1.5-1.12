@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
@@ -41,6 +42,9 @@ public class NetworkedInventory {
   //Hack for TiC crafting station not working correctly when setting output slot to null
   boolean ticHack = false;
 
+  //optimization for InventoryPanel
+  boolean cantInsert = false;
+
   World world;
   ItemConduitNetwork network;
 
@@ -60,6 +64,8 @@ public class NetworkedInventory {
       recheckInv = true;
     } else if(te instanceof TileEntityChest) {
       recheckInv = true;
+    } else if(te instanceof TileInventoryPanel) {
+      cantInsert = true;
     }
     updateInventory();
   }
@@ -79,6 +85,9 @@ public class NetworkedInventory {
   }
 
   boolean canInsert() {
+    if(!cantInsert) {
+      return false;
+    }
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
   }
