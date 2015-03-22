@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 import crazypants.util.Lang;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
@@ -25,6 +26,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   private boolean requiresSort = true;
 
   private boolean doingSend = false;
+
+  private int changeCount;
 
   public ItemConduitNetwork() {
     super(IItemConduit.class, IItemConduit.class);
@@ -63,6 +66,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return null;
   }
 
+  public List<NetworkedInventory> getSourcesForColor(DyeColor color) {
+    ArrayList<NetworkedInventory> res = new ArrayList<NetworkedInventory>();
+    for(NetworkedInventory inv : inventories) {
+      if(inv.canExtract() && inv.con.getInputColor(inv.conDir) == color) {
+        res.add(inv);
+      }
+    }
+    return res;
+  }
+
   private List<NetworkedInventory> getOrCreate(BlockCoord bc) {
     List<NetworkedInventory> res = invMap.get(bc);
     if(res == null) {
@@ -92,6 +105,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   public void routesChanged() {
     requiresSort = true;
+  }
+
+  public int getChangeCount() {
+    return changeCount;
   }
 
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
@@ -167,6 +184,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         ni.updateInsertOrder();
       }
       ni.onTick();
+    }
+    if(requiresSort) {
+      changeCount++;
     }
     requiresSort = false;
 

@@ -6,7 +6,7 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.network.PacketHandler;
 import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
   public static BlockInventoryPanel create() {
+    PacketHandler.INSTANCE.registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
+
     BlockInventoryPanel panel = new BlockInventoryPanel();
     panel.init();
     return panel;

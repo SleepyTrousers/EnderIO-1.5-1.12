@@ -134,6 +134,35 @@ public class NetworkedInventory {
     extractFromSlot--;
   }
 
+  public ItemStack[] getExtractableItemStacks() {
+    if(recheckInv) {
+      updateInventory();
+    }
+
+    int[] slotIndices = getInventory().getAccessibleSlotsFromSide(inventorySide);
+    if(slotIndices == null) {
+      return null;
+    }
+
+    int numSlots = slotIndices.length;
+    if(numSlots == 0) {
+      return null;
+    }
+
+    ItemStack[] res = new ItemStack[numSlots];
+    for(int i = 0; i < numSlots; i++) {
+      int slot = slotIndices[i];
+      ItemStack item = getInventory().getStackInSlot(slot);
+      if(canExtractItem(item)) {
+        if(getInventory().canExtractItem(slot, item, inventorySide)) {
+          res[i] = item;
+        }
+      }
+    }
+
+    return res;
+  }
+
   private boolean transferItems() {
 
     if(recheckInv) {
