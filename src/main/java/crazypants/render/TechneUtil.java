@@ -129,7 +129,6 @@ public class TechneUtil {
 
     Vector4f vec = new Vector4f();
     List<GroupObject> res = new ArrayList<GroupObject>();
-    
 
     for (ModelBox box : (List<ModelBox>) model.cubeList) {
       GroupObject obj = new GroupObject("", GL11.GL_QUADS);
@@ -153,7 +152,7 @@ public class TechneUtil {
           // Increase the interpolation scale by multiples of 2
           while (pv.texturePositionX > uMult) {
             uMult *= 2;
-          }  
+          }
           while (pv.texturePositionY > vMult) {
             vMult *= 2;
           }
@@ -218,7 +217,7 @@ public class TechneUtil {
     TechneModel tm = (TechneModel) modelLoader.loadInstance(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
     return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1)));
   }
-  
+
   public static Collection<GroupObject> getModelAll(String modelPath) {
     TechneModel tm = (TechneModel) modelLoader.loadInstance(new ResourceLocation(EnderIO.MODID.toLowerCase(), modelPath + ".tcn"));
     return TechneUtil.bakeModel(tm, 1f / 16, new Matrix4f().scale(new Vector3f(-1, -1, 1))).values();
@@ -236,72 +235,76 @@ public class TechneUtil {
     renderWithIcon(model, icon, override, tes, world, x, y, z, null);
   }
 
-
   public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z,
       VertexTransform vt) {
     renderWithIcon(model, icon, override, tes, world, x, y, z, vt, true);
   }
-  
+
   public static void renderWithIcon(Collection<GroupObject> model, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z,
       VertexTransform vt, boolean isbrh) {
     for (GroupObject go : model) {
-      for (Face f : go.faces) {
-        Vertex n = f.faceNormal;
-        tes.setNormal(n.x, n.y, n.z);
-        ForgeDirection normal = getNormalFor(n);
-        ForgeDirection right = normal.getRotation(ForgeDirection.DOWN);
-        if(normal == right) {
-          right = ForgeDirection.EAST;
+      renderWithIcon(go, icon, override, tes, world, x, y, z, vt, isbrh);
+    }
+  }
+
+  public static void renderWithIcon(GroupObject go, IIcon icon, IIcon override, Tessellator tes, IBlockAccess world, int x, int y, int z, VertexTransform vt,
+      boolean isbrh) {
+    for (Face f : go.faces) {
+      Vertex n = f.faceNormal;
+      tes.setNormal(n.x, n.y, n.z);
+      ForgeDirection normal = getNormalFor(n);
+      ForgeDirection right = normal.getRotation(ForgeDirection.DOWN);
+      if(normal == right) {
+        right = ForgeDirection.EAST;
+      }
+      ForgeDirection down = normal.getRotation(right.getOpposite());
+
+      if(isbrh && world != null && world.getBlock(x, y, z).getLightOpacity() > 0) {
+        int bx = x + normal.offsetX;
+        int by = y + normal.offsetY;
+        int bz = z + normal.offsetZ;
+        tes.setBrightness(world.getBlock(bx, by, bz).getMixedBrightnessForBlock(world, bx, by, bz));
+      }
+
+      for (int i = 0; i < f.vertices.length; i++) {
+        Vertex vert = f.vertices[i];
+        Vector3d v = new Vector3d(vert);
+        Vector3d tv = new Vector3d(v);
+        tv.add(0.5, 0, 0.5);
+        if(vt != null) {
+          vt.apply(v);
         }
-        ForgeDirection down = normal.getRotation(right.getOpposite());
 
-        if(isbrh && world != null && world.getBlock(x, y, z).getLightOpacity() > 0) {
-          int bx = x + normal.offsetX;
-          int by = y + normal.offsetY;
-          int bz = z + normal.offsetZ;
-          tes.setBrightness(world.getBlock(bx, by, bz).getMixedBrightnessForBlock(world, bx, by, bz));
+        if(isbrh) {
+          float factor = normal.offsetX != 0 ? 0.6f : normal.offsetZ != 0 ? 0.8f : normal.offsetY < 0 ? 0.5f : 1;
+          int c = (int) (0xFF * factor);
+
+          tes.setColorOpaque(c, c, c);
         }
 
-        for (int i = 0; i < f.vertices.length; i++) {
-          Vertex vert = f.vertices[i];
-          Vector3d v = new Vector3d(vert);
-          Vector3d tv = new Vector3d(v);
-          tv.add(0.5, 0, 0.5);
-          if(vt != null) {
-            vt.apply(v);
+        if(override != null) {
+
+          double interpX = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
+          double interpY = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
+
+          // Handles verts outside block bounds. Modulo fails at 1.0.
+          while (interpX > 1) {
+            interpX--;
+          }
+          while (interpY > 1) {
+            interpY--;
           }
 
-          if(isbrh) {
-            float factor = normal.offsetX != 0 ? 0.6f : normal.offsetZ != 0 ? 0.8f : normal.offsetY < 0 ? 0.5f : 1;
-            int c = (int) (0xFF * factor);
-
-            tes.setColorOpaque(c, c, c);
+          if(normal == ForgeDirection.SOUTH || normal == ForgeDirection.WEST) {
+            interpX = 1 - interpX;
           }
-          
-          if(override != null) {
-
-            double interpX = Math.abs(tv.x * right.offsetX + tv.y * right.offsetY + tv.z * right.offsetZ);
-            double interpY = Math.abs(tv.x * down.offsetX + tv.y * down.offsetY + tv.z * down.offsetZ);
-
-            // Handles verts outside block bounds. Modulo fails at 1.0.
-            while (interpX > 1) {
-              interpX--;
-            }
-            while (interpY > 1) {
-              interpY--;
-            }
-
-            if(normal == ForgeDirection.SOUTH || normal == ForgeDirection.WEST) {
-              interpX = 1 - interpX;
-            }
-            if(normal != ForgeDirection.UP && normal != ForgeDirection.DOWN) {
-              interpY = 1 - interpY;
-            }
-            tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpX * 16), override.getInterpolatedV(interpY * 16));
-          } else {
-            TextureCoordinate t = f.textureCoordinates[i];
-            tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 16));
+          if(normal != ForgeDirection.UP && normal != ForgeDirection.DOWN) {
+            interpY = 1 - interpY;
           }
+          tes.addVertexWithUV(v.x, v.y, v.z, override.getInterpolatedU(interpX * 16), override.getInterpolatedV(interpY * 16));
+        } else {
+          TextureCoordinate t = f.textureCoordinates[i];
+          tes.addVertexWithUV(v.x, v.y, v.z, icon.getInterpolatedU(t.u * 16), icon.getInterpolatedV(t.v * 16));
         }
       }
     }

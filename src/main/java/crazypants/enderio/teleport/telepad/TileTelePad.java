@@ -15,6 +15,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
@@ -73,7 +74,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   
   public static final String TELEPORTING_KEY = "eio:teleporting";
   public static final String PROGRESS_KEY = "teleportprogress";
-
+  
+  // Clientside rendering data
+  public float[] bladeRots = new float[3];
+  public float spinSpeed = 0;
+  public float speedMult = 2.5f;
+  
   @Override
   public void updateEntity() {
     super.updateEntity();
@@ -96,20 +102,23 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     
     if(worldObj.isRemote) {
+      updateRotations();
+      if(activeSound != null) {
+        activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
+      }
       if(active()) {
         if(activeSound == null) {
           activeSound = new MachineSound(activeRes, xCoord, yCoord, zCoord, 0.01f, 1);
           playSound();
         }
-        activeSound.setVolume(Math.min(activeSound.getVolume() + 0.1f, 0.5f));
-        activeSound.setPitch(1 + getProgress());
+        activeSound.setVolume(MathHelper.clamp_float(spinSpeed, 0.1f, 1));
         updateQueuedEntities();
       } else if(!active() && activeSound != null) {
-        if(activeSound.getVolume() > 0) {
-          activeSound.setVolume(activeSound.getVolume() - 0.1f);
-        } else {
+        if(activeSound.getVolume() <= 0.1f) {
           activeSound.endPlaying();
           activeSound = null;
+        } else {
+          activeSound.setVolume(MathHelper.clamp_float(spinSpeed, 0.1f, 1));
         }
       }
     } else {
@@ -343,6 +352,18 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public AxisAlignedBB getRenderBoundingBox() {
     return getBoundingBox();
+  }
+
+  public void updateRotations() {
+    if(active()) {
+      spinSpeed = getProgress() * 2;
+    } else {
+      spinSpeed = Math.max(0, spinSpeed - 0.01f);
+    }
+    
+    for (int i = 0; i < bladeRots.length; i++) {
+      bladeRots[i] += spinSpeed * ((i * 2) + 20);
+    }
   }
 
   /* IProgressTile */

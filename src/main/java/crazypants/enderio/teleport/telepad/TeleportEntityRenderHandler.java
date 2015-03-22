@@ -107,10 +107,10 @@ public class TeleportEntityRenderHandler {
   }
 
   private void colorBot(Tessellator tes) {
-    tes.setColorRGBA(100, 100, 255, 100);
+    tes.setColorRGBA(175, 255, 255, 100);
   }
 
   private void colorTop(Tessellator tes) {
-    tes.setColorRGBA(150, 150, 255, 0);
+    tes.setColorRGBA(220, 255, 255, 0);
   }
 }
