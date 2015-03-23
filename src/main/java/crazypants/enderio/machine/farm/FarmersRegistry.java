@@ -22,6 +22,7 @@ public final class FarmersRegistry {
     addIC2();
     addMFR();
     addThaumcraft();
+    addFlowers();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -191,6 +192,16 @@ public final class FarmersRegistry {
     }
   }
 
+  private static void addFlowers() {
+    FarmersCommune.joinCommune(new FlowerPicker().add(
+        GameRegistry.findBlock("minecraft", "yellow_flower"), 
+        GameRegistry.findBlock("minecraft", "red_flower"), 
+        GameRegistry.findBlock("BiomesOPlenty", "flowers"), 
+        GameRegistry.findBlock("BiomesOPlenty", "flowers2"), 
+        GameRegistry.findBlock("Botany", "flower"), 
+        GameRegistry.findBlock("Botania", "flower") ) );
+  }
+  
   private FarmersRegistry() {
   }
 
