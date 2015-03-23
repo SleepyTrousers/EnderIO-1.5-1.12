@@ -9,9 +9,6 @@ import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.DyeColor;
-import crazypants.util.RoundRobinIterator;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -24,7 +21,6 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
   private ItemConduitNetwork network;
   private int networkChangeCount;
-  private Iterator<NetworkedInventory> networkSources = Collections.emptyIterator();
 
   public Container eventHandler;
 
@@ -90,22 +86,12 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
     if(icn == null) {
       network = null;
-      networkSources = Collections.emptyIterator();
+      database.setNetworkSources(null);
     } else if(icn != network || icn.getChangeCount() != networkChangeCount) {
       updateNetwork(icn, conduit, facingDir);
     }
 
-    if(networkSources.hasNext()) {
-      NetworkedInventory ni = networkSources.next();
-      ItemStack[] items = ni.getExtractableItemStacks();
-      if(items != null) {
-        for(ItemStack item : items) {
-          if(item != null) {
-            database.lookupItem(item);
-          }
-        }
-      }
-    }
+    database.scanNextInventory();
   }
 
   private void updateNetwork(ItemConduitNetwork icn, ItemConduit conduit, ForgeDirection facingDir) {
@@ -118,9 +104,9 @@ public class TileInventoryPanel extends AbstractMachineEntity {
       DyeColor color = conduit.getOutputColor(facingDir);
       List<NetworkedInventory> sources = icn.getSourcesForColor(color);
       System.out.println("Color="+color+" sources="+sources.size());
-      networkSources = new RoundRobinIterator<NetworkedInventory>(sources);
+      database.setNetworkSources(sources);
     } else {
-      networkSources = Collections.emptyIterator();
+      database.setNetworkSources(null);
     }
   }
 

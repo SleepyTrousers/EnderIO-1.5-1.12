@@ -69,7 +69,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   public List<NetworkedInventory> getSourcesForColor(DyeColor color) {
     ArrayList<NetworkedInventory> res = new ArrayList<NetworkedInventory>();
     for(NetworkedInventory inv : inventories) {
-      if(inv.canExtract() && inv.con.getInputColor(inv.conDir) == color) {
+      if(inv.canExtract() && inv.con.getInputColor(inv.conDir) == color && !inv.isInventoryPanel()) {
         res.add(inv);
       }
     }

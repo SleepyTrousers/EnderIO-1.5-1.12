@@ -42,8 +42,7 @@ public class NetworkedInventory {
   //Hack for TiC crafting station not working correctly when setting output slot to null
   boolean ticHack = false;
 
-  //optimization for InventoryPanel
-  boolean cantInsert = false;
+  boolean inventoryPanel = false;
 
   World world;
   ItemConduitNetwork network;
@@ -65,7 +64,7 @@ public class NetworkedInventory {
     } else if(te instanceof TileEntityChest) {
       recheckInv = true;
     } else if(te instanceof TileInventoryPanel) {
-      cantInsert = true;
+      inventoryPanel = true;
     }
     updateInventory();
   }
@@ -85,11 +84,15 @@ public class NetworkedInventory {
   }
 
   boolean canInsert() {
-    if(!cantInsert) {
+    if(!inventoryPanel) {
       return false;
     }
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
+  }
+
+  boolean isInventoryPanel() {
+    return inventoryPanel;
   }
 
   boolean isSticky() {
