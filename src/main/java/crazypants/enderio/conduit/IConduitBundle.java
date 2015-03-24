@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import appeng.api.networking.IGridHost;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
@@ -22,7 +23,10 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.util.BlockCoord;
 
-@Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
+@InterfaceList({
+    @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
+    @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas")
+})
 public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
 
   TileEntity getEntity();
