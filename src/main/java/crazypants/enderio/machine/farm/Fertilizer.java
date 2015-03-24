@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -88,7 +92,17 @@ public enum Fertilizer {
   }
 
   private Fertilizer(ItemStack stack) {
-    this.stack = stack;
+    this.stack = stack == null || stack.getItem() == null ? null : stack;
+  }
+
+  private static final List<Fertilizer> validFertilizers = Lists.newArrayList();
+
+  static {
+    for (Fertilizer f : values()) {
+      if(f.stack != null) {
+        validFertilizers.add(f);
+      }
+    }
   }
 
   /**
@@ -98,7 +112,7 @@ public enum Fertilizer {
    * 
    */
   public static Fertilizer getInstance(ItemStack stack) {
-    for (Fertilizer fertilizer : values()) {
+    for (Fertilizer fertilizer : validFertilizers) {
       if(fertilizer.matches(stack)) {
         return fertilizer;
       }
