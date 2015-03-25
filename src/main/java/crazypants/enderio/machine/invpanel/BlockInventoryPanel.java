@@ -17,6 +17,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public static BlockInventoryPanel create() {
     PacketHandler.INSTANCE.registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketItemList.class, PacketItemList.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockInventoryPanel panel = new BlockInventoryPanel();
     panel.init();

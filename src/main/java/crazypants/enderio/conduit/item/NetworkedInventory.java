@@ -84,7 +84,7 @@ public class NetworkedInventory {
   }
 
   boolean canInsert() {
-    if(!inventoryPanel) {
+    if(inventoryPanel) {
       return false;
     }
     ConnectionMode mode = con.getConnectionMode(conDir);

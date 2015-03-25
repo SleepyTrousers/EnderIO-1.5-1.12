@@ -69,29 +69,35 @@ public class TileInventoryPanel extends AbstractMachineEntity {
   public void doUpdate() {
     if(worldObj.isRemote) return;
 
-    ForgeDirection facingDir = getFacingDir();
-    ForgeDirection backside = facingDir.getOpposite();
+    if(shouldDoWorkThisTick(2)) {
+      ForgeDirection facingDir = getFacingDir();
+      ForgeDirection backside = facingDir.getOpposite();
 
-    ItemConduit conduit = null;
-    ItemConduitNetwork icn = null;
+      ItemConduit conduit = null;
+      ItemConduitNetwork icn = null;
 
-    TileEntity te = worldObj.getTileEntity(xCoord+backside.offsetX, yCoord+backside.offsetY, zCoord+backside.offsetZ);
-    if(te instanceof TileConduitBundle) {
-      TileConduitBundle teCB = (TileConduitBundle) te;
-      conduit = teCB.getConduit(ItemConduit.class);
-      if(conduit != null) {
-        icn = (ItemConduitNetwork) conduit.getNetwork();
+      TileEntity te = worldObj.getTileEntity(xCoord+backside.offsetX, yCoord+backside.offsetY, zCoord+backside.offsetZ);
+      if(te instanceof TileConduitBundle) {
+        TileConduitBundle teCB = (TileConduitBundle) te;
+        conduit = teCB.getConduit(ItemConduit.class);
+        if(conduit != null) {
+          icn = (ItemConduitNetwork) conduit.getNetwork();
+        }
       }
+
+      if(icn == null) {
+        network = null;
+        database.setNetworkSources(null);
+      } else if(icn != network || icn.getChangeCount() != networkChangeCount) {
+        updateNetwork(icn, conduit, facingDir);
+      }
+
+      database.scanNextInventory();
     }
 
-    if(icn == null) {
-      network = null;
-      database.setNetworkSources(null);
-    } else if(icn != network || icn.getChangeCount() != networkChangeCount) {
-      updateNetwork(icn, conduit, facingDir);
+    if(shouldDoWorkThisTick(20)) {
+      database.sendChangeLogs();
     }
-
-    database.scanNextInventory();
   }
 
   private void updateNetwork(ItemConduitNetwork icn, ItemConduit conduit, ForgeDirection facingDir) {

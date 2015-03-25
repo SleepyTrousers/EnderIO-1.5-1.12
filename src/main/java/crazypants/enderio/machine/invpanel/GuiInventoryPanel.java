@@ -4,11 +4,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.gui.GhostSlot;
 import crazypants.render.RenderUtil;
 import java.awt.Rectangle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -18,10 +21,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final Rectangle btnScrollDown = new Rectangle(216, 109, 16, 8);
   private static final Rectangle thumbArea     = new Rectangle(216,  35, 16, 74);
 
+  private static final int GHOST_COLUMNS = 6;
+  private static final int GHOST_ROWS    = 5;
+
   private boolean scrollUpPressed;
   private boolean scrollDownPressed;
   private int scrollPos;
-  private int scrollMax = 100;
+  private int scrollMax;
   private long scrollLastTime;
 
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
@@ -29,6 +35,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     redstoneButton.visible = false;
     configB.visible = false;
     scrollLastTime = Minecraft.getSystemTime();
+
+    for(int y = 0; y < GHOST_ROWS; y++) {
+      for(int x = 0; x < GHOST_COLUMNS; x++) {
+        GhostSlot slot = new GhostSlot();
+        slot.x = 109 + x*18;
+        slot.y =  28 + y*18;
+        ghostSlots.add(slot);
+      }
+    }
   }
 
   @Override
@@ -57,20 +72,65 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     icon = scrollDownPressed ? IconEIO.DOWN_ARROW_ON : IconEIO.DOWN_ARROW_OFF;
     icon.renderIcon(sx+btnScrollDown.x, sy+btnScrollDown.y);
 
-    icon = IconEIO.VSCROLL_THUMB;
-    icon.renderIcon(sx+thumbArea.x, sy+thumbArea.y + (thumbArea.height - icon.height) * scrollPos / scrollMax);
+    if(scrollMax > 0) {
+      icon = IconEIO.VSCROLL_THUMB;
+      icon.renderIcon(sx+thumbArea.x, sy+thumbArea.y + (thumbArea.height - icon.height) * scrollPos / scrollMax);
+    }
 
     tes.draw();
+
+    if(getDatabase().sortClientItems()) {
+      updateGhostSlots();
+    }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
+  @Override
+  protected void drawFakeItemStack(int x, int y, ItemStack stack) {
+    FontRenderer font = stack.getItem().getFontRenderer(stack);
+    if(font == null) {
+      font = fontRendererObj;
+    }
+    String str = null;
+    if(stack.stackSize > 999) {
+      str = (stack.stackSize / 1000) + "k";
+    }
+    itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
+    itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, str);
+  }
+
+  private InventoryDatabase getDatabase() {
+    return getTileEntity().getDatabase();
+  }
+
   private void doScroll() {
+    scrollMax = Math.max(0, (getDatabase().getClientItemCount()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS);
     if(scrollUpPressed && scrollPos > 0) {
       scrollPos--;
     }
-    if(scrollDownPressed && scrollPos < scrollMax) {
+    if(scrollDownPressed) {
       scrollPos++;
+    }
+    updateGhostSlots();
+  }
+
+  private void updateGhostSlots() {
+    if(scrollPos > scrollMax) {
+      scrollPos = scrollMax;
+    }
+    
+    InventoryDatabase database = getDatabase();
+    int index = scrollPos * GHOST_COLUMNS;
+    int count = database.getClientItemCount();
+    for(int i = 0; i < GHOST_ROWS*GHOST_COLUMNS; i++,index++) {
+      GhostSlot slot = ghostSlots.get(i);
+      if(index < count) {
+        InventoryDatabase.ItemKey key = database.getClientItem(index);
+        slot.stack = key.makeItemStack();
+      } else {
+        slot.stack = null;
+      }
     }
   }
 

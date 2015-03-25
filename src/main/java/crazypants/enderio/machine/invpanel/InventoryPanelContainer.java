@@ -2,11 +2,18 @@ package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.ItemUtil;
 import java.awt.Point;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
@@ -16,7 +23,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
-public class InventoryPanelContainer extends AbstractMachineContainer {
+public class InventoryPanelContainer extends AbstractMachineContainer implements InventoryDatabase.ChangeLog {
 
   private static final int CRAFTING_GRID_X = 7;
   private static final int CRAFTING_GRID_Y = 16;
@@ -24,10 +31,18 @@ public class InventoryPanelContainer extends AbstractMachineContainer {
   private static final int RETURN_INV_X = 7;
   private static final int RETURN_INV_Y = 82;
 
+  private final HashSet<InventoryDatabase.ItemKey> changedItems;
+
   @SuppressWarnings("LeakingThisInConstructor")
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
     te.eventHandler = this;
+
+    if(te.getWorldObj().isRemote) {
+      changedItems = null;
+    } else {
+      changedItems = new HashSet<InventoryDatabase.ItemKey>();
+    }
   }
 
   @Override
@@ -89,6 +104,40 @@ public class InventoryPanelContainer extends AbstractMachineContainer {
     if(!tileEntity.getWorldObj().isRemote) {
       ((TileInventoryPanel)tileEntity).eventHandler = null;
     }
+    removeChangeLog();
+  }
+
+  private void removeChangeLog() {
+    if(changedItems != null) {
+      ((TileInventoryPanel)tileEntity).getDatabase().removeChangeLog(this);
+    }
+  }
+
+  @Override
+  public void removeCraftingFromCrafters(ICrafting crafting) {
+    super.removeCraftingFromCrafters(crafting);
+    removeChangeLog();
+  }
+
+  @Override
+  public void addCraftingToCrafters(ICrafting crafting) {
+    if(changedItems != null) {
+      sendChangeLog();
+    }
+    super.addCraftingToCrafters(crafting);
+    if(changedItems != null) {
+      ((TileInventoryPanel)tileEntity).getDatabase().addChangeLog(this);
+      if(crafting instanceof EntityPlayerMP) {
+        try {
+          byte[] compressed = ((TileInventoryPanel)tileEntity).getDatabase().compressItemList();
+          PacketItemList pil = new PacketItemList((TileInventoryPanel)tileEntity, compressed);
+          PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
+        } catch (IOException ex) {
+          Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
+                  "Exception while compressing item list", ex);
+        }
+      }
+    }
   }
 
   @Override
@@ -105,6 +154,35 @@ public class InventoryPanelContainer extends AbstractMachineContainer {
     }
 
     tileEntity.setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, tileEntity.getWorldObj()));
+  }
+
+  @Override
+  public void itemChanged(InventoryDatabase.ItemKey key) {
+    changedItems.add(key);
+  }
+
+  @Override
+  public void databaseReset() {
+    changedItems.clear();
+  }
+
+  @Override
+  public void sendChangeLog() {
+    if(!changedItems.isEmpty() && !crafters.isEmpty()) {
+      try {
+        byte[] compressed = ((TileInventoryPanel)tileEntity).getDatabase().compressChangedItems(changedItems);
+        PacketItemList pil = new PacketItemList((TileInventoryPanel)tileEntity, compressed);
+        for(Object crafting : crafters) {
+          if(crafting instanceof EntityPlayerMP) {
+            PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
+          }
+        }
+      } catch (IOException ex) {
+        Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
+                "Exception while compressing changed items", ex);
+      }
+    }
+    changedItems.clear();
   }
 
 }

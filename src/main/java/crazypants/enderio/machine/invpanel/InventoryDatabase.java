@@ -1,21 +1,16 @@
 package crazypants.enderio.machine.invpanel;
 
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
+import crazypants.enderio.network.CompressedDataInput;
+import crazypants.enderio.network.CompressedDataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.DeflaterOutputStream;
-import java.util.zip.InflaterInputStream;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,20 +26,49 @@ public class InventoryDatabase {
   private static final int SIMPLE_META_MASK   = SIMPLE_MAX_META - 1;
 
   private static final int COMPLEX_DBINDEX_START = 1<<(SIMPLE_ITEMID_BITS + SIMPLE_META_BITS);
-  private static final int HAS_NBT_FLAG = 1 << 31;
-
+  
   private final HashMap<Integer, ItemKey> simpleRegsitry;
   private final HashMap<ItemKey, ItemKey> complexRegistry;
   private final ArrayList<ItemKey> complexItems;
+  private final ArrayList<ItemKey> clientItems;
 
   private int generation;
   private InventoryKey[] inventories;
   private int currentInventory;
+  private ChangeLog[] changeLogs;
+
+  private boolean clientListNeedsSorting;
 
   public InventoryDatabase() {
     simpleRegsitry = new HashMap<Integer, ItemKey>();
     complexRegistry = new HashMap<ItemKey, ItemKey>();
     complexItems = new ArrayList<ItemKey>();
+    clientItems = new ArrayList<ItemKey>();
+    changeLogs = new ChangeLog[0];
+  }
+
+  public void addChangeLog(ChangeLog log) {
+    for(ChangeLog alog : changeLogs) {
+      if(alog == log) {
+        return;
+      }
+    }
+    int count = changeLogs.length;
+    changeLogs = Arrays.copyOf(changeLogs, count+1);
+    changeLogs[count] = log;
+  }
+
+  public void removeChangeLog(ChangeLog log) {
+    int count = changeLogs.length;
+    for(int i = 0; i < count ; i++) {
+      if(changeLogs[i] == log) {
+        ChangeLog[] tmp = new ChangeLog[--count];
+        System.arraycopy(changeLogs, 0, tmp, 0, i);
+        System.arraycopy(changeLogs, i+1, tmp, i, count-i);
+        changeLogs = tmp;
+        break;
+      }
+    }
   }
 
   public ItemKey lookupItem(ItemStack stack, ItemKey hint) {
@@ -126,97 +150,182 @@ public class InventoryDatabase {
   }
 
   public void readCompressedItems(byte[] compressed) throws IOException {
-      InflaterInputStream inf = new InflaterInputStream(new ByteArrayInputStream(compressed));
-      try {
-        BufferedInputStream bis = new BufferedInputStream(inf);
-        DataInputStream dis = new DataInputStream(inf);
-        int srcGeneration = dis.readInt();
-        if(srcGeneration != generation) {
-          return;
-        }
-        int count = dis.readUnsignedShort();
-        for(int i=0 ; i<count ; i++) {
-          int dbID = dis.readInt();
-          NBTTagCompound nbt = null;
-          if((dbID & HAS_NBT_FLAG) == HAS_NBT_FLAG) {
-            dbID &= ~HAS_NBT_FLAG;
-            nbt = CompressedStreamTools.read(dis);
-          }
-          
-          if(dbID >= COMPLEX_DBINDEX_START) {
-            int dbIndex = dbID - COMPLEX_DBINDEX_START;
-            int itemID = dis.readUnsignedShort();
-            int meta = dis.readUnsignedShort();
-
-            while(complexItems.size() <= dbIndex) {
-              complexItems.add(null);
-            }
-
-            ItemKey item = complexItems.get(dbIndex);
-            if(item == null) {
-              int hash = computeComplexHash(itemID, meta, nbt);
-              item = new ItemKey(dbID, hash, itemID, meta, nbt);
-              complexItems.set(dbIndex, item);
-              complexRegistry.put(item, item);
-            }
-          } else {
-            getSimpleItem(dbID);
-          }
-        }
-      } finally {
-        inf.close();
+    CompressedDataInput cdi = new CompressedDataInput(compressed);
+    try {
+      int pktGeneration = cdi.readVariable();
+      if(pktGeneration != generation) {
+        return;
       }
+      int count = cdi.readVariable();
+      for(int i=0 ; i<count ; i++) {
+        int code = cdi.readVariable();
+        int dbID = code >> 1;
+        NBTTagCompound nbt = null;
+        if((code & 1) == 1) {
+          nbt = CompressedStreamTools.read(cdi);
+        }
+
+        if(dbID >= COMPLEX_DBINDEX_START) {
+          int dbIndex = dbID - COMPLEX_DBINDEX_START;
+          int itemID = cdi.readVariable();
+          int meta = cdi.readVariable();
+
+          while(complexItems.size() <= dbIndex) {
+            complexItems.add(null);
+          }
+
+          ItemKey item = complexItems.get(dbIndex);
+          if(item == null) {
+            int hash = computeComplexHash(itemID, meta, nbt);
+            item = new ItemKey(dbID, hash, itemID, meta, nbt);
+            complexItems.set(dbIndex, item);
+            complexRegistry.put(item, item);
+          }
+        } else {
+          getSimpleItem(dbID);
+        }
+      }
+    } finally {
+      cdi.close();
+    }
   }
 
   public byte[] compressItemInfo(List<ItemKey> items) throws IOException{
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    DeflaterOutputStream def = new DeflaterOutputStream(baos);
+    CompressedDataOutput cdo = new CompressedDataOutput();
     try {
-      BufferedOutputStream bos = new BufferedOutputStream(def);
-      DataOutputStream dos = new DataOutputStream(bos);
       int count = items.size();
-      dos.writeInt(generation);
-      dos.writeShort(count);
+      cdo.writeVariable(generation);
+      cdo.writeVariable(count);
       for(int i=0 ; i<count ; i++) {
         ItemKey item = items.get(i);
-        item.write(dos);
+        item.write(cdo);
       }
-      dos.flush();
+      return cdo.getCompressed();
     } finally {
-      def.close();
+      cdo.close();
     }
-    return baos.toByteArray();
   }
 
   public byte[] compressItemList() throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    DeflaterOutputStream def = new DeflaterOutputStream(baos);
+    CompressedDataOutput cdo = new CompressedDataOutput();
     try {
-      BufferedOutputStream bos = new BufferedOutputStream(def);
-      DataOutputStream dos = new DataOutputStream(bos);
+      cdo.writeVariable(generation);
+      cdo.writeByte(0);
       for(Map.Entry<Integer, ItemKey> entry : simpleRegsitry.entrySet()) {
         int count = entry.getValue().countItems(this);
         if(count > 0) {
-          dos.writeInt(count);
-          dos.writeShort(entry.getKey());
+          cdo.writeVariable(count);
+          cdo.writeShort(entry.getKey());
         }
       }
-      dos.writeInt(0);
+      cdo.writeByte(0);
+      int prevID = COMPLEX_DBINDEX_START;
       for(ItemKey key : complexItems) {
         if(key != null) {
           int count = key.countItems(this);
           if(count > 0) {
-            dos.writeInt(count);
-            dos.writeInt(key.dbID);
+            cdo.writeVariable(count);
+            cdo.writeVariable(key.dbID - prevID);
+            prevID = key.dbID;
           }
         }
       }
-      dos.writeInt(0);
-      dos.flush();
+      cdo.writeByte(0);
+      return cdo.getCompressed();
     } finally {
-      def.close();
+      cdo.close();
     }
-    return baos.toByteArray();
+  }
+
+  public byte[] compressChangedItems(Collection<ItemKey> items) throws IOException {
+    CompressedDataOutput cdo = new CompressedDataOutput();
+    try {
+      cdo.writeVariable(generation);
+      cdo.writeVariable(items.size());
+      for(ItemKey key : items) {
+        cdo.writeVariable(key.dbID);
+        cdo.writeVariable(key.countItems(this));
+      }
+      return cdo.getCompressed();
+    } finally {
+      cdo.close();
+    }
+  }
+
+  public void readCompressedItemList(byte[] compressed) throws IOException {
+    CompressedDataInput cdi = new CompressedDataInput(compressed);
+    try {
+      int pktGeneration = cdi.readVariable();
+      int changed = cdi.readVariable();
+
+      if(changed > 0) {
+        if(pktGeneration != generation) {
+          return;
+        }
+
+        for(int i = 0; i < changed; i++) {
+          int dbID = cdi.readVariable();
+          int count = cdi.readVariable();
+          ItemKey key = getItem(dbID);
+          if(key != null) {
+            if(key.clientCount == 0 && count > 0) {
+              clientItems.add(key);
+            } else if(key.clientCount > 0 && count == 0) {
+              clientItems.remove(key);
+            }
+            key.clientCount = count;
+          }
+        }
+      } else {
+        clientItems.clear();
+        for(ItemKey key : simpleRegsitry.values()) {
+          key.clientCount = 0;
+        }
+        for(ItemKey key : complexItems) {
+          key.clientCount = 0;
+        }
+        generation = pktGeneration;
+        
+        int count = cdi.readVariable();
+        while(count > 0) {
+          int dbID = cdi.readUnsignedShort();
+          ItemKey key = getSimpleItem(dbID);
+          key.clientCount = count;
+          clientItems.add(key);
+          count = cdi.readVariable();
+        }
+
+        count = cdi.readVariable();
+        int dbID = COMPLEX_DBINDEX_START;
+        while(count > 0) {
+          dbID += cdi.readVariable();
+          ItemKey key = getItem(dbID);
+          if(key != null) {
+            key.clientCount = count;
+            clientItems.add(key);
+          }
+          count = cdi.readVariable();
+        }
+      }
+
+      clientListNeedsSorting = true;
+    } finally {
+      cdi.close();
+    }
+  }
+
+  public boolean sortClientItems() {
+    boolean res = clientListNeedsSorting;
+    clientListNeedsSorting = false;
+    return res;
+  }
+
+  public int getClientItemCount() {
+    return clientItems.size();
+  }
+
+  public ItemKey getClientItem(int index) {
+    return clientItems.get(index);
   }
 
   public void setNetworkSources(List<NetworkedInventory> sources) {
@@ -234,6 +343,10 @@ public class InventoryDatabase {
         inventories[i] = new InventoryKey(sources.get(i));
       }
     }
+
+    for(ChangeLog log : changeLogs) {
+      log.databaseReset();
+    }
   }
 
   public void scanNextInventory() {
@@ -242,11 +355,21 @@ public class InventoryDatabase {
     }
 
     InventoryKey inv = inventories[currentInventory];
-    if(inv.scanInventory(this, currentInventory)) {
-      System.out.println("Changed!");
-    }
+    inv.scanInventory(this, currentInventory);
 
     currentInventory = (currentInventory+1) % inventories.length;
+  }
+
+  public void sendChangeLogs() {
+    for(ChangeLog log : changeLogs) {
+      log.sendChangeLog();
+    }
+  }
+
+  void itemChanged(ItemKey key) {
+    for(ChangeLog log : changeLogs) {
+      log.itemChanged(key);
+    }
   }
 
   public static final class ItemKey {
@@ -256,6 +379,8 @@ public class InventoryDatabase {
     public final int meta;
     public final NBTTagCompound nbt;
     private HashSet<Integer> slots;
+
+    int clientCount;
 
     ItemKey(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
       this.dbID = dbID;
@@ -289,16 +414,26 @@ public class InventoryDatabase {
       return "ItemKey{" + "dbID=" + dbID + ", hash=" + hash + ", itemID=" + itemID + ", meta=" + meta + ", nbt=" + nbt + '}';
     }
 
-    void write(DataOutput dos) throws IOException {
+    public int getClientCount() {
+      return clientCount;
+    }
+
+    public ItemStack makeItemStack() {
+      ItemStack stack = new ItemStack(Item.getItemById(itemID), clientCount, meta);
+      stack.stackTagCompound = nbt;
+      return stack;
+    }
+
+    void write(CompressedDataOutput cdo) throws IOException {
       if(nbt != null) {
-        dos.writeInt(dbID | HAS_NBT_FLAG);
-        CompressedStreamTools.write(nbt, dos);
+        cdo.writeInt((dbID << 1) | 1);
+        CompressedStreamTools.write(nbt, cdo);
         if(dbID >= COMPLEX_DBINDEX_START) {
-          dos.writeShort(itemID);
-          dos.writeShort(meta);
+          cdo.writeVariable(itemID);
+          cdo.writeVariable(meta);
         }
       } else {
-        dos.writeInt(dbID);
+        cdo.writeVariable(dbID << 1);
       }
     }
 
@@ -342,61 +477,66 @@ public class InventoryDatabase {
       this.ni = ni;
     }
 
-    boolean scanInventory(InventoryDatabase db, int niIndex) {
+    void scanInventory(InventoryDatabase db, int niIndex) {
       ItemStack[] items = ni.getExtractableItemStacks();
       if(items == null) {
         if(slotItems.length != 0) {
-          resize(0, niIndex);
+          resize(db, 0, niIndex);
         }
-        return true;
+        return;
       }
 
-      boolean changed = false;
       int count = items.length;
       if(count != slotItems.length) {
-        resize(count, niIndex);
-        changed = true;
+        resize(db, count, niIndex);
       }
 
       for(int slot=0; slot<count; slot++) {
         ItemStack stack = items[slot];
+        ItemKey current = slotItems[slot];
         if(stack == null || stack.stackSize <= 0) {
-          if(slotItems[slot] != null) {
-            slotItems[slot].removeSlot(niIndex, slot);
+          if(current != null) {
             slotItems[slot] = null;
             itemCounts[slot] = 0;
-            changed = true;
+            current.removeSlot(niIndex, slot);
+            db.itemChanged(current);
           }
         } else {
-          ItemKey current = slotItems[slot];
           ItemKey key = db.lookupItem(stack, current);
           if(key != current) {
-            if(current != null) {
-              current.removeSlot(niIndex, slot);
-            }
             slotItems[slot] = key;
             itemCounts[slot] = stack.stackSize;
             key.addSlot(niIndex, slot);
-            changed = true;
+            db.itemChanged(key);
+            if(current != null) {
+              current.removeSlot(niIndex, slot);
+              db.itemChanged(current);
+            }
           } else if(itemCounts[slot] != stack.stackSize) {
             itemCounts[slot] = stack.stackSize;
-            changed = true;
+            db.itemChanged(current);
           }
         }
       }
-      return changed;
     }
 
-    private void resize(int count, int niIndex) {
+    private void resize(InventoryDatabase db, int count, int niIndex) {
       for(int slot=0; slot<slotItems.length; slot++) {
         ItemKey key = slotItems[slot];
         if(key != null) {
           key.removeSlot(niIndex, slot);
+          db.itemChanged(key);
         }
       }
 
       slotItems = new ItemKey[count];
       itemCounts = new int[count];
     }
+  }
+
+  public interface ChangeLog {
+    void itemChanged(ItemKey key);
+    void databaseReset();
+    void sendChangeLog();
   }
 }
