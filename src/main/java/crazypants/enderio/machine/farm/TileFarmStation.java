@@ -473,9 +473,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if (hasBonemeal() && bonemealCooldown-- <= 0) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
       if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.x, bc.y, bc.z))) {
+        farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
+        farmerJoe.inventory.currentItem = 0;
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
+          inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
           PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
-          if (inventory[minFirtSlot].stackSize == 0) {
+          if (inventory[minFirtSlot] != null && inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = null;
           }
           usePower(Config.farmBonemealActionEnergyUseRF);
@@ -484,6 +487,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
           usePower(Config.farmBonemealTryEnergyUseRF);
           bonemealCooldown = 5;
         }
+        farmerJoe.inventory.mainInventory[0] = null;
       }
     }
   }
