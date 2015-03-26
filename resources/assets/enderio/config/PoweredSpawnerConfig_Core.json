@@ -1,6 +1,6 @@
 {
  
-  "_comment": "This is the CORE FILE. Do not edit. The RF cost per tick for spawners of each entity type is multiplied by these values:",
+  // This is the CORE FILE. Do not edit. The RF cost per tick for spawners of each entity type is multiplied by these values
   "costMultiplier": {
     
     "Zombie" : "1",

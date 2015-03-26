@@ -226,7 +226,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   // copied from super with hate
-  private void drawItemStack(ItemStack stack, int mouseX, int mouseY, String str)
+  protected void drawItemStack(ItemStack stack, int mouseX, int mouseY, String str)
   {
     GL11.glTranslatef(0.0F, 0.0F, 32.0F);
     this.zLevel = 200.0F;
