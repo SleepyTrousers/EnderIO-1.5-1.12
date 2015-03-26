@@ -321,6 +321,21 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     super.onDataPacket(net, pkt);
 //    this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
   }
+  
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    if(worldObj.isRemote) {
+      stopPlayingSound();
+    }
+  }
+
+  private void stopPlayingSound() {
+    if(activeSound != null) {
+      activeSound.endPlaying();
+      activeSound = null;
+    }
+  }
 
   public int getPowerScaled(int scale) {
     return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
@@ -564,7 +579,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
     return entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity);
   }
-  
+
   private boolean clientTeleport(Entity entity) {
     if(entity.worldObj.provider.dimensionId == targetDim) {
       return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
