@@ -5,15 +5,29 @@ enderio.power.mj=MJ
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Sortie Max
+enderio.power.generates=Génère
+enderio.power.generation_rate=à
 
 //Ender IO / Enderface
 enderio.blockEnderIo=Ender IO
+tile.blockEnderIo.tooltip.detailed.line1=Permet l'accès distant
+tile.blockEnderIo.tooltip.detailed.line2=aux blocs proches
+tile.blockEnderIo.tooltip.detailed.line3=Utilisé avec les Ancres de Voyage
+tile.blockEnderIo.tooltip.detailed.line4=ou le Bâton de Voyage
+
 enderio.itemEnderface=Masque d'Ender
 
 //Conduits
 enderio.blockConduitBundle=Faisceau de Conduits
 enderio.blockConduitFacade=Façade
 enderio.itemConduitFacade=Façade
+item.enderio.itemConduitFacade.hardened.name=Façade Renforcée
+enderio.item.itemConduitFacade.tooltip.notpainted=Non Peinte
+item.enderio.itemConduitFacade.tooltip.detailed.line1=Peinte dans la Machine à enduction
+item.enderio.itemConduitFacade.tooltip.detailed.line2=Clic-D sur un conduit pour installer
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Invisible si Clé ou conduit
+item.enderio.itemConduitFacade.tooltip.detailed.line4=en main
+item.enderio.itemConduitFacade.hardened.tooltip=Renforcée : Résiste à la casse et aux explosions
 
 enderio.itemPowerConduit=Conduit d'énergie
 enderio.itemPowerConduitEnhanced=Conduit d'énergie Amélioré
@@ -24,19 +38,144 @@ enderio.itemRedstoneConduitSwitch=Interrupteur Redstone
 enderio.itemRedstoneConduitInsulated=Conduit de Redstone isolé
 
 enderio.itemLiquidConduit=Conduit pour fluides
+enderio.itemLiquidConduitAdvanced.name=Conduit pour fluides préssurisé
+enderio.itemLiquidConduitEnder.name=Conduit pour fluides de l'Ender
+enderio.itemLiquidConduit.lockedType=Type de fluide verrouillé sur
+enderio.itemLiquidConduit.unlockedType=Type de fluide déverrouillé
+enderio.itemLiquidConduit.lockedWaila=Verrouillé sur
 
-enderio.itemItemConduit=Tuyau pour objet
-enderio.itemItemConduitEmpowered=Tuyau pour objet Avancé
+enderio.itemLiquidConduit.tooltip.maxExtract=Extraction Max:
+enderio.itemLiquidConduit.tooltip.maxIo=E/S Max:
+enderio.itemLiquidConduit.tooltip.detailed.line1=L'écoulement des fluides respecte la gravité
+enderio.itemLiquidConduit.tooltip.detailed.line2=Vitesse du flux dépendante du fluide
+enderio.itemLiquidConduit.tooltip.detailed.line3=viscosité
+
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Téléportation du fluide Instantanée
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=permet de transporter plusieurs
+enderio.itemLiquidConduitEnder.tooltip.detailed.line3=fluides en même temps
+
+enderio.itemItemConduit=Conduit pour objets
+
+enderio.filterUpgradeBasic.name=Filtre d'objets basique
+enderio.filterUpgradeAdvanced.name=Filtre d'objets avancé
+enderio.itemConduitFilterUpgrade=Amélioration de Conduit pour objets
+
+enderio.itemConduitFilterUpgrade.configured=Configuré
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Mettre dans une grille de craft pour effacer
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Cela effacera tous les paramètres de filtrage !
+
+item.itemExistingItemFilter.name=Filtre d'objets par Inventaire
+item.itemExistingItemFilter.tooltip.basic.line1=Amélioration de Conduit pour objets
+item.itemExistingItemFilter.tooltip.detailed.line1=Sélectionne unqiuement les objet déjà
+item.itemExistingItemFilter.tooltip.detailed.line2=dans l'inventaire
+item.itemExistingItemFilter.tooltip.detailed.line3=Clic droit sur un inventaire
+item.itemExistingItemFilter.tooltip.detailed.line4=en se baissant pour ajouter
+item.itemExistingItemFilter.tooltip.detailed.line5=le contenu au filtre
+
+enderio.item.itemExistingItemFilter.filterUpdated=De nouveaux objets ont été ajoutés au filtre
+enderio.item.itemExistingItemFilter.filterNotUpdated=Le filtre inclut déjà tous les objets de l'inventaire
+
+item.itemModItemFilter.name=Filtre d'objet par Mod
+item.itemModItemFilter.tooltip.basic.line1=Amélioration de Conduit pour objets
+item.itemModItemFilter.tooltip.detailed.line1=Sélectionne uniquement les objets
+item.itemModItemFilter.tooltip.detailed.line2=d'un ou plusieurs Mod(s)
+
+item.itemPowerItemFilter.name=Filtre d'objets Rechargeable
+item.itemPowerItemFilter.tooltip.basic.line1=Amélioration de Conduit pour objets
+item.itemPowerItemFilter.tooltip.detailed.line1=Filtre les objets rechargeable en se basant
+item.itemPowerItemFilter.tooltip.detailed.line2=sur la quantité de RF stockée
+
+item.itemExtractSpeedUpgrade.name=Amélioration de vitesse - Conduit pour objets
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Amélioration de Conduit pour objets
+item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Multiplie la vitesse de 4
+item.itemExtractSpeedUpgrade.tooltip.detailed.line2=objets par extraction
+item.itemExtractSpeedUpgrade.tooltip.detailed.line3=15 Améliorations Max
+
+item.itemExtractSpeedDowngrade.name=Diminution de vitesse - Conduit pour objets
+item.itemExtractSpeedDowngrade.tooltip.basic.line1=Diminution de Conduit pour objets
+item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Réduit la vitesse à 1
+item.itemExtractSpeedDowngrade.tooltip.detailed.line2=objet par extraction
+
+enderio.itemGasConduit.name=Conduite de Gaz
+
+enderio.itemGasConduit.tooltip.maxExtract=Extraction Max :
+enderio.itemGasConduit.tooltip.maxIo=E/S Max :
+enderio.itemGasConduit.tooltip.detailed.line1=Transfert les gaz compatibles avec Mekanism
+
+enderio.itemMEConduit.name=Conduit ME
+enderio.itemMEConduitDense.name=Conduit ME Dense
+enderio.itemMEConduit.channelsUsed={0,number} sur {1,number} Canaux
+
+//Entity
+entity.witherSkeleton.name=Wither squelette
 
 //Materials
 enderio.itemMaterial=Matériaux
 enderio.silicon=Silicium
-enderio.conduitBinder=Jonction
-enderio.binderComposite=Jonction Composite
+enderio.conduitBinder=Amalgame de Conduit
+enderio.binderComposite=Composé pour Amalgame
 enderio.phasedIronNugget=Pépite de fer Palpitant
+tile.blockDarkIronBars.name=Barres de fer sombre
+tile.blockEndermanSkull.name=Crâne d'Enderman
+tile.blockEndermanSkull.base.name=Tête d'Enderman
+tile.blockEndermanSkull.reanimated.name=Tête d'Enderman réanimée
+tile.blockEndermanSkull.tormented.name=Tête d'Enderman tourmentée
+enderio.blastResistant=Résistant(e) aux explosion
+enderio.lightEmitter=Emet de la lumière
+enderio.tooltip.isBeaconBase=Peut être utilisé comme base de balise
 
+//Fluids
+fluid.nutrient_distillation=Distillat de nutriments
+tile.fluid.nutrient_distillation.name=Distillat de nutriments
+item.bucketNutrient_distillation.name=Sceau de Distillat de nutriments
+
+fluid.hootch=Gnôle
+tile.fluid.hootch.name=Gnôle
+item.bucketHootch.name=Sceau de Gnôle
+fluid.fire_water=Eau de Feu
+tile.fluid.fire_water.name=Eau de Feu
+item.bucketFire_water.name=Sceau d'Eau de Feu
+fluid.rocket_fuel=Combustible pour fusée
+tile.fluid.rocket_fuel.name=Combustible pour fusée
+item.bucketRocket_fuel.name=Sceau de Combustible pour fusée
+fluid.eio.xpjuice=Exp. Liquide
+tile.fluid.eio.xpjuice.name=Exp. Liquide
+item.bucketXpjuice.name=Sceau d'Exp. Liquide
+
+enderio.fluid.millibucket.abr=mB
+
+enderio.fuel.tooltip.heading=Détails du carburant
+enderio.fuel.tooltip.burnTime=temps de combustion
+enderio.fluid.millibucketsTick=mB/t
+enderio.coolant.tooltip.heading=Liquide de refroidissement
+enderio.coolant.tooltip.degreesPerBucket=Degrés par sceau
+enderio.gas.gasTick=Gaz/t
+
+//Materials
 enderio.itemMachinePart=Pièces Détachées
-enderio.blockFusedQuartz=Quartz uni
+enderio.machineChassi.name=Chassis pour machine
+enderio.basicGear.name=Roue basique
+enderio.pulsatingCrystal.name=Cristal Palpitant
+enderio.vibrantCrystal.name=Cristal étincelant
+enderio.enderCrystal.name=Cristal de l'Ender
+enderio.attractorCrystal.name=Cristal charmeur
+enderio.weatherCrystal.name=Cristal Météo
+enderio.darkGrindingBall.name=Bille d'Acier sombre
+enderio.darkGrindingBall.tooltip.detailed.line1=Bille pour Broyeur SAG
+enderio.darkGrindingBall.tooltip.detailed.line2=Produit principal
+enderio.darkGrindingBall.tooltip.detailed.line3=Sous-produit
+enderio.darkGrindingBall.tooltip.detailed.line4=Réduction d'énergie
+
+tile.blockReinforcedObsidian.name=Obsidienne renforcée
+tile.blockReinforcedObsidian.tooltip.common.line1=Résistant au Wither
+
+//Quartz / Glass
+enderio.blockFusedQuartz=Quartz Fusionné
+enderio.blockFusedQuartz.fusedQuartz.name=Quartz Fusionné
+enderio.blockFusedQuartz.fusedGlass.name=Verre semi-transparent
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Quartz Fusionné illuminé
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Verre semi-transparent illuminé
+
 enderio.itemFusedQuartzFrame=Cadre de Quartz uni
 enderio.itemPowderIngot=Poudres & Lingots
 
@@ -48,6 +187,20 @@ enderio.phasedGold=Alliage Étincelant
 enderio.redstoneAlloy=Alliage de Redstone
 enderio.conductiveIron=Fer conducteur
 enderio.phasedIron=Fer Étincelant
+enderio.vibrantNugget.name=Pépite étincelante
+enderio.darkSteel.name=Acier Sombre
+enderio.soularium.name=Âmarium
+
+tile.blockIngotStorage.name=Stockage Lingot
+tile.enderio.electricalSteel.name=Bloc d'Acier Électrique
+tile.enderio.energeticAlloy.name=Bloc d'Alliage Énergetique
+tile.enderio.phasedGold.name=Bloc d'Alliage Étincelant
+tile.enderio.redstoneAlloy.name=Bloc d'Alliage de Redstone
+tile.enderio.conductiveIron.name=Bloc de Fer conducteur
+tile.enderio.phasedIron.name=Bloc de Fer Étincelant
+tile.enderio.vibrantNugget.name=Bloc de Pépites étincelantes
+tile.enderio.darkSteel.name=Bloc d'Acier Sombre
+tile.enderio.soularium.name=Bloc d'Âmarium
 
 //Powder / Ingot
 enderio.powderCoal=Poudre de charbon
@@ -56,6 +209,8 @@ enderio.powderGold=Poudre d'Or
 enderio.powderCopper=Poudre de Cuivre
 enderio.powderTin=Poudre d'Étain
 enderio.powderEnder=Poudre de Perle du Néant
+enderio.powderObsidian.name=Poudre d'Obsidienne
+enderio.ingotEnderiumBase.name=Base d'Enderium
 
 //Capacitors
 enderio.itemBasicCapacitor=Condensateur
@@ -63,9 +218,17 @@ enderio.basicCapacitor=Condensateur de base
 enderio.activatedCapacitor=Condensateur Double-Couche
 enderio.enderCapacitor=Condensateur Octadique
 
+enderio.machine.tooltip.upgrade=Amélioration pour Machine
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Augmente le stockage d'Energie et
+enderio.machine.tooltip.upgrade.tooltip.detailed.line2=la vitesse / portée des machines
+enderio.machine.tooltip.clearConfig=Cela va effacer la configuration !
 
 //Machines
 enderio.blockStirlingGenerator=Générateur Stirling
+tile.blockStirlingGenerator.tooltip.detailed.line1=Burns solid fuel to generate power
+tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase output
+tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency with capacitors
+
 enderio.blockReservoir=Réservoir
 enderio.blockAlloySmelter=Fonderie
 enderio.blockSolarPanel=Cellule Photovoltaïque
