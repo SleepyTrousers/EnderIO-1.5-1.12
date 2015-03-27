@@ -100,12 +100,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, str);
   }
 
-  private InventoryDatabase getDatabase() {
-    return getTileEntity().getDatabase();
+  private InventoryDatabaseClient getDatabase() {
+    return (InventoryDatabaseClient) getTileEntity().getDatabaseClient();
   }
 
   private void doScroll() {
-    scrollMax = Math.max(0, (getDatabase().getClientItemCount()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS);
+    scrollMax = Math.max(0, (getDatabase().getNumEntries()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS);
     if(scrollUpPressed && scrollPos > 0) {
       scrollPos--;
     }
@@ -120,14 +120,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       scrollPos = scrollMax;
     }
     
-    InventoryDatabase database = getDatabase();
+    InventoryDatabaseClient database = getDatabase();
     int index = scrollPos * GHOST_COLUMNS;
-    int count = database.getClientItemCount();
+    int count = database.getNumEntries();
     for(int i = 0; i < GHOST_ROWS*GHOST_COLUMNS; i++,index++) {
       GhostSlot slot = ghostSlots.get(i);
       if(index < count) {
-        InventoryDatabase.ItemKey key = database.getClientItem(index);
-        slot.stack = key.makeItemStack();
+        slot.stack = database.getItemStack(index);
       } else {
         slot.stack = null;
       }

@@ -23,7 +23,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
-public class InventoryPanelContainer extends AbstractMachineContainer implements InventoryDatabase.ChangeLog {
+public class InventoryPanelContainer extends AbstractMachineContainer implements InventoryDatabaseServer.ChangeLog {
 
   private static final int CRAFTING_GRID_X = 7;
   private static final int CRAFTING_GRID_Y = 16;
@@ -31,7 +31,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private static final int RETURN_INV_X = 7;
   private static final int RETURN_INV_Y = 82;
 
-  private final HashSet<InventoryDatabase.ItemKey> changedItems;
+  private final HashSet<InventoryDatabaseServer.ItemEntry> changedItems;
 
   @SuppressWarnings("LeakingThisInConstructor")
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
@@ -41,7 +41,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     if(te.getWorldObj().isRemote) {
       changedItems = null;
     } else {
-      changedItems = new HashSet<InventoryDatabase.ItemKey>();
+      changedItems = new HashSet<InventoryDatabaseServer.ItemEntry>();
     }
   }
 
@@ -107,9 +107,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     removeChangeLog();
   }
 
+  private TileInventoryPanel getInventoryPanel() {
+    return (TileInventoryPanel) tileEntity;
+  }
+
   private void removeChangeLog() {
     if(changedItems != null) {
-      ((TileInventoryPanel)tileEntity).getDatabase().removeChangeLog(this);
+      getInventoryPanel().getDatabaseServer().removeChangeLog(this);
     }
   }
 
@@ -126,11 +130,12 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     }
     super.addCraftingToCrafters(crafting);
     if(changedItems != null) {
-      ((TileInventoryPanel)tileEntity).getDatabase().addChangeLog(this);
+      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+      db.addChangeLog(this);
       if(crafting instanceof EntityPlayerMP) {
         try {
-          byte[] compressed = ((TileInventoryPanel)tileEntity).getDatabase().compressItemList();
-          PacketItemList pil = new PacketItemList((TileInventoryPanel)tileEntity, compressed);
+          byte[] compressed = db.compressItemList();
+          PacketItemList pil = new PacketItemList(getInventoryPanel(), compressed);
           PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
         } catch (IOException ex) {
           Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
@@ -157,8 +162,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   }
 
   @Override
-  public void itemChanged(InventoryDatabase.ItemKey key) {
-    changedItems.add(key);
+  public void entryChanged(InventoryDatabaseServer.ItemEntry entry) {
+    changedItems.add(entry);
   }
 
   @Override
@@ -170,11 +175,12 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   public void sendChangeLog() {
     if(!changedItems.isEmpty() && !crafters.isEmpty()) {
       try {
-        byte[] compressed = ((TileInventoryPanel)tileEntity).getDatabase().compressChangedItems(changedItems);
-        PacketItemList pil = new PacketItemList((TileInventoryPanel)tileEntity, compressed);
+      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+        byte[] compressed = db.compressChangedItems(changedItems);
+        PacketItemList pil = new PacketItemList(getInventoryPanel(), compressed);
         for(Object crafting : crafters) {
           if(crafting instanceof EntityPlayerMP) {
-            PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
+            PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
           }
         }
       } catch (IOException ex) {

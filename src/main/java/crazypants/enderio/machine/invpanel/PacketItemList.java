@@ -45,7 +45,7 @@ public class PacketItemList extends MessageTileEntity<TileInventoryPanel> implem
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
-      InventoryDatabase db = teInvPanel.getDatabase();
+      InventoryDatabaseClient db = teInvPanel.getDatabaseClient();
       try {
         db.readCompressedItemList(message.compressed);
       } catch (IOException ex) {

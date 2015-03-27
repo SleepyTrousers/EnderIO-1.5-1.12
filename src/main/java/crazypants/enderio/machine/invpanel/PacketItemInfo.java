@@ -20,10 +20,10 @@ public class PacketItemInfo extends MessageTileEntity<TileInventoryPanel> implem
   public PacketItemInfo() {
   }
 
-  public PacketItemInfo(TileInventoryPanel tile, List<InventoryDatabase.ItemKey> items) {
+  public PacketItemInfo(TileInventoryPanel tile, List<InventoryDatabaseServer.ItemEntry> items) {
     super(tile);
     try {
-      compressed = tile.getDatabase().compressItemInfo(items);
+      compressed = tile.getDatabaseServer().compressItemInfo(items);
     } catch (IOException ex) {
       Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while compressing items", ex);
       compressed = new byte[0];
@@ -51,7 +51,7 @@ public class PacketItemInfo extends MessageTileEntity<TileInventoryPanel> implem
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
-      InventoryDatabase db = teInvPanel.getDatabase();
+      InventoryDatabaseClient db = teInvPanel.getDatabaseClient();
       try {
         db.readCompressedItems(message.compressed);
       } catch (IOException ex) {

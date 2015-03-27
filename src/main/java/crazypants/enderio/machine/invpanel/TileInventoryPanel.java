@@ -17,7 +17,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileInventoryPanel extends AbstractMachineEntity {
 
-  private final InventoryDatabase database;
+  private InventoryDatabaseServer dbServer;
+  private InventoryDatabaseClient dbClient;
 
   private ItemConduitNetwork network;
   private int networkChangeCount;
@@ -26,11 +27,20 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 10, 19, 20, 19));
-    this.database = new InventoryDatabase();
   }
 
-  public InventoryDatabase getDatabase() {
-    return database;
+  public InventoryDatabaseServer getDatabaseServer() {
+    if(dbServer == null) {
+      dbServer = new InventoryDatabaseServer();
+    }
+    return dbServer;
+  }
+
+  public InventoryDatabaseClient getDatabaseClient() {
+    if(dbClient == null) {
+      dbClient = new InventoryDatabaseClient();
+    }
+    return dbClient;
   }
 
   @Override
@@ -70,49 +80,58 @@ public class TileInventoryPanel extends AbstractMachineEntity {
     if(worldObj.isRemote) return;
 
     if(shouldDoWorkThisTick(2)) {
-      ForgeDirection facingDir = getFacingDir();
-      ForgeDirection backside = facingDir.getOpposite();
-
-      ItemConduit conduit = null;
-      ItemConduitNetwork icn = null;
-
-      TileEntity te = worldObj.getTileEntity(xCoord+backside.offsetX, yCoord+backside.offsetY, zCoord+backside.offsetZ);
-      if(te instanceof TileConduitBundle) {
-        TileConduitBundle teCB = (TileConduitBundle) te;
-        conduit = teCB.getConduit(ItemConduit.class);
-        if(conduit != null) {
-          icn = (ItemConduitNetwork) conduit.getNetwork();
-        }
-      }
-
-      if(icn == null) {
-        network = null;
-        database.setNetworkSources(null);
-      } else if(icn != network || icn.getChangeCount() != networkChangeCount) {
-        updateNetwork(icn, conduit, facingDir);
-      }
-
-      database.scanNextInventory();
+      scanNetwork();
     }
 
-    if(shouldDoWorkThisTick(20)) {
-      database.sendChangeLogs();
+    if(dbServer != null && shouldDoWorkThisTick(20)) {
+      dbServer.sendChangeLogs();
+    }
+  }
+
+  private void scanNetwork() {
+    ForgeDirection facingDir = getFacingDir();
+    ForgeDirection backside = facingDir.getOpposite();
+
+    ItemConduit conduit = null;
+    ItemConduitNetwork icn = null;
+
+    TileEntity te = worldObj.getTileEntity(xCoord+backside.offsetX, yCoord+backside.offsetY, zCoord+backside.offsetZ);
+    if(te instanceof TileConduitBundle) {
+      TileConduitBundle teCB = (TileConduitBundle) te;
+      conduit = teCB.getConduit(ItemConduit.class);
+      if(conduit != null) {
+        icn = (ItemConduitNetwork) conduit.getNetwork();
+      }
+    }
+
+    if(icn != network || (icn != null && icn.getChangeCount() != networkChangeCount)) {
+      updateNetwork(icn, conduit, facingDir);
+    }
+
+    if(dbServer != null) {
+      dbServer.scanNextInventory();
     }
   }
 
   private void updateNetwork(ItemConduitNetwork icn, ItemConduit conduit, ForgeDirection facingDir) {
-    this.network = icn;
-    this.networkChangeCount = icn.getChangeCount();
+    List<NetworkedInventory> sources = null;
 
-    ConnectionMode mode = conduit.getConnectionMode(facingDir);
-    System.out.println("updateNetwork: mode="+mode);
-    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT) {
-      DyeColor color = conduit.getOutputColor(facingDir);
-      List<NetworkedInventory> sources = icn.getSourcesForColor(color);
-      System.out.println("Color="+color+" sources="+sources.size());
-      database.setNetworkSources(sources);
-    } else {
-      database.setNetworkSources(null);
+    if(icn != null) {
+      networkChangeCount = icn.getChangeCount();
+
+      ConnectionMode mode = conduit.getConnectionMode(facingDir);
+      System.out.println("updateNetwork: mode="+mode);
+      if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT) {
+        DyeColor color = conduit.getOutputColor(facingDir);
+        sources = icn.getSourcesForColor(color);
+        System.out.println("Color="+color+" sources="+sources.size());
+      }
+    }
+
+    this.network = icn;
+
+    if(dbServer != null || sources != null) {
+      getDatabaseServer().setNetworkSources(sources);
     }
   }
 
