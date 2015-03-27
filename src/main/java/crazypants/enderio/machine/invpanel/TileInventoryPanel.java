@@ -38,7 +38,7 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
   public InventoryDatabaseClient getDatabaseClient() {
     if(dbClient == null) {
-      dbClient = new InventoryDatabaseClient();
+      dbClient = new InventoryDatabaseClient(this);
     }
     return dbClient;
   }

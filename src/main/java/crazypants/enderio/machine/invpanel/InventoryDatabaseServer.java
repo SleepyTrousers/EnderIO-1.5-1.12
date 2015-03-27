@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.network.CompressedDataInput;
 import crazypants.enderio.network.CompressedDataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +40,24 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
     }
   }
 
+  public List<ItemEntry> decompressMissingItems(byte[] compressed) throws IOException {
+    CompressedDataInput cdi = new CompressedDataInput(compressed);
+    try {
+      int numIDs = cdi.readVariable();
+      ArrayList<InventoryDatabaseServer.ItemEntry> items = new ArrayList<InventoryDatabaseServer.ItemEntry>(numIDs);
+      for(int i = 0; i < numIDs; i++) {
+        int dbIndex = cdi.readVariable();
+        if(dbIndex < complexItems.size()) {
+          InventoryDatabaseServer.ItemEntry entry = complexItems.get(dbIndex);
+          items.add(entry);
+        }
+      }
+      return items;
+    } finally {
+      cdi.close();
+    }
+  }
+
   public byte[] compressItemInfo(List<ItemEntry> items) throws IOException{
     CompressedDataOutput cdo = new CompressedDataOutput();
     try {
@@ -46,7 +65,18 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
       cdo.writeVariable(generation);
       cdo.writeVariable(count);
       for(ItemEntry entry : items) {
-        entry.write(cdo);
+        assert entry.dbID >= COMPLEX_DBINDEX_START;
+        int code = (entry.dbID - COMPLEX_DBINDEX_START) << 1;
+        if(entry.nbt != null) {
+          code |= 1;
+        }
+        cdo.writeVariable(code);
+        cdo.writeVariable(entry.itemID);
+        cdo.writeVariable(entry.meta);
+        if(entry.nbt != null) {
+          CompressedStreamTools.write(entry.nbt, cdo);
+        }
+        cdo.writeVariable(entry.countItems(this));
       }
       return cdo.getCompressed();
     } finally {
@@ -154,19 +184,6 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
 
     public ItemEntry(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
       super(dbID, hash, itemID, meta, nbt);
-    }
-    
-    void write(CompressedDataOutput cdo) throws IOException {
-      if(nbt != null) {
-        cdo.writeInt((dbID << 1) | 1);
-        CompressedStreamTools.write(nbt, cdo);
-        if(dbID >= COMPLEX_DBINDEX_START) {
-          cdo.writeVariable(itemID);
-          cdo.writeVariable(meta);
-        }
-      } else {
-        cdo.writeVariable(dbID << 1);
-      }
     }
 
     static int encodeNISlot(int niIndex, int slot) {

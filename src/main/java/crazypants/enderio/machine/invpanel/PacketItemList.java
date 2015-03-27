@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
+import crazypants.enderio.network.NetworkUtil;
 import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -27,16 +28,13 @@ public class PacketItemList extends MessageTileEntity<TileInventoryPanel> implem
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    int size = buf.readMedium();
-    compressed = new byte[size];
-    buf.readBytes(compressed);
+    compressed = NetworkUtil.readByteArray(buf);
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    buf.writeMedium(compressed.length);
-    buf.writeBytes(compressed);
+    NetworkUtil.writeByteArray(buf, compressed);
   }
 
   @Override
