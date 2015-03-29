@@ -156,6 +156,7 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
+import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.EntityUtil;
 import static crazypants.enderio.EnderIO.*;
 
@@ -305,6 +306,8 @@ public class EnderIO {
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
+
+    EnderIOCrashCallable.create();
 
     Config.load(event);
 
