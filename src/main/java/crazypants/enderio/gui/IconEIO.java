@@ -144,7 +144,17 @@ public final class IconEIO {
   public static final IconEIO SUN = new IconEIO(160, 240);
   public static final IconEIO RAIN = new IconEIO(176, 240);
   public static final IconEIO THUNDER = new IconEIO(192, 240);
-  
+
+  public static final IconEIO SORT_DIR_DOWN = new IconEIO( 0, 176);
+  public static final IconEIO SORT_DIR_UP   = new IconEIO(16, 176);
+
+  public static final IconEIO SORT_NAME_DOWN = new IconEIO(208, 240, SORT_DIR_DOWN);
+  public static final IconEIO SORT_NAME_UP   = new IconEIO(208, 240, SORT_DIR_UP);
+  public static final IconEIO SORT_SIZE_DOWN = new IconEIO(224, 240, SORT_DIR_DOWN);
+  public static final IconEIO SORT_SIZE_UP   = new IconEIO(224, 240, SORT_DIR_UP);
+  public static final IconEIO SORT_MOD_DOWN  = new IconEIO(240, 240, SORT_DIR_DOWN);
+  public static final IconEIO SORT_MOD_UP    = new IconEIO(240, 240, SORT_DIR_UP);
+
   // Texture size is actually 512 but everything is aligned to a 256 grid
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
@@ -155,24 +165,34 @@ public final class IconEIO {
   public final double maxV;
   public final double width;
   public final double height;
+  public final IconEIO overlay;
 
   public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgetsv2.png");
 
   public IconEIO(int x, int y) {
-    this(x, y, 16, 16);
+    this(x, y, null);
+  }
+
+  public IconEIO(int x, int y, IconEIO overlay) {
+    this(x, y, 16, 16, overlay);
   }
 
   public IconEIO(int x, int y, int width, int height) {
-    this(width, height, (float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)));
+    this(x, y, width, height, null);
   }
 
-  public IconEIO(double width, double height, double minU, double maxU, double minV, double maxV) {
+  public IconEIO(int x, int y, int width, int height, IconEIO overlay) {
+    this(width, height, (float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)), overlay);
+  }
+
+  public IconEIO(double width, double height, double minU, double maxU, double minV, double maxV, IconEIO overlay) {
     this.width = width;
     this.height = height;
     this.minU = minU;
     this.maxU = maxU;
     this.minV = minV;
     this.maxV = maxV;
+    this.overlay = overlay;
   }
 
   public void renderIcon(double x, double y) {
@@ -205,6 +225,9 @@ public final class IconEIO {
       tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
       tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
       tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
+    }
+    if(overlay != null) {
+      overlay.renderIcon(x, y, width, height, zLevel, false, flipY);
     }
     if(doDraw) {
       tessellator.draw();

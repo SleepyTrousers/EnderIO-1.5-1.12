@@ -1,11 +1,17 @@
 package crazypants.enderio.machine.invpanel;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.network.CompressedDataInput;
 import crazypants.enderio.network.PacketHandler;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -16,8 +22,11 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
   private final TileInventoryPanel te;
   private final ArrayList<ItemEntry> clientItems;
   private final HashSet<Integer> requestedItems;
-  
-  private boolean clientListNeedsSorting;
+
+  private SortOrder order = SortOrder.NAME;
+  private boolean invertSortOrder;
+  private boolean needsSorting;
+  private Collator collator;
 
   public InventoryDatabaseClient(TileInventoryPanel te) {
     this.te = te;
@@ -60,7 +69,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
         int count = cdi.readVariable();
         setItemCount(entry, count);
       }
-      clientListNeedsSorting = true;
+      needsSorting = true;
     } finally {
       cdi.close();
     }
@@ -123,7 +132,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
       if(missingItems != null) {
         PacketHandler.INSTANCE.sendToServer(new PacketRequestMissingItems(te, missingItems));
       }
-      clientListNeedsSorting = true;
+      needsSorting = true;
     } finally {
       cdi.close();
     }
@@ -149,10 +158,46 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
     return list;
   }
 
-  public boolean sortClientItems() {
-    boolean res = clientListNeedsSorting;
-    clientListNeedsSorting = false;
-    return res;
+  private Collator getCollator() {
+    if(collator == null) {
+      String langCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+      Locale locale = Locale.forLanguageTag(langCode);
+      collator = Collator.getInstance(locale);
+    }
+    return collator;
+  }
+
+  public void setSortOrder(SortOrder order, boolean invert) {
+    if(this.order != order || this.invertSortOrder != invert) {
+      this.order = order;
+      this.invertSortOrder = invert;
+      this.needsSorting = true;
+    }
+  }
+
+  public SortOrder getSortOrder() {
+    return order;
+  }
+
+  public boolean isSortOrderInverted() {
+    return invertSortOrder;
+  }
+
+  public boolean sortItems() {
+    if(needsSorting) {
+      Comparator<ItemEntry> cmp;
+      switch (order) {
+        case NAME: cmp = new NameComparator(getCollator()); break;
+        case MOD:  cmp = new ModComparator(getCollator()); break;
+        default:   cmp = CountComparator.INSTANCE;
+      }
+      if(invertSortOrder) {
+        cmp = Collections.reverseOrder(cmp);
+      }
+      Collections.sort(clientItems, cmp);
+      return true;
+    }
+    return false;
   }
 
   public int getNumEntries() {
@@ -173,6 +218,8 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
   }
 
   public static class ItemEntry extends ItemEntryBase {
+    String name;
+    String modId;
     int count;
 
     public ItemEntry(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
@@ -183,10 +230,93 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
       return count;
     }
 
+    public Item getItem() {
+      return Item.getItemById(itemID);
+    }
+
     public ItemStack makeItemStack() {
-      ItemStack stack = new ItemStack(Item.getItemById(itemID), count, meta);
+      ItemStack stack = new ItemStack(getItem(), count, meta);
       stack.stackTagCompound = nbt;
       return stack;
+    }
+
+    public String getUnlocName() {
+      if(name == null) {
+        findUnlocName();
+      }
+      return name;
+    }
+
+    private void findUnlocName() {
+      ItemStack stack = makeItemStack();
+      try {
+        name = stack.getDisplayName();
+        if(name == null || name.isEmpty()) {
+          name = stack.getItem().getUnlocalizedName();
+          if(name == null || name.isEmpty()) {
+            name = stack.getItem().getClass().getName();
+          }
+        }
+      } catch(Throwable ex) {
+        name = "Exception: " + ex.getMessage();
+      }
+    }
+
+    public String getModId() {
+      if(modId == null) {
+        findModId();
+      }
+      return modId;
+    }
+
+    private void findModId() {
+      Item item = getItem();
+      GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
+      if(id != null && id.modId != null) {
+        modId = id.modId;
+      } else {
+        modId = "Unknown";
+      }
+    }
+  }
+
+  static class NameComparator implements Comparator<ItemEntry> {
+    protected final Collator collator;
+
+    NameComparator(Collator collator) {
+      this.collator = collator;
+    }
+
+    @Override
+    public int compare(ItemEntry a, ItemEntry b) {
+      String nameA = a.getUnlocName();
+      String nameB = b.getUnlocName();
+      return collator.compare(nameA, nameB);
+    }
+  }
+
+  static class ModComparator extends NameComparator {
+    ModComparator(Collator collator) {
+      super(collator);
+    }
+
+    @Override
+    public int compare(ItemEntry a, ItemEntry b) {
+      String modIdA = a.getModId();
+      String modIdB = b.getModId();
+      int res = collator.compare(modIdA, modIdB);
+      if(res == 0) {
+        res = super.compare(a, b);
+      }
+      return res;
+    }
+  }
+
+  static class CountComparator implements Comparator<ItemEntry> {
+    public static final CountComparator INSTANCE = new CountComparator();
+    @Override
+    public int compare(ItemEntry a, ItemEntry b) {
+      return a.count - b.count;
     }
   }
 }

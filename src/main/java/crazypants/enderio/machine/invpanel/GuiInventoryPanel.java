@@ -2,6 +2,7 @@ package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.gui.GhostSlot;
@@ -9,6 +10,7 @@ import crazypants.render.RenderUtil;
 import java.awt.Rectangle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -21,8 +23,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final Rectangle btnScrollDown = new Rectangle(216, 109, 16, 8);
   private static final Rectangle thumbArea     = new Rectangle(216,  35, 16, 74);
 
+  private static final int ID_SORT = 9876;
+
   private static final int GHOST_COLUMNS = 6;
   private static final int GHOST_ROWS    = 5;
+
+  private final IconButtonEIO btnSort;
 
   private boolean scrollUpPressed;
   private boolean scrollDownPressed;
@@ -43,6 +49,22 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         slot.y =  28 + y*18;
         ghostSlots.add(slot);
       }
+    }
+
+    btnSort = new IconButtonEIO(this, ID_SORT, 216, 7, getSortOrderIcon());
+  }
+
+  @Override
+  public void initGui() {
+    super.initGui();
+    btnSort.onGuiInit();
+  }
+
+  @Override
+  public void actionPerformed(GuiButton b) {
+    super.actionPerformed(b);
+    if(b.id == ID_SORT) {
+      toggleSortOrder();
     }
   }
 
@@ -79,7 +101,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     tes.draw();
 
-    if(getDatabase().sortClientItems()) {
+    if(getDatabase().sortItems()) {
       updateGhostSlots();
     }
 
@@ -102,6 +124,29 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private InventoryDatabaseClient getDatabase() {
     return (InventoryDatabaseClient) getTileEntity().getDatabaseClient();
+  }
+
+  private IconEIO getSortOrderIcon() {
+    InventoryDatabaseClient db = getDatabase();
+    SortOrder order = db.getSortOrder();
+    boolean invert = db.isSortOrderInverted();
+    switch (order) {
+      case NAME:  return invert ? IconEIO.SORT_NAME_UP : IconEIO.SORT_NAME_DOWN;
+      case COUNT: return invert ? IconEIO.SORT_SIZE_UP : IconEIO.SORT_SIZE_DOWN;
+      case MOD:   return invert ? IconEIO.SORT_MOD_UP  : IconEIO.SORT_MOD_DOWN;
+      default:    return null;
+    }
+  }
+
+  private void toggleSortOrder() {
+    InventoryDatabaseClient db = getDatabase();
+    SortOrder order = db.getSortOrder();
+    if(db.isSortOrderInverted()) {
+      SortOrder[] values = SortOrder.values();
+      order = values[(order.ordinal()+1) % values.length];
+    }
+    db.setSortOrder(order, !db.isSortOrderInverted());
+    btnSort.setIcon(getSortOrderIcon());
   }
 
   private void doScroll() {
