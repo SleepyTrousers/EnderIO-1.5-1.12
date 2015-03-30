@@ -256,8 +256,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
     // External connection terminations
-    for (ForgeDirection dir : externals) {
-      renderExternalConnection(dir);
+    if(rb.overrideBlockTexture == null) {
+      for (ForgeDirection dir : externals) {
+        renderExternalConnection(dir);
+      }
     }
     tessellator.addTranslation(-(float) x, -(float) y, -(float) z);
 
