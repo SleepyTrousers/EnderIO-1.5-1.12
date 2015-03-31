@@ -110,6 +110,10 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
+    if (entityPlayer.isSneaking()) {
+      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
+    }
+    
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileVat)) {
       return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
@@ -152,6 +156,11 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       }
 
       if(isValidFluid(filled)) {
+        
+        if(filled.amount > available.amount) {
+          return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
+        }
+        
         vat.drain(ForgeDirection.DOWN, filled, true);
         if(item.stackSize > 1) {
           item.stackSize--;
