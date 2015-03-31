@@ -255,23 +255,6 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   }
 
   @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileCapacitorBank) {
-        TileCapacitorBank cb = (TileCapacitorBank) te;
-        cb.onBreakBlock();
-
-        ItemStack itemStack =
-            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-        ret.add(itemStack);
-      }
-    }
-    return ret;
-  }
-
-  @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);

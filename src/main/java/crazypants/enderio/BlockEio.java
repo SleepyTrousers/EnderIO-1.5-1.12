@@ -13,6 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -69,12 +72,7 @@ public abstract class BlockEio extends Block {
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:" + name);
   }
-
-  @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    return doNormalDrops(world, x, y, z) ? super.getDrops(world, x, y, z, metadata, fortune) : new ArrayList<ItemStack>();
-  }
-
+  
   /* Subclass Helpers */
   
   @Override
@@ -114,34 +112,32 @@ public abstract class BlockEio extends Block {
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityEio && ((TileEntityEio) te).shouldDrop()) {
-      if(!world.isRemote && !player.capabilities.isCreativeMode && !doNormalDrops(world, x, y, z)) {
-        dropAsItem(world, x, y, z, (TileEntityEio) te);
-        ((TileEntityEio) te).preventDrops();
-      } else if(player.capabilities.isCreativeMode) {
-        ((TileEntityEio) te).preventDrops();
-      }
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+    if(willHarvest) {
+      return true;
     }
-    return super.removedByPlayer(world, player, x, y, z, false);
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
-
+  
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityEio && ((TileEntityEio) te).shouldDrop() && !doNormalDrops(world, x, y, z)) {
-      dropAsItem(world, x, y, z, (TileEntityEio) te);
-      ((TileEntityEio)te).preventDrops();
+  public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+    super.harvestBlock(world, player, x, y, z, meta);
+    world.setBlockToAir(x, y, z);
+  }
+  
+  @Override
+  public final ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    if(doNormalDrops(world, x, y, z)) {
+      return super.getDrops(world, x, y, z, metadata, fortune);
     }
-    super.breakBlock(world, x, y, z, block, meta);
+    return Lists.newArrayList(getNBTDrop(world, x, y, z, (TileEntityEio) world.getTileEntity(x, y, z)));
   }
 
-  public void dropAsItem(World world, int x, int y, int z, TileEntityEio te) {
+  public ItemStack getNBTDrop(World world, int x, int y, int z, TileEntityEio te) {
     int meta = damageDropped(world.getBlockMetadata(x, y, z));
     ItemStack itemStack = new ItemStack(this, 1, meta);
     processDrop(world, x, y, z, te, itemStack);
-    dropBlockAsItem(world, x, y, z, itemStack);
+    return itemStack;
   }
 
   protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEio te, ItemStack drop) {
