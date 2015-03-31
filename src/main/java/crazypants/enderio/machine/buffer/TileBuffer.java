@@ -60,10 +60,10 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
       dist = new PowerDistributor(new BlockCoord(this));
     }
     int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored()));
-    if (!isCreative()) {
+    if(!isCreative()) {
       setEnergyStored(getEnergyStored() - transmitted);
     }
-    return transmitted > 0;
+    return false;
   }
 
   @Override
