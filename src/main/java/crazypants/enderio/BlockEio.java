@@ -134,7 +134,7 @@ public abstract class BlockEio extends Block {
   }
 
   public ItemStack getNBTDrop(World world, int x, int y, int z, TileEntityEio te) {
-    int meta = damageDropped(world.getBlockMetadata(x, y, z));
+    int meta = damageDropped(te.getBlockMetadata());
     ItemStack itemStack = new ItemStack(this, 1, meta);
     processDrop(world, x, y, z, te, itemStack);
     return itemStack;
