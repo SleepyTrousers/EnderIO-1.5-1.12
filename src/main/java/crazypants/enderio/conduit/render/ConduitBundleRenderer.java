@@ -121,9 +121,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
     boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
-    boolean renderConduit = !renderedFacade;
+    boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit) {
+    if(renderConduit && (BlockConduitBundle.theRenderPass == 0 || rb.hasOverrideBlockTexture())) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -141,7 +141,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   private boolean renderFacade(int x, int y, int z, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
     boolean res = false;
     if(bundle.hasFacade()) {
-
+      res = true;
       Block facadeId = bundle.getFacadeId();
       if(ConduitUtil.isFacadeHidden(bundle, player)) {
         Tessellator.instance.setColorOpaque_F(1, 1, 1);
@@ -161,7 +161,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       } else if(facadeId != null) {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
-        res = isFacadeOpaque;
 
         if((isFacadeOpaque && BlockConduitBundle.theRenderPass == 0) ||
             (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1))) {
@@ -257,8 +256,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
     // External connection terminations
-    for (ForgeDirection dir : externals) {
-      renderExternalConnection(dir);
+    if(!rb.hasOverrideBlockTexture()) {
+      for (ForgeDirection dir : externals) {
+        renderExternalConnection(dir);
+      }
     }
     tessellator.addTranslation(-(float) x, -(float) y, -(float) z);
 

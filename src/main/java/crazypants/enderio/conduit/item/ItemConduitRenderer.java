@@ -50,7 +50,7 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
         render = false;
       }
 
-      if(render) {
+      if(render && !rb.hasOverrideBlockTexture()) {
         Offset offset = te.getOffset(IItemConduit.class, dir);
         ConnectionModeGeometry.renderModeConnector(dir, offset, pc.getTextureForInOutBackground(), true);
 
