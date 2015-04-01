@@ -74,10 +74,25 @@ public class WailaCompat implements IWailaDataProvider {
       }
       return wrapped.getBlockMetadata(x, y, z);
     }
-    
+
     @Override
-    public TileEntity getTileEntity(int p_147438_1_, int p_147438_2_, int p_147438_3_) {
-      return wrapped.getTileEntity(p_147438_1_, p_147438_2_, p_147438_3_);
+    public TileEntity getTileEntity(int x, int y, int z) {
+      int meta = getBlockMetadata(x, y, z);
+      Block block = getBlock(x, y, z);
+      if(block == null || !block.hasTileEntity(meta)) {
+        return null;
+      }
+      TileEntity te = block.createTileEntity(this, meta);
+      if(te == null) {
+        return null;
+      }
+
+      te.setWorldObj(this);
+      te.xCoord = x;
+      te.yCoord = y;
+      te.zCoord = z;
+
+      return te;
     }
 
     @Override
@@ -153,13 +168,13 @@ public class WailaCompat implements IWailaDataProvider {
   @SuppressWarnings("unchecked")
   @Override
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-	
+
     _accessor = accessor;
 
     EntityPlayer player = accessor.getPlayer();
     MovingObjectPosition pos = accessor.getPosition();
     int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
-    World world = new WailaWorldWrapper(player.worldObj);
+    World world = accessor.getWorld();
     Block block = world.getBlock(x, y, z);
     TileEntity te = world.getTileEntity(x, y, z);
     Item item = Item.getItemFromBlock(block);
