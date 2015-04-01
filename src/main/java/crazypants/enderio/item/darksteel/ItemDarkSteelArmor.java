@@ -31,6 +31,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
+import crazypants.enderio.thaumcraft.ThaumaturgeArmorUpgrade;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import forestry.api.apiculture.IArmorApiarist;
@@ -280,10 +281,17 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Thaumcraft")
   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if(stack == null) {
       return 0;
     }
-    return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
+
+    if(stack.getItem() == DarkSteelItems.itemDarkSteelHelmet) {
+      return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
+    } else if(ThaumaturgeArmorUpgrade.loadFromItem(stack) != null) {
+      return stack.getItem() == DarkSteelItems.itemDarkSteelBoots ? 1 : 2;
+    } else {
+      return 0;
+    }
   }
 
   public boolean isGogglesUgradeActive() {

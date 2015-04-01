@@ -662,6 +662,10 @@ enderio.darksteel.upgrade.sound.disabled=Détecteur de son Désactivé
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Révèle
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Économie de Vis : 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=Économie de Vis : 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=Économie de Vis : 2%
+item.ItemBootsRobe.tooltip.detailed.line1=Économie de Vis : 1%
+
 enderio.darksteel.upgrade.naturalistEye.name=Oeil du Naturaliste
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Montrer les Feuilles pollinisées
 

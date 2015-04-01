@@ -171,5 +171,8 @@ public class ThaumcraftCompat {
 
   public static void loadUpgrades(List<IDarkSteelUpgrade> upgrades) {
     upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
+    upgrades.add(ThaumaturgeArmorUpgrade.CHEST);
+    upgrades.add(ThaumaturgeArmorUpgrade.LEGS);
+    upgrades.add(ThaumaturgeArmorUpgrade.BOOTS);
   }
 }

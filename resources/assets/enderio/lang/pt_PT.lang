@@ -624,6 +624,10 @@ enderio.darksteel.upgrade.sound.disabled=Localizador de Sons Desativado
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revelação
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Desconto de Vis: 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=Desconto de Vis: 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=Desconto de Vis: 2%
+item.ItemBootsRobe.tooltip.detailed.line1=Desconto de Vis: 1%
+
 item.itemGliderWing.name=Asa de Planador
 item.itemGliderWings.name=Asas de Planador
 item.itemGliderWings.tooltip.detailed.line1=Melhora para o peitoral
