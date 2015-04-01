@@ -126,6 +126,10 @@ public class WailaCompat implements IWailaDataProvider {
     MovingObjectPosition pos = accessor.getPosition();
     if(config.getConfig("facades.hidden")) {
       if(accessor.getBlock() instanceof IFacade) {
+        // If facades are hidden, we need to ignore it
+        if(accessor.getTileEntity() instanceof IConduitBundle && ConduitUtil.isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
+          return null;
+        }
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if(facade != null) {
