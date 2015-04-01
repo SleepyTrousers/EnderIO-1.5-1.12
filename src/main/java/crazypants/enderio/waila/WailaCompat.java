@@ -43,6 +43,7 @@ import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
+
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -158,9 +159,6 @@ public class WailaCompat implements IWailaDataProvider {
     Block block = world.getBlock(x, y, z);
     TileEntity te = world.getTileEntity(x, y, z);
     Item item = Item.getItemFromBlock(block);
-    
-    // let's get rid of WAILA's default RF stuff, once that works
-    ((ITaggedList<String, String>) currenttip).removeEntries("RFEnergyStorage");
 
     if(te instanceof IIoConfigurable && block == accessor.getBlock()) {
       IIoConfigurable machine = (IIoConfigurable) te;
@@ -216,7 +214,9 @@ public class WailaCompat implements IWailaDataProvider {
       }
     }
 
+    boolean removeRF = false;
     if(te instanceof IInternalPoweredTile && block == accessor.getBlock() && accessor.getNBTData().hasKey("storedEnergyRF") && !(te instanceof TileCapBank)) {
+      removeRF = true;
       IInternalPoweredTile power = (IInternalPoweredTile) te;
 
       if(power.displayPower()) {
@@ -233,6 +233,7 @@ public class WailaCompat implements IWailaDataProvider {
             EnumChatFormatting.RESET));
       }
     } else if(te instanceof IConduitBundle && itemStack != null && itemStack.getItem() == EnderIO.itemPowerConduit) {
+      removeRF = true;
       NBTTagCompound nbtRoot = accessor.getNBTData();
       short nbtVersion = nbtRoot.getShort("nbtVersion");
       NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
@@ -277,6 +278,11 @@ public class WailaCompat implements IWailaDataProvider {
           }
         }
       }
+    }
+
+    if(removeRF) {
+      // let's get rid of WAILA's default RF stuff, once that works
+      ((ITaggedList<String, String>) currenttip).removeEntries("RFEnergyStorage");
     }
 
     return currenttip;
