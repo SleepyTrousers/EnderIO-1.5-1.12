@@ -380,8 +380,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x,
-      int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
     if(te == null) {
       return true;
@@ -596,7 +595,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if(tool != null) {
       if(tool.canUse(player.getCurrentEquippedItem(), player, x, y, z)) {
         if(!world.isRemote) {
-          removedByPlayer(world, player, x, y, z);
+          removedByPlayer(world, player, x, y, z, true);
           tool.used(player.getCurrentEquippedItem(), player, x, y, z);
         }
         return true;
