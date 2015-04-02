@@ -79,6 +79,14 @@ public enum Fertilizer {
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
       return BONEMEAL.apply(stack, player, world, bc);
     }
+  },
+
+  MAGICALCROPS_FERTILIZER(GameRegistry.findItem("magicalcrops", "magicalcrops_MagicalCropFertilizer")) {
+
+    @Override
+    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
+      return BONEMEAL.apply(stack, player, world, bc);
+    }
   };
 
   private ItemStack stack;
