@@ -90,27 +90,40 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITelePad) {
       ITelePad tp = (ITelePad) te;
+      TileTelePad tile = null;
+      if (te instanceof TileTelePad) {
+        tile = (TileTelePad) te;
+      }
       if(tp.canBlockBeAccessed(player)) {
         BlockCoord bc = getCoords(stack);
         BlockCoord cur = new BlockCoord(tp.getX(), tp.getY(), tp.getZ());
         int dim = getDimension(stack);
         int curDim = tp.getTargetDim();
-        
+
         if(!bc.equals(cur)) {
-          tp.setCoords(bc);
+          if(tile != null) {
+            tile.setCoords_internal(bc);
+          } else {
+            tp.setCoords(bc);
+          }
           if(!world.isRemote) {
             player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
           }
         }
 
         if(dim != curDim) {
-          tp.setTargetDim(dim);
+          if(tile != null) {
+            tile.setTargetDim_internal(dim);
+          } else {
+            tp.setTargetDim(dim);
+          }
           if(!world.isRemote) {
-            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setDimension", EnumChatFormatting.GREEN.toString(), Integer.toString(dim))));
+            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setDimension", EnumChatFormatting.GREEN.toString(),
+                Integer.toString(dim))));
           }
         }
 
-        if (bc.equals(cur) && dim == curDim) {
+        if(bc.equals(cur) && dim == curDim) {
           return false;
         }
       } else {

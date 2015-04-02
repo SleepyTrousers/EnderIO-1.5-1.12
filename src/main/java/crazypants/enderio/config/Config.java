@@ -69,6 +69,7 @@ public final class Config {
   public static final Section sectionRailConfig = new Section("Rail", "railconfig");
   public static final Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final Section sectionWeather = new Section("Weather", "weather");
+  public static final Section sectionTelepad = new Section("Telepad", "telepad");
   public static final Section sectionMisc = new Section("Misc", "misc");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
@@ -445,7 +446,9 @@ public final class Config {
 
   public static boolean replaceWitherSkeletons = true;
 
-
+  public static boolean telepadLockDimension = true;
+  public static boolean telepadLockCoords = true;
+  
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -1181,12 +1184,16 @@ public final class Config {
         "If false the soul bound enchantment will not be available");
     enchantmentSoulBoundId = config.get(sectionEnchantments.name, "enchantmentSoulBoundId", enchantmentSoulBoundId,
         "The id of the enchantment. If set to -1 the lowest unassigned id will be used.").getInt(enchantmentSoulBoundId);
-    enchantmentSoulBoundWeight = config.get("enchantmentSoulBoundWeight", sectionEnchantments.name, enchantmentSoulBoundWeight,
+    enchantmentSoulBoundWeight = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundWeight,
         "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
 
-
-    replaceWitherSkeletons = config.get("replaceWitherSkeletons", sectionMisc.name, replaceWitherSkeletons,
+    replaceWitherSkeletons = config.get(sectionMisc.name, "replaceWitherSkeletons", replaceWitherSkeletons,
             "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
+
+    telepadLockDimension = config.get(sectionTelepad.name, "lockDimension", telepadLockDimension,
+        "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
+    telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
+        "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
   }
 
   public static void init() {

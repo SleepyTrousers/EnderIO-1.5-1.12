@@ -1,9 +1,12 @@
 package crazypants.enderio.gui;
 
-import com.google.common.base.Strings;
+import java.lang.reflect.Field;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
+
+import com.google.common.base.Strings;
+
 import crazypants.gui.IGuiScreen;
 
 public class TextFieldEIO extends GuiTextField {
@@ -38,6 +41,17 @@ public class TextFieldEIO extends GuiTextField {
   private final int yOrigin;
   private ICharFilter filter;
 
+  private static Field canLoseFocus;
+
+  static {
+    try {
+      canLoseFocus = GuiTextField.class.getDeclaredField("canLoseFocus");
+      canLoseFocus.setAccessible(true);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public TextFieldEIO(FontRenderer fnt, int x, int y, int width, int height) {
     this(fnt, x, y, width, height, null);
   }
@@ -70,5 +84,13 @@ public class TextFieldEIO extends GuiTextField {
   public static boolean isSpecialChar(char c, int key) {
     // taken from the giant switch statement in GuiTextField
     return c == 1 || c == 3 || c == 22 || c == 24 || key == 14 || key == 199 || key == 203 || key == 205 || key == 207 || key == 211;
+  }
+
+  public boolean getCanLoseFocus() {
+    try {
+      return canLoseFocus.getBoolean(this);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }

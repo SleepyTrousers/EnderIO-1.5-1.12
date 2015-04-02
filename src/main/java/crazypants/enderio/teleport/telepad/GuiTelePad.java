@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -18,6 +17,7 @@ import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -86,6 +86,11 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
     yTF.setText(Integer.toString(te.getY()));
     zTF.setText(Integer.toString(te.getZ()));
     dimTF.setText(Integer.toString(te.getTargetDim()));
+
+    xTF.setCanLoseFocus(!Config.telepadLockCoords);
+    yTF.setCanLoseFocus(!Config.telepadLockCoords);
+    zTF.setCanLoseFocus(!Config.telepadLockCoords);
+    dimTF.setCanLoseFocus(!Config.telepadLockDimension);
 
     textFields.addAll(Lists.newArrayList(xTF, yTF, zTF, dimTF));
 
@@ -171,8 +176,11 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     String[] text = { "X", "Y", "Z", "DIM" };
     for (int i = 0; i < text.length; i++) {
-      GuiTextField f = textFields.get(i);
+      TextFieldEIO f = textFields.get(i);
       fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 10, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
+      if(!f.getCanLoseFocus()) {
+        IconEIO.FARM_LOCK.renderIcon(f.xPosition + f.width - 2, f.yPosition - 2, true);
+      }
     }
 
     Entity e = te.getCurrentTarget();

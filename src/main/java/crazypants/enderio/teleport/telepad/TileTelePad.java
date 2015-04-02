@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
@@ -30,6 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.PacketPowerStorage;
@@ -103,7 +105,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       targetDim = worldObj.provider.dimensionId;
     }
     
-    if(worldObj.isRemote) {
+    if(worldObj.isRemote && isMaster()) {
       updateRotations();
       if(activeSound != null) {
         activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
@@ -379,11 +381,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(active()) {
       spinSpeed = getProgress() * 2;
     } else {
-      spinSpeed = Math.max(0, spinSpeed - 0.01f);
+      spinSpeed = Math.max(0, spinSpeed - 0.025f);
     }
     
+    System.out.println(Arrays.toString(bladeRots));
+        
     for (int i = 0; i < bladeRots.length; i++) {
       bladeRots[i] += spinSpeed * ((i * 2) + 20);
+      bladeRots[i] %= 360;
     }
   }
 
@@ -455,6 +460,32 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public ITelePad setX(int x) {
+    return Config.telepadLockCoords ? null : setX_internal(x);
+  }
+
+  @Override
+  public ITelePad setY(int y) {
+    return Config.telepadLockCoords ? null : setY_internal(y);
+  }
+
+  @Override
+  public ITelePad setZ(int z) {
+    return Config.telepadLockCoords ? null : setZ_internal(z);
+  }
+
+  @Override
+  public ITelePad setTargetDim(int dimID) {
+    return Config.telepadLockDimension ? null : setTargetDim_internal(dimID);
+  }
+
+  @Override
+  public void setCoords(BlockCoord coords) {
+    if(!Config.telepadLockCoords) {
+      setCoords_internal(coords);
+    }
+  }
+
+  ITelePad setX_internal(int x) {
     if(inNetwork()) {
       setCoords(new BlockCoord(x, target.y, target.z));
       return master;
@@ -462,8 +493,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return null;
   }
 
-  @Override
-  public ITelePad setY(int y) {
+  ITelePad setY_internal(int y) {
     if(inNetwork()) {
       setCoords(new BlockCoord(target.x, y, target.z));
       return master;
@@ -471,18 +501,16 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return null;
   }
 
-  @Override
-  public ITelePad setZ(int z) {
+  ITelePad setZ_internal(int z) {
     if(inNetwork()) {
       setCoords(new BlockCoord(target.x, target.y, z));
       return master;
     }
     return null;
   }
-  
-  @Override
-  public ITelePad setTargetDim(int dimID) {
-    if (inNetwork()) {
+
+  ITelePad setTargetDim_internal(int dimID) {
+    if(inNetwork()) {
       master.targetDim = dimID;
       coordsChanged = true;
       return master;
@@ -490,8 +518,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return null;
   }
 
-  @Override
-  public void setCoords(BlockCoord coords) {
+  void setCoords_internal(BlockCoord coords) {
     if(inNetwork()) {
       if(isMaster()) {
         this.target = coords;
