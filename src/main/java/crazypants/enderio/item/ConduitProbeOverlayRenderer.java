@@ -37,19 +37,22 @@ public class ConduitProbeOverlayRenderer {
     return null;
   }
 
-  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedProbe) {   
-    IconEIO icon;
+  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedProbe) {
+    IconEIO icon1, icon2;
     if(equippedProbe.getItemDamage() == 0) {
-      icon = IconEIO.PROBE_OVERLAY_PROBE;
+      icon1 = IconEIO.PROBE_OVERLAY_PROBE;
+      icon2 = IconEIO.PROBE_OVERLAY_COPY_OFF;
     } else {
-      icon = IconEIO.PROBE_OVERLAY_COPY;
+      icon1 = IconEIO.PROBE_OVERLAY_PROBE_OFF;
+      icon2 = IconEIO.PROBE_OVERLAY_COPY;
     }
     ScaledResolution res = event.resolution;
 
-    double offsetX = 16;
+    double offsetX = res.getScaledWidth() - 48;
     double offsetY = res.getScaledHeight() - 16;
     GL11.glColor4f(1, 1, 1, 0.75f);
-    icon.renderIcon(offsetX, offsetY - 32, 64, 32, 0, true);
+    icon1.renderIcon(offsetX - 32, offsetY - 32, 32, 32, 0, true);
+    icon2.renderIcon(offsetX, offsetY - 32, 32, 32, 0, true);
   }
 
 }

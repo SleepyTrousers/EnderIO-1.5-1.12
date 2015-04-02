@@ -42,9 +42,11 @@ public final class IconEIO {
   public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(32, 128);
   public static final IconEIO WRENCH_OVERLAY_ME_OFF = new IconEIO(32 + 48, 128);
 
-  public static final IconEIO PROBE_OVERLAY_PROBE = new IconEIO(112, 192, 32, 16);
-  public static final IconEIO PROBE_OVERLAY_COPY = new IconEIO(144, 192, 32, 16);
-
+  public static final IconEIO PROBE_OVERLAY_PROBE = new IconEIO(112, 192, 16, 16);
+  public static final IconEIO PROBE_OVERLAY_COPY = new IconEIO(128, 192, 16, 16);
+  public static final IconEIO PROBE_OVERLAY_PROBE_OFF = new IconEIO(144, 192, 16, 16);
+  public static final IconEIO PROBE_OVERLAY_COPY_OFF = new IconEIO(160, 192, 16, 16);
+  
   public static final IconEIO ACTIVE_TAB = new IconEIO(205, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 0, 19, 24);
 

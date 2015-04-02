@@ -55,7 +55,7 @@ public class YetaWrenchOverlayRenderer {
     ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(equippedWrench);
     ScaledResolution res = event.resolution;
 
-    double offsetX = 16;
+    double offsetX = res.getScaledWidth() - (16 + ((onIcons.length / 2 + (onIcons.length % 2)) * 16));
     double offsetY = res.getScaledHeight() - 16;
     if(mode == ConduitDisplayMode.ALL) {
       GL11.glColor4f(1, 1, 1, 0.75f);
