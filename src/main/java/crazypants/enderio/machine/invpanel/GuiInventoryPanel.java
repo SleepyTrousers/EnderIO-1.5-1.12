@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.gui.GhostSlot;
 import crazypants.render.RenderUtil;
@@ -28,6 +29,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final int GHOST_COLUMNS = 6;
   private static final int GHOST_ROWS    = 5;
 
+  private final TextFieldEIO tfFilter;
   private final IconButtonEIO btnSort;
 
   private boolean scrollUpPressed;
@@ -51,7 +53,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
     }
 
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+
+    tfFilter = new TextFieldEIO(fr, 109, 9, 106, 12);
     btnSort = new IconButtonEIO(this, ID_SORT, 216, 7, getSortOrderIcon());
+
+    textFields.add(tfFilter);
   }
 
   @Override
@@ -101,7 +108,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     tes.draw();
 
-    if(getDatabase().sortItems()) {
+    InventoryDatabaseClient db = getDatabase();
+    db.updateFilter(tfFilter.getText());
+
+    if(db.sortItems()) {
       updateGhostSlots();
     }
 

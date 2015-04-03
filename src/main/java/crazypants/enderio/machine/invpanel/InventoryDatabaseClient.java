@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.Minecraft;
@@ -16,22 +17,30 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabaseClient.ItemEntry> {
 
   private final TileInventoryPanel te;
   private final ArrayList<ItemEntry> clientItems;
+  private final ArrayList<ItemEntry> filteredItems;
   private final HashSet<Integer> requestedItems;
 
   private SortOrder order = SortOrder.NAME;
   private boolean invertSortOrder;
   private boolean needsSorting;
+  private String currentFilter;
+  private boolean needsFiltering;
+  private boolean needsNewFiltering;
+  private Locale locale;
   private Collator collator;
 
   public InventoryDatabaseClient(TileInventoryPanel te) {
     this.te = te;
     clientItems = new ArrayList<ItemEntry>();
+    filteredItems = new ArrayList<ItemEntry>();
     requestedItems = new HashSet<Integer>();
+    currentFilter = "";
   }
 
   public void readCompressedItems(byte[] compressed) throws IOException {
@@ -70,6 +79,8 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
         setItemCount(entry, count);
       }
       needsSorting = true;
+      needsFiltering = true;
+      needsNewFiltering = true;
     } finally {
       cdi.close();
     }
@@ -97,6 +108,10 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
           } else {
             missingItems = addMissingItems(missingItems, dbID);
           }
+        }
+
+        if(order == SortOrder.COUNT) {
+          needsSorting = true;
         }
       } else {
         for(ItemEntry entry : clientItems) {
@@ -127,12 +142,14 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
           }
           count = cdi.readVariable();
         }
+        needsSorting = true;
+        needsFiltering = true;
+        needsNewFiltering = true;
       }
 
       if(missingItems != null) {
         PacketHandler.INSTANCE.sendToServer(new PacketRequestMissingItems(te, missingItems));
       }
-      needsSorting = true;
     } finally {
       cdi.close();
     }
@@ -141,8 +158,12 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
   private void setItemCount(ItemEntry entry, int count) {
     if(entry.count == 0 && count > 0) {
       clientItems.add(entry);
+      needsFiltering = true;
+      needsNewFiltering = true;
     } else if(entry.count > 0 && count == 0) {
       clientItems.remove(entry);
+      needsFiltering = true;
+      needsNewFiltering = true;
     }
     entry.count = count;
   }
@@ -158,11 +179,17 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
     return list;
   }
 
+  private Locale getLocale() {
+    if(locale == null) {
+      String langCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+      locale = Locale.forLanguageTag(langCode);
+    }
+    return locale;
+  }
+
   private Collator getCollator() {
     if(collator == null) {
-      String langCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
-      Locale locale = Locale.forLanguageTag(langCode);
-      collator = Collator.getInstance(locale);
+      collator = Collator.getInstance(getLocale());
     }
     return collator;
   }
@@ -175,6 +202,19 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
     }
   }
 
+  public void updateFilter(String newFilter) {
+    newFilter = newFilter.trim();
+
+    if(!currentFilter.equals(newFilter)) {
+      if(newFilter.length() < currentFilter.length() ||
+              !newFilter.regionMatches(0, currentFilter, 0, currentFilter.length())) {
+        needsNewFiltering = true;
+      }
+      needsFiltering = true;
+      currentFilter = newFilter;
+    }
+  }
+
   public SortOrder getSortOrder() {
     return order;
   }
@@ -184,6 +224,32 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
   }
 
   public boolean sortItems() {
+    boolean changed = false;
+
+    if(needsFiltering) {
+      if(needsNewFiltering) {
+        filteredItems.clear();
+        filteredItems.addAll(clientItems);
+        needsSorting = true;
+      }
+
+      ItemFilter filter = ItemFilter.parse(currentFilter, getLocale());
+      System.out.println("filtering new="+needsNewFiltering+" currentFilter="+currentFilter+" parsed="+filter);
+      if(filter != null) {
+        Iterator<ItemEntry> iter = filteredItems.iterator();
+        while(iter.hasNext()) {
+          ItemEntry entry = iter.next();
+          if(!filter.matches(entry)) {
+            iter.remove();
+            changed = true;
+          }
+        }
+      }
+
+      needsFiltering = false;
+      needsNewFiltering = false;
+    }
+
     if(needsSorting) {
       Comparator<ItemEntry> cmp;
       switch (order) {
@@ -194,18 +260,19 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
       if(invertSortOrder) {
         cmp = Collections.reverseOrder(cmp);
       }
-      Collections.sort(clientItems, cmp);
-      return true;
+      Collections.sort(filteredItems, cmp);
+      changed = true;
     }
-    return false;
+
+    return changed;
   }
 
   public int getNumEntries() {
-    return clientItems.size();
+    return filteredItems.size();
   }
 
   public ItemEntry getItemEntry(int index) {
-    return clientItems.get(index);
+    return filteredItems.get(index);
   }
 
   public ItemStack getItemStack(int index) {
@@ -220,6 +287,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
   public static class ItemEntry extends ItemEntryBase {
     String name;
     String modId;
+    String lowerCaseLocName;
     int count;
 
     public ItemEntry(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
@@ -245,6 +313,13 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
         findUnlocName();
       }
       return name;
+    }
+
+    public String getLowercaseUnlocName(Locale locale) {
+      if(lowerCaseLocName == null) {
+        lowerCaseLocName = StatCollector.translateToLocal(getUnlocName()).toLowerCase(locale);
+      }
+      return lowerCaseLocName;
     }
 
     private void findUnlocName() {
