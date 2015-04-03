@@ -52,7 +52,7 @@ public class MagnetController implements IEntitySelector {
     return null;
   }
   
-  public void doHoover(EntityPlayer player) {
+  private void doHoover(EntityPlayer player) {
     
     AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
