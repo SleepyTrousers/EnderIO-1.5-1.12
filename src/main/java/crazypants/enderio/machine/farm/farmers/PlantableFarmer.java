@@ -76,6 +76,10 @@ public class PlantableFarmer implements IFarmerJoe {
       return plantFromInventory(farm, bc, plantable);
     }
 
+    if (type == EnumPlantType.Water) {
+      return plantFromInventory(farm, bc, plantable);
+    }
+
     return false;
   }
 
