@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -14,7 +12,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.tool.BaublesTool;
 import crazypants.util.BlockCoord;
 
 public class WirelessChargerController {
@@ -93,17 +90,6 @@ public class WirelessChargerController {
   private boolean chargeFromCapBank(EntityPlayer player, IWirelessCharger capBank) {
     boolean res = capBank.chargeItems(player.inventory.armorInventory);
     res |= capBank.chargeItems(player.inventory.mainInventory);    
-    IInventory baubles = BaublesTool.getInstance().getBaubles(player);
-    if (baubles != null) {
-      ItemStack[] item = new ItemStack[1];
-      for (int i = 0; i < baubles.getSizeInventory(); i++) {
-        item[0] = baubles.getStackInSlot(i);
-        if(capBank.chargeItems(item)) {
-          baubles.setInventorySlotContents(i, item[0]);
-          res = true;
-        }
-      }
-    }
     return res;
   }
 
