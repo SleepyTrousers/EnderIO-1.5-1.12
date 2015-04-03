@@ -2,7 +2,6 @@ package crazypants.enderio.item;
 
 import java.util.List;
 
-import baubles.api.BaubleType;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,8 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import cofh.api.energy.ItemEnergyContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -24,12 +26,11 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.tool.BaublesTool;
+import crazypants.util.BaublesUtil;
 import crazypants.util.ItemUtil;
-import cpw.mods.fml.common.Optional;
 
-@Optional.Interface(iface="baubles.api.IBauble", modid="Baubles", striprefs=true)
-public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, baubles.api.IBauble {
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
+public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble {
 
   private static final String ACTIVE_KEY = "magnetActive";
 
@@ -71,9 +72,8 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     return result;
   }
 
-
   protected ItemMagnet() {
-    super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF/100);
+    super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF / 100);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMagnet.unlocalisedName);
     setMaxDamage(16);
@@ -107,8 +107,8 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
+        + PowerDisplayUtil.abrevation();
     list.add(str);
   }
 
@@ -159,7 +159,6 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     stack.setItemDamage(res);
   }
 
-
   @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
     if(player.isSneaking()) {
@@ -180,16 +179,15 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   @Override
-  @Method(modid = "Baubles")
   public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-    if (player instanceof EntityPlayer && hasPower(itemstack)) {
+    if(player instanceof EntityPlayer && hasPower(itemstack)) {
       controller.doHoover((EntityPlayer) player);
       if(!player.worldObj.isRemote && player.worldObj.getTotalWorldTime() % 20 == 0) {
         ItemMagnet.drainPerSecondPower(itemstack);
-        IInventory baubles = BaublesTool.getInstance().getBaubles((EntityPlayer)player);
-        if (baubles != null) {
+        IInventory baubles = BaublesUtil.instance().getBaubles((EntityPlayer) player);
+        if(baubles != null) {
           for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            if (baubles.getStackInSlot(i) == itemstack) {
+            if(baubles.getStackInSlot(i) == itemstack) {
               baubles.setInventorySlotContents(i, itemstack);
             }
           }
@@ -199,23 +197,19 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   @Override
-  @Method(modid = "Baubles")
   public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
   }
 
   @Override
-  @Method(modid = "Baubles")
   public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
   }
 
   @Override
-  @Method(modid = "Baubles")
   public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
     return isActive(itemstack);
   }
 
   @Override
-  @Method(modid = "Baubles")
   public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
     return true;
   }

@@ -21,7 +21,7 @@ import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.tool.BaublesTool;
+import crazypants.util.BaublesUtil;
 import crazypants.util.Lang;
 
 @Interface(iface = "tterrag.core.api.common.enchant.IAdvancedEnchant", modid = "ttCore")
@@ -79,7 +79,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     // wait for that because gravestone mods also listen to this event. So we have
     // to fetch Baubles items ourselves here.
     // For the same reason we cannot put the items into Baubles slots.
-    IInventory baubles = BaublesTool.getInstance().getBaubles(evt.entityPlayer);
+    IInventory baubles = BaublesUtil.instance().getBaubles(evt.entityPlayer);
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack item = baubles.getStackInSlot(i);

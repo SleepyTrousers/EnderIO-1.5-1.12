@@ -17,8 +17,7 @@ import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.BaublesTool;
-
+import crazypants.util.BaublesUtil;
 import static crazypants.enderio.EnderIO.itemMagnet;
 
 public class MagnetController implements IEntitySelector {
@@ -111,7 +110,7 @@ public class MagnetController implements IEntitySelector {
     case ARMOR:
       return;
     case BAUBLES:
-      baubles = BaublesTool.getInstance().getBaubles(player);
+      baubles = BaublesUtil.instance().getBaubles(player);
       if (baubles != null) {
         stack = baubles.getStackInSlot(slot);
       }

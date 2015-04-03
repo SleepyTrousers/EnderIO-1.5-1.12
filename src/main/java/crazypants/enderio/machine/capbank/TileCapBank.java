@@ -35,6 +35,7 @@ import crazypants.enderio.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -43,7 +44,7 @@ import crazypants.util.EntityUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class TileCapBank extends TileEntityEio implements IInternalPowerHandler, IInventory, IIoConfigurable, IPowerStorage {
+public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
 
   private Map<ForgeDirection, IoMode> faceModes;
   private Map<ForgeDirection, InfoDisplayType> faceDisplayTypes;
@@ -675,10 +676,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     return network.receiveEnergy(maxReceive, simulate);
   }
 
-  @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
-  }
+//  @Override
+//  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+//    return 0;
+//  }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {

@@ -14,7 +14,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.tool.BaublesTool;
+import crazypants.util.BaublesUtil;
 import crazypants.util.BlockCoord;
 
 public class WirelessChargerController {
@@ -93,7 +93,7 @@ public class WirelessChargerController {
   private boolean chargeFromCapBank(EntityPlayer player, IWirelessCharger capBank) {
     boolean res = capBank.chargeItems(player.inventory.armorInventory);
     res |= capBank.chargeItems(player.inventory.mainInventory);    
-    IInventory baubles = BaublesTool.getInstance().getBaubles(player);
+    IInventory baubles = BaublesUtil.instance().getBaubles(player);
     if (baubles != null) {
       ItemStack[] item = new ItemStack[1];
       for (int i = 0; i < baubles.getSizeInventory(); i++) {

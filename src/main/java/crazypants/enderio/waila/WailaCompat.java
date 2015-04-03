@@ -121,7 +121,7 @@ public class WailaCompat implements IWailaDataProvider {
     registrar.registerBodyProvider(INSTANCE, BlockEio.class);
 
     registrar.registerNBTProvider(INSTANCE, TileEntityEio.class);
-
+    
     ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
     IWailaInfoProvider.fmt.setMaximumFractionDigits(1);
   }
