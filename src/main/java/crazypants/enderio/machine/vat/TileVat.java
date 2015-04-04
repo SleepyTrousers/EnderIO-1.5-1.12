@@ -19,8 +19,9 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
 
-public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler {
+public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess {
 
   final FluidTank inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
@@ -325,6 +326,21 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   void setClientTask(IPoweredTask currentTask) {
     this.currentTask = currentTask;
+  }
+
+  @Override
+  public FluidTank getInputTank() {
+    return inputTank;
+  }
+
+  @Override
+  public FluidTank getOutputTank() {
+    return outputTank;
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tanksDirty = true;
   }
 
 }

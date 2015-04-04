@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -17,8 +18,10 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
+import crazypants.util.ItemUtil;
 
-public class TileTank extends AbstractMachineEntity implements IFluidHandler {
+public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
 
   private static int IO_MB_TICK = 100;
 
@@ -275,49 +278,32 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       return false;
     }
 
-    ItemStack filledItem = FluidContainerRegistry.fillFluidContainer(tank.getFluid(), toFill);
-    FluidStack filledFluid = FluidContainerRegistry.getFluidForFilledItem(filledItem);
+    ItemStack filledContainer = FluidUtil.fillContainerFromInternalTank(this, toFill, false);
+    if (filledContainer == null) {
+      return false;
+    }
 
-    if(filledFluid == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
-      FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
-      for (FluidContainerData data : datas) {
-        if(data.fluid.getFluid().getName().equals(tank.getFluid().getFluid().getName()) && data.emptyContainer.isItemEqual(toFill)) {
-          filledItem = data.filledContainer.copy();
-          filledFluid = FluidContainerRegistry.getFluidForFilledItem(filledItem);
-        }
+    if (inventory[3] != null) {
+      if (filledContainer.isStackable() && ItemUtil.areStackMergable(inventory[3], filledContainer)
+          && inventory[3].stackSize < inventory[3].getMaxStackSize()) {
+        filledContainer.stackSize += inventory[3].stackSize;
+      } else {
+        return false;
       }
     }
 
-    if(filledFluid == null || filledItem == null) {
-      return false;
-    }
-    if(filledFluid.amount > tank.getFluidAmount()) {
-      return false;
-    }
-    if(inventory[3] != null) {
-      if(!inventory[3].isItemEqual(filledItem) || inventory[3].getMaxStackSize() < inventory[3].stackSize + 1) {
-        return false; //can't stack the full container
-      }
-    }
-
-    tank.drain(filledFluid.amount, true);
-    tankDirty = true;
+    FluidUtil.fillContainerFromInternalTank(this, toFill, true);
 
     toFill = toFill.copy();
     toFill.stackSize--;
-    if(toFill.stackSize == 0) {
+    if (toFill.stackSize == 0) {
       setInventorySlotContents(1, null);
     } else {
       setInventorySlotContents(1, toFill);
     }
 
-    if(inventory[3] == null) {
-      setInventorySlotContents(3, filledItem);
-    } else {
-      ItemStack newStack = inventory[3].copy();
-      newStack.stackSize++;
-      setInventorySlotContents(3, newStack);
-    }
+    setInventorySlotContents(3, filledContainer);
+
     markDirty();
     return false;
   }
@@ -395,6 +381,21 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     } else {
       tank.setFluid(null);
     }
+  }
+
+  @Override
+  public FluidTank getInputTank() {
+    return tank;
+  }
+
+  @Override
+  public FluidTank getOutputTank() {
+    return tank;
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tankDirty = true;
   }
 
 }

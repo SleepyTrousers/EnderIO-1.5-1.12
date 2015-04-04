@@ -102,47 +102,10 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       }
     }
 
-    //now check for empty fluid containers to fill
-    FluidStack available = tank.tank.getFluid();
-    if(available != null) {
-      ItemStack res = FluidContainerRegistry.fillFluidContainer(available.copy(), item);
-      FluidStack filled = FluidContainerRegistry.getFluidForFilledItem(res);
-
-      if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
-        FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
-        for (FluidContainerData data : datas) {
-          if(data != null && data.fluid != null && data.fluid.getFluid() != null &&
-              data.fluid.getFluid().getName() != null && data.emptyContainer != null &&
-              data.fluid.getFluid().getName().equals(available.getFluid().getName()) &&
-              data.emptyContainer.isItemEqual(item)) {
-            res = data.filledContainer.copy();
-            filled = FluidContainerRegistry.getFluidForFilledItem(res);
-          }
-        }
-      }
-
-      if(filled != null) {
-        tank.drainInternal(filled, true);
-        if(item.stackSize > 1) {
-          item.stackSize--;
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, item);
-          for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-            if(entityPlayer.inventory.mainInventory[i] == null) {
-              entityPlayer.inventory.setInventorySlotContents(i, res);
-              return true;
-            }
-          }
-          if(!world.isRemote) {
-            Util.dropItems(world, res, x, y, z, true);
-          }
-
-        } else {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, res);
-        }
-
-        return true;
-      }
+    if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, tank)) {
+      return true;
     }
+
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
 
