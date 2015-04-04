@@ -24,7 +24,6 @@ import crazypants.render.VertexRotation;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
-
 import static crazypants.util.FluidUtil.isValidFluid;
 
 public class BlockVat extends AbstractMachineBlock<TileVat> {
@@ -138,49 +137,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       }
     }
 
-    //now check for empty fluid containers to fill
-    FluidStack available = vat.outputTank.getFluid();
-    if(isValidFluid(available)) {
-      ItemStack res = FluidContainerRegistry.fillFluidContainer(available.copy(), item);
-      FluidStack filled = FluidContainerRegistry.getFluidForFilledItem(res);
-
-      if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
-        FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
-        for (FluidContainerData data : datas) {
-          if(data != null && isValidFluid(data.fluid) && data.fluid.getFluid().getName().equals(available.getFluid().getName())
-              && data.emptyContainer.isItemEqual(item)) {
-            res = data.filledContainer.copy();
-            filled = FluidContainerRegistry.getFluidForFilledItem(res);
-          }
-        }
-      }
-
-      if(isValidFluid(filled)) {
-        
-        if(filled.amount > available.amount) {
-          return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-        }
-        
-        vat.drain(ForgeDirection.DOWN, filled, true);
-        if(item.stackSize > 1) {
-          item.stackSize--;
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, item);
-          for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-            if(entityPlayer.inventory.mainInventory[i] == null) {
-              entityPlayer.inventory.setInventorySlotContents(i, res);
-              return true;
-            }
-          }
-          if(!world.isRemote) {
-            Util.dropItems(world, res, x, y, z, true);
-          }
-
-        } else {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, res);
-        }
-
-        return true;
-      }
+    if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, vat)) {
+      return true;
     }
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);

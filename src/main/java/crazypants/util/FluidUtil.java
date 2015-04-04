@@ -1,24 +1,30 @@
 package crazypants.util;
 
+import static crazypants.util.FluidUtil.isValidFluid;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -164,6 +170,104 @@ public class FluidUtil {
 
   public static boolean isValidFluid(FluidStack fluidStack) {
     return fluidStack != null && fluidStack.getFluid() != null && fluidStack.getFluid().getName() != null;
+  }
+
+  public static ItemStack fillContainerFromInternalTank(ITankAccess tank, ItemStack item, boolean drain) {
+    FluidStack available = tank.getOutputTank().getFluid();
+    if (isValidFluid(available)) {
+      ItemStack res = FluidContainerRegistry.fillFluidContainer(available.copy(), item);
+      FluidStack filled = FluidContainerRegistry.getFluidForFilledItem(res);
+
+      /*
+       * We had some code here that replicated the two methods above if they did
+       * not return a result. As far as *I* know, that is not needed (anymore?).
+       * It works without it for vanilla buckets and Forestry cans. In the case
+       * of issues like "cannot fill xxx anymore", that code needs to be
+       * re-inserted here.
+       */
+
+      if (isValidFluid(filled) && (filled.amount <= available.amount)) {
+        if (drain) {
+          tank.getOutputTank().drain(filled.amount, true);
+          tank.setTanksDirty();
+        }
+        return res;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * If the currently held item of the given player can be filled with the
+   * liquid in the given tank's output tank, do so and put the resultant filled
+   * container item where it can go. This will also drain the tank and set it to
+   * dirty.
+   * 
+   * <p>
+   * Cases handled for the the filled container:
+   * 
+   * <ul>
+   * <li>If the stacksize of the held item is one, then it will be replaced by
+   * the filled container unless the player in in creative.
+   * <li>If the filled container is stackable and the player already has a
+   * non-maxed stack in the inventory, it is put there.
+   * <li>If the player has space in his inventory, it is put there.
+   * <li>Otherwise it will be dropped on the ground between the position given
+   * as parameter and the player's position.
+   * </ul>
+   * 
+   * @param world
+   * @param x
+   * @param y
+   * @param z
+   * @param entityPlayer
+   * @param tank
+   * @return true if a container was filled, false otherwise
+   */
+  public static boolean fillPlayerHandItemFromInternalTank(World world, int x, int y, int z, EntityPlayer entityPlayer,
+      ITankAccess tank) {
+    ItemStack item = entityPlayer.inventory.getCurrentItem();
+    if (item == null || item.getItem() == null) {
+      return false;
+    }
+    ItemStack filledContainer = fillContainerFromInternalTank(tank, item, !entityPlayer.capabilities.isCreativeMode);
+    if (filledContainer == null) {
+      return false;
+    }
+
+    if (item.stackSize == 1 && !entityPlayer.capabilities.isCreativeMode) {
+      entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, filledContainer);
+    } else {
+      if (!entityPlayer.capabilities.isCreativeMode) {
+        item.stackSize--;
+        entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, item);
+      }
+      if (filledContainer.isStackable()) {
+        for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
+          ItemStack inventoryItem = entityPlayer.inventory.mainInventory[i];
+          if (ItemUtil.areStackMergable(inventoryItem, filledContainer)
+              && inventoryItem.stackSize < inventoryItem.getMaxStackSize()) {
+            filledContainer.stackSize += inventoryItem.stackSize;
+            entityPlayer.inventory.setInventorySlotContents(i, filledContainer);
+            return true;
+          }
+        }
+      }
+      for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
+        if (entityPlayer.inventory.mainInventory[i] == null) {
+          entityPlayer.inventory.setInventorySlotContents(i, filledContainer);
+          return true;
+        }
+      }
+      if (!world.isRemote) {
+        double x0 = (x + entityPlayer.posX) / 2.0D;
+        double y0 = (y + entityPlayer.posY) / 2.0D + 0.5D;
+        double z0 = (z + entityPlayer.posZ) / 2.0D;
+        Util.dropItems(world, filledContainer, x0, y0, z0, true);
+      }
+    }
+    return true;
   }
 
 }
