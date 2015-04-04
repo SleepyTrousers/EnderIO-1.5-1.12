@@ -220,6 +220,12 @@ public class NetworkedInventory {
     if(numInserted <= 0) {
       return false;
     }
+    itemExtracted(slot, numInserted);
+    return true;
+
+  }
+
+  public void itemExtracted(int slot, int numInserted) {
     ItemStack curStack = getInventory().getStackInSlot(slot);
     if(curStack != null) {
       if(ticHack) {
@@ -239,8 +245,6 @@ public class NetworkedInventory {
     }
     con.itemsExtracted(numInserted, slot);
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
-    return true;
-
   }
 
   int insertIntoTargets(ItemStack toExtract) {

@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -206,6 +208,20 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
       }
       return count;
     }
+
+    int extractItems(InventoryDatabaseServer db, int count) {
+      int extracted = 0;
+      Integer[] copy = slots.toArray(new Integer[slots.size()]);
+      for(Integer idx : copy) {
+        int niIndex = idx >> 12;
+        int slotIndex = idx & 4095;
+        InventoryKey key = db.inventories[niIndex];
+        int amount = key.extractItem(db, this, slotIndex, niIndex, count);
+        count -= amount;
+        extracted += amount;
+      }
+      return extracted;
+    }
   }
 
   static class InventoryKey {
@@ -244,7 +260,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
             db.entryChanged(current);
           }
         } else {
-          ItemEntry key = db.lookupItem(stack, current);
+          ItemEntry key = db.lookupItem(stack, current, true);
           if(key != current) {
             slotItems[slot] = key;
             itemCounts[slot] = stack.stackSize;
@@ -273,6 +289,38 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
 
       slotItems = new ItemEntry[count];
       itemCounts = new int[count];
+    }
+
+    int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int niIndex, int count) {
+      ItemStack[] items = ni.getExtractableItemStacks();
+      if(items == null || slot >= items.length) {
+        return 0;
+      }
+
+      ItemStack stack = items[slot];
+      if(stack == null || db.lookupItem(stack, entry, false) != entry) {
+        return 0;
+      }
+
+      int remaining = stack.stackSize;
+      if(count > remaining) {
+        count = remaining;
+      }
+
+      ni.itemExtracted(slot, count);
+      remaining -= count;
+
+      if(itemCounts[slot] != remaining) {
+        itemCounts[slot] = remaining;
+        if(remaining == 0) {
+          slotItems[slot] = null;
+          entry.removeSlot(niIndex, slot);
+        }
+        db.entryChanged(entry);
+      }
+
+      System.out.println("result " + count);
+      return count;
     }
   }
 

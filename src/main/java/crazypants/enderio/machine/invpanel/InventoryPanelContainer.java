@@ -175,7 +175,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   public void sendChangeLog() {
     if(!changedItems.isEmpty() && !crafters.isEmpty()) {
       try {
-      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+        InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
         byte[] compressed = db.compressChangedItems(changedItems);
         PacketItemList pil = new PacketItemList(getInventoryPanel(), compressed);
         for(Object crafting : crafters) {
@@ -191,4 +191,68 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     changedItems.clear();
   }
 
+  public int getSlotIndex(IInventory inv, int index) {
+    for (int i = 0; i < inventorySlots.size(); i++) {
+      Slot slot = (Slot)inventorySlots.get(i);
+      if (slot.isSlotInInventory(inv, index)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public void executeFetchItems(EntityPlayerMP player, int dbID, int targetSlot, int count) {
+    InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+    InventoryDatabaseServer.ItemEntry entry = db.getExistingItem(dbID);
+    if(entry != null) {
+      ItemStack targetStack;
+      Slot slot;
+      int maxStackSize;
+
+      if(targetSlot < 0) {
+        slot = null;
+        targetStack = player.inventory.getItemStack();
+        maxStackSize = player.inventory.getInventoryStackLimit();
+
+        if(targetStack != null && targetStack.stackSize > 0) {
+          return;
+        }
+      } else {
+        slot = getSlot(targetSlot);
+        targetStack = slot.getStack();
+        maxStackSize = slot.getSlotStackLimit();
+      }
+
+      //System.out.println("executeFetchItems targetSlot="+targetSlot+" slot="+slot+" maxStackSize="+maxStackSize+" count="+count);
+
+      ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.meta);
+      tmpStack.stackTagCompound = entry.nbt;
+      maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
+
+      if(targetStack != null && targetStack.stackSize > 0) {
+        if(!ItemUtil.areStackMergable(tmpStack, targetStack)) {
+          return;
+        }
+      } else {
+        targetStack = tmpStack.copy();
+      }
+
+      count = Math.min(count, maxStackSize - targetStack.stackSize);
+      if(count > 0) {
+        int extracted = entry.extractItems(db, count);
+        if(extracted > 0) {
+          targetStack.stackSize += extracted;
+
+          sendChangeLog();
+
+          if(slot != null) {
+            slot.putStack(targetStack);
+          } else {
+            player.inventory.setItemStack(targetStack);
+            player.updateHeldItem();
+          }
+        }
+      }
+    }
+  }
 }

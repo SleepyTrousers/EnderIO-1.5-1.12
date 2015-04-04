@@ -30,7 +30,7 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     complexItems = new ArrayList<ItemEntry>();
   }
 
-  public ItemEntry lookupItem(ItemStack stack, ItemEntry hint) {
+  public ItemEntry lookupItem(ItemStack stack, ItemEntry hint, boolean create) {
     if(stack == null || stack.getItem() == null) {
       return null;
     }
@@ -47,7 +47,9 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
       return hint;
     }
 
-    if(nbt == null && itemID < SIMPLE_MAX_ITEMID && meta < SIMPLE_MAX_META) {
+    if(!create) {
+      return null;
+    } else if(nbt == null && itemID < SIMPLE_MAX_ITEMID && meta < SIMPLE_MAX_META) {
       return getSimpleItem(itemID, meta);
     } else {
       return getComplexItem(itemID, meta, nbt);
@@ -113,6 +115,13 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
       return complexItems.get(dbIndex);
     }
     return null;
+  }
+
+  public ItemEntry getExistingItem(int dbID) {
+    if(dbID < COMPLEX_DBINDEX_START) {
+      return simpleRegsitry.get(dbID);
+    }
+    return getItem(dbID);
   }
 
   static final class ItemEntryKey {

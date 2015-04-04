@@ -6,6 +6,7 @@ import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
 import crazypants.render.RenderUtil;
 import java.awt.Rectangle;
@@ -13,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -46,10 +48,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for(int y = 0; y < GHOST_ROWS; y++) {
       for(int x = 0; x < GHOST_COLUMNS; x++) {
-        GhostSlot slot = new GhostSlot();
-        slot.x = 109 + x*18;
-        slot.y =  28 + y*18;
-        ghostSlots.add(slot);
+        ghostSlots.add(new InvSlot(109 + x*18, 28 + y*18));
       }
     }
 
@@ -179,10 +178,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int index = scrollPos * GHOST_COLUMNS;
     int count = database.getNumEntries();
     for(int i = 0; i < GHOST_ROWS*GHOST_COLUMNS; i++,index++) {
-      GhostSlot slot = ghostSlots.get(i);
+      InvSlot slot = (InvSlot) ghostSlots.get(i);
       if(index < count) {
-        slot.stack = database.getItemStack(index);
+        slot.entry = database.getItemEntry(index);
+        slot.stack = slot.entry.makeItemStack();
       } else {
+        slot.entry = null;
         slot.stack = null;
       }
     }
@@ -231,4 +232,49 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.mouseClickMove(x, y, button, time);
   }
 
+  @Override
+  protected void ghostSlotClicked(GhostSlot slot, int x, int y, int button) {
+    if(slot instanceof InvSlot) {
+      InvSlot invSlot = (InvSlot) slot;
+      if(invSlot.entry != null && invSlot.stack != null) {
+        int targetSlot;
+        int count = Math.min(invSlot.stack.stackSize, invSlot.stack.getMaxStackSize());
+
+        if(button == 0) {
+          if(isShiftKeyDown()) {
+            InventoryPlayer playerInv = mc.thePlayer.inventory;
+            targetSlot = playerInv.getFirstEmptyStack();
+            if(targetSlot >= 0) {
+              targetSlot = ((InventoryPanelContainer) inventorySlots).getSlotIndex(playerInv, targetSlot);
+            }
+            if(targetSlot < 0) {
+              return;
+            }
+          } else {
+            targetSlot = -1;
+          }
+        } else if(button == 1) {
+          targetSlot = -1;
+          if(isCtrlKeyDown()) {
+            count = 1;
+          } else {
+            count = (count + 1) / 2;
+          }
+        } else {
+          return;
+        }
+
+        PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(invSlot.entry, targetSlot, count));
+      }
+    }
+  }
+
+  static class InvSlot extends GhostSlot {
+    InventoryDatabaseClient.ItemEntry entry;
+
+    InvSlot(int x, int y) {
+      this.x = x;
+      this.y = y;
+    }
+  }
 }

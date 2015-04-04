@@ -275,10 +275,6 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
     return filteredItems.get(index);
   }
 
-  public ItemStack getItemStack(int index) {
-    return getItemEntry(index).makeItemStack();
-  }
-
   @Override
   protected ItemEntry createItemEntry(int dbId, int hash, int itemID, int meta, NBTTagCompound nbt) {
     return new ItemEntry(dbId, hash, itemID, meta, nbt);
@@ -296,10 +292,6 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
 
     public int getCount() {
       return count;
-    }
-
-    public Item getItem() {
-      return Item.getItemById(itemID);
     }
 
     public ItemStack makeItemStack() {
