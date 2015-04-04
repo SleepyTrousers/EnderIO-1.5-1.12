@@ -4,24 +4,23 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.Util;
 
-public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
+public class BlockEnchanter extends BlockEio implements ISidedGuiHandler, IResourceTooltipProvider {
 
   public static BlockEnchanter create() {
     BlockEnchanter res = new BlockEnchanter();
@@ -40,7 +39,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   @Override
   protected void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
   }
 
   @Override
@@ -69,7 +68,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     }
     world.markBlockForUpdate(x, y, z);
   }
-  
+
   @Override
   protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
@@ -87,6 +86,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     super.breakBlock(world, x, y, z, block, meta);
   }
 
+  @Override
   public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }
@@ -130,6 +130,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEnchanter) {
@@ -137,7 +138,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     }
     return null;
   }
-  
+
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();

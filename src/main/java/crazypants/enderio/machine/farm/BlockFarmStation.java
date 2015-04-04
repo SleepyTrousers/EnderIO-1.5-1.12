@@ -47,6 +47,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileFarmStation) {
@@ -124,6 +125,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
     return false;
   }
 
+  @SideOnly(Side.CLIENT)
   public IIcon getFrontIcon() {
     return iconBuffer[0][3];
   }

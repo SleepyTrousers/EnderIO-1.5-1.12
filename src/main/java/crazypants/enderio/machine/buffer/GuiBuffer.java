@@ -8,6 +8,8 @@ import net.minecraft.inventory.Slot;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.TextFieldEIO;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -15,6 +17,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   private static final String TEXTURE_SIMPLE = "enderio:textures/gui/buffer.png";
@@ -170,11 +173,12 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     return getTileEntity().hasInventory() && getTileEntity().hasPower();
   }
 
+  @Override
   public void renderSlotHighlights(IoMode mode) {
     if (!getTileEntity().hasInventory()) {
       return;
     }
-    
+
     for (int slot = 0; slot < getTileEntity().getSizeInventory(); slot++) {
       renderSlotHighlight(slot, mode);
     }

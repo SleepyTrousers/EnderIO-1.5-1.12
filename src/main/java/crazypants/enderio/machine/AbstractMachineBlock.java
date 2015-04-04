@@ -16,21 +16,22 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ClientProxy;
+import crazypants.enderio.CommonProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio implements IGuiHandler, IResourceTooltipProvider,
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio implements ISidedGuiHandler, IResourceTooltipProvider,
     IWailaInfoProvider {
 
   public static int renderId;
@@ -71,10 +72,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     this(mo, teClass, new Material(MapColor.ironColor));
   }
 
+  @Override
   protected void init() {
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    CommonProxy.guiHandler.registerGuiHandler(getGuiId(), this);
   }
 
   @Override
@@ -82,13 +84,14 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return renderId;
   }
 
+  @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);
     }
     return true;
   }
-  
+
   @Override
   public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
     return false;
@@ -301,7 +304,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
   }
-  
+
   protected void setObeliskBounds() {
     setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
   }

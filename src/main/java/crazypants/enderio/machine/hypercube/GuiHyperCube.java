@@ -10,6 +10,8 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -30,6 +32,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.PlayerUtil;
 
+@SideOnly(Side.CLIENT)
 public class GuiHyperCube extends GuiContainerBase {
 
   protected static final int POWER_INPUT_BUTTON_ID = 1;

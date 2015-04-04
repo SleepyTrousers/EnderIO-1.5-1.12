@@ -8,6 +8,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -17,11 +19,12 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
   public GuiZombieGenerator(InventoryPlayer inventory, TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity));
-    
+
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
 
       @Override

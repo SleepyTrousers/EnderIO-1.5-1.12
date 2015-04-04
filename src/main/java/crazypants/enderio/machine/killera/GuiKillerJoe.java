@@ -7,6 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -20,6 +22,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.util.SoundUtil;
 
+@SideOnly(Side.CLIENT)
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
   private static final int XP_ID = 3489;

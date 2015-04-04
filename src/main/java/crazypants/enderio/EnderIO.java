@@ -171,8 +171,6 @@ public class EnderIO {
 
   public static final PacketHandler packetPipeline = new PacketHandler();
 
-  public static GuiHandler guiHandler = new GuiHandler();
-
   // Materials
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
@@ -483,7 +481,7 @@ public class EnderIO {
     PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
 
-    NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
+    NetworkRegistry.INSTANCE.registerGuiHandler(this, CommonProxy.guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
     //Register Custom Dungeon Loot here
@@ -586,7 +584,7 @@ public class EnderIO {
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
-    if(fluidXpJuice == null) { //should have been registered by open blocks 
+    if(fluidXpJuice == null) { //should have been registered by open blocks
       fluidXpJuice = FluidRegistry.getFluid(getXPJuiceName());
       if(fluidXpJuice == null) {
         Log.error("Liquid XP Juice registration left to open blocks but could not be found.");

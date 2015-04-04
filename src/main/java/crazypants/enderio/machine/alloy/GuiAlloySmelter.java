@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.alloy;
 
 import java.awt.Rectangle;
-import java.text.MessageFormat;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,6 +8,8 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -19,6 +20,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
+@SideOnly(Side.CLIENT)
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
   private final IconButton vanillaFurnaceButton;

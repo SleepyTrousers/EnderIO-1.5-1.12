@@ -6,10 +6,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 
+@SideOnly(Side.CLIENT)
 public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
 
   public GuiCrusher(InventoryPlayer par1InventoryPlayer, TileCrusher inventory) {

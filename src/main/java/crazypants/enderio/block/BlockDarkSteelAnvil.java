@@ -9,13 +9,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 
@@ -45,7 +46,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
   protected void init() {
     GameRegistry.registerBlock(this, ItemAnvilBlock.class, ModObject.blockDarkSteelAnvil.unlocalisedName);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ANVIL, new IGuiHandler() {
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ANVIL, new ISidedGuiHandler() {
 
       @Override
       public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -53,6 +54,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
       }
 
       @Override
+      @SideOnly(Side.CLIENT)
       public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new GuiRepair(player.inventory, world, x, y, z);
       }
@@ -70,6 +72,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     return true;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int p_149691_1_, int p_149691_2_)
   {
@@ -84,6 +87,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     }
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register)
   {

@@ -141,6 +141,10 @@ import crazypants.render.IconUtil;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
+  static {
+    guiHandler = new ClientGuiHandler();
+  }
+
   // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
     { 3, 2, 0, 0, 0, 0 }, 

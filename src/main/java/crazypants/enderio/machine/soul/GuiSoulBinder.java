@@ -6,6 +6,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -16,35 +18,36 @@ import crazypants.enderio.xp.XpUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.SoundUtil;
 
+@SideOnly(Side.CLIENT)
 public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
   private static final int PLAYER_XP_ID = 985162394;
-  
+
   private final IconButtonEIO usePlayerXP;
 
   public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, TileSoulBinder te) {
     super(te, new ContainerSoulBinder(par1InventoryPlayer, te));
     usePlayerXP = new IconButtonEIO(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
-    usePlayerXP.setToolTip("Use Player XP");    
+    usePlayerXP.setToolTip("Use Player XP");
 
     addProgressTooltip(80, 34, 24, 16);
   }
 
   @Override
-  public void initGui() {    
+  public void initGui() {
     super.initGui();
     usePlayerXP.onGuiInit();
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {    
+  protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().thePlayer);
       if(xp > 0 || Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) {
         PacketHandler.INSTANCE.sendToServer(new PacketDrainPlayerXP(getTileEntity(), getTileEntity().getCurrentlyRequiredLevel(), true));
-        SoundUtil.playClientSoundFX("random.orb", getTileEntity());        
+        SoundUtil.playClientSoundFX("random.orb", getTileEntity());
       }
     }
   }
@@ -64,20 +67,20 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
     int i1;
 
     TileSoulBinder binder = getTileEntity();
-    
+
     if(shouldRenderProgress()) {
       i1 = binder.getProgressScaled(24);
       drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);
     }
 
     boolean needsXp = binder.getCurrentlyRequiredLevel() > 0 && binder.getCurrentlyRequiredLevel() > binder.getContainer().getExperienceLevel();
-    usePlayerXP.visible = needsXp;        
-    
+    usePlayerXP.visible = needsXp;
+
     ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, binder.getContainer(), binder.getCurrentlyRequiredLevel());
-    
+
     RenderUtil.bindTexture("enderio:textures/gui/soulFuser.png");
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
+
   }
 
 }

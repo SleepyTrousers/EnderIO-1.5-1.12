@@ -12,8 +12,11 @@ import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer, IGuiScreen {
 
   protected ToolTipManager ttMan = new ToolTipManager();
@@ -221,10 +224,10 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
   public void removeButton(GuiButton button) {
     buttonList.remove(button);
   }
-  
+
   @Override
   public void doActionPerformed(GuiButton guiButton) {
-    actionPerformed(guiButton); 
+    actionPerformed(guiButton);
   }
 
 }

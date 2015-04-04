@@ -2,16 +2,19 @@ package crazypants.enderio.machine.gui;
 
 import java.awt.Rectangle;
 import java.util.List;
-import net.minecraft.util.StatCollector;
 
 import net.minecraft.inventory.Container;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiMachineBase<T> {
 
   protected static final int POWER_Y = 14;
@@ -40,11 +43,11 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   protected String getPowerOutputLabel() {
     return StatCollector.translateToLocal("enderio.gui.max");
   }
-  
+
   protected int getPowerOutputValue() {
     return getTileEntity().getPowerUsePerTick();
   }
-  
+
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
@@ -52,8 +55,8 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   }
 
   public void renderPowerBar(int k, int l) {
-    if(renderPowerBar()) {      
-      int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());      
+    if(renderPowerBar()) {
+      int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());
       // x, y, u, v, width, height
       drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
     }

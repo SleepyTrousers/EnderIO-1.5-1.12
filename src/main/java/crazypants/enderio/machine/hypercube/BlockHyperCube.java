@@ -20,12 +20,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
@@ -35,7 +36,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.PlayerUtil;
 import crazypants.util.Util;
 
-public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
+public class BlockHyperCube extends BlockEio implements ISidedGuiHandler, IResourceTooltipProvider {
 
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
@@ -66,9 +67,10 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   @Override
   protected void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
   }
 
+  @SideOnly(Side.CLIENT)
   public IIcon getPortalIcon() {
     return blockIcon;
   }
@@ -245,6 +247,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {

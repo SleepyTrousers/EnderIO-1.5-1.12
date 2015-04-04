@@ -7,6 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
@@ -17,8 +19,9 @@ import crazypants.enderio.xp.PacketGivePlayerXP;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiExperianceObelisk extends GuiMachineBase<TileExperienceOblisk> {
-  
+
   private IconButtonEIO p;
   private IconButtonEIO pp;
   private IconButtonEIO ppp;

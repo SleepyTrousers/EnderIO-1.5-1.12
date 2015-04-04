@@ -7,6 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
@@ -20,6 +22,7 @@ import crazypants.util.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
+@SideOnly(Side.CLIENT)
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
 
   private final ToggleButtonEIO bufferSizeB;
@@ -76,17 +79,17 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   public final int getXSize() {
     return 219;
   }
-  
+
   @Override
   protected int getPowerU() {
     return 220;
   }
 
   @Override
-  protected int getPowerX() {    
+  protected int getPowerX() {
     return 9;
-  }  
-  
+  }
+
   @Override
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation()
@@ -101,9 +104,9 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);    
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-  
+
 }

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -22,6 +25,7 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
+@SideOnly(Side.CLIENT)
 public class GuiPowerMonitor extends GuiContainerBase {
 
   private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
@@ -69,7 +73,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
     super(new ContainerPowerMonitor());
     this.te = te;
     xSize = WIDTH;
-    ySize = HEIGHT;    
+    ySize = HEIGHT;
 
     titleStr = Lang.localize("gui.powerMonitor.engineControl");
     engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
@@ -140,7 +144,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
   }
 
   @Override
-  public int getOverlayOffsetX() {  
+  public int getOverlayOffsetX() {
     return 0;
   }
 
@@ -168,7 +172,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float ptick, int mouseX, int mouseY) {
-  
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/powerMonitor.png");
     int sx = (width - xSize) / 2;

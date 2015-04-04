@@ -9,11 +9,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraftforge.common.UsernameCache;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.CommonProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ISidedGuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -26,7 +29,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
   public static BlockEnderIO create() {
 
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ME_ACCESS_TERMINAL, new IGuiHandler() {
+    CommonProxy.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ME_ACCESS_TERMINAL, new ISidedGuiHandler() {
 
       @Override
       public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

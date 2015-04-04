@@ -33,6 +33,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new GuiStirlingGenerator(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
   }
@@ -63,7 +64,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
         double v = 0.05;
         double vx = 0;
         double vz = 0;
-        
+
         if(front == ForgeDirection.NORTH || front == ForgeDirection.SOUTH) {
           px += world.rand.nextFloat() * 0.9 - 0.45;
           vz += front == ForgeDirection.NORTH ? -v : v;

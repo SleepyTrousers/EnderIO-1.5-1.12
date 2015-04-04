@@ -35,6 +35,7 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
   }

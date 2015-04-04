@@ -57,15 +57,15 @@ public class GuiHandler implements IGuiHandler {
 
   public static final int GUI_ID_CAP_BANK = 142; // leave room for more machines
 
-  protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
+  protected final Map<Integer, ISidedGuiHandler> guiHandlers = new HashMap<Integer, ISidedGuiHandler>();
 
-  public void registerGuiHandler(int id, IGuiHandler handler) {
+  public void registerGuiHandler(int id, ISidedGuiHandler handler) {
     guiHandlers.put(id, handler);
   }
 
   @Override
   public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-    IGuiHandler handler = guiHandlers.get(id);
+    ISidedGuiHandler handler = guiHandlers.get(id);
     if(handler != null) {
       return handler.getServerGuiElement(id, player, world, x, y, z);
     }
@@ -74,10 +74,6 @@ public class GuiHandler implements IGuiHandler {
 
   @Override
   public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-    IGuiHandler handler = guiHandlers.get(id);
-    if(handler != null) {
-      return handler.getClientGuiElement(id, player, world, x, y, z);
-    }
     return null;
   }
 
