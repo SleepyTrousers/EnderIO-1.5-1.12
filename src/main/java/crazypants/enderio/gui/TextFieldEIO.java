@@ -45,10 +45,15 @@ public class TextFieldEIO extends GuiTextField {
 
   static {
     try {
-      canLoseFocus = GuiTextField.class.getDeclaredField("canLoseFocus");
+      canLoseFocus = GuiTextField.class.getDeclaredField("field_146212_n");
       canLoseFocus.setAccessible(true);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      try {
+        canLoseFocus = GuiTextField.class.getDeclaredField("canLoseFocus");
+        canLoseFocus.setAccessible(true);
+      } catch (Exception e1) {
+        throw new RuntimeException(e);
+      }
     }
   }
 
