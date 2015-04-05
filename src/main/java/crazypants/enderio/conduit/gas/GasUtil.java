@@ -4,7 +4,7 @@ import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
@@ -18,7 +18,7 @@ public final class GasUtil {
   public static boolean isGasConduitEnabled() {
     if(!useCheckPerformed) {
       if(Config.isGasConduitEnabled) {
-        isGasConduitEnabled = Loader.isModLoaded("MekanismAPI|gas");
+        isGasConduitEnabled = ModAPIManager.INSTANCE.hasAPI("MekanismAPI|gas");
       } else {
         isGasConduitEnabled = false;
       }
