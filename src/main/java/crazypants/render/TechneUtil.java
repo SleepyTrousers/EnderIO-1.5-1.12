@@ -276,7 +276,7 @@ public class TechneUtil {
         }
 
         if(isbrh) {
-          float factor = normal.offsetX != 0 ? 0.6f : normal.offsetZ != 0 ? 0.8f : normal.offsetY < 0 ? 0.5f : 1;
+          float factor = normal.offsetX != 0 ? 0.8f : normal.offsetZ != 0 ? 0.6f : normal.offsetY < 0 ? 0.5f : 1;
           int c = (int) (0xFF * factor);
 
           tes.setColorOpaque(c, c, c);
