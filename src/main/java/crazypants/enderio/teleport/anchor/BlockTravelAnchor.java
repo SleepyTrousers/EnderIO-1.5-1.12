@@ -65,6 +65,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();
+
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, result);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
+
     return result;
   }
 
@@ -80,14 +85,6 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   public BlockTravelAnchor(String unlocalisedName, Class<? extends TileEntityEio> teClass) {
     super(unlocalisedName, teClass);
-  }
-
-  @Override
-  protected void init() {
-    super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
   @Override
