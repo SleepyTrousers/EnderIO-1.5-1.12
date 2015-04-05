@@ -76,59 +76,58 @@ public class ItemUtil {
    * Insert items into an IInventory or an ISidedInventory.
    */
   private static int doInsertItemInv(IInventory inv, ItemStack item, ForgeDirection inventorySide) {
-    ISidedInventory sidedInv = inv instanceof ISidedInventory ? (ISidedInventory) inv : null;
+    final ISidedInventory sidedInv = inv instanceof ISidedInventory ? (ISidedInventory) inv : null;
     ISlotIterator slots;
 
     if (sidedInv != null) {
       if(inventorySide == null) {
         inventorySide = ForgeDirection.UNKNOWN;
       }
-      slots = new sidedSlotter(sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal()));
+      // Note: This is not thread-safe. Change to getInstance() to constructor when needed (1.8++?).
+      slots = sidedSlotter.getInstance(sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal()));
     } else {
-      slots = new invSlotter(inv.getSizeInventory());
+      slots = invSlotter.getInstance(inv.getSizeInventory());
     }
     
     int numInserted = 0;
     int numToInsert = item.stackSize;
+    int firstFreeSlot = -1;
 
     // PASS1: Try to add to an existing stack
     while (numToInsert > 0 && slots.hasNext()) {
-      int slot = slots.nextSlot();
+      final int slot = slots.nextSlot();
       if(sidedInv == null || sidedInv.canInsertItem(slot, item, inventorySide.ordinal())) {
-        ItemStack contents = inv.getStackInSlot(slot);
-        if(contents != null && areStackMergable(contents, item)) {
-          int freeSpace = Math.min(inv.getInventoryStackLimit(), contents.getMaxStackSize()) - contents.stackSize; // some inventories like using itemstacks with invalid stack sizes
-          if (freeSpace > 0) {
-            int noToInsert = Math.min(numToInsert, freeSpace);
-            ItemStack toInsert = item.copy();
-            toInsert.stackSize = contents.stackSize + noToInsert;
-            // isItemValidForSlot() may check the stacksize, so give it the number the stack would have in the end.
-            // If it does something funny, like "only even numbers", we are screwed.
-            if(sidedInv != null || inv.isItemValidForSlot(slot, toInsert)) {
-              numInserted += noToInsert;
-              numToInsert -= noToInsert;
-              inv.setInventorySlotContents(slot, toInsert);
+        final ItemStack contents = inv.getStackInSlot(slot);
+        if(contents != null) {
+          if (areStackMergable(contents, item)) {
+            final int freeSpace = Math.min(inv.getInventoryStackLimit(), contents.getMaxStackSize()) - contents.stackSize; // some inventories like using itemstacks with invalid stack sizes
+            if (freeSpace > 0) {
+              final int noToInsert = Math.min(numToInsert, freeSpace);
+              final ItemStack toInsert = item.copy();
+              toInsert.stackSize = contents.stackSize + noToInsert;
+              // isItemValidForSlot() may check the stacksize, so give it the number the stack would have in the end.
+              // If it does something funny, like "only even numbers", we are screwed.
+              if(sidedInv != null || inv.isItemValidForSlot(slot, toInsert)) {
+                numInserted += noToInsert;
+                numToInsert -= noToInsert;
+                inv.setInventorySlotContents(slot, toInsert);
+              }
             }
           }
+        } else if (firstFreeSlot == -1) {
+          firstFreeSlot = slot;
         }
       }
     }
 
-    slots.reset();
     // PASS2: Try to insert into an empty slot
-    while (numToInsert > 0 && slots.hasNext()) {
-      int slot = slots.nextSlot();
-      if(sidedInv == null || sidedInv.canInsertItem(slot, item, inventorySide.ordinal())) {
-        ItemStack contents = inv.getStackInSlot(slot);
-        if(contents == null) {
-          ItemStack toInsert = item.copy();
-          toInsert.stackSize = min(numToInsert, inv.getInventoryStackLimit(), toInsert.getMaxStackSize()); // some inventories like using itemstacks with invalid stack sizes
-          if(sidedInv != null || inv.isItemValidForSlot(slot, toInsert)) {
-            numInserted += toInsert.stackSize;
-            numToInsert -= toInsert.stackSize;
-            inv.setInventorySlotContents(slot, toInsert);
-          }
-        }
+    if (numToInsert > 0 && firstFreeSlot != -1) {
+      final ItemStack toInsert = item.copy();
+      toInsert.stackSize = min(numToInsert, inv.getInventoryStackLimit(), toInsert.getMaxStackSize()); // some inventories like using itemstacks with invalid stack sizes
+      if(sidedInv != null || inv.isItemValidForSlot(firstFreeSlot, toInsert)) {
+        numInserted += toInsert.stackSize;
+        numToInsert -= toInsert.stackSize;
+        inv.setInventorySlotContents(firstFreeSlot, toInsert);
       }
     }
 
@@ -136,10 +135,9 @@ public class ItemUtil {
       inv.markDirty();
     }
     return numInserted;
-    
   }
 
-  private static int min(int i1, int i2, int i3) {
+  private final static int min(int i1, int i2, int i3) {
     return i1 < i2 ? (i1 < i3 ? i1 : i3) : (i2 < i3 ? i2 : i3);
   }
   
@@ -208,47 +206,42 @@ public class ItemUtil {
   private interface ISlotIterator {
     int nextSlot();
     boolean hasNext();
-    void reset();
   }
   
-  private static class invSlotter implements ISlotIterator {
-    final private int size;
+  private final static class invSlotter implements ISlotIterator {
+    private static final invSlotter me = new invSlotter();
+    private int size;
     private int current;
-    invSlotter(int size) {
-      this.size = size;
-      this.current = 0;
+    public final static invSlotter getInstance(int size) {
+      me.size = size;
+      me.current = 0;
+      return me;
     }
     @Override
-    public int nextSlot() {
+    public final int nextSlot() {
       return current++;
     }
     @Override
-    public void reset() {
-      current = 0;
-    }
-    @Override
-    public boolean hasNext() {
+    public final boolean hasNext() {
       return current < size;
     }
   }
   
-  private static class sidedSlotter implements ISlotIterator {
-    final private int[] slots;
+  private final static class sidedSlotter implements ISlotIterator {
+    private static final sidedSlotter me = new sidedSlotter();
+    private int[] slots;
     private int current;
-    sidedSlotter(int[] slots) {
-      this.slots = slots;
-      this.current = 0;
+    public final static sidedSlotter getInstance(int[] slots) {
+      me.slots = slots;
+      me.current = 0;
+      return me;
     }
     @Override
-    public int nextSlot() {
+    public final int nextSlot() {
       return slots[current++];
     }
     @Override
-    public void reset() {
-      current = 0;
-    }
-    @Override
-    public boolean hasNext() {
+    public final boolean hasNext() {
       return slots != null && current < slots.length;
     }
   }
