@@ -72,8 +72,9 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       }
       if(focused == null) {
         this.mc.thePlayer.closeScreen();
-      } else {
+      } else if(par2 == 1) {
         focused.setFocused(false);
+        focused = null;
       }
     }
 

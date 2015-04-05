@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.gui.CheckBoxEIO;
-import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
@@ -121,20 +120,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
     }
 
   }
-
-  @Override
-  public void keyTyped(char par1, int par2) {
-    if(par2 == 1) {
-      for (IGuiOverlay overlay : overlays) {
-        if(overlay.isVisible()) {
-          overlay.setVisible(false);
-          return;
-        }
-      }
-      this.mc.thePlayer.closeScreen();
-    }
-  }
-
+  
   @Override
   public void updateScreen() {
     super.updateScreen();
@@ -207,8 +193,6 @@ public class GuiTravelAccessable extends GuiContainerBase {
     super.drawForegroundImpl(mouseX, mouseY);
 
     if(te.getAccessMode() != AccessMode.PROTECTED) {
-      int sx = (width - xSize) / 2;
-      int sy = (height - ySize) / 2;
       RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
