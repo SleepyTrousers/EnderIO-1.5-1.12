@@ -123,6 +123,7 @@ tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
+enderio.dustWheat.name=Flour
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation

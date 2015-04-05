@@ -16,7 +16,8 @@ public enum PowderIngot {
   POWDER_TIN("powderTin", INGOT_TIN),
   POWDER_ENDER("powderEnder", DUST_ENDERPEARL),
   INGOT_ENDERIUM_BASE("ingotEnderiumBase", INGOT_ENDERIUM),
-  POWDER_OBSIDIAN("powderObsidian", null);
+  POWDER_OBSIDIAN("powderObsidian", null),
+  FLOUR("dustWheat", null);
   // POWDER_LEAD("powderLead", "Lead Powder", "powderLead"),
   // POWDER_SILVER("powderSilver", "Silver Powder", "powderSilver"),
   // POWDER_BRONZE("powderBronze", "Bronze Powder", "powderBronze"),
