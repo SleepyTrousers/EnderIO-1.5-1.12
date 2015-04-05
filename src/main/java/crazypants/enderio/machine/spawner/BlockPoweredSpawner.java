@@ -139,6 +139,12 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
             if(name != null && !isBlackListed(name)) {
               ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);
               dropQueue.add(new DropInfo(evt, drop));
+
+              for (int i = (int) (Math.random() * 7); i > 0; i--) {
+                logic.spawnDelay = 0;
+                logic.updateSpawner();
+              }
+
             }
           }
         }
