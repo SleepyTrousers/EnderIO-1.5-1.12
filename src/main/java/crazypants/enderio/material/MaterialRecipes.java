@@ -204,6 +204,13 @@ public class MaterialRecipes {
           .addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictIngotName));
       GameRegistry.addShapelessRecipe(new ItemStack(EnderIO.itemAlloy, 9, alloy.ordinal()), new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));
     }
+
+    //Food
+    ItemStack flour = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.FLOUR.ordinal());
+    ItemStack bread = new ItemStack(Items.bread, 1, 0);
+
+    GameRegistry.addSmelting(flour, bread, (float) 0.35);
+
   }
 
   public static void addOreDictionaryRecipes() {
