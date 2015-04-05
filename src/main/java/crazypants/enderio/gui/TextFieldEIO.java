@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiTextField;
 
 import com.google.common.base.Strings;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import crazypants.gui.IGuiScreen;
 
 public class TextFieldEIO extends GuiTextField {
@@ -45,7 +46,7 @@ public class TextFieldEIO extends GuiTextField {
 
   static {
     try {
-      canLoseFocus = GuiTextField.class.getDeclaredField("canLoseFocus");
+      canLoseFocus = ReflectionHelper.findField(GuiTextField.class, "canLoseFocus", "field_146212_n", "n");
       canLoseFocus.setAccessible(true);
     } catch (Exception e) {
       throw new RuntimeException(e);

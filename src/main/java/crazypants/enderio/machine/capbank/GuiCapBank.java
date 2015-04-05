@@ -198,9 +198,6 @@ public class GuiCapBank extends GuiContainerBase {
   @Override
   protected void keyTyped(char par1, int par2) {
     super.keyTyped(par1, par2);
-    if(par1 == 'e') {
-      super.keyTyped(par1, 1);
-    }
     updateInputOutput();
   }
 
