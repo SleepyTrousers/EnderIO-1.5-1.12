@@ -383,9 +383,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     } else {
       spinSpeed = Math.max(0, spinSpeed - 0.025f);
     }
-    
-    System.out.println(Arrays.toString(bladeRots));
-        
+            
     for (int i = 0; i < bladeRots.length; i++) {
       bladeRots[i] += spinSpeed * ((i * 2) + 20);
       bladeRots[i] %= 360;
