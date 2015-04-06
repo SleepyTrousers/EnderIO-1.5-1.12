@@ -15,7 +15,7 @@ public enum Material {
   VIBRANT_NUGGET("vibrantNugget"),
   PULSATING_CYSTAL("pulsatingCrystal", true),
   VIBRANT_CYSTAL("vibrantCrystal", true),
-  DRAK_GRINDING_BALL("darkGrindingBall"),
+  DARK_GRINDING_BALL("darkGrindingBall"),
   ENDER_CRYSTAL("enderCrystal", true),
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
   WEATHER_CRYSTAL("weatherCrystal", true);
