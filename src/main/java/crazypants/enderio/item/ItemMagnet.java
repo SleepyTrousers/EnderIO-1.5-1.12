@@ -29,7 +29,7 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BaublesUtil;
 import crazypants.util.ItemUtil;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
 public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble {
 
   private static final String ACTIVE_KEY = "magnetActive";
