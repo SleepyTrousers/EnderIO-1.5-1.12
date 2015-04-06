@@ -2,7 +2,9 @@ package crazypants.enderio.machine.spawner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,6 +43,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
@@ -91,7 +94,6 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     return res;
   }
 
-  private final List<DropInfo> dropQueue = new ArrayList<BlockPoweredSpawner.DropInfo>();
   private final List<UniqueIdentifier> toolBlackList = new ArrayList<UniqueIdentifier>();
 
   private Field fieldpersistenceRequired;
@@ -110,6 +112,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       Log.error("BlockPoweredSpawner: Could not find field: persistenceRequired");
     }
   }
+
+  private final Map<BlockCoord, ItemStack> dropCache = new HashMap<BlockCoord, ItemStack>();
 
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
@@ -138,7 +142,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
             String name = logic.getEntityNameToSpawn();
             if(name != null && !isBlackListed(name)) {
               ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);
-              dropQueue.add(new DropInfo(evt, drop));
+              dropCache.put(new BlockCoord(evt.x, evt.y, evt.z), drop);
 
               for (int i = (int) (Math.random() * 7); i > 0; i--) {
                 logic.spawnDelay = 0;
@@ -148,19 +152,53 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
             }
           }
         }
+      } else {
+        dropCache.put(new BlockCoord(evt.x, evt.y, evt.z), null);
+      }
+    }
+  }
+
+  @SubscribeEvent
+  public void onHarvestDropsEvent(BlockEvent.HarvestDropsEvent evt) {
+    if (!evt.isCanceled() && evt.block instanceof BlockMobSpawner) {
+      BlockCoord bc = new BlockCoord(evt.x, evt.y, evt.z);
+      if (dropCache.containsKey(bc)) {
+        ItemStack stack = dropCache.get(bc);
+        if (stack != null) {
+          evt.drops.add(stack);
+        }
+      } else {
+        // A spawner was broken---but not by a player. The TE has been
+        // invalidated already, but we might be able to recover it.
+        try {
+          for (Object object : evt.world.loadedTileEntityList) {
+            if (object instanceof TileEntityMobSpawner) {
+              TileEntityMobSpawner spawner = (TileEntityMobSpawner) object;
+              if (spawner.getWorldObj() == evt.world && spawner.xCoord == evt.x && spawner.yCoord == evt.y
+                  && spawner.zCoord == evt.z) {
+                // Bingo!
+                MobSpawnerBaseLogic logic = spawner.func_145881_a();
+                if (logic != null) {
+                  String name = logic.getEntityNameToSpawn();
+                  if (name != null && !isBlackListed(name)) {
+                    evt.drops.add(ItemBrokenSpawner.createStackForMobType(name));
+                  }
+                }
+              }
+            }
+          }
+        } catch (Exception e) {
+          // Risky recovery failed. Happens.
+        }
       }
     }
   }
 
   @SubscribeEvent
   public void onServerTick(TickEvent.ServerTickEvent event) {
-    if(event.phase != TickEvent.Phase.END) {
-      return;
+    if (event.phase == TickEvent.Phase.END) {
+      dropCache.clear();
     }
-    for (DropInfo action : dropQueue) {
-      action.doDrop();
-    }
-    dropQueue.clear();
   }
 
   @SubscribeEvent
