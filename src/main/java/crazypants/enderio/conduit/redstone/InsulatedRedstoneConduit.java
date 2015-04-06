@@ -23,7 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -33,6 +32,8 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
@@ -166,7 +167,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
             BlockCoord loc = getLocation().getLocation(faceHit);
             Block id = world.getBlock(loc.x, loc.y, loc.z);
-            if(id == EnderIO.blockConduitBundle) {
+            if (id == EIOBlocks.blockConduitBundle) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
               if(neighbour != null && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
@@ -269,7 +270,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
+    return new ItemStack(EIOItems.itemRedstoneConduit, 1, 2);
   }
 
   @Override
@@ -345,7 +346,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     Block block = world.getBlock(loc.x, loc.y, loc.z);
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
-    if(block == null || block == EnderIO.blockConduitBundle) {
+    if (block == null || block == EIOBlocks.blockConduitBundle) {
       return false;
     }
     

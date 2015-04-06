@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -32,12 +32,12 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
     @Override
     public IIcon getSelectedIcon() {
-      return EnderIO.blockEnderIo.selectedOverlayIcon;
+      return EIOBlocks.blockEnderIo.selectedOverlayIcon;
     }
 
     @Override
     public IIcon getHighlightIcon() {
-      return EnderIO.blockEnderIo.highlightOverlayIcon;
+      return EIOBlocks.blockEnderIo.highlightOverlayIcon;
     }
 
   };
@@ -121,7 +121,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
     GL11.glPolygonOffset(-1.0f, -1.0f);
 
-    CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockEnderIo.frameIcon);
+    CubeRenderer.render(BoundingBox.UNIT_CUBE, EIOBlocks.blockEnderIo.frameIcon);
     Tessellator.instance.draw();
     GL11.glPopMatrix();
 

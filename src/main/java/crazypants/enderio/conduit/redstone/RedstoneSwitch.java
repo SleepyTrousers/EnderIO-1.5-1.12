@@ -12,11 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.init.EIOItems;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -51,7 +51,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 1);
+    return new ItemStack(EIOItems.itemRedstoneConduit, 1, 1);
   }
 
   @Override

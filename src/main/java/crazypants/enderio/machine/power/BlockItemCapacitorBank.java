@@ -10,20 +10,20 @@ import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContainerItem {
 
   public static ItemStack createItemStackWithPower(int storedEnergy) {
-    ItemStack res = new ItemStack(EnderIO.blockCapacitorBank);
+    ItemStack res = new ItemStack(EIOBlocks.blockCapacitorBank);
     PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
     return res;
   }
 
   public BlockItemCapacitorBank() {
-    super(EnderIO.blockCapacitorBank);
+    super(EIOBlocks.blockCapacitorBank);
     setHasSubtypes(true);
   }
 

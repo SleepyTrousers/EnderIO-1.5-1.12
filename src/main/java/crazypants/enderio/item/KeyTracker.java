@@ -10,7 +10,6 @@ import net.minecraft.util.ChatComponentTranslation;
 
 import org.lwjgl.input.Keyboard;
 
-import static crazypants.enderio.EnderIO.itemMagnet;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -18,9 +17,10 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.init.DarkSteelItems;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.JumpUpgrade;
 import crazypants.enderio.item.darksteel.PacketUpgradeState;
 import crazypants.enderio.item.darksteel.SoundDetector;
@@ -101,7 +101,7 @@ public class KeyTracker {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
       ItemStack[] inv = player.inventory.mainInventory;
       for (int i = 0; i < 9; i++) {
-        if(inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {
+        if(inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == EIOItems.itemMagnet) {
           boolean isActive = !ItemMagnet.isActive(inv[i]);
           ItemMagnet.setActive(inv[i], isActive);
           PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, i, isActive));
@@ -113,7 +113,7 @@ public class KeyTracker {
       if(baubles != null) {
         for (int i = 0; i < baubles.getSizeInventory(); i++) {
           ItemStack stack = baubles.getStackInSlot(i);
-          if(stack != null && stack.getItem() != null && stack.getItem() == itemMagnet) {
+          if(stack != null && stack.getItem() != null && stack.getItem() == EIOItems.itemMagnet) {
             ItemMagnet.setActive(stack, false);
             PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.BAUBLES, i, false));
             return;
@@ -188,7 +188,7 @@ public class KeyTracker {
       ConduitDisplayMode newMode = curMode.next();
       ConduitDisplayMode.setDisplayMode(equipped, newMode);
       PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
-    } else if(equipped.getItem() == EnderIO.itemConduitProbe) {
+    } else if(equipped.getItem() == EIOItems.itemConduitProbe) {
       
       int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
       equipped.setItemDamage(newMeta);

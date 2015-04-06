@@ -2,6 +2,7 @@ package crazypants.enderio.item.darksteel;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.DarkSteelItems;
 import static crazypants.enderio.item.darksteel.AbstractUpgrade.KEY_UPGRADE_PREFIX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

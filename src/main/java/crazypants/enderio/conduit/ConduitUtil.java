@@ -45,6 +45,7 @@ import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
@@ -271,7 +272,7 @@ public class ConduitUtil {
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == EnderIO.itemConduitProbe;
+    return equipped.getItem() == EIOItems.itemConduitProbe;
   }
 
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {

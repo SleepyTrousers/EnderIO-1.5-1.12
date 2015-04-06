@@ -4,29 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.facade.FacadeRenderer;
 import crazypants.enderio.conduit.gas.GasConduit;
 import crazypants.enderio.conduit.gas.GasConduitRenderer;
 import crazypants.enderio.conduit.gas.GasUtil;
@@ -49,94 +41,20 @@ import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.ConduitRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.enderface.EnderIoRenderer;
-import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.DarkSteelItems;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOEntities;
+import crazypants.enderio.init.EIOFluids;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
 import crazypants.enderio.item.ToolTickHandler;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundDetector;
-import crazypants.enderio.item.darksteel.SoundEntity;
-import crazypants.enderio.item.darksteel.SoundRenderer;
-import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.item.skull.EndermanSkullRenderer;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineRenderer;
-import crazypants.enderio.machine.TechneMachineRenderer;
-import crazypants.enderio.machine.attractor.BlockAttractor;
-import crazypants.enderio.machine.attractor.ObeliskRenderer;
-import crazypants.enderio.machine.attractor.TileAttractor;
-import crazypants.enderio.machine.capbank.BlockCapBank;
-import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.capbank.render.CapBankRenderer;
-import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
-import crazypants.enderio.machine.enchanter.TileEnchanter;
-import crazypants.enderio.machine.farm.BlockFarmStation;
-import crazypants.enderio.machine.farm.FarmingStationRenderer;
-import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
-import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
-import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
-import crazypants.enderio.machine.generator.zombie.ZombieGeneratorRenderer;
-import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
-import crazypants.enderio.machine.hypercube.TileHyperCube;
-import crazypants.enderio.machine.killera.KillerJoeRenderer;
-import crazypants.enderio.machine.killera.TileKillerJoe;
-import crazypants.enderio.machine.light.BlockElectricLight;
-import crazypants.enderio.machine.light.ElectricLightRenderer;
-import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
-import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
-import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
-import crazypants.enderio.machine.painter.PaintedBlockRenderer;
-import crazypants.enderio.machine.painter.PaintedItemRenderer;
-import crazypants.enderio.machine.power.BlockCapacitorBank;
-import crazypants.enderio.machine.power.CapBankRenderer2;
-import crazypants.enderio.machine.power.CapacitorBankRenderer;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.machine.ranged.RangeRenerer;
-import crazypants.enderio.machine.reservoir.ReservoirRenderer;
-import crazypants.enderio.machine.reservoir.TileReservoir;
-import crazypants.enderio.machine.solar.BlockSolarPanel;
-import crazypants.enderio.machine.solar.SolarPanelRenderer;
-import crazypants.enderio.machine.soul.BlockSoulBinder;
-import crazypants.enderio.machine.soul.SoulBinderRenderer;
-import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
-import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
-import crazypants.enderio.machine.spawnguard.SpawnGuardRenderer;
-import crazypants.enderio.machine.spawnguard.TileSpawnGuard;
-import crazypants.enderio.machine.tank.TankFluidRenderer;
-import crazypants.enderio.machine.tank.TankItemRenderer;
-import crazypants.enderio.machine.tank.TileTank;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
-import crazypants.enderio.machine.vacuum.BlockVacuumChest;
-import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
-import crazypants.enderio.machine.vat.BlockVat;
-import crazypants.enderio.machine.vat.TileVat;
-import crazypants.enderio.machine.weather.BlockWeatherObelisk;
-import crazypants.enderio.machine.weather.TileWeatherObelisk;
-import crazypants.enderio.machine.xp.BlockExperienceObelisk;
-import crazypants.enderio.machine.xp.TileExperienceOblisk;
-import crazypants.enderio.material.BlockFusedQuartz;
-import crazypants.enderio.material.FusedQuartzFrameRenderer;
-import crazypants.enderio.material.FusedQuartzRenderer;
-import crazypants.enderio.material.MachinePartRenderer;
-import crazypants.enderio.material.Material;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
-import crazypants.enderio.teleport.telepad.BlockTelePad;
-import crazypants.enderio.teleport.telepad.TelePadRenderer;
-import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
-import crazypants.enderio.teleport.telepad.TileTelePad;
-import crazypants.render.IconUtil;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -221,147 +139,44 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-    AbstractMachineBlock.renderId = RenderingRegistry.getNextAvailableRenderId();
-    AbstractMachineRenderer machRen = new AbstractMachineRenderer();
-    RenderingRegistry.registerBlockHandler(machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockStirlingGenerator), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrusher), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAlloySmelter), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPowerMonitor), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockBuffer), machRen);
+    EIOBlocks.registerBlockRenderers();
 
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
+    registerConduitRenderers();
 
-    BlockSolarPanel.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new SolarPanelRenderer());
+    EIOItems.registerItemRenderers();
 
-    EnchanterModelRenderer emr = new EnchanterModelRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), emr);
+    DarkSteelItems.registerItemRenderers();
 
-    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
+    new YetaWrenchOverlayRenderer();
+    new ConduitProbeOverlayRenderer();
 
-    BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
-
-    BlockSoulBinder.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
-
-    BlockAttractor.renderId = RenderingRegistry.getNextAvailableRenderId();
-    ObeliskRenderer<TileAttractor> attRen = new ObeliskRenderer<TileAttractor>(new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()));
-    RenderingRegistry.registerBlockHandler(attRen);
-    ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAttractor), attRen);
-
-    SpawnGuardRenderer sgr = new SpawnGuardRenderer();
-    BlockSpawnGuard.renderId = BlockAttractor.renderId;
-    ClientRegistry.bindTileEntitySpecialRenderer(TileSpawnGuard.class, sgr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
-
-    ObeliskRenderer<TileExperienceOblisk> eor = new ObeliskRenderer<TileExperienceOblisk>(new ItemStack(EnderIO.itemXpTransfer));
-    BlockExperienceObelisk.renderId = BlockAttractor.renderId;
-    ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
-
-    ObeliskRenderer<TileWeatherObelisk> twr = new ObeliskRenderer<TileWeatherObelisk>(
-        new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()));
-    BlockWeatherObelisk.renderId = BlockAttractor.renderId;
-    ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
-
-    BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
-    TechneMachineRenderer<TileCombustionGenerator> cr = new TechneMachineRenderer<TileCombustionGenerator>(EnderIO.blockCombustionGenerator, "models/combustionGen");
-    RenderingRegistry.registerBlockHandler(cr);
-
-    ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), zgr);
-
-    KillerJoeRenderer kjr = new KillerJoeRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), kjr);
-
-    BlockVat.renderId = RenderingRegistry.getNextAvailableRenderId();
-    TechneMachineRenderer<TileVat> vr = new TechneMachineRenderer<TileVat>(EnderIO.blockVat, "models/vat");
-    RenderingRegistry.registerBlockHandler(vr);
-
-    FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);
-
-    BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
-
-    if(EnderIO.blockCapBank != null) {
-      BlockCapBank.renderId = RenderingRegistry.getNextAvailableRenderId();
-      CapBankRenderer newCbr = new CapBankRenderer();
-      RenderingRegistry.registerBlockHandler(newCbr);
-      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapBank), newCbr);
-      ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
+    if (Config.useSneakMouseWheelYetaWrench) {
+      ToolTickHandler th = new ToolTickHandler();
+      MinecraftForge.EVENT_BUS.register(th);
+      FMLCommonHandler.instance().bus().register(th);
     }
 
-    CapacitorBankRenderer capr = new CapacitorBankRenderer();
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);
+    MinecraftForge.EVENT_BUS.register(TravelController.instance);
+    FMLCommonHandler.instance().bus().register(TravelController.instance);
 
-    BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
-    CapBankRenderer2 cbr2 = new CapBankRenderer2();
-    RenderingRegistry.registerBlockHandler(cbr2);
+    // Ensure it is loaded and registered
+    KeyTracker.instance.isGlideActive();
 
-    BlockVacuumChest.renderId = RenderingRegistry.getNextAvailableRenderId();
-    VacuumChestRenderer vcr = new VacuumChestRenderer();
-    RenderingRegistry.registerBlockHandler(vcr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), vcr);
+    EIOEntities.registerEntityRenderers();
 
-    ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit, itemConRenderer);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemGasConduit, itemConRenderer);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMEConduit, itemConRenderer);
+    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
+    FMLCommonHandler.instance().bus().register(SoundDetector.instance);
 
-    BlockPaintedFenceGateRenderer bcfgr = new BlockPaintedFenceGateRenderer();
-    BlockPaintedFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(bcfgr);
+    EIOFluids.registerFluidRenderers();
 
-    PaintedItemRenderer pir = new PaintedItemRenderer();
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedFence), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedFenceGate), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedWall), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedStair), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedSlab), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedGlowstone), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedCarpet), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelPressurePlate), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTravelPlatform), pir);
+    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
+  }
 
-    BlockPaintedGlowstone.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockPaintedGlowstone.renderId, Blocks.glowstone));
-
-    BlockTravelAnchor.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockTravelAnchor.renderId, EnderIO.blockTravelPlatform));
-
-    BlockTelePad.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new TelePadRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
-
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
-
+  public void registerConduitRenderers() {
     cbr = new ConduitBundleRenderer((float) Config.conduitScale);
     BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(cbr);
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
-
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
-
-    BlockEndermanSkull.renderId = RenderingRegistry.getNextAvailableRenderId();
-    EndermanSkullRenderer esk = new EndermanSkullRenderer();
-    RenderingRegistry.registerBlockHandler(esk);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEndermanSkull), esk);
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
@@ -370,70 +185,9 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
     conduitRenderers.add(new EnderLiquidConduitRenderer());
     conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
-    if(GasUtil.isGasConduitEnabled()) {
+    if (GasUtil.isGasConduitEnabled()) {
       conduitRenderers.add(new GasConduitRenderer());
     }
-
-    EnderIoRenderer eior = new EnderIoRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), eior);
-
-    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTank), new TankItemRenderer());
-
-    HyperCubeRenderer hcr = new HyperCubeRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
-
-    if(Config.transceiverEnabled) {
-      TransceiverRenderer tr = new TransceiverRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
-      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTransceiver), tr);
-    }
-
-    new YetaWrenchOverlayRenderer();
-    new ConduitProbeOverlayRenderer();
-    if(Config.useSneakMouseWheelYetaWrench) {
-      ToolTickHandler th = new ToolTickHandler();
-      MinecraftForge.EVENT_BUS.register(th);
-      FMLCommonHandler.instance().bus().register(th);
-    }
-    MinecraftForge.EVENT_BUS.register(TravelController.instance);
-    FMLCommonHandler.instance().bus().register(TravelController.instance);
-
-    DarkSteelItems.registerItemRenderer();
-
-    //Ensure it is loaded and registered
-    KeyTracker.instance.isGlideActive();
-
-    RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
-    RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, new RangeRenerer());
-
-    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-    FMLCommonHandler.instance().bus().register(SoundDetector.instance);
-
-    if(!Loader.isModLoaded("OpenBlocks")) {
-      //We have registered liquid XP so we need to give it textures
-      IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-        @Override
-        public void registerIcons(IIconRegister register) {
-          //NB: textures re-used with permission from OpenBlocks to maintain look
-          IIcon flowing = register.registerIcon("enderio:xpjuiceflowing");
-          IIcon still = register.registerIcon("enderio:xpjuicestill");
-          EnderIO.fluidXpJuice.setIcons(still, flowing);
-        }
-
-        @Override
-        public int getTextureType() {
-          return 0;
-        }
-
-      });
-    }
-
-    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 
   @Override

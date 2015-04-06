@@ -7,6 +7,8 @@ import codechicken.nei.api.IConfigureNEI;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.painter.PainterUtil;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
@@ -31,40 +33,40 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     API.registerRecipeHandler(new SoulBinderRecipeHandler());
     API.registerUsageHandler(new SoulBinderRecipeHandler());
 
-    API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
-    API.hideItem(new ItemStack(EnderIO.itemEnderface));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedCarpet)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedSlab)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedFence)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedFenceGate)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedGlowstone)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedStair)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedWall)));
-    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedDoubleSlab)));
+    API.hideItem(new ItemStack(EIOBlocks.blockConduitFacade));
+    API.hideItem(new ItemStack(EIOItems.itemEnderface));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedCarpet)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedSlab)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedFence)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedFenceGate)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedGlowstone)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedStair)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedWall)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EIOBlocks.blockPaintedDoubleSlab)));
 
     if(!Config.photovoltaicCellEnabled) {
-      API.hideItem(new ItemStack(EnderIO.blockSolarPanel));
+      API.hideItem(new ItemStack(EIOBlocks.blockSolarPanel));
     }
     if(!Config.travelAnchorEnabled) {
-      API.hideItem(new ItemStack(EnderIO.itemTravelStaff));
+      API.hideItem(new ItemStack(EIOItems.itemTravelStaff));
     }
     if(!Config.reinforcedObsidianEnabled) {
-      API.hideItem(new ItemStack(EnderIO.blockReinforcedObsidian));
+      API.hideItem(new ItemStack(EIOBlocks.blockReinforcedObsidian));
     }
-    if((!Config.transceiverEnabled || !Config.enderRailEnabled) && EnderIO.blockEnderRail != null) {
-      API.hideItem(new ItemStack(EnderIO.blockEnderRail));
+    if((!Config.transceiverEnabled || !Config.enderRailEnabled) && EIOBlocks.blockEnderRail != null) {
+      API.hideItem(new ItemStack(EIOBlocks.blockEnderRail));
     }
-    if(!Config.transceiverEnabled && EnderIO.blockTransceiver != null) {
-      API.hideItem(new ItemStack(EnderIO.blockTransceiver));
+    if(!Config.transceiverEnabled && EIOBlocks.blockTransceiver != null) {
+      API.hideItem(new ItemStack(EIOBlocks.blockTransceiver));
     }
     if(!Config.reservoirEnabled) {
-      API.hideItem(new ItemStack(EnderIO.blockReservoir));
+      API.hideItem(new ItemStack(EIOBlocks.blockReservoir));
     }
     if(!GasUtil.isGasConduitEnabled()) {
-      API.hideItem(new ItemStack(EnderIO.itemGasConduit));
+      API.hideItem(new ItemStack(EIOItems.itemGasConduit));
     }
-    API.hideItem(new ItemStack(EnderIO.blockHyperCube));
-    API.hideItem(new ItemStack(EnderIO.blockCapacitorBank, 1, OreDictionary.WILDCARD_VALUE));
+    API.hideItem(new ItemStack(EIOBlocks.blockHyperCube));
+    API.hideItem(new ItemStack(EIOBlocks.blockCapacitorBank, 1, OreDictionary.WILDCARD_VALUE));
   }
 
   @Override

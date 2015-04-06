@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -29,6 +28,7 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
@@ -124,7 +124,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         if(entry.getValue() != null) {
           IItemFilter f = entry.getValue();
           if(f != null) {
-            setSpeedUpgrade(entry.getKey(), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 15, 0));
+            setSpeedUpgrade(entry.getKey(), new ItemStack(EIOItems.itemExtractSpeedUpgrade, 15, 0));
           }
         }
       }
@@ -176,7 +176,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     for (Entry<ForgeDirection, IItemFilter> entry : sourceFilters.entrySet()) {
       if(entry.getValue() != null) {
         IItemFilter f = entry.getValue();
-        ItemStack up = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, filterMeta);
+        ItemStack up = new ItemStack(EIOItems.itemBasicFilterUpgrade, 1, filterMeta);
         FilterRegister.writeFilterToStack(f, up);
         converted.put(entry.getKey(), up);
       }
@@ -414,7 +414,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     if(stack == null) {
       return SpeedUpgrade.BASE_MAX_EXTRACTED;
     }
-    SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(stack);
+    SpeedUpgrade speedUpgrade = EIOItems.itemExtractSpeedUpgrade.getSpeedUpgrade(stack);
     return speedUpgrade.getMaximumExtracted(stack.stackSize);
   }
 
@@ -565,7 +565,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public ItemStack createItem() {
-    ItemStack result = new ItemStack(EnderIO.itemItemConduit, 1, metaData);
+    ItemStack result = new ItemStack(EIOItems.itemItemConduit, 1, metaData);
     return result;
   }
 

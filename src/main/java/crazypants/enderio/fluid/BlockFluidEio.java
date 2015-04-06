@@ -18,8 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOFluids;
 
 public class BlockFluidEio extends BlockFluidClassic {
 
@@ -83,18 +83,18 @@ public class BlockFluidEio extends BlockFluidClassic {
       return;
     }
 
-    if(this == EnderIO.blockFireWater) {
+    if(this == EIOFluids.blockFireWater) {
       entity.setFire(50);
-    } else if(this == EnderIO.blockRocketFuel && entity instanceof EntityLivingBase) {
+    } else if(this == EIOFluids.blockRocketFuel && entity instanceof EntityLivingBase) {
       ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.jump.id, 150, 3, true));
-    } else if(this == EnderIO.blockNutrientDistillation && entity instanceof EntityPlayerMP) {
+    } else if(this == EIOFluids.blockNutrientDistillation && entity instanceof EntityPlayerMP) {
       long time = entity.worldObj.getTotalWorldTime();
       EntityPlayerMP player = (EntityPlayerMP) entity;
       if(time % Config.nutrientFoodBoostDelay == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time) {
         player.getFoodStats().addStats(1, 0.1f);
         player.getEntityData().setLong("eioLastFoodBoost", time);
       }
-    } else if (this == EnderIO.blockHootch && entity instanceof EntityLivingBase) {
+    } else if (this == EIOFluids.blockHootch && entity instanceof EntityLivingBase) {
       ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 150, 0, true));
     }
 

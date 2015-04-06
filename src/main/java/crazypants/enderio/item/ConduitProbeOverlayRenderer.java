@@ -10,8 +10,8 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.init.EIOItems;
 
 public class ConduitProbeOverlayRenderer {
 
@@ -31,7 +31,7 @@ public class ConduitProbeOverlayRenderer {
 
   private ItemStack getEquippedProbe() {
     ItemStack equipped = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
-    if(equipped != null && equipped.getItem() == EnderIO.itemConduitProbe) {
+    if(equipped != null && equipped.getItem() == EIOItems.itemConduitProbe) {
       return equipped;
     }
     return null;

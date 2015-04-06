@@ -19,13 +19,13 @@ import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -348,7 +348,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemLiquidConduit, 1, 0);
+    return new ItemStack(EIOItems.itemLiquidConduit, 1, 0);
   }
 
   @Override

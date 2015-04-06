@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
@@ -54,18 +55,18 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     String mobType = null;
     for(MachineRecipeInput input : inputs) {
-      if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
-        mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
+      if(input != null && EIOItems.itemSoulVessel.containsSoul(input.item)) {
+        mobType = EIOItems.itemSoulVessel.getMobTypeFromStack(input.item);
       }
     }
     if(mobType == null) {
       return new ResultStack[0];
     }
-    ItemStack spawner = EnderIO.itemBrokenSpawner.createStackForMobType(mobType);
+    ItemStack spawner = EIOItems.itemBrokenSpawner.createStackForMobType(mobType);
     if(spawner == null) {
       return new ResultStack[0];
     }
-    ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
+    ItemStack soulVessel = new ItemStack(EIOItems.itemSoulVessel);    
     return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(spawner)};
   }
 
@@ -82,11 +83,11 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
     int slot = input.slotNumber;
     ItemStack item = input.item;
     if(slot == 0) {
-      String mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(item);
-      return mobType != null && !EnderIO.blockPoweredSpawner.isBlackListed(mobType);
+      String mobType = EIOItems.itemSoulVessel.getMobTypeFromStack(item);
+      return mobType != null && !EIOBlocks.blockPoweredSpawner.isBlackListed(mobType);
     } 
     if(slot == 1) {
-      return item.getItem() == EnderIO.itemBrokenSpawner;
+      return item.getItem() == EIOItems.itemBrokenSpawner;
     }
     return false;    
   }
@@ -116,12 +117,12 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
 
   @Override
   public ItemStack getInputStack() {    
-    return new ItemStack(EnderIO.itemBrokenSpawner);
+    return new ItemStack(EIOItems.itemBrokenSpawner);
   }
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(EnderIO.itemBrokenSpawner);
+    return new ItemStack(EIOItems.itemBrokenSpawner);
   }
 
   @Override

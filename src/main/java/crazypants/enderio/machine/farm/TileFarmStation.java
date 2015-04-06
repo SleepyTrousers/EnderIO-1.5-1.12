@@ -17,9 +17,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
@@ -694,7 +694,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   @Override
   public String getInventoryName() {
-    return EnderIO.blockFarmStation.getLocalizedName();
+    return EIOBlocks.blockFarmStation.getLocalizedName();
   }
 
   @Override

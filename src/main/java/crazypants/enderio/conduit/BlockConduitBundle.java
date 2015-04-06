@@ -56,6 +56,7 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -202,7 +203,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
         return conduit.createItem();
       } else if(cc.conduitType == null && bundle.getFacadeId() != null) {
         // use the facde
-        ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
+        ItemStack fac = new ItemStack(EIOItems.itemConduitFacade, 1, 0);
         PainterUtil.setSourceBlock(fac, bundle.getFacadeId(), bundle.getFacadeMetadata());
         return fac;
       }
@@ -374,7 +375,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     List<ItemStack> drop = new ArrayList<ItemStack>();
     if(ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
-      ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
+      ItemStack fac = new ItemStack(EIOItems.itemConduitFacade, 1, te.getFacadeType().ordinal());
       PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
       drop.add(fac);
       te.setFacadeId(null);
@@ -464,7 +465,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(!player.isSneaking() || equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
+    if(!player.isSneaking() || equipped == null || equipped.getItem() != EIOItems.itemYetaWench) {
       return;
     }
     ConduitUtil.openConduitGui(world, x, y, z, player);
@@ -479,7 +480,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
 
     ItemStack stack = player.getCurrentEquippedItem();
-    if(stack != null && stack.getItem() == EnderIO.itemConduitFacade && !bundle.hasFacade()) {
+    if(stack != null && stack.getItem() == EIOItems.itemConduitFacade && !bundle.hasFacade()) {
       //add facade
       return handleFacadeClick(world, x, y, z, player, side, bundle, stack);
 

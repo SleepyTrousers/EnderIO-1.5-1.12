@@ -3,8 +3,8 @@ package crazypants.enderio.machine.soul;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
 
@@ -18,12 +18,12 @@ public class SoulBinderEnderCystalRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   public ItemStack getInputStack() {    
-    return new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
+    return new ItemStack(EIOItems.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
   }
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal());
+    return new ItemStack(EIOItems.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal());
   }
 
 }

@@ -37,6 +37,7 @@ import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
@@ -247,7 +248,7 @@ public class TravelController {
     if(selectedCoord == null) {
       return false;
     }
-    return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlock(selectedCoord.x, selectedCoord.y, selectedCoord.z) == EnderIO.blockEnderIo;
+    return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlock(selectedCoord.x, selectedCoord.y, selectedCoord.z) == EIOBlocks.blockEnderIo;
   }
 
   @SubscribeEvent
@@ -633,7 +634,7 @@ public class TravelController {
       int x = MathHelper.floor_double(player.posX);
       int y = MathHelper.floor_double(player.boundingBox.minY) - 1;
       int z = MathHelper.floor_double(player.posZ);
-      if(world.getBlock(x, y, z) == EnderIO.blockTravelPlatform) {
+      if(world.getBlock(x, y, z) == EIOBlocks.blockTravelPlatform) {
         return new BlockCoord(x, y, z);
       }
     }

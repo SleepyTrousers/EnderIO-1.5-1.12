@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -12,6 +11,7 @@ import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.VertexTransform;
@@ -55,7 +55,7 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
 
     IIcon[] icons = new IIcon[6];
     for (int i = 0; i < icons.length; i++) {
-      icons[i] = EnderIO.blockConduitBundle.getConnectorIcon(ConduitConnectorType.INTERNAL);
+      icons[i] = EIOBlocks.blockConduitBundle.getConnectorIcon(ConduitConnectorType.INTERNAL);
     }
     icons[3] = sw.getSwitchIcon();    
 

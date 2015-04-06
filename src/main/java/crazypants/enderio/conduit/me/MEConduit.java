@@ -28,6 +28,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -85,7 +86,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemMEConduit, 1, getDamageForState(isDense));
+    return new ItemStack(EIOItems.itemMEConduit, 1, getDamageForState(isDense));
   }
 
   @Override

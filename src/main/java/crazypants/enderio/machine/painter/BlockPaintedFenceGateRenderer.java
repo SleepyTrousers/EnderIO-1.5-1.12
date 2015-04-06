@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 
 public class BlockPaintedFenceGateRenderer implements ISimpleBlockRenderingHandler {
 
@@ -46,10 +46,11 @@ public class BlockPaintedFenceGateRenderer implements ISimpleBlockRenderingHandl
         && rb.blockAccess.getBlock(par2 + 1, par3, par4) == Blocks.cobblestone_wall ||
         (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == Blocks.cobblestone_wall
         && rb.blockAccess.getBlock(par2, par3, par4 + 1) == Blocks.cobblestone_wall ||
-        (i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EnderIO.blockPaintedWall
-        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == EnderIO.blockPaintedWall ||
-        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EnderIO.blockPaintedWall
-        && rb.blockAccess.getBlock(par2, par3, par4 + 1) == EnderIO.blockPaintedWall)
+ (i1 == 2 || i1 == 0)
+        && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EIOBlocks.blockPaintedWall
+        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == EIOBlocks.blockPaintedWall || (i1 == 3 || i1 == 1)
+        && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EIOBlocks.blockPaintedWall
+        && rb.blockAccess.getBlock(par2, par3, par4 + 1) == EIOBlocks.blockPaintedWall)
     {
       f -= 0.1875F;
       f1 -= 0.1875F;

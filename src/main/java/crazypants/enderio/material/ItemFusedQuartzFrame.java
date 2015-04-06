@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -54,7 +54,7 @@ public class ItemFusedQuartzFrame extends Item {
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
 
-    if(world.getBlock(x, y, z) == EnderIO.blockFusedQuartz) {
+    if(world.getBlock(x, y, z) == EIOBlocks.blockFusedQuartz) {
       TileEntityPaintedBlock tecb = (TileEntityPaintedBlock) world.getTileEntity(x, y, z);
       if(tecb == null) {
         return false;

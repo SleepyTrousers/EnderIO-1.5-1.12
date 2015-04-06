@@ -1,7 +1,7 @@
 package crazypants.enderio.power;
 
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOItems;
 
 public enum Capacitors {
 
@@ -28,7 +28,7 @@ public enum Capacitors {
   }
 
   public ItemStack getItemStack() {
-    return new ItemStack(EnderIO.itemBasicCapacitor, 1, ordinal());
+    return new ItemStack(EIOItems.itemBasicCapacitor, 1, ordinal());
   }
 
 }

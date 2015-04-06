@@ -18,6 +18,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.init.EIOFluids;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.XpUtil;
@@ -83,7 +84,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     }
     IFluidHandler fh = (IFluidHandler) te;
     ForgeDirection dir = ForgeDirection.getOrientation(side);
-    if(!fh.canDrain(dir, EnderIO.fluidXpJuice)) {
+    if(!fh.canDrain(dir, EIOFluids.fluidXpJuice)) {
       return false;
     }
     int currentXP = XpUtil.getPlayerXP(player);
@@ -91,7 +92,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     int requiredXP = nextLevelXP - currentXP;
 
     int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
-    FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
+    FluidStack fs = new FluidStack(EIOFluids.fluidXpJuice, fluidVolume);
     FluidStack res = fh.drain(dir, fs, true);
     if(res == null || res.amount <= 0) {
       return false;
@@ -114,12 +115,12 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     }
     IFluidHandler fh = (IFluidHandler) te;
     ForgeDirection dir = ForgeDirection.getOrientation(side);
-    if(!fh.canFill(dir, EnderIO.fluidXpJuice)) {
+    if(!fh.canFill(dir, EIOFluids.fluidXpJuice)) {
       return false;
     }
 
     int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
-    FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
+    FluidStack fs = new FluidStack(EIOFluids.fluidXpJuice, fluidVolume);
     int takenVolume = fh.fill(dir, fs, true);
     if(takenVolume <= 0) {
       return false;

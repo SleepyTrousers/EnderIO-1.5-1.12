@@ -9,7 +9,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.util.BlockCoord;
 import crazypants.util.EntityUtil;
@@ -54,7 +54,7 @@ public class PlayerTeleportHandler {
       int meta = reciever.getBlockMetadata();
 
       //Make sure player not on the track and is in a safe position
-      ForgeDirection railDir = EnderIO.blockEnderRail.getDirection(meta);
+      ForgeDirection railDir = EIOBlocks.blockEnderRail.getDirection(meta);
       int xOffset = Math.abs(railDir.offsetX);
       int zOffset = Math.abs(railDir.offsetZ);
       BlockCoord startPos = new BlockCoord(reciever).getLocation(ForgeDirection.UP);

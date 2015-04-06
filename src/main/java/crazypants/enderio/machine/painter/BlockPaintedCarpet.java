@@ -24,8 +24,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
@@ -57,7 +57,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockPaintedCarpet, 1, damage);
+    ItemStack result = new ItemStack(EIOBlocks.blockPaintedCarpet, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }

@@ -25,8 +25,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
@@ -64,7 +64,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
   }
 
   public static ItemStack createItemStackForSourceBlock(Block source, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockPaintedSlab, 1, 0);
+    ItemStack result = new ItemStack(EIOBlocks.blockPaintedSlab, 1, 0);
     PainterUtil.setSourceBlock(result, source, damage);
     return result;
   }
@@ -251,7 +251,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
   public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.wooden_slab, Blocks.stone_slab, EnderIO.blockPaintedDoubleSlab, BlockPaintedSlab.this);
+      super(Blocks.wooden_slab, Blocks.stone_slab, EIOBlocks.blockPaintedDoubleSlab, BlockPaintedSlab.this);
     }
 
     @Override

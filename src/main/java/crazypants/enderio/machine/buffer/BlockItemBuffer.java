@@ -12,8 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 
 public class BlockItemBuffer extends ItemBlockWithMetadata {
 
@@ -42,7 +42,7 @@ public class BlockItemBuffer extends ItemBlockWithMetadata {
     }
 
 	public static ItemStack getStack(Type type) {
-		return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
+		return new ItemStack(EIOBlocks.blockBuffer, 1, type.ordinal());
 	}
   }
 

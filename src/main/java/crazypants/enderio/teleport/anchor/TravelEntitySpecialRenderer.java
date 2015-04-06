@@ -18,9 +18,9 @@ import org.lwjgl.opengl.GL14;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -195,7 +195,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
   protected void renderBlock(double sf) {
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.75f);
-    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), EnderIO.blockTravelPlatform.getIcon(0, 0));
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), EIOBlocks.blockTravelPlatform.getIcon(0, 0));
   }
 
   public Vector4f getSelectedColor() {
@@ -203,7 +203,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
   }
 
   public IIcon getSelectedIcon() {
-    return EnderIO.blockTravelPlatform.selectedOverlayIcon;
+    return EIOBlocks.blockTravelPlatform.selectedOverlayIcon;
   }
 
   public Vector4f getHighlightColor() {
@@ -211,7 +211,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
   }
 
   public IIcon getHighlightIcon() {
-    return EnderIO.blockTravelPlatform.highlightOverlayIcon;
+    return EIOBlocks.blockTravelPlatform.highlightOverlayIcon;
   }
 
 }

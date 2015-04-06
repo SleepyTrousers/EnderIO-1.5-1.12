@@ -11,7 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.power.GaugeBounds.VPos;
 import crazypants.render.ConnectedTextureRenderer;
 import crazypants.render.CustomCubeRenderer;
@@ -62,7 +62,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       connectedTexRenderer.setEdgeTexture(IconUtil.whiteTexture);
       connectedTexRenderer.setForceAllEdges(true);
     } else {
-      connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+      connectedTexRenderer.setEdgeTexture(EIOBlocks.blockAlloySmelter.getBlockTextureFromSide(3));
       connectedTexRenderer.setForceAllEdges(false);
     }
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
@@ -121,8 +121,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
             col.scale(0.25);
             tes.setColorRGBA_F(col.x, col.y, col.z, col.w);
           }
-          renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
-          renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon,capBank.getEnergyStoredRatio(), refVertices, x, y, z);
+          renderGaugeOnFace(gb, EIOBlocks.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
+          renderFillBarOnFace(gb, EIOBlocks.blockCapacitorBank.fillBarIcon,capBank.getEnergyStoredRatio(), refVertices, x, y, z);
           capBank.lastRenderStoredRatio = capBank.getEnergyStoredRatio();
           tes.addTranslation((float) -x, (float) -y, (float) -z);
           return;

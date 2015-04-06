@@ -20,11 +20,11 @@ import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BaublesUtil;
 import crazypants.util.ItemUtil;
@@ -56,11 +56,11 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   public static boolean hasPower(ItemStack itemStack) {
-    return EnderIO.itemMagnet.getEnergyStored(itemStack) > 0;
+    return EIOItems.itemMagnet.getEnergyStored(itemStack) > 0;
   }
 
   public static void drainPerSecondPower(ItemStack itemStack) {
-    EnderIO.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);
+    EIOItems.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);
   }
 
   static MagnetController controller = new MagnetController();

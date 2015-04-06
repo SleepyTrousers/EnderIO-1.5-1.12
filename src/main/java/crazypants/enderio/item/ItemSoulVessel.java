@@ -29,11 +29,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.init.EIOItems;
 import crazypants.util.DyeColor;
 import crazypants.util.EntityUtil;
 import crazypants.util.Lang;
@@ -198,7 +198,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     root.setString("id", entityId);
     entity.writeToNBT(root);
 
-    ItemStack capturedMobVessel = new ItemStack(EnderIO.itemSoulVessel);
+    ItemStack capturedMobVessel = new ItemStack(EIOItems.itemSoulVessel);
     capturedMobVessel.setTagCompound(root);
     setDisplayNameFromEntityNameTag(capturedMobVessel, entity);
 

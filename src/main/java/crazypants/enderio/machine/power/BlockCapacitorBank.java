@@ -30,6 +30,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -132,7 +133,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       if(world.isRemote) {
         world.markBlockForUpdate(x, y, z);
       } else {
-        world.notifyBlocksOfNeighborChange(x, y, z, EnderIO.blockCapacitorBank);
+        world.notifyBlocksOfNeighborChange(x, y, z, EIOBlocks.blockCapacitorBank);
         world.markBlockForUpdate(x, y, z);
       }
 

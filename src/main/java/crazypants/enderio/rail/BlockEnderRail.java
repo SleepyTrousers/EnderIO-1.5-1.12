@@ -20,11 +20,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.transceiver.Channel;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
@@ -144,7 +144,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   @Override
   public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-    return world.getBlock(x, y - 1, z) == EnderIO.blockTransceiver;
+    return world.getBlock(x, y - 1, z) == EIOBlocks.blockTransceiver;
   }
 
   @Override
@@ -243,7 +243,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
       return false;
     }
     Block blk = reciever.getWorldObj().getBlock(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
-    if(blk != EnderIO.blockEnderRail) {
+    if(blk != EIOBlocks.blockEnderRail) {
       return false;
     }
     return reciever.getRailController().isClear();

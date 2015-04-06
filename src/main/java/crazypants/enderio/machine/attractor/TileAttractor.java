@@ -31,9 +31,9 @@ import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
@@ -124,7 +124,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if(!slotDefinition.isInputSlot(i)) {
       return false;
     }
-    String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(itemstack);
+    String mob = EIOItems.itemSoulVessel.getMobTypeFromStack(itemstack);
     if(mob == null) {
       return false;
     }
@@ -225,7 +225,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private boolean isMobInFilter(String entityId) {
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
       if(inventory[i] != null) {
-        String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(inventory[i]);
+        String mob = EIOItems.itemSoulVessel.getMobTypeFromStack(inventory[i]);
         if(mob != null && mob.equals(entityId)) {
           return true;
         }

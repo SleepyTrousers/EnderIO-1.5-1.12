@@ -15,6 +15,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.darksteel.IDarkSteelUpgrade;
 import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
 import crazypants.enderio.material.Alloy;
@@ -71,65 +73,81 @@ public class ThaumcraftCompat {
         .add(getAspects(Blocks.soul_sand))
         .add(getAspects(Items.gold_ingot)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EIOBlocks.blockEndermanSkull),
+        new AspectList()
         .add(Aspect.MAGIC, 3)
         .add(Aspect.TRAVEL, 4)
         .add(Aspect.ELDRITCH, 4));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull, 1, SkullType.TORMENTED.ordinal()), new AspectList()
-        .add(getAspects(EnderIO.blockEndermanSkull))
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOBlocks.blockEndermanSkull, 1, SkullType.TORMENTED.ordinal()),
+        new AspectList().add(getAspects(EIOBlocks.blockEndermanSkull))
         .add(getAspects(Items.potionitem)).add(getAspects(Items.potionitem))
-        .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
+            .add(getAspects(new ItemStack(EIOItems.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
         .add(getAspects(Alloy.SOULARIUM.oredictIngotName)).add(getAspects(Alloy.SOULARIUM.oredictIngotName)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_ELECTRODE.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOItems.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_ELECTRODE.ordinal()),
+        new AspectList()
         .add(getAspects(new ItemStack(Items.skull, 1, 2)))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
-        .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
+            .add(getAspects(new ItemStack(EIOItems.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
         .add(getAspects(Alloy.ENERGETIC_ALLOY.oredictIngotName)).add(getAspects(Alloy.ENERGETIC_ALLOY.oredictIngotName)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOItems.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal()),
+        new AspectList()
         .add(getAspects(new ItemStack(Items.skull, 1, 2)))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
-        .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
+            .add(getAspects(new ItemStack(EIOItems.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
         .add(getAspects(Alloy.SOULARIUM.oredictIngotName)).add(getAspects(Alloy.SOULARIUM.oredictIngotName)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOItems.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal()),
+        new AspectList()
         .add(Aspect.UNDEAD, 2)
         .add(Aspect.MAN, 1)
         .add(Aspect.EARTH, 1)
-        .add(getAspects(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal()))));
+            .add(getAspects(new ItemStack(EIOItems.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal()))));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ENDER_RESONATOR.ordinal()), new AspectList()
-        .add(getAspects(EnderIO.blockEndermanSkull))
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOItems.itemFrankenSkull, 1, FrankenSkull.ENDER_RESONATOR.ordinal()),
+        new AspectList().add(getAspects(EIOBlocks.blockEndermanSkull))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
         .add(getAspects(Alloy.PHASED_GOLD.oredictIngotName))
         .add(getAspects(Alloy.SOULARIUM.oredictIngotName)).add(getAspects(Alloy.SOULARIUM.oredictIngotName)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EIOItems.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal()), new AspectList()
         .add(Aspect.AIR, 2)
         .add(Aspect.ELDRITCH, 4)
         .add(Aspect.TRAVEL, 2)
         .add(getAspects(Items.emerald)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOItems.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()),
+        new AspectList()
         .add(Aspect.AIR, 2)
         .add(Aspect.MAN, 3)
-        .add(getAspects(new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()))));
+            .add(getAspects(new ItemStack(EIOItems.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()))));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EIOBlocks.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()),
+        new AspectList()
         .add(getAspects(new ItemStack(Items.quartz, 4)))
         .add(Aspect.CRYSTAL, 1));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EIOBlocks.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal()),
+        new AspectList()
         .add(Aspect.CRYSTAL, 2));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOBlocks.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.quartz, 4)))
         .add(Aspect.LIGHT, 8)
         .add(Aspect.SENSES, 2));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_GLASS.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(
+        new ItemStack(EIOBlocks.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_GLASS.ordinal()),
+        new AspectList()
         .add(Aspect.CRYSTAL, 2)
         .add(Aspect.LIGHT, 8)
         .add(Aspect.SENSES, 2));

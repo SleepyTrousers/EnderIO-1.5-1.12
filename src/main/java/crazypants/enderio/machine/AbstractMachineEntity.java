@@ -23,6 +23,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
@@ -164,7 +165,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
     if(slotDefinition.isUpgradeSlot(i)) {
-      return itemstack != null && itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0;
+      return itemstack != null && itemstack.getItem() == EIOItems.itemBasicCapacitor && itemstack.getItemDamage() > 0;
     }
     return isMachineItemValidForSlot(i, itemstack);
   }

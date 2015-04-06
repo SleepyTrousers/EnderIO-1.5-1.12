@@ -10,17 +10,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 
 public class BlockItemPaintedSlab extends ItemSlab {
 
   private boolean isFullBlock;
 
   public BlockItemPaintedSlab(Block blk) {
-    super(blk, EnderIO.blockPaintedSlab, EnderIO.blockPaintedDoubleSlab, blk == EnderIO.blockPaintedDoubleSlab);
+    super(blk, EIOBlocks.blockPaintedSlab, EIOBlocks.blockPaintedDoubleSlab, blk == EIOBlocks.blockPaintedDoubleSlab);
     setHasSubtypes(true);
-    isFullBlock = blk == EnderIO.blockPaintedDoubleSlab;
+    isFullBlock = blk == EIOBlocks.blockPaintedDoubleSlab;
     setUnlocalizedName(ModObject.blockPaintedSlab.unlocalisedName);
   }
 
@@ -52,16 +52,16 @@ public class BlockItemPaintedSlab extends ItemSlab {
       int k1 = j1 & 7;
       boolean flag = (j1 & 8) != 0;
 
-      if((side == 1 && !flag || side == 0 && flag) && i1 == EnderIO.blockPaintedSlab && k1 == par1ItemStack.getItemDamage()) {
+      if((side == 1 && !flag || side == 0 && flag) && i1 == EIOBlocks.blockPaintedSlab && k1 == par1ItemStack.getItemDamage()) {
 
-        if(world.checkNoEntityCollision(EnderIO.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))) {
+        if(world.checkNoEntityCollision(EIOBlocks.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))) {
 
           TileEntity te = world.getTileEntity(x, y, z);
           if(te instanceof TileEntityPaintedSlab) {
             ((TileEntityPaintedSlab) te).isConvertingToFullBlock = true;
           }
 
-          if(world.setBlock(x, y, z, EnderIO.blockPaintedDoubleSlab, k1, 3)) {
+          if(world.setBlock(x, y, z, EIOBlocks.blockPaintedDoubleSlab, k1, 3)) {
 
             te = world.getTileEntity(x, y, z);
             if(te instanceof TileEntityPaintedBlock) {
@@ -74,8 +74,8 @@ public class BlockItemPaintedSlab extends ItemSlab {
             }
 
             world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F,
-                EnderIO.blockPaintedDoubleSlab.stepSound.getStepResourcePath(), (EnderIO.blockPaintedDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
-                EnderIO.blockPaintedDoubleSlab.stepSound.getPitch() * 0.8F);
+                EIOBlocks.blockPaintedDoubleSlab.stepSound.getStepResourcePath(), (EIOBlocks.blockPaintedDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
+                EIOBlocks.blockPaintedDoubleSlab.stepSound.getPitch() * 0.8F);
             --par1ItemStack.stackSize;
           } else {
             if(te instanceof TileEntityPaintedSlab) {
@@ -114,15 +114,15 @@ public class BlockItemPaintedSlab extends ItemSlab {
     int j1 = world.getBlockMetadata(x, y, z);
     int k1 = j1 & 7;
 
-    if(i1 == EnderIO.blockPaintedSlab && k1 == par1ItemStack.getItemDamage()) {
+    if(i1 == EIOBlocks.blockPaintedSlab && k1 == par1ItemStack.getItemDamage()) {
 
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileEntityPaintedSlab) {
         ((TileEntityPaintedSlab) te).isConvertingToFullBlock = true;
       }
 
-      if(world.checkNoEntityCollision(EnderIO.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
-          && world.setBlock(x, y, z, EnderIO.blockPaintedDoubleSlab, k1, 3)) {
+      if(world.checkNoEntityCollision(EIOBlocks.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
+          && world.setBlock(x, y, z, EIOBlocks.blockPaintedDoubleSlab, k1, 3)) {
 
         te = world.getTileEntity(x, y, z);
         if(te instanceof TileEntityPaintedBlock) {
@@ -135,8 +135,8 @@ public class BlockItemPaintedSlab extends ItemSlab {
         }
 
         world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F,
-            EnderIO.blockPaintedDoubleSlab.stepSound.getStepResourcePath(), (EnderIO.blockPaintedDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
-            EnderIO.blockPaintedDoubleSlab.stepSound.getPitch() * 0.8F);
+            EIOBlocks.blockPaintedDoubleSlab.stepSound.getStepResourcePath(), (EIOBlocks.blockPaintedDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
+            EIOBlocks.blockPaintedDoubleSlab.stepSound.getPitch() * 0.8F);
         --par1ItemStack.stackSize;
 
       } else {

@@ -9,7 +9,7 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
@@ -73,13 +73,13 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   private void updateVanillaFurnaceButton() {
-    IIcon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
+    IIcon icon = EIOBlocks.blockAlloySmelter.vanillaSmeltingOn;
     String unlocText = "gui.alloy.mode.all";
     if(getTileEntity().getMode() == Mode.ALLOY) {
-      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
+      icon = EIOBlocks.blockAlloySmelter.vanillaSmeltingOff;
       unlocText = "gui.alloy.mode.alloy";
     } else if(getTileEntity().getMode() == Mode.FURNACE) {
-      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly;
+      icon = EIOBlocks.blockAlloySmelter.vanillaSmeltingOnly;
       unlocText = "gui.alloy.mode.furnace";
     }
     vanillaFurnaceButton.setIcon(icon);

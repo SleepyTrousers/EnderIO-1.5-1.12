@@ -35,6 +35,8 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.init.DarkSteelItems;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
@@ -262,7 +264,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     } else if(entityLiving instanceof EntityCreeper) {
       return new ItemStack(Items.skull, 1, 4);
     } else if(entityLiving instanceof EntityEnderman) {
-      return new ItemStack(EnderIO.blockEndermanSkull);
+      return new ItemStack(EIOBlocks.blockEndermanSkull);
     }
 
     return null;

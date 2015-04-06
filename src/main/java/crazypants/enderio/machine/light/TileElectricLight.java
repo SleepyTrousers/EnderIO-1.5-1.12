@@ -9,9 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.wireless.IWirelessCharger;
 import crazypants.enderio.machine.wireless.WirelessChargerController;
 import crazypants.enderio.power.BasicCapacitor;
@@ -260,7 +260,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
         clearLightNodes();
 
         for (NodeEntry entry : after) {
-          worldObj.setBlock(entry.coord.x, entry.coord.y, entry.coord.z, EnderIO.blockLightNode);
+          worldObj.setBlock(entry.coord.x, entry.coord.y, entry.coord.z, EIOBlocks.blockLightNode);
           TileEntity te = worldObj.getTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
           if(te instanceof TileLightNode) {
             TileLightNode ln = (TileLightNode) te;
@@ -332,13 +332,13 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   private boolean isLightNode(Vector3d offset) {
-    return worldObj.getBlock(xCoord + (int) offset.x, yCoord + (int) offset.y, zCoord + (int) offset.z) == EnderIO.blockLightNode;
+    return worldObj.getBlock(xCoord + (int) offset.x, yCoord + (int) offset.y, zCoord + (int) offset.z) == EIOBlocks.blockLightNode;
   }
 
   private void clearLightNodes() {
     if(lightNodes != null) {
       for (TileLightNode ln : lightNodes) {
-        if(worldObj.getBlock(ln.xCoord, ln.yCoord, ln.zCoord) == EnderIO.blockLightNode) {
+        if(worldObj.getBlock(ln.xCoord, ln.yCoord, ln.zCoord) == EIOBlocks.blockLightNode) {
           worldObj.setBlockToAir(ln.xCoord, ln.yCoord, ln.zCoord);
         }
       }

@@ -23,8 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
@@ -53,7 +53,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   }
 
   public static ItemStack createItemStackForSourceBlock(Block id, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockPaintedWall, 1, damage);
+    ItemStack result = new ItemStack(EIOBlocks.blockPaintedWall, 1, damage);
     PainterUtil.setSourceBlock(result, id, damage);
     return result;
   }
@@ -165,7 +165,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   @Override
   public boolean canConnectWallTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
     Block l = par1IBlockAccess.getBlock(par2, par3, par4);
-    if(l == EnderIO.blockPaintedFenceGate) {
+    if (l == EIOBlocks.blockPaintedFenceGate) {
       return true;
     }
     return super.canConnectWallTo(par1IBlockAccess, par2, par3, par4);

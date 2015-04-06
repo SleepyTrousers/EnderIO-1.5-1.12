@@ -8,9 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
@@ -74,7 +75,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       if(NULL_ENTITY_NAME.equals(name)) {
         return;
       }
-      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntityStub(logic.getEntityNameToSpawn());
+      ItemStack res = EIOItems.itemSoulVessel.createVesselWithEntityStub(logic.getEntityNameToSpawn());
       decrStackSize(0, 1);
       setInventorySlotContents(1, res);
     }
@@ -110,7 +111,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       return false;
     }
     if(slotDefinition.isInputSlot(i)) {
-      return itemstack.getItem() == EnderIO.itemSoulVessel && !EnderIO.itemSoulVessel.containsSoul(itemstack);
+      return itemstack.getItem() == EIOItems.itemSoulVessel && !EIOItems.itemSoulVessel.containsSoul(itemstack);
     }
     return false;
   }
@@ -256,7 +257,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
     @Override
     public void func_98267_a(int par1) {
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, EnderIO.blockPoweredSpawner, par1, 0);
+      worldObj.addBlockEvent(xCoord, yCoord, zCoord, EIOBlocks.blockPoweredSpawner, par1, 0);
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.TechneMachineRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -15,7 +15,7 @@ import crazypants.render.CubeRenderer;
 public class FarmingStationRenderer extends TechneMachineRenderer<TileFarmStation> {
 
   public FarmingStationRenderer() {
-    super(EnderIO.blockFarmStation, "models/farm");
+    super(EIOBlocks.blockFarmStation, "models/farm");
   }
 
   @Override

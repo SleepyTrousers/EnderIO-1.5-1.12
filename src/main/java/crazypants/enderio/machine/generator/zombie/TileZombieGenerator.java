@@ -9,9 +9,9 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOFluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
@@ -204,7 +204,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return fluid != null && fluid.getID() == EnderIO.fluidNutrientDistillation.getID();
+    return fluid != null && fluid.getID() == EIOFluids.fluidNutrientDistillation.getID();
   }
 
   @Override

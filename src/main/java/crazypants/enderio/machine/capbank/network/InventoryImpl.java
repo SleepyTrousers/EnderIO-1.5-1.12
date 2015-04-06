@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class InventoryImpl implements IInventory {
@@ -116,7 +116,7 @@ public class InventoryImpl implements IInventory {
 
   @Override
   public String getInventoryName() {
-    return EnderIO.blockCapBank.getUnlocalizedName() + ".name";
+    return EIOBlocks.blockCapBank.getUnlocalizedName() + ".name";
   }
 
   @Override

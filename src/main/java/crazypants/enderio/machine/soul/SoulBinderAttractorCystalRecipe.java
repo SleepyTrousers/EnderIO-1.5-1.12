@@ -3,8 +3,8 @@ package crazypants.enderio.machine.soul;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.material.Material;
 
 public class SoulBinderAttractorCystalRecipe extends AbstractSoulBinderRecipe {
@@ -22,7 +22,7 @@ public class SoulBinderAttractorCystalRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal());
+    return new ItemStack(EIOItems.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal());
   }
 
 }

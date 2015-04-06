@@ -10,9 +10,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
 import crazypants.util.Lang;
@@ -21,25 +21,25 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public static final AbstractUpgrade EMPOWERED = new EnergyUpgrade(
       "enderio.darksteel.upgrade.empowered_one", Config.darkSteelUpgradeVibrantCost,
-      new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()),
+      new ItemStack(EIOItems.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()),
       Config.darkSteelPowerStorageBase,
       Config.darkSteelPowerStorageBase / 100);
 
   public static final AbstractUpgrade EMPOWERED_TWO = new EnergyUpgrade(
       "enderio.darksteel.upgrade.empowered_two", Config.darkSteelUpgradePowerOneCost,
-      new ItemStack(EnderIO.itemBasicCapacitor, 1, 0),
+      new ItemStack(EIOItems.itemBasicCapacitor, 1, 0),
       Config.darkSteelPowerStorageLevelOne,
       Config.darkSteelPowerStorageLevelOne / 100);
 
   public static final AbstractUpgrade EMPOWERED_THREE = new EnergyUpgrade(
       "enderio.darksteel.upgrade.empowered_three", Config.darkSteelUpgradePowerTwoCost,
-      new ItemStack(EnderIO.itemBasicCapacitor, 1, 1),
+      new ItemStack(EIOItems.itemBasicCapacitor, 1, 1),
       Config.darkSteelPowerStorageLevelTwo,
       Config.darkSteelPowerStorageLevelTwo / 100);
 
   public static final AbstractUpgrade EMPOWERED_FOUR = new EnergyUpgrade(
       "enderio.darksteel.upgrade.empowered_four", Config.darkSteelUpgradePowerThreeCost,
-      new ItemStack(EnderIO.itemBasicCapacitor, 1, 2),
+      new ItemStack(EIOItems.itemBasicCapacitor, 1, 2),
       Config.darkSteelPowerStorageLevelThree,
       Config.darkSteelPowerStorageLevelThree / 100);
 

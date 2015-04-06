@@ -10,14 +10,14 @@ import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.init.EIOBlocks;
 
 public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedTooltipProvider {
 
   public BlockItemTank() {
-    super(EnderIO.blockTank,EnderIO.blockTank);
+    super(EIOBlocks.blockTank,EIOBlocks.blockTank);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
@@ -50,17 +50,17 @@ public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedToo
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    EnderIO.blockTank.addCommonEntries(itemstack, entityplayer, list, flag);
+    EIOBlocks.blockTank.addCommonEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    EnderIO.blockTank.addBasicEntries(itemstack, entityplayer, list, flag);
+    EIOBlocks.blockTank.addBasicEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    EnderIO.blockTank.addDetailedEntries(itemstack, entityplayer, list, flag);
+    EIOBlocks.blockTank.addDetailedEntries(itemstack, entityplayer, list, flag);
   }
 
 
