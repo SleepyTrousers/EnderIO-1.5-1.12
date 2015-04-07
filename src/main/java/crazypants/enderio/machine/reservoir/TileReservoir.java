@@ -11,15 +11,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
+import crazypants.util.ITankAccess;
 import crazypants.vecmath.Vector3f;
 
-public class TileReservoir extends TileEntityEio implements IFluidHandler {
+public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 
   enum Pos {
     TL(true, false),
@@ -660,6 +662,35 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
     c.lastRenderPartialTick = renderPartialTick;
 
     return false;
+  }
+
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    if (forFluidType != null && forFluidType.getFluid() == FluidRegistry.WATER) {
+      return tank;
+    }
+    return null;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    if (isMaster()) {
+      return new FluidTank[] { tank, regenTank };
+    } else {
+      return new FluidTank[] { tank };
+    }
+  }
+
+  @Override
+  public void setTanksDirty() {
+    if (isMaster() && regenTank != null && tank != null) {
+      if (!regenTank.isFull() && tank.getAmount() > 0) {
+        int toMove = Math.min(tank.getAmount(), regenTank.getCapacity() - regenTank.getAmount());
+        regenTank.setAmount(regenTank.getAmount() + toMove);
+        tank.setAmount(tank.getAmount() - toMove);
+      }
+    }
+    tankDirty = true;
   }
 
 }

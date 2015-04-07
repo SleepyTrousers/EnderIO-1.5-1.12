@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -20,6 +21,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ITankAccess;
 import crazypants.util.ItemUtil;
+import crazypants.util.FluidUtil.FluidAndStackResult;
 
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
 
@@ -220,8 +222,16 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       if(item.getItem() == Items.lava_bucket) {
         return true;
       }
+      if (item.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) item.getItem()).getFluid(item) != null) {
+        return true;
+      }
       return false;
     } else if(i == 1) {
+      if (item.getItem() instanceof IFluidContainerItem
+          && (((IFluidContainerItem) item.getItem()).getFluid(item) == null || ((IFluidContainerItem) item.getItem())
+              .getFluid(item).amount < ((IFluidContainerItem) item.getItem()).getCapacity(item))) {
+        return true;
+      }
       return FluidContainerRegistry.isEmptyContainer(item) || item.getItem() == Items.bucket;
     }
     return false;
@@ -265,85 +275,49 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   private boolean fillEmptyContainer() {
-    ItemStack toFill = inventory[1];
-    if(toFill == null) {
-      return false;
-    }
-    if(tank.getFluidAmount() <= 0) {
-      return false;
-    }
-
-    ItemStack filledContainer = FluidUtil.fillContainerFromInternalTank(this, toFill, false);
-    if (filledContainer == null) {
+    FluidAndStackResult fill = FluidUtil.tryFillContainer(inventory[1], getOutputTanks()[0].getFluid());
+    if (fill.result.fluidStack == null) {
       return false;
     }
 
     if (inventory[3] != null) {
-      if (filledContainer.isStackable() && ItemUtil.areStackMergable(inventory[3], filledContainer)
+      if (inventory[3].isStackable() && ItemUtil.areStackMergable(inventory[3], fill.result.itemStack)
           && inventory[3].stackSize < inventory[3].getMaxStackSize()) {
-        filledContainer.stackSize += inventory[3].stackSize;
+        fill.result.itemStack.stackSize += inventory[3].stackSize;
       } else {
         return false;
       }
     }
 
-    FluidUtil.fillContainerFromInternalTank(this, toFill, true);
+    getOutputTanks()[0].setFluid(fill.remainder.fluidStack);
+    setInventorySlotContents(1, fill.remainder.itemStack);
+    setInventorySlotContents(3, fill.result.itemStack);
 
-    toFill = toFill.copy();
-    toFill.stackSize--;
-    if (toFill.stackSize == 0) {
-      setInventorySlotContents(1, null);
-    } else {
-      setInventorySlotContents(1, toFill);
-    }
-
-    setInventorySlotContents(3, filledContainer);
-
+    setTanksDirty();
     markDirty();
     return false;
   }
 
   private boolean drainFullContainer() {
-    ItemStack fillFrom = inventory[0];
-    if(fillFrom == null) {
+    FluidAndStackResult fill = FluidUtil.tryDrainContainer(inventory[0], this);
+    if (fill.result.fluidStack == null) {
       return false;
     }
-    FluidStack fluid = FluidUtil.getFluidFromItem(fillFrom);
-    if(fluid == null) {
-      return false;
-    }
-    ItemStack emptyItem = FluidUtil.getEmptyContainer(fillFrom);
-    if(emptyItem != null && inventory[2] != null) {
-      if(!inventory[2].isItemEqual(emptyItem) || inventory[2].getMaxStackSize() < inventory[2].stackSize + 1) {
-        return false; //can't stack the empty container
+
+    if (inventory[2] != null) {
+      if (inventory[2].isStackable() && ItemUtil.areStackMergable(inventory[2], fill.result.itemStack)
+          && inventory[2].stackSize < inventory[2].getMaxStackSize()) {
+        fill.result.itemStack.stackSize += inventory[2].stackSize;
+      } else {
+        return false;
       }
     }
 
-    int filled = fillInternal(fluid, false);
-    if(filled < fluid.amount) {
-      return false; //can't empty the entire thing
-    }
-    fillInternal(fluid, true);
+    getInputTank(fill.result.fluidStack).setFluid(fill.remainder.fluidStack);
+    setInventorySlotContents(0, fill.remainder.itemStack);
+    setInventorySlotContents(2, fill.result.itemStack);
 
-    fillFrom = fillFrom.copy();
-    fillFrom.stackSize--;
-    if(fillFrom.stackSize == 0) {
-      setInventorySlotContents(0, null);
-    } else {
-      setInventorySlotContents(0, fillFrom);
-    }
-
-    if(emptyItem == null) {
-        return true;
-    }
-    
-    if(inventory[2] == null) {
-      setInventorySlotContents(2, emptyItem);
-    } else {
-      ItemStack newStack = inventory[2].copy();
-      newStack.stackSize++;
-      setInventorySlotContents(2, newStack);
-    }
+    setTanksDirty();
     markDirty();
     return false;
   }
@@ -379,13 +353,13 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  public FluidTank getInputTank() {
+  public FluidTank getInputTank(FluidStack forFluidType) {
     return tank;
   }
 
   @Override
-  public FluidTank getOutputTank() {
-    return tank;
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { tank };
   }
 
   @Override

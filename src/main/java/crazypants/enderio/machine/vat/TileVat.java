@@ -329,13 +329,13 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public FluidTank getInputTank() {
+  public FluidTank getInputTank(FluidStack forFluidType) {
     return inputTank;
   }
 
   @Override
-  public FluidTank getOutputTank() {
-    return outputTank;
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { outputTank /* , inputTank */};
   }
 
   @Override

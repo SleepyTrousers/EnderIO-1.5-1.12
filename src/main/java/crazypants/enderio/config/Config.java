@@ -454,6 +454,8 @@ public final class Config {
 
   public static boolean replaceWitherSkeletons = true;
 
+  public static boolean enableWaterFromBottles = true;
+
   public static boolean telepadLockDimension = true;
   public static boolean telepadLockCoords = true;
   
@@ -1211,6 +1213,14 @@ public final class Config {
 
     replaceWitherSkeletons = config.get(sectionMisc.name, "replaceWitherSkeletons", replaceWitherSkeletons,
             "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
+
+    enableWaterFromBottles = config
+        .get(
+            sectionMisc.name,
+            "enableWaterFromBottles",
+            enableWaterFromBottles,
+            "Enables emptying vanilla water bottles without breaking the bottle. In combination with a water source block this allows duping of water without cost.")
+        .getBoolean();
 
     telepadLockDimension = config.get(sectionTelepad.name, "lockDimension", telepadLockDimension,
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();

@@ -21,6 +21,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
+import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
 
 public abstract class BlockEio extends Block {
 
@@ -90,6 +92,14 @@ public abstract class BlockEio extends Block {
         ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
         world.markBlockForUpdate(x, y, z);
         return true;
+      }
+      if (te instanceof ITankAccess) {
+        if (FluidUtil.fillInternalTankFromPlayerHandItem(world, x, y, z, entityPlayer, (ITankAccess) te)) {
+          return true;
+        }
+        if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, (ITankAccess) te)) {
+          return true;
+        }
       }
     }
 

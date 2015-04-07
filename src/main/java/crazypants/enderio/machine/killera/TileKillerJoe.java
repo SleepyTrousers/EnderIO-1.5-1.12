@@ -21,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -42,9 +43,10 @@ import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ForgeDirectionOffsets;
+import crazypants.util.ITankAccess;
 import crazypants.vecmath.Vector3d;
 
-public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector, IHaveExperience {
+public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector, IHaveExperience, ITankAccess {
 
   private static final int IO_MB_TICK = 250;
 
@@ -547,5 +549,27 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     @Override
     protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
     }
+  }
+
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    if (forFluidType != null && forFluidType.getFluid() == EnderIO.fluidNutrientDistillation) {
+      return fuelTank;
+    }
+    /*
+     * if (forFluidType != null && forFluidType.getFluid() ==
+     * EnderIO.fluidXpJuice) { return xpCon; }
+     */
+    return null;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { xpCon /* , fuelTank */};
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tanksDirty = true;
   }
 }
