@@ -16,7 +16,7 @@ public class XpUtil {
   public static final int LIQUID_PER_XP_BOTTLE = XP_PER_BOTTLE * RATIO;
   
   
-  public static int liquidToExperiance(int liquid) {
+  public static int liquidToExperience(int liquid) {
     return liquid / RATIO;
   }
 

@@ -15,8 +15,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -31,9 +29,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.FluidUtil;
 import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
@@ -72,40 +68,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @Override
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileTank(metadata);
-  }
-
-  @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileTank)) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    TileTank tank = (TileTank) te;
-    ItemStack item = entityPlayer.inventory.getCurrentItem();
-    if(item == null) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    //check for filled fluid containers and see if we can empty them into our input tank
-    FluidStack fluid = FluidUtil.getFluidFromItem(item);
-    if(fluid != null) {
-      int filled = tank.fillInternal(fluid, false);
-      if(filled >= fluid.amount) {
-        tank.fillInternal(fluid, true);
-        if(!entityPlayer.capabilities.isCreativeMode) {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
-        }
-        return true;
-      }
-    }
-
-    if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, tank)) {
-      return true;
-    }
-
-    return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
 
   @Override

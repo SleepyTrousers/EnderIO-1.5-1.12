@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.ModObject;
@@ -25,8 +26,9 @@ import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
 import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
 
-public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler {
+public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess {
 
   public static final int POWER_PER_TICK_ONE = Config.soulBinderLevelOnePowerPerTickRF;
   private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2, 
@@ -227,6 +229,19 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     xpCont.writeToNBT(nbtRoot);
   }
   
-  
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    return xpCont;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { xpCont };
+  }
+
+  @Override
+  public void setTanksDirty() {
+    xpCont.setDirty(true);
+  }
   
 }

@@ -97,7 +97,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       return false;
     }
 
-    int xpToGive = XpUtil.liquidToExperiance(res.amount);
+    int xpToGive = XpUtil.liquidToExperience(res.amount);
     player.addExperience(xpToGive);
 
     return true;
@@ -124,7 +124,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     if(takenVolume <= 0) {
       return false;
     }
-    int xpToTake = XpUtil.liquidToExperiance(takenVolume);
+    int xpToTake = XpUtil.liquidToExperience(takenVolume);
     XpUtil.addPlayerXP(player, -xpToTake);
     return true;
   }

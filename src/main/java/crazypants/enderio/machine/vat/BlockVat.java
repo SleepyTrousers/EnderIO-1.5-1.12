@@ -10,9 +10,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
-import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
@@ -21,10 +18,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.VertexRotation;
-import crazypants.util.FluidUtil;
-import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
-import static crazypants.util.FluidUtil.isValidFluid;
 
 public class BlockVat extends AbstractMachineBlock<TileVat> {
 
@@ -104,44 +98,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       return topIcon;
     }
     return blockIcon;
-  }
-
-  @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-
-    if (entityPlayer.isSneaking()) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-    
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileVat)) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    TileVat vat = (TileVat) te;
-    ItemStack item = entityPlayer.inventory.getCurrentItem();
-    if(item == null) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    //check for filled fluid containers and see if we can empty them into our input tank
-    FluidStack fluid = FluidUtil.getFluidFromItem(item);
-    if(isValidFluid(fluid)) {
-      int filled = vat.fill(ForgeDirection.UP, fluid, false);
-      if(filled >= fluid.amount) {
-        vat.fill(ForgeDirection.UP, fluid, true);
-        if(!entityPlayer.capabilities.isCreativeMode) {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
-        }
-        return true;
-      }
-    }
-
-    if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, vat)) {
-      return true;
-    }
-
-    return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
 
   @Override

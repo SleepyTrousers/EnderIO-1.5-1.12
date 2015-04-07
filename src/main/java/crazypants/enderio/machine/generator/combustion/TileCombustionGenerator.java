@@ -21,8 +21,9 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
 
-public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler {
+public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
 
   private final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
   private final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
@@ -422,6 +423,27 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
   public FluidTank getFuelTank() {
     return fuelTank;
+  }
+
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    if (FluidFuelRegister.instance.getCoolant(forFluidType.getFluid()) != null) {
+      return coolantTank;
+    }
+    if (FluidFuelRegister.instance.getFuel(forFluidType.getFluid()) != null) {
+      return fuelTank;
+    }
+    return null;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { /* coolantTank, fuelTank */};
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tanksDirty = true;
   }
 
 }

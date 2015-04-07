@@ -7,6 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.EnderIO;
@@ -19,8 +20,9 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
 
-public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler {
+public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
 
   private static int IO_MB_TICK = 250;
 
@@ -272,6 +274,24 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("active", active);
+  }
+
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    if (forFluidType != null && forFluidType.getFluid() == EnderIO.fluidNutrientDistillation) {
+      return fuelTank;
+    }
+    return null;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { /* fuelTank */};
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tanksDirty = true;
   }
 
 }
