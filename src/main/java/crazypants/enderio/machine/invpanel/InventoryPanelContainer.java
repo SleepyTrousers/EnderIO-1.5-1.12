@@ -35,9 +35,15 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   public static final int RETURN_INV_X = 7;
   public static final int RETURN_INV_Y = 82;
 
+  public static final int FILTER_SLOT_X = 233;
+  public static final int FILTER_SLOT_Y = 7;
+
   private final HashSet<InventoryDatabaseServer.ItemEntry> changedItems;
 
+  private Slot slotFilter;
+
   private int indexCraftingSlot;
+  private int indexFilterSlot;
   private int startReturnSlot;
   private int endReturnSlot;
 
@@ -56,11 +62,12 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
     indexCraftingSlot = inventorySlots.size();
-    addSlotToContainer(new SlotCrafting(playerInv.player, tileEntity, tileEntity, 9, CRAFTING_GRID_X+59, CRAFTING_GRID_Y+18) {
+    addSlotToContainer(new SlotCrafting(playerInv.player, tileEntity, tileEntity,
+            TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X+59, CRAFTING_GRID_Y+18) {
       @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
         FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, tileEntity);
-        for (int i = 0; i < 9; i++) {
+        for (int i = TileInventoryPanel.SLOT_CRAFTING_START; i < TileInventoryPanel.SLOT_CRAFTING_RESULT; i++) {
           ItemStack itemstack = tileEntity.getStackInSlot(i);
           if(itemstack == null)
             continue;
@@ -89,14 +96,22 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       }
     });
 
-    for(int y=0,i=0 ; y<3 ; y++) {
+    for(int y=0,i=TileInventoryPanel.SLOT_CRAFTING_START ; y<3 ; y++) {
       for(int x=0 ; x<3 ; x++,i++) {
         addSlotToContainer(new Slot(tileEntity, i, CRAFTING_GRID_X+x*18, CRAFTING_GRID_Y+y*18));
       }
     }
 
+    indexFilterSlot = inventorySlots.size();
+    slotFilter = addSlotToContainer(new Slot(tileEntity, TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
+      @Override
+      public int getSlotStackLimit() {
+        return 1;
+      }
+    });
+
     startReturnSlot = inventorySlots.size();
-    for(int y=0,i=10 ; y<2 ; y++) {
+    for(int y=0,i=TileInventoryPanel.SLOT_RETURN_START ; y<2 ; y++) {
       for(int x=0 ; x<5 ; x++,i++) {
         addSlotToContainer(new Slot(tileEntity, i, RETURN_INV_X+x*18, RETURN_INV_Y+y*18));
       }
@@ -120,6 +135,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   private TileInventoryPanel getInventoryPanel() {
     return (TileInventoryPanel) tileEntity;
+  }
+
+  public Slot getSlotFilter() {
+    return slotFilter;
   }
 
   private void removeChangeLog() {

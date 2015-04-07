@@ -10,11 +10,12 @@ import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 
 public class FilterRegister {
 
+  public static boolean isItemFilter(ItemStack stack) {
+    return stack != null && (stack.getItem() instanceof IItemFilterUpgrade);
+  }
+
   public static IItemFilter getFilterForUpgrade(ItemStack stack) {
-    if(stack == null) {
-      return null;
-    }
-    if(!(stack.getItem() instanceof IItemFilterUpgrade)) {
+    if(!isItemFilter(stack)) {
       return null;
     }
     IItemFilterUpgrade upgrade = (IItemFilterUpgrade)stack.getItem();

@@ -11,6 +11,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
+import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -21,14 +22,18 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final Rectangle btnScrollUp   = new Rectangle(216,  27, 16, 8);
-  private static final Rectangle btnScrollDown = new Rectangle(216, 109, 16, 8);
-  private static final Rectangle thumbArea     = new Rectangle(216,  35, 16, 74);
+  private static final Rectangle btnScrollUp   = new Rectangle(215,  27,  11,  8);
+  private static final Rectangle btnScrollDown = new Rectangle(215, 109,  11,  8);
+  private static final Rectangle thumbArea     = new Rectangle(215,  35,  11, 74);
+
+  private static final Rectangle scrollbarArea   = new Rectangle(215,  27,  11, 90);
+  private static final Rectangle inventoryArea   = new Rectangle(107,  27, 108, 90);
 
   private static final int ID_SORT = 9876;
 
@@ -49,8 +54,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final String headerInventory;
   private final String infoTextFilter;
 
-  private final GuiToolTip tooltipReturn;
-
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
     super(te, container);
     redstoneButton.visible = false;
@@ -59,15 +62,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for(int y = 0; y < GHOST_ROWS; y++) {
       for(int x = 0; x < GHOST_COLUMNS; x++) {
-        ghostSlots.add(new InvSlot(109 + x*18, 28 + y*18));
+        ghostSlots.add(new InvSlot(108 + x*18, 28 + y*18));
       }
     }
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEIO(fr, 109, 10, 106, 10);
+    tfFilter = new TextFieldEIO(fr, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
-    btnSort = new IconButtonEIO(this, ID_SORT, 216, 7, getSortOrderIcon());
+    btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon());
 
     textFields.add(tfFilter);
 
@@ -78,14 +81,22 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     ArrayList<String> list = new ArrayList<String>();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
-    tooltipReturn = new GuiToolTip(new Rectangle(6, 72, 5*18, 8), list);
+    addToolTip(new GuiToolTip(new Rectangle(6, 72, 5*18, 8), list));
+
+    list = new ArrayList<String>();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
+    addToolTip(new GuiToolTip(new Rectangle(InventoryPanelContainer.FILTER_SLOT_X, InventoryPanelContainer.FILTER_SLOT_Y, 16, 16), list) {
+      @Override
+      public boolean shouldDraw() {
+        return !((InventoryPanelContainer) inventorySlots).getSlotFilter().getHasStack() && super.shouldDraw();
+      }
+    });
   }
 
   @Override
   public void initGui() {
     super.initGui();
     btnSort.onGuiInit();
-    addToolTip(tooltipReturn);
   }
 
   @Override
@@ -124,12 +135,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     if(scrollMax > 0) {
       icon = IconEIO.VSCROLL_THUMB;
-      icon.renderIcon(sx+thumbArea.x, sy+thumbArea.y + (thumbArea.height - icon.height) * scrollPos / scrollMax);
+      icon.renderIcon(sx+thumbArea.x, sy+getThumbPosition());
     }
 
     tes.draw();
 
     InventoryDatabaseClient db = getDatabase();
+    db.setItemFilter(getTileEntity().getItemFilter());
     db.updateFilter(tfFilter.getText());
 
     if(db.sortItems()) {
@@ -147,6 +159,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
       fr.drawString(infoTextFilter, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
     }
+  }
+
+  private int getThumbPosition() {
+    return thumbArea.y + (int)(thumbArea.height - IconEIO.VSCROLL_THUMB.height) * scrollPos / scrollMax;
   }
 
   @Override
@@ -228,7 +244,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   public int getXSize() {
-    return 238;
+    return 256;
   }
 
   @Override
@@ -243,8 +259,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     x -= guiLeft;
     y -= guiTop;
 
-    scrollUpPressed   = btnScrollUp.contains(x, y);
-    scrollDownPressed = btnScrollDown.contains(x, y);
+    if(scrollMax > 0 && thumbArea.contains(x, y)) {
+      int thumbPos = getThumbPosition();
+      scrollUpPressed   = y < thumbPos;
+      scrollDownPressed = y >= thumbPos + (int)IconEIO.VSCROLL_THUMB.height;
+    } else {
+      scrollUpPressed   = btnScrollUp.contains(x, y);
+      scrollDownPressed = btnScrollDown.contains(x, y);
+    }
 
     if(scrollUpPressed || scrollDownPressed) {
       scrollLastTime = Minecraft.getSystemTime();
@@ -257,6 +279,38 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.mouseMovedOrUp(x, y, button);
     scrollUpPressed   = false;
     scrollDownPressed = false;
+  }
+
+  @Override
+  public void handleMouseInput() {
+    super.handleMouseInput();
+
+    int wheel = Mouse.getEventDWheel();
+    if(wheel != 0) {
+      int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+      int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+      boolean shift = isShiftKeyDown();
+
+      x -= guiLeft;
+      y -= guiTop;
+
+      if(scrollbarArea.contains(x, y) || (shift && inventoryArea.contains(x, y))) {
+        scrollUpPressed   = wheel > 0;
+        scrollDownPressed = wheel < 0;
+        doScroll();
+        scrollUpPressed   = false;
+        scrollDownPressed = false;
+
+      } else if(!shift && wheel > 0 & (hoverGhostSlot instanceof InvSlot)) {
+        InvSlot invSlot = (InvSlot) hoverGhostSlot;
+        if(invSlot.stack != null && invSlot.entry != null) {
+          ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
+          if(itemStack == null || ItemUtil.areStackMergable(itemStack, hoverGhostSlot.stack)) {
+            PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(invSlot.entry, -1, 1));
+          }
+        }
+      }
+    }
   }
 
   @Override

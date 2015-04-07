@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.network.CompressedDataInput;
 import crazypants.enderio.network.PacketHandler;
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
   private SortOrder order = SortOrder.NAME;
   private boolean invertSortOrder;
   private boolean needsSorting;
+  private IItemFilter itemFilter;
   private String currentFilter;
   private boolean needsFiltering;
   private boolean needsNewFiltering;
@@ -202,6 +204,14 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
     }
   }
 
+  public void setItemFilter(IItemFilter itemFilter) {
+    if(this.itemFilter != itemFilter) {
+      this.itemFilter = itemFilter;
+      needsNewFiltering = true;
+      needsFiltering = true;
+    }
+  }
+
   public void updateFilter(String newFilter) {
     newFilter = newFilter.trim();
 
@@ -233,7 +243,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
         needsSorting = true;
       }
 
-      ItemFilter filter = ItemFilter.parse(currentFilter, getLocale());
+      ItemFilter filter = ItemFilter.parse(currentFilter, getLocale(), itemFilter);
       System.out.println("filtering new="+needsNewFiltering+" currentFilter="+currentFilter+" parsed="+filter);
       if(filter != null) {
         Iterator<ItemEntry> iter = filteredItems.iterator();

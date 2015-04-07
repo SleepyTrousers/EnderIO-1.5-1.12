@@ -19,6 +19,12 @@ public interface IItemFilter {
 
   void readFromByteBuf(ByteBuf buf);
 
+  /**
+   * Checks if the given item passes the filter or not.
+   * @param inv the attached inventory - or null when used without an inventory (eg for a GUI)
+   * @param item the item to check
+   * @return true if the item is allowed to pass
+   */
   boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item);
 
   boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item);

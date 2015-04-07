@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.invpanel;
 
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -11,13 +12,13 @@ public abstract class ItemFilter {
 
   public abstract boolean matches(InventoryDatabaseClient.ItemEntry entry);
 
-  public static ItemFilter parse(String filter, Locale locale) {
-    String[] parts = SPLIT_PATTERN.split(filter);
-    if(parts.length == 0) {
-      return null;
+  public static ItemFilter parse(String filter, Locale locale, IItemFilter filterCard) {
+    ArrayList<ItemFilter> list = new ArrayList<ItemFilter>();
+    if(filterCard != null) {
+      list.add(new CardFilter(filterCard));
     }
 
-    ArrayList<ItemFilter> list = new ArrayList<ItemFilter>();
+    String[] parts = SPLIT_PATTERN.split(filter);
     for(String part : parts) {
       if(part.startsWith("@")) {
         part = part.substring(1);
@@ -98,6 +99,18 @@ public abstract class ItemFilter {
     @Override
     public String toString() {
       return text;
+    }
+  }
+
+  static class CardFilter extends ItemFilter {
+    final IItemFilter filter;
+    CardFilter(IItemFilter filter) {
+      this.filter = filter;
+    }
+
+    @Override
+    public boolean matches(InventoryDatabaseClient.ItemEntry entry) {
+      return filter.doesItemPassFilter(null, entry.makeItemStack());
     }
   }
 }

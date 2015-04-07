@@ -476,6 +476,9 @@ enderio.gui.inventorypanel.info.filter=<filter by name>
 enderio.gui.inventorypanel.tooltip.return.line1=Item return area
 enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
 enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit
+enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
+enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
+enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
 
 enderio.machine.tooltip.configured=(Configured)
 
