@@ -5,11 +5,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
+import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -40,6 +44,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private int scrollMax;
   private long scrollLastTime;
 
+  private final String headerCrafting;
+  private final String headerReturn;
+  private final String headerInventory;
+  private final String infoTextFilter;
+
+  private final GuiToolTip tooltipReturn;
+
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
     super(te, container);
     redstoneButton.visible = false;
@@ -54,16 +65,27 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEIO(fr, 109, 9, 106, 12);
+    tfFilter = new TextFieldEIO(fr, 109, 10, 106, 10);
+    tfFilter.setEnableBackgroundDrawing(false);
     btnSort = new IconButtonEIO(this, ID_SORT, 216, 7, getSortOrderIcon());
 
     textFields.add(tfFilter);
+
+    headerCrafting = Lang.localize("gui.inventorypanel.header.crafting");
+    headerReturn = Lang.localize("gui.inventorypanel.header.return");
+    headerInventory = Lang.localize("container.inventory", false);
+    infoTextFilter = Lang.localize("gui.inventorypanel.info.filter");
+
+    ArrayList<String> list = new ArrayList<String>();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
+    tooltipReturn = new GuiToolTip(new Rectangle(6, 72, 5*18, 8), list);
   }
 
   @Override
   public void initGui() {
     super.initGui();
     btnSort.onGuiInit();
+    addToolTip(tooltipReturn);
   }
 
   @Override
@@ -114,7 +136,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       updateGhostSlots();
     }
 
+    int headerColor = 0x404040;
+    FontRenderer fr = getFontRenderer();
+    fr.drawString(headerCrafting, sx+7, sy+6, headerColor);
+    fr.drawString(headerReturn, sx+7, sy+72, headerColor);
+    fr.drawString(headerInventory, sx+38, sy+120, headerColor);
+
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+
+    if(!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
+      fr.drawString(infoTextFilter, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
+    }
   }
 
   @Override

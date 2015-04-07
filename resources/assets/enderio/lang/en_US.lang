@@ -469,6 +469,14 @@ tile.blockBuffer.power.name=Power Buffer
 tile.blockBuffer.omni.name=Omni Buffer
 tile.blockBuffer.creative.name=Creative Buffer
 
+tile.blockInventoryPanel.name=Inventory Panel
+enderio.gui.inventorypanel.header.crafting=Crafting grid
+enderio.gui.inventorypanel.header.return=Return area
+enderio.gui.inventorypanel.info.filter=<filter by name>
+enderio.gui.inventorypanel.tooltip.return.line1=Item return area
+enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
+enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks

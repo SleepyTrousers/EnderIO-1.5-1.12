@@ -1,12 +1,16 @@
 package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.ItemUtil;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,13 +29,17 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class InventoryPanelContainer extends AbstractMachineContainer implements InventoryDatabaseServer.ChangeLog {
 
-  private static final int CRAFTING_GRID_X = 7;
-  private static final int CRAFTING_GRID_Y = 16;
+  public static final int CRAFTING_GRID_X = 7;
+  public static final int CRAFTING_GRID_Y = 16;
 
-  private static final int RETURN_INV_X = 7;
-  private static final int RETURN_INV_Y = 82;
+  public static final int RETURN_INV_X = 7;
+  public static final int RETURN_INV_Y = 82;
 
   private final HashSet<InventoryDatabaseServer.ItemEntry> changedItems;
+
+  private int indexCraftingSlot;
+  private int startReturnSlot;
+  private int endReturnSlot;
 
   @SuppressWarnings("LeakingThisInConstructor")
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
@@ -47,6 +55,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
+    indexCraftingSlot = inventorySlots.size();
     addSlotToContainer(new SlotCrafting(playerInv.player, tileEntity, tileEntity, 9, CRAFTING_GRID_X+59, CRAFTING_GRID_Y+18) {
       @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
@@ -86,11 +95,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       }
     }
 
+    startReturnSlot = inventorySlots.size();
     for(int y=0,i=10 ; y<2 ; y++) {
       for(int x=0 ; x<5 ; x++,i++) {
         addSlotToContainer(new Slot(tileEntity, i, RETURN_INV_X+x*18, RETURN_INV_Y+y*18));
       }
     }
+    endReturnSlot = inventorySlots.size();
   }
 
   @Override
@@ -162,6 +173,29 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   }
 
   @Override
+  public boolean func_94530_a(ItemStack par1, Slot slot) {
+    return !(slot instanceof SlotCrafting) && super.func_94530_a(par1, slot);
+  }
+
+  @Override
+  protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
+    SlotDefinition slotDef = tileEntity.getSlotDefinition();
+    if(slotDef.isInputSlot(slotIndex) || slotDef.isUpgradeSlot(slotIndex)) {
+      return Collections.singletonList(getPlayerInventorySlotRange(false));
+    }
+    if(slotDef.isOutputSlot(slotIndex) || slotIndex == indexCraftingSlot) {
+      return Collections.singletonList(getPlayerInventorySlotRange(true));
+    }
+    if(slotIndex >= startPlayerSlot) {
+      ArrayList<SlotRange> res = new ArrayList<SlotRange>();
+      res.add(new SlotRange(startReturnSlot, endReturnSlot, false));
+      addPlayerSlotRanges(res, slotIndex);
+      return res;
+    }
+    return Collections.emptyList();
+  }
+
+  @Override
   public void entryChanged(InventoryDatabaseServer.ItemEntry entry) {
     changedItems.add(entry);
   }
@@ -213,10 +247,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
         slot = null;
         targetStack = player.inventory.getItemStack();
         maxStackSize = player.inventory.getInventoryStackLimit();
-
-        if(targetStack != null && targetStack.stackSize > 0) {
-          return;
-        }
       } else {
         slot = getSlot(targetSlot);
         targetStack = slot.getStack();
