@@ -331,6 +331,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       stopPlayingSound();
     }
   }
+  
+  @Override
+  public void onChunkUnload() {
+    super.onChunkUnload();
+    if(worldObj.isRemote) {
+      stopPlayingSound();
+    }
+  }
 
   private void stopPlayingSound() {
     if(activeSound != null) {
