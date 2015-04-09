@@ -64,7 +64,7 @@ public class CrusherRecipeManager {
         int id = OreDictionary.getOreID(input.item);
         if(id >= 0) {
           String name = OreDictionary.getOreName(id);
-          if(name.startsWith("ingot")) {            
+          if(name.startsWith("ingot") || name.startsWith("block")) {
             addExcludedStack(input.item);
             return true;
           }

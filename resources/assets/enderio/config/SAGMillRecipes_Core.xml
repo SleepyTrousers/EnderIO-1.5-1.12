@@ -392,7 +392,8 @@ addOreDictionaryTooltips=true
         <itemStack modID="minecraft" itemName="wheat" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="wheat_seeds" number="2" />
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="8" number="2" />
+        <itemStack modID="minecraft" itemName="wheat_seeds" chance="0.2" />
       </output>
     </recipe>
 
