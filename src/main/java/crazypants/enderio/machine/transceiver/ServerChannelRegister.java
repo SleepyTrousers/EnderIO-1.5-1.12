@@ -75,7 +75,7 @@ public class ServerChannelRegister extends ChannelRegister {
       reader.endArray();
       reader.close();
     } catch (Exception e) {
-      Log.error("Could not read Dimensional trasciever channels from " + getDataFile().getAbsolutePath() + " : " + e);
+      Log.error("Could not read Dimensional Transceiver channels from " + getDataFile().getAbsolutePath() + " : " + e);
     }
   }
 
