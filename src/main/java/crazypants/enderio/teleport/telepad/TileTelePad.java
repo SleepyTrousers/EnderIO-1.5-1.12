@@ -125,7 +125,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
           activeSound.setVolume(MathHelper.clamp_float(spinSpeed, 0.1f, 1));
         }
       }
-    } else {
+    } else if(!worldObj.isRemote) {
       if(active()) {
         if(powerUsed >= maxPower) {
           teleport(toTeleport.poll());
