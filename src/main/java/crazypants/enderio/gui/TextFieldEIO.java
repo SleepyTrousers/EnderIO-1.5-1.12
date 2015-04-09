@@ -27,7 +27,7 @@ public class TextFieldEIO extends GuiTextField {
   public static ICharFilter FILTER_ALPHABETICAL = new ICharFilter() {
     @Override
     public boolean passesFilter(TextFieldEIO tf, char c) {
-      return Character.isAlphabetic(c);
+      return Character.isLetter(c);
     }
   };
 
