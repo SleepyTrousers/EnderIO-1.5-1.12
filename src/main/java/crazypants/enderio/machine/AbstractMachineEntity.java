@@ -50,7 +50,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   protected Map<ForgeDirection, IoMode> faceModes;
 
-  private int[] allSlots;
+  private final int[] allSlots;
 
   protected boolean notifyNeighbours = false;
 
@@ -238,27 +238,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
 
     if(worldObj.isRemote) {
-      // check if the block on the client needs to update its texture
-      if(isActive() != lastActive) {
-        ticksSinceActiveChanged++;
-        if(ticksSinceActiveChanged > 20 || isActive()) {
-          ticksSinceActiveChanged = 0;
-          lastActive = isActive();
-          forceClientUpdate = false;
-          worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-      }
-
-      if(hasSound()) {
-        updateSound();
-      }
-
-      if(forceClientUpdate) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        forceClientUpdate = false;
-      }
+      updateEntityClient();
       return;
-
     } // else is server, do all logic only on the server
 
     boolean requiresClientSync = forceClientUpdate;
@@ -291,6 +272,27 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       notifyNeighbours = false;
     }
 
+  }
+
+  protected void updateEntityClient() {
+    // check if the block on the client needs to update its texture
+    if(isActive() != lastActive) {
+      ticksSinceActiveChanged++;
+      if(ticksSinceActiveChanged > 20 || isActive()) {
+        ticksSinceActiveChanged = 0;
+        lastActive = isActive();
+        forceClientUpdate = true;
+      }
+    }
+
+    if(hasSound()) {
+      updateSound();
+    }
+
+    if(forceClientUpdate) {
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      forceClientUpdate = false;
+    }
   }
 
   protected boolean doSideIo() {

@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.item;
 
+import crazypants.enderio.EnderIO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,11 +67,14 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return null;
   }
 
-  public List<NetworkedInventory> getSourcesForColor(DyeColor color) {
+  public List<NetworkedInventory> getInventoryPanelSources() {
     ArrayList<NetworkedInventory> res = new ArrayList<NetworkedInventory>();
     for(NetworkedInventory inv : inventories) {
-      if(inv.canExtract() && inv.con.getInputColor(inv.conDir) == color && !inv.isInventoryPanel()) {
-        res.add(inv);
+      ItemStack speedUpgradeStack = inv.con.getSpeedUpgrade(inv.conDir);
+      if(speedUpgradeStack != null) {
+        if(EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(speedUpgradeStack) == SpeedUpgrade.INVENTORY_PANEL) {
+          res.add(inv);
+        }
       }
     }
     return res;
@@ -105,6 +109,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   public void routesChanged() {
     requiresSort = true;
+  }
+
+  public void inventoryPanelSourcesChanged() {
+    changeCount++;
   }
 
   public int getChangeCount() {

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.inventory.ISidedInventory;
@@ -236,21 +235,25 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
     }
 
     void scanInventory(InventoryDatabaseServer db, int niIndex) {
-      ItemStack[] items = ni.getExtractableItemStacks();
-      if(items == null) {
-        if(slotItems.length != 0) {
-          reset(db, 0, niIndex);
-        }
+      ISidedInventory inv = ni.getInventoryRecheck();
+      int side = ni.getInventorySide();
+      int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
+      if(slotIndices == null || slotIndices.length == 0) {
+        setEmpty(db, niIndex);
         return;
       }
 
-      int count = items.length;
+      int count = slotIndices.length;
       if(count != slotItems.length) {
         reset(db, count, niIndex);
       }
 
       for(int slot=0; slot<count; slot++) {
-        ItemStack stack = items[slot];
+        int invSlot = slotIndices[slot];
+        ItemStack stack = inv.getStackInSlot(invSlot);
+        if(stack != null && !inv.canExtractItem(invSlot, stack, side)) {
+          stack = null;
+        }
         ItemEntry current = slotItems[slot];
         if(stack == null || stack.stackSize <= 0) {
           if(current != null) {
@@ -278,6 +281,12 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
       }
     }
 
+    private void setEmpty(InventoryDatabaseServer db, int niIndex) {
+      if(slotItems.length != 0) {
+        reset(db, 0, niIndex);
+      }
+    }
+
     private void reset(InventoryDatabaseServer db, int count, int niIndex) {
       for(int slot=0; slot<slotItems.length; slot++) {
         ItemEntry key = slotItems[slot];
@@ -292,13 +301,20 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
     }
 
     int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int niIndex, int count) {
-      ItemStack[] items = ni.getExtractableItemStacks();
-      if(items == null || slot >= items.length) {
+      ISidedInventory inv = ni.getInventoryRecheck();
+      int side = ni.getInventorySide();
+      int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
+      if(slotIndices == null || slot >= slotIndices.length) {
         return 0;
       }
 
-      ItemStack stack = items[slot];
-      if(stack == null || db.lookupItem(stack, entry, false) != entry) {
+      int invSlot = slotIndices[slot];
+      ItemStack stack = inv.getStackInSlot(invSlot);
+      if(stack == null || !inv.canExtractItem(invSlot, stack, side)) {
+        return 0;
+      }
+
+      if(db.lookupItem(stack, entry, false) != entry) {
         return 0;
       }
 
@@ -307,7 +323,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
         count = remaining;
       }
 
-      ni.itemExtracted(slot, count);
+      ni.itemExtracted(invSlot, count);
       remaining -= count;
 
       if(itemCounts[slot] != remaining) {

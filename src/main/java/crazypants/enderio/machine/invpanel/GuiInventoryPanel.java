@@ -2,6 +2,7 @@ package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -53,6 +55,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final String headerReturn;
   private final String headerInventory;
   private final String infoTextFilter;
+  private final String infoTextOffline;
 
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
     super(te, container);
@@ -78,6 +81,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     headerReturn = Lang.localize("gui.inventorypanel.header.return");
     headerInventory = Lang.localize("container.inventory", false);
     infoTextFilter = Lang.localize("gui.inventorypanel.info.filter");
+    infoTextOffline = Lang.localize("gui.inventorypanel.info.offline");
 
     ArrayList<String> list = new ArrayList<String>();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
@@ -156,8 +160,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    if(!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
-      fr.drawString(infoTextFilter, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
+    if(getTileEntity().isActive()) {
+      tfFilter.setEnabled(true);
+      if(!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
+        fr.drawString(infoTextFilter, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
+      }
+    } else {
+      tfFilter.setEnabled(false);
+      tfFilter.setText("");
+      fr.drawString(infoTextOffline, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
     }
   }
 

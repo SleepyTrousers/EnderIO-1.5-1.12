@@ -96,6 +96,12 @@ item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
 item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
 item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
 
+item.itemExtractInventoryPanelUpgrade.name=Remote Awareness Upgrade
+item.itemExtractInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
+item.itemExtractInventoryPanelUpgrade.tooltip.detailed.line1=Allows Inventory Panels attached
+item.itemExtractInventoryPanelUpgrade.tooltip.detailed.line2=to this network to see and extract
+item.itemExtractInventoryPanelUpgrade.tooltip.detailed.line3=items from this inventory
+
 enderio.itemGasConduit.name=Gas Conduit
 
 enderio.itemGasConduit.tooltip.maxExtract=Max Extract:
@@ -473,6 +479,7 @@ tile.blockInventoryPanel.name=Inventory Panel
 enderio.gui.inventorypanel.header.crafting=Crafting grid
 enderio.gui.inventorypanel.header.return=Return area
 enderio.gui.inventorypanel.info.filter=<filter by name>
+enderio.gui.inventorypanel.info.offline=<OFFLINE>
 enderio.gui.inventorypanel.tooltip.return.line1=Item return area
 enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
 enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit

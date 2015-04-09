@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.invpanel;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.ItemConduit;
@@ -10,7 +9,6 @@ import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.util.DyeColor;
 import java.util.List;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -30,6 +28,7 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
   private ItemConduitNetwork network;
   private int networkChangeCount;
+  private int numSources;
 
   public Container eventHandler;
   private IItemFilter itemFilter;
@@ -98,12 +97,15 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
   @Override
   public boolean isActive() {
-    return true;
+    return numSources > 0;
   }
 
   @Override
   public void doUpdate() {
-    if(worldObj.isRemote) return;
+    if(worldObj.isRemote) {
+      updateEntityClient();
+      return;
+    }
 
     if(shouldDoWorkThisTick(2)) {
       scanNetwork();
@@ -111,6 +113,11 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
     if(dbServer != null && shouldDoWorkThisTick(20)) {
       dbServer.sendChangeLogs();
+    }
+
+    if(forceClientUpdate) {
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      markDirty();
     }
   }
 
@@ -144,13 +151,11 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
     if(icn != null) {
       networkChangeCount = icn.getChangeCount();
+      sources = icn.getInventoryPanelSources();
 
-      ConnectionMode mode = conduit.getConnectionMode(facingDir);
-      System.out.println("updateNetwork: mode="+mode);
-      if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT) {
-        DyeColor color = conduit.getOutputColor(facingDir);
-        sources = icn.getSourcesForColor(color);
-        System.out.println("Color="+color+" sources="+sources.size());
+      if(numSources != sources.size()) {
+        numSources = sources.size();
+        forceClientUpdate = true;
       }
     }
 
@@ -167,9 +172,16 @@ public class TileInventoryPanel extends AbstractMachineEntity {
   }
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
+    super.readCustomNBT(nbtRoot);
+    numSources = nbtRoot.getInteger("numSources");
     updateItemFilter();
+  }
+
+  @Override
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
+    nbtRoot.setInteger("numSources", numSources);
   }
 
   @Override

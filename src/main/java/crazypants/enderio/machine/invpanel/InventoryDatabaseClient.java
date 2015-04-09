@@ -393,7 +393,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<InventoryDatabase
     public static final CountComparator INSTANCE = new CountComparator();
     @Override
     public int compare(ItemEntry a, ItemEntry b) {
-      return a.count - b.count;
+      return b.count - a.count;
     }
   }
 }

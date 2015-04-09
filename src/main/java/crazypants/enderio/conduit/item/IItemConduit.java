@@ -49,7 +49,9 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
   void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade);
   
   ItemStack getSpeedUpgrade(ForgeDirection dir);
-  
+
+  boolean hasInventoryPanelUpgrade(ForgeDirection dir);
+
   int getOutputPriority(ForgeDirection dir);
   
   void setOutputPriority(ForgeDirection dir, int priority);

@@ -13,6 +13,12 @@ public enum SpeedUpgrade {
     public int getMaximumExtracted(int stackSize) {
       return 1;
     }
+  },
+  INVENTORY_PANEL("enderio:extractInventoryPanelUpgrade", "item.itemExtractInventoryPanelUpgrade", 1) {
+    @Override
+    public int getMaximumExtracted(int stackSize) {
+      return BASE_MAX_EXTRACTED;
+    }
   };
 
   public static final int BASE_MAX_EXTRACTED = 4;

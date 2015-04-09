@@ -315,17 +315,27 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade) {
+    boolean hadIPU = hasInventoryPanelUpgrade(dir);
     if(upgrade != null) {
       speedUpgrades.put(dir, upgrade);
     } else {
       speedUpgrades.remove(dir);
     }
     setClientStateDirty();
+    if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
+      network.inventoryPanelSourcesChanged();
+    }
   }
 
   @Override
   public ItemStack getSpeedUpgrade(ForgeDirection dir) {
     return speedUpgrades.get(dir);
+  }
+
+  @Override
+  public boolean hasInventoryPanelUpgrade(ForgeDirection dir) {
+    ItemStack upgrade = speedUpgrades.get(dir);
+    return upgrade != null && EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(upgrade) == SpeedUpgrade.INVENTORY_PANEL;
   }
 
   @Override
