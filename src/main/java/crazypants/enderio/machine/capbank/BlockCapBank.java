@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.capbank;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -135,6 +137,11 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
         .getMaxEnergyStored()));
+    if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Items")) {
+      NBTTagList itemList = (NBTTagList) itemstack.stackTagCompound.getTag("Items");
+      String msg = Lang.localize("tile.blockCapBank.tooltip.hasItems", false);
+      list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
+    }
   }
 
   @Override
@@ -372,7 +379,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       ForgeDirection dir = getDirForHeading(heading);
       cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
     } else {
-      boolean modifiedDisplayType = false;
+      boolean modifiedDisplayType;
       modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, x, y - 1, z));
       modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, x, y + 1, z));
       if(modifiedDisplayType) {

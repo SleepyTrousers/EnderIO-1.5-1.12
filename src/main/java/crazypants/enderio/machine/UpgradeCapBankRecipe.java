@@ -5,11 +5,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.world.World;
 
 public class UpgradeCapBankRecipe extends ShapedOreRecipe {
 
   public UpgradeCapBankRecipe(ItemStack result, Object... recipe) {
     super(result, recipe);
+  }
+
+  @Override
+  public boolean matches(InventoryCrafting inv, World world) {
+    for(int y=0 ; y<3 ; y++) {
+      for(int x=0 ; x<3 ; x++) {
+        ItemStack st = inv.getStackInRowAndColumn(x, y);
+        if(st != null && st.stackTagCompound != null && st.stackTagCompound.hasKey("Items")) {
+          return false;
+        }
+      }
+    }
+    return super.matches(inv, world);
   }
 
   @Override
