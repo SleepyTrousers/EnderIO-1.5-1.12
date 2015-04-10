@@ -7,9 +7,9 @@ import java.util.List;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
@@ -77,15 +77,15 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     String mobType = null;
     for(MachineRecipeInput input : inputs) {
-      if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
-        mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
+      if(input != null && EIOItems.itemSoulVessel.containsSoul(input.item)) {
+        mobType = EIOItems.itemSoulVessel.getMobTypeFromStack(input.item);
       }
     }
     if(!getSupportedSouls().contains(mobType)) {
       return new ResultStack[0];
     }
     ItemStack resultStack = getOutputStack(mobType);
-    ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
+    ItemStack soulVessel = new ItemStack(EIOItems.itemSoulVessel);    
     return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(resultStack)};
   }
 
@@ -103,7 +103,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     int slot = input.slotNumber;
     ItemStack item = input.item;
     if(slot == 0) {     
-      String type = EnderIO.itemSoulVessel.getMobTypeFromStack(item);
+      String type = EIOItems.itemSoulVessel.getMobTypeFromStack(item);
       return  getSupportedSouls().contains(type);
     } 
     if(slot == 1) {

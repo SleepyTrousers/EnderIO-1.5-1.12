@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.init;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -7,6 +7,13 @@ import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
+import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
+import crazypants.enderio.item.darksteel.ItemDarkSteelShears;
+import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
+import crazypants.enderio.item.darksteel.ItemGliderWing;
+import crazypants.enderio.item.darksteel.PoweredItemRenderer;
 
 public class DarkSteelItems {
 
@@ -24,7 +31,7 @@ public class DarkSteelItems {
   private DarkSteelItems() {
   }
 
-  public static void createDarkSteelArmorItems() {
+  public static void registerItems() {
     itemGliderWing = ItemGliderWing.create();
 
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
@@ -39,7 +46,7 @@ public class DarkSteelItems {
 
   }
 
-  public static void addLoot() {
+  public static void registerDungeonLoot() {
     if(Config.lootTheEnder) {
       ItemStack sword = new ItemStack(itemDarkSteelSword, 1, 0);
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
@@ -56,7 +63,7 @@ public class DarkSteelItems {
   }
 
   @SideOnly(Side.CLIENT)
-  public static void registerItemRenderer() {
+  public static void registerItemRenderers() {
     PoweredItemRenderer dsr = new PoweredItemRenderer();
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelBoots, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelLeggings, dsr);

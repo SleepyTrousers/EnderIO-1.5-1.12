@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.render.BoundingBox;
@@ -89,9 +89,9 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
           rb.setRenderBounds(pushPullBounds.minX, pushPullBounds.minY, pushPullBounds.minZ,
               pushPullBounds.maxX, pushPullBounds.maxY, pushPullBounds.maxZ);
         }
-        IIcon icon = EnderIO.blockTransceiver.getOverlayIconForMode(trans, dir, mode);
+        IIcon icon = EIOBlocks.blockTransceiver.getOverlayIconForMode(trans, dir, mode);
         if(icon != null) {
-          rb.doDefaultRenderFace(dir, EnderIO.blockTransceiver, 0, 0, 0, icon);
+          rb.doDefaultRenderFace(dir, EIOBlocks.blockTransceiver, 0, 0, 0, icon);
         }
       }
     }
@@ -141,7 +141,7 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
     RenderUtil.bindBlockTexture();
-    IIcon icon = EnderIO.blockHyperCube.getPortalIcon();
+    IIcon icon = EIOBlocks.blockHyperCube.getPortalIcon();
 
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();

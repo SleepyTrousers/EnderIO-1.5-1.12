@@ -16,9 +16,9 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -139,7 +139,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
   private static final ArrayList<PositionedStack> EMPTY_VIAL_OUTPUT = new ArrayList<PositionedStack>();
   static {
-    EMPTY_VIAL_OUTPUT.add(new PositionedStack(new ItemStack(EnderIO.itemSoulVessel), 101, 23));
+    EMPTY_VIAL_OUTPUT.add(new PositionedStack(new ItemStack(EIOItems.itemSoulVessel), 101, 23));
   }
 
   public class SoulBinderRecipeNEI extends TemplateRecipeHandler.CachedRecipe {
@@ -192,7 +192,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
     private List<ItemStack> getSoulVialInputs(List<String> mobs) {
       List<ItemStack> result = new ArrayList<ItemStack>(mobs.size());
       for (String mobName : mobs) {
-        ItemStack sv = new ItemStack(EnderIO.itemSoulVessel);
+        ItemStack sv = new ItemStack(EIOItems.itemSoulVessel);
         sv.stackTagCompound = new NBTTagCompound();
         sv.stackTagCompound.setString("id", mobName);
         result.add(sv);

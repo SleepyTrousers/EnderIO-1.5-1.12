@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOFluids;
 
 public class ExperienceContainer {
 
@@ -135,7 +135,7 @@ public class ExperienceContainer {
 
   
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(EnderIO.fluidXpJuice == null) {
+    if(EIOFluids.fluidXpJuice == null) {
       return null;
     }
     int available = getFluidAmount();
@@ -147,11 +147,11 @@ public class ExperienceContainer {
       experienceTotal = 0;
       addExperience(newXp);      
     }        
-    return new FluidStack(EnderIO.fluidXpJuice, canDrain);
+    return new FluidStack(EIOFluids.fluidXpJuice, canDrain);
   }
 
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return fluid != null && EIOFluids.fluidXpJuice != null && fluid.getID() == EIOFluids.fluidXpJuice.getID();
   }
   
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -178,15 +178,15 @@ public class ExperienceContainer {
   }
   
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return fluid != null && EIOFluids.fluidXpJuice != null && fluid.getID() == EIOFluids.fluidXpJuice.getID();
   }
   
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-    if(EnderIO.fluidXpJuice == null) {
+    if(EIOFluids.fluidXpJuice == null) {
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] {
-      new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getMaxFluidAmount())  
+      new FluidTankInfo(new FluidStack(EIOFluids.fluidXpJuice, getFluidAmount()), getMaxFluidAmount())  
     };
   }
 

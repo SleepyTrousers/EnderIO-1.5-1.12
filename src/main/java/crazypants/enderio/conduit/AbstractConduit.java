@@ -17,11 +17,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.util.BlockCoord;
 
 public abstract class AbstractConduit implements IConduit {
@@ -480,7 +480,7 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
 
     if(!externalConnections.isEmpty()) {
-      world.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
+      world.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EIOBlocks.blockConduitBundle);
     }
     externalConnections.clear();
 
@@ -497,7 +497,7 @@ public abstract class AbstractConduit implements IConduit {
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
-    if(block == EnderIO.blockConduitBundle) {
+    if(block == EIOBlocks.blockConduitBundle) {
       return false;
     }
 

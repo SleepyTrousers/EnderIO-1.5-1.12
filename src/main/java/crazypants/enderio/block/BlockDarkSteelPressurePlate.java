@@ -23,10 +23,10 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
@@ -197,7 +197,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       if(block == null) {
         return false;
       }
-      return Block.getBlockFromItem(paintSource.getItem()) == EnderIO.blockFusedQuartz;
+      return Block.getBlockFromItem(paintSource.getItem()) == EIOBlocks.blockFusedQuartz;
     }
 
     @Override
@@ -213,7 +213,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }
 
     public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
-      ItemStack result = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, damage);
+      ItemStack result = new ItemStack(EIOBlocks.blockDarkSteelPressurePlate, 1, damage);
       PainterUtil.setSourceBlock(result, block, damage);
       return result;
     }

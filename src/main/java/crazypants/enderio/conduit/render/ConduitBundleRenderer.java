@@ -42,6 +42,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
@@ -149,7 +150,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         bundle.setFacadeId(null, false);
         bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
 
-        BlockConduitFacade facb = EnderIO.blockConduitFacade;
+        BlockConduitFacade facb = EIOBlocks.blockConduitFacade;
         facb.setBlockOverride(bundle);
         facb.setBlockBounds(0, 0, 0, 1, 1, 1);
         if(!rb.hasOverrideBlockTexture()) {
@@ -225,7 +226,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         if(conduit != null) {
           if(ConduitUtil.renderConduit(player, component.conduitType)) {
             if(rb.hasOverrideBlockTexture()) {
-              List<RaytraceResult> results = EnderIO.blockConduitBundle.doRayTraceAll(bundle.getWorld(), MathHelper.floor_double(x),
+              List<RaytraceResult> results = EIOBlocks.blockConduitBundle.doRayTraceAll(bundle.getWorld(),
+                  MathHelper.floor_double(x),
                   MathHelper.floor_double(y), MathHelper.floor_double(z), EnderIO.proxy.getClientPlayer());
               for (RaytraceResult r : results) {
                 // the connectors can be rendered multiple times and this makes the break texture look funky
@@ -244,14 +246,14 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         }
 
       } else if(ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL && !rb.hasOverrideBlockTexture()) {
-        IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
+        IIcon tex = EIOBlocks.blockConduitBundle.getConnectorIcon(component.data);
         CubeRenderer.render(component.bound, tex);
       }
     }
     //render these after the 'normal' conduits so help with proper blending
     for (BoundingBox wireBound : wireBounds) {
       Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.25f);
-      CubeRenderer.render(wireBound, EnderIO.blockConduitFacade.getIcon(0, 0));
+      CubeRenderer.render(wireBound, EIOBlocks.blockConduitFacade.getIcon(0, 0));
     }
 
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
@@ -266,7 +268,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   }
 
   private void renderExternalConnection(ForgeDirection dir) {
-    IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon(ConduitConnectorType.EXTERNAL);
+    IIcon tex = EIOBlocks.blockConduitBundle.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
       CubeRenderer.render(bb, tex, true);
@@ -296,7 +298,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     @Override
     public Block getBlock(int x, int y, int z) {
       Block res = super.getBlock(x, y, z);
-      if(res == EnderIO.blockConduitBundle) {
+      if (res == EIOBlocks.blockConduitBundle) {
         TileEntity te = getTileEntity(x, y, z);
         if(te instanceof TileConduitBundle) {
           TileConduitBundle tcb = (TileConduitBundle) te;
@@ -318,7 +320,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     @Override
     public int getBlockMetadata(int x, int y, int z) {
       Block block = super.getBlock(x, y, z);
-      if(block == EnderIO.blockConduitBundle) {
+      if (block == EIOBlocks.blockConduitBundle) {
         TileEntity te = getTileEntity(x, y, z);
         if(te instanceof TileConduitBundle) {
           TileConduitBundle tcb = (TileConduitBundle) te;

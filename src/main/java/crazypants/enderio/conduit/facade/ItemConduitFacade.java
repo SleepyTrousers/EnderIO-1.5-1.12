@@ -15,7 +15,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -23,6 +22,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
@@ -120,7 +120,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     if(player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && world.isAirBlock(placeX, placeY, placeZ)
         && PainterUtil.getSourceBlock(itemStack) != null) {
 
-      world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
+      world.setBlock(placeX, placeY, placeZ, EIOBlocks.blockConduitBundle);
       IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
       Block facadeID = PainterUtil.getSourceBlock(itemStack);
       int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
@@ -145,7 +145,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
   public ItemStack createItemStackForSourceBlock(Block id, int itemDamage) {
     if(id == null) {
-      id = EnderIO.blockConduitFacade;
+      id = EIOBlocks.blockConduitFacade;
     }
     ItemStack result = new ItemStack(id, 1, 0);
     PainterUtil.setSourceBlock(result, id, itemDamage);
@@ -213,7 +213,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
         return false;
       }
-      if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {
+      if(block == EIOBlocks.blockFusedQuartz && paintSource.getItemDamage() < 2) {
         return true;
       }
       return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();

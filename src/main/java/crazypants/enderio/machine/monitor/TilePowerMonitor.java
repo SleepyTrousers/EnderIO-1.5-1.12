@@ -3,7 +3,6 @@ package crazypants.enderio.machine.monitor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -12,6 +11,7 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.conduit.redstone.Signal;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -99,7 +99,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
 
   @Override
   public String getInventoryName() {
-    return EnderIO.blockPowerMonitor.getUnlocalizedName();
+    return EIOBlocks.blockPowerMonitor.getUnlocalizedName();
   }
 
   @Override
@@ -195,7 +195,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   private void broadcastSignal() {
-    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EnderIO.blockPowerMonitor);
+    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EIOBlocks.blockPowerMonitor);
 
   }
 

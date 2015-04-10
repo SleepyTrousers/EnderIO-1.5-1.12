@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.DarkSteelItems;
 import crazypants.enderio.material.Material;
 
 public class SpoonUpgrade extends AbstractUpgrade {

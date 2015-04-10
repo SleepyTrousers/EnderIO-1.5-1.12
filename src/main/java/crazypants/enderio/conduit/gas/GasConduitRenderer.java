@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -18,6 +17,7 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector3d;
@@ -115,7 +115,7 @@ public class GasConduitRenderer extends DefaultConduitRenderer {
       }
 
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
+        tex = EIOBlocks.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;
         for (Vertex c : corners) {

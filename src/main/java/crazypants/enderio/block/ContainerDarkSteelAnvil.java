@@ -10,8 +10,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 
@@ -73,7 +73,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
         ContainerDarkSteelAnvil.this.maximumCost = 0;
 
-        if(!player.capabilities.isCreativeMode && !world.isRemote && world.getBlock(x, y, z) == EnderIO.blockDarkSteelAnvil
+        if(!player.capabilities.isCreativeMode && !world.isRemote && world.getBlock(x, y, z) == EIOBlocks.blockDarkSteelAnvil
             && player.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
           int i1 = world.getBlockMetadata(x, y, z);
           int k = i1 & 3;
@@ -96,6 +96,6 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
   @Override
   public boolean canInteractWith(EntityPlayer player) {
-    return player.worldObj.getBlock(this.x, this.y, this.z) == EnderIO.blockDarkSteelAnvil;
+    return player.worldObj.getBlock(this.x, this.y, this.z) == EIOBlocks.blockDarkSteelAnvil;
   }
 }

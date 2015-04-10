@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.ConnectedTextureRenderer;
 import crazypants.render.CubeRenderer;
@@ -39,7 +39,7 @@ public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
     float offset = -0.5f;
     tes.addTranslation(offset, 0, offset);
     tes.startDrawingQuads();
-    CubeRenderer.render(new BoundingBox(EnderIO.blockSolarPanel), RenderUtil.getBlockTextures(EnderIO.blockSolarPanel, metadata), false);
+    CubeRenderer.render(new BoundingBox(EIOBlocks.blockSolarPanel), RenderUtil.getBlockTextures(EIOBlocks.blockSolarPanel, metadata), false);
     tes.draw();
 
     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -62,7 +62,7 @@ public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
     Tessellator.instance.addTranslation(0, 0.0001f, 0);
     int meta = world.getBlockMetadata(x, y, z);
     meta = MathHelper.clamp_int(meta, 0, 1);
-    ctr.setEdgeTexture(EnderIO.blockSolarPanel.getBorderIcon(0, meta));
+    ctr.setEdgeTexture(EIOBlocks.blockSolarPanel.getBorderIcon(0, meta));
     CustomCubeRenderer.instance.setOverrideTexture(IconUtil.blankTexture);
     if(!renderer.hasOverrideBlockTexture()) {
       CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, ctr);
@@ -80,8 +80,8 @@ public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
   }
 
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z, int meta) {
-    IIcon texture = EnderIO.blockSolarPanel.getBorderIcon(0, meta);
-    RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockSolarPanel, x, y, z, ForgeDirection.UP, texture, blockAccess == null, false, false);
+    IIcon texture = EIOBlocks.blockSolarPanel.getBorderIcon(0, meta);
+    RenderUtil.renderConnectedTextureFace(blockAccess, EIOBlocks.blockSolarPanel, x, y, z, ForgeDirection.UP, texture, blockAccess == null, false, false);
   }
   
   @Override

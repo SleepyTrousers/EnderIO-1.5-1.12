@@ -18,7 +18,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -30,6 +29,7 @@ import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
@@ -62,7 +62,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
   
   static ItemStack createItemStackForSubtype(int subtype) {
-    ItemStack result = new ItemStack(EnderIO.itemPowerConduit, 1, subtype);
+    ItemStack result = new ItemStack(EIOItems.itemPowerConduit, 1, subtype);
     return result;
   }
 

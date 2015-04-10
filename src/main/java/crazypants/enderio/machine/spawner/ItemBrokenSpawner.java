@@ -12,10 +12,10 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOItems;
 
 public class ItemBrokenSpawner extends Item {
 
@@ -40,7 +40,7 @@ public class ItemBrokenSpawner extends Item {
     if(mobType == null) {
       return null;
     }
-    ItemStack res = new ItemStack(EnderIO.itemBrokenSpawner);
+    ItemStack res = new ItemStack(EIOItems.itemBrokenSpawner);
     res.stackTagCompound = new NBTTagCompound();
     res.stackTagCompound.setString("mobType", mobType);
     return res;

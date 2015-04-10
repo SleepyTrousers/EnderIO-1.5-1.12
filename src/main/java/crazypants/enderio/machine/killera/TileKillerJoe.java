@@ -26,9 +26,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOFluids;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
@@ -453,7 +453,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return fluid != null && fluid.getID() == EnderIO.fluidNutrientDistillation.getID();
+    return fluid != null && fluid.getID() == EIOFluids.fluidNutrientDistillation.getID();
   }
 
   @Override

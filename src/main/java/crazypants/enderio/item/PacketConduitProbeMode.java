@@ -5,8 +5,8 @@ import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.init.EIOItems;
 
 public class PacketConduitProbeMode implements IMessage, IMessageHandler<PacketConduitProbeMode, IMessage>  {
 
@@ -24,7 +24,7 @@ public class PacketConduitProbeMode implements IMessage, IMessageHandler<PacketC
   @Override
   public IMessage onMessage(PacketConduitProbeMode message, MessageContext ctx) {    
     ItemStack stack = ctx.getServerHandler().playerEntity.inventory.getCurrentItem();    
-    if(stack != null && stack.getItem() == EnderIO.itemConduitProbe) {
+    if(stack != null && stack.getItem() == EIOItems.itemConduitProbe) {
       int newMeta = stack.getItemDamage() == 0 ? 1 : 0;
       stack.setItemDamage(newMeta);      
     }

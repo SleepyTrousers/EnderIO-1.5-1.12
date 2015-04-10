@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -145,7 +145,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
       return;
     }
     ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-    if(contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
+    if(contents == null || contents.getItem() != EIOItems.itemBasicCapacitor) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);

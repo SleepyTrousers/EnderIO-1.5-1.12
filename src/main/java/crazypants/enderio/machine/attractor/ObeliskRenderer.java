@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
@@ -84,7 +84,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
       break;
     }
 
-    renderInventoryBlock(EnderIO.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
+    renderInventoryBlock(EIOBlocks.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
     Timer t = RenderUtil.getTimer();
     renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t.renderPartialTicks);
     GL11.glPopMatrix();
@@ -161,7 +161,7 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
 
     Tessellator.instance.addTranslation(x, y, z);
 
-    IIcon icon = EnderIO.blockAttractor.getOnIcon();
+    IIcon icon = EIOBlocks.blockAttractor.getOnIcon();
     if(world != null) {
       icon = block.getIcon(world, x, y, z, 0);
       Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));

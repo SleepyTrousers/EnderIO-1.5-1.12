@@ -30,6 +30,7 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.init.DarkSteelItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.ItemUtil;

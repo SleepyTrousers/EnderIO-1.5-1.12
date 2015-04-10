@@ -11,7 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -61,7 +61,7 @@ public class IoDisplay implements IInfoRenderer {
 
       float scale = 0.85f;
       float offset = (1-scale)/2;
-      IIcon icon = EnderIO.blockCapBank.getInfoPanelIcon();
+      IIcon icon = EIOBlocks.blockCapBank.getInfoPanelIcon();
       float minU = icon.getMinU();
       float maxU = icon.getMaxU();
       float minV = icon.getMinV();

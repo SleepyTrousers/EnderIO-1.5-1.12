@@ -4,14 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem {
 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
-    ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
+    ItemStack res = new ItemStack(EIOBlocks.blockCapBank, 1, meta);
     PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
     CapBankType type = CapBankType.getTypeFromMeta(meta);
     type.writeTypeToNBT(res.stackTagCompound);
@@ -19,7 +19,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
   }
 
   public BlockItemCapBank() {
-    super(EnderIO.blockCapBank);
+    super(EIOBlocks.blockCapBank);
     setHasSubtypes(true);
   }
 

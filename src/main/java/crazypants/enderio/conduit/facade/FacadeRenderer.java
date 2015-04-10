@@ -8,7 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.RenderUtil;
 
@@ -80,7 +80,7 @@ public class FacadeRenderer implements IItemRenderer {
       GL11.glPolygonOffset(-1.0f, -1.0f);
 
       RenderUtil.bindItemTexture();
-      renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getOverlayIcon());
+      renderBlocks.setOverrideBlockTexture(EIOItems.itemConduitFacade.getOverlayIcon());
       renderBlocks.renderBlockAsItem(Blocks.stone, item.getItemDamage(), 1.0F);
 
       GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -92,7 +92,7 @@ public class FacadeRenderer implements IItemRenderer {
       GL11.glDepthFunc(GL11.GL_LEQUAL);
 
     } else {
-      renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getIconFromDamage(item.getItemDamage()));
+      renderBlocks.setOverrideBlockTexture(EIOItems.itemConduitFacade.getIconFromDamage(item.getItemDamage()));
       renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
       renderBlocks.clearOverrideBlockTexture();
     }

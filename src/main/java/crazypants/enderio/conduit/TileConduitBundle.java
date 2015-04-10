@@ -40,6 +40,7 @@ import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
@@ -72,7 +73,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
 
   public TileConduitBundle() {
-    blockType = EnderIO.blockConduitBundle;
+    blockType = EIOBlocks.blockConduitBundle;
   }
 
   @Override
@@ -259,7 +260,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
     worldObj.func_147451_t(xCoord, yCoord, zCoord);
     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EnderIO.blockConduitBundle);
+    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EIOBlocks.blockConduitBundle);
     facadeChanged = false;
   }
 

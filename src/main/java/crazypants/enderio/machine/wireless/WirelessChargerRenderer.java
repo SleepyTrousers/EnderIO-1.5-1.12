@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
@@ -41,7 +41,7 @@ public class WirelessChargerRenderer implements ISimpleBlockRenderingHandler {
     
     Tessellator tes = Tessellator.instance;
     
-    IIcon baseIcon = EnderIO.blockWirelessCharger.getIcon(0, 0);
+    IIcon baseIcon = EIOBlocks.blockWirelessCharger.getIcon(0, 0);
     
     tes.addTranslation(x, y, z);
     
@@ -55,7 +55,7 @@ public class WirelessChargerRenderer implements ISimpleBlockRenderingHandler {
     xform = new VertexTransformComposite(rot, trans);
     CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.7, 0.05, 0.7), baseIcon, xform, true);
     
-    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.2, 0.91, 0.2), EnderIO.blockWirelessCharger.getCenterOn(), true);
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.2, 0.91, 0.2), EIOBlocks.blockWirelessCharger.getCenterOn(), true);
     
     trans = new VertexTranslation(0, 0, 0.5 - 0.01);
     xform = new VertexTransformComposite(trans);

@@ -2,7 +2,7 @@ package crazypants.enderio.machine.generator.zombie;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOFluids;
 
 public class NutrientTank extends FluidTank {
 
@@ -12,7 +12,7 @@ public class NutrientTank extends FluidTank {
 
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    if(resource == null || resource.getFluid().getID() != EnderIO.fluidNutrientDistillation.getID()) {
+    if(resource == null || resource.getFluid().getID() != EIOFluids.fluidNutrientDistillation.getID()) {
       return 0;
     }
     return super.fill(resource, doFill);

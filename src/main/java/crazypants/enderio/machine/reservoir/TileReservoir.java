@@ -13,8 +13,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3f;
@@ -323,7 +323,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
   }
 
   public boolean onNeighborBlockChange(Block blockId) {
-    if(blockId == EnderIO.blockReservoir) {
+    if(blockId == EIOBlocks.blockReservoir) {
 
       if(!isCurrentMultiblockValid()) {
         // if its not, try and form a new one

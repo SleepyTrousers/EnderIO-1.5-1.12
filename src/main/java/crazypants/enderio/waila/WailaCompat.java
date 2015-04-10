@@ -37,6 +37,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -257,7 +258,7 @@ public class WailaCompat implements IWailaDataProvider {
       return;
     }
 
-    if(itemStack.getItem() == EnderIO.itemPowerConduit) {
+    if(itemStack.getItem() == EIOItems.itemPowerConduit) {
       NBTTagCompound nbtRoot = _accessor.getNBTData();
       if(nbtRoot.hasKey("storedEnergyRF")) {
         int stored = nbtRoot.getInteger("storedEnergyRF");
@@ -267,7 +268,7 @@ public class WailaCompat implements IWailaDataProvider {
             EnumChatFormatting.WHITE, fmt.format(max), EnumChatFormatting.RESET));
       }
 
-    } else if(itemStack.getItem() == EnderIO.itemLiquidConduit) {
+    } else if(itemStack.getItem() == EIOItems.itemLiquidConduit) {
       NBTTagCompound nbtRoot = _accessor.getNBTData();
       if(nbtRoot.hasKey("fluidLocked") && nbtRoot.hasKey("FluidName")) {
         boolean fluidTypeLocked = nbtRoot.getBoolean("fluidLocked");
@@ -286,7 +287,7 @@ public class WailaCompat implements IWailaDataProvider {
         }
       }
 
-    } else if(itemStack.getItem() == EnderIO.itemMEConduit) {
+    } else if(itemStack.getItem() == EIOItems.itemMEConduit) {
       NBTTagCompound nbtRoot = _accessor.getNBTData();
       if(nbtRoot.hasKey("isDense")) {
         boolean isDense = nbtRoot.getBoolean("isDense");

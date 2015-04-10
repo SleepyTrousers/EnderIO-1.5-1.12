@@ -18,7 +18,6 @@ import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
@@ -27,6 +26,7 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 
@@ -67,7 +67,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     }
     Block block = world.getBlock(x, y, z);
     if(block instanceof IRotatableFacade && !player.isSneaking() &&
-            (block != EnderIO.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
+            (block != EIOBlocks.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
       if(((IRotatableFacade)block).tryRotateFacade(world, x, y, z, ForgeDirection.getOrientation(side))) {
         player.swingItem();
         return true;
@@ -100,7 +100,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
     Block block = player.worldObj.getBlock(x, y, z);
-    return block == EnderIO.blockConduitBundle && player.capabilities.isCreativeMode;
+    return block == EIOBlocks.blockConduitBundle && player.capabilities.isCreativeMode;
   }
 
   @Override

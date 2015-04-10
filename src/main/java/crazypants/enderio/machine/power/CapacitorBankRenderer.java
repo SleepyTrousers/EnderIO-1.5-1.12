@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -103,7 +103,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
 
     tes.startDrawingQuads();
-    CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockCapacitorBank.getIcon(0, 0), null, brightness, true);
+    CubeRenderer.render(BoundingBox.UNIT_CUBE, EIOBlocks.blockCapacitorBank.getIcon(0, 0), null, brightness, true);
     tes.draw();
 
     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -117,7 +117,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       renderBorder(null, 0, 0, 0, meta);
     }
     for (GaugeBounds gb : gaugeBounds) {
-      renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon);
+      renderGaugeOnFace(gb, EIOBlocks.blockCapacitorBank.overlayIcon);
     }
     tes.draw();
 
@@ -126,7 +126,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
 
     for (GaugeBounds gb : gaugeBounds) {
-      renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon, filledRatio);
+      renderFillBarOnFace(gb, EIOBlocks.blockCapacitorBank.fillBarIcon, filledRatio);
     }
     tes.draw();
 
@@ -136,12 +136,12 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z, int meta) {
     IIcon texture;
     if(meta == 0) {
-      texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
+      texture = EIOBlocks.blockAlloySmelter.getBlockTextureFromSide(3);
     } else {
       texture = IconUtil.whiteTexture;
     }
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockCapacitorBank, x, y, z, face, texture,
+      RenderUtil.renderConnectedTextureFace(blockAccess, EIOBlocks.blockCapacitorBank, x, y, z, face, texture,
           blockAccess == null, false, false);
     }
   }

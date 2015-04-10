@@ -17,12 +17,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -697,7 +697,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
   }
 
   public void onNeighborBlockChange(Block block) {
-    if(block != EnderIO.blockCapacitorBank) {
+    if(block != EIOBlocks.blockCapacitorBank) {
       receptorsDirty = true;
       getController().masterReceptorsDirty = true;
       getController().redstoneStateDirty = true;
@@ -970,7 +970,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
 
   @Override
   public String getInventoryName() {
-    return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
+    return EIOBlocks.blockCapacitorBank.getUnlocalizedName() + ".name";
   }
 
   @Override

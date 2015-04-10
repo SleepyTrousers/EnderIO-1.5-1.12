@@ -10,9 +10,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.AbstractMachineBlock;
 
 public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceOblisk> {
@@ -40,9 +40,9 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int meta) {
     if(ForgeDirection.getOrientation(side) == ForgeDirection.UP){
-      return EnderIO.blockAttractor.getIcon(side,0);
+      return EIOBlocks.blockAttractor.getIcon(side,0);
     }
-    return EnderIO.blockAttractor.getOnIcon();
+    return EIOBlocks.blockAttractor.getOnIcon();
   }
 
   @Override

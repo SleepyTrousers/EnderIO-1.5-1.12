@@ -3,8 +3,7 @@ package crazypants.enderio.item.skull;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -105,7 +104,7 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     BoundingBox bb;
     float boltSize = size/3;
     BoundingBox baseBolt = BoundingBox.UNIT_CUBE.scale(boltSize ,boltSize , boltSize);
-    IIcon icon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
+    IIcon icon = EIOBlocks.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
     
     float offset = 0.15f;
     bb = baseBolt.translate(size + boltSize/2, -0.15f, offset);
@@ -170,7 +169,7 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     GL11.glScalef(scale, scale, scale);
     GL11.glTranslatef(xTrans, yTrans, zTrans);
     RenderUtil.bindBlockTexture();
-    renderWorldBlock(null, 0, 0, 0, EnderIO.blockEndermanSkull, getRenderId(), (RenderBlocks)data[0], item.getItemDamage());
+    renderWorldBlock(null, 0, 0, 0, EIOBlocks.blockEndermanSkull, getRenderId(), (RenderBlocks) data[0], item.getItemDamage());
     
     Tessellator.instance.draw();
     GL11.glPopMatrix();

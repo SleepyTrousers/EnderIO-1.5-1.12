@@ -15,10 +15,10 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BaublesUtil;
-import static crazypants.enderio.EnderIO.itemMagnet;
 
 public class MagnetController implements IEntitySelector {
 
@@ -116,7 +116,7 @@ public class MagnetController implements IEntitySelector {
       }
       break;
     }
-    if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
+    if (stack == null || stack.getItem() == null || stack.getItem() != EIOItems.itemMagnet || ItemMagnet.isActive(stack) == isActive) {
       return;
     }
     if (type == SlotType.BAUBLES) {

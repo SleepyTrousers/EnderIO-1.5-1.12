@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOItems;
 
 public class BrokenSpawnerRenderer implements IItemRenderer {
 
@@ -31,7 +31,7 @@ public class BrokenSpawnerRenderer implements IItemRenderer {
     }
 
     RenderBlocks rb = (RenderBlocks) data[0];
-    rb.setOverrideBlockTexture(EnderIO.itemBrokenSpawner.getIconFromDamage(0));
+    rb.setOverrideBlockTexture(EIOItems.itemBrokenSpawner.getIconFromDamage(0));
     rb.renderBlockAsItem(Blocks.stone, 0, 1);
     rb.setOverrideBlockTexture(null);
 

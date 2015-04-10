@@ -9,7 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 
@@ -18,8 +18,8 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
     Tessellator.instance.startDrawingQuads();
-    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.6, 0.6, 0.6), EnderIO.blockHyperCube.getIcon(0, 0));
-    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.90, 0.90,0.90), EnderIO.blockVacuumChest.getIcon(0, 0));
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.6, 0.6, 0.6), EIOBlocks.blockHyperCube.getIcon(0, 0));
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(0.90, 0.90, 0.90), EIOBlocks.blockVacuumChest.getIcon(0, 0));
     Tessellator.instance.draw();
   }
 
@@ -37,7 +37,7 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
     renderer.lockBlockBounds = true;
 
     if(!renderer.hasOverrideBlockTexture()) {
-      renderer.setOverrideBlockTexture(EnderIO.blockHyperCube.getIcon(0, 0));
+      renderer.setOverrideBlockTexture(EIOBlocks.blockHyperCube.getIcon(0, 0));
     }
     renderer.renderStandardBlock(Blocks.stone, x, y, z);
     renderer.setOverrideBlockTexture(override);
@@ -52,7 +52,7 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
     renderer.renderMaxZ = 1;
 
     if(!renderer.hasOverrideBlockTexture()) {
-      renderer.setOverrideBlockTexture(EnderIO.blockVacuumChest.getIcon(0, 0));
+      renderer.setOverrideBlockTexture(EIOBlocks.blockVacuumChest.getIcon(0, 0));
     }
     renderer.renderStandardBlock(Blocks.stone, x, y, z);
     renderer.setOverrideBlockTexture(override);
@@ -67,7 +67,7 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
 
   @Override
   public int getRenderId() {
-    return EnderIO.blockVacuumChest.renderId;
+    return EIOBlocks.blockVacuumChest.renderId;
   }
   
   @Override

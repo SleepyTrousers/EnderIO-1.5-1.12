@@ -10,7 +10,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
@@ -48,7 +48,7 @@ public class TankItemRenderer implements IItemRenderer {
     }
 
     GL11.glEnable(GL11.GL_ALPHA_TEST);
-    Block block = EnderIO.blockTank;
+    Block block = EIOBlocks.blockTank;
     int meta = item.getItemDamage();
     
     IIcon[] icons = RenderUtil.getBlockTextures(block, meta);

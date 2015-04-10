@@ -7,7 +7,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class ConvertOldRecipe implements IRecipe {
@@ -27,7 +27,7 @@ public class ConvertOldRecipe implements IRecipe {
         if(input != null) {
           return false;
         }
-        if(Block.getBlockFromItem(checkStack.getItem()) == EnderIO.blockCapacitorBank) {
+        if(Block.getBlockFromItem(checkStack.getItem()) == EIOBlocks.blockCapacitorBank) {
           input = checkStack;
         } else {
           return false;
@@ -39,7 +39,7 @@ public class ConvertOldRecipe implements IRecipe {
       return false;
     }
 
-    output = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.ACTIVATED));
+    output = new ItemStack(EIOBlocks.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.ACTIVATED));
     PowerHandlerUtil.setStoredEnergyForItem(output, PowerHandlerUtil.getStoredEnergyForItem(input));
     return true;
 

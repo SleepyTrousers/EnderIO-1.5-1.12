@@ -30,13 +30,13 @@ import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.network.PacketHandler;
@@ -68,7 +68,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   public static String getSpawnerTypeFromItemStack(ItemStack stack) {
-    if(stack == null || stack.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner)) {
+    if(stack == null || stack.getItem() != Item.getItemFromBlock(EIOBlocks.blockPoweredSpawner)) {
       return null;
     }
     return readMobTypeFromNBT(stack.stackTagCompound);
@@ -165,7 +165,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if(evt.left == null || evt.left.stackSize != 1 || evt.left.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner) ||
+    if(evt.left == null || evt.left.stackSize != 1 || evt.left.getItem() != Item.getItemFromBlock(EIOBlocks.blockPoweredSpawner) ||
         evt.right == null || ItemBrokenSpawner.getMobTypeFromStack(evt.right) == null) {
       return;
     }

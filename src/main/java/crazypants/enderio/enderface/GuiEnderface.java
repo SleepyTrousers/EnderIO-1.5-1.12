@@ -30,6 +30,7 @@ import org.lwjgl.opengl.GL12;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
@@ -108,7 +109,7 @@ public class GuiEnderface extends GuiScreen {
     chunkLoaded = c != null && c.isChunkLoaded;
     RB.blockAccess = world;
 
-    blocks.add(new ViewableBlocks(ioX, ioY, ioZ, EnderIO.blockEnderIo));
+    blocks.add(new ViewableBlocks(ioX, ioY, ioZ, EIOBlocks.blockEnderIo));
 
     for (int x = ioX - range; x <= ioX + range; x++) {
       for (int y = ioY - range; y <= ioY + range; y++) {
@@ -217,7 +218,7 @@ public class GuiEnderface extends GuiScreen {
     MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
     if(hit != null) {
       Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
+      if (block == EIOBlocks.blockHyperCube || block == EIOBlocks.blockCapacitorBank) {
         block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
       } else {
         openInterface(hit.blockX, hit.blockY, hit.blockZ);

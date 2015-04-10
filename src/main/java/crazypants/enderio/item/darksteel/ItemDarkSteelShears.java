@@ -27,6 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.init.DarkSteelItems;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;

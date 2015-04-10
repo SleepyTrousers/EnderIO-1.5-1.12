@@ -21,12 +21,13 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
@@ -70,7 +71,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
+    return new ItemStack(EIOItems.itemRedstoneConduit, 1, 0);
   }
 
   @Override
@@ -192,7 +193,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    neighbourDirty |= blockId != EnderIO.blockConduitBundle;
+    neighbourDirty |= blockId != EIOBlocks.blockConduitBundle;
     return res;
   }
 

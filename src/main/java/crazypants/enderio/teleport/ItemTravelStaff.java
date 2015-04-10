@@ -20,6 +20,7 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {
@@ -28,7 +29,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     if(ep == null || ep.getCurrentEquippedItem() == null) {
       return false;
     }
-    return ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff;
+    return ep.getCurrentEquippedItem().getItem() == EIOItems.itemTravelStaff;
   }
 
   private long lastBlickTick = 0;

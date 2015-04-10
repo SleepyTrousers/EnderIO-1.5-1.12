@@ -8,7 +8,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 
 public class BlockItemPaintedFence extends ItemBlock {
 
@@ -18,7 +18,7 @@ public class BlockItemPaintedFence extends ItemBlock {
   }
 
   public BlockItemPaintedFence() {
-    super(EnderIO.blockPaintedFence);
+    super(EIOBlocks.blockPaintedFence);
     setHasSubtypes(true);
   }
 

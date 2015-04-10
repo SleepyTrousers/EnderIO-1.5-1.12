@@ -13,7 +13,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -180,10 +180,10 @@ public class FillGauge implements IInfoRenderer {
   }
 
   private void createVertexCache() {
-    barIcon = EnderIO.blockCapBank.getFillBarIcon();
+    barIcon = EIOBlocks.blockCapBank.getFillBarIcon();
     barMinV = barIcon.getMinV();
     barHeightV = barIcon.getMaxV() - barIcon.getMinV();
-    gaugeIcon = EnderIO.blockCapBank.getGaugeIcon();
+    gaugeIcon = EIOBlocks.blockCapBank.getGaugeIcon();
 
     gaugeVertexCache = new HashMap<FillGauge.GaugeKey, List<Vertex>>();
     levelVertexCache = new HashMap<FillGauge.GaugeKey, List<Vertex>>();

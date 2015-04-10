@@ -12,13 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.BoundingBox;
@@ -222,7 +222,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   }
 
   public boolean isItemValidForFilter(ItemStack itemstack) {
-    return itemstack != null && itemstack.getItem() == EnderIO.itemBasicFilterUpgrade && itemstack.getItemDamage() == 0;
+    return itemstack != null && itemstack.getItem() == EIOItems.itemBasicFilterUpgrade && itemstack.getItemDamage() == 0;
   }
 
   public int getRange() {

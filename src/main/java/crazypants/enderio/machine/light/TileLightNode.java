@@ -2,8 +2,8 @@ package crazypants.enderio.machine.light;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.init.EIOBlocks;
 
 public class TileLightNode extends TileEntityEio {
 
@@ -27,7 +27,7 @@ public class TileLightNode extends TileEntityEio {
       return;
     }
     if(shouldDoWorkThisTick(42)) {
-      if(worldObj.getBlock(parentX, parentY, parentZ) != EnderIO.blockElectricLight) {
+      if(worldObj.getBlock(parentX, parentY, parentZ) != EIOBlocks.blockElectricLight) {
         worldObj.setBlockToAir(xCoord, yCoord, zCoord);
       }
     }

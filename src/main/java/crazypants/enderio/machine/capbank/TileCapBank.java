@@ -20,9 +20,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -378,7 +378,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     for (Entry<ForgeDirection, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
       BlockCoord bc = getLocation().getLocation(entry.getKey());
       Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
-      if(block != null && (block.isOpaqueCube() || block == EnderIO.blockCapBank)) {
+      if(block != null && (block.isOpaqueCube() || block == EIOBlocks.blockCapBank)) {
         reset.add(entry.getKey());
       }
     }
@@ -737,7 +737,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public String getInventoryName() {
-    return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
+    return EIOBlocks.blockCapacitorBank.getUnlocalizedName() + ".name";
   }
 
   @Override

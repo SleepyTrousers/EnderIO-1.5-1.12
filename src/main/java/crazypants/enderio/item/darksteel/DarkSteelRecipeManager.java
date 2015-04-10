@@ -17,7 +17,7 @@ import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
@@ -67,7 +67,7 @@ public class DarkSteelRecipeManager {
     }
 
     if(evt.left.getItem() instanceof IDarkSteelItem && 
-        evt.right.getItem() == EnderIO.itemAlloy && 
+        evt.right.getItem() == EIOItems.itemAlloy && 
         evt.right.getItemDamage() == Alloy.DARK_STEEL.ordinal()) {
 
       handleRepair(evt);

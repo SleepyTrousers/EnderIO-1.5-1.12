@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.init.EIOItems;
 
 public class InventorySpeedUpgrades implements IInventory {
 
@@ -104,7 +104,7 @@ public class InventorySpeedUpgrades implements IInventory {
     if(item == null) {
       return false;
     }
-    return item.getItem() == EnderIO.itemExtractSpeedUpgrade;
+    return item.getItem() == EIOItems.itemExtractSpeedUpgrade;
   }
 
 }

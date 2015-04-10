@@ -31,7 +31,7 @@ import org.lwjgl.opengl.GL14;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
@@ -248,7 +248,7 @@ public class IoConfigRenderer {
 
     BoundingBox bb = new BoundingBox(selection.config.getLocation());
 
-    IIcon icon = EnderIO.blockAlloySmelter.selectedFaceIcon;
+    IIcon icon = EIOBlocks.blockAlloySmelter.selectedFaceIcon;
     List<Vertex> corners = bb.getCornersWithUvForFace(selection.face,icon.getMinU(),icon.getMaxU(),icon.getMinV(),icon.getMaxV());
 
     GL11.glDisable(GL11.GL_DEPTH_TEST);

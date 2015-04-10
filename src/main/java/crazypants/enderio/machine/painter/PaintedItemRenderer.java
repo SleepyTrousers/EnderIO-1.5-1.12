@@ -9,7 +9,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
+import crazypants.enderio.init.EIOItems;
 import crazypants.render.RenderUtil;
 
 public class PaintedItemRenderer implements IItemRenderer {
@@ -47,7 +48,7 @@ public class PaintedItemRenderer implements IItemRenderer {
   }
 
   public void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
-    if(item.getItem() == Item.getItemFromBlock(EnderIO.blockPaintedGlowstone) || item.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform)) {
+    if(item.getItem() == Item.getItemFromBlock(EIOBlocks.blockPaintedGlowstone) || item.getItem() == Item.getItemFromBlock(EIOBlocks.blockTravelPlatform)) {
       Block block = PainterUtil.getSourceBlock(item);
       int meta;
       RenderUtil.bindBlockTexture();
@@ -70,8 +71,8 @@ public class PaintedItemRenderer implements IItemRenderer {
     Block block = PainterUtil.getSourceBlock(item);    
     if(block != null) {
       int meta = PainterUtil.getSourceBlockMetadata(item);
-      if(block == EnderIO.blockFusedQuartz && meta == 1) {
-        renderBlocks.setOverrideBlockTexture(EnderIO.blockPainter.getInvisibleIcon());
+      if(block == EIOBlocks.blockFusedQuartz && meta == 1) {
+        renderBlocks.setOverrideBlockTexture(EIOBlocks.blockPainter.getInvisibleIcon());
       } else {
         renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, meta));
       }
@@ -100,7 +101,7 @@ public class PaintedItemRenderer implements IItemRenderer {
     GL11.glPolygonOffset(-1.0f, -1.0f);
 
     RenderUtil.bindItemTexture();
-    renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getOverlayIcon());
+    renderBlocks.setOverrideBlockTexture(EIOItems.itemConduitFacade.getOverlayIcon());
     renderBlocks.renderBlockAsItem(block, meta, 1.0f);
 
     GL11.glPopAttrib();

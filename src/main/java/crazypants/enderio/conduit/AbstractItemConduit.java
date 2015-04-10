@@ -16,9 +16,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 
@@ -57,15 +57,15 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   @Override
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 
-    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle, player, world, x, y, z, side);
+    BlockCoord placeAt = Util.canPlaceItem(stack, EIOBlocks.blockConduitBundle, player, world, x, y, z, side);
     if(placeAt != null) {
       if(!world.isRemote) {
-        if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, EnderIO.blockConduitBundle, 0, 1)) {
+        if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, EIOBlocks.blockConduitBundle, 0, 1)) {
           TileEntity te = world.getTileEntity(placeAt.x, placeAt.y, placeAt.z);
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(stack, player));
-            Block b = EnderIO.blockConduitBundle;
+            Block b = EIOBlocks.blockConduitBundle;
             world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getStepResourcePath(),
                 (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
           }
@@ -83,7 +83,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
       int placeY = y + dir.offsetY;
       int placeZ = z + dir.offsetZ;
 
-      if(world.getBlock(placeX, placeY, placeZ) == EnderIO.blockConduitBundle) {
+      if(world.getBlock(placeX, placeY, placeZ) == EIOBlocks.blockConduitBundle) {
 
         IConduitBundle bundle = (TileConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
         if(bundle == null) {

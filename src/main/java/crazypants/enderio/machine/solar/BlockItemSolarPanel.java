@@ -10,19 +10,19 @@ import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.Lang;
 
 public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
   public BlockItemSolarPanel() {
-    super(EnderIO.blockSolarPanel, EnderIO.blockSolarPanel);
+    super(EIOBlocks.blockSolarPanel, EIOBlocks.blockSolarPanel);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }

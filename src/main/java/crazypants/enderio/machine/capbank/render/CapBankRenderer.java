@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
@@ -68,7 +68,7 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     } else {
       connectedTexRenderer.setForceAllEdges(false);
     }
-    connectedTexRenderer.setEdgeTexture(EnderIO.blockCapBank.getBorderIcon(0, meta));
+    connectedTexRenderer.setEdgeTexture(EIOBlocks.blockCapBank.getBorderIcon(0, meta));
     CustomCubeRenderer.instance.setOverrideTexture(renderer.overrideBlockTexture);
     if (renderer.overrideBlockTexture == null) {
       CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, connectedTexRenderer);
@@ -107,7 +107,7 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     Tessellator tes = Tessellator.instance;
 
     tes.startDrawingQuads();
-    CubeRenderer.render(EnderIO.blockCapBank, item.getItemDamage());
+    CubeRenderer.render(EIOBlocks.blockCapBank, item.getItemDamage());
     tes.draw();
 
     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -135,9 +135,9 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
   }
 
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z, int meta) {
-    IIcon texture = EnderIO.blockCapBank.getBorderIcon(0, meta);
+    IIcon texture = EIOBlocks.blockCapBank.getBorderIcon(0, meta);
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockCapBank,  x, y, z, face, texture,
+      RenderUtil.renderConnectedTextureFace(blockAccess, EIOBlocks.blockCapBank,  x, y, z, face, texture,
           blockAccess == null, false, false);
     }
   }

@@ -19,9 +19,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.EIOItems;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.util.BlockCoord;
@@ -237,7 +237,7 @@ public class BlockFusedQuartz extends BlockEio {
     if(sourceBlock == null) {
       return null;
     }
-    ItemStack result = new ItemStack(EnderIO.instance.itemFusedQuartzFrame, 1, quartzBlockMeta);
+    ItemStack result = new ItemStack(EIOItems.itemFusedQuartzFrame, 1, quartzBlockMeta);
     PainterUtil.setSourceBlock(result, sourceBlock, sourceBlockMetadata);
     return result;
   }

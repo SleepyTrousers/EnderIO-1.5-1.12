@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
@@ -38,7 +38,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-    IIcon soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
+    IIcon soulariumIcon = EIOBlocks.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
     override = renderer.overrideBlockTexture;
     
     //Horrible hack to get the MC lighting engine to set the correct values for me
@@ -58,7 +58,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
     float slabWidth = 0.15f;
     bb = BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
     bb = bb.translate(0, 0.5f - (slabWidth / 2), 0);
-    setIcons(soulariumIcon, EnderIO.blockSoulFuser.getIcon(ForgeDirection.UP.ordinal(), 0), ForgeDirection.UP);
+    setIcons(soulariumIcon, EIOBlocks.blockSoulFuser.getIcon(ForgeDirection.UP.ordinal(), 0), ForgeDirection.UP);
     CubeRenderer.render(bb, icons, true);
 
     bb = BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
@@ -71,17 +71,17 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
     int facing = ForgeDirection.SOUTH.ordinal();
 
     if(world == null || !(world.getTileEntity(x, y, z) instanceof TileSoulBinder)) {
-      endermanIcon = EnderIO.blockSoulFuser.endermanSkullIcon;
+      endermanIcon = EIOBlocks.blockSoulFuser.endermanSkullIcon;
     } else {
       TileSoulBinder sb = (TileSoulBinder) world.getTileEntity(x, y, z);
       facing = sb.facing;
-      endermanIcon = sb.isActive() ? EnderIO.blockSoulFuser.endermanSkullIconOn : EnderIO.blockSoulFuser.endermanSkullIcon;
+      endermanIcon = sb.isActive() ? EIOBlocks.blockSoulFuser.endermanSkullIconOn : EIOBlocks.blockSoulFuser.endermanSkullIcon;
     }
 
     renderSkull(forFacing(ForgeDirection.SOUTH, facing), soulariumIcon, endermanIcon);
-    renderSkull(forFacing(ForgeDirection.WEST, facing), soulariumIcon, EnderIO.blockSoulFuser.skeletonSkullIcon);
-    renderSkull(forFacing(ForgeDirection.NORTH, facing), soulariumIcon, EnderIO.blockSoulFuser.zombieSkullIcon);
-    renderSkull(forFacing(ForgeDirection.EAST, facing), soulariumIcon, EnderIO.blockSoulFuser.creeperSkullIcon);
+    renderSkull(forFacing(ForgeDirection.WEST, facing), soulariumIcon, EIOBlocks.blockSoulFuser.skeletonSkullIcon);
+    renderSkull(forFacing(ForgeDirection.NORTH, facing), soulariumIcon, EIOBlocks.blockSoulFuser.zombieSkullIcon);
+    renderSkull(forFacing(ForgeDirection.EAST, facing), soulariumIcon, EIOBlocks.blockSoulFuser.creeperSkullIcon);
 
     Tessellator.instance.addTranslation(-x, -y, -z);
 

@@ -32,6 +32,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.init.EIOBlocks;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
@@ -185,7 +186,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       if(world.isRemote) {
         world.markBlockForUpdate(x, y, z);
       } else {
-        world.notifyBlocksOfNeighborChange(x, y, z, EnderIO.blockCapBank);
+        world.notifyBlocksOfNeighborChange(x, y, z, EIOBlocks.blockCapBank);
         world.markBlockForUpdate(x, y, z);
       }
 

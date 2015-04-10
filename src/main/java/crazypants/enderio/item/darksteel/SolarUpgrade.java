@@ -4,8 +4,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.DarkSteelItems;
+import crazypants.enderio.init.EIOBlocks;
 
 public class SolarUpgrade extends AbstractUpgrade {
 
@@ -75,7 +76,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   
   @Override
   public ItemStack getUpgradeItem() {
-    return new ItemStack(EnderIO.blockSolarPanel, 1, level - 1);
+    return new ItemStack(EIOBlocks.blockSolarPanel, 1, level - 1);
   }
 
   @Override
