@@ -124,7 +124,7 @@ public abstract class AbstractGasConduit extends AbstractConduit implements IGas
 
     DyeColor col = getExtractionSignalColor(dir);
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    if(mode.isConditionMet(mode, signal) && mode != RedstoneControlMode.OFF) {
+    if(RedstoneControlMode.isConditionMet(mode, signal) && mode != RedstoneControlMode.OFF) {
       return true;
     }
 
@@ -144,7 +144,7 @@ public abstract class AbstractGasConduit extends AbstractConduit implements IGas
       }
     }
 
-    return mode.isConditionMet(mode, externalSignal);
+    return RedstoneControlMode.isConditionMet(mode, externalSignal);
   }
 
   @Override

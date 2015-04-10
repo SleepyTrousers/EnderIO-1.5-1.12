@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.gas;
 import java.util.List;
 
 import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,7 +26,6 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
     if(player.getCurrentEquippedItem() == null) {
       return false;
     }
-    AbstractGasTankConduitNetwork<? extends AbstractGasTankConduit> network = getTankNetwork();
     if(ToolUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
@@ -121,6 +121,15 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
       result = tank.getGas();
     }
     return result;
+  }
+  
+  @Override
+  public boolean canOutputToDir(ForgeDirection dir) {
+    if (super.canOutputToDir(dir)) {
+      IGasHandler ext = getExternalHandler(dir);
+      return ext != null && ext.canReceiveGas(dir.getOpposite(), tank.getGasType());
+    }
+    return false;
   }
 
   protected abstract void updateTank();
