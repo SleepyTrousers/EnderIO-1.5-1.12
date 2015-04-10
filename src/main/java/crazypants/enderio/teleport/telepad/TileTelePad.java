@@ -1,6 +1,5 @@
 package crazypants.enderio.teleport.telepad;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
@@ -609,8 +608,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private boolean teleport(Entity entity) {
-    entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
-    return entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity);
+    if(maxPower > 0) {
+      entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
+      return entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity);
+    }
+    return false;
   }
 
   private boolean clientTeleport(Entity entity) {
