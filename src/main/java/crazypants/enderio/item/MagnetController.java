@@ -1,5 +1,6 @@
 package crazypants.enderio.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.command.IEntitySelector;
@@ -9,10 +10,12 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
@@ -53,6 +56,10 @@ public class MagnetController implements IEntitySelector {
   
   public void doHoover(EntityPlayer player) {
     
+    if (blacklist == null) {
+      initBlacklist();
+    }
+
     AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
@@ -84,8 +91,31 @@ public class MagnetController implements IEntitySelector {
     }
   }
 
+  private static List<Item> blacklist = null;
+
+  private static void initBlacklist() {
+    blacklist = new ArrayList<Item>();
+    for (String name : Config.magnetBlacklist) {
+      String[] parts = name.split(":");
+      if (parts.length == 2) {
+        Item item = GameRegistry.findItem(parts[0], parts[1]);
+        if (item != null) {
+          blacklist.add(item);
+        }
+      }
+    }
+  }
+
   @Override
   public boolean isEntityApplicable(Entity var1) {
+    if (!blacklist.isEmpty() && var1 instanceof EntityItem) {
+      Item item = ((EntityItem) var1).getEntityItem().getItem();
+      for (Item blacklisted : blacklist) {
+        if (blacklisted == item) {
+          return false;
+        }
+      }
+    }
     return true;
   }
   
