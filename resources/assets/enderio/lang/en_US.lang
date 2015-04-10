@@ -297,6 +297,7 @@ tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
 tile.blockCapBank.tooltip.detailed.line4=to change information display
+tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
 tile.blockCapBank.tooltipPrefix=Contains
 
 enderio.capbank.maxIO=Max I/O
