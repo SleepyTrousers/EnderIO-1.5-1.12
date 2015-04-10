@@ -445,8 +445,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreQuartz" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="4" />
-        <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />
+        <itemStack modID="minecraft" itemName="quartz" number="1" />
+        <itemStack oreDictionary="dustNetherQuartz" number="1" />
       </output>
     </recipe>
 
