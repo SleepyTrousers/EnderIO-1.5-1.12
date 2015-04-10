@@ -13,10 +13,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabaseServer.ItemEntry> {
 
-  private InventoryKey[] inventories;
+  private AbstractInventoryKey[] inventories;
   private int currentInventory;
   private ChangeLog changeLog;
 
@@ -141,9 +142,14 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
     if(sources == null || sources.isEmpty()) {
       this.inventories = null;
     } else {
-      this.inventories = new InventoryKey[sources.size()];
+      this.inventories = new AbstractInventoryKey[sources.size()];
       for(int i=0; i<sources.size(); i++) {
-        inventories[i] = new InventoryKey(sources.get(i));
+        NetworkedInventory ni = sources.get(i);
+        if(ni.getInventory() instanceof IDeepStorageUnit) {
+          inventories[i] = new DSUKey((IDeepStorageUnit) ni.getInventory());
+        } else {
+          inventories[i] = new InventoryKey(ni);
+        }
       }
     }
 
@@ -157,7 +163,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
       return;
     }
 
-    InventoryKey inv = inventories[currentInventory];
+    AbstractInventoryKey inv = inventories[currentInventory];
     inv.scanInventory(this, currentInventory);
 
     currentInventory = (currentInventory+1) % inventories.length;
@@ -202,7 +208,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
     int countItems(InventoryDatabaseServer db) {
       int count = 0;
       for(Integer idx : slots) {
-        InventoryKey key = db.inventories[idx >> 12];
+        AbstractInventoryKey key = db.inventories[idx >> 12];
         count += key.itemCounts[idx & 4095];
       }
       return count;
@@ -214,7 +220,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
       for(Integer idx : copy) {
         int niIndex = idx >> 12;
         int slotIndex = idx & 4095;
-        InventoryKey key = db.inventories[niIndex];
+        AbstractInventoryKey key = db.inventories[niIndex];
         int amount = key.extractItem(db, this, slotIndex, niIndex, count);
         count -= amount;
         extracted += amount;
@@ -223,17 +229,82 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
     }
   }
 
-  static class InventoryKey {
-    private static final ItemEntry[] NO_SLOTS = new ItemEntry[0];
+  static abstract class AbstractInventoryKey {
+    static final ItemEntry[] NO_SLOTS = new ItemEntry[0];
 
-    final NetworkedInventory ni;
     ItemEntry[] slotItems = NO_SLOTS;
     int[] itemCounts;
+
+    protected void setEmpty(InventoryDatabaseServer db, int niIndex) {
+      if(slotItems.length != 0) {
+        reset(db, 0, niIndex);
+      }
+    }
+
+    protected void reset(InventoryDatabaseServer db, int count, int niIndex) {
+      for(int slot=0; slot<slotItems.length; slot++) {
+        ItemEntry key = slotItems[slot];
+        if(key != null) {
+          key.removeSlot(niIndex, slot);
+          db.entryChanged(key);
+        }
+      }
+
+      slotItems = new ItemEntry[count];
+      itemCounts = new int[count];
+    }
+
+    protected void updateSlot(InventoryDatabaseServer db, int slot, int niIndex, ItemStack stack) {
+      ItemEntry current = slotItems[slot];
+      if(stack == null || stack.stackSize <= 0) {
+        if(current != null) {
+          slotItems[slot] = null;
+          itemCounts[slot] = 0;
+          current.removeSlot(niIndex, slot);
+          db.entryChanged(current);
+        }
+      } else {
+        ItemEntry key = db.lookupItem(stack, current, true);
+        if(key != current) {
+          slotItems[slot] = key;
+          itemCounts[slot] = stack.stackSize;
+          key.addSlot(niIndex, slot);
+          db.entryChanged(key);
+          if(current != null) {
+            current.removeSlot(niIndex, slot);
+            db.entryChanged(current);
+          }
+        } else if(itemCounts[slot] != stack.stackSize) {
+          itemCounts[slot] = stack.stackSize;
+          db.entryChanged(current);
+        }
+      }
+    }
+
+    protected void updateCount(InventoryDatabaseServer db, int slot, int niIndex, ItemEntry entry, int count) {
+      if(itemCounts[slot] != count) {
+        itemCounts[slot] = count;
+        if(count == 0) {
+          slotItems[slot] = null;
+          entry.removeSlot(niIndex, slot);
+        }
+        db.entryChanged(entry);
+      }
+    }
+
+    abstract void scanInventory(InventoryDatabaseServer db, int niIndex);
+    abstract int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int niIndex, int count);
+  }
+
+  static class InventoryKey extends AbstractInventoryKey {
+
+    final NetworkedInventory ni;
 
     InventoryKey(NetworkedInventory ni) {
       this.ni = ni;
     }
 
+    @Override
     void scanInventory(InventoryDatabaseServer db, int niIndex) {
       ISidedInventory inv = ni.getInventoryRecheck();
       int side = ni.getInventorySide();
@@ -254,53 +325,12 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
         if(stack != null && !inv.canExtractItem(invSlot, stack, side)) {
           stack = null;
         }
-        ItemEntry current = slotItems[slot];
-        if(stack == null || stack.stackSize <= 0) {
-          if(current != null) {
-            slotItems[slot] = null;
-            itemCounts[slot] = 0;
-            current.removeSlot(niIndex, slot);
-            db.entryChanged(current);
-          }
-        } else {
-          ItemEntry key = db.lookupItem(stack, current, true);
-          if(key != current) {
-            slotItems[slot] = key;
-            itemCounts[slot] = stack.stackSize;
-            key.addSlot(niIndex, slot);
-            db.entryChanged(key);
-            if(current != null) {
-              current.removeSlot(niIndex, slot);
-              db.entryChanged(current);
-            }
-          } else if(itemCounts[slot] != stack.stackSize) {
-            itemCounts[slot] = stack.stackSize;
-            db.entryChanged(current);
-          }
-        }
+        updateSlot(db, slot, niIndex, stack);
       }
     }
 
-    private void setEmpty(InventoryDatabaseServer db, int niIndex) {
-      if(slotItems.length != 0) {
-        reset(db, 0, niIndex);
-      }
-    }
-
-    private void reset(InventoryDatabaseServer db, int count, int niIndex) {
-      for(int slot=0; slot<slotItems.length; slot++) {
-        ItemEntry key = slotItems[slot];
-        if(key != null) {
-          key.removeSlot(niIndex, slot);
-          db.entryChanged(key);
-        }
-      }
-
-      slotItems = new ItemEntry[count];
-      itemCounts = new int[count];
-    }
-
-    int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int niIndex, int count) {
+    @Override
+    public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int niIndex, int count) {
       ISidedInventory inv = ni.getInventoryRecheck();
       int side = ni.getInventorySide();
       int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
@@ -326,16 +356,49 @@ public class InventoryDatabaseServer extends InventoryDatabase<InventoryDatabase
       ni.itemExtracted(invSlot, count);
       remaining -= count;
 
-      if(itemCounts[slot] != remaining) {
-        itemCounts[slot] = remaining;
-        if(remaining == 0) {
-          slotItems[slot] = null;
-          entry.removeSlot(niIndex, slot);
-        }
-        db.entryChanged(entry);
-      }
+      updateCount(db, slot, niIndex, entry, remaining);
 
       System.out.println("result " + count);
+      return count;
+    }
+  }
+
+  static class DSUKey extends AbstractInventoryKey {
+    private final IDeepStorageUnit dsu;
+
+    DSUKey(IDeepStorageUnit dsu) {
+      this.dsu = dsu;
+    }
+
+    @Override
+    public void scanInventory(InventoryDatabaseServer db, int niIndex) {
+      if(slotItems.length != 1) {
+        reset(db, 1, niIndex);
+      }
+      ItemStack stack = dsu.getStoredItemType();
+      updateSlot(db, 0, niIndex, stack);
+    }
+
+    @Override
+    public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int niIndex, int count) {
+      if(slotItems.length != 1) {
+        return 0;
+      }
+
+      ItemStack stack = dsu.getStoredItemType();
+      if(db.lookupItem(stack, entry, false) != entry) {
+        return 0;
+      }
+
+      int remaining = stack.stackSize;
+      if(count > remaining) {
+        count = remaining;
+      }
+
+      remaining -= count;
+      dsu.setStoredItemCount(remaining);
+
+      updateCount(db, slot, niIndex, entry, remaining);
       return count;
     }
   }
