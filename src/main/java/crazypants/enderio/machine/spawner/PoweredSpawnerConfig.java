@@ -92,7 +92,7 @@ public class PoweredSpawnerConfig {
       }
 
       blkList = rootObj.getAsJsonArray("blackList");
-      if(blkList != null && blkList.size() > 0) {
+      if(blkList != null) {
         blackList.clear();
         Log.info("Replacing default Powered Spawner blacklist with user supplied values.");
         for (int i = 0; i < blkList.size(); i++) {
