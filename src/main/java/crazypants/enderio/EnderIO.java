@@ -46,6 +46,7 @@ import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.gas.ItemGasConduit;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
@@ -222,6 +223,7 @@ public class EnderIO {
   public static ItemModItemFilter itemModItemFilter;
   public static ItemPowerItemFilter itemPowerItemFilter;
   public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
+  public static ItemFunctionUpgrade itemFunctionUpgrade;
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
@@ -396,6 +398,7 @@ public class EnderIO {
     itemModItemFilter = ItemModItemFilter.create();
     itemPowerItemFilter = ItemPowerItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
+    itemFunctionUpgrade = ItemFunctionUpgrade.create();
 
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();

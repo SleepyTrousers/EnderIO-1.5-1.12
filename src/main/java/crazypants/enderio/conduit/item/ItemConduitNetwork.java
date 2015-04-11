@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit.item;
 
-import crazypants.enderio.EnderIO;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,11 +68,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   public List<NetworkedInventory> getInventoryPanelSources() {
     ArrayList<NetworkedInventory> res = new ArrayList<NetworkedInventory>();
     for(NetworkedInventory inv : inventories) {
-      ItemStack speedUpgradeStack = inv.con.getSpeedUpgrade(inv.conDir);
-      if(speedUpgradeStack != null) {
-        if(EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(speedUpgradeStack) == SpeedUpgrade.INVENTORY_PANEL) {
-          res.add(inv);
-        }
+      if(inv.con.hasInventoryPanelUpgrade(inv.conDir)) {
+        res.add(inv);
       }
     }
     return res;

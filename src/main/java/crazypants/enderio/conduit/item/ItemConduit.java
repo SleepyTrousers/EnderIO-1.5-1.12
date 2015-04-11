@@ -35,7 +35,6 @@ import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
-import crazypants.util.ItemUtil;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -95,6 +94,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   protected final EnumMap<ForgeDirection, ItemStack> outputFilterUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, ItemStack> inputFilterUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, ItemStack> speedUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, ItemStack> functionUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
 
   protected final EnumMap<ForgeDirection, Boolean> selfFeed = new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
 
@@ -188,6 +188,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(createItem());
     for (ItemStack stack : speedUpgrades.values()) {
+      res.add(stack);
+    }
+    for (ItemStack stack : functionUpgrades.values()) {
       res.add(stack);
     }
     for (ItemStack stack : inputFilterUpgrades.values()) {
@@ -315,16 +318,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade) {
-    boolean hadIPU = hasInventoryPanelUpgrade(dir);
     if(upgrade != null) {
       speedUpgrades.put(dir, upgrade);
     } else {
       speedUpgrades.remove(dir);
     }
     setClientStateDirty();
-    if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
-      network.inventoryPanelSourcesChanged();
-    }
   }
 
   @Override
@@ -333,9 +332,28 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public void setFunctionUpgrade(ForgeDirection dir, ItemStack upgrade) {
+    boolean hadIPU = hasInventoryPanelUpgrade(dir);
+    if(upgrade != null) {
+      functionUpgrades.put(dir, upgrade);
+    } else {
+      functionUpgrades.remove(dir);
+    }
+    setClientStateDirty();
+    if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
+      network.inventoryPanelSourcesChanged();
+    }
+  }
+
+  @Override
+  public ItemStack getFunctionUpgrade(ForgeDirection dir) {
+    return functionUpgrades.get(dir);
+  }
+
+  @Override
   public boolean hasInventoryPanelUpgrade(ForgeDirection dir) {
-    ItemStack upgrade = speedUpgrades.get(dir);
-    return upgrade != null && EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(upgrade) == SpeedUpgrade.INVENTORY_PANEL;
+    ItemStack upgrade = functionUpgrades.get(dir);
+    return upgrade != null && EnderIO.itemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL;
   }
 
   @Override
@@ -659,6 +677,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
+    for (Entry<ForgeDirection, ItemStack> entry : functionUpgrades.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("functionUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+
     for (Entry<ForgeDirection, IItemFilter> entry : outputFilters.entrySet()) {
       if(entry.getValue() != null) {
         IItemFilter f = entry.getValue();
@@ -773,6 +800,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
         speedUpgrades.put(dir, ups);
+      }
+
+      key = "functionUpgrades." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        functionUpgrades.put(dir, ups);
       }
 
       key = "inputFilterUpgrades." + dir.name();

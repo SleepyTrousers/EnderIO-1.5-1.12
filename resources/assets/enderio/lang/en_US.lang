@@ -96,11 +96,12 @@ item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
 item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
 item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
 
-item.itemExtractInventoryPanelUpgrade.name=Remote Awareness Upgrade
-item.itemExtractInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
-item.itemExtractInventoryPanelUpgrade.tooltip.detailed.line1=Allows Inventory Panels attached
-item.itemExtractInventoryPanelUpgrade.tooltip.detailed.line2=to this network to see and extract
-item.itemExtractInventoryPanelUpgrade.tooltip.detailed.line3=items from this inventory
+item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
+item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory
 
 enderio.itemGasConduit.name=Gas Conduit
 
@@ -489,10 +490,10 @@ enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items t
 enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Sort items by name
 enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Sort items by name
 enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Starting at the end of the alphabet
-enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Sort items by Mod-ID
-enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Items from the same Mod are sorted by name
-enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Sort items by Mod-ID
-enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Items from the same Mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Items from the same mod are sorted by name
 enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=Starting at the end of the alphabet
 enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sort items by their quantity
 enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Starting with the highest quantity
@@ -955,6 +956,7 @@ enderio.gui.conduit.item.priority=Priority
 enderio.gui.conduit.item.filterupgrade=Insert Item Filter
 enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
 enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
+enderio.gui.conduit.item.functionupgrade.line1=Possible function upgrades:
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color

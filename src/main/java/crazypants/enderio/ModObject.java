@@ -18,6 +18,7 @@ public enum ModObject {
   itemModItemFilter,
   itemPowerItemFilter,
   itemExtractSpeedUpgrade,
+  itemFunctionUpgrade,
 
   // Power
   itemPowerConduit,
