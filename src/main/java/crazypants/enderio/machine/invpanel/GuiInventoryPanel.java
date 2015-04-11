@@ -2,7 +2,6 @@ package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
@@ -16,6 +15,7 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Locale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -47,6 +46,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private boolean scrollUpPressed;
   private boolean scrollDownPressed;
+  private boolean scrollThumbPressed;
+  private boolean dragActive;
   private int scrollPos;
   private int scrollMax;
   private long scrollLastTime;
@@ -100,6 +101,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Override
   public void initGui() {
     super.initGui();
+    updateSortButton();
     btnSort.onGuiInit();
   }
 
@@ -173,7 +175,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   private int getThumbPosition() {
-    return thumbArea.y + (int)(thumbArea.height - IconEIO.VSCROLL_THUMB.height) * scrollPos / scrollMax;
+    return thumbArea.y + (thumbArea.height - (int)IconEIO.VSCROLL_THUMB.height) * scrollPos / scrollMax;
   }
 
   @Override
@@ -214,7 +216,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       order = values[(order.ordinal()+1) % values.length];
     }
     db.setSortOrder(order, !db.isSortOrderInverted());
+    updateSortButton();
+  }
+
+  private void updateSortButton() {
+    InventoryDatabaseClient db = getDatabase();
+    SortOrder order = db.getSortOrder();
+    ArrayList<String> list = new ArrayList<String>();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.sort."
+            + order.name().toLowerCase(Locale.ENGLISH) + (db.isSortOrderInverted() ? "_up" : "_down") + ".line");
     btnSort.setIcon(getSortOrderIcon());
+    btnSort.setToolTip(list.toArray(new String[list.size()]));
   }
 
   private void doScroll() {
@@ -272,24 +284,30 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     if(scrollMax > 0 && thumbArea.contains(x, y)) {
       int thumbPos = getThumbPosition();
-      scrollUpPressed   = y < thumbPos;
-      scrollDownPressed = y >= thumbPos + (int)IconEIO.VSCROLL_THUMB.height;
+      scrollUpPressed    = y < thumbPos;
+      scrollDownPressed  = y >= thumbPos + (int)IconEIO.VSCROLL_THUMB.height;
+      scrollThumbPressed = !scrollUpPressed && !scrollDownPressed;
     } else {
-      scrollUpPressed   = btnScrollUp.contains(x, y);
-      scrollDownPressed = btnScrollDown.contains(x, y);
+      scrollUpPressed    = btnScrollUp.contains(x, y);
+      scrollDownPressed  = btnScrollDown.contains(x, y);
+      scrollThumbPressed = false;
     }
 
     if(scrollUpPressed || scrollDownPressed) {
       scrollLastTime = Minecraft.getSystemTime();
       doScroll();
     }
+
+    dragActive = scrollUpPressed | scrollDownPressed | scrollThumbPressed;
   }
 
   @Override
   protected void mouseMovedOrUp(int x, int y, int button) {
+    scrollUpPressed    = false;
+    scrollDownPressed  = false;
+    scrollThumbPressed = false;
+    dragActive         = false;
     super.mouseMovedOrUp(x, y, button);
-    scrollUpPressed   = false;
-    scrollDownPressed = false;
   }
 
   @Override
@@ -297,7 +315,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.handleMouseInput();
 
     int wheel = Mouse.getEventDWheel();
-    if(wheel != 0) {
+    if(wheel != 0 && !dragActive) {
       int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
       int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
       boolean shift = isShiftKeyDown();
@@ -326,7 +344,20 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void mouseClickMove(int x, int y, int button, long time) {
-    super.mouseClickMove(x, y, button, time);
+    if(scrollThumbPressed) {
+      y -= guiTop;
+
+      int pos = y - (thumbArea.y + (int)IconEIO.VSCROLL_THUMB.height/2);
+      int len = thumbArea.height - (int)IconEIO.VSCROLL_THUMB.height;
+
+      pos = Math.max(0, Math.min(scrollMax, Math.round(pos * (float)scrollMax / (float)len)));
+      if(scrollPos != pos) {
+        scrollPos = pos;
+        updateGhostSlots();
+      }
+    } else if(!dragActive) {
+      super.mouseClickMove(x, y, button, time);
+    }
   }
 
   @Override
@@ -366,12 +397,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  static class InvSlot extends GhostSlot {
+  class InvSlot extends GhostSlot {
     InventoryDatabaseClient.ItemEntry entry;
 
     InvSlot(int x, int y) {
       this.x = x;
       this.y = y;
+    }
+
+    @Override
+    public boolean isMouseOver(int mx, int my) {
+      return !dragActive && super.isMouseOver(mx, my);
     }
   }
 }
