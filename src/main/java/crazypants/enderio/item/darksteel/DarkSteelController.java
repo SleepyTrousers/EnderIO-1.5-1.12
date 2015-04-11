@@ -281,7 +281,7 @@ public class DarkSteelController {
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);
 
-    if(boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots) {
+    if (boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
       if(costedDistance > 0) {
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
