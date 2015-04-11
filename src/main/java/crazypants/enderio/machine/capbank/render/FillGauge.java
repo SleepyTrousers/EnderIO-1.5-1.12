@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
@@ -26,7 +25,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
-public class FillGauge implements IInfoRenderer {
+public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener {
 
   private static final double HEIGHT = 0.75;
   private static final double VERT_BORDER = (1 - HEIGHT) / 2;
@@ -49,7 +48,7 @@ public class FillGauge implements IInfoRenderer {
   private float barMinV;
 
   FillGauge() {
-    MinecraftForge.EVENT_BUS.register(this);
+    RenderUtil.registerReloadListener(this);
   }
 
   @Override
@@ -174,8 +173,8 @@ public class FillGauge implements IInfoRenderer {
     return false;
   }
   
-  @SubscribeEvent
-  public void onTextureRestitch(TextureStitchEvent.Post event) {
+  @Override
+  public void onResourceManagerReload(IResourceManager p_110549_1_) {
     createVertexCache();
   }
 

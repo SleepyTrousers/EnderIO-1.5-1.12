@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +45,6 @@ import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vector4d;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
-
 import static net.minecraftforge.common.util.ForgeDirection.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -672,4 +673,7 @@ public class RenderUtil {
 
   }
 
+  public static void registerReloadListener(IResourceManagerReloadListener obj) {
+    ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(obj);
+  }
 }
