@@ -303,6 +303,8 @@ public final class Config {
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
+  public static String[] magnetBlacklist = new String[] { "appliedenergistics2:item.ItemCrystalSeed", "Botania:livingrock",
+      "Botania:manaTablet" };
 
   public static boolean useCombustionGenModel = false;
 
@@ -1014,6 +1016,9 @@ public final class Config {
         "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);
     magnetRange = config.get(sectionMagnet.name, "magnetRange", magnetRange,
         "Range of the magnet in blocks.").getInt(magnetRange);
+
+    magnetBlacklist = config.getStringList("magnetBlacklist", sectionMagnet.name, magnetBlacklist,
+        "These items will not be picked up by the magnet.");
 
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);

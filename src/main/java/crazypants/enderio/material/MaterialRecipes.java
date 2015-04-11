@@ -12,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -109,7 +108,7 @@ public class MaterialRecipes {
     } else {
       GameRegistry.addShapedRecipe(cbc, "ggg", "scs", "ggg", 'g', Blocks.gravel, 's', Blocks.sand, 'c', Items.clay_ball);
     }
-    FurnaceRecipes.smelting().func_151394_a(binderComposite, conduitBinder, 0);
+    GameRegistry.addSmelting(binderComposite, conduitBinder, 0);
 
     //Nuggets
     ItemStack phasedIronNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.PHASED_IRON_NUGGET.ordinal());
@@ -132,12 +131,17 @@ public class MaterialRecipes {
     GameRegistry.addShapedRecipe(vibCry, "nnn", "ngn", "nnn", 'n', vibrantNugget, 'g', Items.emerald);
 
     //Balls
-    ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DRAK_GRINDING_BALL.ordinal());
+    ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DARK_GRINDING_BALL.ordinal());
     GameRegistry.addShapedRecipe(darkBall, " s ", "sss", " s ", 's', darkSteel);
 
     //Smelting
-    FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()), new ItemStack(Items.iron_ingot), 0);
-    FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()), new ItemStack(Items.gold_ingot), 0);
+    ItemStack dustIron = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal());
+    ItemStack dustGold = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal());
+    ItemStack ingotIron = new ItemStack(Items.iron_ingot);
+    ItemStack ingotGold = new ItemStack(Items.gold_ingot);
+
+    GameRegistry.addSmelting(dustIron, ingotIron, 0);
+    GameRegistry.addSmelting(dustGold, ingotGold, 0);
 
     //Ender Dusts
     ItemStack enderDust = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal());
@@ -209,18 +213,20 @@ public class MaterialRecipes {
     ItemStack flour = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.FLOUR.ordinal());
     ItemStack bread = new ItemStack(Items.bread, 1, 0);
 
-    GameRegistry.addSmelting(flour, bread, (float) 0.35);
+    GameRegistry.addSmelting(flour, bread, 0.35f);
 
   }
 
   public static void addOreDictionaryRecipes() {
     if(OreDictionaryHelper.hasCopper()) {
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()),
-          OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_COPPER), 0);
+      ItemStack dustCopper = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal());
+      ItemStack ingotCopper = OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_COPPER);
+      GameRegistry.addSmelting(dustCopper, ingotCopper, 0);
     }
     if(hasTin()) {
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()),
-          OreDictionaryPreferences.instance.getPreferred(INGOT_TIN), 0);
+      ItemStack dustTin = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal());
+      ItemStack ingotTin = OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_TIN);
+      GameRegistry.addSmelting(dustTin, ingotTin, 0);
     }
 
     ItemStack capacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 0);

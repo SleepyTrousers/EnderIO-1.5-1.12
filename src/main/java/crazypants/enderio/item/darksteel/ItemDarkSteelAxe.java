@@ -99,29 +99,34 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return false;
   }
 
-  @SubscribeEvent
-  public void onBreakEvent(BlockEvent.BreakEvent evt) {    
-    if(evt.getPlayer().isSneaking() && isEquipped(evt.getPlayer()) && isLog(evt.block, evt.blockMetadata)) {
-      int powerStored = getStoredPower(evt.getPlayer());
-    
-      TreeHarvestUtil harvester = new TreeHarvestUtil();
-      HarvestResult res = new HarvestResult();
-      BlockCoord bc = new BlockCoord(evt.x, evt.y, evt.z);
-      harvester.harvest(evt.getPlayer().worldObj, bc, res);
-      
-      List<BlockCoord> sortedTargets = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
-      harvestComparator.refPoint = bc;
-      Collections.sort(sortedTargets, harvestComparator);
-            
-      int maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;  
-      int numUsedPower = 0;
-      for(int i=0;numUsedPower<maxBlocks && i < sortedTargets.size();i++) {        
-        if(doMultiHarvest(evt.getPlayer(), evt.getPlayer().worldObj, sortedTargets.get(i), evt.block, evt.blockMetadata % 4)) {
-          numUsedPower++;
-        }
-      }
+  @Override
+  public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player) {
+    if (!player.worldObj.isRemote && player.isSneaking()) {
+      Block block = player.worldObj.getBlock(X, Y, Z);
+      int blockMetadata = player.worldObj.getBlockMetadata(X, Y, Z);
+      if (isLog(block, blockMetadata)) {
+        int powerStored = EnergyUpgrade.getEnergyStored(itemstack);
 
+        TreeHarvestUtil harvester = new TreeHarvestUtil();
+        HarvestResult res = new HarvestResult();
+        BlockCoord bc = new BlockCoord(X, Y, Z);
+        harvester.harvest(player.worldObj, bc, res);
+
+        List<BlockCoord> sortedTargets = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
+        harvestComparator.refPoint = bc;
+        Collections.sort(sortedTargets, harvestComparator);
+
+        int maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;
+        int numUsedPower = 0;
+        for (int i = 0; numUsedPower < maxBlocks && i < sortedTargets.size(); i++) {
+          if (doMultiHarvest(player, player.worldObj, sortedTargets.get(i), block, blockMetadata % 4)) {
+            numUsedPower++;
+          }
+        }
+        return numUsedPower != 0;
+      }
     }
+    return false;
   }
 
   private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockCoord bc, Block refBlock, int refMeta) {  
