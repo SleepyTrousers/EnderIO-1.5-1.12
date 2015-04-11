@@ -590,6 +590,24 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="dustPlatinum" chance="0.1" />
       </output>
     </recipe>
+    
+    <recipe name="AluminumOre" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="oreAluminum" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustAluminum" number="2" />
+      </output>
+    </recipe>
+    
+    <recipe name="AluminumIngot" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="ingotAluminum" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustAluminum" />
+      </output>
+    </recipe>
 
   </recipeGroup>
 
