@@ -162,7 +162,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(worldObj.isRemote) {
       if(networkId == -1) {
         if(idRequestTimer <= 0) {

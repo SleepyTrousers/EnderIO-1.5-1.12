@@ -15,8 +15,9 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
+import crazypants.util.IProgressTile;
 
-public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory {
+public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
 
   public static final int ENERGY_PER_TICK = Config.stirlingGeneratorBaseRfPerTick;
 
@@ -76,6 +77,16 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return (float) burnTime / (float) totalBurnTime;
   }
 
+  @Override
+  public void setProgress(float progress) {
+    burnTime = (int) (totalBurnTime * progress);
+  }
+
+  @Override
+  public TileEntity getTileEntity() {
+    return this;
+  }
+  
   @Override
   public String getSoundName() {
     return SOUND_NAME;

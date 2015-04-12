@@ -62,11 +62,6 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   @Override
-  public float getProgress() {
-    return 0.5f;
-  }
-
-  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     ticksSinceLastCraft++;
     if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {

@@ -92,7 +92,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     int scaled;
 
     if(shouldRenderProgress()) {
-      scaled = getTileEntity().getProgressScaled(12);
+      scaled = getProgressScaled(12);
       drawTexturedModalRect(sx + 80, sy + 64 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }
 

@@ -33,7 +33,7 @@ public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
     if(shouldRenderProgress()) {
-      int scaled = getTileEntity().getProgressScaled(24);
+      int scaled = getProgressScaled(24);
       drawTexturedModalRect(k + 88, l + 34, 176, 14, scaled + 1, 16);
     }
 

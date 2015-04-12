@@ -59,8 +59,7 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
   }
 
   @Override
-  public boolean canUpdate() {
+  public boolean shouldUpdate() {
     return false;
   }
-
 }

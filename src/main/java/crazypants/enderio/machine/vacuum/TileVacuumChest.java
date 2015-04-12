@@ -41,7 +41,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   private boolean redstoneStateDirty = true;
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(redstoneStateDirty) {
       updateRedstoneStatus();
     }

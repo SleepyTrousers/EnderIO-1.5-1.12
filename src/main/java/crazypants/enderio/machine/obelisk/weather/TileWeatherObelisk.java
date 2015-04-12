@@ -17,8 +17,9 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.util.IProgressTile;
 
-public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
+public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile {
 
   public enum WeatherTask {
     CLEAR(Config.weatherObeliskClearPower, Color.YELLOW) {
@@ -83,7 +84,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   }
 
   int powerUsed = 0;
-  int progress = 0; // client only
+  private float progress = 0; // client only
   WeatherTask activeTask = null;
 
   private Color particleColor;
@@ -101,8 +102,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
-  public void updateEntity() {
-    super.updateEntity();
+  public void doUpdate() {
+    super.doUpdate();
     if(worldObj.isRemote) {
       if(activeParticleTicks > 0) {
         spawnParticle();
@@ -142,6 +143,21 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
   @Override
   public float getProgress() {
     return isActive() ? worldObj.isRemote ? progress : (float) powerUsed / (float) activeTask.power : 0;
+  }
+  
+  @Override
+  public void setProgress(float progress) {
+    this.progress = progress;
+  }
+  
+  @Override
+  protected int getProgressUpdateFreq() {
+    return 5;
+  }
+
+  @Override
+  public TileEntity getTileEntity() {
+    return this;
   }
 
   @Override

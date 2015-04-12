@@ -99,11 +99,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   @Override
-  public float getProgress() {
-    return 0.5f;
-  }
-
-  @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
     if(powerDis != null) {

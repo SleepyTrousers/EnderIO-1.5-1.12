@@ -253,8 +253,6 @@ public class ClientProxy extends CommonProxy {
     BlockSoulBinder.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
 
-    BlockAttractor.renderId = RenderingRegistry.getNextAvailableRenderId();
-
     ObeliskRenderer defaultObeliskRenderer = new ObeliskRenderer();
     BlockObeliskAbstract.defaultObeliskRenderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(defaultObeliskRenderer);

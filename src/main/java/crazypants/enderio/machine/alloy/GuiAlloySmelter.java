@@ -102,7 +102,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
     if(shouldRenderProgress()) {
-      int scaled = getTileEntity().getProgressScaled(14) + 1;
+      int scaled = getProgressScaled(14) + 1;
       drawTexturedModalRect(sx + 55, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
       drawTexturedModalRect(sx + 103, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
     }

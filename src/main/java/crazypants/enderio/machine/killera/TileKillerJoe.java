@@ -97,14 +97,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public boolean isActive() {
     return false;
   }
-
+  
   @Override
-  public float getProgress() {
-    return 0;
-  }
-
-  @Override
-  public void updateEntity() {
+  public void doUpdate() {
     updateArmSwingProgress();
     hooverXP();
     if(worldObj != null && !worldObj.isRemote) {
@@ -114,7 +109,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         hadSword = inventory[0] != null;
       }
     }
-    super.updateEntity();
+    super.doUpdate();
   }
 
   @Override

@@ -11,6 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.IProgressTile;
 
 public abstract class AbstractMachineContainer extends Container {
 
@@ -243,4 +244,14 @@ public abstract class AbstractMachineContainer extends Container {
     return result;
   }
 
+  protected int getProgressScaled(int scale) {
+    if(getTileEntity() instanceof IProgressTile) {
+      getProgressScaled(scale, (IProgressTile) getTileEntity());
+    }
+    return 0;
+  }
+
+  public static int getProgressScaled(int scale, IProgressTile tile) {
+    return (int) (tile.getProgress() * scale);
+  }
 }

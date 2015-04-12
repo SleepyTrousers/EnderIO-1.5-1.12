@@ -197,8 +197,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public abstract boolean isActive();
 
-  public abstract float getProgress();
-
   public String getSoundName() {
     return null;
   }
@@ -229,18 +227,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       }
     }
   }
-
-  public int getProgressScaled(int scale) {
-    int result = (int) (getProgress() * scale);
-    return result;
-  }
-
+  
   // --- Process Loop
   // --------------------------------------------------------------------------
 
   @Override
-  public void updateEntity() {
-
+  public void doUpdate() {    
     if(worldObj == null) { // sanity check
       return;
     }

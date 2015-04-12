@@ -231,12 +231,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   public boolean isActive() {
     return false;
   }
-
-  @Override
-  public float getProgress() {
-    return 0;
-  }
-
+  
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean res = processItems(redstoneCheckPassed);

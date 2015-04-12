@@ -81,7 +81,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
   private ArrayList<TankNeighbour> tankNeighbours;
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(worldObj == null || worldObj.isRemote) {
       return;
     }

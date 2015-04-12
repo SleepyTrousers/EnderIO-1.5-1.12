@@ -85,7 +85,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(worldObj == null || worldObj.isRemote) {
       return;
     }

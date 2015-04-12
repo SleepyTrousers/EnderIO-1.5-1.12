@@ -116,11 +116,6 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
   }
 
   @Override
-  public float getProgress() {
-    return 0;
-  }
-
-  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     if(redstoneCheckPassed && hasPower()) {
       if(!registered) {

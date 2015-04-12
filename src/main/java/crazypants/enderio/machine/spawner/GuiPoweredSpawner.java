@@ -74,13 +74,13 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
       int yOff = 34;
       drawTexturedModalRect(left + 80, top + yOff, 207, 0, 17, 15);
       if(spawner.getProgress() < 1 && spawner.getProgress() > 0) {
-        int scaled = spawner.getProgressScaled(14) + 1;
+        int scaled = getProgressScaled(14) + 1;
         drawTexturedModalRect(left + 81, top + yOff + 14 - scaled, 176, 14 - scaled, 14, scaled);
       }
     } else {
       drawTexturedModalRect(left + 52, top + 40, 52, 170, 72, 21);
       if(spawner.getProgress() < 1 && spawner.getProgress() > 0) {
-        int scaled = spawner.getProgressScaled(24);
+        int scaled = getProgressScaled(24);
         drawTexturedModalRect(left + 76, top + 43, 176, 14, scaled + 1, 16);
       }
     }

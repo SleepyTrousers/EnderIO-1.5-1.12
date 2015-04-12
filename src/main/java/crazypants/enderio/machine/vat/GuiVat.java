@@ -103,7 +103,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     TileVat vat = getTileEntity();
     
     if(shouldRenderProgress()) {
-      int scaled = vat.getProgressScaled(14) + 1;
+      int scaled = getProgressScaled(14) + 1;
       drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);
 
       IIcon inputIcon = null;

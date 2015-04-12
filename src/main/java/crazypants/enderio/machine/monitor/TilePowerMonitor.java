@@ -117,11 +117,6 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     return false;
   }
 
-  @Override
-  public float getProgress() {
-    return 0;
-  }
-
   public float getEnergyPerTick() {
     return energyPerTick;
   }

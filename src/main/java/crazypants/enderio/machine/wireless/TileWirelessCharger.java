@@ -33,7 +33,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     
     if(worldObj == null || worldObj.isRemote) {
       return;

@@ -199,9 +199,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     logic.updateSpawner();
-    super.updateEntity();
+    super.doUpdate();
   }
 
   /**

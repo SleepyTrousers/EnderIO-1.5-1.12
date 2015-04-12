@@ -107,7 +107,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(worldObj.isRemote) {
       return;
     }

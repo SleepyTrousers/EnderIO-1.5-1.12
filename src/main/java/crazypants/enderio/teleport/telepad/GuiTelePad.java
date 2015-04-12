@@ -20,6 +20,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
@@ -169,7 +170,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     int powerScaled = te.getPowerScaled(powerScale);
     drawTexturedModalRect(sx + powerX, sy + powerY + powerScale - powerScaled, xSize, 0, 10, powerScaled);
-    int progressScaled = te.getProgressScaled(progressScale);
+    int progressScaled = AbstractMachineContainer.getProgressScaled(progressScale, te);
     drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
 
     FontRenderer fnt = getFontRenderer();

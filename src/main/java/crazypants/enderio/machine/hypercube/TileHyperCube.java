@@ -239,7 +239,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(worldObj == null) { // sanity check
       return;
     }

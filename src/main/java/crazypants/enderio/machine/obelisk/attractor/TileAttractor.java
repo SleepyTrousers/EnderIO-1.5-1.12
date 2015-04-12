@@ -137,12 +137,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   public boolean isActive() {
     return hasPower();
   }
-
-  @Override
-  public float getProgress() {
-    return 0;
-  }
-
+  
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     if(redstoneCheckPassed && hasPower()) {

@@ -23,6 +23,7 @@ import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.IProgressTile;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
@@ -181,17 +182,27 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   }
 
   protected int scaleProgressForTooltip(float progress) {
-    return (int)(progress * 100);
+    return (int) (progress * 100);
   }
 
   protected boolean shouldRenderProgress() {
-    float progress = tileEntity.getProgress();
-    if(progress > 0 && progress < 1) {
-      updateProgressTooltips(scaleProgressForTooltip(progress), progress);
-      return true;
-    } else {
-      updateProgressTooltips(-1, -1);
-      return false;
+    if(tileEntity instanceof IProgressTile) {
+      float progress = ((IProgressTile) tileEntity).getProgress();
+      if(progress > 0 && progress < 1) {
+        updateProgressTooltips(scaleProgressForTooltip(progress), progress);
+        return true;
+      } else {
+        updateProgressTooltips(-1, -1);
+        return false;
+      }
     }
+    return false;
+  }
+
+  protected int getProgressScaled(int scale) {
+    if(getTileEntity() instanceof IProgressTile) {
+      return AbstractMachineContainer.getProgressScaled(scale, (IProgressTile) getTileEntity());
+    }
+    return 0;
   }
 }

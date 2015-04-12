@@ -5,11 +5,63 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import crazypants.enderio.machine.PacketProgress;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
+import crazypants.util.IProgressTile;
 
 public abstract class TileEntityEio extends TileEntity {
 
   private final int checkOffset = (int) (Math.random() * 20);
+  private final boolean isProgressTile;
+
+  protected int lastProgressScaled = -1;
+  protected int ticksSinceLastProgressUpdate;
+
+  public TileEntityEio() {
+    isProgressTile = this instanceof IProgressTile;
+  }
+
+  @Override
+  public final boolean canUpdate() {
+    return shouldUpdate() || isProgressTile;
+  }
+
+  protected boolean shouldUpdate() {
+    return true;
+  }
+
+  @Override
+  public final void updateEntity() {
+    doUpdate();
+    if(isProgressTile) {
+      int curScaled = AbstractMachineContainer.getProgressScaled(16, (IProgressTile) this);
+      if(++ticksSinceLastProgressUpdate >= getProgressUpdateFreq() || curScaled != lastProgressScaled) {
+        sendTaskProgressPacket();
+        lastProgressScaled = curScaled;
+      }
+    }
+  }
+
+  protected void doUpdate() {
+
+  }
+
+  protected void sendTaskProgressPacket() {
+    if(isProgressTile) {
+      PacketHandler.sendToAllAround(new PacketProgress((IProgressTile) this), this);
+    }
+    ticksSinceLastProgressUpdate = 0;
+  }
+
+  /**
+   * Controls how often progress updates. Has no effect if your TE is not
+   * {@link IProgressTile}.
+   */
+  protected int getProgressUpdateFreq() {
+    return 20;
+  }
 
   @Override
   public final void readFromNBT(NBTTagCompound root) {

@@ -86,19 +86,20 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
 
     if(shouldRenderProgress() && getTileEntity().activeTask != null) {
-      int barHeight = getTileEntity().progress;
+      // TODO test
+      int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
       Color color = getTileEntity().activeTask.color;
       GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-  
+
   @Override
   protected int getPowerHeight() {
     return super.getPowerHeight() + 20;
   }
-  
+
   @Override
   protected int getPowerU() {
     return super.getPowerU();
@@ -125,23 +126,6 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     if (b.id >= 0 && b.id <= 2) {
       getTileEntity().startTask(b.id);
       PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity(), WeatherTask.values()[b.id]));
-    }
-  }
-
-  @Override
-  protected int scaleProgressForTooltip(float progress) {
-    return (int) (progress / ((float) ContainerWeatherObelisk.MAX_SCALE) * 100);
-  }
-
-  @Override
-  protected boolean shouldRenderProgress() {
-    int progress = getTileEntity().progress;
-    if(progress > 0) {
-      updateProgressTooltips(scaleProgressForTooltip(progress), progress);
-      return true;
-    } else {
-      updateProgressTooltips(-1, -1);
-      return false;
     }
   }
 }

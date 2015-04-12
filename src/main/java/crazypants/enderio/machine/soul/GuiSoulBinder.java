@@ -66,7 +66,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
     TileSoulBinder binder = getTileEntity();
     
     if(shouldRenderProgress()) {
-      i1 = binder.getProgressScaled(24);
+      i1 = getProgressScaled(24);
       drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);
     }
 

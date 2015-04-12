@@ -29,7 +29,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
     if(shouldRenderProgress()) {
-      int scaled = getTileEntity().getProgressScaled(24);
+      int scaled = getProgressScaled(24);
       drawTexturedModalRect(k + 103, l + 49, 176, 14, scaled + 1, 16);
     }
 

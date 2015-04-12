@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,10 +27,9 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.tool.ArrayMappingTool;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
@@ -365,8 +363,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void updateEntity() {
-    super.updateEntity();
+  public void doUpdate() {
+    super.doUpdate();
     if(isActive() != wasActive) {
       wasActive = isActive();
       worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
@@ -392,7 +390,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       setNotification("noPower");
       return false;
     }
-    int curScaled = getProgressScaled(16);
+    int curScaled = AbstractMachineContainer.getProgressScaled(16, this);
     if(curScaled != lastProgressScaled) {
       sendTaskProgressPacket();
       lastProgressScaled = curScaled;

@@ -42,11 +42,6 @@ public class TileExperienceOblisk extends AbstractMachineEntity implements IFlui
   }
 
   @Override
-  public float getProgress() {
-    return 0;
-  }
-
-  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     if(xpCont.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);

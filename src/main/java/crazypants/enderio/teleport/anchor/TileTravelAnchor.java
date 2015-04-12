@@ -157,7 +157,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean canUpdate() {
+  public boolean shouldUpdate() {
     return false;
   }
 

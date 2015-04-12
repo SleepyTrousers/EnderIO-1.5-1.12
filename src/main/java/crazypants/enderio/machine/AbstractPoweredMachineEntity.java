@@ -33,9 +33,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
 
-    super.updateEntity();
+    super.doUpdate();
 
     if(worldObj == null || worldObj.isRemote) { // sanity check
       return;

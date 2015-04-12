@@ -22,7 +22,7 @@ public class TileLightNode extends TileEntityEio {
   }
 
   @Override
-  public void updateEntity() {
+  public void doUpdate() {
     if(worldObj.isRemote) {
       return;
     }

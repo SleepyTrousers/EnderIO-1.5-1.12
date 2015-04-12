@@ -103,11 +103,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  public float getProgress() {
-    return 0;
-  }
-
-  @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;

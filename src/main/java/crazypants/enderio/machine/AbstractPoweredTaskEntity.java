@@ -23,9 +23,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected int ticksSinceCheckedRecipe = 0;
   protected boolean startFailed = false;
 
-  protected int lastProgressScaled = -1;
-  protected int ticksSinceLastProgressUpdate;
-
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
   }
@@ -135,11 +132,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return requiresClientSync;
   }
 
-  protected void sendTaskProgressPacket() {
-    PacketHandler.sendToAllAround(new PacketProgress(this), this);
-    ticksSinceLastProgressUpdate = 0;
-  }
-
   protected boolean checkProgress(boolean redstoneChecksPassed) {
     if(currentTask == null || !hasPower()) {
       return false;
@@ -151,12 +143,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     if(currentTask.isComplete()) {
       taskComplete();
       return false;
-    }
-
-    int curScaled = getProgressScaled(16);
-    if(++ticksSinceLastProgressUpdate >= 20 || curScaled != lastProgressScaled) {
-      sendTaskProgressPacket();
-      lastProgressScaled = curScaled;
     }
 
     return false;

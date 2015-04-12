@@ -22,7 +22,7 @@ public class TileEndermanSkull extends TileEntityEio {
   }
 
   @Override
-  public boolean canUpdate() {
+  public boolean shouldUpdate() {
     return false;
   }
 

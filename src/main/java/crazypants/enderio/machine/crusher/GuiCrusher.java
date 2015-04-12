@@ -38,7 +38,7 @@ public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
     if(shouldRenderProgress()) {
-      int barHeight = getTileEntity().getProgressScaled(24);
+      int barHeight = getProgressScaled(24);
       drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, barHeight + 1);
     }
 

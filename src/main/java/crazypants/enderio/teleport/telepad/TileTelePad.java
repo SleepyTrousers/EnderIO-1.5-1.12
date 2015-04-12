@@ -34,7 +34,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.PacketPowerStorage;
-import crazypants.enderio.machine.PacketProgress;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.rail.TeleporterEIO;
@@ -68,7 +67,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private Queue<Entity> toTeleport = Queues.newArrayDeque();
   private int powerUsed;
   private int maxPower;
-  private int lastSyncPowerUsed;
 
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
   private MachineSound activeSound = null;
@@ -84,8 +82,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   public float speedMult = 2.5f;
   
   @Override
-  public void updateEntity() {
-    super.updateEntity();
+  public void doUpdate() {
+    super.doUpdate();
     // my master is gone!
     if(master != null && master.isInvalid()) {
       master.breakNetwork();
@@ -141,11 +139,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       if(powerChanged) {
         lastSyncPowerStored = getEnergyStored();
         PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
-      }
-      boolean progressChanged = (lastSyncPowerUsed != powerUsed);
-      if(progressChanged) {
-        lastSyncPowerUsed = getEnergyStored();
-        PacketHandler.sendToAllAround(new PacketProgress(this), this);
       }
       if(coordsChanged && inNetwork() && master != null && isMaster()) {
         coordsChanged = false;
@@ -287,7 +280,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   @Override
-  public boolean canUpdate() {
+  public boolean shouldUpdate() {
     return true;
   }
 
@@ -348,10 +341,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public int getPowerScaled(int scale) {
     return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
-  }
-
-  public int getProgressScaled(int scale) {
-    return (int) (getProgress() * scale);
   }
 
   private int calculateTeleportPower() {
