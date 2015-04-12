@@ -29,7 +29,7 @@ public class FluidTankEio extends FluidTank {
     if(fl == null || fluid == null) {
       return false;
     }
-    return fl.getID() == fluid.fluidID;
+    return fl.getID() == fluid.getFluidID();
   }
 
   public FluidStack drain(FluidStack resource, boolean doDrain) {
