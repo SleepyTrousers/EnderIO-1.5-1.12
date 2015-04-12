@@ -516,22 +516,19 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
           ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
         }
 
-        String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
         if(TooltipAddera.showAdvancedTooltips()) {
-          tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"), format, fmt.format(nw.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
-          tooltip
-              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"), format, fmt.format(nw.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
-          tooltip
-              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(nw.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
-
+          String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
+          String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
           tooltip.add("");
         }
 
         long stored = nw.getEnergyStoredL();
         long max = nw.getMaxEnergyStoredL();
-        tooltip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE,
-            fmt.format(max),
-            EnumChatFormatting.RESET));
+        tooltip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
+                EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
 
         int change = Math.round(nw.getAverageChangePerTick());
         String color = EnumChatFormatting.WHITE.toString();
@@ -540,9 +537,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         } else if(change < 0) {
           color = EnumChatFormatting.RED.toString();
         }
-        tooltip
-            .add(String.format("%s%s%sRF/t ", color, fmt.format(change), " " + EnumChatFormatting.RESET.toString()));
-
+        tooltip.add(String.format("%s%s%s", color, PowerDisplayUtil.formatPowerPerTick(change), " " + EnumChatFormatting.RESET.toString()));
       }
     }
   }

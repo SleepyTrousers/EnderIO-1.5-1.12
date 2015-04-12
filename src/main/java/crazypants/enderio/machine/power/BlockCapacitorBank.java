@@ -81,17 +81,6 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
-
-    ItemStack is = BlockItemCapacitorBank.createItemStackWithPower(0);
-    list.add(is);
-
-    is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
-    list.add(is);
-
-    is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored() / 2);
-    is.setItemDamage(1);
-    list.add(is);
-
   }
 
   @Override
@@ -376,9 +365,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
 
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, fmt.format(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, fmt.format(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, PowerDisplayUtil.formatPower(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, PowerDisplayUtil.formatPower(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add("Deprecated. Convert by placing in crafting grid");
     }
   }
