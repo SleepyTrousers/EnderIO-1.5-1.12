@@ -556,7 +556,7 @@ public class TravelController {
       return 1;
     }
 
-    BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
+    BlockCoord bc = new BlockCoord(loc.x, loc.y, loc.z);
     float ratio = -1;
     Float r = candidates.get(bc);
     if(r != null) {
