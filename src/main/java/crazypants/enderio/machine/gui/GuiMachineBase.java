@@ -25,6 +25,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.IProgressTile;
 import crazypants.util.Lang;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector4f;
 
 public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBase {
@@ -201,7 +202,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
 
   protected int getProgressScaled(int scale) {
     if(getTileEntity() instanceof IProgressTile) {
-      return AbstractMachineContainer.getProgressScaled(scale, (IProgressTile) getTileEntity());
+      return Util.getProgressScaled(scale, (IProgressTile) getTileEntity());
     }
     return 0;
   }

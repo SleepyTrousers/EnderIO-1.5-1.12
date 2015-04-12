@@ -390,11 +390,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       setNotification("noPower");
       return false;
     }
-    int curScaled = AbstractMachineContainer.getProgressScaled(16, this);
-    if(curScaled != lastProgressScaled) {
-      sendTaskProgressPacket();
-      lastProgressScaled = curScaled;
-    }
     return true;
   }
 

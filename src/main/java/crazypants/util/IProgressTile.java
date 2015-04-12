@@ -19,5 +19,4 @@ public interface IProgressTile {
   void setProgress(float progress);
 
   TileEntity getTileEntity();
-
 }

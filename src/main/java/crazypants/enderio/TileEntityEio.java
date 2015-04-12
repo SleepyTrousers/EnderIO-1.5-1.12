@@ -10,6 +10,7 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.IProgressTile;
+import crazypants.util.Util;
 
 public abstract class TileEntityEio extends TileEntity {
 
@@ -36,12 +37,19 @@ public abstract class TileEntityEio extends TileEntity {
   public final void updateEntity() {
     doUpdate();
     if(isProgressTile) {
-      int curScaled = AbstractMachineContainer.getProgressScaled(16, (IProgressTile) this);
+      int curScaled = getProgressScaled(16);
       if(++ticksSinceLastProgressUpdate >= getProgressUpdateFreq() || curScaled != lastProgressScaled) {
         sendTaskProgressPacket();
         lastProgressScaled = curScaled;
       }
     }
+  }
+
+  public final int getProgressScaled(int scale) {
+    if(isProgressTile) {
+      return Util.getProgressScaled(scale, (IProgressTile) this);
+    }
+    return 0;
   }
 
   protected void doUpdate() {

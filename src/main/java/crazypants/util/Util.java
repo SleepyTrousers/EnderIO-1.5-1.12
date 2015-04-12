@@ -513,6 +513,10 @@ public class Util {
     return ForgeDirection.UNKNOWN;
   }
   
+  public static int getProgressScaled(int scale, IProgressTile tile) {
+    return (int) (tile.getProgress() * scale);
+  }
+  
   // copied from WAILA source to avoid API dependency
   public static String WailaStyle     = "\u00A4";
   public static String WailaIcon      = "\u00A5";
