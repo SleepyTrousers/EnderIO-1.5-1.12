@@ -81,17 +81,6 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
-
-    ItemStack is = BlockItemCapacitorBank.createItemStackWithPower(0);
-    list.add(is);
-
-    is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
-    list.add(is);
-
-    is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored() / 2);
-    is.setItemDamage(1);
-    list.add(is);
-
   }
 
   @Override
