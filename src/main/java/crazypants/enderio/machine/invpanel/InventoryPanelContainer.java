@@ -46,6 +46,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private int indexFilterSlot;
   private int startReturnSlot;
   private int endReturnSlot;
+  private int startCraftingGrid;
+  private int endCraftingGrid;
 
   @SuppressWarnings("LeakingThisInConstructor")
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
@@ -96,11 +98,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       }
     });
 
+    startCraftingGrid = inventorySlots.size();
     for(int y=0,i=TileInventoryPanel.SLOT_CRAFTING_START ; y<3 ; y++) {
       for(int x=0 ; x<3 ; x++,i++) {
         addSlotToContainer(new Slot(tileEntity, i, CRAFTING_GRID_X+x*18, CRAFTING_GRID_Y+y*18));
       }
     }
+    endCraftingGrid = inventorySlots.size();
 
     indexFilterSlot = inventorySlots.size();
     slotFilter = addSlotToContainer(new Slot(tileEntity, TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
@@ -139,6 +143,18 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   public Slot getSlotFilter() {
     return slotFilter;
+  }
+
+  public List<Slot> getCraftingGridSlots() {
+    return inventorySlots.subList(startCraftingGrid, endCraftingGrid);
+  }
+
+  public List<Slot> getReturnAreaSlots() {
+    return inventorySlots.subList(startReturnSlot, endReturnSlot);
+  }
+
+  public List<Slot> getPlayerInventorySlots() {
+    return inventorySlots.subList(startPlayerSlot, endPlayerSlot);
   }
 
   private void removeChangeLog() {
@@ -198,14 +214,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
-    SlotDefinition slotDef = tileEntity.getSlotDefinition();
-    if(slotDef.isInputSlot(slotIndex) || slotDef.isUpgradeSlot(slotIndex)) {
-      return Collections.singletonList(getPlayerInventorySlotRange(false));
-    }
-    if(slotDef.isOutputSlot(slotIndex) || slotIndex == indexCraftingSlot) {
+    if(slotIndex == indexCraftingSlot) {
       return Collections.singletonList(getPlayerInventorySlotRange(true));
     }
-    if(slotIndex >= startPlayerSlot) {
+    if(slotIndex >= startReturnSlot && slotIndex < endReturnSlot) {
+      return Collections.singletonList(new SlotRange(startReturnSlot, endReturnSlot, false));
+    }
+    if((slotIndex >= startCraftingGrid && slotIndex < endCraftingGrid) || slotIndex >= startPlayerSlot) {
       ArrayList<SlotRange> res = new ArrayList<SlotRange>();
       res.add(new SlotRange(startReturnSlot, endReturnSlot, false));
       addPlayerSlotRanges(res, slotIndex);
@@ -303,5 +318,44 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
         }
       }
     }
+  }
+
+  public boolean moveItemsToReturnArea(int fromSlot) {
+    return moveItems(fromSlot, startReturnSlot, endReturnSlot, Short.MAX_VALUE);
+  }
+
+  public boolean moveItems(int fromSlot, int toSlotStart, int toSlotEnd, int amount) {
+    if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
+      return false;
+    }
+    if(getTileEntity().getWorldObj().isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
+    }
+    return true;
+  }
+
+  public boolean executeMoveItems(int fromSlot, int toSlotStart, int toSlotEnd, int amount) {
+    if((fromSlot >= toSlotStart && fromSlot < toSlotEnd) || toSlotEnd <= toSlotStart || amount <= 0) {
+      return false;
+    }
+
+    Slot srcSlot = getSlot(fromSlot);
+    ItemStack src = srcSlot.getStack();
+    if(src != null) {
+      ItemStack toMove = src.copy();
+      toMove.stackSize = Math.min(src.stackSize, amount);
+      int remaining = src.stackSize - toMove.stackSize;
+      if(mergeItemStack(toMove, toSlotStart, toSlotEnd, false)) {
+        remaining += toMove.stackSize;
+        if(remaining == 0) {
+          srcSlot.putStack(null);
+        } else {
+          src.stackSize = remaining;
+          srcSlot.onSlotChanged();
+        }
+        return true;
+      }
+    }
+    return false;
   }
 }

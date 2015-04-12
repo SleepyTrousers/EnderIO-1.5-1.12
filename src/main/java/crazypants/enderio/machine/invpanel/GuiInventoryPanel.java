@@ -58,6 +58,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final String infoTextFilter;
   private final String infoTextOffline;
 
+  private ICraftingHelper craftingHelper;
+
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
     super(te, container);
     redstoneButton.visible = false;
@@ -93,9 +95,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     addToolTip(new GuiToolTip(new Rectangle(InventoryPanelContainer.FILTER_SLOT_X, InventoryPanelContainer.FILTER_SLOT_Y, 16, 16), list) {
       @Override
       public boolean shouldDraw() {
-        return !((InventoryPanelContainer) inventorySlots).getSlotFilter().getHasStack() && super.shouldDraw();
+        return !getContainer().getSlotFilter().getHasStack() && super.shouldDraw();
       }
     });
+  }
+
+  public void setCraftingHelper(ICraftingHelper craftingHelper) {
+    this.craftingHelper = craftingHelper;
   }
 
   @Override
@@ -192,8 +198,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, str);
   }
 
-  private InventoryDatabaseClient getDatabase() {
-    return (InventoryDatabaseClient) getTileEntity().getDatabaseClient();
+  public InventoryPanelContainer getContainer() {
+    return (InventoryPanelContainer) inventorySlots;
+  }
+
+  public InventoryDatabaseClient getDatabase() {
+    return getTileEntity().getDatabaseClient();
   }
 
   private IconEIO getSortOrderIcon() {
@@ -373,7 +383,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
             InventoryPlayer playerInv = mc.thePlayer.inventory;
             targetSlot = playerInv.getFirstEmptyStack();
             if(targetSlot >= 0) {
-              targetSlot = ((InventoryPanelContainer) inventorySlots).getSlotIndex(playerInv, targetSlot);
+              targetSlot = getContainer().getSlotIndex(playerInv, targetSlot);
             }
             if(targetSlot < 0) {
               return;

@@ -7,6 +7,8 @@ import codechicken.nei.api.IConfigureNEI;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
+import crazypants.enderio.machine.invpanel.InventoryPanelNEIOverlayHandler;
 import crazypants.enderio.machine.painter.PainterUtil;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
@@ -30,6 +32,8 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.registerRecipeHandler(new SoulBinderRecipeHandler());
     API.registerUsageHandler(new SoulBinderRecipeHandler());
+
+    API.registerGuiOverlayHandler(GuiInventoryPanel.class, new InventoryPanelNEIOverlayHandler(), "crafting");
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));

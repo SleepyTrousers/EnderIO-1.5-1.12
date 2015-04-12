@@ -47,10 +47,8 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
       return hint;
     }
 
-    if(!create) {
-      return null;
-    } else if(nbt == null && itemID < SIMPLE_MAX_ITEMID && meta < SIMPLE_MAX_META) {
-      return getSimpleItem(itemID, meta);
+    if(nbt == null && itemID < SIMPLE_MAX_ITEMID && meta < SIMPLE_MAX_META) {
+      return getSimpleItem(itemID, meta, create);
     } else {
       return getComplexItem(itemID, meta, nbt);
     }
@@ -88,10 +86,10 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     return hash;
   }
 
-  private ItemEntry getSimpleItem(int itemID, int meta) {
+  private ItemEntry getSimpleItem(int itemID, int meta, boolean create) {
     Integer dbID = (itemID << SIMPLE_META_BITS) | meta;
     ItemEntry entry = simpleRegsitry.get(dbID);
-    if(entry == null) {
+    if(entry == null && create) {
       entry = createItemEntry(dbID, dbID, itemID, meta, null);
       simpleRegsitry.put(dbID, entry);
       System.out.println("New simple item: " + entry);
@@ -102,7 +100,7 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
   protected ItemEntry getSimpleItem(int dbID) {
     int itemID = dbID >> SIMPLE_META_BITS;
     int meta = dbID & SIMPLE_META_MASK;
-    return getSimpleItem(itemID, meta);
+    return getSimpleItem(itemID, meta, true);
   }
 
   public ItemEntry getItem(int dbID) {

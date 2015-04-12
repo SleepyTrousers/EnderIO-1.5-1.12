@@ -37,7 +37,6 @@ import crazypants.render.RenderUtil;
 import crazypants.util.DyeColor;
 import crazypants.util.Lang;
 import java.util.ArrayList;
-import net.minecraft.util.EnumChatFormatting;
 
 public class ItemSettings extends BaseSettingsPanel {
 
