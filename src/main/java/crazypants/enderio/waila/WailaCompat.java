@@ -40,6 +40,7 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
@@ -123,7 +124,6 @@ public class WailaCompat implements IWailaDataProvider {
     registrar.registerNBTProvider(INSTANCE, TileEntityEio.class);
     
     ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
-    IWailaInfoProvider.fmt.setMaximumFractionDigits(1);
   }
 
   // IGNORE deprecation, the new method requires forge 1234 which is too new for cauldron!
@@ -243,9 +243,8 @@ public class WailaCompat implements IWailaDataProvider {
         int stored = accessor.getNBTData().getInteger("storedEnergyRF");
         int max = accessor.getNBTData().getInteger("maxStoredRF");
 
-        currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE,
-            fmt.format(max),
-            EnumChatFormatting.RESET));
+        currenttip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
+                EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
       }
     }
 
@@ -262,9 +261,8 @@ public class WailaCompat implements IWailaDataProvider {
       if(nbtRoot.hasKey("storedEnergyRF")) {
         int stored = nbtRoot.getInteger("storedEnergyRF");
         int max = nbtRoot.getInteger("maxStoredRF");
-        currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored),
-            EnumChatFormatting.RESET,
-            EnumChatFormatting.WHITE, fmt.format(max), EnumChatFormatting.RESET));
+        currenttip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
+            EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
       }
 
     } else if(itemStack.getItem() == EnderIO.itemLiquidConduit) {
@@ -276,9 +274,10 @@ public class WailaCompat implements IWailaDataProvider {
         String fluidName = fluid.getLocalizedName();
         int fluidAmount = fluid.amount;
         if(fluidAmount > 0) {
+          // NOTE: using PowerDisplayUtil.formatPower here to handle the non breaking space issue
           currenttip.add(String.format("%s%s%s%s %s%s%s %s", lockedStr,
               EnumChatFormatting.WHITE, fluidName, EnumChatFormatting.RESET,
-              EnumChatFormatting.WHITE, fmt.format(fluidAmount), EnumChatFormatting.RESET,
+              EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(fluidAmount), EnumChatFormatting.RESET,
               Fluids.MB()));
         } else if(fluidTypeLocked) {
           currenttip.add(String.format("%s%s%s%s", lockedStr,
