@@ -59,26 +59,26 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   @Override
-  protected void keyTyped(char par1, int par2) {
+  protected void keyTyped(char c, int key) {
     GuiTextField focused = null;
     for (GuiTextField f : textFields) {
       if (f.isFocused()) {
         focused = f;
       }
     }
-    if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
-      if(hideOverlays()) {
-        return;
+    if(key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+      if(!hideOverlays()) {
+        if(focused == null) {
+          this.mc.thePlayer.closeScreen();
+        } else if(key == 1) {
+          focused.setFocused(false);
+          focused = null;
+        }
       }
-      if(focused == null) {
-        this.mc.thePlayer.closeScreen();
-      } else if(par2 == 1) {
-        focused.setFocused(false);
-        focused = null;
-      }
+      return;
     }
 
-    if (par1 == '\t') {
+    if (c == '\t') {
       for (int i = 0; i < textFields.size(); i++) {
         TextFieldEIO f = textFields.get(i);
         if (f.isFocused()) {
@@ -89,8 +89,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       }
     }
     if(focused != null) {
-      focused.textboxKeyTyped(par1, par2);
+      if(focused.textboxKeyTyped(c, key)) {
+        return;
+      }
     }
+    super.keyTyped(c, key);
   }
 
   public boolean hideOverlays() {
