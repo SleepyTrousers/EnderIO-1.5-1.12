@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.weather;
+package crazypants.enderio.machine.obelisk.weather;
 
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

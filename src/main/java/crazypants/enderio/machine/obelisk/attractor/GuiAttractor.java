@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.attractor;
+package crazypants.enderio.machine.obelisk.attractor;
 
 import java.awt.Color;
 

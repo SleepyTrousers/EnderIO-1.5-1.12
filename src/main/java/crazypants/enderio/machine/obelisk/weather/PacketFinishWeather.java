@@ -1,10 +1,10 @@
-package crazypants.enderio.machine.weather;
+package crazypants.enderio.machine.obelisk.weather;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 
 public class PacketFinishWeather extends PacketActivateWeather {
 

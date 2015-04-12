@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.spawnguard;
+package crazypants.enderio.machine.obelisk.aversion;
 
 import java.awt.Color;
 
@@ -14,14 +14,14 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiSpawnGurad extends GuiPoweredMachineBase<TileSpawnGuard> {
+public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelisk> {
 
   ToggleButtonEIO showRangeB;
   
   private static final int RANGE_ID = 8738924;
   
-  public GuiSpawnGurad(InventoryPlayer par1InventoryPlayer, TileSpawnGuard te) {
-    super(te, new ContainerSpawnGuard(par1InventoryPlayer, te));
+  public GuiAversionObelisk(InventoryPlayer par1InventoryPlayer, TileAversionObelisk te) {
+    super(te, new ContainerAversionObelisk(par1InventoryPlayer, te));
     
     int x = getXSize() - 5 - BUTTON_SIZE;
     showRangeB = new ToggleButtonEIO(this, RANGE_ID, x, 44, IconEIO.ADD_BUT, IconEIO.ADD_BUT);

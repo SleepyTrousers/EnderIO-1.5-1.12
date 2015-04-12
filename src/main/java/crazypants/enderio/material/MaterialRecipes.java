@@ -18,7 +18,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.util.OreDictionaryHelper;
 
 

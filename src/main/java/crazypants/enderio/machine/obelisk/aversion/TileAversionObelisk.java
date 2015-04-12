@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.spawnguard;
+package crazypants.enderio.machine.obelisk.aversion;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -17,21 +17,18 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.render.BoundingBox;
 
-public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRanged {
+public class TileAversionObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
   private int powerPerTick;
   private int range;
-  private int rangeSqu;
   private boolean registered = false;
   private AxisAlignedBB bounds;
   
   private boolean showingRange;
   
-  public TileSpawnGuard() {
+  public TileAversionObelisk() {
     super(new SlotDefinition(12, 0));
   }
   
@@ -60,7 +57,7 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
   @Override
   public void invalidate() {
     super.invalidate();    
-    SpawnGuardController.instance.deregisterGuard(this);
+    AversionObeliskController.instance.deregisterGuard(this);
     registered = false;
   }
   
@@ -85,7 +82,6 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
       powerPerTick = Config.spawnGuardPowerPerTickLevelThree;
       break;
     }
-    rangeSqu = range * range;    
     setCapacitor(new BasicCapacitor(powerPerTick * 8, getCapacitor().getMaxEnergyStored(), powerPerTick));
     
     BoundingBox bb = new BoundingBox(getLocation());
@@ -128,7 +124,7 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
   protected boolean processTasks(boolean redstoneCheckPassed) {
     if(redstoneCheckPassed && hasPower()) {
       if(!registered) {
-        SpawnGuardController.instance.registerGuard(this);
+        AversionObeliskController.instance.registerGuard(this);
         registered = true;
       }
       usePower();

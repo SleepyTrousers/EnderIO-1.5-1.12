@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.attractor;
+package crazypants.enderio.machine.obelisk.attractor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,8 +39,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;

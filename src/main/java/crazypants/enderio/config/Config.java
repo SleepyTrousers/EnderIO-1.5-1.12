@@ -15,7 +15,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.vecmath.VecmathUtil;
 
 public final class Config {

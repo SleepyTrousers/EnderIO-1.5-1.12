@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.attractor;
+package crazypants.enderio.machine.obelisk;
 
 import java.util.Random;
 
@@ -25,6 +25,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
@@ -32,6 +33,7 @@ import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
+
 import static org.lwjgl.opengl.GL11.*;
 
 @SideOnly(Side.CLIENT)

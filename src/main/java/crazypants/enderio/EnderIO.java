@@ -79,7 +79,6 @@ import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
-import crazypants.enderio.machine.attractor.BlockAttractor;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
@@ -98,6 +97,9 @@ import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
+import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
+import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
+import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.painter.BlockPaintedCarpet;
 import crazypants.enderio.machine.painter.BlockPaintedFence;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
@@ -118,14 +120,12 @@ import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
-import crazypants.enderio.machine.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.ItemXpTransfer;
@@ -153,7 +153,6 @@ import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.util.EntityUtil;
-
 import static crazypants.enderio.EnderIO.*;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -243,7 +242,7 @@ public class EnderIO {
   public static BlockSliceAndSplice blockSliceAndSplice;
   public static BlockSoulBinder blockSoulFuser;
   public static BlockAttractor blockAttractor;
-  public static BlockSpawnGuard blockSpawnGuard;
+  public static BlockAversionObelisk blockSpawnGuard;
   public static BlockExperienceObelisk blockExperianceOblisk;
   public static BlockWeatherObelisk blockWeatherObelisk;
   public static BlockTransceiver blockTransceiver;
@@ -351,7 +350,7 @@ public class EnderIO {
     blockPoweredSpawner = BlockPoweredSpawner.create();
     blockKillerJoe = BlockKillerJoe.create();
     blockAttractor = BlockAttractor.create();
-    blockSpawnGuard = BlockSpawnGuard.create();
+    blockSpawnGuard = BlockAversionObelisk.create();
     blockExperianceOblisk = BlockExperienceObelisk.create();
     blockWeatherObelisk = BlockWeatherObelisk.create();
     blockEnchanter = BlockEnchanter.create();

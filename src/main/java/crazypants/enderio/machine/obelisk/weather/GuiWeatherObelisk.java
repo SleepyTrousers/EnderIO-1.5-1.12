@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.weather;
+package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
 import java.text.NumberFormat;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
 

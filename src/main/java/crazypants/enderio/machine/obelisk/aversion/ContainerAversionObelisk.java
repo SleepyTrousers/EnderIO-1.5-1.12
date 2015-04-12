@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.attractor;
+package crazypants.enderio.machine.obelisk.aversion;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerAttractor extends AbstractMachineContainer {
+public class ContainerAversionObelisk extends AbstractMachineContainer {
 
-  public ContainerAttractor(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerAversionObelisk(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);
   }
 

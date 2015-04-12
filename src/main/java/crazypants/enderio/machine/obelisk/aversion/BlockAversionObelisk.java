@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.spawnguard;
+package crazypants.enderio.machine.obelisk.aversion;
 
 import java.util.Random;
 
@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,30 +13,30 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 
-public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
+public class BlockAversionObelisk extends AbstractMachineBlock<TileAversionObelisk> {
 
   public static int renderId;
   
-  public static BlockSpawnGuard create() {
-    BlockSpawnGuard res = new BlockSpawnGuard();
+  public static BlockAversionObelisk create() {
+    BlockAversionObelisk res = new BlockAversionObelisk();
     res.init();
     
     //Just making sure its loaded
-    SpawnGuardController.instance.toString();
+    AversionObeliskController.instance.toString();
     
     return res;
-  }
+  } 
   
-  protected BlockSpawnGuard() {
-    super(ModObject.blockSpawnGuard, TileSpawnGuard.class);
+  protected BlockAversionObelisk() {
+    super(ModObject.blockSpawnGuard, TileAversionObelisk.class);
     setObeliskBounds();
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSpawnGuard) {
-      return new ContainerSpawnGuard(player.inventory, (TileSpawnGuard)te);
+    if(te instanceof TileAversionObelisk) {
+      return new ContainerAversionObelisk(player.inventory, (TileAversionObelisk)te);
     }
     return null;
   }
@@ -45,8 +44,8 @@ public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSpawnGuard) {
-      return new GuiSpawnGurad(player.inventory, (TileSpawnGuard)te);
+    if(te instanceof TileAversionObelisk) {
+      return new GuiAversionObelisk(player.inventory, (TileAversionObelisk)te);
     }
     return null;
   }
