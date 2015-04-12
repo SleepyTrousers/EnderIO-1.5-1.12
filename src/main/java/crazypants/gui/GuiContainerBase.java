@@ -194,8 +194,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       GL11.glPopMatrix();
     }
-
-    ttMan.drawTooltips(this, realMx, realMy);
   }
   
   @Override
@@ -227,6 +225,8 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         renderToolTip(stack, par1, par2);
       }
     }
+
+    ttMan.drawTooltips(this, par1, par2);
   }
 
   // copied from super with hate

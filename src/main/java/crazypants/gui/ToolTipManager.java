@@ -36,7 +36,7 @@ public class ToolTipManager {
     for (GuiToolTip toolTip : toolTips) {
       toolTip.onTick(mouseX - renderer.getGuiLeft(), mouseY - renderer.getGuiTop());
       if(toolTip.shouldDraw()) {
-        drawTooltip(toolTip, mouseX - renderer.getGuiLeft(), mouseY - renderer.getGuiTop(), renderer);
+        drawTooltip(toolTip, mouseX, mouseY, renderer);
       }
     }
   }
@@ -50,13 +50,13 @@ public class ToolTipManager {
     List<String> formatted = new ArrayList<String>(list.size());
     for (int i = 0; i < list.size(); i++) {
       if(i == 0) {
-        formatted.add("\u00a7" + Integer.toHexString(15) + list.get(i));
+        formatted.add("\u00a7f" + list.get(i));
       } else {
         formatted.add("\u00a77" + list.get(i));
       }
     }
 
-    if(mouseX > (renderer.getXSize() / 2)) {
+    if(mouseX > renderer.getGuiLeft() + renderer.getXSize() / 2) {
       int maxWidth = 0;
       Iterator iterator = formatted.iterator();
       while (iterator.hasNext()) {
