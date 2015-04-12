@@ -86,7 +86,9 @@ import crazypants.enderio.machine.killera.KillerJoeRenderer;
 import crazypants.enderio.machine.killera.TileKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 import crazypants.enderio.machine.obelisk.ObeliskRenderer;
+import crazypants.enderio.machine.obelisk.ObeliskSpecialRenderer;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
@@ -94,6 +96,8 @@ import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
+import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
+import crazypants.enderio.machine.obelisk.xp.TileExperienceOblisk;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
@@ -120,8 +124,6 @@ import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.TileVat;
-import crazypants.enderio.machine.xp.BlockExperienceObelisk;
-import crazypants.enderio.machine.xp.TileExperienceOblisk;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
@@ -252,24 +254,27 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
 
     BlockAttractor.renderId = RenderingRegistry.getNextAvailableRenderId();
-    ObeliskRenderer<TileAttractor> attRen = new ObeliskRenderer<TileAttractor>(new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()));
-    RenderingRegistry.registerBlockHandler(attRen);
+
+    ObeliskRenderer defaultObeliskRenderer = new ObeliskRenderer();
+    BlockObeliskAbstract.defaultObeliskRenderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(defaultObeliskRenderer);
+
+    ObeliskSpecialRenderer<TileAttractor> attRen = new ObeliskSpecialRenderer<TileAttractor>(new ItemStack(EnderIO.itemMaterial, 1,
+        Material.ATTRACTOR_CRYSTAL.ordinal()), defaultObeliskRenderer);
     ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAttractor), attRen);
 
-    AversionObeliskRenderer sgr = new AversionObeliskRenderer();
-    BlockAversionObelisk.renderId = BlockAttractor.renderId;
+    AversionObeliskRenderer sgr = new AversionObeliskRenderer(defaultObeliskRenderer);
     ClientRegistry.bindTileEntitySpecialRenderer(TileAversionObelisk.class, sgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
 
-    ObeliskRenderer<TileExperienceOblisk> eor = new ObeliskRenderer<TileExperienceOblisk>(new ItemStack(EnderIO.itemXpTransfer));
-    BlockExperienceObelisk.renderId = BlockAttractor.renderId;
+    ObeliskSpecialRenderer<TileExperienceOblisk> eor = new ObeliskSpecialRenderer<TileExperienceOblisk>(new ItemStack(EnderIO.itemXpTransfer),
+        defaultObeliskRenderer);
     ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
-    ObeliskRenderer<TileWeatherObelisk> twr = new ObeliskRenderer<TileWeatherObelisk>(
-        new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()));
-    BlockWeatherObelisk.renderId = BlockAttractor.renderId;
+    ObeliskSpecialRenderer<TileWeatherObelisk> twr = new ObeliskSpecialRenderer<TileWeatherObelisk>(new ItemStack(EnderIO.itemMaterial, 1,
+        Material.WEATHER_CRYSTAL.ordinal()), defaultObeliskRenderer);
     ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
 

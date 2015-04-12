@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.xp;
+package crazypants.enderio.machine.obelisk.xp;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;

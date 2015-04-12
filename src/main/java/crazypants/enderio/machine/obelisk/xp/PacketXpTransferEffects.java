@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.xp;
+package crazypants.enderio.machine.obelisk.xp;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

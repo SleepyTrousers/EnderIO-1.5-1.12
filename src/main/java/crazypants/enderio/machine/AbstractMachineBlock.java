@@ -301,8 +301,4 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
   }
-  
-  protected void setObeliskBounds() {
-    setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
-  }
 }

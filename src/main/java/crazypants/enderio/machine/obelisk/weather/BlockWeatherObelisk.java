@@ -8,12 +8,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 import crazypants.enderio.network.PacketHandler;
 
-public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk> {
-
-  public static int renderId;
+public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk> {
 
   public static BlockWeatherObelisk create() {
     BlockWeatherObelisk ret = new BlockWeatherObelisk();
@@ -26,7 +24,6 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
 
   private BlockWeatherObelisk() {
     super(ModObject.blockWeatherObelisk, TileWeatherObelisk.class);
-    setObeliskBounds();
   }
 
   @Override
@@ -40,51 +37,13 @@ public class BlockWeatherObelisk extends AbstractMachineBlock<TileWeatherObelisk
   }
 
   @Override
-  public boolean renderAsNormalBlock() {
-    return false;
-  }
-
-  @Override
-  public boolean isOpaqueCube() {
-    return false;
-  }
-
-  @Override
-  public int getLightOpacity() {
-    return 0;
-  }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
-  }
-
-  @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_WEATHER_OBELISK;
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:blockAttractorSideOn";
-    }
-    return "enderio:blockAttractorSide";
-  }
-
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
-  @Override
-  protected String getBackIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
-  @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    ; // no active smoke
+    ; // no active particles
   }
 }

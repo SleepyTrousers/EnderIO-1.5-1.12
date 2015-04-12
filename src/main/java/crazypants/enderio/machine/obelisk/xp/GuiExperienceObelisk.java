@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.xp;
+package crazypants.enderio.machine.obelisk.xp;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -17,7 +17,7 @@ import crazypants.enderio.xp.PacketGivePlayerXP;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiExperianceObelisk extends GuiMachineBase<TileExperienceOblisk> {
+public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceOblisk> {
   
   private IconButtonEIO p;
   private IconButtonEIO pp;
@@ -27,8 +27,8 @@ public class GuiExperianceObelisk extends GuiMachineBase<TileExperienceOblisk> {
   private IconButtonEIO mm;
   private IconButtonEIO mmm;
 
-  public GuiExperianceObelisk(InventoryPlayer par1InventoryPlayer, TileExperienceOblisk te) {
-    super(te, new ContainerExperianceObelisk());
+  public GuiExperienceObelisk(InventoryPlayer par1InventoryPlayer, TileExperienceOblisk te) {
+    super(te, new ContainerExperienceObelisk());
     ySize = 115;
 
     int spacing = 5;
