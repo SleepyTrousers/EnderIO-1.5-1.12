@@ -25,6 +25,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -194,6 +195,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     super.setConnectionMode(dir, mode);
     refreshConnections(dir);
   }
+  
+  @Override
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+    super.setExtractionRedstoneMode(mode, dir);
+    refreshConnections(dir);
+  }
 
   private void refreshConnections(ForgeDirection dir) {
     if(network == null) {
@@ -223,14 +230,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     doExtract();
   }
 
-  @Override
-  public boolean isExtractingFromDir(ForgeDirection dir) {
-    return getConnectionMode(dir).acceptsInput();
-  }
-
   private void doExtract() {
     BlockCoord loc = getLocation();
-    if(!hasConnectionMode(ConnectionMode.INPUT) && !hasConnectionMode(ConnectionMode.IN_OUT)) {
+    if(!hasExtractableMode()) {
       return;
     }
     if(network == null) {

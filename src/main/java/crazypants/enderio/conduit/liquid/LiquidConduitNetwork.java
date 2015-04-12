@@ -176,7 +176,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     LocatedFluidHandler closestTank = null;
     for (LocatedFluidHandler lh : externals) {
       int distance = lh.bc.distanceSquared(conLoc);
-      if(distance < closestDistance) {
+      if(distance < closestDistance && con.canOutputToDir(lh.dir.getOpposite())) {
         int couldFill = lh.tank.fill(lh.dir, toDrain.copy(), false);
         if(couldFill > 0) {
           closestTank = lh;

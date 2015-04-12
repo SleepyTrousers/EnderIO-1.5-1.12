@@ -98,7 +98,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean canOutputToDir(ForgeDirection dir) {
-    if(isExtractingFromDir(dir) || getConnectionMode(dir) == ConnectionMode.DISABLED) {
+    if(!canInputToDir(dir)) {
       return false;
     }
     if(conduitConnections.contains(dir)) {
@@ -117,7 +117,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   protected boolean autoExtractForDir(ForgeDirection dir) {
-    if(!isExtractingFromDir(dir)) {
+    if(!canExtractFromDir(dir)) {
       return false;
     }
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
@@ -163,8 +163,17 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean isExtractingFromDir(ForgeDirection dir) {
-    return getConnectionMode(dir) == ConnectionMode.INPUT;
+  public boolean canExtractFromDir(ForgeDirection dir) {
+    return getConnectionMode(dir).acceptsInput();
+  }
+  
+  @Override
+  public boolean canInputToDir(ForgeDirection dir) {
+    return getConnectionMode(dir).acceptsOutput() && !autoExtractForDir(dir);
+  }
+
+  protected boolean hasExtractableMode() {
+    return hasConnectionMode(ConnectionMode.INPUT) || hasConnectionMode(ConnectionMode.IN_OUT);
   }
 
   @Override

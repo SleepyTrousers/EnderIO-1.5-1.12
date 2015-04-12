@@ -114,9 +114,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   private void doExtract() {
-
-    BlockCoord loc = getLocation();
-    if(!hasConnectionMode(ConnectionMode.INPUT)) {
+    if(!hasExtractableMode()) {
       return;
     }
 
@@ -263,7 +261,7 @@ public class LiquidConduit extends AbstractTankConduit {
     pushed += filledLocal;
 
     do {
-      if(dir != from && canOutputToDir(dir)) {
+      if(dir != from && canOutputToDir(dir) && !autoExtractForDir(dir)) {
         if(getConduitConnections().contains(dir)) {
           ILiquidConduit conduitCon = getFluidConduit(dir);
           if(conduitCon != null) {
@@ -397,7 +395,7 @@ public class LiquidConduit extends AbstractTankConduit {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY);
     }
-    if(isExtractingFromDir(component.dir)) {
+    if(getConnectionMode(component.dir) == ConnectionMode.INPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
     }
     if(getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
