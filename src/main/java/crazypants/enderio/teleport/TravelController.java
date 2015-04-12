@@ -59,9 +59,9 @@ public class TravelController {
 
   private boolean showTargets = false;
 
-  BlockCoord onBlockCoord;
+  public BlockCoord onBlockCoord;
 
-  BlockCoord selectedCoord;
+  public BlockCoord selectedCoord;
 
   Camera currentView = new Camera();
 
