@@ -166,7 +166,7 @@ curse {
     projectId = project.curse_projectId
     changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
-    additionalArtifact deobfJar, sourcesJar, apiJar
+    additionalArtifact deobfJar, sourceJar, apiJar
 }
 
 task checkTranslations << {
