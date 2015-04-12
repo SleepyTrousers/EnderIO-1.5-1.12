@@ -56,8 +56,10 @@ public abstract class TileEntityEio extends TileEntity {
   public void init() {
   }
 
+  private BlockCoord cachedLocation = null;
+
   public BlockCoord getLocation() {
-    return new BlockCoord(this);
+    return cachedLocation == null || !cachedLocation.equals(xCoord, yCoord, zCoord) ? (cachedLocation = new BlockCoord(this)) : cachedLocation;
   }
 
   /**
