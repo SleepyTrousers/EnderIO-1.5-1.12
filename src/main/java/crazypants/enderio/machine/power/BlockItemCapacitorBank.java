@@ -52,16 +52,6 @@ public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContaine
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-    ItemStack stack = createItemStackWithPower(0);
-    par3List.add(stack);
-
-    stack = createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
-    par3List.add(stack);
-
-    stack = createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored() / 2);
-    stack.setItemDamage(1);
-    par3List.add(stack);
-
   }
 
   @Override
