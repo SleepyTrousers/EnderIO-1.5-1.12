@@ -150,7 +150,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
     if(tank.getFluid() == null) {
       return true;
     }
-    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+    if(fluid != null && fluid.getID() == tank.getFluid().getFluidID()) {
       return true;
     }
     return false;
@@ -297,7 +297,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
 
     nbtRoot.setBoolean("autoEject", autoEject);
 
-    if(tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid().fluidID) != null) {
+    if(tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid().getFluidID()) != null) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
     }
     if(regenTank != null) {

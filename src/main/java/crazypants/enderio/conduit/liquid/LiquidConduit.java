@@ -316,7 +316,7 @@ public class LiquidConduit extends AbstractTankConduit {
     if(tank.getFluid() == null) {
       return true;
     }
-    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+    if(fluid != null && fluid.getID() == tank.getFluid().getFluidID()) {
       return true;
     }
     return false;
