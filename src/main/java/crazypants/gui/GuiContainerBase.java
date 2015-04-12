@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.Optional;
 import crazypants.enderio.gui.IGuiOverlay;
+import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 import crazypants.render.RenderUtil;
@@ -151,9 +152,9 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   }
 
   @Override
-  protected void mouseClicked(int x, int y, int p_73864_3_) {
+  protected void mouseClicked(int x, int y, int button) {
     for (GuiTextField f : textFields) {
-      f.mouseClicked(x, y, p_73864_3_);
+      f.mouseClicked(x, y, button);
     }
     if(!ghostSlots.isEmpty()) {
       GhostSlot slot = getGhostSlot(x, y);
@@ -163,7 +164,22 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         return;
       }
     }
-    super.mouseClicked(x, y, p_73864_3_);
+    if(button >= 1) {
+      for(Object obj : buttonList) {
+        if(obj instanceof IconButtonEIO) {
+          IconButtonEIO btn = (IconButtonEIO) obj;
+          if(btn.mousePressedButton(mc, x, y, button)) {
+            btn.func_146113_a(this.mc.getSoundHandler());
+            actionPerformedButton(btn, button);
+          }
+        }
+      }
+    }
+    super.mouseClicked(x, y, button);
+  }
+
+  protected void actionPerformedButton(IconButtonEIO btn, int mouseButton) {
+    actionPerformed(btn);
   }
 
   public void addOverlay(IGuiOverlay overlay) {
