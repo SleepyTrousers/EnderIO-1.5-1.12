@@ -284,7 +284,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return super.getLightValue(world, x, y, z);
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() != null) {
+    if(con.getFacadeId() != null && con.getFacadeId().isOpaqueCube()) {
       return 0;
     }
     Collection<IConduit> conduits = con.getConduits();

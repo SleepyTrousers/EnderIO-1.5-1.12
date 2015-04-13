@@ -4,6 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -31,6 +32,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   protected int lastUpdateLevel = -1;
   
   private boolean tankDirty = false;
+  private Fluid lastFluid = null;
 
   public TileTank(int meta) {
     super(new SlotDefinition(0, 1, 2, 3, -1, -1));
@@ -254,6 +256,11 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     if(tankDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketTank(this), this);
       worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+      Fluid held = tank.getFluid() == null ? null : tank.getFluid().getFluid();
+      if(lastFluid != held) {
+        lastFluid = held;
+        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+      }
       tankDirty = false;
     }
     return res;

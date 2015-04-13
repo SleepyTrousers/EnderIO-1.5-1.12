@@ -84,22 +84,23 @@ public abstract class BlockEio extends Block {
     if(shouldWrench(world, x, y, z, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
       return true;
     }
+    TileEntity te = world.getTileEntity(x, y, z);
 
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
     if(tool != null && !entityPlayer.isSneaking()) {
-      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof AbstractMachineEntity) {
         ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
         world.markBlockForUpdate(x, y, z);
         return true;
       }
-      if (te instanceof ITankAccess) {
-        if (FluidUtil.fillInternalTankFromPlayerHandItem(world, x, y, z, entityPlayer, (ITankAccess) te)) {
-          return true;
-        }
-        if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, (ITankAccess) te)) {
-          return true;
-        }
+    }
+    
+    if (te instanceof ITankAccess) {
+      if (FluidUtil.fillInternalTankFromPlayerHandItem(world, x, y, z, entityPlayer, (ITankAccess) te)) {
+        return true;
+      }
+      if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, (ITankAccess) te)) {
+        return true;
       }
     }
 
