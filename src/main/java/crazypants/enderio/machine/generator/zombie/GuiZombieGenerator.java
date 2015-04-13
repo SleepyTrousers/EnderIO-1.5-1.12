@@ -19,7 +19,7 @@ import crazypants.util.Lang;
 
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
-  public GuiZombieGenerator(InventoryPlayer inventory, TileZombieGenerator tileEntity) {
+  public GuiZombieGenerator(InventoryPlayer inventory, final TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity));
     
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
@@ -30,8 +30,10 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         String heading = Lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
+        if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
+          text.add(Lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+        }
       }
-
     });
 
   }

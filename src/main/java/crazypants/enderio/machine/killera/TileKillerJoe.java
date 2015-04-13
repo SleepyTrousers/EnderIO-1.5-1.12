@@ -158,7 +158,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       return false;
     }
 
-    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
+    if(fuelTank.getFluidAmount() < getActivationAmount()) {
       return false;
     }
 
@@ -188,6 +188,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       }
     }
     return false;
+  }
+  
+  int getActivationAmount() {
+    return (int) (fuelTank.getCapacity() * 0.7f);
   }
 
   private boolean canJoeSee(EntityLivingBase ent)

@@ -28,7 +28,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   private IconButtonEIO xpB;
   private IconButtonEIO xp10B;
 
-  public GuiKillerJoe(InventoryPlayer inventory, TileKillerJoe tileEntity) {
+  public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
 
     addToolTip(new GuiToolTip(new Rectangle(18, 11, 15, 47), "") {
@@ -39,6 +39,9 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
         String heading = Lang.localize("killerJoe.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
+        if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
+          text.add(Lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+        }
       }
 
     });

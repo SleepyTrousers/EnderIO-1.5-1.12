@@ -150,7 +150,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     }
     inPause = false;
 
-    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {      
+    if(fuelTank.getFluidAmount() < getActivationAmount()) {      
       return false;
     }
     
@@ -163,6 +163,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     }    
     setEnergyStored(getEnergyStored() + outputPerTick);     
     return true;
+  }
+  
+  int getActivationAmount() {
+    return (int) (fuelTank.getCapacity() * 0.7f);
   }
 
   private boolean transmitEnergy() {
