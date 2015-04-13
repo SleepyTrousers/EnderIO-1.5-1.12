@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -25,6 +27,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   protected long lastEmptyTick = 0;
   protected int numEmptyEvents = 0;
   protected boolean fluidTypeLocked = false;
+  private int lastLightValue;
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -151,7 +154,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   protected abstract boolean canJoinNeighbour(ILiquidConduit n);
 
   public abstract AbstractTankConduitNetwork<? extends AbstractTankConduit> getTankNetwork();
-
+  
   public void setFluidType(FluidStack liquidType) {
     if(tank.getFluid() != null && tank.getFluid().isFluidEqual(liquidType)) {
       return;
@@ -182,6 +185,23 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
   public boolean isFluidTypeLocked() {
     return fluidTypeLocked;
+  }
+
+  @Override
+  public void updateEntity(World world) {
+    int lightValue = getLightValue();
+    if(lastLightValue != lightValue) {
+      BlockCoord bc = getLocation();
+      getBundle().getWorld().updateLightByType(EnumSkyBlock.Block, bc.x, bc.y, bc.z);
+      lastLightValue = lightValue;
+    }
+    super.updateEntity(world);
+  }
+
+  @Override
+  public int getLightValue() {
+    FluidStack stack = getFluidType();
+    return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
   }
 
   protected abstract void updateTank();

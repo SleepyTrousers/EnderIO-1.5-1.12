@@ -331,43 +331,42 @@ public class FluidUtil {
 
     for (FluidTank subTank : tank.getOutputTanks()) {
       FluidAndStackResult fill = tryFillContainer(entityPlayer.inventory.getCurrentItem(), subTank.getFluid());
-      if (fill.result.fluidStack != null) {
+      if(fill.result.fluidStack != null) {
 
-        if (!entityPlayer.capabilities.isCreativeMode) {
-          subTank.setFluid(fill.remainder.fluidStack);
-          tank.setTanksDirty();
-          if (fill.remainder.itemStack == null) {
+        subTank.setFluid(fill.remainder.fluidStack);
+        tank.setTanksDirty();
+        if(!entityPlayer.capabilities.isCreativeMode) {
+          if(fill.remainder.itemStack == null) {
             entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, fill.result.itemStack);
             return true;
           } else {
             entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, fill.remainder.itemStack);
           }
-        }
 
-        if (fill.result.itemStack.isStackable()) {
+          if(fill.result.itemStack.isStackable()) {
+            for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
+              ItemStack inventoryItem = entityPlayer.inventory.mainInventory[i];
+              if(ItemUtil.areStackMergable(inventoryItem, fill.result.itemStack) && inventoryItem.stackSize < inventoryItem.getMaxStackSize()) {
+                fill.result.itemStack.stackSize += inventoryItem.stackSize;
+                entityPlayer.inventory.setInventorySlotContents(i, fill.result.itemStack);
+                return true;
+              }
+            }
+          }
+
           for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-            ItemStack inventoryItem = entityPlayer.inventory.mainInventory[i];
-            if (ItemUtil.areStackMergable(inventoryItem, fill.result.itemStack)
-                && inventoryItem.stackSize < inventoryItem.getMaxStackSize()) {
-              fill.result.itemStack.stackSize += inventoryItem.stackSize;
+            if(entityPlayer.inventory.mainInventory[i] == null) {
               entityPlayer.inventory.setInventorySlotContents(i, fill.result.itemStack);
               return true;
             }
           }
-        }
 
-        for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-          if (entityPlayer.inventory.mainInventory[i] == null) {
-            entityPlayer.inventory.setInventorySlotContents(i, fill.result.itemStack);
-            return true;
+          if(!world.isRemote) {
+            double x0 = (x + entityPlayer.posX) / 2.0D;
+            double y0 = (y + entityPlayer.posY) / 2.0D + 0.5D;
+            double z0 = (z + entityPlayer.posZ) / 2.0D;
+            Util.dropItems(world, fill.result.itemStack, x0, y0, z0, true);
           }
-        }
-
-        if (!world.isRemote) {
-          double x0 = (x + entityPlayer.posX) / 2.0D;
-          double y0 = (y + entityPlayer.posY) / 2.0D + 0.5D;
-          double z0 = (z + entityPlayer.posZ) / 2.0D;
-          Util.dropItems(world, fill.result.itemStack, x0, y0, z0, true);
         }
 
         return true;
@@ -379,46 +378,45 @@ public class FluidUtil {
   public static boolean fillInternalTankFromPlayerHandItem(World world, int x, int y, int z, EntityPlayer entityPlayer,
       ITankAccess tank) {
     FluidAndStackResult fill = tryDrainContainer(entityPlayer.inventory.getCurrentItem(), tank);
-    if (fill.result.fluidStack == null) {
+    if(fill.result.fluidStack == null) {
       return false;
     }
-  
+
     tank.getInputTank(fill.result.fluidStack).setFluid(fill.remainder.fluidStack);
     tank.setTanksDirty();
 
-    if (!entityPlayer.capabilities.isCreativeMode) {
-      if (fill.remainder.itemStack == null) {
+    if(!entityPlayer.capabilities.isCreativeMode) {
+      if(fill.remainder.itemStack == null) {
         entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, fill.result.itemStack);
         return true;
       } else {
         entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, fill.remainder.itemStack);
       }
-    }
 
-    if (fill.result.itemStack.isStackable()) {
+      if(fill.result.itemStack.isStackable()) {
+        for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
+          ItemStack inventoryItem = entityPlayer.inventory.mainInventory[i];
+          if(ItemUtil.areStackMergable(inventoryItem, fill.result.itemStack) && inventoryItem.stackSize < inventoryItem.getMaxStackSize()) {
+            fill.result.itemStack.stackSize += inventoryItem.stackSize;
+            entityPlayer.inventory.setInventorySlotContents(i, fill.result.itemStack);
+            return true;
+          }
+        }
+      }
+
       for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-        ItemStack inventoryItem = entityPlayer.inventory.mainInventory[i];
-        if (ItemUtil.areStackMergable(inventoryItem, fill.result.itemStack)
-            && inventoryItem.stackSize < inventoryItem.getMaxStackSize()) {
-          fill.result.itemStack.stackSize += inventoryItem.stackSize;
+        if(entityPlayer.inventory.mainInventory[i] == null) {
           entityPlayer.inventory.setInventorySlotContents(i, fill.result.itemStack);
           return true;
         }
       }
-    }
 
-    for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-      if (entityPlayer.inventory.mainInventory[i] == null) {
-        entityPlayer.inventory.setInventorySlotContents(i, fill.result.itemStack);
-        return true;
+      if(!world.isRemote) {
+        double x0 = (x + entityPlayer.posX) / 2.0D;
+        double y0 = (y + entityPlayer.posY) / 2.0D + 0.5D;
+        double z0 = (z + entityPlayer.posZ) / 2.0D;
+        Util.dropItems(world, fill.result.itemStack, x0, y0, z0, true);
       }
-    }
-
-    if (!world.isRemote) {
-      double x0 = (x + entityPlayer.posX) / 2.0D;
-      double y0 = (y + entityPlayer.posY) / 2.0D + 0.5D;
-      double z0 = (z + entityPlayer.posZ) / 2.0D;
-      Util.dropItems(world, fill.result.itemStack, x0, y0, z0, true);
     }
 
     return true;
