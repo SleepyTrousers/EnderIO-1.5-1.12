@@ -98,7 +98,7 @@ public class GuiHyperCube extends GuiContainerBase {
     addButton.setToolTip(Lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
 
-    privateButton = new ToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.PUBLIC, IconEIO.PRIVATE);
+    privateButton = new ToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
     privateButton.setSelectedToolTip(Lang.localize("gui.trans.privateChannel"));
     privateButton.setUnselectedToolTip(Lang.localize("gui.trans.publicChannel"));
 

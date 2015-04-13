@@ -20,6 +20,7 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -72,7 +73,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       int x = gui.getXSize() - 20;
       int y = customTop;
 
-      inOutNextB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
+      inOutNextB = new ArrowButton(gui, NEXT_FILTER_ID, x, y, true);
       inOutNextB.setSize(8, 16);
 
       x = filterX - 20;

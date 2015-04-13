@@ -40,7 +40,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   }
   
   private IconButtonEIO createLockButton(int slot, int x, int y) {
-    return new ToggleButtonEIO(this, LOCK_ID+slot, x, y, IconEIO.FARM_UNLOCK, IconEIO.FARM_LOCK).setSelected(getTileEntity().isSlotLocked(slot));
+    return new ToggleButtonEIO(this, LOCK_ID + slot, x, y, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED).setSelected(getTileEntity().isSlotLocked(slot));
   }
 
   @Override

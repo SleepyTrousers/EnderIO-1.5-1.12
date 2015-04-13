@@ -68,7 +68,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
     int col = ColorUtil.getRGB(Color.white);
     parent.drawString(parent.getFontRenderer(), c.getName(), xPosition + margin, yPosition + margin / 2, col);
     if(!c.isPublic()) {
-      IconEIO.PRIVATE.renderIcon(xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
+      IconEIO.LOCK_LOCKED.renderIcon(xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
     }
   }
 

@@ -11,11 +11,13 @@ public final class IconEIO {
 
   public static final IconEIO TICK = new IconEIO(0, 192);
   public static final IconEIO MINUS = new IconEIO(16, 192);
-  public static final IconEIO PUBLIC = new IconEIO(32, 192);
-  public static final IconEIO PRIVATE = new IconEIO(48, 192);
+  public static final IconEIO LOCK_UNLOCKED = new IconEIO(32, 192);
+  public static final IconEIO LOCK_LOCKED = new IconEIO(48, 192);
   public static final IconEIO CROSS = new IconEIO(64, 192);
   public static final IconEIO PLUS = new IconEIO(80, 192);
   public static final IconEIO ARROWS = new IconEIO(176, 192);
+  public static final IconEIO ADD = new IconEIO(112, 240);
+  public static final IconEIO SUBTRACT = new IconEIO(96, 240);
 
   public static final IconEIO BUTTON = new IconEIO(0, 208);
   public static final IconEIO BUTTON_HIGHLIGHT = new IconEIO(16, 208);
@@ -50,8 +52,15 @@ public final class IconEIO {
   public static final IconEIO ACTIVE_TAB = new IconEIO(205, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 0, 19, 24);
 
-  public static final IconEIO RIGHT_ARROW = new IconEIO(192, 48, 16, 32);
-  public static final IconEIO LEFT_ARROW = new IconEIO(208, 48, 16, 32);
+  public static final IconEIO LEFT_ARROW = new IconEIO(224, 32, 8, 16);
+  public static final IconEIO LEFT_ARROW_PRESSED = new IconEIO(240, 32, 8, 16);
+  public static final IconEIO LEFT_ARROW_HOVER = new IconEIO(224, 48, 8, 16);
+  public static final IconEIO LEFT_ARROW_HOVER_PRESSED = new IconEIO(240, 48, 8, 16);
+
+  public static final IconEIO RIGHT_ARROW = new IconEIO(232, 32, 8, 16);
+  public static final IconEIO RIGHT_ARROW_PRESSED = new IconEIO(248, 32, 8, 16);
+  public static final IconEIO RIGHT_ARROW_HOVER = new IconEIO(232, 48, 8, 16);
+  public static final IconEIO RIGHT_ARROW_HOVER_PRESSED = new IconEIO(248, 48, 8, 16);
 
   public static final IconEIO REDSTONE_MODE_WITHOUT_SIGNAL = new IconEIO(64, 224);
   public static final IconEIO REDSTONE_MODE_WITH_SIGNAL = new IconEIO(80, 224);
@@ -75,13 +84,12 @@ public final class IconEIO {
   @Deprecated
   public static final IconEIO OUTPUT_OLD = new IconEIO(128, 180 + 32, 30, 14);
 
-  public static final IconEIO INPUT = new IconEIO(224, 64, 16, 8);
-  public static final IconEIO OUTPUT = new IconEIO(240, 64, 16, 8);
-  public static final IconEIO INPUT_OUTPUT = new IconEIO(224, 48, 32, 16);
-  public static final IconEIO DISABLED = new IconEIO(48, 240);
-
-  public static final IconEIO LOOP = new IconEIO(224, 96);
-  public static final IconEIO LOOP_OFF = new IconEIO(240, 96);
+  public static final IconEIO INPUT = new IconEIO(32, 176, 16, 8);
+  public static final IconEIO OUTPUT = new IconEIO(48, 176, 16, 8);
+  public static final IconEIO INPUT_OUTPUT = new IconEIO(32, 176, 32, 8);
+  public static final IconEIO DISABLED = new IconEIO(64, 176);
+  public static final IconEIO LOOP = new IconEIO(80, 176);
+  public static final IconEIO LOOP_OFF = new IconEIO(96, 176);
 
   public static final IconEIO ROUND_ROBIN = new IconEIO(64, 240);
   public static final IconEIO ROUND_ROBIN_OFF = new IconEIO(80, 240);
@@ -94,7 +102,14 @@ public final class IconEIO {
   public static final IconEIO RECIPE_BUTTON = new IconEIO(80, 208);
 
   public static final IconEIO ADD_BUT = new IconEIO(208, 32, 8, 8);
+  public static final IconEIO ADD_BUT_PRESSED = new IconEIO(216, 32, 8, 8);
+  public static final IconEIO ADD_BUT_HOVER = new IconEIO(208, 48, 8, 8);
+  public static final IconEIO ADD_BUT_HOVER_PRESSED = new IconEIO(216, 48, 8, 8);
+
   public static final IconEIO MINUS_BUT = new IconEIO(208, 40, 8, 8);
+  public static final IconEIO MINUS_BUT_PRESSED = new IconEIO(216, 40, 8, 8);
+  public static final IconEIO MINUS_BUT_HOVER = new IconEIO(208, 56, 8, 8);
+  public static final IconEIO MINUS_BUT_HOVER_PRESSED = new IconEIO(216, 56, 8, 8);
 
   public static final IconEIO SOUND = new IconEIO(176, 208);
 
@@ -114,9 +129,6 @@ public final class IconEIO {
 
   public static final IconEIO ITEM_STACK = new IconEIO(144, 208);
   public static final IconEIO ITEM_SINGLE = new IconEIO(160, 208);
-  
-  public static final IconEIO FARM_UNLOCK = new IconEIO(128, 240);
-  public static final IconEIO FARM_LOCK   = new IconEIO(144, 240);
 
   public static final IconEIO SUN = new IconEIO(160, 240);
   public static final IconEIO RAIN = new IconEIO(176, 240);

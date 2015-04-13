@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
+import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -53,11 +54,11 @@ public class BaseSettingsPanel implements ITabPanel {
     int x = gap * 3 + fr.getStringWidth(modeLabel);
     int y = 8;// + fr.FONT_HEIGHT;
 
-    leftArrow = new IconButtonEIO(gui, PREV_MODE_B, x, y, IconEIO.LEFT_ARROW);
+    leftArrow = new ArrowButton(gui, PREV_MODE_B, x, y, false);
     leftArrow.setSize(8, 16);
 
     x += leftArrow.getWidth() + gap + getLongestModeStringWidth() + gap;
-    rightArrow = new IconButtonEIO(gui, NEXT_MODE_B, x, y, IconEIO.RIGHT_ARROW);
+    rightArrow = new ArrowButton(gui, NEXT_MODE_B, x, y, true);
     rightArrow.setSize(8, 16);
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
@@ -76,7 +77,6 @@ public class BaseSettingsPanel implements ITabPanel {
     leftArrow.onGuiInit();
     rightArrow.onGuiInit();
 
-    FontRenderer fr = gui.getFontRenderer();
     connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     initCustomOptions();

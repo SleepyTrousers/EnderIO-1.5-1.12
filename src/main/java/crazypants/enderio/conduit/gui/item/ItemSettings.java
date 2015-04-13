@@ -21,6 +21,7 @@ import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
+import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -90,7 +91,7 @@ public class ItemSettings extends BaseSettingsPanel {
     int x = 52;
     int y = customTop;
 
-    nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
+    nextFilterB = new ArrowButton(gui, NEXT_FILTER_ID, x, y, true);
     nextFilterB.setSize(8, 16);
 
     x = 66;    

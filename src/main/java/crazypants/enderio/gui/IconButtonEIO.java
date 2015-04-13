@@ -25,7 +25,7 @@ public class IconButtonEIO extends GuiButton {
 
   protected IGuiScreen gui;
 
-  protected GuiToolTip toolTip;
+  private GuiToolTip toolTip;
   private int marginY = 0;
   private int marginX = 0;
 
@@ -41,13 +41,17 @@ public class IconButtonEIO extends GuiButton {
  
   public void setToolTip(String... tooltipText) {
     if(toolTip == null) {
-      toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
+      toolTip = new GuiToolTip(getBounds(), tooltipText);
       //gui.addToolTip(toolTip);
     } else {
       toolTip.setToolTipText(tooltipText);
     }
   }
-
+  
+  public final Rectangle getBounds() {
+    return new Rectangle(xOrigin, yOrigin, getWidth(), getHeight());
+  }
+  
   public void onGuiInit() {
     gui.addButton(this);
     if(toolTip != null) {
@@ -101,6 +105,10 @@ public class IconButtonEIO extends GuiButton {
 
   public void setIcon(IconEIO icon) {
     this.icon = icon;
+  }
+  
+  public GuiToolTip getToolTip() {
+    return toolTip;
   }
 
   /**

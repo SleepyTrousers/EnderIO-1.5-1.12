@@ -180,7 +180,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
       TextFieldEIO f = textFields.get(i);
       fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 10, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
       if(!f.getCanLoseFocus()) {
-        IconEIO.FARM_LOCK.renderIcon(f.xPosition + f.width - 2, f.yPosition - 2, true);
+        IconEIO.LOCK_LOCKED.renderIcon(f.xPosition + f.width - 2, f.yPosition - 2, true);
       }
     }
 

@@ -882,8 +882,9 @@ enderio.gui.travelAccessable.ok=Authorise
 enderio.gui.telepad.configure.travel=Travel Settings
 enderio.gui.telepad.configure.telepad=Telepad Settings
 
-//Spawn Gurad
+//Spawn Gurad [sic]
 enderio.gui.spawnGurad.showRange=Show Range
+enderio.gui.spawnGurad.hideRange=Hide Range
 enderio.gui.spawnGurad.range=Range:
 
 //conduits
