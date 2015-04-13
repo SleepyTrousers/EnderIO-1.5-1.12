@@ -189,7 +189,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
       String name = e.getCommandSenderName();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
     }
-
+    
     super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);
   }
 

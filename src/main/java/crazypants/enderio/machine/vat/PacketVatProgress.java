@@ -39,7 +39,11 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
         break;
       }
     }
+    
     IMachineRecipe rec = task.getRecipe();
+    if (rec == null) {
+      return;
+    }
     for (ResultStack res : rec.getCompletedResult(1.0f, task.getInputs())) {
       if(res.fluid != null && res.fluid.getFluid() != null) {
         outputFluidId = res.fluid.getFluid().getID();
