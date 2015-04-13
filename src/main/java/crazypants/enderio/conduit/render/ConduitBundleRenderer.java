@@ -177,6 +177,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
           rb.blockAccess = origBa;
         }
+        
+        res = isFacadeOpaque;
       }
 
     } else {

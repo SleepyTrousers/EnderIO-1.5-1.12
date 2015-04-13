@@ -83,8 +83,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
-    // TODO Can avoid the call to the TESR here
-    if(facadeId != null && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+    if(facadeId != null && facadeId.isOpaqueCube() && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
       return false;
     }
     return super.shouldRenderInPass(arg0);
