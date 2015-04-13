@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.ModObject;
@@ -17,8 +18,9 @@ import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
 import crazypants.util.FluidUtil;
+import crazypants.util.ITankAccess;
 
-public class TileExperienceOblisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience {
+public class TileExperienceOblisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess {
 
   private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
 
@@ -109,6 +111,21 @@ public class TileExperienceOblisk extends AbstractMachineEntity implements IFlui
   @Override
   public ExperienceContainer getContainer() {
     return xpCont;
+  }
+
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    return xpCont;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[] { xpCont };
+  }
+
+  @Override
+  public void setTanksDirty() {
+    xpCont.setDirty(true);
   }
 
 }

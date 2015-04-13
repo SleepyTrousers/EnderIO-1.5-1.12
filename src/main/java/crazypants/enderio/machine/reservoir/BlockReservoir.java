@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -12,9 +11,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
@@ -23,8 +19,6 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class BlockReservoir extends BlockEio implements IResourceTooltipProvider {
@@ -63,61 +57,17 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    TileEntity te;
 
-    ItemStack current = entityPlayer.inventory.getCurrentItem();
-    if(current != null) {
-
-      TileReservoir tank = (TileReservoir) world.getTileEntity(x, y, z);
-
-      FluidStack liquid = FluidUtil.getFluidFromItem(current);
-      if(liquid != null) {
-        // Handle filled containers
-        int qty = tank.getController().doFill(ForgeDirection.UNKNOWN, liquid, true);
-
-        if(qty != 0 && !entityPlayer.capabilities.isCreativeMode) {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(current));
+    if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
+        && (te = world.getTileEntity(x, y, z)) instanceof TileReservoir) {
+      TileReservoir tank = ((TileReservoir) te).getController();
+      if (ToolUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
+        tank.setAutoEject(!tank.isAutoEject());
+        for (BlockCoord bc : tank.multiblock) {
+          world.markBlockForUpdate(bc.x, bc.y, bc.z);
         }
         return true;
-
-      } else {
-        // Handle empty containers
-
-        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-        if(available != null && available.amount > 0) {
-          ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
-          if(current.getItem() == Items.bucket) {
-            filled = new ItemStack(Items.water_bucket);
-          }
-          liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
-          if(current.getItem() == Items.bucket) {
-            liquid = new FluidStack(FluidRegistry.WATER, 1000);
-          }
-
-          if(liquid != null) {
-            if(!entityPlayer.capabilities.isCreativeMode) {
-              if(current.stackSize > 1) {
-                if(!entityPlayer.inventory.addItemStackToInventory(filled)) {
-                  return false;
-                } else {
-                  entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(current));
-                }
-              } else {
-                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(current));
-                entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, filled);
-              }
-            }
-            tank.drain(ForgeDirection.UNKNOWN, liquid.amount, true);
-            return true;
-
-          } else if(ToolUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
-            tank.setAutoEject(!tank.isAutoEject());
-            for (BlockCoord bc : tank.multiblock) {
-              world.markBlockForUpdate(bc.x, bc.y, bc.z);
-            }
-
-          }
-
-        }
       }
     }
 

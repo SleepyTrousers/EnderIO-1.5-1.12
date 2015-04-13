@@ -1,15 +1,20 @@
 package crazypants.enderio.xp;
 
+import java.security.InvalidParameterException;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import crazypants.enderio.EnderIO;
 
-public class ExperienceContainer {
+public class ExperienceContainer extends FluidTank {
+  // Note: We extend FluidTank instead of implementing IFluidTank because it has
+  // some methods we need.
 
   private int experienceLevel;
   private float experience;
@@ -22,6 +27,7 @@ public class ExperienceContainer {
   }
   
   public ExperienceContainer(int maxStored) {
+    super(null, 0);
     maxXp = maxStored;
   }
   
@@ -141,7 +147,7 @@ public class ExperienceContainer {
     int available = getFluidAmount();
     int canDrain = Math.min(available, maxDrain);
     if(doDrain) {      
-      int newXp = experienceTotal - XpUtil.liquidToExperiance(canDrain);
+      int newXp = experienceTotal - XpUtil.liquidToExperience(canDrain);
       experience = 0;
       experienceLevel = 0;
       experienceTotal = 0;
@@ -165,7 +171,7 @@ public class ExperienceContainer {
       return 0;
     }
     //need to do these calcs in XP instead of fluid space to avoid type overflows
-    int xp = XpUtil.liquidToExperiance(resource.amount);
+    int xp = XpUtil.liquidToExperience(resource.amount);
     int xpSpace = getMaximumExperiance() - getExperienceTotal();
     int canFillXP = Math.min(xp, xpSpace);
     if(canFillXP <= 0) {
@@ -186,32 +192,36 @@ public class ExperienceContainer {
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] {
-      new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getMaxFluidAmount())  
+ new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getCapacity())
     };
   }
 
-  private int getMaxFluidAmount() {    
+  @Override
+  public int getCapacity() {
     if(maxXp == Integer.MAX_VALUE) {
       return Integer.MAX_VALUE;
     }
     return XpUtil.experienceToLiquid(maxXp);
   }
 
-  private int getFluidAmount() {
+  @Override
+  public int getFluidAmount() {
    return XpUtil.experienceToLiquid(experienceTotal);
   }
   
-  public void readFromNBT(NBTTagCompound nbtRoot) {
+  public FluidTank readFromNBT(NBTTagCompound nbtRoot) {
     experienceLevel = nbtRoot.getInteger("experienceLevel");
     experienceTotal = nbtRoot.getInteger("experienceTotal");
     experience = nbtRoot.getFloat("experience");
+    return this;
   }
   
   
-  public void writeToNBT(NBTTagCompound nbtRoot) {   
+  public NBTTagCompound writeToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setInteger("experienceLevel", experienceLevel);
     nbtRoot.setInteger("experienceTotal", experienceTotal);
     nbtRoot.setFloat("experience", experience);
+    return nbtRoot;
   }
    
   public void toBytes(ByteBuf buf) {
@@ -224,6 +234,47 @@ public class ExperienceContainer {
     experienceTotal = buf.readInt();
     experienceLevel = buf.readInt();
     experience = buf.readFloat();
+  }
+
+
+  @Override
+  public FluidStack getFluid() {
+    return new FluidStack(EnderIO.fluidXpJuice, getFluidAmount());
+  }
+
+  @Override
+  public FluidTankInfo getInfo() {
+    return getTankInfo(ForgeDirection.UNKNOWN)[0];
+  }
+
+  @Override
+  public int fill(FluidStack resource, boolean doFill) {
+    return fill(ForgeDirection.UNKNOWN, resource, doFill);
+  }
+
+  @Override
+  public FluidStack drain(int maxDrain, boolean doDrain) {
+    return drain(ForgeDirection.UNKNOWN, maxDrain, doDrain);
+  }
+
+  @Override
+  public void setFluid(FluidStack fluid) {
+    experience = 0;
+    experienceLevel = 0;
+    experienceTotal = 0;
+    if (fluid != null && fluid.getFluid() != null) {
+      if (EnderIO.fluidXpJuice == fluid.getFluid()) {
+        addExperience(XpUtil.liquidToExperience(fluid.amount));
+      } else {
+        throw new InvalidParameterException(fluid.getFluid() + " is no XP juice");
+      }
+    }
+    xpDirty = true;
+  }
+
+  @Override
+  public void setCapacity(int capacity) {
+    throw new InvalidParameterException();
   }
 
 }

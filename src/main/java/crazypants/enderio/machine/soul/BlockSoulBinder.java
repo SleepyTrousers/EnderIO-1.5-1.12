@@ -15,15 +15,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.farm.BlockFarmStation;
-import crazypants.enderio.machine.farm.PacketFarmAction;
-import crazypants.enderio.machine.farm.PacketUpdateNotification;
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.painter.GuiPainter;
-import crazypants.enderio.machine.painter.PainterContainer;
-import crazypants.enderio.machine.painter.TileEntityPainter;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
 
