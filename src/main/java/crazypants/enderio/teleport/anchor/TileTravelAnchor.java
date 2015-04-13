@@ -44,13 +44,10 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(accessMode == AccessMode.PUBLIC) {
       return true;
     }
-    if(accessMode == AccessMode.PRIVATE) {
-      return placedBy != null && placedBy.equals(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
-    }
-    if(placedBy != null && placedBy.equals(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()))) {
-      return true;
-    }
-    return authorisedUsers.contains(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+    // Covers protected and private access modes
+    return (placedBy != null && placedBy.equals(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName())))
+        || authorisedUsers.contains(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+
   }
 
   @Override
@@ -78,8 +75,9 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean getRequiresPassword(EntityPlayer username) {
-    return getAccessMode() != AccessMode.PUBLIC && !canUiBeAccessed(username) && !authorisedUsers.contains(PlayerUtil.getPlayerUUID(username.getGameProfile().getName()));
+  public boolean getRequiresPassword(EntityPlayer playerName) {
+    return getAccessMode() == AccessMode.PROTECTED && !canUiBeAccessed(playerName)
+        && !authorisedUsers.contains(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
   }
 
   @Override

@@ -123,6 +123,9 @@ public final class Config {
 
   public static boolean travelAnchorEnabled = true;
   public static int travelAnchorMaxDistance = 48;
+  public static int travelAnchorCooldown = 0;
+  public static boolean travelAnchorSneak = true;
+  public static boolean travelAnchorSkipWarning = true;
 
   public static int travelStaffMaxDistance = 128;
   public static float travelStaffPowerPerBlockRF = 250;
@@ -681,6 +684,15 @@ public final class Config {
 
     travelAnchorMaxDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaxDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaxDistance);
+
+    travelAnchorCooldown = config.get(sectionAnchor.name, "travelAnchorCooldown", travelAnchorCooldown,
+        "Number of ticks cooldown between activations (1 sec = 20 ticks)").getInt(travelAnchorCooldown);
+
+    travelAnchorSneak = config.get(sectionAnchor.name, "travelAnchorSneak", travelAnchorSneak,
+        "Add sneak as an option to activate travel anchors").getBoolean(travelAnchorSneak);
+
+    travelAnchorSkipWarning = config.get(sectionAnchor.name, "travelAnchorSkipWarning", travelAnchorSkipWarning,
+        "Travel Anchors send a chat warning when skipping inaccessible anchors").getBoolean(travelAnchorSkipWarning);
 
     travelStaffMaxDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaxDistance,
         "Maximum number of blocks that can be traveled using the Staff of the Traveling.").getInt(travelStaffMaxDistance);

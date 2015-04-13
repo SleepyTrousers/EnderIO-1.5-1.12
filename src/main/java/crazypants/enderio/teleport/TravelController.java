@@ -57,6 +57,16 @@ public class TravelController {
 
   private boolean wasJumping = false;
 
+  private boolean wasSneaking = false;
+
+  private int delayTimer = 0;
+
+  private int timer = Config.travelAnchorCooldown;
+
+  private boolean tempJump;
+
+  private boolean tempSneak;
+
   private boolean showTargets = false;
 
   public BlockCoord onBlockCoord;
@@ -287,32 +297,38 @@ public class TravelController {
         selectedCoord = null;
       }
       MovementInput input = player.movementInput;
-      if(input.jump && !wasJumping && onBlock && selectedCoord != null) {
+      tempJump = input.jump;
+      tempSneak = input.sneak;
 
-        BlockCoord target = TravelController.instance.selectedCoord;
-        TileEntity te = player.worldObj.getTileEntity(target.x, target.y, target.z);
-        if(te instanceof ITravelAccessable) {
-          ITravelAccessable ta = (ITravelAccessable) te;
-          if(ta.getRequiresPassword(player)) {
-            PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
-            PacketHandler.INSTANCE.sendToServer(p);
-            return;
-          }
-        }
+      // Handles teleportation if a target is selected
+      if((input.jump && !wasJumping && onBlock && selectedCoord != null && delayTimer == 0)
+          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && delayTimer == 0 && Config.travelAnchorSneak)) {
 
-        if(isTargetEnderIO()) {
-          openEnderIO(null, player.worldObj, player);
-        } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
-          input.jump = false;
-          try {
-            ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");
-          } catch (Exception e) {
-            //ignore
-          }
-        }
+        onInput(player);
+        delayTimer = timer;
+      }
+      // If there is no selected coordinate and the input is jump, go up
+      if(input.jump && !wasJumping && onBlock && selectedCoord == null && delayTimer == 0) {
+
+        updateVerticalTarget(player, 1);
+        onInput(player);
+        delayTimer = timer;
 
       }
-      wasJumping = input.jump;
+
+      // If there is no selected coordinate and the input is sneak, go down
+      if(input.sneak && !wasSneaking && onBlock && selectedCoord == null && delayTimer == 0) {
+        updateVerticalTarget(player, -1);
+        onInput(player);
+        delayTimer = timer;
+      }
+
+      if(delayTimer != 0) {
+        delayTimer--;
+      }
+
+      wasJumping = tempJump;
+      wasSneaking = tempSneak;
       candidates.clear();
     }
   }
@@ -512,6 +528,40 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
+  private void updateVerticalTarget(EntityClientPlayerMP player, int direction) {
+
+    BlockCoord currentBlock = getActiveTravelBlock(player);
+    World world = Minecraft.getMinecraft().theWorld;
+    for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaxDistance && y >= 0 && y <= 255; i++, y += direction) {
+
+      //Circumvents the raytracing used to find candidates on the y axis
+      TileEntity selectedBlock = world.getTileEntity(currentBlock.x, y, currentBlock.z);
+
+      if(selectedBlock instanceof ITravelAccessable) {
+        ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
+        BlockCoord targetBlock = new BlockCoord(currentBlock.x, y, currentBlock.z);
+
+        if(Config.travelAnchorSkipWarning) {
+          if(travelBlock.getRequiresPassword(player)) {
+            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
+          }
+
+          if(travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
+            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
+          }
+          if(!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
+          }
+        }
+        if(travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+          selectedCoord = targetBlock;
+          return;
+        }
+      }
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
   private void updateSelectedTarget(EntityClientPlayerMP player) {
     selectedCoord = null;
     if(candidates.isEmpty()) {
@@ -548,6 +598,37 @@ public class TravelController {
       }
 
     }
+  }
+
+  private void onInput(EntityClientPlayerMP player) {
+
+    MovementInput input = player.movementInput;
+    BlockCoord target = TravelController.instance.selectedCoord;
+    if(target == null) {
+      return;
+    }
+
+    TileEntity te = player.worldObj.getTileEntity(target.x, target.y, target.z);
+    if(te instanceof ITravelAccessable) {
+      ITravelAccessable ta = (ITravelAccessable) te;
+      if(ta.getRequiresPassword(player)) {
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
+        PacketHandler.INSTANCE.sendToServer(p);
+        return;
+      }
+    }
+
+    if(isTargetEnderIO()) {
+      openEnderIO(null, player.worldObj, player);
+    } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
+      input.jump = false;
+      try {
+        ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");
+      } catch (Exception e) {
+        //ignore
+      }
+    }
+
   }
 
   public double getScaleForCandidate(Vector3d loc) {
@@ -612,7 +693,7 @@ public class TravelController {
     }
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
-  
+
   public boolean doClientTeleport(Entity entity, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z);
