@@ -104,6 +104,23 @@ public class IconButtonEIO extends GuiButton {
   }
 
   /**
+   * Override this to handle mouse clicks with other buttons than the left
+   * @param mc The MC instance
+   * @param x X coordinate of mouse click
+   * @param y Y coordinate of mouse click
+   * @param button the mouse button - only called for button >= 1
+   * @return true if the mouse click is handled
+   */
+  public boolean mousePressedButton(Minecraft mc, int x, int y, int button) {
+    return false;
+  }
+
+  protected boolean checkMousePress(Minecraft mc, int x, int y) {
+    // call super here so that we only get the area check
+    return super.mousePressed(mc, x, y);
+  }
+
+  /**
    * Draws this button to the screen.
    */
   @SuppressWarnings("synthetic-access")

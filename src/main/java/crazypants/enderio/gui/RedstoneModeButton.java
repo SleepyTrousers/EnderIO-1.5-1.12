@@ -1,9 +1,5 @@
 package crazypants.enderio.gui;
 
-import java.awt.Rectangle;
-
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.client.Minecraft;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
@@ -20,8 +16,6 @@ public class RedstoneModeButton extends IconButtonEIO {
 
   private IRedstoneModeControlable model;
   private RedstoneControlMode curMode;
-  
-  private boolean rightMouseDown = false;
 
   private BlockCoord bc;
 
@@ -45,6 +39,15 @@ public class RedstoneModeButton extends IconButtonEIO {
     boolean result = super.mousePressed(par1Minecraft, par2, par3);
     if(result) {
       nextMode();
+    }
+    return result;
+  }
+
+  @Override
+  public boolean mousePressedButton(Minecraft mc, int x, int y, int button) {
+    boolean result = button == 1 && super.checkMousePress(mc, x, y);
+    if(result) {
+      prevMode();
     }
     return result;
   }
@@ -84,21 +87,4 @@ public class RedstoneModeButton extends IconButtonEIO {
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneMode(model, bc.x, bc.y, bc.z));
     }
   }
-
-  @Override
-  public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-    super.drawButton(mc, mouseX, mouseY);
-    
-    Rectangle r = new Rectangle(xPosition, yPosition, width, height);
-    if(r.contains(mouseX, mouseY)) {
-      if(rightMouseDown && Mouse.getEventButton() == 1 && !Mouse.getEventButtonState()) {
-        prevMode();
-        gui.doActionPerformed(this);
-      }
-      rightMouseDown = Mouse.getEventButton() == 1 && Mouse.getEventButtonState();
-    } else {
-      rightMouseDown = false;
-    }
-  }
-
 }
