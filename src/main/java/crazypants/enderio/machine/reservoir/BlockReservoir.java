@@ -19,6 +19,7 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.FluidUtil;
 import crazypants.vecmath.Vector3d;
 
 public class BlockReservoir extends BlockEio implements IResourceTooltipProvider {
@@ -69,10 +70,17 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
         }
         return true;
       }
+      if (FluidUtil.fillInternalTankFromPlayerHandItem(world, x, y, z, entityPlayer, tank)) {
+        return true;
+      }
+      if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, tank)) {
+        return true;
+      }
     }
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
+
 
   @Override
   @SideOnly(Side.CLIENT)

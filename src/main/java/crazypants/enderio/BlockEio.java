@@ -95,6 +95,10 @@ public abstract class BlockEio extends Block {
       }
     }
     
+    if (entityPlayer.isSneaking()) {
+      return false;
+    }
+
     if (te instanceof ITankAccess) {
       if (FluidUtil.fillInternalTankFromPlayerHandItem(world, x, y, z, entityPlayer, (ITankAccess) te)) {
         return true;
@@ -102,10 +106,6 @@ public abstract class BlockEio extends Block {
       if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, (ITankAccess) te)) {
         return true;
       }
-    }
-
-    if(entityPlayer.isSneaking()) {
-      return false;
     }
 
     return openGui(world, x, y, z, entityPlayer, side);
