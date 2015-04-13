@@ -499,6 +499,11 @@ enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sort items by their qua
 enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Starting with the highest quantity
 enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Sort items by their quantity
 enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Starting with the lonely ones
+enderio.gui.inventorypanel.tooltip.refill.line1=Refills the crafting grid
+enderio.gui.inventorypanel.tooltip.refill.line2=A normal click puts items
+enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting opperations,
+enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
+enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
 
 enderio.machine.tooltip.configured=(Configured)
 

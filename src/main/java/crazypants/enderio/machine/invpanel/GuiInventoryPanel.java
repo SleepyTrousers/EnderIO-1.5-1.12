@@ -36,6 +36,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final Rectangle scrollbarArea   = new Rectangle(215,  27,  11, 90);
   private static final Rectangle inventoryArea   = new Rectangle(107,  27, 108, 90);
 
+  private static final Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
+
   private static final int ID_SORT = 9876;
 
   private static final int GHOST_COLUMNS = 6;
@@ -43,6 +45,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private final TextFieldEIO tfFilter;
   private final IconButtonEIO btnSort;
+  private final GuiToolTip ttRefill;
 
   private boolean scrollUpPressed;
   private boolean scrollDownPressed;
@@ -98,10 +101,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         return !getContainer().getSlotFilter().getHasStack() && super.shouldDraw();
       }
     });
+
+    list = new ArrayList<String>();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.refill.line");
+    ttRefill = new GuiToolTip(btnRefill, list);
+    ttRefill.setVisible(false);
+    addToolTip(ttRefill);
   }
 
   public void setCraftingHelper(ICraftingHelper craftingHelper) {
     this.craftingHelper = craftingHelper;
+    ttRefill.setVisible(craftingHelper != null);
   }
 
   @Override
@@ -120,13 +130,19 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+  protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/inventorypanel.png");
     int sx = guiLeft;
     int sy = guiTop;
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+
+    if(craftingHelper != null) {
+      boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
+      int iconX = hover ? (isShiftKeyDown() ? 48 : 24) : 0;
+      drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
+    }
 
     long time = Minecraft.getSystemTime();
     if((time - scrollLastTime) >= 100) {
@@ -166,7 +182,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     fr.drawString(headerReturn, sx+7, sy+72, headerColor);
     fr.drawString(headerInventory, sx+38, sy+120, headerColor);
 
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
     if(getTileEntity().isActive()) {
       tfFilter.setEnabled(true);
@@ -291,6 +307,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     x -= guiLeft;
     y -= guiTop;
+
+    if(craftingHelper != null && btnRefill.contains(x, y)) {
+      craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
+    }
 
     if(scrollMax > 0 && thumbArea.contains(x, y)) {
       int thumbPos = getThumbPosition();
