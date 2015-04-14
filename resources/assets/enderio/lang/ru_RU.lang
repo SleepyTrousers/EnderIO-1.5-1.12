@@ -104,6 +104,7 @@ enderio.itemGasConduit.tooltip.detailed.line1=Передаёт газы совм
 
 enderio.itemMEConduit.name=МЭ труба
 enderio.itemMEConduitDense.name=Плотная МЭ труба
+enderio.itemMEConduit.channelsUsed=Каналы: {0,number} из {1,number}
 
 //Entity
 entity.witherSkeleton.name=Скелет-иссушитель
@@ -122,6 +123,7 @@ tile.blockEndermanSkull.tormented.name=Измученная голова стр�
 enderio.blastResistant=Взрывоустойчиво
 enderio.lightEmitter=Излучает свет
 enderio.tooltip.isBeaconBase=Может быть использовано, как основа для маяка
+enderio.dustWheat.name=Мука
 
 //Fluids
 fluid.nutrient_distillation=Питательный дистиллят
@@ -251,6 +253,7 @@ tile.blockSolarPanel.tooltip.detailed.line2=Должна иметь чистое
 tile.blockSolarPanel.tooltip.detailed.line3=к небу
 enderio.maxSolorProduction=Макс. выход
 enderio.tooltip.efficiency=Эффективность
+enderio.tooltip.sunlightBlocked=Небо закрыто!
 
 item.itemElectricLight.name=Электрический светильник
 item.itemElectricLight.tooltip.detailed.line1=Освещает большую площадь при подаче
@@ -294,6 +297,7 @@ tile.blockCapBank.tooltip.detailed.line1=Мульти-блок для хране
 tile.blockCapBank.tooltip.detailed.line2=Может заряжать RF-предметы.
 tile.blockCapBank.tooltip.detailed.line3=Shift-ПКМ, по экрану пустой рукой,
 tile.blockCapBank.tooltip.detailed.line4=чтобы изменить отображаемую информацию
+tile.blockCapBank.tooltip.hasItems=Предметов в инвентаре: {0,number,integer} {0,choice,1#item|1<items}
 tile.blockCapBank.tooltipPrefix=Содержит
 
 enderio.capbank.maxIO=Макс. вход/выход
@@ -303,6 +307,8 @@ enderio.capbank.change=Вход/выход
 enderio.capbank.iodisplay.stable=Вход/выход
 enderio.capbank.iodisplay.gain=Вход
 enderio.capbank.iodisplay.loss=Выход
+enderio.capbank.iodisplay.input=Вход
+enderio.capbank.iodisplay.output=Выход
 
 tile.blockWirelessCharger.name=Беспроводной зарядник
 tile.blockWirelessCharger.tooltip.detailed.line1=Заряжает ближайшие предметы 
@@ -368,6 +374,7 @@ tile.blockZombieGenerator.name=Зомби генератор
 tile.blockZombieGenerator.tooltip.detailed.line1=Потребляет питательный дистиллят
 tile.blockZombieGenerator.tooltip.detailed.line2=для производства энергии
 enderio.zombieGenerator.fuelTank=Питательный резервуар
+enderio.gui.fluid.minReq=Для активации требуется: %s
 
 tile.blockKillerJoe.name=Киллер Джо
 tile.blockKillerJoe.tooltip.detailed.line1=Атакует ближайших существ, если
@@ -398,6 +405,7 @@ enderio.farm.note.noSeeds=Нет семян
 enderio.farm.note.noAxe=Нет топора
 enderio.farm.note.noHoe=Нет мотыги
 enderio.farm.note.noPower=Нет питания
+enderio.farm.gui.baseUse=Основное использование:
 
 tile.blockTank.name=Жидкостный резервуар
 tile.blockTank.advanced.name=Жидкостный резервуар под давлением
@@ -497,6 +505,9 @@ tile.blockTravelAnchor.tooltip.detailed.line6=Может быть покраше
 enderio.blockTravelPlatform.invalidTarget=Место назначения заблокировано
 enderio.blockTravelPlatform.outOfRange=Место назначения за пределами радиуса действия
 
+tile.blockTelePad.name=Блок телепорта
+enderio.gui.telepad.teleport=Телепортироваться!
+
 item.itemTravelStaff.name=Посох путешествия
 item.itemTravelStaff.tooltip.detailed.line1=Когда якори путешествия и EnderIO экипированы
 item.itemTravelStaff.tooltip.detailed.line2=блоки становятся видимыми и могут быть
@@ -504,6 +515,18 @@ item.itemTravelStaff.tooltip.detailed.line3=активированы ПКМ
 item.itemTravelStaff.tooltip.detailed.line4=Shift-ПКМ телепортирует
 item.itemTravelStaff.tooltip.detailed.line5=игрока на короткую дистанцию
 enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
+
+item.itemCoordSelector.name=Настройщик координат
+item.itemCoordSelector.tooltip.detailed.line1=Сохраняет координаты блока.
+item.itemCoordSelector.tooltip.detailed.line2=ПКМ по блоку, чтобы выбрать
+item.itemCoordSelector.tooltip.detailed.line3=блок рядом с этой стороной.
+item.itemCoordSelector.tooltip.detailed.line4=Shift-ПКМ по блоку, чтобы
+item.itemCoordSelector.tooltip.detailed.line5=выбрать конкретный блок.
+item.itemCoordSelector.tooltip.detailed.line6=Можно выбирать блоки на расстоянии.
+enderio.itemCoordSelector.chat.newCoords=Новые координаты: %s
+enderio.itemCoordSelector.chat.setCoords=Выбранные координаты: %s
+enderio.itemCoordSelector.chat.newDimension=Новое измерение: %s%s
+enderio.itemCoordSelector.chat.setDimension=Выбранное измерение: %s%s
 
 //Painter
 tile.blockPainter.name=Покрасочный механизм
@@ -539,7 +562,7 @@ item.itemMagnet.name=Электромагнит
 item.itemMagnet.tooltip.detailed.line1=Тянет ближайший предмет к Вам
 item.itemMagnet.tooltip.detailed.line2=Shift-ПКМ, чтобы включить/выключить
 item.itemMagnet.tooltip.detailed.line3=Должен быть запитан, активен и в
-item.itemMagnet.tooltip.detailed.line4=панели быстрого доступа для работы
+item.itemMagnet.tooltip.detailed.line4=панели быстрого доступа(или в слоте Baubles) для функционирования
 
 item.enderio.itemConduitProbe.name=Зонд трубы
 item.enderio.itemConduitProbe.tooltip.detailed.line1=ПКМ по трубе, чтобы отобразить
@@ -579,6 +602,7 @@ item.darkSteel_boots.name=Тёмные ботинки
 item.darkSteel_sword.name=Край
 item.darkSteel_pickaxe.name=Тёмная кирка
 item.darkSteel_axe.name=Тёмный топор
+item.darkSteel_shears.name=Тёмные ножницы
 
 enderio.item.tooltip.showDetails=<Зажмите Shift>
 enderio.item.darkSteel.tooltip.durability=Прочность:
@@ -589,6 +613,8 @@ enderio.item.darkSteel_pickaxe.tooltip.effObs=Эффективность уни�
 enderio.item.darkSteel_pickaxe.tooltip.cost=стоит
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
+
+enderio.item.darkSteel_shears.tooltip.multiHarvest=Стригут несколько блоков/овец, если запитаны
 
 enderio.item.darkSteel_sword.tooltip.line1=Увеличено выпадение черепов и жемчуга Края.
 enderio.item.darkSteel_sword.tooltip.line2=Странник Края не может телепортироваться после удара.
@@ -854,8 +880,12 @@ enderio.gui.travelAccessable.unauthorised=Вам запрещён доступ �
 enderio.gui.travelAccessable.enterCode=Требуется код доступа
 enderio.gui.travelAccessable.ok=Авторизироваться
 
-//Spawn Gurad
+enderio.gui.telepad.configure.travel=Настройки путешествий
+enderio.gui.telepad.configure.telepad=Настройки телепорта
+
+//Spawn Gurad [sic]
 enderio.gui.spawnGurad.showRange=Показать дальность
+enderio.gui.spawnGurad.hideRange=Спрятать дальность
 enderio.gui.spawnGurad.range=Дальность:
 
 //conduits
@@ -915,7 +945,7 @@ enderio.gui.weather.requireditem=Требуется предмет: %s
 
 //Enchants
 enchantment.enderio.soulBound=Печать души
-description.enchantment.enderio.soulBound=Это зачарование оставляет предмет в инвентаре после смерти
+description.enchantment.enderio.soulBound=Предотвращает потерю предмета из инвентаря после смерти
 
 //Configuration
 enderio.config.title=Конфигурация Ender IO
@@ -972,9 +1002,10 @@ enderio.keybind.soundlocator=Звуколокатор
 enderio.keybind.speed=Скорость
 enderio.keybind.stepassist=Шаг вверх
 enderio.keybind.yetawrenchmode=Режим ключа Yeta
+enderio.keybind.magnet=Переключить электромагнит
 enderio.nei.alloysmelter=Завод сплавов
 enderio.nei.enchanter=Зачарователь
-enderio.nei.sagmill=Дробилка
+enderio.nei.sagmill=Дробитель
 enderio.nei.slicensplice=«Отрубатель и сращиватель»
 enderio.nei.soulbinder=Связыватель душ
 enderio.nei.vat=Чан
