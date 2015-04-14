@@ -76,6 +76,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   public static final String TELEPORTING_KEY = "eio:teleporting";
   public static final String PROGRESS_KEY = "teleportprogress";
   
+  boolean wasBlocked = false;
+  
   // Clientside rendering data
   public float[] bladeRots = new float[3];
   public float spinSpeed = 0;
@@ -565,7 +567,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   void enqueueTeleport(Entity entity, boolean sendUpdate) {
-    if(toTeleport.contains(entity)) {
+    if(entity == null || toTeleport.contains(entity)) {
       return;
     }
 
@@ -582,6 +584,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   void dequeueTeleport(Entity entity, boolean sendUpdate) {
+    if (entity == null) {
+      return;
+    }
     toTeleport.remove(entity);
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
     if(sendUpdate) {
@@ -599,7 +604,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private boolean teleport(Entity entity) {
     if(maxPower > 0) {
       entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
-      return entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity);
+      wasBlocked = !(entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity));
+      PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.TELEPORT, this, wasBlocked));
+      return !wasBlocked;
     }
     return false;
   }
@@ -624,8 +631,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         server.getConfigurationManager().transferEntityToWorld(entity, 0, server.worldServerForDimension(currentDim), toDim, new TeleporterEIO(toDim));
       }
     }
-    PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD);
-    return true;
+    return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD);
   }
 
   /* ITravelAccessable overrides */

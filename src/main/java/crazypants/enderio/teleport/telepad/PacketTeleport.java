@@ -14,7 +14,8 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
 
   enum Type {
     BEGIN,
-    END
+    END,
+    TELEPORT
   }
 
   public PacketTeleport() {
@@ -23,10 +24,17 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
 
   private int entityId;
   private Type type;
+  private boolean wasBlocked;
 
   public PacketTeleport(Type type, TileTelePad te, int entityId) {
     super(te);
     this.entityId = entityId;
+    this.type = type;
+  }
+  
+  public PacketTeleport(Type type, TileTelePad te, boolean wasBlocked) {
+    super(te);
+    this.wasBlocked = wasBlocked;
     this.type = type;
   }
 
@@ -35,6 +43,7 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
     super.toBytes(buf);
     buf.writeInt(entityId);
     buf.writeInt(type.ordinal());
+    buf.writeBoolean(wasBlocked);
   }
 
   @Override
@@ -42,6 +51,7 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
     super.fromBytes(buf);
     entityId = buf.readInt();
     type = Type.values()[buf.readInt()];
+    wasBlocked = buf.readBoolean();
   }
 
   @Override
@@ -50,13 +60,17 @@ public class PacketTeleport extends MessageTileEntity<TileTelePad> implements IM
     TileEntity te = message.getTileEntity(world);
     if(te instanceof TileTelePad) {
       Entity e = world.getEntityByID(message.entityId);
-      if(e != null) {
-        if(message.type == Type.BEGIN) {
+        switch(message.type) {
+        case BEGIN:
           ((TileTelePad) te).enqueueTeleport(e, false);
-        } else {
+          break;
+        case END:
           ((TileTelePad) te).dequeueTeleport(e, false);
+          break;
+        case TELEPORT:
+          ((TileTelePad)te).wasBlocked = message.wasBlocked;
+          break;
         }
-      }
     }
     return null;
   }

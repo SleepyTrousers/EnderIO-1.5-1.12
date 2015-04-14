@@ -54,6 +54,7 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_WEATHER_OBELISK = 101;
   public static final int GUI_ID_TELEPAD = 102;
   public static final int GUI_ID_TELEPAD_TRAVEL = 103;
+  public static final int GUI_ID_INHIBITOR = 104;
 
   public static final int GUI_ID_CAP_BANK = 142; // leave room for more machines
 
