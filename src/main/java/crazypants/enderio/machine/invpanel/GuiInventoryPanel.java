@@ -6,6 +6,7 @@ import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
@@ -19,22 +20,15 @@ import java.util.Locale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final Rectangle btnScrollUp   = new Rectangle(215,  27,  11,  8);
-  private static final Rectangle btnScrollDown = new Rectangle(215, 109,  11,  8);
-  private static final Rectangle thumbArea     = new Rectangle(215,  35,  11, 74);
-
-  private static final Rectangle scrollbarArea   = new Rectangle(215,  27,  11, 90);
-  private static final Rectangle inventoryArea   = new Rectangle(107,  27, 108, 90);
+  private static final Rectangle inventoryArea = new Rectangle(107,  27, 108, 90);
 
   private static final Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
 
@@ -46,14 +40,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final TextFieldEIO tfFilter;
   private final IconButtonEIO btnSort;
   private final GuiToolTip ttRefill;
+  private final VScrollbarEIO scrollbar;
 
-  private boolean scrollUpPressed;
-  private boolean scrollDownPressed;
-  private boolean scrollThumbPressed;
-  private boolean dragActive;
   private int scrollPos;
-  private int scrollMax;
-  private long scrollLastTime;
 
   private final String headerCrafting;
   private final String headerReturn;
@@ -67,7 +56,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super(te, container);
     redstoneButton.visible = false;
     configB.visible = false;
-    scrollLastTime = Minecraft.getSystemTime();
 
     for(int y = 0; y < GHOST_ROWS; y++) {
       for(int x = 0; x < GHOST_COLUMNS; x++) {
@@ -80,6 +68,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     tfFilter = new TextFieldEIO(fr, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon());
+    scrollbar = new VScrollbarEIO(this, 215, 27, 90);
 
     textFields.add(tfFilter);
 
@@ -119,6 +108,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.initGui();
     updateSortButton();
     btnSort.onGuiInit();
+    addScrollbar(scrollbar);
   }
 
   @Override
@@ -144,38 +134,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
     }
 
-    long time = Minecraft.getSystemTime();
-    if((time - scrollLastTime) >= 100) {
-      scrollLastTime = time;
-      doScroll();
-    }
-
-    Tessellator tes = Tessellator.instance;
-    tes.startDrawingQuads();
-    RenderUtil.bindTexture(IconEIO.TEXTURE);
-    IconEIO icon;
-
-    icon = scrollUpPressed ? IconEIO.UP_ARROW_ON : IconEIO.UP_ARROW_OFF;
-    icon.renderIcon(sx+btnScrollUp.x, sy+btnScrollUp.y);
-
-    icon = scrollDownPressed ? IconEIO.DOWN_ARROW_ON : IconEIO.DOWN_ARROW_OFF;
-    icon.renderIcon(sx+btnScrollDown.x, sy+btnScrollDown.y);
-
-    if(scrollMax > 0) {
-      icon = IconEIO.VSCROLL_THUMB;
-      icon.renderIcon(sx+thumbArea.x, sy+getThumbPosition());
-    }
-
-    tes.draw();
-
-    InventoryDatabaseClient db = getDatabase();
-    db.setItemFilter(getTileEntity().getItemFilter());
-    db.updateFilter(tfFilter.getText());
-
-    if(db.sortItems()) {
-      updateGhostSlots();
-    }
-
     int headerColor = 0x404040;
     FontRenderer fr = getFontRenderer();
     fr.drawString(headerCrafting, sx+7, sy+6, headerColor);
@@ -183,6 +141,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     fr.drawString(headerInventory, sx+38, sy+120, headerColor);
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
+
+    InventoryDatabaseClient db = getDatabase();
+    db.setItemFilter(getTileEntity().getItemFilter());
+    db.updateFilter(tfFilter.getText());
+
+    boolean update = db.sortItems();
+    scrollbar.setScrollMax(Math.max(0, (getDatabase().getNumEntries()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS));
+    if(update || scrollPos != scrollbar.getScrollPos()) {
+      updateGhostSlots();
+    }
 
     if(getTileEntity().isActive()) {
       tfFilter.setEnabled(true);
@@ -194,10 +162,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       tfFilter.setText("");
       fr.drawString(infoTextOffline, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
     }
-  }
-
-  private int getThumbPosition() {
-    return thumbArea.y + (thumbArea.height - (int)IconEIO.VSCROLL_THUMB.height) * scrollPos / scrollMax;
   }
 
   @Override
@@ -255,21 +219,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnSort.setToolTip(list.toArray(new String[list.size()]));
   }
 
-  private void doScroll() {
-    scrollMax = Math.max(0, (getDatabase().getNumEntries()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS);
-    if(scrollUpPressed && scrollPos > 0) {
-      scrollPos--;
-    }
-    if(scrollDownPressed) {
-      scrollPos++;
-    }
-    updateGhostSlots();
-  }
-
   private void updateGhostSlots() {
-    if(scrollPos > scrollMax) {
-      scrollPos = scrollMax;
-    }
+    scrollPos = scrollbar.getScrollPos();
     
     InventoryDatabaseClient database = getDatabase();
     int index = scrollPos * GHOST_COLUMNS;
@@ -311,56 +262,21 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(craftingHelper != null && btnRefill.contains(x, y)) {
       craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
     }
-
-    if(scrollMax > 0 && thumbArea.contains(x, y)) {
-      int thumbPos = getThumbPosition();
-      scrollUpPressed    = y < thumbPos;
-      scrollDownPressed  = y >= thumbPos + (int)IconEIO.VSCROLL_THUMB.height;
-      scrollThumbPressed = !scrollUpPressed && !scrollDownPressed;
-    } else {
-      scrollUpPressed    = btnScrollUp.contains(x, y);
-      scrollDownPressed  = btnScrollDown.contains(x, y);
-      scrollThumbPressed = false;
-    }
-
-    if(scrollUpPressed || scrollDownPressed) {
-      scrollLastTime = Minecraft.getSystemTime();
-      doScroll();
-    }
-
-    dragActive = scrollUpPressed | scrollDownPressed | scrollThumbPressed;
   }
 
   @Override
-  protected void mouseMovedOrUp(int x, int y, int button) {
-    scrollUpPressed    = false;
-    scrollDownPressed  = false;
-    scrollThumbPressed = false;
-    dragActive         = false;
-    super.mouseMovedOrUp(x, y, button);
-  }
+  protected void mouseWheel(int x, int y, int delta) {
+    super.mouseWheel(x, y, delta);
 
-  @Override
-  public void handleMouseInput() {
-    super.handleMouseInput();
-
-    int wheel = Mouse.getEventDWheel();
-    if(wheel != 0 && !dragActive) {
-      int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
-      int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-      boolean shift = isShiftKeyDown();
-
+    if(draggingScrollbar == null) {
       x -= guiLeft;
       y -= guiTop;
 
-      if(scrollbarArea.contains(x, y) || (shift && inventoryArea.contains(x, y))) {
-        scrollUpPressed   = wheel > 0;
-        scrollDownPressed = wheel < 0;
-        doScroll();
-        scrollUpPressed   = false;
-        scrollDownPressed = false;
+      boolean shift = isShiftKeyDown();
 
-      } else if(!shift && wheel > 0 & (hoverGhostSlot instanceof InvSlot)) {
+      if(shift && inventoryArea.contains(x, y)) {
+        scrollbar.scrollBy(-Integer.signum(delta));
+      } else if(!shift && delta > 0 & (hoverGhostSlot instanceof InvSlot)) {
         InvSlot invSlot = (InvSlot) hoverGhostSlot;
         if(invSlot.stack != null && invSlot.entry != null) {
           ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
@@ -369,24 +285,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           }
         }
       }
-    }
-  }
-
-  @Override
-  protected void mouseClickMove(int x, int y, int button, long time) {
-    if(scrollThumbPressed) {
-      y -= guiTop;
-
-      int pos = y - (thumbArea.y + (int)IconEIO.VSCROLL_THUMB.height/2);
-      int len = thumbArea.height - (int)IconEIO.VSCROLL_THUMB.height;
-
-      pos = Math.max(0, Math.min(scrollMax, Math.round(pos * (float)scrollMax / (float)len)));
-      if(scrollPos != pos) {
-        scrollPos = pos;
-        updateGhostSlots();
-      }
-    } else if(!dragActive) {
-      super.mouseClickMove(x, y, button, time);
     }
   }
 
@@ -433,11 +331,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     InvSlot(int x, int y) {
       this.x = x;
       this.y = y;
-    }
-
-    @Override
-    public boolean isMouseOver(int mx, int my) {
-      return !dragActive && super.isMouseOver(mx, my);
     }
   }
 }
