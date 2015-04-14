@@ -29,6 +29,7 @@ import cpw.mods.fml.common.Optional;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.TextFieldEIO;
+import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.gui.ToolTipManager.ToolTipRenderer;
 import crazypants.render.RenderUtil;
 
@@ -40,9 +41,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   protected ToolTipManager ttMan = new ToolTipManager();
   protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
   protected List<TextFieldEIO> textFields = Lists.newArrayList();
+  protected List<VScrollbarEIO> scrollbars = new ArrayList<VScrollbarEIO>();
   protected List<GhostSlot> ghostSlots = new ArrayList<GhostSlot>();
 
   protected GhostSlot hoverGhostSlot;
+  protected VScrollbarEIO draggingScrollbar;
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
@@ -131,6 +134,10 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         return;
       }
     }
+    int delta = Mouse.getEventDWheel();
+    if(delta != 0) {
+      mouseWheel(x, y, delta);
+    }
     super.handleMouseInput();
   }
 
@@ -156,6 +163,18 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     for (GuiTextField f : textFields) {
       f.mouseClicked(x, y, button);
     }
+    if(!scrollbars.isEmpty()) {
+      if(draggingScrollbar != null) {
+        draggingScrollbar.mouseClicked(x, y, button);
+        return;
+      }
+      for(VScrollbarEIO vs : scrollbars) {
+        if(vs.mouseClicked(x, y, button)) {
+          draggingScrollbar = vs;
+          return;
+        }
+      }
+    }
     if(!ghostSlots.isEmpty()) {
       GhostSlot slot = getGhostSlot(x, y);
       if(slot != null) {
@@ -178,6 +197,32 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super.mouseClicked(x, y, button);
   }
 
+  @Override
+  protected void mouseMovedOrUp(int x, int y, int button) {
+    if(draggingScrollbar != null) {
+      draggingScrollbar.mouseMovedOrUp(x, y, button);
+      draggingScrollbar = null;
+    }
+    super.mouseMovedOrUp(x, y, button);
+  }
+
+  @Override
+  protected void mouseClickMove(int x, int y, int button, long time) {
+    if(draggingScrollbar != null) {
+      draggingScrollbar.mouseClickMove(x, y, button, time);
+      return;
+    }
+    super.mouseClickMove(x, y, button, time);
+  }
+
+  protected void mouseWheel(int x, int y, int delta) {
+    if(!scrollbars.isEmpty()) {
+      for(VScrollbarEIO vs : scrollbars) {
+        vs.mouseWheel(x, y, delta);
+      }
+    }
+  }
+
   protected void actionPerformedButton(IconButtonEIO btn, int mouseButton) {
     actionPerformed(btn);
   }
@@ -188,6 +233,18 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   public void removeOverlay(IGuiOverlay overlay) {
     overlays.remove(overlay);
+  }
+
+  public void addScrollbar(VScrollbarEIO vs) {
+    scrollbars.add(vs);
+    vs.adjustPosition();
+  }
+
+  public void removeScrollbar(VScrollbarEIO vs) {
+    scrollbars.remove(vs);
+    if(draggingScrollbar == vs) {
+      draggingScrollbar = null;
+    }
   }
 
   private int realMx, realMy;
@@ -217,6 +274,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     for (GuiTextField f : textFields) {
       f.drawTextBox();
     }
+    if(!scrollbars.isEmpty()) {
+      for(VScrollbarEIO vs : scrollbars) {
+        vs.drawScrollbar(mouseX, mouseY);
+      }
+    }
     drawGhostSlots(mouseX, mouseY);
   }
 
@@ -235,14 +297,16 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     super.drawScreen(mx, my, par3);
 
-    if(hoverGhostSlot != null && mc.thePlayer.inventory.getItemStack() == null) {
-      ItemStack stack = hoverGhostSlot.getStack();
-      if(stack != null) {
-        renderToolTip(stack, par1, par2);
+    if(draggingScrollbar == null) {
+      if(hoverGhostSlot != null && mc.thePlayer.inventory.getItemStack() == null) {
+        ItemStack stack = hoverGhostSlot.getStack();
+        if(stack != null) {
+          renderToolTip(stack, par1, par2);
+        }
       }
-    }
 
-    ttMan.drawTooltips(this, par1, par2);
+      ttMan.drawTooltips(this, par1, par2);
+    }
   }
 
   // copied from super with hate
