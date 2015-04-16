@@ -20,10 +20,10 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -59,7 +59,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private GuiToolTip[] filterToolTips;
 
   private boolean inOutShowIn = true;
-  private IconButtonEIO inOutNextB;
+  private MultiIconButtonEIO inOutNextB;
   private IconButtonEIO whiteListB;
 
   protected LiquidSettings(final GuiExternalConnection gui, IConduit con) {
@@ -73,8 +73,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       int x = gui.getXSize() - 20;
       int y = customTop;
 
-      inOutNextB = new ArrowButton(gui, NEXT_FILTER_ID, x, y, true);
-      inOutNextB.setSize(8, 16);
+      inOutNextB = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
       x = filterX - 20;
       y = filterY + 1;

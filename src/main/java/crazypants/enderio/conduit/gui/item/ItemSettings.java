@@ -21,10 +21,9 @@ import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ColorButton;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
@@ -55,13 +54,13 @@ public class ItemSettings extends BaseSettingsPanel {
   private String inputHeading;
   private String outputHeading;
 
-  private final IconButtonEIO nextFilterB;
+  private final MultiIconButtonEIO nextFilterB;
 
   private final ToggleButtonEIO loopB;
   private final ToggleButtonEIO roundRobinB;
 
-  private final IconButtonEIO priUpB;
-  private final IconButtonEIO priDownB;
+  private final MultiIconButtonEIO priUpB;
+  private final MultiIconButtonEIO priDownB;
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
@@ -91,8 +90,7 @@ public class ItemSettings extends BaseSettingsPanel {
     int x = 52;
     int y = customTop;
 
-    nextFilterB = new ArrowButton(gui, NEXT_FILTER_ID, x, y, true);
-    nextFilterB.setSize(8, 16);
+    nextFilterB = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
     x = 66;    
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
@@ -143,12 +141,10 @@ public class ItemSettings extends BaseSettingsPanel {
     priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), Lang.localize("gui.conduit.item.priority"));
     
     x = priLeft + priWidth + 9;    
-    priUpB = new IconButtonEIO(gui, ID_PRIORITY_UP, x, y, IconEIO.ADD_BUT);
-    priUpB.setSize(8, 8);
+    priUpB = MultiIconButtonEIO.createAddButton(gui, ID_PRIORITY_UP, x, y);
 
     y += 8;
-    priDownB = new IconButtonEIO(gui, ID_PRIORITY_DOWN, x, y, IconEIO.MINUS_BUT);
-    priDownB.setSize(8, 8);
+    priDownB = MultiIconButtonEIO.createMinusButton(gui, ID_PRIORITY_DOWN, x, y);
 
     gui.getContainer().addFilterListener(new FilterChangeListener() {
       @Override

@@ -11,10 +11,9 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
-import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ITabPanel;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.Lang;
@@ -29,8 +28,8 @@ public class BaseSettingsPanel implements ITabPanel {
   protected final IConduit con;
   protected final String typeName;
 
-  protected IconButtonEIO leftArrow;
-  protected IconButtonEIO rightArrow;
+  protected MultiIconButtonEIO leftArrow;
+  protected MultiIconButtonEIO rightArrow;
   protected String modeLabel;
 
   protected int left = 0;
@@ -54,12 +53,10 @@ public class BaseSettingsPanel implements ITabPanel {
     int x = gap * 3 + fr.getStringWidth(modeLabel);
     int y = 8;// + fr.FONT_HEIGHT;
 
-    leftArrow = new ArrowButton(gui, PREV_MODE_B, x, y, false);
-    leftArrow.setSize(8, 16);
+    leftArrow = MultiIconButtonEIO.createLeftArrowButton(gui, PREV_MODE_B, x, y);
 
     x += leftArrow.getWidth() + gap + getLongestModeStringWidth() + gap;
-    rightArrow = new ArrowButton(gui, NEXT_MODE_B, x, y, true);
-    rightArrow.setSize(8, 16);
+    rightArrow = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_MODE_B, x, y);
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
     customTop -= 16;
@@ -89,6 +86,7 @@ public class BaseSettingsPanel implements ITabPanel {
   public void deactivate() {
   }
   
+  @Override
   public void mouseClicked(int x, int y, int par3) {    
   }
 
