@@ -99,6 +99,7 @@ public final class Config {
   public static File configDirectory;
 
   public static boolean useHardRecipes = false;
+  public static boolean allowExternalTickSpeedup = true;
 
   public static boolean useSteelInChassi = false;
 
@@ -566,6 +567,11 @@ public final class Config {
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
     transceiverUseEasyRecipe= config.get(sectionRecipe.name, "transceiverUseEasyRecipe", transceiverUseEasyRecipe, "When enabled the dim trans. will use a cheaper recipe")
         .getBoolean(useHardRecipes);
+
+    allowExternalTickSpeedup = config.get(sectionMisc.name, "allowExternalTickSpeedup", allowExternalTickSpeedup,
+        "Allows machines to run faster if another mod speeds up the tickrate. Running at higher tickrates is "
+            + "unsupported. Disable this if you run into any kind of problem.")
+        .getBoolean(allowExternalTickSpeedup);
 
     enchanterBaseLevelCost = config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
         "Base level cost added to all recipes in the enchanter.").getInt(enchanterBaseLevelCost);
