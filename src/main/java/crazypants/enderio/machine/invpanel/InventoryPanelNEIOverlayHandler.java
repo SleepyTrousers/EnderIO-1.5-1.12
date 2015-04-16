@@ -39,7 +39,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
     LayoutManager.overlayRenderer = new DefaultOverlayRenderer(ingredients, positioner);
 
     if(shift) {
-      shift = clearIngredients(guiInvPanel);
+      shift = guiInvPanel.getContainer().clearCraftingGrid();
     }
 
     PositionedStack[] slots = mapSlots(ingredients, guiInvPanel.getContainer());
@@ -52,18 +52,6 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
     } else {
       guiInvPanel.setCraftingHelper(null);
     }
-  }
-
-  private boolean clearIngredients(GuiInventoryPanel gui) {
-    InventoryPanelContainer c = gui.getContainer();
-    for(Slot slot : c.getCraftingGridSlots()) {
-      if(slot.getHasStack()) {
-        c.moveItemsToReturnArea(slot.slotNumber);
-        if(slot.getHasStack())
-          return false;
-      }
-    }
-    return true;
   }
 
   private PositionedStack[] mapSlots(List<PositionedStack> ingredients, InventoryPanelContainer c) {

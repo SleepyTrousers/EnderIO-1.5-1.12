@@ -212,6 +212,19 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     return !(slot instanceof SlotCrafting) && super.func_94530_a(par1, slot);
   }
 
+  public boolean clearCraftingGrid() {
+    boolean cleared = true;
+    for(Slot slot : getCraftingGridSlots()) {
+      if(slot.getHasStack()) {
+        moveItemsToReturnArea(slot.slotNumber);
+        if(slot.getHasStack()) {
+          cleared = false;
+        }
+      }
+    }
+    return cleared;
+  }
+
   @Override
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
     if(slotIndex == indexCraftingSlot) {

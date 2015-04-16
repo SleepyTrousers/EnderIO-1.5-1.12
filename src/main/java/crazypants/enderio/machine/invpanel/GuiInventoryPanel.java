@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
@@ -33,6 +34,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
 
   private static final int ID_SORT = 9876;
+  private static final int ID_CLEAR = 9877;
 
   private static final int GHOST_COLUMNS = 6;
   private static final int GHOST_ROWS    = 5;
@@ -41,6 +43,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final IconButtonEIO btnSort;
   private final GuiToolTip ttRefill;
   private final VScrollbarEIO scrollbar;
+  private final MultiIconButtonEIO btnClear;
 
   private int scrollPos;
 
@@ -69,6 +72,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     tfFilter.setEnableBackgroundDrawing(false);
     btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon());
     scrollbar = new VScrollbarEIO(this, 215, 27, 90);
+    btnClear = new MultiIconButtonEIO(this, ID_CLEAR, 65, 60, IconEIO.X_BUT, IconEIO.X_BUT_PRESSED, IconEIO.X_BUT_HOVER);
 
     textFields.add(tfFilter);
 
@@ -82,7 +86,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
     addToolTip(new GuiToolTip(new Rectangle(6, 72, 5*18, 8), list));
 
-    list = new ArrayList<String>();
+    list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
     addToolTip(new GuiToolTip(new Rectangle(InventoryPanelContainer.FILTER_SLOT_X, InventoryPanelContainer.FILTER_SLOT_Y, 16, 16), list) {
       @Override
@@ -91,11 +95,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
     });
 
-    list = new ArrayList<String>();
+    list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.refill.line");
     ttRefill = new GuiToolTip(btnRefill, list);
     ttRefill.setVisible(false);
     addToolTip(ttRefill);
+
+    list.clear();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
+    btnClear.setToolTip(list.toArray(new String[list.size()]));
   }
 
   public void setCraftingHelper(ICraftingHelper craftingHelper) {
@@ -108,6 +116,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.initGui();
     updateSortButton();
     btnSort.onGuiInit();
+    btnClear.onGuiInit();
     addScrollbar(scrollbar);
   }
 
@@ -116,6 +125,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.actionPerformed(b);
     if(b.id == ID_SORT) {
       toggleSortOrder();
+    }
+    if(b.id == ID_CLEAR) {
+      getContainer().clearCraftingGrid();
     }
   }
 

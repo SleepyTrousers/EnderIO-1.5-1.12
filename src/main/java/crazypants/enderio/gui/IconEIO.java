@@ -111,6 +111,11 @@ public final class IconEIO {
   public static final IconEIO MINUS_BUT_HOVER = new IconEIO(208, 56, 8, 8);
   public static final IconEIO MINUS_BUT_HOVER_PRESSED = new IconEIO(216, 56, 8, 8);
 
+  public static final IconEIO X_BUT = new IconEIO(200, 32, 8, 8);
+  public static final IconEIO X_BUT_PRESSED = new IconEIO(200, 40, 8, 8);
+  public static final IconEIO X_BUT_HOVER = new IconEIO(200, 48, 8, 8);
+  public static final IconEIO X_BUT_HOVER_PRESSED = new IconEIO(200, 56, 8, 8);
+
   public static final IconEIO UP_ARROW_OFF         = new IconEIO(201, 64, 11, 8);
   public static final IconEIO UP_ARROW_ON          = new IconEIO(212, 64, 11, 8);
   public static final IconEIO UP_ARROW_HOVER_OFF   = new IconEIO(234, 64, 11, 8);
