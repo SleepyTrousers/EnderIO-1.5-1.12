@@ -11,7 +11,7 @@ public class ItemEntryBase {
   public final int meta;
   public final NBTTagCompound nbt;
 
-  ItemEntryBase(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
+  protected ItemEntryBase(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
     this.dbID = dbID;
     this.hash = hash;
     this.itemID = itemID;

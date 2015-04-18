@@ -4,6 +4,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 import io.netty.buffer.ByteBuf;
@@ -21,7 +23,7 @@ public class PacketItemInfo extends MessageTileEntity<TileInventoryPanel> implem
   public PacketItemInfo() {
   }
 
-  public PacketItemInfo(TileInventoryPanel tile, List<InventoryDatabaseServer.ItemEntry> items) {
+  public PacketItemInfo(TileInventoryPanel tile, List<ItemEntry> items) {
     super(tile);
     try {
       compressed = tile.getDatabaseServer().compressItemInfo(items);

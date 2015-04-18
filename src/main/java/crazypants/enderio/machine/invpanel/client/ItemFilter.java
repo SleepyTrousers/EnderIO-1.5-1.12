@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.invpanel;
+package crazypants.enderio.machine.invpanel.client;
 
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ public abstract class ItemFilter {
 
   private static final Pattern SPLIT_PATTERN = Pattern.compile("\\s+");
 
-  public abstract boolean matches(InventoryDatabaseClient.ItemEntry entry);
+  public abstract boolean matches(ItemEntry entry);
 
   public static ItemFilter parse(String filter, Locale locale, IItemFilter filterCard) {
     ArrayList<ItemFilter> list = new ArrayList<ItemFilter>();
@@ -47,7 +47,7 @@ public abstract class ItemFilter {
     }
 
     @Override
-    public boolean matches(InventoryDatabaseClient.ItemEntry entry) {
+    public boolean matches(ItemEntry entry) {
       for(ItemFilter f : list) {
         if(!f.matches(entry)) {
           return false;
@@ -72,7 +72,7 @@ public abstract class ItemFilter {
     }
 
     @Override
-    public boolean matches(InventoryDatabaseClient.ItemEntry entry) {
+    public boolean matches(ItemEntry entry) {
       return entry.getModId().toLowerCase(locale).contains(text);
     }
 
@@ -92,7 +92,7 @@ public abstract class ItemFilter {
     }
 
     @Override
-    public boolean matches(InventoryDatabaseClient.ItemEntry entry) {
+    public boolean matches(ItemEntry entry) {
       return entry.getLowercaseUnlocName(locale).contains(text);
     }
 
@@ -109,7 +109,7 @@ public abstract class ItemFilter {
     }
 
     @Override
-    public boolean matches(InventoryDatabaseClient.ItemEntry entry) {
+    public boolean matches(ItemEntry entry) {
       return filter.doesItemPassFilter(null, entry.makeItemStack());
     }
   }

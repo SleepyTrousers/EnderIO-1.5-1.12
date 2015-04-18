@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.invpanel;
 
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.CompressedDataOutput;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
@@ -60,7 +62,7 @@ public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPa
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       InventoryDatabaseServer db = teInvPanel.getDatabaseServer();
       try {
-        List<InventoryDatabaseServer.ItemEntry> items = db.decompressMissingItems(message.compressed);
+        List<ItemEntry> items = db.decompressMissingItems(message.compressed);
         if(!items.isEmpty()) {
           PacketHandler.sendTo(new PacketItemInfo(teInvPanel, items), player);
         }

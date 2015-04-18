@@ -9,6 +9,10 @@ import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
+import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.client.ItemEntry;
+import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
 import crazypants.gui.GuiToolTip;
@@ -338,7 +342,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   class InvSlot extends GhostSlot {
-    InventoryDatabaseClient.ItemEntry entry;
+    ItemEntry entry;
 
     InvSlot(int x, int y) {
       this.x = x;

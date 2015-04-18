@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
+import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;

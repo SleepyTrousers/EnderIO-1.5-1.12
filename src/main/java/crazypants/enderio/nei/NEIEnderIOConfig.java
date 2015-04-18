@@ -8,7 +8,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
-import crazypants.enderio.machine.invpanel.InventoryPanelNEIOverlayHandler;
+import crazypants.enderio.machine.invpanel.client.InventoryPanelNEIOverlayHandler;
 import crazypants.enderio.machine.painter.PainterUtil;
 
 public class NEIEnderIOConfig implements IConfigureNEI {

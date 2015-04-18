@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.invpanel;
+package crazypants.enderio.machine.invpanel.client;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.nei.LayoutManager;
@@ -8,6 +8,9 @@ import codechicken.nei.api.DefaultOverlayRenderer;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IStackPositioner;
 import codechicken.nei.recipe.IRecipeHandler;
+import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
+import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
+import crazypants.enderio.machine.invpanel.PacketFetchItem;
 import crazypants.enderio.network.PacketHandler;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -243,7 +246,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
   static class Candidate {
     final ItemStack stack;
     final ArrayList<Slot> sourceSlots = new ArrayList<Slot>();
-    InventoryDatabaseClient.ItemEntry entry;
+    ItemEntry entry;
     int available;
     int used;
 

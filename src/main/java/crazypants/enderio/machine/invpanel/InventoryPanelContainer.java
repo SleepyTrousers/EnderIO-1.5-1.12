@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.invpanel;
 
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import cpw.mods.fml.common.FMLCommonHandler;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.invpanel.server.ChangeLog;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.ItemUtil;
 import java.awt.Point;
@@ -27,7 +29,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
-public class InventoryPanelContainer extends AbstractMachineContainer implements InventoryDatabaseServer.ChangeLog {
+public class InventoryPanelContainer extends AbstractMachineContainer implements ChangeLog {
 
   public static final int CRAFTING_GRID_X = 7;
   public static final int CRAFTING_GRID_Y = 16;
@@ -38,7 +40,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   public static final int FILTER_SLOT_X = 233;
   public static final int FILTER_SLOT_Y = 7;
 
-  private final HashSet<InventoryDatabaseServer.ItemEntry> changedItems;
+  private final HashSet<ItemEntry> changedItems;
 
   private Slot slotFilter;
 
@@ -57,7 +59,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     if(te.getWorldObj().isRemote) {
       changedItems = null;
     } else {
-      changedItems = new HashSet<InventoryDatabaseServer.ItemEntry>();
+      changedItems = new HashSet<ItemEntry>();
     }
   }
 
@@ -243,7 +245,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   }
 
   @Override
-  public void entryChanged(InventoryDatabaseServer.ItemEntry entry) {
+  public void entryChanged(ItemEntry entry) {
     changedItems.add(entry);
   }
 
@@ -284,7 +286,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   public void executeFetchItems(EntityPlayerMP player, int dbID, int targetSlot, int count) {
     InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
-    InventoryDatabaseServer.ItemEntry entry = db.getExistingItem(dbID);
+    ItemEntry entry = db.getExistingItem(dbID);
     if(entry != null) {
       ItemStack targetStack;
       Slot slot;

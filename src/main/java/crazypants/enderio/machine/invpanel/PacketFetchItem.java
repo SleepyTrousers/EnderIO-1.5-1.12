@@ -3,6 +3,7 @@ package crazypants.enderio.machine.invpanel;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -15,7 +16,7 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
   public PacketFetchItem() {
   }
 
-  public PacketFetchItem(InventoryDatabaseClient.ItemEntry entry, int targetSlot, int count) {
+  public PacketFetchItem(ItemEntry entry, int targetSlot, int count) {
     this.dbID = entry.dbID;
     this.targetSlot = targetSlot;
     this.count = count;
