@@ -1,56 +1,43 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
-import crazypants.enderio.machine.invpanel.PacketRequestMissingItems;
-import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.network.CompressedDataInput;
-import crazypants.enderio.network.PacketHandler;
 import java.io.IOException;
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
 
-  private final TileInventoryPanel te;
   private final ArrayList<ItemEntry> clientItems;
-  private final ArrayList<ItemEntry> filteredItems;
   private final HashSet<Integer> requestedItems;
 
-  private SortOrder order = SortOrder.NAME;
-  private boolean invertSortOrder;
-  private boolean needsSorting;
-  private IItemFilter itemFilter;
-  private String currentFilter;
-  private boolean needsFiltering;
-  private boolean needsNewFiltering;
-  private Locale locale;
-  private Collator collator;
+  private int itemsChangeCount;
+  private int countChangeCount;
 
-  public InventoryDatabaseClient(TileInventoryPanel te) {
-    this.te = te;
+  InventoryDatabaseClient(int generation) {
+    this.generation = generation;
     clientItems = new ArrayList<ItemEntry>();
-    filteredItems = new ArrayList<ItemEntry>();
     requestedItems = new HashSet<Integer>();
-    currentFilter = "";
+  }
+
+  public int getItemsChangeCount() {
+    return itemsChangeCount;
+  }
+
+  public int getCountChangeCount() {
+    return countChangeCount;
+  }
+
+  public void getItems(List<ItemEntry> outList) {
+    outList.addAll(clientItems);
   }
 
   public void readCompressedItems(byte[] compressed) throws IOException {
     CompressedDataInput cdi = new CompressedDataInput(compressed);
     try {
-      int pktGeneration = cdi.readVariable();
-      if(pktGeneration != generation) {
-        return;
-      }
       int numEntries = cdi.readVariable();
       for(int i=0 ; i<numEntries ; i++) {
         int code = cdi.readVariable();
@@ -79,27 +66,19 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
         int count = cdi.readVariable();
         setItemCount(entry, count);
       }
-      needsSorting = true;
-      needsFiltering = true;
-      needsNewFiltering = true;
+      itemsChangeCount++;
+      countChangeCount++;
     } finally {
       cdi.close();
     }
   }
 
-  public void readCompressedItemList(byte[] compressed) throws IOException {
+  public List<Integer> readCompressedItemList(byte[] compressed) throws IOException {
     CompressedDataInput cdi = new CompressedDataInput(compressed);
     try {
-      int pktGeneration = cdi.readVariable();
-      int changed = cdi.readVariable();
-
       List<Integer> missingItems = null;
-
+      int changed = cdi.readVariable();
       if(changed > 0) {
-        if(pktGeneration != generation) {
-          return;
-        }
-
         for(int i = 0; i < changed; i++) {
           int dbID = cdi.readVariable();
           int count = cdi.readVariable();
@@ -111,15 +90,12 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
           }
         }
 
-        if(order == SortOrder.COUNT) {
-          needsSorting = true;
-        }
+        countChangeCount++;
       } else {
         for(ItemEntry entry : clientItems) {
           entry.count = 0;
         }
         clientItems.clear();
-        generation = pktGeneration;
 
         int count = cdi.readVariable();
         while(count > 0) {
@@ -143,14 +119,11 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
           }
           count = cdi.readVariable();
         }
-        needsSorting = true;
-        needsFiltering = true;
-        needsNewFiltering = true;
+        itemsChangeCount++;
+        countChangeCount++;
       }
 
-      if(missingItems != null) {
-        PacketHandler.INSTANCE.sendToServer(new PacketRequestMissingItems(te, missingItems));
-      }
+      return missingItems;
     } finally {
       cdi.close();
     }
@@ -159,12 +132,10 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
   private void setItemCount(ItemEntry entry, int count) {
     if(entry.count == 0 && count > 0) {
       clientItems.add(entry);
-      needsFiltering = true;
-      needsNewFiltering = true;
+      itemsChangeCount++;
     } else if(entry.count > 0 && count == 0) {
       clientItems.remove(entry);
-      needsFiltering = true;
-      needsNewFiltering = true;
+      itemsChangeCount++;
     }
     entry.count = count;
   }
@@ -178,110 +149,6 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
       requestedItems.add(dbId);
     }
     return list;
-  }
-
-  private Locale getLocale() {
-    if(locale == null) {
-      String langCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
-      locale = Locale.forLanguageTag(langCode);
-    }
-    return locale;
-  }
-
-  private Collator getCollator() {
-    if(collator == null) {
-      collator = Collator.getInstance(getLocale());
-    }
-    return collator;
-  }
-
-  public void setSortOrder(SortOrder order, boolean invert) {
-    if(this.order != order || this.invertSortOrder != invert) {
-      this.order = order;
-      this.invertSortOrder = invert;
-      this.needsSorting = true;
-    }
-  }
-
-  public void setItemFilter(IItemFilter itemFilter) {
-    if(this.itemFilter != itemFilter) {
-      this.itemFilter = itemFilter;
-      needsNewFiltering = true;
-      needsFiltering = true;
-    }
-  }
-
-  public void updateFilter(String newFilter) {
-    newFilter = newFilter.trim();
-
-    if(!currentFilter.equals(newFilter)) {
-      if(newFilter.length() < currentFilter.length() ||
-              !newFilter.regionMatches(0, currentFilter, 0, currentFilter.length())) {
-        needsNewFiltering = true;
-      }
-      needsFiltering = true;
-      currentFilter = newFilter;
-    }
-  }
-
-  public SortOrder getSortOrder() {
-    return order;
-  }
-
-  public boolean isSortOrderInverted() {
-    return invertSortOrder;
-  }
-
-  public boolean sortItems() {
-    boolean changed = false;
-
-    if(needsFiltering) {
-      if(needsNewFiltering) {
-        filteredItems.clear();
-        filteredItems.addAll(clientItems);
-        needsSorting = true;
-      }
-
-      ItemFilter filter = ItemFilter.parse(currentFilter, getLocale(), itemFilter);
-      System.out.println("filtering new="+needsNewFiltering+" currentFilter="+currentFilter+" parsed="+filter);
-      if(filter != null) {
-        Iterator<ItemEntry> iter = filteredItems.iterator();
-        while(iter.hasNext()) {
-          ItemEntry entry = iter.next();
-          if(!filter.matches(entry)) {
-            iter.remove();
-            changed = true;
-          }
-        }
-      }
-
-      needsFiltering = false;
-      needsNewFiltering = false;
-    }
-
-    if(needsSorting) {
-      Comparator<ItemEntry> cmp;
-      switch (order) {
-        case NAME: cmp = new NameComparator(getCollator()); break;
-        case MOD:  cmp = new ModComparator(getCollator()); break;
-        default:   cmp = CountComparator.INSTANCE;
-      }
-      if(invertSortOrder) {
-        cmp = Collections.reverseOrder(cmp);
-      }
-      Collections.sort(filteredItems, cmp);
-      changed = true;
-    }
-
-    return changed;
-  }
-
-  public int getNumEntries() {
-    return filteredItems.size();
-  }
-
-  public ItemEntry getItemEntry(int index) {
-    return filteredItems.get(index);
   }
 
   @Override

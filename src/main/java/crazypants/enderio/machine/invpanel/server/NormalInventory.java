@@ -12,13 +12,13 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  void scanInventory(InventoryDatabaseServer db, int aiIndex) {
+  int scanInventory(InventoryDatabaseServer db, int aiIndex) {
     ISidedInventory inv = ni.getInventoryRecheck();
     int side = ni.getInventorySide();
     int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
     if (slotIndices == null || slotIndices.length == 0) {
       setEmpty(db, aiIndex);
-      return;
+      return 0;
     }
     int count = slotIndices.length;
     if (count != slotItems.length) {
@@ -32,6 +32,7 @@ class NormalInventory extends AbstractInventory {
       }
       updateSlot(db, slot, aiIndex, stack);
     }
+    return count;
   }
 
   @Override

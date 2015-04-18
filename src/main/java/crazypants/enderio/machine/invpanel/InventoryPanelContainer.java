@@ -161,7 +161,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   private void removeChangeLog() {
     if(changedItems != null) {
-      getInventoryPanel().getDatabaseServer().removeChangeLog(this);
+      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+      if(db != null) {
+        db.removeChangeLog(this);
+      }
     }
   }
 
@@ -179,15 +182,17 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     super.addCraftingToCrafters(crafting);
     if(changedItems != null) {
       InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
-      db.addChangeLog(this);
-      if(crafting instanceof EntityPlayerMP) {
-        try {
-          byte[] compressed = db.compressItemList();
-          PacketItemList pil = new PacketItemList(getInventoryPanel(), compressed);
-          PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
-        } catch (IOException ex) {
-          Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
-                  "Exception while compressing item list", ex);
+      if(db != null) {
+        db.addChangeLog(this);
+        if(crafting instanceof EntityPlayerMP) {
+          try {
+            byte[] compressed = db.compressItemList();
+            PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
+            PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
+          } catch (IOException ex) {
+            Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
+                    "Exception while compressing item list", ex);
+          }
         }
       }
     }
@@ -252,23 +257,26 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   @Override
   public void databaseReset() {
     changedItems.clear();
+
   }
 
   @Override
   public void sendChangeLog() {
     if(!changedItems.isEmpty() && !crafters.isEmpty()) {
-      try {
-        InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
-        byte[] compressed = db.compressChangedItems(changedItems);
-        PacketItemList pil = new PacketItemList(getInventoryPanel(), compressed);
-        for(Object crafting : crafters) {
-          if(crafting instanceof EntityPlayerMP) {
-            PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
+      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+      if(db != null) {
+        try {
+          byte[] compressed = db.compressChangedItems(changedItems);
+          PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
+          for(Object crafting : crafters) {
+            if(crafting instanceof EntityPlayerMP) {
+              PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
+            }
           }
+        } catch (IOException ex) {
+          Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
+                  "Exception while compressing changed items", ex);
         }
-      } catch (IOException ex) {
-        Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
-                "Exception while compressing changed items", ex);
       }
     }
     changedItems.clear();
@@ -284,8 +292,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     return -1;
   }
 
-  public void executeFetchItems(EntityPlayerMP player, int dbID, int targetSlot, int count) {
+  public void executeFetchItems(EntityPlayerMP player, int generation, int dbID, int targetSlot, int count) {
     InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+    if(db == null || db.getGeneration() != generation || !db.isCurrent()) {
+      return;
+    }
     ItemEntry entry = db.getExistingItem(dbID);
     if(entry != null) {
       ItemStack targetStack;

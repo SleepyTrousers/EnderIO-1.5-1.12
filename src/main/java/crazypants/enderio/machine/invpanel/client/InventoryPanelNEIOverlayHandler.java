@@ -85,8 +85,14 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
     }
 
     @Override
+    public void remove() {
+      LayoutManager.overlayRenderer = null;
+    }
+
+    @Override
     public void refill(GuiInventoryPanel gui, int amount) {
       InventoryPanelContainer container = gui.getContainer();
+      InventoryDatabaseClient db = gui.getDatabase();
       List<Slot> craftingGrid = container.getCraftingGridSlots();
       int slotsToProcess = (1<<9)-1;
       boolean madeProgress;
@@ -108,9 +114,9 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
                 if(!isStackCompatible(pstack, stack)) {
                   return;
                 }
-                candidate = findCandidates(stack, gui, candidates);
+                candidate = findCandidates(stack, gui, db, candidates);
               } else {
-                candidate = findAllCandidates(pstack, gui, candidates);
+                candidate = findAllCandidates(pstack, gui, db, candidates);
               }
 
               if(candidate == null) {
@@ -160,7 +166,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
               if(current < targetAmount) {
                 int toMove = Math.min(candidate.entry.getCount(), targetAmount - current);
                 System.out.println("fetching items from DB");
-                PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(candidate.entry, slot.slotNumber, toMove));
+                PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), candidate.entry, slot.slotNumber, toMove));
                 slotsToProcess &= ~mask;
                 current += toMove;
               }
@@ -188,11 +194,11 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
       return false;
     }
 
-    private Candidate findAllCandidates(PositionedStack pstack, GuiInventoryPanel gui, Candidate[] candidates) {
+    private Candidate findAllCandidates(PositionedStack pstack, GuiInventoryPanel gui, InventoryDatabaseClient db, Candidate[] candidates) {
       Candidate bestInventory = null;
       Candidate bestNetwork = null;
       for(ItemStack istack : pstack.items) {
-        Candidate candidate = findCandidates(istack, gui, candidates);
+        Candidate candidate = findCandidates(istack, gui, db, candidates);
         if(candidate.available > 0) {
           if(bestInventory == null || bestInventory.available < candidate.available) {
             bestInventory = candidate;
@@ -211,7 +217,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
       }
     }
 
-    private Candidate findCandidates(ItemStack stack, GuiInventoryPanel gui, Candidate[] candidates) {
+    private Candidate findCandidates(ItemStack stack, GuiInventoryPanel gui, InventoryDatabaseClient db, Candidate[] candidates) {
       for(Candidate candidate : candidates) {
         if(candidate != null && InventoryUtils.canStack(candidate.stack, stack)) {
           return candidate;
@@ -221,8 +227,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
       InventoryPanelContainer container = gui.getContainer();
       findCandidates(candidate, stack, container.getReturnAreaSlots());
       findCandidates(candidate, stack, container.getPlayerInventorySlots());
-      if(candidate.available == 0) {
-        InventoryDatabaseClient db = gui.getDatabase();
+      if(candidate.available == 0 && db != null) {
         candidate.entry = db.lookupItem(stack, null, false);
         System.out.println("Looked up DB entry: stack=" + stack + " entry="+candidate.entry);
         if(candidate.entry != null && candidate.entry.getCount() <= 0) {

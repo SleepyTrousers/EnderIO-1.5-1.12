@@ -63,7 +63,7 @@ abstract class AbstractInventory {
     }
   }
 
-  abstract void scanInventory(InventoryDatabaseServer db, int aiIndex);
+  abstract int scanInventory(InventoryDatabaseServer db, int aiIndex);
 
   abstract int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int aiIndex, int count);
 

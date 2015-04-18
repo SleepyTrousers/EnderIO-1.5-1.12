@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchItem, IMessage> {
 
+  private int generation;
   private int dbID;
   private int targetSlot;
   private int count;
@@ -16,7 +17,8 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
   public PacketFetchItem() {
   }
 
-  public PacketFetchItem(ItemEntry entry, int targetSlot, int count) {
+  public PacketFetchItem(int generation, ItemEntry entry, int targetSlot, int count) {
+    this.generation = generation;
     this.dbID = entry.dbID;
     this.targetSlot = targetSlot;
     this.count = count;
@@ -24,6 +26,7 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
 
   @Override
   public void fromBytes(ByteBuf bb) {
+    generation = bb.readInt();
     dbID = bb.readInt();
     targetSlot = bb.readShort();
     count = bb.readShort();
@@ -31,6 +34,7 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
 
   @Override
   public void toBytes(ByteBuf bb) {
+    bb.writeInt(generation);
     bb.writeInt(dbID);
     bb.writeShort(targetSlot);
     bb.writeShort(count);
@@ -41,7 +45,7 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
     if(player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      ipc.executeFetchItems(player, message.dbID, message.targetSlot, message.count);
+      ipc.executeFetchItems(player, message.generation, message.dbID, message.targetSlot, message.count);
     }
     return null;
   }

@@ -24,11 +24,12 @@ public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPa
   public PacketRequestMissingItems() {
   }
 
-  public PacketRequestMissingItems(TileInventoryPanel tile, List<Integer> missingIDs) {
+  public PacketRequestMissingItems(TileInventoryPanel tile, int generation, List<Integer> missingIDs) {
     super(tile);
     try {
       CompressedDataOutput cdo = new CompressedDataOutput();
       try {
+        cdo.writeVariable(generation);
         cdo.writeVariable(missingIDs.size());
         for(Integer id : missingIDs) {
           cdo.writeVariable(id - InventoryDatabase.COMPLEX_DBINDEX_START);
@@ -61,13 +62,15 @@ public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPa
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       InventoryDatabaseServer db = teInvPanel.getDatabaseServer();
-      try {
-        List<ItemEntry> items = db.decompressMissingItems(message.compressed);
-        if(!items.isEmpty()) {
-          PacketHandler.sendTo(new PacketItemInfo(teInvPanel, items), player);
+      if(db != null) {
+        try {
+          List<ItemEntry> items = db.decompressMissingItems(message.compressed);
+          if(!items.isEmpty()) {
+            PacketHandler.sendTo(new PacketItemInfo(teInvPanel, db, items), player);
+          }
+        } catch (IOException ex) {
+          Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading missing item IDs", ex);
         }
-      } catch (IOException ex) {
-        Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading missing item IDs", ex);
       }
     }
     return null;

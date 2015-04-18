@@ -30,6 +30,10 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     complexItems = new ArrayList<ItemEntry>();
   }
 
+  public int getGeneration() {
+    return generation;
+  }
+
   public ItemEntry lookupItem(ItemStack stack, ItemEntry hint, boolean create) {
     if(stack == null || stack.getItem() == null) {
       return null;

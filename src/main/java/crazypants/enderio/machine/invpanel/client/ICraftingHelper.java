@@ -4,6 +4,8 @@ import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 
 public interface ICraftingHelper {
 
+  void remove();
+
   void refill(GuiInventoryPanel gui, int amount);
 
 }

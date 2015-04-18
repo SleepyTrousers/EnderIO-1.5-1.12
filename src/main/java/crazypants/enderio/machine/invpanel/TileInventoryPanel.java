@@ -7,11 +7,10 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
-import java.util.List;
+import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,8 +27,6 @@ public class TileInventoryPanel extends AbstractMachineEntity {
   private InventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
-  private ItemConduitNetwork network;
-  private int networkChangeCount;
   private int numSources;
 
   public Container eventHandler;
@@ -40,16 +37,21 @@ public class TileInventoryPanel extends AbstractMachineEntity {
   }
 
   public InventoryDatabaseServer getDatabaseServer() {
-    if(dbServer == null) {
-      dbServer = new InventoryDatabaseServer();
-    }
     return dbServer;
   }
 
-  public InventoryDatabaseClient getDatabaseClient() {
-    if(dbClient == null) {
-      dbClient = new InventoryDatabaseClient(this);
+  public InventoryDatabaseClient getDatabaseClient(int generation) {
+    if(dbClient != null && dbClient.getGeneration() != generation) {
+      ClientDatabaseManager.INSTANCE.destroyDatabase(dbClient.getGeneration());
+      dbClient = null;
     }
+    if(dbClient == null) {
+      dbClient = ClientDatabaseManager.INSTANCE.getOrCreateDatabase(generation);
+    }
+    return dbClient;
+  }
+
+  public InventoryDatabaseClient getDatabaseClient() {
     return dbClient;
   }
 
@@ -109,12 +111,8 @@ public class TileInventoryPanel extends AbstractMachineEntity {
       return;
     }
 
-    if(shouldDoWorkThisTick(2)) {
+    if(shouldDoWorkThisTick(20)) {
       scanNetwork();
-    }
-
-    if(dbServer != null && shouldDoWorkThisTick(20)) {
-      dbServer.sendChangeLogs();
     }
 
     if(forceClientUpdate) {
@@ -127,44 +125,27 @@ public class TileInventoryPanel extends AbstractMachineEntity {
     ForgeDirection facingDir = getFacingDir();
     ForgeDirection backside = facingDir.getOpposite();
 
-    ItemConduit conduit = null;
     ItemConduitNetwork icn = null;
 
     TileEntity te = worldObj.getTileEntity(xCoord+backside.offsetX, yCoord+backside.offsetY, zCoord+backside.offsetZ);
     if(te instanceof TileConduitBundle) {
       TileConduitBundle teCB = (TileConduitBundle) te;
-      conduit = teCB.getConduit(ItemConduit.class);
+      ItemConduit conduit = teCB.getConduit(ItemConduit.class);
       if(conduit != null) {
         icn = (ItemConduitNetwork) conduit.getNetwork();
       }
     }
 
-    if(icn != network || (icn != null && icn.getChangeCount() != networkChangeCount)) {
-      updateNetwork(icn, conduit, facingDir);
-    }
-
-    if(dbServer != null) {
-      dbServer.scanNextInventory();
-    }
-  }
-
-  private void updateNetwork(ItemConduitNetwork icn, ItemConduit conduit, ForgeDirection facingDir) {
-    List<NetworkedInventory> sources = null;
-
     if(icn != null) {
-      networkChangeCount = icn.getChangeCount();
-      sources = icn.getInventoryPanelSources();
+      dbServer = icn.getDatabase();
+      dbServer.sendChangeLogs();
 
-      if(numSources != sources.size()) {
-        numSources = sources.size();
+      if(numSources != dbServer.getNumInventories()) {
+        numSources = dbServer.getNumInventories();
         forceClientUpdate = true;
       }
-    }
-
-    this.network = icn;
-
-    if(dbServer != null || sources != null) {
-      getDatabaseServer().setNetworkSources(sources);
+    } else {
+      dbServer = null;
     }
   }
 

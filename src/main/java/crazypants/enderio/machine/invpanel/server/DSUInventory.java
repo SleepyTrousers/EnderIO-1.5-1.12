@@ -11,12 +11,13 @@ class DSUInventory extends AbstractInventory {
   }
 
   @Override
-  public void scanInventory(InventoryDatabaseServer db, int aiIndex) {
+  public int scanInventory(InventoryDatabaseServer db, int aiIndex) {
     if (slotItems.length != 1) {
       reset(db, 1, aiIndex);
     }
     ItemStack stack = dsu.getStoredItemType();
     updateSlot(db, 0, aiIndex, stack);
+    return 1;
   }
 
   @Override

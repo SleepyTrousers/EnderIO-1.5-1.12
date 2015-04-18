@@ -9,6 +9,7 @@ import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.invpanel.client.DatabaseView;
 import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.client.ItemEntry;
@@ -43,6 +44,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final int GHOST_COLUMNS = 6;
   private static final int GHOST_ROWS    = 5;
 
+  private final DatabaseView view;
   private final TextFieldEIO tfFilter;
   private final IconButtonEIO btnSort;
   private final GuiToolTip ttRefill;
@@ -69,6 +71,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         ghostSlots.add(new InvSlot(108 + x*18, 28 + y*18));
       }
     }
+
+    this.view = new DatabaseView();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
@@ -131,7 +135,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       toggleSortOrder();
     }
     if(b.id == ID_CLEAR) {
-      getContainer().clearCraftingGrid();
+      if(getContainer().clearCraftingGrid()) {
+        if(craftingHelper != null) {
+          craftingHelper.remove();
+          craftingHelper = null;
+        }
+      }
     }
   }
 
@@ -158,12 +167,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
-    InventoryDatabaseClient db = getDatabase();
-    db.setItemFilter(getTileEntity().getItemFilter());
-    db.updateFilter(tfFilter.getText());
+    view.setDatabase(getDatabase());
+    view.setItemFilter(getTileEntity().getItemFilter());
+    view.updateFilter(tfFilter.getText());
 
-    boolean update = db.sortItems();
-    scrollbar.setScrollMax(Math.max(0, (getDatabase().getNumEntries()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS));
+    boolean update = view.sortItems();
+    scrollbar.setScrollMax(Math.max(0, (view.getNumEntries()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS));
     if(update || scrollPos != scrollbar.getScrollPos()) {
       updateGhostSlots();
     }
@@ -203,9 +212,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   private IconEIO getSortOrderIcon() {
-    InventoryDatabaseClient db = getDatabase();
-    SortOrder order = db.getSortOrder();
-    boolean invert = db.isSortOrderInverted();
+    SortOrder order = view.getSortOrder();
+    boolean invert = view.isSortOrderInverted();
     switch (order) {
       case NAME:  return invert ? IconEIO.SORT_NAME_UP : IconEIO.SORT_NAME_DOWN;
       case COUNT: return invert ? IconEIO.SORT_SIZE_UP : IconEIO.SORT_SIZE_DOWN;
@@ -215,22 +223,20 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   private void toggleSortOrder() {
-    InventoryDatabaseClient db = getDatabase();
-    SortOrder order = db.getSortOrder();
-    if(db.isSortOrderInverted()) {
+    SortOrder order = view.getSortOrder();
+    if(view.isSortOrderInverted()) {
       SortOrder[] values = SortOrder.values();
       order = values[(order.ordinal()+1) % values.length];
     }
-    db.setSortOrder(order, !db.isSortOrderInverted());
+    view.setSortOrder(order, !view.isSortOrderInverted());
     updateSortButton();
   }
 
   private void updateSortButton() {
-    InventoryDatabaseClient db = getDatabase();
-    SortOrder order = db.getSortOrder();
+    SortOrder order = view.getSortOrder();
     ArrayList<String> list = new ArrayList<String>();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.sort."
-            + order.name().toLowerCase(Locale.ENGLISH) + (db.isSortOrderInverted() ? "_up" : "_down") + ".line");
+            + order.name().toLowerCase(Locale.ENGLISH) + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
     btnSort.setIcon(getSortOrderIcon());
     btnSort.setToolTip(list.toArray(new String[list.size()]));
   }
@@ -238,13 +244,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private void updateGhostSlots() {
     scrollPos = scrollbar.getScrollPos();
     
-    InventoryDatabaseClient database = getDatabase();
     int index = scrollPos * GHOST_COLUMNS;
-    int count = database.getNumEntries();
+    int count = view.getNumEntries();
     for(int i = 0; i < GHOST_ROWS*GHOST_COLUMNS; i++,index++) {
       InvSlot slot = (InvSlot) ghostSlots.get(i);
       if(index < count) {
-        slot.entry = database.getItemEntry(index);
+        slot.entry = view.getItemEntry(index);
         slot.stack = slot.entry.makeItemStack();
       } else {
         slot.entry = null;
@@ -294,10 +299,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         scrollbar.scrollBy(-Integer.signum(delta));
       } else if(!shift && delta > 0 & (hoverGhostSlot instanceof InvSlot)) {
         InvSlot invSlot = (InvSlot) hoverGhostSlot;
-        if(invSlot.stack != null && invSlot.entry != null) {
+        InventoryDatabaseClient db = getDatabase();
+        if(invSlot.stack != null && invSlot.entry != null && db != null) {
           ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
           if(itemStack == null || ItemUtil.areStackMergable(itemStack, hoverGhostSlot.stack)) {
-            PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(invSlot.entry, -1, 1));
+            PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
           }
         }
       }
@@ -308,7 +314,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   protected void ghostSlotClicked(GhostSlot slot, int x, int y, int button) {
     if(slot instanceof InvSlot) {
       InvSlot invSlot = (InvSlot) slot;
-      if(invSlot.entry != null && invSlot.stack != null) {
+      InventoryDatabaseClient db = getDatabase();
+      if(invSlot.entry != null && invSlot.stack != null && db != null) {
         int targetSlot;
         int count = Math.min(invSlot.stack.stackSize, invSlot.stack.getMaxStackSize());
 
@@ -336,7 +343,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           return;
         }
 
-        PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(invSlot.entry, targetSlot, count));
+        PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
       }
     }
   }

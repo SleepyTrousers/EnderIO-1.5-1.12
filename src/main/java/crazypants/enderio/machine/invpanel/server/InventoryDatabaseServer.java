@@ -1,25 +1,46 @@
 package crazypants.enderio.machine.invpanel.server;
 
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
+import crazypants.enderio.machine.invpanel.PacketDatabaseReset;
 import crazypants.enderio.network.CompressedDataInput;
 import crazypants.enderio.network.CompressedDataOutput;
+import crazypants.enderio.network.PacketHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
+  private static final AtomicInteger nextGeneration = new AtomicInteger();
+
+  private final ItemConduitNetwork network;
+  private int networkChangeCount;
+
   private AbstractInventory[] inventories;
   private int currentInventory;
   private ChangeLog changeLog;
+  private boolean sentToClient;
+  private int tickPause;
 
-  public InventoryDatabaseServer() {
+  public InventoryDatabaseServer(ItemConduitNetwork network) {
+    this.network = network;
+  }
+
+  public ItemConduitNetwork getNetwork() {
+    return network;
+  }
+
+  public boolean isCurrent() {
+    return networkChangeCount == network.getChangeCount();
   }
 
   public void addChangeLog(ChangeLog cl) {
@@ -43,6 +64,10 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
   public List<ItemEntry> decompressMissingItems(byte[] compressed) throws IOException {
     CompressedDataInput cdi = new CompressedDataInput(compressed);
     try {
+      int pktGeneration = cdi.readVariable();
+      if(pktGeneration != generation) {
+        return Collections.emptyList();
+      }
       int numIDs = cdi.readVariable();
       ArrayList<ItemEntry> items = new ArrayList<ItemEntry>(numIDs);
       for(int i = 0; i < numIDs; i++) {
@@ -62,7 +87,6 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     CompressedDataOutput cdo = new CompressedDataOutput();
     try {
       int count = items.size();
-      cdo.writeVariable(generation);
       cdo.writeVariable(count);
       for(ItemEntry entry : items) {
         assert entry.dbID >= COMPLEX_DBINDEX_START;
@@ -87,7 +111,6 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
   public byte[] compressItemList() throws IOException {
     CompressedDataOutput cdo = new CompressedDataOutput();
     try {
-      cdo.writeVariable(generation);
       cdo.writeByte(0);
       for(Map.Entry<Integer, ItemEntry> entry : simpleRegsitry.entrySet()) {
         int count = entry.getValue().countItems(this);
@@ -109,6 +132,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
         }
       }
       cdo.writeByte(0);
+      sentToClient = true;
       return cdo.getCompressed();
     } finally {
       cdo.close();
@@ -118,7 +142,6 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
   public byte[] compressChangedItems(Collection<ItemEntry> items) throws IOException {
     CompressedDataOutput cdo = new CompressedDataOutput();
     try {
-      cdo.writeVariable(generation);
       cdo.writeVariable(items.size());
       for(ItemEntry entry : items) {
         cdo.writeVariable(entry.dbID);
@@ -130,13 +153,23 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     }
   }
 
-  public void setNetworkSources(List<NetworkedInventory> sources) {
+  public void resetDatabase() {
     simpleRegsitry.clear();
     complexRegistry.clear();
     complexItems.clear();
-    generation++;
     currentInventory = 0;
+    if(sentToClient) {
+      PacketHandler.INSTANCE.sendToAll(new PacketDatabaseReset(generation));
+      sentToClient = false;
+    }
+  }
 
+  public void updateNetworkSources() {
+    resetDatabase();
+    generation = nextGeneration.incrementAndGet();
+    networkChangeCount = network.getChangeCount();
+
+    List<NetworkedInventory> sources = network.getInventoryPanelSources();
     if(sources == null || sources.isEmpty()) {
       this.inventories = null;
     } else {
@@ -156,15 +189,27 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     }
   }
 
-  public void scanNextInventory() {
+  public int getNumInventories() {
+    return (inventories == null) ? 0 : inventories.length;
+  }
+
+  private void scanNextInventory() {
     if(inventories == null) {
+      tickPause = 20;
       return;
     }
 
     AbstractInventory inv = inventories[currentInventory];
-    inv.scanInventory(this, currentInventory);
+    int slots = inv.scanInventory(this, currentInventory);
 
     currentInventory = (currentInventory+1) % inventories.length;
+    tickPause += 1 + (slots + 8) / 9;
+  }
+
+  public void tick() {
+    if(--tickPause <= 0) {
+      scanNextInventory();
+    }
   }
 
   void entryChanged(ItemEntry entry) {
