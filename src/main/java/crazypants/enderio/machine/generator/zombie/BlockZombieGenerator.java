@@ -18,15 +18,11 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
   public static BlockZombieGenerator create() {
-
-    PacketHandler.INSTANCE.registerMessage(PacketZombieTank.class, PacketZombieTank.class, PacketHandler.nextID(), Side.CLIENT);
-
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();
     return gen;

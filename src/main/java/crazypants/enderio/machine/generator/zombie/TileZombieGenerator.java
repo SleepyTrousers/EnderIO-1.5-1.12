@@ -22,7 +22,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ITankAccess;
 
-public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
+public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
   private static int IO_MB_TICK = 250;
 
@@ -134,7 +134,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     }
 
     if(tanksDirty) {
-      PacketHandler.sendToAllAround(new PacketZombieTank(this), this);
+      PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
       tanksDirty = false;
     }
 
@@ -183,9 +183,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
-      return 0;
-    }
     int res = fuelTank.fill(resource, doFill);
     if(res > 0 && doFill) {
       tanksDirty = true;
@@ -205,7 +202,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return fluid != null && fluid.getID() == EnderIO.fluidNutrientDistillation.getID();
+    return fuelTank.canFill(fluid);
   }
 
   @Override
@@ -243,28 +240,13 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-
-    if(nbtRoot.hasKey("fuelTank")) {
-      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("fuelTank");
-      if(tankRoot != null) {
-        fuelTank.readFromNBT(tankRoot);
-      } else {
-        fuelTank.setFluid(null);
-      }
-    } else {
-      fuelTank.setFluid(null);
-    }
-
+    fuelTank.readCommon("fuelTank", nbtRoot);
   }
 
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
-    if(fuelTank.getFluidAmount() > 0) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      fuelTank.writeToNBT(tankRoot);
-      nbtRoot.setTag("fuelTank", tankRoot);
-    }
+    fuelTank.writeCommon("fuelTank", nbtRoot);
   }
 
   @Override
@@ -289,6 +271,11 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   @Override
   public void setTanksDirty() {
     tanksDirty = true;
+  }
+
+  @Override
+  public NutrientTank getNutrientTank() {
+    return fuelTank;
   }
 
 }

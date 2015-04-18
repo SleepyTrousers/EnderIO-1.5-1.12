@@ -154,6 +154,7 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.util.EntityUtil;
 import static crazypants.enderio.EnderIO.*;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
@@ -432,6 +433,8 @@ public class EnderIO {
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water);
+
+    PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
 
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);

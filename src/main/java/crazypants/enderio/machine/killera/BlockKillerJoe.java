@@ -23,7 +23,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   static final String USERNAME = "KillerJoe";
   
   public static BlockKillerJoe create() {
-    PacketHandler.INSTANCE.registerMessage(PacketNutrientLevel.class, PacketNutrientLevel.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);    
     PacketGivePlayerXP.register();
     PacketExperianceContainer.register();
