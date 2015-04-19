@@ -11,10 +11,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import org.lwjgl.input.Keyboard;
 
+import cofh.api.block.IDismantleable;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,11 +68,25 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
     Block block = world.getBlock(x, y, z);
-    if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
-      player.swingItem();
-      return !world.isRemote;
+    boolean ret = false;
+    if (block != null) {
+      PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, side, world);
+      if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.useBlock == Result.DENY || e.useItem == Result.DENY) {
+        return false;
+      }
+      if (player.isSneaking() && block instanceof IDismantleable && ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
+        if (!world.isRemote) {
+          ((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
+        }
+        ret = true;
+      } else if (block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        ret = true;
+      }
     }
-    return false;
+    if (ret) {
+      player.swingItem();
+    }
+    return ret && !world.isRemote;
   }
 
   @Override
