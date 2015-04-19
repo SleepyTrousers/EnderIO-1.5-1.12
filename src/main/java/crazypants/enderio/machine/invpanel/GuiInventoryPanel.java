@@ -2,12 +2,14 @@ package crazypants.enderio.machine.invpanel;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
+import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
 import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
@@ -24,11 +26,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Locale;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -112,6 +116,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
+
+    addToolTip(new GuiToolTip(new Rectangle(12, 132, 15, 47), "") {
+      @Override
+      protected void updateText() {
+        text.clear();
+        text.add(Lang.localize("gui.inventorypanel.tooltip.fuelTank"));
+        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
+      }
+    });
   }
 
   public void setCraftingHelper(ICraftingHelper craftingHelper) {
@@ -126,6 +139,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnSort.onGuiInit();
     btnClear.onGuiInit();
     addScrollbar(scrollbar);
+  }
+
+  @Override
+  protected void fixupGuiPosition() {
+    guiLeft = (width - 232) / 2;  // account for the tabs
   }
 
   @Override
@@ -165,10 +183,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     fr.drawString(headerReturn, sx+7, sy+72, headerColor);
     fr.drawString(headerInventory, sx+38, sy+120, headerColor);
 
+    TileInventoryPanel te = getTileEntity();
+    NutrientTank fuelTank = te.fuelTank;
+    if(fuelTank.getFluidAmount() > 0) {
+      RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx+12, sy+132, zLevel, 16, 47);
+    }
+
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
     view.setDatabase(getDatabase());
-    view.setItemFilter(getTileEntity().getItemFilter());
+    view.setItemFilter(te.getItemFilter());
     view.updateFilter(tfFilter.getText());
 
     boolean update = view.sortItems();
@@ -177,7 +201,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       updateGhostSlots();
     }
 
-    if(getTileEntity().isActive()) {
+    if(te.isActive()) {
       tfFilter.setEnabled(true);
       if(!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
         fr.drawString(infoTextFilter, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
@@ -281,6 +305,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     y -= guiTop;
 
     if(craftingHelper != null && btnRefill.contains(x, y)) {
+      mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
       craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
     }
   }

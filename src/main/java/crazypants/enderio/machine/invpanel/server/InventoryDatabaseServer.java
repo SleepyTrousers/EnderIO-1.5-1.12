@@ -2,8 +2,10 @@ package crazypants.enderio.machine.invpanel.server;
 
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
 import crazypants.enderio.machine.invpanel.PacketDatabaseReset;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.network.CompressedDataInput;
 import crazypants.enderio.network.CompressedDataOutput;
 import crazypants.enderio.network.PacketHandler;
@@ -30,6 +32,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
   private ChangeLog changeLog;
   private boolean sentToClient;
   private int tickPause;
+  private float power;
 
   public InventoryDatabaseServer(ItemConduitNetwork network) {
     this.network = network;
@@ -193,8 +196,39 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     return (inventories == null) ? 0 : inventories.length;
   }
 
+  public float getPower() {
+    return power;
+  }
+
+  public void addPower(float power) {
+    this.power += power;
+  }
+
+  public boolean isOperational() {
+    return power > 0 && inventories != null;
+  }
+
+  public int extractItems(ItemEntry entry, int count, TileInventoryPanel te) {
+    float availablePower = power + te.getAvailablePower();
+    availablePower -= Config.inventoryPanelExtractCostPerOperation;
+    if(availablePower <= 0) {
+      return 0;
+    }
+    if(Config.inventoryPanelExtractCostPerOperation > 0) {
+      long maxCount = Math.round(Math.floor(availablePower / Config.inventoryPanelExtractCostPerOperation));
+      count = (int)Math.min(maxCount, count);
+    }
+    if(count > 0) {
+      int extracted = entry.extractItems(this, count);
+      power -= Config.inventoryPanelExtractCostPerOperation + extracted * Config.inventoryPanelExtractCostPerOperation;
+      te.refuelPower(this);
+      return extracted;
+    }
+    return 0;
+  }
+
   private void scanNextInventory() {
-    if(inventories == null) {
+    if(!isOperational()) {
       tickPause = 20;
       return;
     }
@@ -204,6 +238,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
     currentInventory = (currentInventory+1) % inventories.length;
     tickPause += 1 + (slots + 8) / 9;
+    power -= slots * Config.inventoryPanelScanCostPerSlot;
   }
 
   public void tick() {

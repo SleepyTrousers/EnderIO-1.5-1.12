@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.invpanel;
 
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.ItemUtil;
@@ -293,7 +293,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   }
 
   public void executeFetchItems(EntityPlayerMP player, int generation, int dbID, int targetSlot, int count) {
-    InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+    TileInventoryPanel te = getInventoryPanel();
+    InventoryDatabaseServer db = te.getDatabaseServer();
     if(db == null || db.getGeneration() != generation || !db.isCurrent()) {
       return;
     }
@@ -329,7 +330,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
       count = Math.min(count, maxStackSize - targetStack.stackSize);
       if(count > 0) {
-        int extracted = entry.extractItems(db, count);
+        int extracted = db.extractItems(entry, count, te);
         if(extracted > 0) {
           targetStack.stackSize += extracted;
 

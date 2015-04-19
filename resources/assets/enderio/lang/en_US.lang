@@ -506,6 +506,7 @@ enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
 enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
 enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
 enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
+enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
 
 enderio.machine.tooltip.configured=(Configured)
 

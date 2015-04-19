@@ -8,32 +8,47 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
+import crazypants.enderio.machine.generator.zombie.NutrientTank;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.util.ITankAccess;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileInventoryPanel extends AbstractMachineEntity {
+public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
   public static final int SLOT_CRAFTING_START  = 0;
   public static final int SLOT_CRAFTING_RESULT = 9;
   public static final int SLOT_VIEW_FILTER     = 10;
   public static final int SLOT_RETURN_START    = 11;
 
+  protected final NutrientTank fuelTank;
+  protected boolean tanksDirty;
+
   private InventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
-  private int numSources;
+  private boolean active;
 
   public Container eventHandler;
   private IItemFilter itemFilter;
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
+    this.fuelTank = new NutrientTank(2000);
   }
 
   public InventoryDatabaseServer getDatabaseServer() {
@@ -101,7 +116,7 @@ public class TileInventoryPanel extends AbstractMachineEntity {
 
   @Override
   public boolean isActive() {
-    return numSources > 0;
+    return active;
   }
 
   @Override
@@ -118,6 +133,11 @@ public class TileInventoryPanel extends AbstractMachineEntity {
     if(forceClientUpdate) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       markDirty();
+    }
+
+    if(tanksDirty) {
+      tanksDirty = false;
+      PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
     }
   }
 
@@ -139,14 +159,40 @@ public class TileInventoryPanel extends AbstractMachineEntity {
     if(icn != null) {
       dbServer = icn.getDatabase();
       dbServer.sendChangeLogs();
+      refuelPower(dbServer);
 
-      if(numSources != dbServer.getNumInventories()) {
-        numSources = dbServer.getNumInventories();
+      if(active != dbServer.isOperational()) {
+        active = dbServer.isOperational();
         forceClientUpdate = true;
       }
     } else {
+      if(active) {
+        forceClientUpdate = true;
+      }
       dbServer = null;
+      active = false;
     }
+  }
+
+  public float getAvailablePower() {
+    return fuelTank.getFluidAmount() * Config.inventoryPanelPowerPerMB;
+  }
+
+  public void refuelPower(InventoryDatabaseServer db) {
+    float missingPower = Config.inventoryPanelPowerPerMB * 0.5f - db.getPower();
+    if(missingPower > 0) {
+      int amount = (int)Math.ceil(missingPower / Config.inventoryPanelPowerPerMB);
+      amount = Math.min(amount, fuelTank.getFluidAmount());
+      if(amount > 0) {
+        useNutrient(amount);
+        dbServer.addPower(amount * Config.inventoryPanelPowerPerMB);
+      }
+    }
+  }
+
+  public void useNutrient(int amount) {
+    fuelTank.drain(amount, true);
+    tanksDirty = true;
   }
 
   @Override
@@ -155,20 +201,101 @@ public class TileInventoryPanel extends AbstractMachineEntity {
   }
 
   @Override
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
+    fuelTank.writeCommon("fuelTank", nbtRoot);
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    fuelTank.readCommon("fuelTank", nbtRoot);
+  }
+
+  @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    numSources = nbtRoot.getInteger("numSources");
+    active = nbtRoot.getBoolean("active");
     updateItemFilter();
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
-    nbtRoot.setInteger("numSources", numSources);
+    nbtRoot.setBoolean("active", active);
   }
 
   @Override
   public String getMachineName() {
     return ModObject.blockInventoryPanel.unlocalisedName;
   }
+
+  private ForgeDirection getIODirection() {
+    return getFacingDir().getOpposite();
+  }
+
+  @Override
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    if(from != getIODirection()) {
+      return 0;
+    }
+    int res = fuelTank.fill(resource, doFill);
+    if(res > 0 && doFill) {
+      tanksDirty = true;
+    }
+    return res;
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    return null;
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    return null;
+  }
+
+  @Override
+  public boolean canFill(ForgeDirection from, Fluid fluid) {
+    return from == getIODirection() && fuelTank.canFill(fluid);
+  }
+
+  @Override
+  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    return false;
+  }
+
+  @Override
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    if(from == getIODirection()) {
+      return new FluidTankInfo[] { fuelTank.getInfo() };
+    } else {
+      return new FluidTankInfo[0];
+    }
+  }
+
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    if (forFluidType != null && fuelTank.canFill(forFluidType.getFluid())) {
+      return fuelTank;
+    }
+    return null;
+  }
+
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[0];
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tanksDirty = true;
+  }
+
+  @Override
+  public NutrientTank getNutrientTank() {
+    return fuelTank;
+  }
+
 }

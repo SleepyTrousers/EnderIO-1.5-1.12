@@ -54,12 +54,16 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public void initGui() {
     super.initGui();
+    fixupGuiPosition();
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
     }
     for (TextFieldEIO f : textFields) {
       f.init(this);
     }
+  }
+
+  protected void fixupGuiPosition() {
   }
 
   @Override

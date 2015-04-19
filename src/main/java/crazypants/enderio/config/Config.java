@@ -70,6 +70,7 @@ public final class Config {
   public static final Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final Section sectionWeather = new Section("Weather", "weather");
   public static final Section sectionTelepad = new Section("Telepad", "telepad");
+  public static final Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
   public static final Section sectionMisc = new Section("Misc", "misc");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
@@ -458,7 +459,12 @@ public final class Config {
 
   public static boolean telepadLockDimension = true;
   public static boolean telepadLockCoords = true;
-  
+
+  public static float inventoryPanelPowerPerMB = 800.0f;
+  public static float inventoryPanelScanCostPerSlot = 0.1f;
+  public static float inventoryPanelExtractCostPerItem = 3.0f;
+  public static float inventoryPanelExtractCostPerOperation = 10.0f;
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -1226,6 +1232,15 @@ public final class Config {
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
     telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
         "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
+
+    inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
+            "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
+    inventoryPanelScanCostPerSlot = config.getFloat("scanCostPerSlot", sectionInventoryPanel.name, inventoryPanelScanCostPerSlot, 0.0f, 10.0f,
+            "Internal power used for scanning a slot");
+    inventoryPanelExtractCostPerItem = config.getFloat("extractCostPerItem", sectionInventoryPanel.name, inventoryPanelExtractCostPerItem, 0.0f, 10.0f,
+            "Internal power used per item extracted (not a stack of items)");
+    inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f, 10000.0f,
+            "Internal power used per extract operation (independent of stack size)");
   }
 
   public static void init() {

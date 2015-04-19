@@ -32,7 +32,7 @@ public class ItemEntry extends ItemEntryBase {
     return count;
   }
 
-  public int extractItems(InventoryDatabaseServer db, int count) {
+  int extractItems(InventoryDatabaseServer db, int count) {
     int extracted = 0;
     Integer[] copy = slots.toArray(new Integer[slots.size()]);
     for (Integer idx : copy) {
