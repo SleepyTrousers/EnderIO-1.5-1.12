@@ -104,7 +104,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public void doUpdate() {
     updateArmSwingProgress();
     hooverXP();
-    if(worldObj != null && !worldObj.isRemote) {
+    if (!worldObj.isRemote) {
       getAttackera().onUpdate();
       if(inventory[0] != null != hadSword) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

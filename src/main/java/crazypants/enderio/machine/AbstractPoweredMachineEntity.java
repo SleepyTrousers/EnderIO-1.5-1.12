@@ -37,7 +37,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
     super.doUpdate();
 
-    if(worldObj == null || worldObj.isRemote) { // sanity check
+    if (worldObj.isRemote) {
       return;
     }
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));

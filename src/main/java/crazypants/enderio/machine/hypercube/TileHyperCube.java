@@ -240,9 +240,6 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
 
   @Override
   public void doUpdate() {
-    if(worldObj == null) { // sanity check
-      return;
-    }
     if(worldObj.isRemote) {
       return;
     } // else is server, do all logic only on the server

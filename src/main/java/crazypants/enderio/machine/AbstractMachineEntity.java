@@ -233,10 +233,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public void doUpdate() {    
-    if(worldObj == null) { // sanity check
-      return;
-    }
-
     if(worldObj.isRemote) {
       // check if the block on the client needs to update its texture
       if(isActive() != lastActive) {
