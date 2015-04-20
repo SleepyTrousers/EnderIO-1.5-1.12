@@ -32,12 +32,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
   @Override
   public void overlayRecipe(GuiContainer gui, IRecipeHandler recipe, int recipeIndex, boolean shift) {
     GuiInventoryPanel guiInvPanel = (GuiInventoryPanel) gui;
-    System.out.println("InventoryPanelNEIOverlayHandler.overlayRecipe " + recipe + " " + recipeIndex + " " + shift);
     List<PositionedStack> ingredients = recipe.getIngredientStacks(recipeIndex);
-
-    for(PositionedStack stack : ingredients) {
-      System.out.println("stack={x="+stack.relx+",y="+stack.rely+",item="+stack.item+"}");
-    }
 
     LayoutManager.overlayRenderer = new DefaultOverlayRenderer(ingredients, positioner);
 
@@ -165,7 +160,6 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
             if(candidate.entry != null) {
               if(current < targetAmount) {
                 int toMove = Math.min(candidate.entry.getCount(), targetAmount - current);
-                System.out.println("fetching items from DB");
                 PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), candidate.entry, slot.slotNumber, toMove));
                 slotsToProcess &= ~mask;
                 current += toMove;
@@ -229,7 +223,6 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
       findCandidates(candidate, stack, container.getPlayerInventorySlots());
       if(candidate.available == 0 && db != null) {
         candidate.entry = db.lookupItem(stack, null, false);
-        System.out.println("Looked up DB entry: stack=" + stack + " entry="+candidate.entry);
         if(candidate.entry != null && candidate.entry.getCount() <= 0) {
           candidate.entry = null;
         }

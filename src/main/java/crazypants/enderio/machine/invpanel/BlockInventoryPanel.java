@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ClientProxy;
@@ -7,12 +14,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
-import java.util.Random;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
@@ -64,35 +65,35 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   public void setBlockBoundsForItemRender() {
-    setBlockBounds(0.0f, 0.0f, 0.5f-BLOCK_SIZE/2, 1.0f, 1.0f, 0.5f+BLOCK_SIZE/2);
+    setBlockBounds(0.0f, 0.0f, 0.5f - BLOCK_SIZE / 2, 1.0f, 1.0f, 0.5f + BLOCK_SIZE / 2);
   }
 
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
     int facing = getFacing(world, x, y, z);
     switch (facing) {
-      case 2:
-        setBlockBounds(0.0f, 0.0f, 1.0f-BLOCK_SIZE, 1.0f, 1.0f, 1.0f);
-        break;
-      case 3:
-        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, BLOCK_SIZE);
-        break;
-      case 4:
-        setBlockBounds(1.0f-BLOCK_SIZE, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        break;
-      case 5:
-        setBlockBounds(0.0f, 0.0f, 0.0f, BLOCK_SIZE, 1.0f, 1.0f);
-        break;
-      default:
-        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        break;
+    case 2:
+      setBlockBounds(0.0f, 0.0f, 1.0f - BLOCK_SIZE, 1.0f, 1.0f, 1.0f);
+      break;
+    case 3:
+      setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, BLOCK_SIZE);
+      break;
+    case 4:
+      setBlockBounds(1.0f - BLOCK_SIZE, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+      break;
+    case 5:
+      setBlockBounds(0.0f, 0.0f, 0.0f, BLOCK_SIZE, 1.0f, 1.0f);
+      break;
+    default:
+      setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+      break;
     }
   }
 
   private int getFacing(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileInventoryPanel) {
-      return ((TileInventoryPanel)te).getFacing();
+      return ((TileInventoryPanel) te).getFacing();
     }
     return 0;
   }
@@ -115,21 +116,21 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     return "enderio:invPanelFrontOff";
   }
 
-//  @Override
-//  protected String getTopIconKey(boolean active) {
-//    return "enderio:invPanelSide";
-//  }
-//
-//  @Override
-//  protected String getSideIconKey(boolean active) {
-//    return "enderio:invPanelSide";
-//  }
+  //  @Override
+  //  protected String getTopIconKey(boolean active) {
+  //    return "enderio:invPanelSide";
+  //  }
+  //
+  //  @Override
+  //  protected String getSideIconKey(boolean active) {
+  //    return "enderio:invPanelSide";
+  //  }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int blockSide, int blockMeta) {
     // This is used to render the block as an item
-    return iconBuffer[0][blockSide+6];
+    return iconBuffer[0][blockSide + 6];
   }
 
   @Override

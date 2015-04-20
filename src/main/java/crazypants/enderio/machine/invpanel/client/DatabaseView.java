@@ -125,7 +125,6 @@ public class DatabaseView {
       }
 
       ItemFilter filter = ItemFilter.parse(currentFilter, LOCALE, itemFilter);
-      System.out.println("filtering new="+needsNewFiltering+" currentFilter="+currentFilter+" parsed="+filter);
       if(filter != null) {
         Iterator<ItemEntry> iter = filteredItems.iterator();
         while(iter.hasNext()) {

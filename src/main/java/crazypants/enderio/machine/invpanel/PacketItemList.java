@@ -1,21 +1,22 @@
 package crazypants.enderio.machine.invpanel;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
-import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
-import crazypants.enderio.network.MessageTileEntity;
-import crazypants.enderio.network.NetworkUtil;
-import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.network.MessageTileEntity;
+import crazypants.enderio.network.NetworkUtil;
+import crazypants.enderio.network.PacketHandler;
 
 public class PacketItemList extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketItemList, IMessage> {
 
@@ -58,8 +59,7 @@ public class PacketItemList extends MessageTileEntity<TileInventoryPanel> implem
           PacketHandler.INSTANCE.sendToServer(new PacketRequestMissingItems(teInvPanel, db.getGeneration(), missingItems));
         }
       } catch (IOException ex) {
-        Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE,
-                "Exception while reading item list", ex);
+        Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading item list", ex);
       }
     }
     return null;

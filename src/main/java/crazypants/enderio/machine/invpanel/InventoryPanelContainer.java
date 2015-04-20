@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.invpanel;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machine.invpanel.server.ChangeLog;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.util.ItemUtil;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -28,6 +22,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.invpanel.server.ChangeLog;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.util.ItemUtil;
 
 public class InventoryPanelContainer extends AbstractMachineContainer implements ChangeLog {
 
@@ -44,14 +45,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   private Slot slotFilter;
 
-  private int indexCraftingSlot;
+  private int slotCraftResult;
+  @SuppressWarnings("unused")
   private int indexFilterSlot;
-  private int startReturnSlot;
-  private int endReturnSlot;
-  private int startCraftingGrid;
-  private int endCraftingGrid;
+  private int firstSlotReturn;
+  private int lastSlotReturn;
+  private int firstSlotCraftingGrid;
+  private int lastSlotCraftingGrid;
 
-  @SuppressWarnings("LeakingThisInConstructor")
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
     te.eventHandler = this;
@@ -65,9 +66,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    indexCraftingSlot = inventorySlots.size();
-    addSlotToContainer(new SlotCrafting(playerInv.player, tileEntity, tileEntity,
-            TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X+59, CRAFTING_GRID_Y+18) {
+    slotCraftResult = inventorySlots.size();
+    addSlotToContainer(new SlotCrafting(playerInv.player, tileEntity, tileEntity, TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59,
+        CRAFTING_GRID_Y + 18) {
       @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
         FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, tileEntity);
@@ -100,15 +101,15 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       }
     });
 
-    startCraftingGrid = inventorySlots.size();
-    for(int y=0,i=TileInventoryPanel.SLOT_CRAFTING_START ; y<3 ; y++) {
-      for(int x=0 ; x<3 ; x++,i++) {
-        addSlotToContainer(new Slot(tileEntity, i, CRAFTING_GRID_X+x*18, CRAFTING_GRID_Y+y*18));
+    firstSlotCraftingGrid = inventorySlots.size();
+    for (int y = 0, i = TileInventoryPanel.SLOT_CRAFTING_START; y < 3; y++) {
+      for (int x = 0; x < 3; x++, i++) {
+        addSlotToContainer(new Slot(tileEntity, i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
       }
     }
-    endCraftingGrid = inventorySlots.size();
+    lastSlotCraftingGrid = inventorySlots.size() - 1;
 
-    indexFilterSlot = inventorySlots.size();
+    indexFilterSlot = lastSlotCraftingGrid + 1;
     slotFilter = addSlotToContainer(new Slot(tileEntity, TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
       @Override
       public int getSlotStackLimit() {
@@ -116,13 +117,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       }
     });
 
-    startReturnSlot = inventorySlots.size();
-    for(int y=0,i=TileInventoryPanel.SLOT_RETURN_START ; y<2 ; y++) {
-      for(int x=0 ; x<5 ; x++,i++) {
-        addSlotToContainer(new Slot(tileEntity, i, RETURN_INV_X+x*18, RETURN_INV_Y+y*18));
+    firstSlotReturn = inventorySlots.size();
+    for (int y = 0, i = TileInventoryPanel.SLOT_RETURN_START; y < 2; y++) {
+      for (int x = 0; x < 5; x++, i++) {
+        addSlotToContainer(new Slot(tileEntity, i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
       }
     }
-    endReturnSlot = inventorySlots.size();
+    lastSlotReturn = inventorySlots.size() - 1;
   }
 
   @Override
@@ -134,7 +135,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
     if(!tileEntity.getWorldObj().isRemote) {
-      ((TileInventoryPanel)tileEntity).eventHandler = null;
+      ((TileInventoryPanel) tileEntity).eventHandler = null;
     }
     removeChangeLog();
   }
@@ -147,14 +148,17 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     return slotFilter;
   }
 
+  @SuppressWarnings("unchecked")
   public List<Slot> getCraftingGridSlots() {
-    return inventorySlots.subList(startCraftingGrid, endCraftingGrid);
+    return inventorySlots.subList(firstSlotCraftingGrid, lastSlotCraftingGrid);
   }
 
+  @SuppressWarnings("unchecked")
   public List<Slot> getReturnAreaSlots() {
-    return inventorySlots.subList(startReturnSlot, endReturnSlot);
+    return inventorySlots.subList(firstSlotReturn, lastSlotReturn);
   }
 
+  @SuppressWarnings("unchecked")
   public List<Slot> getPlayerInventorySlots() {
     return inventorySlots.subList(startPlayerSlot, endPlayerSlot);
   }
@@ -188,10 +192,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
           try {
             byte[] compressed = db.compressItemList();
             PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
-            PacketHandler.sendTo(pil, (EntityPlayerMP)crafting);
+            PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
           } catch (IOException ex) {
-            Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
-                    "Exception while compressing item list", ex);
+            Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE, "Exception while compressing item list", ex);
           }
         }
       }
@@ -207,7 +210,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       }
     }, 3, 3);
 
-    for(int i=0 ; i<9 ; i++) {
+    for (int i = 0; i < 9; i++) {
       tmp.setInventorySlotContents(i, tileEntity.getStackInSlot(i));
     }
 
@@ -221,7 +224,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   public boolean clearCraftingGrid() {
     boolean cleared = true;
-    for(Slot slot : getCraftingGridSlots()) {
+    for (Slot slot : getCraftingGridSlots()) {
       if(slot.getHasStack()) {
         moveItemsToReturnArea(slot.slotNumber);
         if(slot.getHasStack()) {
@@ -234,15 +237,15 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
-    if(slotIndex == indexCraftingSlot) {
+    if(slotIndex == slotCraftResult) {
       return Collections.singletonList(getPlayerInventorySlotRange(true));
     }
-    if(slotIndex >= startReturnSlot && slotIndex < endReturnSlot) {
-      return Collections.singletonList(new SlotRange(startReturnSlot, endReturnSlot, false));
+    if(slotIndex >= firstSlotReturn && slotIndex <= lastSlotReturn) {
+      return Collections.singletonList(new SlotRange(firstSlotReturn, lastSlotReturn, false));
     }
-    if((slotIndex >= startCraftingGrid && slotIndex < endCraftingGrid) || slotIndex >= startPlayerSlot) {
+    if((slotIndex >= firstSlotCraftingGrid && slotIndex <= lastSlotCraftingGrid) || slotIndex >= startPlayerSlot) {
       ArrayList<SlotRange> res = new ArrayList<SlotRange>();
-      res.add(new SlotRange(startReturnSlot, endReturnSlot, false));
+      res.add(new SlotRange(firstSlotReturn, lastSlotReturn, false));
       addPlayerSlotRanges(res, slotIndex);
       return res;
     }
@@ -268,14 +271,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
         try {
           byte[] compressed = db.compressChangedItems(changedItems);
           PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
-          for(Object crafting : crafters) {
+          for (Object crafting : crafters) {
             if(crafting instanceof EntityPlayerMP) {
               PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
             }
           }
         } catch (IOException ex) {
-          Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE,
-                  "Exception while compressing changed items", ex);
+          Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE, "Exception while compressing changed items", ex);
         }
       }
     }
@@ -284,8 +286,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   public int getSlotIndex(IInventory inv, int index) {
     for (int i = 0; i < inventorySlots.size(); i++) {
-      Slot slot = (Slot)inventorySlots.get(i);
-      if (slot.isSlotInInventory(inv, index)) {
+      Slot slot = (Slot) inventorySlots.get(i);
+      if(slot.isSlotInInventory(inv, index)) {
         return i;
       }
     }
@@ -313,8 +315,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
         targetStack = slot.getStack();
         maxStackSize = slot.getSlotStackLimit();
       }
-
-      //System.out.println("executeFetchItems targetSlot="+targetSlot+" slot="+slot+" maxStackSize="+maxStackSize+" count="+count);
 
       ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.meta);
       tmpStack.stackTagCompound = entry.nbt;
@@ -348,7 +348,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   }
 
   public boolean moveItemsToReturnArea(int fromSlot) {
-    return moveItems(fromSlot, startReturnSlot, endReturnSlot, Short.MAX_VALUE);
+    return moveItems(fromSlot, firstSlotReturn, lastSlotReturn, Short.MAX_VALUE);
   }
 
   public boolean moveItems(int fromSlot, int toSlotStart, int toSlotEnd, int amount) {

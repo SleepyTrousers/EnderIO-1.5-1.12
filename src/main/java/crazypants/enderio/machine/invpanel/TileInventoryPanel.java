@@ -1,7 +1,15 @@
 package crazypants.enderio.machine.invpanel;
 
-import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -15,25 +23,17 @@ import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
+import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.ITankAccess;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
-  public static final int SLOT_CRAFTING_START  = 0;
+  public static final int SLOT_CRAFTING_START = 0;
   public static final int SLOT_CRAFTING_RESULT = 9;
-  public static final int SLOT_VIEW_FILTER     = 10;
-  public static final int SLOT_RETURN_START    = 11;
+  public static final int SLOT_VIEW_FILTER = 10;
+  public static final int SLOT_RETURN_START = 11;
 
   protected final NutrientTank fuelTank;
   protected boolean tanksDirty;
@@ -147,7 +147,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
     ItemConduitNetwork icn = null;
 
-    TileEntity te = worldObj.getTileEntity(xCoord+backside.offsetX, yCoord+backside.offsetY, zCoord+backside.offsetZ);
+    TileEntity te = worldObj.getTileEntity(xCoord + backside.offsetX, yCoord + backside.offsetY, zCoord + backside.offsetZ);
     if(te instanceof TileConduitBundle) {
       TileConduitBundle teCB = (TileConduitBundle) te;
       ItemConduit conduit = teCB.getConduit(ItemConduit.class);
@@ -181,7 +181,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public void refuelPower(InventoryDatabaseServer db) {
     float missingPower = Config.inventoryPanelPowerPerMB * 0.5f - db.getPower();
     if(missingPower > 0) {
-      int amount = (int)Math.ceil(missingPower / Config.inventoryPanelPowerPerMB);
+      int amount = (int) Math.ceil(missingPower / Config.inventoryPanelPowerPerMB);
       amount = Math.min(amount, fuelTank.getFluidAmount());
       if(amount > 0) {
         useNutrient(amount);
@@ -277,7 +277,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && fuelTank.canFill(forFluidType.getFluid())) {
+    if(forFluidType != null && fuelTank.canFill(forFluidType.getFluid())) {
       return fuelTank;
     }
     return null;

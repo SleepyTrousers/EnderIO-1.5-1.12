@@ -2,6 +2,7 @@ package crazypants.enderio.machine.invpanel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,13 +12,13 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
   private static final Item META_EXTRACTOR = new Item();
 
   private static final int SIMPLE_ITEMID_BITS = 12;
-  private static final int SIMPLE_META_BITS   = 4;
-  private static final int SIMPLE_MAX_ITEMID  = 1<<SIMPLE_ITEMID_BITS;
-  private static final int SIMPLE_MAX_META    = 1<<SIMPLE_META_BITS;
-  private static final int SIMPLE_META_MASK   = SIMPLE_MAX_META - 1;
+  private static final int SIMPLE_META_BITS = 4;
+  private static final int SIMPLE_MAX_ITEMID = 1 << SIMPLE_ITEMID_BITS;
+  private static final int SIMPLE_MAX_META = 1 << SIMPLE_META_BITS;
+  private static final int SIMPLE_META_MASK = SIMPLE_MAX_META - 1;
 
-  protected static final int COMPLEX_DBINDEX_START = 1<<(SIMPLE_ITEMID_BITS + SIMPLE_META_BITS);
-  
+  protected static final int COMPLEX_DBINDEX_START = 1 << (SIMPLE_ITEMID_BITS + SIMPLE_META_BITS);
+
   protected final HashMap<Integer, ItemEntry> simpleRegsitry;
   protected final HashMap<ItemEntry, ItemEntry> complexRegistry;
   protected final ArrayList<ItemEntry> complexItems;
@@ -68,16 +69,14 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
   private ItemEntry getComplexItem(int itemID, int meta, NBTTagCompound nbt) {
     int hash = computeComplexHash(itemID, meta, nbt);
     ItemEntryKey key = new ItemEntryKey(hash, itemID, meta, nbt);
-    @SuppressWarnings("element-type-mismatch")
     ItemEntry entry = complexRegistry.get(key);
     if(entry == null) {
       if(nbt != null) {
-        nbt = (NBTTagCompound)nbt.copy();
+        nbt = (NBTTagCompound) nbt.copy();
       }
       entry = createItemEntry(COMPLEX_DBINDEX_START + complexItems.size(), hash, itemID, meta, nbt);
       complexItems.add(entry);
       complexRegistry.put(entry, entry);
-      System.out.println("New complex item: " + entry);
     }
     return entry;
   }

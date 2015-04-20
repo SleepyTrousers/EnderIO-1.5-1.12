@@ -1,5 +1,20 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Locale;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
@@ -22,23 +37,11 @@ import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Locale;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final Rectangle inventoryArea = new Rectangle(107,  27, 108, 90);
+  private static final Rectangle inventoryArea = new Rectangle(107, 27, 108, 90);
 
   private static final Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
 
@@ -46,7 +49,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final int ID_CLEAR = 9877;
 
   private static final int GHOST_COLUMNS = 6;
-  private static final int GHOST_ROWS    = 5;
+  private static final int GHOST_ROWS = 5;
 
   private final DatabaseView view;
   private final TextFieldEIO tfFilter;
@@ -70,9 +73,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     redstoneButton.visible = false;
     configB.visible = false;
 
-    for(int y = 0; y < GHOST_ROWS; y++) {
-      for(int x = 0; x < GHOST_COLUMNS; x++) {
-        ghostSlots.add(new InvSlot(108 + x*18, 28 + y*18));
+    for (int y = 0; y < GHOST_ROWS; y++) {
+      for (int x = 0; x < GHOST_COLUMNS; x++) {
+        ghostSlots.add(new InvSlot(108 + x * 18, 28 + y * 18));
       }
     }
 
@@ -110,7 +113,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     ArrayList<String> list = new ArrayList<String>();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
-    addToolTip(new GuiToolTip(new Rectangle(6, 72, 5*18, 8), list));
+    addToolTip(new GuiToolTip(new Rectangle(6, 72, 5 * 18, 8), list));
 
     list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
@@ -157,7 +160,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void fixupGuiPosition() {
-    guiLeft = (width - 232) / 2;  // account for the tabs
+    guiLeft = (width - 232) / 2; // account for the tabs
   }
 
   @Override
@@ -190,14 +193,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     int headerColor = 0x404040;
     FontRenderer fr = getFontRenderer();
-    fr.drawString(headerCrafting, sx+7, sy+6, headerColor);
-    fr.drawString(headerReturn, sx+7, sy+72, headerColor);
-    fr.drawString(headerInventory, sx+38, sy+120, headerColor);
+    fr.drawString(headerCrafting, sx + 7, sy + 6, headerColor);
+    fr.drawString(headerReturn, sx + 7, sy + 72, headerColor);
+    fr.drawString(headerInventory, sx + 38, sy + 120, headerColor);
 
     TileInventoryPanel te = getTileEntity();
     NutrientTank fuelTank = te.fuelTank;
     if(fuelTank.getFluidAmount() > 0) {
-      RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx+12, sy+132, zLevel, 16, 47);
+      RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 12, sy + 132, zLevel, 16, 47);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
@@ -207,7 +210,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     view.updateFilter(tfFilter.getText());
 
     boolean update = view.sortItems();
-    scrollbar.setScrollMax(Math.max(0, (view.getNumEntries()+GHOST_COLUMNS-1) / GHOST_COLUMNS - GHOST_ROWS));
+    scrollbar.setScrollMax(Math.max(0, (view.getNumEntries() + GHOST_COLUMNS - 1) / GHOST_COLUMNS - GHOST_ROWS));
     if(update || scrollPos != scrollbar.getScrollPos()) {
       updateGhostSlots();
     }
@@ -250,10 +253,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     SortOrder order = view.getSortOrder();
     boolean invert = view.isSortOrderInverted();
     switch (order) {
-      case NAME:  return invert ? IconEIO.SORT_NAME_UP : IconEIO.SORT_NAME_DOWN;
-      case COUNT: return invert ? IconEIO.SORT_SIZE_UP : IconEIO.SORT_SIZE_DOWN;
-      case MOD:   return invert ? IconEIO.SORT_MOD_UP  : IconEIO.SORT_MOD_DOWN;
-      default:    return null;
+    case NAME:
+      return invert ? IconEIO.SORT_NAME_UP : IconEIO.SORT_NAME_DOWN;
+    case COUNT:
+      return invert ? IconEIO.SORT_SIZE_UP : IconEIO.SORT_SIZE_DOWN;
+    case MOD:
+      return invert ? IconEIO.SORT_MOD_UP : IconEIO.SORT_MOD_DOWN;
+    default:
+      return null;
     }
   }
 
@@ -262,7 +269,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     SortOrder[] values = SortOrder.values();
     int idx = order.ordinal();
     if(next && view.isSortOrderInverted()) {
-      order = values[(idx+1) % values.length];
+      order = values[(idx + 1) % values.length];
     } else if(!next && !view.isSortOrderInverted()) {
       if(idx == 0) {
         idx = values.length;
@@ -276,18 +283,18 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private void updateSortButton() {
     SortOrder order = view.getSortOrder();
     ArrayList<String> list = new ArrayList<String>();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.sort."
-            + order.name().toLowerCase(Locale.ENGLISH) + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
+    TooltipAddera.addTooltipFromResources(list,
+        "enderio.gui.inventorypanel.tooltip.sort." + order.name().toLowerCase(Locale.ENGLISH) + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
     btnSort.setIcon(getSortOrderIcon());
     btnSort.setToolTip(list.toArray(new String[list.size()]));
   }
 
   private void updateGhostSlots() {
     scrollPos = scrollbar.getScrollPos();
-    
+
     int index = scrollPos * GHOST_COLUMNS;
     int count = view.getNumEntries();
-    for(int i = 0; i < GHOST_ROWS*GHOST_COLUMNS; i++,index++) {
+    for (int i = 0; i < GHOST_ROWS * GHOST_COLUMNS; i++, index++) {
       InvSlot slot = (InvSlot) ghostSlots.get(i);
       if(index < count) {
         slot.entry = view.getItemEntry(index);

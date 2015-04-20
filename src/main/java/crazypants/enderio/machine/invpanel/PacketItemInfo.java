@@ -1,5 +1,14 @@
 package crazypants.enderio.machine.invpanel;
 
+import io.netty.buffer.ByteBuf;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -9,13 +18,6 @@ import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
-import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketItemInfo extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketItemInfo, IMessage> {
 
