@@ -10,10 +10,13 @@ import crazypants.enderio.network.PacketHandler;
 import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
+
+  private static final float BLOCK_SIZE = 3.0f / 16.0f;
 
   public static BlockInventoryPanel create() {
     PacketHandler.INSTANCE.registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
@@ -30,6 +33,11 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public BlockInventoryPanel() {
     super(ModObject.blockInventoryPanel, TileInventoryPanel.class);
+  }
+
+  @Override
+  public int getRenderType() {
+    return 0;
   }
 
   @Override
@@ -56,7 +64,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   public void setBlockBoundsForItemRender() {
-    setBlockBounds(0.0f, 0.0f, 0.4f, 1.0f, 1.0f, 0.6f);
+    setBlockBounds(0.0f, 0.0f, 0.5f-BLOCK_SIZE/2, 1.0f, 1.0f, 0.5f+BLOCK_SIZE/2);
   }
 
   @Override
@@ -64,16 +72,16 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     int facing = getFacing(world, x, y, z);
     switch (facing) {
       case 2:
-        setBlockBounds(0.0f, 0.0f, 0.8f, 1.0f, 1.0f, 1.0f);
+        setBlockBounds(0.0f, 0.0f, 1.0f-BLOCK_SIZE, 1.0f, 1.0f, 1.0f);
         break;
       case 3:
-        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.2f);
+        setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, BLOCK_SIZE);
         break;
       case 4:
-        setBlockBounds(0.8f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        setBlockBounds(1.0f-BLOCK_SIZE, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         break;
       case 5:
-        setBlockBounds(0.0f, 0.0f, 0.0f, 0.2f, 1.0f, 1.0f);
+        setBlockBounds(0.0f, 0.0f, 0.0f, BLOCK_SIZE, 1.0f, 1.0f);
         break;
       default:
         setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
@@ -105,6 +113,23 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
       return "enderio:invPanelFrontOn";
     }
     return "enderio:invPanelFrontOff";
+  }
+
+//  @Override
+//  protected String getTopIconKey(boolean active) {
+//    return "enderio:invPanelSide";
+//  }
+//
+//  @Override
+//  protected String getSideIconKey(boolean active) {
+//    return "enderio:invPanelSide";
+//  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IIcon getIcon(int blockSide, int blockMeta) {
+    // This is used to render the block as an item
+    return iconBuffer[0][blockSide+6];
   }
 
   @Override

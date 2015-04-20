@@ -477,6 +477,11 @@ tile.blockBuffer.omni.name=Omni Buffer
 tile.blockBuffer.creative.name=Creative Buffer
 
 tile.blockInventoryPanel.name=Inventory Panel
+tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
+tile.blockInventoryPanel.tooltip.detailed.line1=Allows remote access to inventories via
+tile.blockInventoryPanel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+tile.blockInventoryPanel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
+tile.blockInventoryPanel.tooltip.detailed.line4=Offers a persistent crafting grid.
 enderio.gui.inventorypanel.header.crafting=Crafting grid
 enderio.gui.inventorypanel.header.return=Return area
 enderio.gui.inventorypanel.info.filter=<filter by name>
@@ -630,6 +635,7 @@ skullZombieElectrode.name=Zombie Electrode
 skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
+skullSentientEnder.name=Sentient Ender
 
 item.itemSpawnEggEnderIO.name=Spawn
 
