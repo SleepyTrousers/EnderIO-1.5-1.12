@@ -3,8 +3,8 @@ package crazypants.enderio.machine.vacuum;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
@@ -41,8 +41,8 @@ public class GuiVacuumChest extends GuiContainerBase {
   private final TileVacuumChest te;
 
   private final GuiToolTip rangeTooltip;
-  private final IconButtonEIO rangeUpB;
-  private final IconButtonEIO rangeDownB;
+  private final MultiIconButtonEIO rangeUpB;
+  private final MultiIconButtonEIO rangeDownB;
   private final ToggleButtonEIO whiteListB;
   private final ToggleButtonEIO useMetaB;
   private final RedstoneModeButton rsB;
@@ -63,12 +63,10 @@ public class GuiVacuumChest extends GuiContainerBase {
     rangeTooltip = new GuiToolTip(new Rectangle(x, y, RANGE_WIDTH, 16), Lang.localize("gui.vacuum.range"));
 
     x += RANGE_WIDTH;
-    rangeUpB = new IconButtonEIO(this, ID_RANGE_UP, x, y, IconEIO.ADD_BUT);
-    rangeUpB.setSize(8, 8);
+    rangeUpB = MultiIconButtonEIO.createAddButton(this, ID_RANGE_UP, x, y);
 
     y += 8;
-    rangeDownB = new IconButtonEIO(this, ID_RANGE_DOWN, x, y, IconEIO.MINUS_BUT);
-    rangeDownB.setSize(8, 8);
+    rangeDownB = MultiIconButtonEIO.createMinusButton(this, ID_RANGE_DOWN, x, y);
 
     x = xSize - 16 - 7;
     y = 104;

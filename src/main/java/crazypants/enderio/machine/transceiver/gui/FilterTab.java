@@ -11,10 +11,9 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterContainer;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.gui.ArrowButton;
 import crazypants.enderio.gui.ITabPanel;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
@@ -29,7 +28,7 @@ public class FilterTab implements ITabPanel {
   private final BasicItemFilterGui sendGui;
   private final BasicItemFilterGui recGui;
 
-  private final IconButtonEIO sendRecB;
+  private final MultiIconButtonEIO sendRecB;
 
   boolean showSend = true;
 
@@ -41,7 +40,7 @@ public class FilterTab implements ITabPanel {
     recGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), false), false, container.getFilterOffset().x,
         container.getFilterOffset().y, 20);
 
-    sendRecB = new ArrowButton(parent, 8888, container.getFilterOffset().x + 79, container.getFilterOffset().y - 20, true);
+    sendRecB = MultiIconButtonEIO.createRightArrowButton(parent, 8888, container.getFilterOffset().x + 79, container.getFilterOffset().y - 20);
     sendRecB.setSize(10, 16);
   }
 
