@@ -30,7 +30,9 @@ public class ExistingItemFilter implements IItemFilter {
     if(item == null) {
       return false;
     }
-    if(snapshot == null) {
+    if(snapshot != null) {
+      return isStackInSnapshot(item);
+    } else if(ni != null) {
       int[] slots = ni.getInventory().getAccessibleSlotsFromSide(ni.getInventorySide());
       for (int i = 0; i < slots.length; i++) {
         ItemStack stack = ni.getInventory().getStackInSlot(i);
@@ -38,8 +40,6 @@ public class ExistingItemFilter implements IItemFilter {
           return true;
         }
       }
-    } else {
-      return isStackInSnapshot(item);
     }
     return false;
   }

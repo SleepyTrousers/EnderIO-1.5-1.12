@@ -43,4 +43,16 @@ public class NetworkUtil {
       FMLCommonHandler.instance().raiseException(e, "PacketUtil.readTileEntityPacket.writeNBTTagCompound", true);
     }
   }
+
+  public static byte[] readByteArray(ByteBuf buf) {
+    int size = buf.readMedium();
+    byte[] res = new byte[size];
+    buf.readBytes(res);
+    return res;
+  }
+
+  public static void writeByteArray(ByteBuf buf, byte[] arr) {
+    buf.writeMedium(arr.length);
+    buf.writeBytes(arr);
+  }
 }

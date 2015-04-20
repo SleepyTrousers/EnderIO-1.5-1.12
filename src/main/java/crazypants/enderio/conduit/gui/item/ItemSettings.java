@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
 import crazypants.enderio.conduit.gui.FilterChangeListener;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
@@ -26,6 +27,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
@@ -34,6 +36,7 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.DyeColor;
 import crazypants.util.Lang;
+import java.util.ArrayList;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -76,6 +79,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private final GuiToolTip priorityTooltip;
   private final GuiToolTip speedUpgradeTooltip;
+  private final GuiToolTip functionUpgradeTooltip;
   private final GuiToolTip filterUpgradeTooltip;
 
   private IItemFilterGui filterGui;
@@ -97,8 +101,30 @@ public class ItemSettings extends BaseSettingsPanel {
     channelB.setColorIndex(0);
     channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
     
-    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.filterupgrade"));
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.speedupgrade"), Lang.localize("gui.conduit.item.speedupgrade2"));
+    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.filterupgrade")) {
+      @Override
+      public boolean shouldDraw() {
+        return !gui.getContainer().hasFilterUpgrades(isInputVisible()) && super.shouldDraw();
+      }
+    };
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.speedupgrade"), Lang.localize("gui.conduit.item.speedupgrade2")) {
+      @Override
+      public boolean shouldDraw() {
+        return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
+      }
+    };
+
+    ArrayList<String> list = new ArrayList<String>();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
+    for(FunctionUpgrade upgrade : FunctionUpgrade.values()) {
+      list.add(Lang.localize(upgrade.unlocName.concat(".name"), false));
+    }
+    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 34, 18, 18), list) {
+      @Override
+      public boolean shouldDraw() {
+        return !gui.getContainer().hasFunctionUpgrades() && super.shouldDraw();
+      }
+    };
 
     x += channelB.getWidth() + 4;
     priLeft = x - 8;
@@ -261,6 +287,7 @@ public class ItemSettings extends BaseSettingsPanel {
     }
 
     gui.addToolTip(filterUpgradeTooltip);
+    gui.addToolTip(functionUpgradeTooltip);
 
     if(mode == ConnectionMode.IN_OUT && !outputActive) {
       loopB.onGuiInit();
@@ -387,7 +414,10 @@ public class ItemSettings extends BaseSettingsPanel {
     GL11.glColor3f(1, 1, 1);
     RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
     gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46, 94, 220, 18, 18);
-    
+
+    //function upgrade slot
+    gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46 + 18, 112, 238, 18, 18);
+
     if(filterGui != null) {
       filterGui.renderCustomOptions(top, par1, par2, par3);
     }
@@ -407,6 +437,7 @@ public class ItemSettings extends BaseSettingsPanel {
     priDownB.detach();
     gui.removeToolTip(priorityTooltip);
     gui.removeToolTip(speedUpgradeTooltip);
+    gui.removeToolTip(functionUpgradeTooltip);
     gui.removeToolTip(filterUpgradeTooltip);
     channelB.detach();
     deactiveFilterGUI();

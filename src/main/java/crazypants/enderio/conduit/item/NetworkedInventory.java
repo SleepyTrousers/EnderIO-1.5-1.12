@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
@@ -41,6 +42,8 @@ public class NetworkedInventory {
   //Hack for TiC crafting station not working correctly when setting output slot to null
   boolean ticHack = false;
 
+  boolean inventoryPanel = false;
+
   World world;
   ItemConduitNetwork network;
 
@@ -60,6 +63,8 @@ public class NetworkedInventory {
       recheckInv = true;
     } else if(te instanceof TileEntityChest) {
       recheckInv = true;
+    } else if(te instanceof TileInventoryPanel) {
+      inventoryPanel = true;
     }
     updateInventory();
   }
@@ -79,8 +84,15 @@ public class NetworkedInventory {
   }
 
   boolean canInsert() {
+    if(inventoryPanel) {
+      return false;
+    }
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
+  }
+
+  boolean isInventoryPanel() {
+    return inventoryPanel;
   }
 
   boolean isSticky() {
@@ -179,6 +191,12 @@ public class NetworkedInventory {
     if(numInserted <= 0) {
       return false;
     }
+    itemExtracted(slot, numInserted);
+    return true;
+
+  }
+
+  public void itemExtracted(int slot, int numInserted) {
     ItemStack curStack = getInventory().getStackInSlot(slot);
     if(curStack != null) {
       if(ticHack) {
@@ -198,8 +216,6 @@ public class NetworkedInventory {
     }
     con.itemsExtracted(numInserted, slot);
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
-    return true;
-
   }
 
   int insertIntoTargets(ItemStack toExtract) {
@@ -357,6 +373,13 @@ public class NetworkedInventory {
   }
 
   public ISidedInventory getInventory() {
+    return inv;
+  }
+
+  public ISidedInventory getInventoryRecheck() {
+    if(recheckInv) {
+      updateInventory();
+    }
     return inv;
   }
 

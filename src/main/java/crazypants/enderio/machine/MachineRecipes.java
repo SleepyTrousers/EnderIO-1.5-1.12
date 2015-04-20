@@ -9,6 +9,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.buffer.BlockItemBuffer.Type;
@@ -50,6 +51,7 @@ public class MachineRecipes {
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
     ItemStack frankenZombie = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
     ItemStack enderRes = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ENDER_RESONATOR.ordinal());
+    ItemStack sentientEnder = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SENTIENT_ENDER.ordinal());
     ItemStack obsidian = new ItemStack(Blocks.obsidian);
 
     //stirling gen
@@ -265,6 +267,12 @@ public class MachineRecipes {
     GameRegistry.addShapelessRecipe(wirelessLamp, wirelessLampInv, Blocks.redstone_torch);
     GameRegistry.addShapelessRecipe(wirelessLampInv, poweredLampInv, enderRes);
     GameRegistry.addShapelessRecipe(wirelessLampInv, wirelessLamp, Blocks.redstone_torch);
+
+    //inventory panel
+    ItemStack awareness = new ItemStack(EnderIO.itemFunctionUpgrade, 1, FunctionUpgrade.INVENTORY_PANEL.ordinal());
+    GameRegistry.addRecipe(new ShapedOreRecipe(awareness, "bsb", "ses", "bib", 'b', conduitBinder, 's', silicon, 'e', Items.ender_eye, 'i', electricSteel));
+    ItemStack invPanel = new ItemStack(EnderIO.blockInventoryPanel);
+    GameRegistry.addShapedRecipe(invPanel, "dad", "psp", "dtd", 'd', darkSteel, 'a', awareness, 'p', pulCry, 's', sentientEnder, 't', basicTank);
   }
 
   public static void addOreDictionaryRecipes() {

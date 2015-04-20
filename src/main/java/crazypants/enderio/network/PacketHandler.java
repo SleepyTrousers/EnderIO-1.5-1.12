@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class PacketHandler
 {
@@ -24,5 +25,9 @@ public class PacketHandler
 
     public static void sendToAllAround(IMessage message, TileEntity te) {
         sendToAllAround(message, te, 64);
+    }
+
+    public static void sendTo(IMessage message, EntityPlayerMP player) {
+      INSTANCE.sendTo(message, player);
     }
 }

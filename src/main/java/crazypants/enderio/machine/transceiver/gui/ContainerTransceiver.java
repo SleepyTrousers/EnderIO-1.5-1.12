@@ -7,7 +7,6 @@ import java.util.Set;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
@@ -125,21 +124,4 @@ public class ContainerTransceiver extends AbstractMachineContainer {
   protected int getIndexOfFirstPlayerInvSlot(SlotDefinition slotDef) {
     return slotDef.getNumSlots();
   }
-
-  public static class FilterSlot extends Slot {
-
-    InventoryFilterUpgrade inv;
-
-    public FilterSlot(InventoryFilterUpgrade inv) {
-      super(inv, 0, 0, 0);
-      this.inv = inv;
-    }
-
-    @Override
-    public boolean isItemValid(ItemStack stack) {
-      return inv.isItemValidForSlot(0, stack);
-    }
-
-  }
-
 }

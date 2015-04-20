@@ -54,12 +54,16 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public void initGui() {
     super.initGui();
+    fixupGuiPosition();
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
     }
     for (TextFieldEIO f : textFields) {
       f.init(this);
     }
+  }
+
+  protected void fixupGuiPosition() {
   }
 
   @Override
@@ -158,6 +162,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     return ghostSlots;
   }
 
+  protected void ghostSlotClicked(GhostSlot slot, int x, int y, int button) {
+    ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+    slot.putStack(st);
+  }
+
   @Override
   protected void mouseClicked(int x, int y, int button) {
     for (GuiTextField f : textFields) {
@@ -178,8 +187,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     if(!ghostSlots.isEmpty()) {
       GhostSlot slot = getGhostSlot(x, y);
       if(slot != null) {
-        ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
-        slot.putStack(st);
+        ghostSlotClicked(slot, x, y, button);
         return;
       }
     }

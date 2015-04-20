@@ -18,6 +18,7 @@ public enum ModObject {
   itemModItemFilter,
   itemPowerItemFilter,
   itemExtractSpeedUpgrade,
+  itemFunctionUpgrade,
 
   // Power
   itemPowerConduit,
@@ -63,6 +64,7 @@ public enum ModObject {
   blockInhibitorObelisk,
   blockTransceiver,
   blockBuffer,
+  blockInventoryPanel,
 
   blockPoweredSpawner,
   itemBrokenSpawner,

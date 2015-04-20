@@ -96,6 +96,13 @@ item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
 item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
 item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
 
+item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
+item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory
+
 enderio.itemGasConduit.name=Gas Conduit
 
 enderio.itemGasConduit.tooltip.maxExtract=Max Extract:
@@ -469,6 +476,43 @@ tile.blockBuffer.power.name=Power Buffer
 tile.blockBuffer.omni.name=Omni Buffer
 tile.blockBuffer.creative.name=Creative Buffer
 
+tile.blockInventoryPanel.name=Inventory Panel
+tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
+tile.blockInventoryPanel.tooltip.detailed.line1=Allows remote access to inventories via
+tile.blockInventoryPanel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+tile.blockInventoryPanel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
+tile.blockInventoryPanel.tooltip.detailed.line4=Offers a persistent crafting grid.
+enderio.gui.inventorypanel.header.crafting=Crafting grid
+enderio.gui.inventorypanel.header.return=Return area
+enderio.gui.inventorypanel.info.filter=<filter by name>
+enderio.gui.inventorypanel.info.offline=<OFFLINE>
+enderio.gui.inventorypanel.tooltip.return.line1=Item return area
+enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
+enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit
+enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
+enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
+enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
+enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Sort items by name
+enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Sort items by name
+enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Starting at the end of the alphabet
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=Starting at the end of the alphabet
+enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sort items by their quantity
+enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Starting with the highest quantity
+enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Sort items by their quantity
+enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Starting with the lonely ones
+enderio.gui.inventorypanel.tooltip.refill.line1=Refills the crafting grid
+enderio.gui.inventorypanel.tooltip.refill.line2=A normal click puts items
+enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting opperations,
+enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
+enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
+enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
+enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
+enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks
@@ -591,6 +635,7 @@ skullZombieElectrode.name=Zombie Electrode
 skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
+skullSentientEnder.name=Sentient Ender
 
 item.itemSpawnEggEnderIO.name=Spawn
 
@@ -925,6 +970,7 @@ enderio.gui.conduit.item.priority=Priority
 enderio.gui.conduit.item.filterupgrade=Insert Item Filter
 enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
 enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
+enderio.gui.conduit.item.functionupgrade.line1=Possible function upgrades:
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color

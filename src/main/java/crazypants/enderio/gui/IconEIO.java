@@ -111,6 +111,11 @@ public final class IconEIO {
   public static final IconEIO MINUS_BUT_HOVER = new IconEIO(208, 56, 8, 8);
   public static final IconEIO MINUS_BUT_HOVER_PRESSED = new IconEIO(216, 56, 8, 8);
 
+  public static final IconEIO X_BUT = new IconEIO(200, 32, 8, 8);
+  public static final IconEIO X_BUT_PRESSED = new IconEIO(200, 40, 8, 8);
+  public static final IconEIO X_BUT_HOVER = new IconEIO(200, 48, 8, 8);
+  public static final IconEIO X_BUT_HOVER_PRESSED = new IconEIO(200, 56, 8, 8);
+
   public static final IconEIO UP_ARROW_OFF         = new IconEIO(201, 64, 11, 8);
   public static final IconEIO UP_ARROW_ON          = new IconEIO(212, 64, 11, 8);
   public static final IconEIO UP_ARROW_HOVER_OFF   = new IconEIO(234, 64, 11, 8);
@@ -144,7 +149,17 @@ public final class IconEIO {
   public static final IconEIO SUN = new IconEIO(160, 240);
   public static final IconEIO RAIN = new IconEIO(176, 240);
   public static final IconEIO THUNDER = new IconEIO(192, 240);
-  
+
+  public static final IconEIO SORT_DIR_DOWN = new IconEIO( 0, 176);
+  public static final IconEIO SORT_DIR_UP   = new IconEIO(16, 176);
+
+  public static final IconEIO SORT_NAME_DOWN = new IconEIO(208, 240, SORT_DIR_DOWN);
+  public static final IconEIO SORT_NAME_UP   = new IconEIO(208, 240, SORT_DIR_UP);
+  public static final IconEIO SORT_SIZE_DOWN = new IconEIO(224, 240, SORT_DIR_DOWN);
+  public static final IconEIO SORT_SIZE_UP   = new IconEIO(224, 240, SORT_DIR_UP);
+  public static final IconEIO SORT_MOD_DOWN  = new IconEIO(240, 240, SORT_DIR_DOWN);
+  public static final IconEIO SORT_MOD_UP    = new IconEIO(240, 240, SORT_DIR_UP);
+
   // Texture size is actually 512 but everything is aligned to a 256 grid
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
@@ -155,24 +170,34 @@ public final class IconEIO {
   public final double maxV;
   public final double width;
   public final double height;
+  public final IconEIO overlay;
 
   public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgetsv2.png");
 
   public IconEIO(int x, int y) {
-    this(x, y, 16, 16);
+    this(x, y, null);
+  }
+
+  public IconEIO(int x, int y, IconEIO overlay) {
+    this(x, y, 16, 16, overlay);
   }
 
   public IconEIO(int x, int y, int width, int height) {
-    this(width, height, (float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)));
+    this(x, y, width, height, null);
   }
 
-  public IconEIO(double width, double height, double minU, double maxU, double minV, double maxV) {
+  public IconEIO(int x, int y, int width, int height, IconEIO overlay) {
+    this(width, height, (float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)), overlay);
+  }
+
+  public IconEIO(double width, double height, double minU, double maxU, double minV, double maxV, IconEIO overlay) {
     this.width = width;
     this.height = height;
     this.minU = minU;
     this.maxU = maxU;
     this.minV = minV;
     this.maxV = maxV;
+    this.overlay = overlay;
   }
 
   public void renderIcon(double x, double y) {
@@ -205,6 +230,9 @@ public final class IconEIO {
       tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
       tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
       tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
+    }
+    if(overlay != null) {
+      overlay.renderIcon(x, y, width, height, zLevel, false, flipY);
     }
     if(doDraw) {
       tessellator.draw();

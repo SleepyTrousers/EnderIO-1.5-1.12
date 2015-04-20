@@ -72,6 +72,10 @@ public class ItemUtil {
     return startedWith - remaining.stackSize;
   }
 
+  public static int doInsertItem(IInventory inv, int startSlot, int endSlot, ItemStack item) {
+    return doInsertItemInv(inv, null, invSlotter.getInstance(startSlot, endSlot), item, ForgeDirection.UNKNOWN);
+  }
+
   /*
    * Insert items into an IInventory or an ISidedInventory.
    */
@@ -86,9 +90,13 @@ public class ItemUtil {
       // Note: This is not thread-safe. Change to getInstance() to constructor when needed (1.8++?).
       slots = sidedSlotter.getInstance(sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal()));
     } else {
-      slots = invSlotter.getInstance(inv.getSizeInventory());
+      slots = invSlotter.getInstance(0, inv.getSizeInventory());
     }
-    
+
+    return doInsertItemInv(inv, sidedInv, slots, item, inventorySide);
+  }
+
+  private static int doInsertItemInv(IInventory inv, ISidedInventory sidedInv, ISlotIterator slots, ItemStack item, ForgeDirection inventorySide) {
     int numInserted = 0;
     int numToInsert = item.stackSize;
     int firstFreeSlot = -1;
@@ -210,11 +218,11 @@ public class ItemUtil {
   
   private final static class invSlotter implements ISlotIterator {
     private static final invSlotter me = new invSlotter();
-    private int size;
+    private int end;
     private int current;
-    public final static invSlotter getInstance(int size) {
-      me.size = size;
-      me.current = 0;
+    public final static invSlotter getInstance(int start, int end) {
+      me.end = end;
+      me.current = start;
       return me;
     }
     @Override
@@ -223,7 +231,7 @@ public class ItemUtil {
     }
     @Override
     public final boolean hasNext() {
-      return current < size;
+      return current < end;
     }
   }
   

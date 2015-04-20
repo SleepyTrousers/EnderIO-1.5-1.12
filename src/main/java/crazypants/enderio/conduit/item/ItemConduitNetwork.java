@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
@@ -25,6 +26,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   private boolean requiresSort = true;
 
   private boolean doingSend = false;
+
+  private int changeCount;
+
+  private InventoryDatabaseServer database;
 
   public ItemConduitNetwork() {
     super(IItemConduit.class, IItemConduit.class);
@@ -63,6 +68,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return null;
   }
 
+  public List<NetworkedInventory> getInventoryPanelSources() {
+    ArrayList<NetworkedInventory> res = new ArrayList<NetworkedInventory>();
+    for(NetworkedInventory inv : inventories) {
+      if(inv.con.hasInventoryPanelUpgrade(inv.conDir)) {
+        res.add(inv);
+      }
+    }
+    return res;
+  }
+
   private List<NetworkedInventory> getOrCreate(BlockCoord bc) {
     List<NetworkedInventory> res = invMap.get(bc);
     if(res == null) {
@@ -92,6 +107,35 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   public void routesChanged() {
     requiresSort = true;
+  }
+
+  public void inventoryPanelSourcesChanged() {
+    changeCount++;
+  }
+
+  public int getChangeCount() {
+    return changeCount;
+  }
+
+  public InventoryDatabaseServer getDatabase() {
+    check: {
+      if(database == null) {
+        database = new InventoryDatabaseServer(this);
+      } else if(database.isCurrent()) {
+        break check;
+      }
+      database.updateNetworkSources();
+    }
+    return database;
+  }
+
+  @Override
+  public void destroyNetwork() {
+    super.destroyNetwork();
+    if(database != null) {
+      database.resetDatabase();
+      database = null;
+    }
   }
 
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
@@ -168,8 +212,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       }
       ni.onTick();
     }
-    requiresSort = false;
-
+    if(requiresSort) {
+      requiresSort = false;
+      changeCount++;
+    }
+    if(database != null) {
+      database.tick();
+    }
   }
 
   static int compare(int x, int y) {
