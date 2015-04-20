@@ -94,4 +94,8 @@ public class TextFieldEIO extends GuiTextField {
       throw new RuntimeException(e);
     }
   }
+
+  public boolean contains(int x, int y) {
+    return x >= this.xPosition && x < this.xPosition + this.width && y >= this.yPosition && y < this.yPosition + this.height;
+  }
 }

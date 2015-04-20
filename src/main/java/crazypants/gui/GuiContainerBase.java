@@ -74,20 +74,21 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         focused = f;
       }
     }
-    boolean hadOverlays = false;
-    if(key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+    
+    // If esc is pressed
+    if(key == 1) {
+      // If there is a focused text field unfocus it
       if(focused != null && key == 1) {
         focused.setFocused(false);
         focused = null;
         return;
-      } else if(!hideOverlays()) {
+      } else if(!hideOverlays()) { // Otherwise close overlays/GUI
         this.mc.thePlayer.closeScreen();
         return;
-      } else {
-        hadOverlays = true;
       }
     }
-
+    
+    // If the user pressed tab, switch to the next text field, or unfocus if there are none
     if(c == '\t') {
       for (int i = 0; i < textFields.size(); i++) {
         TextFieldEIO f = textFields.get(i);
@@ -98,16 +99,29 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         }
       }
     }
+
+    // If there is a focused text field, attempt to type into it
     if(focused != null) {
       if(focused.textboxKeyTyped(c, key)) {
         return;
       }
     }
     
-    if (hadOverlays) {
+    // More NEI behavior, f key focuses first text field
+    if(c == 'f' && focused == null && !textFields.isEmpty()) {
+      focused = textFields.get(0);
+      focused.setFocused(true);
+    }
+
+    // Finally if 'e' was pressed but not captured by a text field, close the overlays/GUI
+    if(key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+      if(!hideOverlays()) {
+        this.mc.thePlayer.closeScreen();
+      }
       return;
     }
-    
+
+    // If the key was not captured, let NEI do its thing
     super.keyTyped(c, key);
   }
 
@@ -198,6 +212,15 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         return;
       }
     }
+    // Right click field clearing
+    if(button == 1) {
+      for (TextFieldEIO tf : textFields) {
+        if(tf.contains(x, y)) {
+          tf.setText("");
+        }
+      }
+    }
+    // Button events for non-left-clicks
     if(button >= 1) {
       for(Object obj : buttonList) {
         if(obj instanceof IconButtonEIO) {
