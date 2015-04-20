@@ -96,7 +96,6 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     if(entry == null && create) {
       entry = createItemEntry(dbID, dbID, itemID, meta, null);
       simpleRegsitry.put(dbID, entry);
-      System.out.println("New simple item: " + entry);
     }
     return entry;
   }

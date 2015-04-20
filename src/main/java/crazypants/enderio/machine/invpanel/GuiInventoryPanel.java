@@ -337,15 +337,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
       boolean shift = isShiftKeyDown();
 
-      if(shift && inventoryArea.contains(x, y)) {
-        scrollbar.scrollBy(-Integer.signum(delta));
-      } else if(!shift && delta > 0 & (hoverGhostSlot instanceof InvSlot)) {
-        InvSlot invSlot = (InvSlot) hoverGhostSlot;
-        InventoryDatabaseClient db = getDatabase();
-        if(invSlot.stack != null && invSlot.entry != null && db != null) {
-          ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
-          if(itemStack == null || ItemUtil.areStackMergable(itemStack, hoverGhostSlot.stack)) {
-            PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
+      if(inventoryArea.contains(x, y)) {
+        if(!shift) {
+          scrollbar.scrollBy(-Integer.signum(delta));
+        } else if(hoverGhostSlot instanceof InvSlot) {
+          InvSlot invSlot = (InvSlot) hoverGhostSlot;
+          InventoryDatabaseClient db = getDatabase();
+          if(invSlot.stack != null && invSlot.entry != null && db != null) {
+            ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
+            if(itemStack == null || ItemUtil.areStackMergable(itemStack, hoverGhostSlot.stack)) {
+              PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
+            }
           }
         }
       }
