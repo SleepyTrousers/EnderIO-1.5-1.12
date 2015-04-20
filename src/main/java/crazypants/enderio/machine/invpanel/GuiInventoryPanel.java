@@ -82,7 +82,21 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     tfFilter = new TextFieldEIO(fr, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
-    btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon());
+    btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon()) {
+      @Override
+      public boolean mousePressed(Minecraft mc, int x, int y) {
+        return mousePressedButton(mc, x, y, 0);
+      }
+
+      @Override
+      public boolean mousePressedButton(Minecraft mc, int x, int y, int button) {
+        if(button <= 1 && super.checkMousePress(mc, x, y)) {
+          toggleSortOrder(button == 0);
+          return true;
+        }
+        return false;
+      }
+    };
     scrollbar = new VScrollbarEIO(this, 215, 27, 90);
     btnClear = new MultiIconButtonEIO(this, ID_CLEAR, 65, 60, IconEIO.X_BUT, IconEIO.X_BUT_PRESSED, IconEIO.X_BUT_HOVER);
 
@@ -149,9 +163,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Override
   public void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
-    if(b.id == ID_SORT) {
-      toggleSortOrder();
-    }
     if(b.id == ID_CLEAR) {
       if(getContainer().clearCraftingGrid()) {
         if(craftingHelper != null) {
@@ -246,11 +257,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  private void toggleSortOrder() {
+  void toggleSortOrder(boolean next) {
     SortOrder order = view.getSortOrder();
-    if(view.isSortOrderInverted()) {
-      SortOrder[] values = SortOrder.values();
-      order = values[(order.ordinal()+1) % values.length];
+    SortOrder[] values = SortOrder.values();
+    int idx = order.ordinal();
+    if(next && view.isSortOrderInverted()) {
+      order = values[(idx+1) % values.length];
+    } else if(!next && !view.isSortOrderInverted()) {
+      if(idx == 0) {
+        idx = values.length;
+      }
+      order = values[idx - 1];
     }
     view.setSortOrder(order, !view.isSortOrderInverted());
     updateSortButton();
