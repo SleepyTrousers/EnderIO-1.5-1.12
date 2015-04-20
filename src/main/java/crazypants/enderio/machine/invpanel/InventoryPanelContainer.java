@@ -47,11 +47,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   private int slotCraftResult;
   @SuppressWarnings("unused")
-  private int indexFilterSlot;
   private int firstSlotReturn;
-  private int lastSlotReturn;
+  private int endSlotReturn;
   private int firstSlotCraftingGrid;
-  private int lastSlotCraftingGrid;
+  private int endSlotCraftingGrid;
 
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
@@ -107,9 +106,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
         addSlotToContainer(new Slot(tileEntity, i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
       }
     }
-    lastSlotCraftingGrid = inventorySlots.size() - 1;
+    endSlotCraftingGrid = inventorySlots.size();
 
-    indexFilterSlot = lastSlotCraftingGrid + 1;
     slotFilter = addSlotToContainer(new Slot(tileEntity, TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
       @Override
       public int getSlotStackLimit() {
@@ -123,7 +121,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
         addSlotToContainer(new Slot(tileEntity, i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
       }
     }
-    lastSlotReturn = inventorySlots.size() - 1;
+    endSlotReturn = inventorySlots.size();
   }
 
   @Override
@@ -150,17 +148,22 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @SuppressWarnings("unchecked")
   public List<Slot> getCraftingGridSlots() {
-    return inventorySlots.subList(firstSlotCraftingGrid, lastSlotCraftingGrid);
+    return inventorySlots.subList(firstSlotCraftingGrid, endSlotCraftingGrid);
   }
 
   @SuppressWarnings("unchecked")
   public List<Slot> getReturnAreaSlots() {
-    return inventorySlots.subList(firstSlotReturn, lastSlotReturn);
+    return inventorySlots.subList(firstSlotReturn, endSlotReturn);
   }
 
   @SuppressWarnings("unchecked")
   public List<Slot> getPlayerInventorySlots() {
     return inventorySlots.subList(startPlayerSlot, endPlayerSlot);
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<Slot> getPlayerHotbarSlots() {
+    return inventorySlots.subList(startHotBarSlot, endHotBarSlot);
   }
 
   private void removeChangeLog() {
@@ -237,17 +240,17 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
-    if(slotIndex == slotCraftResult) {
+    if((slotIndex == slotCraftResult) || (slotIndex >= firstSlotReturn && slotIndex < endSlotReturn)) {
       return Collections.singletonList(getPlayerInventorySlotRange(true));
     }
-    if(slotIndex >= firstSlotReturn && slotIndex <= lastSlotReturn) {
-      return Collections.singletonList(new SlotRange(firstSlotReturn, lastSlotReturn, false));
-    }
-    if((slotIndex >= firstSlotCraftingGrid && slotIndex <= lastSlotCraftingGrid) || slotIndex >= startPlayerSlot) {
+    if(slotIndex >= firstSlotCraftingGrid && slotIndex < endSlotCraftingGrid) {
       ArrayList<SlotRange> res = new ArrayList<SlotRange>();
-      res.add(new SlotRange(firstSlotReturn, lastSlotReturn, false));
-      addPlayerSlotRanges(res, slotIndex);
+      res.add(new SlotRange(firstSlotReturn, endSlotReturn, false));
+      res.add(getPlayerInventorySlotRange(false));
       return res;
+    }
+    if(slotIndex >= startPlayerSlot) {
+      return Collections.singletonList(new SlotRange(firstSlotReturn, endSlotReturn, false));
     }
     return Collections.emptyList();
   }
@@ -348,7 +351,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   }
 
   public boolean moveItemsToReturnArea(int fromSlot) {
-    return moveItems(fromSlot, firstSlotReturn, lastSlotReturn, Short.MAX_VALUE);
+    return moveItems(fromSlot, firstSlotReturn, endSlotReturn, Short.MAX_VALUE);
   }
 
   public boolean moveItems(int fromSlot, int toSlotStart, int toSlotEnd, int amount) {

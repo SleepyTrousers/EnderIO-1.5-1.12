@@ -462,8 +462,8 @@ public final class Config {
 
   public static float inventoryPanelPowerPerMB = 800.0f;
   public static float inventoryPanelScanCostPerSlot = 0.1f;
-  public static float inventoryPanelExtractCostPerItem = 3.0f;
-  public static float inventoryPanelExtractCostPerOperation = 10.0f;
+  public static float inventoryPanelExtractCostPerItem = 12.0f;
+  public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
   public static void load(FMLPreInitializationEvent event) {
 

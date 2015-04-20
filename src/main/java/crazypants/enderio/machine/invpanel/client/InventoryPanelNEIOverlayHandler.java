@@ -221,6 +221,7 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
       InventoryPanelContainer container = gui.getContainer();
       findCandidates(candidate, stack, container.getReturnAreaSlots());
       findCandidates(candidate, stack, container.getPlayerInventorySlots());
+      findCandidates(candidate, stack, container.getPlayerHotbarSlots());
       if(candidate.available == 0 && db != null) {
         candidate.entry = db.lookupItem(stack, null, false);
         if(candidate.entry != null && candidate.entry.getCount() <= 0) {
