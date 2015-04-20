@@ -74,19 +74,21 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         focused = f;
       }
     }
+    boolean hadOverlays = false;
     if(key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
-      if(!hideOverlays()) {
-        if(focused == null) {
-          this.mc.thePlayer.closeScreen();
-        } else if(key == 1) {
-          focused.setFocused(false);
-          focused = null;
-        }
+      if(focused != null && key == 1) {
+        focused.setFocused(false);
+        focused = null;
+        return;
+      } else if(!hideOverlays()) {
+        this.mc.thePlayer.closeScreen();
+        return;
+      } else {
+        hadOverlays = true;
       }
-      return;
     }
 
-    if (c == '\t') {
+    if(c == '\t') {
       for (int i = 0; i < textFields.size(); i++) {
         TextFieldEIO f = textFields.get(i);
         if (f.isFocused()) {
@@ -101,6 +103,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
         return;
       }
     }
+    
+    if (hadOverlays) {
+      return;
+    }
+    
     super.keyTyped(c, key);
   }
 
