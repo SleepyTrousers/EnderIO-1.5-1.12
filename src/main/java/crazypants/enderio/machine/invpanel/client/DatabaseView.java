@@ -11,7 +11,19 @@ import net.minecraft.client.Minecraft;
 
 public class DatabaseView {
 
-  public static final Locale LOCALE = Locale.forLanguageTag(Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode());
+  public static final Locale LOCALE;
+
+  static {
+    String languageCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+    int idx = languageCode.indexOf('_');
+    if(idx > 0) {
+      String lang = languageCode.substring(0, idx);
+      String country = languageCode.substring(idx+1);
+      LOCALE = new Locale(lang, country);
+    } else {
+      LOCALE = new Locale(languageCode);
+    }
+  }
 
   private final ArrayList<ItemEntry> filteredItems;
 
