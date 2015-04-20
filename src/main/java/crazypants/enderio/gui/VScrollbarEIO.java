@@ -42,13 +42,13 @@ public class VScrollbarEIO {
     xPosition = xOrigin + gui.getGuiLeft();
     yPosition = yOrigin + gui.getGuiTop();
     wholeArea = new Rectangle(xPosition, yPosition,
-            (int)IconEIO.VSCROLL_THUMB.width, height);
+            (int)IconEIO.VSCROLL_THUMB_OFF.width, height);
     btnUp = new Rectangle(xPosition, yPosition,
             (int)IconEIO.UP_ARROW_OFF.width, (int)IconEIO.UP_ARROW_OFF.height);
     btnDown = new Rectangle(xPosition, yPosition + Math.max(0, height - (int)IconEIO.DOWN_ARROW_OFF.height),
             (int)IconEIO.DOWN_ARROW_OFF.width, (int)IconEIO.DOWN_ARROW_OFF.height);
     thumbArea = new Rectangle(xPosition, yPosition + btnUp.height,
-            (int)IconEIO.VSCROLL_THUMB.width, Math.max(0, height - (btnUp.height + btnDown.height)));
+            (int)IconEIO.VSCROLL_THUMB_OFF.width, Math.max(0, height - (btnUp.height + btnDown.height)));
   }
 
   public int getScrollPos() {
@@ -109,10 +109,14 @@ public class VScrollbarEIO {
 
     if(scrollMax > 0) {
       int thumbPos = getThumbPosition();
-      boolean hoverThumb = thumbArea.contains(mouseX, mouseY) &&
-              mouseY >= thumbPos && mouseY < thumbPos + (int)IconEIO.VSCROLL_THUMB.height;
-
-      IconEIO iconThumb = hoverThumb ? IconEIO.VSCROLL_THUMB_HOVER : IconEIO.VSCROLL_THUMB;
+      boolean hoverThumb = thumbArea.contains(mouseX, mouseY) && mouseY >= thumbPos && mouseY < thumbPos + (int) IconEIO.VSCROLL_THUMB_OFF.height;
+      
+      IconEIO iconThumb;
+      if(pressedThumb) {
+        iconThumb = IconEIO.VSCROLL_THUMB_HOVER_ON;
+      } else {
+        iconThumb = hoverThumb ? IconEIO.VSCROLL_THUMB_HOVER_OFF : IconEIO.VSCROLL_THUMB_OFF;
+      }
       iconThumb.renderIcon(thumbArea.x, thumbPos, false);
     }
 
@@ -125,7 +129,7 @@ public class VScrollbarEIO {
       if(scrollMax > 0 && thumbArea.contains(x, y)) {
         int thumbPos = getThumbPosition();
         pressedUp    = y < thumbPos;
-        pressedDown  = y >= thumbPos + (int)IconEIO.VSCROLL_THUMB.height;
+        pressedDown  = y >= thumbPos + (int)IconEIO.VSCROLL_THUMB_OFF.height;
         pressedThumb = !pressedUp && !pressedDown;
       } else {
         pressedUp    = btnUp.contains(x, y);
@@ -144,8 +148,8 @@ public class VScrollbarEIO {
 
   public boolean mouseClickMove(int x, int y, int button, long time) {
     if(pressedThumb) {
-      int pos = y - (thumbArea.y + (int)IconEIO.VSCROLL_THUMB.height/2);
-      int len = thumbArea.height - (int)IconEIO.VSCROLL_THUMB.height;
+      int pos = y - (thumbArea.y + (int)IconEIO.VSCROLL_THUMB_OFF.height/2);
+      int len = thumbArea.height - (int)IconEIO.VSCROLL_THUMB_OFF.height;
       if(len > 0) {
         setScrollPos(Math.round(pos * (float)scrollMax / (float)len));
       }
@@ -172,7 +176,7 @@ public class VScrollbarEIO {
   }
 
   protected int getThumbPosition() {
-    return thumbArea.y + (thumbArea.height - (int)IconEIO.VSCROLL_THUMB.height) * scrollPos / scrollMax;
+    return thumbArea.y + (thumbArea.height - (int)IconEIO.VSCROLL_THUMB_OFF.height) * scrollPos / scrollMax;
   }
 
   protected int limitPos(int pos) {
