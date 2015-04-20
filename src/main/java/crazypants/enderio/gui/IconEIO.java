@@ -116,16 +116,19 @@ public final class IconEIO {
   public static final IconEIO X_BUT_HOVER = new IconEIO(200, 48, 8, 8);
   public static final IconEIO X_BUT_HOVER_PRESSED = new IconEIO(200, 56, 8, 8);
 
-  public static final IconEIO UP_ARROW_OFF         = new IconEIO(201, 64, 11, 8);
-  public static final IconEIO UP_ARROW_ON          = new IconEIO(212, 64, 11, 8);
+  public static final IconEIO UP_ARROW_OFF         = new IconEIO(212, 64, 11, 8);
+  public static final IconEIO UP_ARROW_ON          = new IconEIO(223, 64, 11, 8);
   public static final IconEIO UP_ARROW_HOVER_OFF   = new IconEIO(234, 64, 11, 8);
   public static final IconEIO UP_ARROW_HOVER_ON    = new IconEIO(245, 64, 11, 8);
-  public static final IconEIO DOWN_ARROW_OFF       = new IconEIO(201, 72, 11, 8);
-  public static final IconEIO DOWN_ARROW_ON        = new IconEIO(212, 72, 11, 8);
+  public static final IconEIO DOWN_ARROW_OFF       = new IconEIO(212, 72, 11, 8);
+  public static final IconEIO DOWN_ARROW_ON        = new IconEIO(223, 72, 11, 8);
   public static final IconEIO DOWN_ARROW_HOVER_OFF = new IconEIO(234, 72, 11, 8);
   public static final IconEIO DOWN_ARROW_HOVER_ON  = new IconEIO(245, 72, 11, 8);
-  public static final IconEIO VSCROLL_THUMB        = new IconEIO(223, 64, 11, 8);
-  public static final IconEIO VSCROLL_THUMB_HOVER  = new IconEIO(223, 72, 11, 8);
+  
+  public static final IconEIO VSCROLL_THUMB_OFF       = new IconEIO(234, 80, 11, 8);
+  public static final IconEIO VSCROLL_THUMB_HOVER_OFF = new IconEIO(234, 88, 11, 8);
+  public static final IconEIO VSCROLL_THUMB_ON        = new IconEIO(245, 80, 11, 8);
+  public static final IconEIO VSCROLL_THUMB_HOVER_ON  = new IconEIO(245, 88, 11, 8);
 
   public static final IconEIO SOUND = new IconEIO(176, 208);
 
