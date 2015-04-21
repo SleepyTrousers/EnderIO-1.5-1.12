@@ -39,11 +39,12 @@ public class DatabaseView {
   private boolean needsFiltering;
   private boolean needsNewFiltering;
 
-  private Collator collator;
+  private final Collator collator;
 
   public DatabaseView() {
     filteredItems = new ArrayList<ItemEntry>();
     currentFilter = "";
+    collator = Collator.getInstance(LOCALE);
   }
 
   public void setDatabase(InventoryDatabaseClient database) {
@@ -143,9 +144,9 @@ public class DatabaseView {
     if(needsSorting) {
       Comparator<ItemEntry> cmp;
       switch (order) {
-        case NAME: cmp = new NameComparator(getCollator()); break;
-        case MOD:  cmp = new ModComparator(getCollator()); break;
-        default:   cmp = CountComparator.INSTANCE;
+        case NAME: cmp = new NameComparator(collator); break;
+        case MOD:  cmp = new ModComparator(collator); break;
+        default:   cmp = new CountComparator(collator); break;
       }
       if(invertSortOrder) {
         cmp = Collections.reverseOrder(cmp);
@@ -163,13 +164,6 @@ public class DatabaseView {
 
   public ItemEntry getItemEntry(int index) {
     return filteredItems.get(index);
-  }
-
-  private Collator getCollator() {
-    if(collator == null) {
-      collator = Collator.getInstance(LOCALE);
-    }
-    return collator;
   }
 
 }
