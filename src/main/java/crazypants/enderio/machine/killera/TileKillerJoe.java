@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -538,6 +539,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
     @Override
     protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
+    }
+    
+    @Override
+    public void addChatMessage(IChatComponent p_145747_1_) {
     }
   }
 
