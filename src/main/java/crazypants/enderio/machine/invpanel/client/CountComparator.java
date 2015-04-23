@@ -1,13 +1,20 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import java.util.Comparator;
+import java.text.Collator;
 
-class CountComparator implements Comparator<ItemEntry> {
-  public static final CountComparator INSTANCE = new CountComparator();
+class CountComparator extends NameComparator {
+
+  public CountComparator(Collator collator) {
+    super(collator);
+  }
 
   @Override
   public int compare(ItemEntry a, ItemEntry b) {
-    return b.count - a.count;
+    int res = b.count - a.count;
+    if(res == 0) {
+      res = super.compare(a, b);
+    }
+    return res;
   }
 
 }
