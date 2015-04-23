@@ -729,8 +729,8 @@ addOreDictionaryTooltips=true
         <itemStack modID="appliedenergistics2" itemName="tile.OreQuartzCharged" />
       </input>
       <output>
-        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1" />
-        <itemStack oreDictionary="dustCertusQuartz" />
+        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1" number="2" />
+        <itemStack oreDictionary="dustCertusQuartz" chance="0.1" />
       </output>
     </recipe>
 
@@ -739,8 +739,8 @@ addOreDictionaryTooltips=true
         <itemStack modID="appliedenergistics2" itemName="tile.OreQuartz" />
       </input>
       <output>
-        <itemStack oreDictionary="crystalCertusQuartz" />
-        <itemStack oreDictionary="dustCertusQuartz" />
+        <itemStack oreDictionary="crystalCertusQuartz" number="2" />
+        <itemStack oreDictionary="dustCertusQuartz" chance="0.1" />
       </output>
     </recipe>
 
@@ -1089,7 +1089,7 @@ addOreDictionaryTooltips=true
       </input>
       <output>
         <itemStack oreDictionary="dustIron" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1099,7 +1099,7 @@ addOreDictionaryTooltips=true
       </input>
       <output>
         <itemStack oreDictionary="dustGold" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1108,8 +1108,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherDiamond" />
       </input>
       <output>
-		<itemStack modID="minecraft" itemName="diamond" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack modID="minecraft" itemName="diamond" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1118,8 +1118,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherCoal" />
       </input>
       <output>
-		<itemStack oreDictionary="dustCoal" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustCoal" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1128,8 +1128,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherLapis" />
       </input>
       <output>
-		<itemStack modID="minecraft" itemName="dye" itemMeta="4" number="24" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="24" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1138,8 +1138,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherRedstone" />
       </input>
       <output>
-		<itemStack modID="minecraft" itemName="redstone" number="21" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack modID="minecraft" itemName="redstone" number="21" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1148,8 +1148,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherCopper" />
       </input>
       <output>
-		<itemStack oreDictionary="dustCopper" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustCopper" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1158,8 +1158,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherTin" />
       </input>
       <output>
-		<itemStack oreDictionary="dustTin" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustTin" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1168,8 +1168,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherEmerald" />
       </input>
       <output>
-		<itemStack modID="minecraft" itemName="emerald" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack modID="minecraft" itemName="emerald" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1178,8 +1178,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherSilver" />
       </input>
       <output>
-		<itemStack oreDictionary="dustSilver" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustSilver" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1188,8 +1188,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherLead" />
       </input>
       <output>
-		<itemStack oreDictionary="dustLead" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustLead" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1198,8 +1198,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherUranium" />
       </input>
       <output>
-		<itemStack oreDictionary="crushedUranium" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="crushedUranium" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1208,8 +1208,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherRuby" />
       </input>
       <output>
-		<itemStack oreDictionary="gemRuby" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="gemRuby" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1218,8 +1218,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherPeridot" />
       </input>
       <output>
-		<itemStack oreDictionary="gemPeridot" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="gemPeridot" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1228,8 +1228,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherSapphire" />
       </input>
       <output>
-		<itemStack oreDictionary="gemSapphire" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="gemSapphire" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1238,8 +1238,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherPlatinum" />
       </input>
       <output>
-		<itemStack oreDictionary="dustPlatinum" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustPlatinum" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1248,8 +1248,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherNickel" />
       </input>
       <output>
-		<itemStack oreDictionary="dustNickel" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustNickel" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1258,8 +1258,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherSulfur" />
       </input>
       <output>
-		<itemStack oreDictionary="dustSulfur" number="24" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="24" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1268,8 +1268,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherMithril" />
       </input>
       <output>
-		<itemStack oreDictionary="dustMithril" number="4" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustMithril" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1278,8 +1278,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherAmber" />
       </input>
       <output>
-		<itemStack oreDictionary="gemAmber" number="5" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="gemAmber" number="5" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
@@ -1288,8 +1288,8 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="oreNetherSaltpeter" />
       </input>
       <output>
-		<itemStack oreDictionary="dustSaltpeter" number="10" />
-		<itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+        <itemStack oreDictionary="dustSaltpeter" number="10" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
 	
