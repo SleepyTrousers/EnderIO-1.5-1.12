@@ -25,6 +25,7 @@ public class BlockLightNode extends BlockEio {
     super(ModObject.blockLightNode.unlocalisedName, TileLightNode.class, Material.air);
     setCreativeTab(null);
     setBlockBounds(0, 0, 0, 0, 0, 0);
+    setTickRandomly(true);
   }
 
   @Override
@@ -39,13 +40,7 @@ public class BlockLightNode extends BlockEio {
 
   @Override
   public boolean isBlockSolid(IBlockAccess iblockaccess, int x, int y, int z, int l) {
-    Block blockID = iblockaccess.getBlock(x, y, z);
-    if(blockID == this) {
-      return false;
-    } else {
-
-      return super.isBlockSolid(iblockaccess, x, y, z, l);
-    }
+    return false;
   }
 
   @Override
@@ -68,17 +63,7 @@ public class BlockLightNode extends BlockEio {
 
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    Block block = world.getBlock(x, y, z);
-    if(block != null && block != this) {
-      return block.getLightValue(world, x, y, z);
-    }
-    int onVal = 15;
-    // TileEntity te = world.getTileEntity(x, y, z);
-    // if(te instanceof TileLightNode && ((TileLightNode)te).isDiagnal) {
-    // System.out.println("BlockLightNode.getLightValue: ");
-    // onVal = 5;
-    // }
-    return world.getBlockMetadata(x, y, z) > 0 ? onVal : 0;
+    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
   }
 
   @Override
@@ -86,6 +71,14 @@ public class BlockLightNode extends BlockEio {
     TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
     if(te != null) {
       te.onNeighbourChanged();
+    }
+  }
+
+  @Override
+  public void updateTick(World world, int x, int y, int z, Random r) {
+    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
+    if(te != null) {
+      te.checkParent();
     }
   }
 
