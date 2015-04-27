@@ -79,7 +79,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
           ((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
         }
         ret = true;
-      } else if(block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+      } else if(!player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
         ret = true;
       } else if(block instanceof IRotatableFacade && !player.isSneaking()
           && (block != EnderIO.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
