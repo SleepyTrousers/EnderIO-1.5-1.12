@@ -87,10 +87,10 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     if(swingProgress > 0) {
       float f6 = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
       float f7 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI);
-      GL11.glRotatef(f7 * 5.0F, 1.0F, 0.0F, 0.0F);
+      GL11.glRotatef(f6 * 5.0F, 1.0F, 0.0F, 0.0F);
       GL11.glRotatef(f7 * 50.0F, 0.0F, 0.0F, 1.0F);
     }
-    GL11.glTranslatef(-0.25f, 0.2f, 0.05f);
+    GL11.glTranslatef(-0.255f, 0.2f, 0.05f);
 
     RenderUtil.bindItemTexture();
 
