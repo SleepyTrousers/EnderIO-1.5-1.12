@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -27,12 +28,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
   private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer() {
     @Override
     public boolean matchesMetadata(int meta1, int meta2) {
-      if (super.matchesMetadata(meta1, meta2)) {
-        return true;
-      }
-      
-      BlockFusedQuartz.Type type = BlockFusedQuartz.Type.values()[meta1];
-      return type.connectTo(meta2);
+      return super.matchesMetadata(meta1, meta2) || BlockFusedQuartz.Type.byMeta(meta1).connectTo(meta2);
     }
   };
 
