@@ -5,6 +5,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.PacketProgress;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
@@ -32,14 +33,19 @@ public abstract class TileEntityEio extends TileEntity {
     return true;
   }
 
+  private long lastUpdate = 0;
+
   @Override
   public final void updateEntity() {
-    doUpdate();
-    if(isProgressTile && !worldObj.isRemote) {
-      int curScaled = getProgressScaled(16);
-      if(++ticksSinceLastProgressUpdate >= getProgressUpdateFreq() || curScaled != lastProgressScaled) {
-        sendTaskProgressPacket();
-        lastProgressScaled = curScaled;
+    if (Config.allowExternalTickSpeedup || worldObj.getTotalWorldTime() != lastUpdate) {
+      lastUpdate = worldObj.getTotalWorldTime();
+      doUpdate();
+      if (isProgressTile && !worldObj.isRemote) {
+        int curScaled = getProgressScaled(16);
+        if (++ticksSinceLastProgressUpdate >= getProgressUpdateFreq() || curScaled != lastProgressScaled) {
+          sendTaskProgressPacket();
+          lastProgressScaled = curScaled;
+        }
       }
     }
   }
