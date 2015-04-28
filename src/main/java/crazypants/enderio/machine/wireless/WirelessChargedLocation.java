@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 import crazypants.util.BlockCoord;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class WirelessChargedLocation {
 
@@ -24,13 +26,26 @@ public class WirelessChargedLocation {
     WirelessChargerController wcc = WirelessChargerController.instance;
     chargers.clear();
     lastChangeCount = wcc.getChangeCount();
-    wcc.getChargers(te.getWorldObj(), new BlockCoord(te), chargers);
+    final BlockCoord bc = new BlockCoord(te);
+    wcc.getChargers(te.getWorldObj(), bc, chargers);
+    Collections.sort(chargers, new Comparator<IWirelessCharger>() {
+      @Override
+      public int compare(IWirelessCharger o1, IWirelessCharger o2) {
+        int dist1 = o1.getLocation().distanceSquared(bc);
+        int dist2 = o2.getLocation().distanceSquared(bc);
+        return dist1 - dist2;
+      }
+    });
   }
 
-  public boolean chargeItems(ItemStack[] items) {
+  private void checkChangeCount() {
     if(lastChangeCount != WirelessChargerController.instance.getChangeCount()) {
       updateChargers();
     }
+  }
+
+  public boolean chargeItems(ItemStack[] items) {
+    checkChangeCount();
     for(IWirelessCharger wc : chargers) {
       if(wc.isActive()) {
         if(wc.chargeItems(items)) {
@@ -39,5 +54,19 @@ public class WirelessChargedLocation {
       }
     }
     return false;
+  }
+
+  public int takeEnergy(int max) {
+    checkChangeCount();
+    int charged = 0;
+    for(IWirelessCharger wc : chargers) {
+      if(wc.isActive()) {
+        charged += wc.takeEnergy(max - charged);
+        if(charged >= max) {
+          break;
+        }
+      }
+    }
+    return charged;
   }
 }
