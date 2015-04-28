@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -11,11 +12,17 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.util.BaublesUtil;
+import crazypants.util.ShadowInventory;
 
 public class ContainerCapBank extends Container {
 
   private final TileCapBank tileEntity;
   private final InventoryImpl inv;
+
+  // Note: Modifying the Baubles inventory on the client side of an integrated
+  // server is a bad idea as Baubles does some very bad things...
+  private IInventory baubles;
 
   public ContainerCapBank(final Entity player, InventoryPlayer playerInv, TileCapBank cb) {
     tileEntity = cb;
@@ -25,6 +32,12 @@ public class ContainerCapBank extends Container {
       inv = new InventoryImpl();
     }
 
+    baubles = BaublesUtil.instance().getBaubles((EntityPlayer) player);
+
+    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
+      baubles = new ShadowInventory(baubles);
+    }
+    
     int armorOffset = 21;
     addSlotToContainer(new Slot(inv, 0, 59 + armorOffset, 59) {
       @Override
@@ -68,7 +81,7 @@ public class ContainerCapBank extends Container {
     //armor slots
     for (int i = 0; i < 4; ++i) {
       final int k = i;
-      addSlotToContainer(new Slot(playerInv, playerInv.getSizeInventory() - 1 - i, -15 + armorOffset, 30 + i * 18) {
+      addSlotToContainer(new Slot(playerInv, playerInv.getSizeInventory() - 1 - i, -15 + armorOffset, 12 + i * 18) {
 
         @Override
         public int getSlotStackLimit() {
@@ -91,8 +104,23 @@ public class ContainerCapBank extends Container {
       });
     }
 
+    if (hasBaublesSlots()) {
+      for (int i = 0; i < baubles.getSizeInventory(); i++) {
+        addSlotToContainer(new Slot(baubles, i, -15 + armorOffset, 84 + i * 18) {
+          @Override
+          public boolean isItemValid(ItemStack par1ItemStack) {
+            return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
+          }
+        });
+      }
+    }
+    
   }
 
+  public boolean hasBaublesSlots() {
+    return baubles != null;
+  }
+  
   public void updateInventory() {
     if(tileEntity.getNetwork() != null && tileEntity.getNetwork().getInventory() != null) {
       inv.setCapBank(tileEntity.getNetwork().getInventory().getCapBank());
@@ -111,6 +139,8 @@ public class ContainerCapBank extends Container {
     int endPlayerSlot = startPlayerSlot + 26;
     int startHotBarSlot = endPlayerSlot + 1;
     int endHotBarSlot = startHotBarSlot + 9;
+    int startBaublesSlot = endHotBarSlot + 1;
+    int endBaublesSlot = baubles == null ? 0 : startBaublesSlot + baubles.getSizeInventory();
 
     ItemStack copystack = null;
     Slot slot = (Slot) inventorySlots.get(slotIndex);
@@ -119,12 +149,17 @@ public class ContainerCapBank extends Container {
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
 
+      // Note: Merging into Baubles slots is disabled because the used vanilla
+      // merge method does not check if the item can go into the slot or not.
+
       if(slotIndex < 4) {
         // merge from machine input slots to inventory
-        if(!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)) {
-          if(!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
+        if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)
+            && /*
+                * !(baubles != null && mergeItemStack(origStack,
+                * startBaublesSlot, endBaublesSlot, false)) &&
+                */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
             return null;
-          }
         }
 
       } else {
@@ -133,11 +168,22 @@ public class ContainerCapBank extends Container {
           if(!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
 
             if(slotIndex <= endPlayerSlot) {
-              if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+              if (/*
+                   * !(baubles != null && mergeItemStack(origStack,
+                   * startBaublesSlot, endBaublesSlot, false)) &&
+                   */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                 return null;
               }
             } else if(slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
-              if(!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              if (/*
+                   * !(baubles != null && mergeItemStack(origStack,
+                   * startBaublesSlot, endBaublesSlot, false)) &&
+                   */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+                return null;
+              }
+            } else if (slotIndex >= startBaublesSlot && slotIndex <= endBaublesSlot) {
+              if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && 
+                  !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
                 return null;
               }
             }
