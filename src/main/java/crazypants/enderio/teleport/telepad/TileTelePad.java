@@ -91,10 +91,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       master.breakNetwork();
     }
     
-    if (worldObj == null) {
-      return;
-    }
-
     if(autoUpdate) {
       updateConnectedState(true);
       autoUpdate = false;

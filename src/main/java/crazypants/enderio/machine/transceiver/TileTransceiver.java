@@ -96,7 +96,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public void doUpdate() {
-    if(!registered && worldObj != null && !worldObj.isRemote) {
+    if (!registered && !worldObj.isRemote) {
       ServerChannelRegister.instance.register(this);
       registered = true;
       removeUnregsiteredChannels(sendChannels);
@@ -104,7 +104,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
     super.doUpdate();
 
-    if(worldObj != null && !worldObj.isRemote) {
+    if (!worldObj.isRemote) {
       railController.doTick();
       if(sendChannelsDirty) {
         PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this, 256);
