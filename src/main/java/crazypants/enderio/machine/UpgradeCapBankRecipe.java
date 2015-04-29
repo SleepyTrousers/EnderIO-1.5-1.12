@@ -6,8 +6,13 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.RecipeSorter;
 
 public class UpgradeCapBankRecipe extends ShapedOreRecipe {
+
+  static {
+    RecipeSorter.register("EnderIO:upgradeCapBankRecipe", UpgradeCapBankRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
+  }
 
   public UpgradeCapBankRecipe(ItemStack result, Object... recipe) {
     super(result, recipe);
