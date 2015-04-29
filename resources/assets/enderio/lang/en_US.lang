@@ -924,6 +924,9 @@ enderio.gui.travelAccessable.protected=Protected
 enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
 enderio.gui.travelAccessable.enterCode=Access Code Required
 enderio.gui.travelAccessable.ok=Authorise
+enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted teleport.
+enderio.gui.travelAccessable.skipObstructed=Skipped obstructed anchor.
+enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
 
 enderio.gui.telepad.configure.travel=Travel Settings
 enderio.gui.telepad.configure.telepad=Telepad Settings
