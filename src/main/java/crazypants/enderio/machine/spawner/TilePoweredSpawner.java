@@ -3,6 +3,7 @@ package crazypants.enderio.machine.spawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
@@ -236,7 +237,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
     boolean spaceClear = worldObj.checkNoEntityCollision(entityliving.boundingBox)
-        && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).isEmpty() && !worldObj.isAnyLiquid(entityliving.boundingBox);
+        && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).isEmpty()
+        && (!worldObj.isAnyLiquid(entityliving.boundingBox) || entityliving.isCreatureType(EnumCreatureType.waterCreature, false));
     if(spaceClear && USE_VANILLA_SPAWN_CHECKS) {
       //Full checks for lighting, dimension etc 
       spaceClear = entityliving.getCanSpawnHere();
