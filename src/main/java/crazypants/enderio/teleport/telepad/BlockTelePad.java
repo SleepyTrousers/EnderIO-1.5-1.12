@@ -25,9 +25,9 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 public class BlockTelePad extends BlockTravelAnchor {
 
   @SideOnly(Side.CLIENT)
-  private IIcon unconnected;
+  private IIcon[] icons;
   @SideOnly(Side.CLIENT)
-  private IIcon connected;
+  private IIcon model;
   @SideOnly(Side.CLIENT)
   IIcon animationIcon;
   
@@ -57,23 +57,25 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
-    unconnected = iIconRegister.registerIcon("enderio:blockTelePad");
-    connected = iIconRegister.registerIcon("enderio:telePadModel");
-    animationIcon = iIconRegister.registerIcon("enderio:telePadAnimation");
+    icons = new IIcon[3];
+    icons[0] = iIconRegister.registerIcon("enderio:telePadBottom");
+    icons[1] = iIconRegister.registerIcon("enderio:telePadTop");
+    icons[2] = iIconRegister.registerIcon("enderio:telePadSide");
+    model = iIconRegister.registerIcon("enderio:telePadModel");
   }
 
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
     if(te != null && te.inNetwork()) {
-      return connected;
+      return model;
     }
-    return unconnected;
+    return getIcon(blockSide, 0);
   }
 
   @Override
-  public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-    return unconnected;
+  public IIcon getIcon(int side, int meta) {
+    return icons[Math.min(side, 2)];
   }
 
   @Override

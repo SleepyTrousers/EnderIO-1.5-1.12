@@ -72,7 +72,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     if(!MinecraftForge.EVENT_BUS.post(evt)) {
       doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source);
     }
-
+    
     return null;
   }
 
