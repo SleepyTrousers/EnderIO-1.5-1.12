@@ -19,7 +19,11 @@ public class WirelessChargedLocation {
   public WirelessChargedLocation(TileEntity te) {
     this.te = te;
     this.chargers = new ArrayList<IWirelessCharger>();
-    updateChargers();
+    /* Set lastChangeCount to one less than the current change count so that
+       the charger list is updated on first use (unless ~4B changes happen in between).
+       Do this instead directly updating so that WirelessChargedLocation can be used
+       while the TileEntity is still in construction (or loading). */
+    this.lastChangeCount = WirelessChargerController.instance.getChangeCount() - 1;
   }
 
   private void updateChargers() {
