@@ -1064,11 +1064,13 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
     }
 
     NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-    for (int i = 0; i < itemList.tagCount(); i++) {
-      NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-      byte slot = itemStack.getByte("Slot");
-      if(slot >= 0 && slot < inventory.length) {
-        inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
+    if(itemList != null) {
+      for (int i = 0; i < itemList.tagCount(); i++) {
+        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
+        byte slot = itemStack.getByte("Slot");
+        if(slot >= 0 && slot < inventory.length) {
+          inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
+        }
       }
     }
 
