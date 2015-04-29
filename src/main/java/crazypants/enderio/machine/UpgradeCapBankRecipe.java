@@ -2,11 +2,15 @@ package crazypants.enderio.machine;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class UpgradeCapBankRecipe extends ShapedOreRecipe {
+
+  static {
+    RecipeSorter.register("EnderIO:upgradeCapBankRecipe", UpgradeCapBankRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
+  }
 
   public UpgradeCapBankRecipe(ItemStack result, Object... recipe) {
     super(result, recipe);
