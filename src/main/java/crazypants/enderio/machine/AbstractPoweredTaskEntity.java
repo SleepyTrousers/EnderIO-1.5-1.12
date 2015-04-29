@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.util.IProgressTile;
 
@@ -22,6 +21,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected int ticksSinceCheckedRecipe = 0;
   protected boolean startFailed = false;
+  protected float nextChance = Float.NaN;
 
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
@@ -118,11 +118,20 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     }
     ticksSinceCheckedRecipe = 0;
 
-    float chance = random.nextFloat();
+    // Get a new chance when we don't have one yet
+    // If a recipe could not be started we will try with the same chance next time
+    if(Float.isNaN(nextChance)) {
+      nextChance = random.nextFloat();
+    }
+
     // Then see if we need to start a new one
-    IMachineRecipe nextRecipe = canStartNextTask(chance);
+    IMachineRecipe nextRecipe = canStartNextTask(nextChance);
     if(nextRecipe != null) {
-      boolean started = startNextTask(nextRecipe, chance);
+      boolean started = startNextTask(nextRecipe, nextChance);
+      if(started) {
+        // this chance value has been used up
+        nextChance = Float.NaN;
+      }
       sendTaskProgressPacket();
       startFailed = !started;
     } else {
@@ -166,8 +175,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
       lastCompletedRecipe = currentTask.getRecipe();
       ResultStack[] output = currentTask.getCompletedResult();
       if(output != null && output.length > 0) {
-        ResultStack[] results = currentTask.getCompletedResult();
-        mergeResults(results);
+        mergeResults(output);
       }
     }
     markDirty();
