@@ -68,11 +68,9 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     int x = message.x, y = message.y, z = message.z;
 
     TravelSource source = TravelSource.values()[message.source];
-    TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z);
-    if(!MinecraftForge.EVENT_BUS.post(evt)) {
-      doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source);
-    }
-    
+
+    doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source);
+
     return null;
   }
 

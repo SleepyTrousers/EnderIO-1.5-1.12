@@ -30,6 +30,7 @@ public class BlockFusedQuartz extends BlockEio {
 
   public static int renderId;
 
+  private final static Type[] metaMapping = new Type[16];
   public enum Type {
 
     FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
@@ -48,6 +49,7 @@ public class BlockFusedQuartz extends BlockEio {
       this.frameIcon = frameIcon;
       this.blockIcon = blockIcon;
       this.itemIcon = itemIcon;
+      metaMapping[this.ordinal()] = this;
     }
 
     public boolean connectTo(int otherMeta) {
@@ -67,6 +69,10 @@ public class BlockFusedQuartz extends BlockEio {
       }
 
       return false;
+    }
+
+    public static Type byMeta(int meta) {
+      return metaMapping[meta] != null ? metaMapping[meta] : GLASS;
     }
   }
 
@@ -96,8 +102,8 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     int meta = world.getBlockMetadata(x, y, z);
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
-    if(meta == Type.FUSED_QUARTZ.ordinal() || meta == Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()) {
+    Type type = Type.byMeta(meta);
+    if (type == Type.FUSED_QUARTZ || type == Type.ENLIGHTENED_FUSED_QUARTZ) {
       return 2000;
     } else {
       return super.getExplosionResistance(par1Entity);
@@ -171,7 +177,7 @@ public class BlockFusedQuartz extends BlockEio {
     if(block == this) {
       BlockCoord here = new BlockCoord(x, y, z).getLocation(ForgeDirection.VALID_DIRECTIONS[side].getOpposite());
       int myMeta = world.getBlockMetadata(here.x, here.y, here.z);
-      return !Type.values()[myMeta].connectTo(meta);
+      return !Type.byMeta(myMeta).connectTo(meta);
     }
     return true;
   }
@@ -214,17 +220,17 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int par1, int meta) {
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    meta = MathHelper.clamp_int(meta, 0, blockIcon.length - 1);
     return blockIcon[meta];
   }
 
   public IIcon getItemIcon(int meta) {
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    meta = MathHelper.clamp_int(meta, 0, itemsIcons.length - 1);
     return itemsIcons[meta];
   }
 
   public IIcon getDefaultFrameIcon(int meta) {
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    meta = MathHelper.clamp_int(meta, 0, frameIcons.length - 1);
     return frameIcons[meta];
   }
 

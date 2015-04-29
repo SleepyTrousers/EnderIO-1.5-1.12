@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.light;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,12 +13,8 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.wireless.IWirelessCharger;
-import crazypants.enderio.machine.wireless.WirelessChargerController;
-import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
@@ -43,17 +41,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private boolean requiresPower = true;
   
-  private boolean isWireless;
-  private IWirelessCharger charger;
-  private int ticksSinceLastSearch = 50;
-
-  private ICapacitor capacitor;
+  private WirelessChargedLocation chargedLocation;
 
   private int energyStoredRF;
 
   public TileElectricLight() {
-    capacitor = new BasicCapacitor(Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyReceived(), 100);
-    energyStoredRF = 0;
   }
 
   public void onNeighborBlockChange(Block blockID) {
@@ -99,11 +91,15 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
   
   public void setWireless(boolean wireless) {
-    isWireless = wireless;
+    if(!wireless) {
+      chargedLocation = null;
+    } else if(chargedLocation == null) {
+      chargedLocation = new WirelessChargedLocation(this);
+    }
   }
 
   public boolean isWireless() {
-    return isWireless;
+    return chargedLocation != null;
   }
 
   @Override
@@ -112,20 +108,20 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       return;
     }
 
-    boolean hasRedstone = hasRedstoneSignal();
+    boolean isActivated = hasRedstoneSignal() ^ isInvereted;
 
-    boolean isActivated = (requiresPower ? hasPower() : true) && (hasRedstone && !isInvereted || !hasRedstone && isInvereted);
-    
-    if(isActivated && requiresPower) {
-      setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
-    }
-    
-    if(!hasPower() && requiresPower) {
-      isActivated = false;
-    }
+    if(requiresPower) {
+      if(isActivated) {
+        if(!hasPower()) {
+          isActivated = false;
+        } else {
+          setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
+        }
+      }
 
-    if(init && requiresPower) {
-      updateLightNodes();
+      if(init) {
+        updateLightNodes();
+      }
     }
 
     if(isActivated != lastActive || init) {
@@ -146,45 +142,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       lastActive = isActivated;
     }
     
-    if (isWireless) {
-      if (ticksSinceLastSearch > 50) {
-        charger = findNearestCharger();
-        ticksSinceLastSearch = 0;
-      } else {
-        ticksSinceLastSearch++;
-      }
-      
-      if (charger != null && energyStoredRF < getMaxEnergyStored()) {
-        energyStoredRF += charger.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+    if (chargedLocation != null) {
+      if (energyStoredRF < getMaxEnergyStored()) {
+        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
       }
     }
-  }
-  
-  private IWirelessCharger findNearestCharger() {
-    int minDist = Integer.MAX_VALUE;
-    BlockCoord charger = null;
-    Map<BlockCoord, IWirelessCharger> map = WirelessChargerController.instance.getChargerMap(worldObj);
-    
-    if (map == null) {
-      return null;
-    }
-    
-    for (BlockCoord b : map.keySet()) {
-      int dist = b.distance(new BlockCoord(this));
-      if (dist < minDist) {
-        minDist = dist;
-        charger = b;
-      }
-    }
-
-    if (charger != null && minDist < Config.wirelessChargerRange) {
-      TileEntity te = charger.getTileEntity(worldObj);
-      if (te instanceof IWirelessCharger) {
-        return (IWirelessCharger) te;
-      }
-    }
-    
-    return null;
   }
 
   public void onBlockRemoved() {
@@ -200,17 +162,17 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   private void updateLightNodes() {
-    if(!requiresPower) {
-      return;
-    }
-    updatingLightNodes = true;
-    List<NodeEntry> before = new ArrayList<NodeEntry>(17);
-    if(lightNodes != null) {
+    Set<BlockCoord> before;
+    if(lightNodes != null && !lightNodes.isEmpty()) {
+      before = new HashSet<BlockCoord>(lightNodes.size());
       for (TileLightNode node : lightNodes) {
-        before.add(new NodeEntry(node));
+        before.add(node.getLocation());
       }
+    } else {
+      before = Collections.emptySet();
     }
-    List<NodeEntry> after = new ArrayList<NodeEntry>(17);
+    Set<BlockCoord> after = new HashSet<BlockCoord>(17);
+    updatingLightNodes = true;
     try {
       if(lightNodeCoords != null) {
 
@@ -255,19 +217,17 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       addDiaganals(diags, new Vector3d(), after);
       addDiaganals(diags, ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);
 
-      if(!areEqual(before, after)) {
-
+      if(!before.equals(after)) {
         clearLightNodes();
 
-        for (NodeEntry entry : after) {
-          worldObj.setBlock(entry.coord.x, entry.coord.y, entry.coord.z, EnderIO.blockLightNode);
-          TileEntity te = worldObj.getTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
+        for (BlockCoord entry : after) {
+          worldObj.setBlock(entry.x, entry.y, entry.z, EnderIO.blockLightNode);
+          TileEntity te = worldObj.getTileEntity(entry.x, entry.y, entry.z);
           if(te instanceof TileLightNode) {
             TileLightNode ln = (TileLightNode) te;
             ln.parentX = xCoord;
             ln.parentY = yCoord;
             ln.parentZ = zCoord;
-            ln.isDiagnal = entry.isDiagnal;
             lightNodes.add(ln);
           }
         }
@@ -281,52 +241,37 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     }
   }
 
-  private boolean areEqual(List<NodeEntry> before, List<NodeEntry> after) {
-    if(before.size() != after.size()) {
-      return false;
-    }
-    for (NodeEntry entry : before) {
-      if(!after.contains(entry)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private void addDiaganals(Vector3d[] diags, Vector3d trans, List<NodeEntry> result) {
+  private void addDiaganals(Vector3d[] diags, Vector3d trans, Set<BlockCoord> result) {
     Vector3d offset = new Vector3d();
     offset.set(diags[0]);
     offset.add(diags[1]);
-    addNodeInDirection(offset.add(trans), true, result);
+    addNodeInDirection(offset.add(trans), result);
 
     offset.set(diags[0]);
     offset.sub(diags[1]);
-    addNodeInDirection(offset.add(trans), true, result);
+    addNodeInDirection(offset.add(trans), result);
 
-    offset.set(new Vector3d(diags[0]).negate());
+    offset.set(diags[0]);
+    offset.negate();
     offset.add(diags[1]);
-    addNodeInDirection(offset.add(trans), true, result);
+    addNodeInDirection(offset.add(trans), result);
 
-    offset.set(new Vector3d(diags[0]).negate());
+    offset.set(diags[0]);
+    offset.negate();
     offset.sub(diags[1]);
-    addNodeInDirection(offset.add(trans), true, result);
+    addNodeInDirection(offset.add(trans), result);
   }
 
-  private void addNodeInDirection(Vector3d offset, List<NodeEntry> after) {
-    addNodeInDirection(offset, false, after);
-  }
-
-  private void addNodeInDirection(Vector3d offset, boolean diagnal, List<NodeEntry> result) {
-
+  private void addNodeInDirection(Vector3d offset, Set<BlockCoord> result) {
     boolean isAir = isAir(offset);
     boolean isTransp = isTranparent(offset);
     if(isAir || isTransp) {
       offset.scale(2);
       if(isAir(offset)) {
-        addLightNode(offset, diagnal, result);
+        addLightNode(offset, result);
       } else if(isAir) {
         offset.scale(0.5);
-        addLightNode(offset, diagnal, result);
+        addLightNode(offset, result);
       }
     }
   }
@@ -346,8 +291,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     }
   }
 
-  private void addLightNode(Vector3d offset, boolean isDiag, List<NodeEntry> result) {
-
+  private void addLightNode(Vector3d offset, Set<BlockCoord> result) {
     int x = xCoord + (int) offset.x;
     int y = yCoord + (int) offset.y;
     int z = zCoord + (int) offset.z;
@@ -359,17 +303,12 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
         return;
       }
     }
-    result.add(new NodeEntry(new BlockCoord(x, y, z), isDiag));
+    result.add(new BlockCoord(x, y, z));
   }
 
   private boolean isRailcraftException(Block id) {
-
     String className = id.getClass().getName();
-    if(className.equals("mods.railcraft.common.blocks.machine.BlockMachine")) {
-      return true;
-    }
-
-    return false;
+    return className.equals("mods.railcraft.common.blocks.machine.BlockMachine");
   }
 
   private boolean isTranparent(Vector3d offset) {
@@ -390,7 +329,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     face = ForgeDirection.values()[root.getShort("face")];
     isInvereted = root.getBoolean("isInverted");
     requiresPower = root.getBoolean("requiresPower");
-    isWireless = root.getBoolean("isWireless");
+    setWireless(root.getBoolean("isWireless"));
 
     if(root.hasKey("storedEnergy")) {
       float se = root.getFloat("storedEnergy");
@@ -409,7 +348,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     root.setInteger("storedEnergyRF", energyStoredRF);
     root.setBoolean("isInverted", isInvereted);
     root.setBoolean("requiresPower", requiresPower);
-    root.setBoolean("isWireless", isWireless);
+    root.setBoolean("isWireless", isWireless());
 
     if(lightNodes != null) {
       int[] lnLoc = new int[lightNodes.size() * 3];
@@ -424,7 +363,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   public boolean hasPower() {
-    return energyStoredRF > RF_USE_PER_TICK;
+    return energyStoredRF >= RF_USE_PER_TICK;
   }
 
   private boolean hasRedstoneSignal() {
@@ -443,10 +382,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public boolean canConnectEnergy(ForgeDirection from) {
-    if(!requiresPower) {
-      return false;
-    }
-    return true;
+    return requiresPower;
   }
 
   @Override
@@ -464,7 +400,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     if(!requiresPower) {
       return 0;
     }
-    return capacitor.getMaxEnergyReceived();
+    return Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyReceived();
   }
 
   @Override
@@ -480,62 +416,12 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     if(!requiresPower) {
       return 0;
     }
-    return capacitor.getMaxEnergyStored();
+    return 100;
   }
 
   @Override
   public void setEnergyStored(int stored) {
     energyStoredRF = stored;
-  }
-
-  static class NodeEntry {
-    final BlockCoord coord;
-    final boolean isDiagnal;
-
-    NodeEntry(BlockCoord coord, boolean isDiagnal) {
-      this.coord = coord;
-      this.isDiagnal = isDiagnal;
-    }
-
-    NodeEntry(TileLightNode node) {
-      coord = new BlockCoord(node);
-      isDiagnal = node.isDiagnal;
-    }
-
-    @Override
-    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((coord == null) ? 0 : coord.hashCode());
-      result = prime * result + (isDiagnal ? 1231 : 1237);
-      return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if(this == obj) {
-        return true;
-      }
-      if(obj == null) {
-        return false;
-      }
-      if(getClass() != obj.getClass()) {
-        return false;
-      }
-      NodeEntry other = (NodeEntry) obj;
-      if(coord == null) {
-        if(other.coord != null) {
-          return false;
-        }
-      } else if(!coord.equals(other.coord)) {
-        return false;
-      }
-      if(isDiagnal != other.isDiagnal) {
-        return false;
-      }
-      return true;
-    }
-
   }
 
   @Override

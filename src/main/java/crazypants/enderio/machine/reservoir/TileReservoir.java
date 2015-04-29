@@ -84,7 +84,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public void doUpdate() {
-    if(worldObj == null || worldObj.isRemote) {
+    if (worldObj.isRemote) {
       return;
     }
 

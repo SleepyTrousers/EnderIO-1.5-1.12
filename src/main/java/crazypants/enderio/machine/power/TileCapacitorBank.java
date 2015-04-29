@@ -196,10 +196,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
 
   @Override
   public void doUpdate() {
-    if(worldObj == null) { // sanity check
-      return;
-    }
-
     if(blockMetadata == -1) {
       isCreative = getBlockMetadata() == 1;
     }

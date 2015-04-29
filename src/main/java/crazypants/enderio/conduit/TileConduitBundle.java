@@ -222,10 +222,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public void doUpdate() {
-    if(worldObj == null) {
-      return;
-    }
-
     for (IConduit conduit : conduits) {
       conduit.updateEntity(worldObj);
     }
