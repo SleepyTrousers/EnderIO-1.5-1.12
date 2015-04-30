@@ -10,6 +10,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -18,11 +22,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.XpUtil;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
 
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 

@@ -15,6 +15,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
@@ -30,8 +34,6 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
-import crazypants.util.FluidUtil;
-import crazypants.util.ItemUtil;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler {
 

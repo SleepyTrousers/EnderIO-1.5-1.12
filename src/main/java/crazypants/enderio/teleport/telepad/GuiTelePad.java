@@ -13,6 +13,9 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
@@ -25,9 +28,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 

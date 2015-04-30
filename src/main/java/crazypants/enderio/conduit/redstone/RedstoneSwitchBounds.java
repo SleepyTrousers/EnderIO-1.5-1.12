@@ -1,10 +1,11 @@
 package crazypants.enderio.conduit.redstone;
 
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.render.VertexRotation;
 import crazypants.render.VertexTransform;
-import crazypants.vecmath.Vector3d;
 
 public class RedstoneSwitchBounds {
 

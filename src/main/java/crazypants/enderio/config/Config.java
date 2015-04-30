@@ -6,7 +6,10 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import tterrag.core.common.event.ConfigFileChangedEvent;
+
+import com.enderio.core.common.event.ConfigFileChangedEvent;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Method;
@@ -16,7 +19,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-import crazypants.vecmath.VecmathUtil;
 
 public final class Config {
 

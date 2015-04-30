@@ -8,12 +8,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 

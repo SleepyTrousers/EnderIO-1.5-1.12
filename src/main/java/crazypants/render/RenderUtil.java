@@ -36,15 +36,15 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import crazypants.enderio.Log;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vector4d;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vector4d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 import static org.lwjgl.opengl.GL11.*;
 

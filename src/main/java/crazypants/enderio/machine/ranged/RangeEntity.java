@@ -3,9 +3,11 @@ package crazypants.enderio.machine.ranged;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.util.BlockCoord;
 
 public class RangeEntity extends Entity {
 

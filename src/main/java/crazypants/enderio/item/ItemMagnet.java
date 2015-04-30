@@ -14,6 +14,9 @@ import net.minecraft.world.World;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cofh.api.energy.ItemEnergyContainer;
+
+import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.Optional.Method;
@@ -27,7 +30,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BaublesUtil;
-import crazypants.util.ItemUtil;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
 public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble {

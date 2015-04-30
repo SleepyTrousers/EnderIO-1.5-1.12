@@ -11,6 +11,8 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -20,7 +22,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 

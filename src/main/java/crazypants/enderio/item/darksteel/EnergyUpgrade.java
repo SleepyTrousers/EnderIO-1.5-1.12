@@ -8,6 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -15,7 +18,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
-import crazypants.util.Lang;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 

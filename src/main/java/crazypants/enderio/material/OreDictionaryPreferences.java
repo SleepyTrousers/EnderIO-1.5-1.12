@@ -7,7 +7,8 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import crazypants.util.OreDictionaryHelper;
+
+import com.enderio.core.common.util.OreDictionaryHelper;
 
 public final class OreDictionaryPreferences {
 

@@ -1,24 +1,21 @@
 package crazypants.enderio.machine.wireless;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
 import crazypants.render.VertexRotation;
 import crazypants.render.VertexTransform;
 import crazypants.render.VertexTransformComposite;
 import crazypants.render.VertexTranslation;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vertex;
 
 public class WirelessChargerRenderer implements ISimpleBlockRenderingHandler {
 

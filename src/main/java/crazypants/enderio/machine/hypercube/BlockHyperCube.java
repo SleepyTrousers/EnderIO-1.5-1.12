@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.hypercube;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -19,6 +18,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.PlayerUtil;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -32,8 +35,6 @@ import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.PlayerUtil;
-import crazypants.util.Util;
 
 public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 

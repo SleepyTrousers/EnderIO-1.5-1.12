@@ -10,6 +10,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.ITankAccess;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
@@ -19,9 +24,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.util.ITankAccess;
 
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
 

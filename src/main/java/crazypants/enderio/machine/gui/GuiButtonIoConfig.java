@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.gui;
 
+import java.util.ArrayList;
+
+import org.lwjgl.input.Keyboard;
+
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.gui.TooltipAddera;
@@ -7,9 +13,6 @@ import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.IGuiScreen;
-import crazypants.util.Lang;
-import java.util.ArrayList;
-import org.lwjgl.input.Keyboard;
 
 public class GuiButtonIoConfig extends ToggleButtonEIO {
 

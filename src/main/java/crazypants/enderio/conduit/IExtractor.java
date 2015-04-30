@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.util.DyeColor;
 
 public interface IExtractor extends IConduit {
 

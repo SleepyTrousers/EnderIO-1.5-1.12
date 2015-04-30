@@ -1,7 +1,8 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.tileentity.TileEntity;
-import crazypants.util.Lang;
+
+import com.enderio.core.common.util.Lang;
 
 public enum RedstoneControlMode {
 

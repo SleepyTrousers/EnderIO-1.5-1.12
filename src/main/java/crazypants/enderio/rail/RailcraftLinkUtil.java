@@ -13,7 +13,8 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.vecmath.Vector3d;
+
+import com.enderio.core.common.vecmath.Vector3d;
 
 public class RailcraftLinkUtil implements ICartLinkUtil {
 

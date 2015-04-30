@@ -7,6 +7,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.IProgressTile;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
@@ -14,8 +18,6 @@ import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerDistributor;
-import crazypants.util.BlockCoord;
-import crazypants.util.IProgressTile;
 
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
 

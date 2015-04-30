@@ -6,11 +6,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 

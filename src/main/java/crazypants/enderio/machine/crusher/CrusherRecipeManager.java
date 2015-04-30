@@ -20,7 +20,7 @@ import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.util.Util;
+import com.enderio.core.common.util.Util;
 
 public class CrusherRecipeManager {
 

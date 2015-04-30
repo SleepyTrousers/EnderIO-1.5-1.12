@@ -22,13 +22,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+
+import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.ItemUtil;
 
 public class InventoryPanelContainer extends AbstractMachineContainer implements ChangeLog {
 

@@ -3,9 +3,7 @@ package crazypants.enderio.item.darksteel;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.Material;
 
 public class SpoonUpgrade extends AbstractUpgrade {
 

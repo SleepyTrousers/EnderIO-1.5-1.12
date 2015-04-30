@@ -13,8 +13,8 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
 
 public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravelEvent, IMessage> {
 

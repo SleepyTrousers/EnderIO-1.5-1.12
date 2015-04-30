@@ -14,8 +14,9 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
 
-import crazypants.util.PlayerUtil;
 import org.apache.commons.io.IOUtils;
+
+import com.enderio.core.common.util.PlayerUtil;
 
 import crazypants.enderio.Log;
 

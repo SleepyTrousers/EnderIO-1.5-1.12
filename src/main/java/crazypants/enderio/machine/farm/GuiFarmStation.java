@@ -8,14 +8,15 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import crazypants.vecmath.Vector4f;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 

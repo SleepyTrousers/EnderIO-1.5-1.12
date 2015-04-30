@@ -4,6 +4,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
@@ -12,7 +15,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.util.Lang;
 
 public class ItemPowerConduit extends AbstractItemConduit {
 

@@ -11,13 +11,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class IoDisplay implements IInfoRenderer {
 

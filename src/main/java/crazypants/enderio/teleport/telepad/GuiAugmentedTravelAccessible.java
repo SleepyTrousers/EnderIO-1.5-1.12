@@ -2,13 +2,15 @@ package crazypants.enderio.teleport.telepad;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.GuiTravelAccessable;
-import crazypants.util.Lang;
 
 public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements IToggleableGui {
 

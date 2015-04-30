@@ -6,11 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.TooltipAddera;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 

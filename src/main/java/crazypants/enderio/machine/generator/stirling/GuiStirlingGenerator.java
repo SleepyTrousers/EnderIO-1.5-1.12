@@ -11,6 +11,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -19,7 +21,6 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 @SideOnly(Side.CLIENT)
 public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirlingGenerator> {

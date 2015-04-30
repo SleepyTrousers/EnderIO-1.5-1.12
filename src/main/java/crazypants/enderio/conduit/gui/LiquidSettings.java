@@ -14,6 +14,9 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
@@ -31,8 +34,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.DyeColor;
-import crazypants.util.Lang;
 
 public class LiquidSettings extends BaseSettingsPanel {
 

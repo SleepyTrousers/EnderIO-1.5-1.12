@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit;
 
-import crazypants.util.Lang;
+import com.enderio.core.common.util.Lang;
+
 
 public enum ConnectionMode {
 

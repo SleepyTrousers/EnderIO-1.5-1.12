@@ -4,7 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.vecmath.Vector3d;
+
+import com.enderio.core.common.vecmath.Vector3d;
 
 public final class CubeRenderer {
 

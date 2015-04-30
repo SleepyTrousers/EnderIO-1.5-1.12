@@ -1,20 +1,19 @@
 package crazypants.enderio.conduit.gui.item;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
@@ -24,10 +23,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.IGuiScreen;
-import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import crazypants.vecmath.Vector4f;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 

@@ -14,9 +14,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.util.BlockCoord;
 
 public class TreeFarmer implements IFarmerJoe {
 

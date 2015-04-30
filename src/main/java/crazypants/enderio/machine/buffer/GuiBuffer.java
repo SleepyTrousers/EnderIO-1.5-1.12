@@ -13,7 +13,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+import com.enderio.core.common.util.Lang;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 

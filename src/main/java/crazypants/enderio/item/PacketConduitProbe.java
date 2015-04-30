@@ -11,6 +11,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -27,7 +30,6 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.EnergyHandlerPI;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.util.Lang;
 
 public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
 

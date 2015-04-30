@@ -19,9 +19,9 @@ import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
 
 @SideOnly(Side.CLIENT)
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {

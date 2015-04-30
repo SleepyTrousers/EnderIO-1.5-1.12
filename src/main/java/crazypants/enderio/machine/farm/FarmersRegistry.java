@@ -1,13 +1,25 @@
 package crazypants.enderio.machine.farm;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.farm.farmers.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
+import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
+import crazypants.enderio.machine.farm.farmers.FarmersCommune;
+import crazypants.enderio.machine.farm.farmers.FlowerPicker;
+import crazypants.enderio.machine.farm.farmers.ManaBeanFarmer;
+import crazypants.enderio.machine.farm.farmers.MelonFarmer;
+import crazypants.enderio.machine.farm.farmers.NaturaBerryFarmer;
+import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
+import crazypants.enderio.machine.farm.farmers.PickableFarmer;
+import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.farm.farmers.StemFarmer;
+import crazypants.enderio.machine.farm.farmers.TreeFarmer;
 
 public final class FarmersRegistry {
 

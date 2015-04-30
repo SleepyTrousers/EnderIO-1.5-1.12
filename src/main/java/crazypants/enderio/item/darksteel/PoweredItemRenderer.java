@@ -11,9 +11,11 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vector4f;
 
 public class PoweredItemRenderer implements IItemRenderer {
 

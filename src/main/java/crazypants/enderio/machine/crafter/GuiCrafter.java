@@ -2,10 +2,14 @@ package crazypants.enderio.machine.crafter;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
@@ -16,9 +20,6 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
 

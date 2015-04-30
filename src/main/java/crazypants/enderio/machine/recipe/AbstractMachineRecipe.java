@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 

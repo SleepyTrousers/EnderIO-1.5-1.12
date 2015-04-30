@@ -2,8 +2,8 @@ package crazypants.render;
 
 import java.awt.Color;
 
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vector4f;
 
 public final class ColorUtil {
 

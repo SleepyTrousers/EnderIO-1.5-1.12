@@ -10,6 +10,10 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.util.PlayerUtil;
+
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -26,9 +30,6 @@ import crazypants.gui.GuiToolTip;
 import crazypants.gui.ListSelectionListener;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.util.PlayerUtil;
 
 public class GuiHyperCube extends GuiContainerBase {
 

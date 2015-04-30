@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.transceiver;
 
-import crazypants.util.PlayerUtil;
-import net.minecraft.nbt.NBTTagCompound;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import java.util.UUID;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.common.util.PlayerUtil;
 
 
 public class Channel {

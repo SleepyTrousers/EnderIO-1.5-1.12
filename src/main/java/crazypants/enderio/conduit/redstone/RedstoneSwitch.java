@@ -10,6 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -19,9 +24,6 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
-import crazypants.vecmath.Vector3d;
 
 public class RedstoneSwitch extends RedstoneConduit {
 

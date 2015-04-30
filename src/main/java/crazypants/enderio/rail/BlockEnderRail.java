@@ -16,6 +16,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.MetadataUtil;
+import com.enderio.core.common.util.RoundRobinIterator;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -31,8 +35,6 @@ import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.MetadataUtil;
-import crazypants.util.RoundRobinIterator;
 
 public class BlockEnderRail extends BlockRail implements IResourceTooltipProvider {
 
@@ -260,7 +262,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(sender.getWorldObj().provider.dimensionId != reciever.getWorldObj().provider.dimensionId) {
       powerRequired = Config.enderRailPowerRequireCrossDimensions;
     } else {
-      powerRequired += sender.getLocation().distance(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
+      powerRequired += sender.getLocation().getDist(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
       if(Config.enderRailCapSameDimensionPowerAtCrossDimensionCost) {
         powerRequired = Math.min(powerRequired, Config.enderRailPowerRequireCrossDimensions);
       }

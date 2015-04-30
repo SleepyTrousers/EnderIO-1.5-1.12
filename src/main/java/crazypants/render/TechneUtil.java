@@ -67,7 +67,7 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3d;
 
 /**
  * Slightly modified to fit the EnderIO source.

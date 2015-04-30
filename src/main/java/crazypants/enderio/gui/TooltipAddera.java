@@ -24,6 +24,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -39,8 +42,6 @@ import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public class TooltipAddera {
 

@@ -11,6 +11,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PaintedBlockRenderer;
@@ -21,7 +24,6 @@ import crazypants.render.CustomCubeRenderer;
 import crazypants.render.CustomRenderBlocks;
 import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vertex;
 
 public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 

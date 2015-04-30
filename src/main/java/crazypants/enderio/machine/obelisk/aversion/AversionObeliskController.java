@@ -11,7 +11,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public class AversionObeliskController {
 

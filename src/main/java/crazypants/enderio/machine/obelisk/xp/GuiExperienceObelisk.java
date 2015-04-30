@@ -7,6 +7,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
@@ -15,7 +17,6 @@ import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceOblisk> {
   

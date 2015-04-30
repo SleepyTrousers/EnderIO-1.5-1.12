@@ -6,6 +6,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.SoundUtil;
+
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -14,7 +16,6 @@ import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.XpUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.SoundUtil;
 
 public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 

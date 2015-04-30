@@ -2,13 +2,15 @@ package crazypants.enderio.conduit.packet;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.util.DyeColor;
 
 public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketItemConduitFilter, IMessage> {
 

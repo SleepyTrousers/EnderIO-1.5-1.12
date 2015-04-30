@@ -1,19 +1,12 @@
 package crazypants.enderio.conduit.gui.item;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;

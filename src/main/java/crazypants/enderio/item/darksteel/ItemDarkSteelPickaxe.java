@@ -19,6 +19,8 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import cofh.api.energy.IEnergyContainerItem;
 
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -32,8 +34,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 

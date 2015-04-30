@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.render.RenderUtil;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class TeleportEntityRenderHandler {

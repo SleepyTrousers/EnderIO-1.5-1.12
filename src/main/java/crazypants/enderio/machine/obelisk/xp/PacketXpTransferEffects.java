@@ -8,8 +8,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
 
 public class PacketXpTransferEffects implements IMessage, IMessageHandler<PacketXpTransferEffects, IMessage> {
 

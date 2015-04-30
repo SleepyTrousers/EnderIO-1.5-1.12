@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.vecmath.Vertex;
+import com.enderio.core.common.vecmath.Vertex;
 
 public class CustomRenderBlocks extends RenderBlocks {
 

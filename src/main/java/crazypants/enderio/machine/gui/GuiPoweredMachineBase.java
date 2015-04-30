@@ -2,9 +2,9 @@ package crazypants.enderio.machine.gui;
 
 import java.awt.Rectangle;
 import java.util.List;
-import net.minecraft.util.StatCollector;
 
 import net.minecraft.inventory.Container;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 

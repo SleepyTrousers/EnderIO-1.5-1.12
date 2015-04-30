@@ -33,11 +33,11 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Camera;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Camera;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
 
 public class GuiEnderface extends GuiScreen {
 

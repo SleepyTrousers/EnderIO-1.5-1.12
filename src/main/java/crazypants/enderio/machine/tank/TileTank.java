@@ -8,21 +8,22 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
+import com.enderio.core.common.util.ITankAccess;
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.util.ITankAccess;
-import crazypants.util.ItemUtil;
-import crazypants.util.FluidUtil.FluidAndStackResult;
 
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
 

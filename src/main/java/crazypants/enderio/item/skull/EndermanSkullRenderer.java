@@ -11,7 +11,7 @@ import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 import crazypants.render.VertexRotation;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3d;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.model.ModelSkeletonHead;

@@ -4,6 +4,8 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconButtonEIO;
@@ -11,7 +13,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class BasicItemFilterGui implements IItemFilterGui {
     

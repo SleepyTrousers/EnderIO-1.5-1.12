@@ -8,6 +8,8 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
@@ -16,7 +18,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
-import crazypants.util.Lang;
 
 public class BaseSettingsPanel implements ITabPanel {
 

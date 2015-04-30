@@ -1,6 +1,18 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
@@ -13,15 +25,6 @@ import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GuiVacuumChest extends GuiContainerBase {
 

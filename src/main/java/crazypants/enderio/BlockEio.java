@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -15,14 +13,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.ITankAccess;
+import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.FluidUtil;
-import crazypants.util.ITankAccess;
 
 public abstract class BlockEio extends Block {
 

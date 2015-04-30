@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.reservoir;
 
-import static net.minecraftforge.fluids.FluidContainerRegistry.*;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -14,12 +12,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ITankAccess;
+import com.enderio.core.common.vecmath.Vector3f;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
-import crazypants.util.ITankAccess;
-import crazypants.vecmath.Vector3f;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public interface ITravelAccessable {
 

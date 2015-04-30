@@ -13,6 +13,10 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.TextFieldEIO;
@@ -30,9 +34,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.vecmath.VecmathUtil;
 
 public class GuiCapBank extends GuiContainerBase {
 

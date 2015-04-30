@@ -22,6 +22,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -34,7 +37,6 @@ import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.util.IFacade;
-import crazypants.util.Lang;
 
 public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade, IRotatableFacade {
 

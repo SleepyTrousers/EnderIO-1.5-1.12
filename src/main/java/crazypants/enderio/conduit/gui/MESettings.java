@@ -1,8 +1,9 @@
 package crazypants.enderio.conduit.gui;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.util.Lang;
 
 public class MESettings extends BaseSettingsPanel {
 

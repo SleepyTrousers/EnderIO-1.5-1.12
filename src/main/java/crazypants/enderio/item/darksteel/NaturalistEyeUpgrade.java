@@ -1,12 +1,11 @@
 package crazypants.enderio.item.darksteel;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.config.Config;
-import static crazypants.enderio.item.darksteel.AbstractUpgrade.KEY_UPGRADE_PREFIX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.config.Config;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
 

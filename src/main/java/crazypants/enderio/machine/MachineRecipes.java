@@ -1,6 +1,5 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,6 +21,8 @@ import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
+
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 
 public class MachineRecipes {
 

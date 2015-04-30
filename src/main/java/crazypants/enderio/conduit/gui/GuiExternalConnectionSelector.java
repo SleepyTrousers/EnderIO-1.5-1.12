@@ -18,7 +18,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 

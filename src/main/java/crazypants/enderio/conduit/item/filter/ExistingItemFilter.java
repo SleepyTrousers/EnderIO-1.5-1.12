@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +14,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
 import crazypants.gui.GhostSlot;
-import net.minecraft.inventory.IInventory;
 
 public class ExistingItemFilter implements IItemFilter {
 

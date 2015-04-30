@@ -11,6 +11,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,8 +23,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 

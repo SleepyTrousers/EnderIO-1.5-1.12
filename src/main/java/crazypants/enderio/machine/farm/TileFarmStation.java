@@ -15,6 +15,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -30,8 +34,6 @@ import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.tool.ArrayMappingTool;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
 

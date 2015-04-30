@@ -10,6 +10,9 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
@@ -18,7 +21,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.util.ItemUtil;
 
 public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer {
 

@@ -40,8 +40,8 @@ import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector3d;
 
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 

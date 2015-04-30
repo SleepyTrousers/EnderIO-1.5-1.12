@@ -19,7 +19,7 @@ import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.Util;
+import com.enderio.core.common.util.Util;
 
 public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 

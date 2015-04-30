@@ -15,8 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.EntityUtil;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.util.EntityUtil;
 
 public class EntityWitherSkeleton extends EntitySkeleton {
   public EntityWitherSkeleton(World world) {

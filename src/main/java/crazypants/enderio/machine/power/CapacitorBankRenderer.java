@@ -15,6 +15,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector4d;
+import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -23,10 +28,6 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector4d;
-import crazypants.vecmath.Vertex;
 
 @SideOnly(Side.CLIENT)
 public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -207,7 +208,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     Tessellator tes = Tessellator.instance;
     tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
     Vector2f u = gb.getMinMaxU(icon);
-    List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
+    List<com.enderio.core.common.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
     for (Vertex coord : corners) {
       if(coord.uv != null) {
         tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());

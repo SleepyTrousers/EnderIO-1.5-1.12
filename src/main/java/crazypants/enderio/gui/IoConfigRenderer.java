@@ -29,6 +29,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.IBlockAccessWrapper;
+import com.enderio.core.common.vecmath.Camera;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -40,14 +49,6 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.render.BoundingBox;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.IBlockAccessWrapper;
-import crazypants.vecmath.Camera;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
 
 public class IoConfigRenderer {
 

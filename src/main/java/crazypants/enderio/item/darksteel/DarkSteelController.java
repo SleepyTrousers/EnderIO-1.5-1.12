@@ -16,6 +16,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4d;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -25,10 +31,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Util;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4d;
 
 public class DarkSteelController {
 

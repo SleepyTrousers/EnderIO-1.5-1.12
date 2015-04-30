@@ -2,7 +2,6 @@ package crazypants.enderio.gui;
 
 import java.awt.Rectangle;
 
-import net.minecraft.util.IIcon;
 import crazypants.gui.IGuiScreen;
 
 public interface IGuiOverlay {

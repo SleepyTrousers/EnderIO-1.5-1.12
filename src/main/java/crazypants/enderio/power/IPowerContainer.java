@@ -1,6 +1,6 @@
 package crazypants.enderio.power;
 
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public interface IPowerContainer {
 

@@ -7,9 +7,11 @@ import java.text.NumberFormat;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
 

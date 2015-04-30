@@ -10,6 +10,9 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.gui.CheckBoxEIO;
@@ -20,8 +23,6 @@ import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
 public class GuiTravelAccessable extends GuiContainerBase {
 

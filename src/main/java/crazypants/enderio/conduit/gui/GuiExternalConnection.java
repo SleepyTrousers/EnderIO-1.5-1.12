@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.Optional;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gas.IGasConduit;
@@ -27,8 +28,6 @@ import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
-
-import cpw.mods.fml.common.Optional;
 
 public class GuiExternalConnection extends GuiContainerBase {
 

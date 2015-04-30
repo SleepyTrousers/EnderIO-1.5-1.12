@@ -26,6 +26,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
 import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
+
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -64,7 +67,6 @@ import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
 import crazypants.util.IFacade;
-import crazypants.util.Util;
 
 @Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
 public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRotatableFacade, IRedNetOmniNode {

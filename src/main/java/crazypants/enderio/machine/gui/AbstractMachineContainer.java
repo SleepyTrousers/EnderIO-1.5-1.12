@@ -12,10 +12,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.IProgressTile;
+import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.util.IProgressTile;
-import crazypants.util.Util;
 
 public abstract class AbstractMachineContainer extends Container {
 

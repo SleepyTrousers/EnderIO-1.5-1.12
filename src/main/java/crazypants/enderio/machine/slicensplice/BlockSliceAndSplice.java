@@ -14,7 +14,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
 

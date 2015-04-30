@@ -4,6 +4,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
@@ -13,7 +16,6 @@ import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
-import crazypants.util.Lang;
 
 public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 

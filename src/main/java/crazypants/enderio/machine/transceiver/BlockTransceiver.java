@@ -9,6 +9,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,8 +23,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 

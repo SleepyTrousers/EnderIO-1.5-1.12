@@ -16,8 +16,8 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import crazypants.vecmath.Vector4f;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.vecmath.Vector4f;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 

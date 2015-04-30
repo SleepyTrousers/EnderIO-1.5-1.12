@@ -1,12 +1,14 @@
 package crazypants.enderio.teleport.telepad;
 
 import io.netty.buffer.ByteBuf;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
-import crazypants.util.BlockCoord;
 
 public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implements IMessageHandler<PacketUpdateCoords, IMessage>{
 

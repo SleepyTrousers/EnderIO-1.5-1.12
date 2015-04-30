@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.liquid;
 
-import static crazypants.render.CubeRenderer.*;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -10,6 +8,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -19,11 +24,8 @@ import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vertex;
+
+import static crazypants.render.CubeRenderer.*;
 
 public class LiquidConduitRenderer extends DefaultConduitRenderer {
 

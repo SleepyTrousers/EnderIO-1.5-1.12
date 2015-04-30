@@ -19,7 +19,7 @@ import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+import com.enderio.core.common.util.Lang;
 
 public class FilterTab implements ITabPanel {
 

@@ -28,7 +28,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public class EnderLiquidConduit extends AbstractLiquidConduit {
 

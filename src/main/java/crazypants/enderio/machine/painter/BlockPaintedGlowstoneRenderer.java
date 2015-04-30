@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
 
 public class BlockPaintedGlowstoneRenderer implements ISimpleBlockRenderingHandler {
 

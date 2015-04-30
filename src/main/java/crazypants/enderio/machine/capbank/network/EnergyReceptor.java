@@ -1,12 +1,14 @@
 package crazypants.enderio.machine.capbank.network;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IPowerInterface;
-import crazypants.util.BlockCoord;
 
 public class EnergyReceptor {
 

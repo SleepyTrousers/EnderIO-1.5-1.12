@@ -1,11 +1,8 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
 
 public class SoulBinderEnderCystalRecipe extends AbstractSoulBinderRecipe {

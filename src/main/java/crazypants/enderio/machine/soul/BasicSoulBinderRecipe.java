@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.soul;
 
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.material.Material;
 
 public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
 

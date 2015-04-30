@@ -1,9 +1,9 @@
 package crazypants.render;
 
-import crazypants.vecmath.Quat4d;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vertex;
+import com.enderio.core.common.vecmath.Quat4d;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vertex;
 
 public class VertexRotation implements VertexTransform {
 

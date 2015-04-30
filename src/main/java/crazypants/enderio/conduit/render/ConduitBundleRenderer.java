@@ -22,6 +22,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.IBlockAccessWrapper;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -46,8 +48,6 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.IBlockAccessWrapper;
 
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {

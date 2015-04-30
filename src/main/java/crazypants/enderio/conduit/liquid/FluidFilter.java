@@ -6,7 +6,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.util.FluidUtil;
+
+import com.enderio.core.common.util.FluidUtil;
 
 public class FluidFilter {
 

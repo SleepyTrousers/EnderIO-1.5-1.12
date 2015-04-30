@@ -28,7 +28,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public class LiquidConduit extends AbstractTankConduit {
 

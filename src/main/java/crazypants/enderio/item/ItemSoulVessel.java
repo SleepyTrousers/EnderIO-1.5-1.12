@@ -26,6 +26,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,9 +39,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.util.DyeColor;
-import crazypants.util.EntityUtil;
-import crazypants.util.Lang;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 

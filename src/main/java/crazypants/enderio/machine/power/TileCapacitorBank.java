@@ -17,6 +17,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -33,9 +38,6 @@ import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Util;
-import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHandler, IInventory, IIoConfigurable, IPowerStorage {
 

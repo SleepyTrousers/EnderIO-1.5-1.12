@@ -16,6 +16,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,10 +29,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
-import crazypants.util.InventoryWrapper;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable, 
   IRedstoneConnectable, IIoConfigurable {

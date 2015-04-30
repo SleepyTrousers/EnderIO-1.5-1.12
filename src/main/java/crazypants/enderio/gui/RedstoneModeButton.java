@@ -1,13 +1,15 @@
 package crazypants.enderio.gui;
 
 import net.minecraft.client.Minecraft;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.IGuiScreen;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
 public class RedstoneModeButton extends IconButtonEIO {
 

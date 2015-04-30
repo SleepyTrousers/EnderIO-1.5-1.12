@@ -15,6 +15,9 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
@@ -35,8 +38,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GhostSlot;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {

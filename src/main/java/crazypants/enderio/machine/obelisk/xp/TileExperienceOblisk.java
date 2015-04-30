@@ -8,6 +8,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.ITankAccess;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -17,8 +21,6 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
-import crazypants.util.FluidUtil;
-import crazypants.util.ITankAccess;
 
 public class TileExperienceOblisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess {
 

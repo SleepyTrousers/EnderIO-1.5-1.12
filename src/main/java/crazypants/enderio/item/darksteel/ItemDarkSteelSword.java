@@ -24,6 +24,11 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -36,9 +41,6 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 

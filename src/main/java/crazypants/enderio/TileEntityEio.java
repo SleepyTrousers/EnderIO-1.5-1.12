@@ -5,12 +5,14 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+
+import com.enderio.core.common.util.IProgressTile;
+import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.PacketProgress;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BlockCoord;
-import crazypants.util.IProgressTile;
-import crazypants.util.Util;
+import com.enderio.core.common.util.BlockCoord;
 
 public abstract class TileEntityEio extends TileEntity {
 

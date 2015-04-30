@@ -1,18 +1,20 @@
 package crazypants.enderio.config;
 
-import static crazypants.enderio.config.Config.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config.Section;
-import crazypants.util.Lang;
+
+import static crazypants.enderio.config.Config.config;
 
 @SuppressWarnings({ "rawtypes" })
 public class GuiConfigFactoryEIO extends GuiConfig {

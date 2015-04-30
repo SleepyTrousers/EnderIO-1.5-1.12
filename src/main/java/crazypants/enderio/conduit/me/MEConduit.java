@@ -30,7 +30,7 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
 

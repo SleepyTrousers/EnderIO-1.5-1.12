@@ -19,7 +19,8 @@ import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
-import static crazypants.enderio.ModObject.*;
+
+import static crazypants.enderio.ModObject.blockPainter;
 
 public class ConduitRecipes {
 

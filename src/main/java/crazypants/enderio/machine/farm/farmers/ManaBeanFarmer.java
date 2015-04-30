@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import crazypants.util.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public class ManaBeanFarmer extends CustomSeedFarmer
 {

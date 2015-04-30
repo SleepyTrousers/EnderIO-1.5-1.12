@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import static net.minecraftforge.common.EnumPlantType.Cave;
-import static net.minecraftforge.common.EnumPlantType.Crop;
-import static net.minecraftforge.common.EnumPlantType.Desert;
-import static net.minecraftforge.common.EnumPlantType.Nether;
-import static net.minecraftforge.common.EnumPlantType.Plains;
-import static net.minecraftforge.common.EnumPlantType.Water;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,13 +11,14 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.util.BlockCoord;
 
 public class PlantableFarmer implements IFarmerJoe {
 

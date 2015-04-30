@@ -2,12 +2,12 @@ package crazypants.enderio.machine.generator.zombie;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketNutrientTank extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketNutrientTank, IMessage> {
 

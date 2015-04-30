@@ -1,11 +1,9 @@
 package crazypants.enderio.item.darksteel;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 
 public class NightVisionUpgrade extends AbstractUpgrade {

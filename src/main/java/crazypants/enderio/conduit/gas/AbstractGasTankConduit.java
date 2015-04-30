@@ -12,7 +12,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public abstract class AbstractGasTankConduit extends AbstractGasConduit {
 

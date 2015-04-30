@@ -7,8 +7,9 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.gui.IGuiScreen;
-import crazypants.util.DyeColor;
 
 public class ColorButton extends IconButtonEIO {
 

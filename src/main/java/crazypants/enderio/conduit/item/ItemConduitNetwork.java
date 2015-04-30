@@ -9,12 +9,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
+import com.enderio.core.common.util.BlockCoord;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 

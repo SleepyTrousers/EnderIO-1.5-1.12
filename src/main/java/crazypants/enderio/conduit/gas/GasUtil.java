@@ -8,7 +8,7 @@ import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public final class GasUtil {
 

@@ -2,10 +2,13 @@ package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Color;
 
-import crazypants.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.util.PlayerUtil;
+
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -20,7 +23,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.ListSelectionListener;
 import crazypants.render.ColorUtil;
-import crazypants.util.Lang;
 
 public class ChannelTab implements ITabPanel {
 

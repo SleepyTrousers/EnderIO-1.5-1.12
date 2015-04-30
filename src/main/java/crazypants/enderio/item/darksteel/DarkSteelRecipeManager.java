@@ -13,15 +13,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 
+import com.enderio.core.common.util.Lang;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
-import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
-import crazypants.util.Lang;
 
 public class DarkSteelRecipeManager {
 

@@ -11,6 +11,12 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.IProgressTile;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -22,11 +28,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.IProgressTile;
-import crazypants.util.Lang;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector4f;
 
 public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBase {
 

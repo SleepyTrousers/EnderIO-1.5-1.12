@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.vecmath.Vertex;
+import com.enderio.core.common.vecmath.Vertex;
 
 public interface IRenderFace {
 

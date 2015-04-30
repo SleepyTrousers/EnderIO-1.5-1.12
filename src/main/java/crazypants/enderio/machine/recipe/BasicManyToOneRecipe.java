@@ -7,9 +7,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class BasicManyToOneRecipe implements IManyToOneRecipe {
 

@@ -8,6 +8,9 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
@@ -17,7 +20,6 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.gui.IGuiScreen;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
 
 public class GuiOverlayIoConfig implements IGuiOverlay {
 

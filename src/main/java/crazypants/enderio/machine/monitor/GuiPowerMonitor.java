@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.text.NumberFormat;
@@ -12,6 +10,8 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -20,7 +20,8 @@ import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+
+import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
 
 public class GuiPowerMonitor extends GuiContainerBase {
 

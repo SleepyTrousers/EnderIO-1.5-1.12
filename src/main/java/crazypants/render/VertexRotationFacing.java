@@ -1,7 +1,7 @@
 package crazypants.render;
 
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3d;
 
 public class VertexRotationFacing extends VertexRotation {
 

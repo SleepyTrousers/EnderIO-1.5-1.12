@@ -10,8 +10,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+
+import com.enderio.core.common.util.Lang;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.util.Lang;
 
 public class ClearConfigRecipe implements IRecipe {
   
