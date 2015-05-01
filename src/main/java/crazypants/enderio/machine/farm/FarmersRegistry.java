@@ -23,6 +23,7 @@ public final class FarmersRegistry {
     addMFR();
     addThaumcraft();
     addFlowers();
+    addGrowableOres();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -201,8 +202,71 @@ public final class FarmersRegistry {
         GameRegistry.findBlock("Botany", "flower"), 
         GameRegistry.findBlock("Botania", "flower") ) );
   }
+
+  private static void addGrowableOres() {
+    String mod = "B0bGrowsOre";
+    String[] growableOres = {
+            "coalReed", // Coal Ore Reed
+            "copperReed",  // Copper Ore Reed
+            "goldReed",  // Gold Ore Reed
+            "ironReed",  // Iron Ore Reed
+            "oreGrowableAir",  // Air Infused Stone Reed
+            "oreGrowableAluminium",  // Aluminum Ore Reed
+            "oreGrowableAmberBop",  // Amber Ore Reed
+            "oreGrowableAmethyst",  // Amethyst Ore Reed
+            "oreGrowableApatite",  // Apatite Ore Reed
+            "oreGrowableArdite",  // Ardite Ore Reed
+            "oreGrowableBlaze",  // Blaze Reed
+            "oreGrowableCheese",  // Cheese Ore Reed
+            "oreGrowableCinnibar",  // Cinnibar Ore Reed
+            "oreGrowableClay",  // Clay Reed
+            "oreGrowableCobalt",  // Cobalt Ore Reed
+            "oreGrowableDesh",  // Desh Ore Reed
+            "oreGrowableDiamond",  // Diamond Ore Reed
+            "oreGrowableEarth",  // Earth Infused Stone Reed
+            "oreGrowableEmerald",  // Emerald Ore Reed
+            "oreGrowableEnder",  // Ender Reed
+            "oreGrowableEntropy",  // Entropy Infused Stone Reed
+            "oreGrowableFerrous",  // Ferrous Ore Reed
+            "oreGrowableFire",  // Fire Infused Stone Reed
+            "oreGrowableGlowstone",  // Glowstone Reed
+            "oreGrowableIlmenite",  // Ilmenite Ore Reed
+            "oreGrowableLapis",  // Lapis Lazuli Ore Reed
+            "oreGrowableLead",  // Lead Ore Reed
+            "oreGrowableMalachite",  // Malachite Ore Reed
+            "oreGrowableMithril",  // Mithril Ore Reed
+            "oreGrowableNQuartz",  // Nether Quartz Ore Reed
+            "oreGrowableObsidian",  // Obsidian Reed
+            "oreGrowableOrder",  // Order Infused Stone Reed
+            "oreGrowablePeridot",  // Peridot Ore Reed
+            "oreGrowablePlatinum",  // Platinum Ore Reed
+            "oreGrowableQuartz",  // Certus Quartz Ore Reed
+            "oreGrowableRedstone",  // Redstone Ore Reed
+            "oreGrowableRuby",  // Ruby Ore Reed
+            "oreGrowableSaltpeterM",  // Saltpeter Ore Reed
+            "oreGrowableSapphire",  // Sapphire Ore Reed
+            "oreGrowableSilicon",  // Silicon Ore Reed
+            "oreGrowableSulfur",  // Sulfur Ore Reed
+            "oreGrowableTanzanite",  // Tanzanite Ore Reed
+            "oreGrowableTopaz",  // Topaz Ore Reed
+            "oreGrowableUranium",  // Uranium Ore Reed
+            "oreGrowableWater",  // Water Infused Stone Reed
+            "oreGrowableYellorium",  // Yellorite Ore Reed
+            "oreGrowableZinc",  // Zinc Ore Reed
+            "silverReed",  // Silver Ore Reed
+            "tinReed"};  // Tin Ore Reed
+
+    for (int i = 0; i < growableOres.length; i++) {
+      Block growableOresBlock = GameRegistry.findBlock(mod, growableOres[i]);
+      Item growableOresItem = GameRegistry.findItem(mod, growableOres[i]);
+      if (growableOresBlock !=null && growableOresItem !=null)
+        FarmersCommune.joinCommune(new StemFarmer( growableOresBlock, new ItemStack(growableOresItem)));
+    }
+  }
+
   
   private FarmersRegistry() {
   }
 
 }
+
