@@ -247,6 +247,10 @@ public class GuiCapBank extends GuiContainerBase {
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize - 21, ySize);
 
+    if (container.hasBaublesSlots()) {
+      drawTexturedModalRect(sx, sy + 83, 197, 83, 24, 76);
+    }
+    
     int i1 = getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
