@@ -122,7 +122,7 @@ item.bucketXpjuice.name=XP 양동이
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=연료 세부사항
-enderio.fuel.tooltip.burnTime=연료 소모시간
+enderio.fuel.tooltip.burnTime=연료 소모시간 {0,number}
 enderio.fluid.millibucketsTick=mB/t
 coolant.tooltip.heading=냉각제
 enderio.fuel.tooltip.degreesPerBucket=양동이당 온도

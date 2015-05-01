@@ -89,7 +89,7 @@ item.bucketFire_water.name=Eimer mit Spiritus
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Treibstoffdetails
-enderio.fuel.tooltip.burnTime=Brenndauer
+enderio.fuel.tooltip.burnTime=Brenndauer {0,number}
 enderio.fluid.millibucketsTick=mB/t
 
 
