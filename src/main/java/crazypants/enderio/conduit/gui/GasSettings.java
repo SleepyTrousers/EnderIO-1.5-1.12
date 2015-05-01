@@ -6,6 +6,9 @@ import mekanism.api.gas.Gas;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.IIcon;
 
+import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.Lang;
 
@@ -13,14 +16,11 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GasSettings extends BaseSettingsPanel {
 

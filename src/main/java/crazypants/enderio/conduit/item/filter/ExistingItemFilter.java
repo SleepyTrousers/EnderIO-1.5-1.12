@@ -11,9 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.oredict.OreDictionary;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
-import crazypants.gui.GhostSlot;
 
 public class ExistingItemFilter implements IItemFilter {
 

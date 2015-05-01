@@ -7,12 +7,14 @@ import mekanism.api.gas.IGasHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
-import com.enderio.core.common.util.BlockCoord;
 
 public abstract class AbstractGasTankConduit extends AbstractGasConduit {
 

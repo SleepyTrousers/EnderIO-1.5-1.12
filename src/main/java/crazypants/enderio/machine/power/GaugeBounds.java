@@ -6,12 +6,11 @@ import java.util.List;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector4d;
-
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
 
 class GaugeBounds {
 

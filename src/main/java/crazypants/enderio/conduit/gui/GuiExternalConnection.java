@@ -15,6 +15,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.ITabPanel;
+import com.enderio.core.client.render.IWidgetIcon;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.common.Optional;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -24,10 +29,7 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.RenderUtil;
 
 public class GuiExternalConnection extends GuiContainerBase {
 
@@ -174,9 +176,9 @@ public class GuiExternalConnection extends GuiContainerBase {
     for (int i = 0; i < tabs.size(); i++) {
       if(i != activeTab) {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
-        IconEIO.INACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (i * 24));
-        IconEIO icon = tabs.get(i).getIcon();
-        icon.renderIcon(tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 6, 11, 11, 0, false);
+        IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, sy + tabYOffset + (i * 24));
+        IWidgetIcon icon = tabs.get(i).getIcon();
+        icon.getMap().render(icon, tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 6, 11, 11, 0, false);
       }
     }
 
@@ -187,11 +189,11 @@ public class GuiExternalConnection extends GuiContainerBase {
 
     RenderUtil.bindTexture(IconEIO.TEXTURE);
     tes.startDrawingQuads();
-    IconEIO.ACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
+    IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
 
     if(tabs.size() > 0) {
-      IconEIO icon = tabs.get(activeTab).getIcon();
-      icon.renderIcon(tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
+      IWidgetIcon icon = tabs.get(activeTab).getIcon();
+      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
       tes.draw();
       tabs.get(activeTab).render(par1, par2, par3);
     } else {

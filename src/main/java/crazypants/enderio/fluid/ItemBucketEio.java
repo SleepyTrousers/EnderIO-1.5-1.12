@@ -14,11 +14,12 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemBucketEio extends ItemBucket implements IAdvancedTooltipProvider{

@@ -17,6 +17,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,10 +34,6 @@ import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.render.FillGauge.GaugeInfo;
 import crazypants.enderio.machine.capbank.render.FillGauge.GaugeKey;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.render.ConnectedTextureRenderer;
-import crazypants.render.CubeRenderer;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.RenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {

@@ -5,7 +5,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.gui.TemplateSlot;
+
+import com.enderio.core.client.gui.widget.TemplateSlot;
+
 import crazypants.util.ArrayInventory;
 
 public class ContainerTravelAuth extends Container {

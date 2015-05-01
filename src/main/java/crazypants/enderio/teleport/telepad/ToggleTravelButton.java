@@ -1,10 +1,12 @@
 package crazypants.enderio.teleport.telepad;
 
 import net.minecraft.client.Minecraft;
-import crazypants.enderio.gui.IconButtonEIO;
+
+import com.enderio.core.client.gui.button.IconButton;
+
 import crazypants.enderio.gui.IconEIO;
 
-public class ToggleTravelButton extends IconButtonEIO {
+public class ToggleTravelButton extends IconButton {
 
   IToggleableGui gui;
   

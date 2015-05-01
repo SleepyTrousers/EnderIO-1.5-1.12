@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -20,7 +21,6 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
-import com.enderio.core.common.util.BlockCoord;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 

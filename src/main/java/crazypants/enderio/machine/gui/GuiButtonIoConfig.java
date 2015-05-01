@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
+import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.IGuiScreen;
 
-public class GuiButtonIoConfig extends ToggleButtonEIO {
+public class GuiButtonIoConfig extends ToggleButton {
 
   private final IIoConfigurable config;
   private final GuiOverlayIoConfig configOverlay;

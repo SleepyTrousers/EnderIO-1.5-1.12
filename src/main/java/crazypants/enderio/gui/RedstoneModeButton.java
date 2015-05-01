@@ -2,6 +2,8 @@ package crazypants.enderio.gui;
 
 import net.minecraft.client.Minecraft;
 
+import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 
@@ -9,9 +11,8 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.IGuiScreen;
 
-public class RedstoneModeButton extends IconButtonEIO {
+public class RedstoneModeButton extends IconButton {
 
   private static IconEIO[] ICONS = new IconEIO[] { IconEIO.REDSTONE_MODE_ALWAYS, IconEIO.REDSTONE_MODE_WITH_SIGNAL, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL,
       IconEIO.REDSTONE_MODE_NEVER };

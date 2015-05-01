@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -14,7 +15,6 @@ import com.enderio.core.common.vecmath.Vertex;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
-import crazypants.render.BoundingBox;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;

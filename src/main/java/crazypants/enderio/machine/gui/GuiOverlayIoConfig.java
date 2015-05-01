@@ -9,22 +9,22 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
+import com.enderio.core.client.gui.IGuiOverlay;
+import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
-import crazypants.gui.IGuiScreen;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiOverlayIoConfig implements IGuiOverlay {
 
   private boolean visible = false;
-  private ToggleButtonEIO configB;
+  private ToggleButton configB;
 
   private IGuiScreen screen;
 
@@ -43,7 +43,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
     coords.addAll(bc);
   }
 
-  public void setConfigB(ToggleButtonEIO configB) {
+  public void setConfigB(ToggleButton configB) {
     this.configB = configB;
   }
 

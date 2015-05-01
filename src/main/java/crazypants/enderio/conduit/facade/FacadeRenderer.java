@@ -8,9 +8,10 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.render.RenderUtil;
 
 public class FacadeRenderer implements IItemRenderer {
 

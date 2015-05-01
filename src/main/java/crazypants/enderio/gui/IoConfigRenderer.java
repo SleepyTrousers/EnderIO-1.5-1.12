@@ -29,6 +29,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 import com.enderio.core.common.vecmath.Camera;
@@ -46,9 +49,6 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.render.BoundingBox;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class IoConfigRenderer {
 
@@ -300,7 +300,7 @@ public class IoConfigRenderer {
     }
 
     GL11.glColor3f(1, 1, 1);
-    IconEIO.IO_WHATSIT.renderIcon(x, y, true);
+    IconEIO.map.render(IconEIO.IO_WHATSIT, x, y, true);
 
     if(selection != null) {
       IconEIO ioIcon = null;
@@ -325,7 +325,7 @@ public class IoConfigRenderer {
         xd /=2;
         xd += 4;
         xd /= scaledresolution.getScaleFactor();
-        ioIcon.renderIcon(xd, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
+        ioIcon.getMap().render(ioIcon, xd, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
       }
     }
   }

@@ -8,15 +8,14 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.IRenderFace;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
-
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.CustomRenderBlocks;
-import crazypants.render.IRenderFace;
-import crazypants.render.RenderUtil;
 
 public class OverlayRenderer implements IRenderFace {
 

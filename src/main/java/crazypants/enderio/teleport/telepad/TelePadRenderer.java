@@ -10,15 +10,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
 
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.TechneModelRenderer;
+import com.enderio.core.client.render.TechneUtil;
 import com.google.common.collect.Lists;
 
-import crazypants.render.CubeRenderer;
-import crazypants.render.TechneModelRenderer;
-import crazypants.render.TechneUtil;
+import crazypants.enderio.EnderIO;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
-  public static final Map<String, GroupObject> all = TechneUtil.getModel("models/telePad");
+  public static final Map<String, GroupObject> all = TechneUtil.getModel(EnderIO.MODID, "models/telePad");
 
   public TelePadRenderer() {
     super(getModel(), BlockTelePad.renderId);

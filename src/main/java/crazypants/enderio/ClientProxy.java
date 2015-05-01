@@ -16,6 +16,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+
+import com.enderio.core.client.render.IconUtil;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -134,7 +137,6 @@ import crazypants.enderio.teleport.telepad.TelePadRenderer;
 import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
-import crazypants.render.IconUtil;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {

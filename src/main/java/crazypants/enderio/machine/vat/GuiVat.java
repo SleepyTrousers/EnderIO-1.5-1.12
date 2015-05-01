@@ -11,23 +11,23 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
 
-  private final IconButtonEIO dump1, dump2;
+  private final IconButton dump1, dump2;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
     super(te, new ContainerVat(inventory, te));
@@ -62,9 +62,9 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
     });
 
-    dump1 = new IconButtonEIO(this, 1, 29, 62, IconEIO.REDSTONE_MODE_NEVER);
+    dump1 = new IconButton(this, 1, 29, 62, IconEIO.REDSTONE_MODE_NEVER);
     dump1.setToolTip(Lang.localize("gui.machine.vat.dump.1"));
-    dump2 = new IconButtonEIO(this, 2, 131, 62, IconEIO.REDSTONE_MODE_NEVER);
+    dump2 = new IconButton(this, 2, 131, 62, IconEIO.REDSTONE_MODE_NEVER);
     dump2.setToolTip(Lang.localize("gui.machine.vat.dump.2"));
 
     addProgressTooltip(81, 63, 14, 14);

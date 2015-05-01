@@ -8,16 +8,17 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.ITabPanel;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.IWidgetIcon;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
-import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
 
 public class BaseSettingsPanel implements ITabPanel {
 
@@ -29,8 +30,8 @@ public class BaseSettingsPanel implements ITabPanel {
   protected final IConduit con;
   protected final String typeName;
 
-  protected MultiIconButtonEIO leftArrow;
-  protected MultiIconButtonEIO rightArrow;
+  protected MultiIconButton leftArrow;
+  protected MultiIconButton rightArrow;
   protected String modeLabel;
 
   protected int left = 0;
@@ -54,10 +55,10 @@ public class BaseSettingsPanel implements ITabPanel {
     int x = gap * 3 + fr.getStringWidth(modeLabel);
     int y = 8;// + fr.FONT_HEIGHT;
 
-    leftArrow = MultiIconButtonEIO.createLeftArrowButton(gui, PREV_MODE_B, x, y);
+    leftArrow = MultiIconButton.createLeftArrowButton(gui, PREV_MODE_B, x, y);
 
     x += leftArrow.getWidth() + gap + getLongestModeStringWidth() + gap;
-    rightArrow = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_MODE_B, x, y);
+    rightArrow = MultiIconButton.createRightArrowButton(gui, NEXT_MODE_B, x, y);
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
     customTop -= 16;
@@ -100,7 +101,7 @@ public class BaseSettingsPanel implements ITabPanel {
   }
 
   @Override
-  public IconEIO getIcon() {
+  public IWidgetIcon getIcon() {
     return icon;
   }
 
@@ -139,8 +140,9 @@ public class BaseSettingsPanel implements ITabPanel {
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);
-    IconEIO icon = new IconEIO(10, 48, 64, 16);
-    icon.renderIcon(x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
+    // TODO figure out what this should be
+//    IconEIO icon = new IconEIO(10, 48, 64, 16);
+//    icon.getMap().render(icon, x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;
     x += move;

@@ -42,7 +42,7 @@ public class SoundRenderer extends RenderEntity {
 
     double size = 0.5 * se.lifeSpan / 20f;
 
-    IconEIO.SOUND.renderIcon(-size/2, -size/2, size,size,0,true,true);
+    IconEIO.map.render(IconEIO.SOUND, -size/2, -size/2, size,size,0,true,true);
 
     GL11.glPopAttrib();
     GL11.glPopMatrix();

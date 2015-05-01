@@ -27,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.enderio.core.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Lang;
@@ -38,7 +39,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 

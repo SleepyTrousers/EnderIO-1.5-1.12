@@ -9,6 +9,13 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.Lang;
 
@@ -26,18 +33,12 @@ import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -58,13 +59,13 @@ public class ItemSettings extends BaseSettingsPanel {
   private String inputHeading;
   private String outputHeading;
 
-  private final MultiIconButtonEIO nextFilterB;
+  private final MultiIconButton nextFilterB;
 
-  private final ToggleButtonEIO loopB;
-  private final ToggleButtonEIO roundRobinB;
+  private final ToggleButton loopB;
+  private final ToggleButton roundRobinB;
 
-  private final MultiIconButtonEIO priUpB;
-  private final MultiIconButtonEIO priDownB;
+  private final MultiIconButton priUpB;
+  private final MultiIconButton priDownB;
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
@@ -95,7 +96,7 @@ public class ItemSettings extends BaseSettingsPanel {
     int x = 52;
     int y = customTop;
 
-    nextFilterB = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
+    nextFilterB = MultiIconButton.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
     x = 66;    
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
@@ -154,13 +155,13 @@ public class ItemSettings extends BaseSettingsPanel {
     colorB.setToolTipHeading(Lang.localize("gui.conduit.item.sigCol"));
 
     x += 4 + colorB.getWidth();
-    roundRobinB = new ToggleButtonEIO(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
     roundRobinB.setSelectedToolTip(Lang.localize("gui.conduit.item.roundRobinEnabled"));
     roundRobinB.setUnselectedToolTip(Lang.localize("gui.conduit.item.roundRobinDisabled"));
     roundRobinB.setPaintSelectedBorder(false);
 
     x += 4 + roundRobinB.getWidth();
-    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    loopB = new ToggleButton(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
     loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
     loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
@@ -168,10 +169,10 @@ public class ItemSettings extends BaseSettingsPanel {
     priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), Lang.localize("gui.conduit.item.priority"));
     
     x = priLeft + priWidth + 9;    
-    priUpB = MultiIconButtonEIO.createAddButton(gui, ID_PRIORITY_UP, x, y);
+    priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
 
     y += 8;
-    priDownB = MultiIconButtonEIO.createMinusButton(gui, ID_PRIORITY_DOWN, x, y);
+    priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y);
 
     gui.getContainer().addFilterListener(new FilterChangeListener() {
       @Override
@@ -400,7 +401,7 @@ public class ItemSettings extends BaseSettingsPanel {
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
       GL11.glColor3f(1, 1, 1);
-      IconEIO.BUTTON_DOWN.renderIcon(left + priLeft, top - 5, priWidth, 16, 0, true);
+      IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
       String str = itemConduit.getOutputPriority(gui.getDir()) + "";
       int sw = fr.getStringWidth(str);
       fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));

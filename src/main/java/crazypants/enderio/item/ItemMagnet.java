@@ -15,6 +15,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cofh.api.energy.ItemEnergyContainer;
 
+import com.enderio.core.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -27,7 +28,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BaublesUtil;
 

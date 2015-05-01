@@ -2,13 +2,13 @@ package crazypants.enderio.conduit.gui;
 
 import net.minecraft.client.gui.GuiButton;
 
+import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;

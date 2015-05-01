@@ -11,6 +11,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.IRenderFace;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector2f;
@@ -22,12 +28,6 @@ import com.enderio.core.common.vecmath.Vertex;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.GaugeBounds.VPos;
-import crazypants.render.ConnectedTextureRenderer;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.CustomRenderBlocks;
-import crazypants.render.IRenderFace;
-import crazypants.render.IconUtil;
-import crazypants.render.RenderUtil;
 
 public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 

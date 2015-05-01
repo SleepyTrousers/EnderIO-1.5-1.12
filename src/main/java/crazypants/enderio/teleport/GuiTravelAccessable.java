@@ -10,19 +10,19 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
-import crazypants.enderio.gui.CheckBoxEIO;
-import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiTravelAccessable extends GuiContainerBase {
 
@@ -30,11 +30,11 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
 
-  private CheckBoxEIO publicCB;
-  private CheckBoxEIO privateCB;
-  private CheckBoxEIO protectedCB;
+  private CheckBox publicCB;
+  private CheckBox privateCB;
+  private CheckBox protectedCB;
 
-  private TextFieldEIO tf;
+  private TextFieldEnder tf;
 
   private String publicStr;
   private String privateStr;
@@ -62,7 +62,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tf = new TextFieldEIO(fr, 28, 10, 90, 16);
+    tf = new TextFieldEnder(fr, 28, 10, 90, 16);
 
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
@@ -73,15 +73,15 @@ public class GuiTravelAccessable extends GuiContainerBase {
     int y = 50;
 
     x = col0x - 8;
-    privateCB = new CheckBoxEIO(this, ID_PRIVATE, x, y);
+    privateCB = new CheckBox(this, ID_PRIVATE, x, y);
     privateCB.setSelected(te.getAccessMode() == AccessMode.PRIVATE);
 
     x = col1x - 8;
-    protectedCB = new CheckBoxEIO(this, ID_PROTECTED, x, y);
+    protectedCB = new CheckBox(this, ID_PROTECTED, x, y);
     protectedCB.setSelected(te.getAccessMode() == AccessMode.PROTECTED);
 
     x = col2x - 8;
-    publicCB = new CheckBoxEIO(this, ID_PUBLIC, x, y);
+    publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
     ySize = 185;

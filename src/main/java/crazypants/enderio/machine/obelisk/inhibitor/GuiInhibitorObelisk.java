@@ -6,11 +6,11 @@ import net.minecraft.inventory.Container;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiInhibitorObelisk extends GuiPoweredMachineBase<TileInhibitorObelisk> {
 

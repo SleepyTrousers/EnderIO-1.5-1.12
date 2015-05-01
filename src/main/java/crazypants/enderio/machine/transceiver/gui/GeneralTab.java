@@ -10,17 +10,18 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.ITabPanel;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
 public class GeneralTab implements ITabPanel {
 
@@ -29,7 +30,7 @@ public class GeneralTab implements ITabPanel {
   GuiTransceiver parent;
   GuiToolTip sendPowerBarTT;
   
-  ToggleButtonEIO bufferSizeB;
+  ToggleButton bufferSizeB;
 
   public GeneralTab(GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;    
@@ -37,7 +38,7 @@ public class GeneralTab implements ITabPanel {
 
     int x = parent.getXSize() - 5 - 16;
     int y = 43;
-    bufferSizeB = new ToggleButtonEIO(parent, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
+    bufferSizeB = new ToggleButton(parent, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
     bufferSizeB.setSelectedToolTip(Lang.localize("gui.machine.bufferingstacks"));
     bufferSizeB.setUnselectedToolTip(Lang.localize("gui.machine.bufferingsingle"));
     bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());

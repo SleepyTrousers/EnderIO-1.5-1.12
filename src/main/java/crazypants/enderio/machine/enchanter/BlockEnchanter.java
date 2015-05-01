@@ -4,22 +4,20 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.tool.ToolUtil;
-import com.enderio.core.common.util.Util;
 
 public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 

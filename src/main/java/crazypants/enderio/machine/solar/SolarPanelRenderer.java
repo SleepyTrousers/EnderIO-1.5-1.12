@@ -12,14 +12,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.render.BoundingBox;
-import crazypants.render.ConnectedTextureRenderer;
-import crazypants.render.CubeRenderer;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.IconUtil;
-import crazypants.render.RenderUtil;
 
 public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
 

@@ -7,9 +7,11 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
-import crazypants.gui.GhostSlot;
 
 /**
  *

@@ -11,6 +11,10 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.IGuiOverlay;
+import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -18,12 +22,8 @@ import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.IGuiScreen;
-import crazypants.render.RenderUtil;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 
@@ -41,10 +41,10 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private IItemConduit itemConduit;
   private GuiExternalConnection gui;
 
-  private ToggleButtonEIO useMetaB;
-  private ToggleButtonEIO useNbtB;
-  private ToggleButtonEIO useOreDictB;
-  private ToggleButtonEIO stickyB;
+  private ToggleButton useMetaB;
+  private ToggleButton useNbtB;
+  private ToggleButton useOreDictB;
+  private ToggleButton stickyB;
   
   private GuiButton snapshotB;
   private GuiButton clearB;
@@ -71,13 +71,13 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     int x = butLeft;
     int y = 68;
 
-    useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
+    useMetaB = new ToggleButton(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
     useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
-    stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    stickyB = new ToggleButton(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
     String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
     stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
@@ -87,13 +87,13 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     x = butLeft;
 
     x += 20;
-    useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
+    useNbtB = new ToggleButton(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
     useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
     x = butLeft;
-    useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
+    useOreDictB = new ToggleButton(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);

@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.alloy;
 
 import java.awt.Rectangle;
-import java.text.MessageFormat;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,19 +8,20 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IIconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.Lang;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiToolTip;
-import crazypants.gui.IconButton;
-import crazypants.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
-import com.enderio.core.common.vecmath.Vector4f;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
-  private final IconButton vanillaFurnaceButton;
+  private final IIconButton vanillaFurnaceButton;
   private final GuiToolTip vanillaFurnaceTooltip;
 
   protected static final int SMELT_MODE_BUTTON_ID = 76;
@@ -29,7 +29,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
     super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory));
 
-    vanillaFurnaceButton = new IconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
+    vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 
     vanillaFurnaceTooltip = new GuiToolTip(new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE), (String[])null);

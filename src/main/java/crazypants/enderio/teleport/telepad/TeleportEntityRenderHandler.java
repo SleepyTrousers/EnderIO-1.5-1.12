@@ -8,8 +8,9 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.render.RenderUtil;
 
 import static org.lwjgl.opengl.GL11.*;
 

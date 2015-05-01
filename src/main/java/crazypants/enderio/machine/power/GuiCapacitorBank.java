@@ -14,10 +14,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
@@ -26,9 +29,6 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
 
 public class GuiCapacitorBank extends GuiContainerBase {
 
@@ -60,7 +60,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private GuiTextField maxOutputTF;
 
   private GuiOverlayIoConfig configOverlay;
-  private IconButtonEIO configB;
+  private IconButton configB;
 
   public GuiCapacitorBank(Entity player, InventoryPlayer playerInv, TileCapacitorBank te) {
     super(new ContainerCapacitorBank(player, playerInv, te));
@@ -113,7 +113,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
 
     y += 20;
-    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
+    configB = new IconButton(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
     configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
 
     List<BlockCoord> coords = new ArrayList<BlockCoord>();

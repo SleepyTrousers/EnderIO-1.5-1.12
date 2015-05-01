@@ -10,14 +10,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
 
 public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 

@@ -15,18 +15,22 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.gui.widget.VScrollbar;
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.MultiIconButtonEIO;
-import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
-import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
@@ -35,9 +39,6 @@ import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GhostSlot;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -53,11 +54,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final int GHOST_ROWS = 5;
 
   private final DatabaseView view;
-  private final TextFieldEIO tfFilter;
-  private final IconButtonEIO btnSort;
+  private final TextFieldEnder tfFilter;
+  private final IconButton btnSort;
   private final GuiToolTip ttRefill;
-  private final VScrollbarEIO scrollbar;
-  private final MultiIconButtonEIO btnClear;
+  private final VScrollbar scrollbar;
+  private final MultiIconButton btnClear;
 
   private int scrollPos;
 
@@ -84,9 +85,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEIO(fr, 108, 11, 106, 10);
+    tfFilter = new TextFieldEnder(fr, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
-    btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon()) {
+    btnSort = new IconButton(this, ID_SORT, 233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(Minecraft mc, int x, int y) {
         return mousePressedButton(mc, x, y, 0);
@@ -101,8 +102,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         return false;
       }
     };
-    scrollbar = new VScrollbarEIO(this, 215, 27, 90);
-    btnClear = new MultiIconButtonEIO(this, ID_CLEAR, 65, 60, IconEIO.X_BUT, IconEIO.X_BUT_PRESSED, IconEIO.X_BUT_HOVER);
+    scrollbar = new VScrollbar(this, 215, 27, 90);
+    btnClear = new MultiIconButton(this, ID_CLEAR, 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
 
     textFields.add(tfFilter);
 

@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.EnderIO;
@@ -15,10 +17,8 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
 
-import static crazypants.render.CubeRenderer.*;
+import static com.enderio.core.client.render.CubeRenderer.*;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
 public class DefaultConduitRenderer implements ConduitRenderer {

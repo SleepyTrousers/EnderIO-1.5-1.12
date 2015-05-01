@@ -8,8 +8,10 @@ import java.util.Set;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.conduit.ConduitUtil;
+
 import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.ConduitUtil;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 

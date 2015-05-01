@@ -3,12 +3,12 @@ package crazypants.enderio.machine.farm;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
-import crazypants.render.RenderUtil;
 
 import static org.lwjgl.opengl.GL11.*;
 

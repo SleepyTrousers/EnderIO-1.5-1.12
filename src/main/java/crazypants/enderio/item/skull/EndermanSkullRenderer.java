@@ -1,35 +1,25 @@
 package crazypants.enderio.item.skull;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
-import crazypants.render.RenderUtil;
-import crazypants.render.VertexRotation;
-import com.enderio.core.common.vecmath.Vector3d;
 import net.minecraft.block.Block;
-import net.minecraft.client.model.ModelEnderman;
-import net.minecraft.client.model.ModelSkeletonHead;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderEnderman;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.client.render.VertexRotation;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.EnderIO;
 
 public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 

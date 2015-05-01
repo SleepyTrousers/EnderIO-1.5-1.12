@@ -7,12 +7,12 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
+
+import com.enderio.core.client.gui.widget.GuiScrollableList;
+import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.hypercube.GuiHyperCube;
 import crazypants.enderio.machine.transceiver.Channel;
-import crazypants.gui.GuiScrollableList;
-import crazypants.render.ColorUtil;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 
@@ -68,7 +68,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
     int col = ColorUtil.getRGB(Color.white);
     parent.drawString(parent.getFontRenderer(), c.getName(), xPosition + margin, yPosition + margin / 2, col);
     if(!c.isPublic()) {
-      IconEIO.LOCK_LOCKED.renderIcon(xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
+      IconEIO.map.render(IconEIO.LOCK_LOCKED, xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
     }
   }
 

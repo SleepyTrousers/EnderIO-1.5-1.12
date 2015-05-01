@@ -11,20 +11,21 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GhostSlot;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiVacuumChest extends GuiContainerBase {
 
@@ -44,10 +45,10 @@ public class GuiVacuumChest extends GuiContainerBase {
   private final TileVacuumChest te;
 
   private final GuiToolTip rangeTooltip;
-  private final MultiIconButtonEIO rangeUpB;
-  private final MultiIconButtonEIO rangeDownB;
-  private final ToggleButtonEIO whiteListB;
-  private final ToggleButtonEIO useMetaB;
+  private final MultiIconButton rangeUpB;
+  private final MultiIconButton rangeDownB;
+  private final ToggleButton whiteListB;
+  private final ToggleButton useMetaB;
   private final RedstoneModeButton rsB;
   private final String headerChest;
   private final String headerFilter;
@@ -66,10 +67,10 @@ public class GuiVacuumChest extends GuiContainerBase {
     rangeTooltip = new GuiToolTip(new Rectangle(x, y, RANGE_WIDTH, 16), Lang.localize("gui.vacuum.range"));
 
     x += RANGE_WIDTH;
-    rangeUpB = MultiIconButtonEIO.createAddButton(this, ID_RANGE_UP, x, y);
+    rangeUpB = MultiIconButton.createAddButton(this, ID_RANGE_UP, x, y);
 
     y += 8;
-    rangeDownB = MultiIconButtonEIO.createMinusButton(this, ID_RANGE_DOWN, x, y);
+    rangeDownB = MultiIconButton.createMinusButton(this, ID_RANGE_DOWN, x, y);
 
     x = xSize - 16 - 7;
     y = 104;
@@ -77,13 +78,13 @@ public class GuiVacuumChest extends GuiContainerBase {
 
     x = FILTER_LEFT + TileVacuumChest.FILTER_SLOTS*18 + 2;
     y = 86;
-    whiteListB = new ToggleButtonEIO(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST, IconEIO.FILTER_BLACKLIST);
+    whiteListB = new ToggleButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST, IconEIO.FILTER_BLACKLIST);
     whiteListB.setUnselectedToolTip(Lang.localize("gui.conduit.item.whitelist"));
     whiteListB.setSelectedToolTip(Lang.localize("gui.conduit.item.blacklist"));
     whiteListB.setPaintSelectedBorder(false);
 
     y += 18;
-    useMetaB = new ToggleButtonEIO(this, ID_MATCHMETA, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
+    useMetaB = new ToggleButton(this, ID_MATCHMETA, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
     useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
@@ -190,7 +191,7 @@ public class GuiVacuumChest extends GuiContainerBase {
     fr.drawString(headerRange, sx+xSize-7-fr.getStringWidth(headerRange), sy+74, headerColor);
     fr.drawString(headerInventory, sx+7, sy+111, headerColor);
 
-    IconEIO.BUTTON_DOWN.renderIcon(sx + RANGE_LEFT, sy + RANGE_TOP, RANGE_WIDTH, 16, 0, true);
+    IconEIO.map.render(EnderWidget.BUTTON_DOWN, sx + RANGE_LEFT, sy + RANGE_TOP, RANGE_WIDTH, 16, 0, true);
     String str = Integer.toString(te.getRange());
     int sw = fr.getStringWidth(str);
     fr.drawString(str, sx + RANGE_LEFT + RANGE_WIDTH - sw - 5, sy + RANGE_TOP + 5, ColorUtil.getRGB(Color.black));

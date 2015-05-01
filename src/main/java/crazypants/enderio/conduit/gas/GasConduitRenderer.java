@@ -1,5 +1,4 @@
 package crazypants.enderio.conduit.gas;
-
 import java.util.List;
 
 import mekanism.api.gas.GasStack;
@@ -8,6 +7,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
 
@@ -20,10 +21,8 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
 
-import static crazypants.render.CubeRenderer.addVecWithUV;
+import static com.enderio.core.client.render.CubeRenderer.addVecWithUV;
 
 public class GasConduitRenderer extends DefaultConduitRenderer {
 

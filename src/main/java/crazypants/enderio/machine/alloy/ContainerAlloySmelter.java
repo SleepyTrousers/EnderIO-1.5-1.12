@@ -7,8 +7,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+
 import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer {
 

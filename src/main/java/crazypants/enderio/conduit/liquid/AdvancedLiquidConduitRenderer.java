@@ -8,6 +8,8 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
 
@@ -20,10 +22,8 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
 
-import static crazypants.render.CubeRenderer.addVecWithUV;
+import static com.enderio.core.client.render.CubeRenderer.addVecWithUV;
 
 public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
@@ -37,18 +37,18 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       float worldLight, RenderBlocks rb) {
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
 
-    if(!conduit.hasConnectionMode(ConnectionMode.INPUT) && !conduit.hasConnectionMode(ConnectionMode.OUTPUT)) {
+    if (!conduit.hasConnectionMode(ConnectionMode.INPUT) && !conduit.hasConnectionMode(ConnectionMode.OUTPUT)) {
       return;
     }
     AdvancedLiquidConduit pc = (AdvancedLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       IIcon tex = null;
-      if(conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
+      if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
         tex = pc.getTextureForInputMode();
-      } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
+      } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
         tex = pc.getTextureForOutputMode();
       }
-      if(tex != null) {
+      if (tex != null) {
         Offset offset = te.getOffset(ILiquidConduit.class, dir);
         ConnectionModeGeometry.renderModeConnector(dir, offset, tex, true);
       }
@@ -59,19 +59,19 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
     super.renderConduit(tex, conduit, component, brightness);
 
-    if(isNSEWUD(component.dir)) {
+    if (isNSEWUD(component.dir)) {
       AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
 
       FluidStack fluid = lc.getFluidType();
       IIcon texture = null;
-      if(fluid != null) {
+      if (fluid != null) {
         texture = fluid.getFluid().getStillIcon();
-        if(texture == null) {
+        if (texture == null) {
           texture = fluid.getFluid().getIcon();
         }
       }
 
-      if(texture == null) {
+      if (texture == null) {
         texture = lc.getNotSetEdgeTexture();
       }
 
@@ -84,12 +84,12 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
 
       for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-        if(d != component.dir && d != component.dir.getOpposite()) {
+        if (d != component.dir && d != component.dir.getOpposite()) {
 
           ForgeDirection vDir = RenderUtil.getVDirForFace(d);
-          if(component.dir == ForgeDirection.UP || component.dir == ForgeDirection.DOWN) {
+          if (component.dir == ForgeDirection.UP || component.dir == ForgeDirection.DOWN) {
             vDir = RenderUtil.getUDirForFace(d);
-          } else if((component.dir == ForgeDirection.NORTH || component.dir == ForgeDirection.SOUTH) && d.offsetY != 0) {
+          } else if ((component.dir == ForgeDirection.NORTH || component.dir == ForgeDirection.SOUTH) && d.offsetY != 0) {
             vDir = RenderUtil.getUDirForFace(d);
           }
 
@@ -119,7 +119,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         }
       }
 
-      if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;
@@ -159,8 +159,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     int index = 0;
     for (Vertex v : vertices) {
       double val = get(v.xyz, edge);
-      if(highest ? val >= minMax : val <= minMax) {
-        if(val != minMax) {
+      if (highest ? val >= minMax : val <= minMax) {
+        if (val != minMax) {
           res[0] = index;
         } else {
           res[1] = index;
@@ -173,10 +173,10 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   private double get(Vector3d xyz, ForgeDirection edge) {
-    if(edge == ForgeDirection.EAST || edge == ForgeDirection.WEST) {
+    if (edge == ForgeDirection.EAST || edge == ForgeDirection.WEST) {
       return xyz.x;
     }
-    if(edge == ForgeDirection.UP || edge == ForgeDirection.DOWN) {
+    if (edge == ForgeDirection.UP || edge == ForgeDirection.DOWN) {
       return xyz.y;
     }
     return xyz.z;

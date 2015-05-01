@@ -2,10 +2,12 @@ package crazypants.enderio.conduit.redstone;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
+
+import com.enderio.core.client.render.CubeRenderer;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import crazypants.render.CubeRenderer;
 
 public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
 

@@ -7,10 +7,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.TechneMachineRenderer;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
 
 public class FarmingStationRenderer extends TechneMachineRenderer<TileFarmStation> {
 

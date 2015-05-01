@@ -19,6 +19,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import org.lwjgl.input.Keyboard;
 
 import cofh.api.block.IDismantleable;
+
+import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -30,7 +33,6 @@ import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;

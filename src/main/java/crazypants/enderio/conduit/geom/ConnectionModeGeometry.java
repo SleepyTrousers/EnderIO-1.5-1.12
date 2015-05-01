@@ -8,15 +8,14 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.client.render.VertexRotation;
+import com.enderio.core.client.render.VertexTransform;
+import com.enderio.core.client.render.VertexTransformComposite;
+import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
-
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
-import crazypants.render.VertexRotation;
-import crazypants.render.VertexTransform;
-import crazypants.render.VertexTransformComposite;
-import crazypants.render.VertexTranslation;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 

@@ -27,6 +27,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
 import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Util;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -64,8 +66,6 @@ import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
 import crazypants.util.IFacade;
 
 @Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")

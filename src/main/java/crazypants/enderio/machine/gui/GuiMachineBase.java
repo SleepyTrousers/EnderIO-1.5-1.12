@@ -11,6 +11,10 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.IProgressTile;
 import com.enderio.core.common.util.Lang;
@@ -18,16 +22,12 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
 
 public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBase {
 
@@ -46,7 +46,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
 
   protected final GuiButtonIoConfig configB;
   
-  protected IconButtonEIO recipeButton;
+  protected IconButton recipeButton;
 
   protected List<GuiToolTip> progressTooltips;
   protected int lastProgressTooltipValue = -1;
@@ -68,7 +68,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, machine, configOverlay);
 
     y += 19;
-    recipeButton = new IconButtonEIO(this, RECIPE_ID, x, y, IconEIO.RECIPE);
+    recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
     recipeButton.visible = false;
     recipeButton.setIconMargin(3, 3);
   }

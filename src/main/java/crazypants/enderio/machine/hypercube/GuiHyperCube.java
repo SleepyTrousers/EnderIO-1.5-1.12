@@ -10,26 +10,26 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.IGuiOverlay;
+import com.enderio.core.client.gui.ListSelectionListener;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiScrollableList;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.PlayerUtil;
 
-import crazypants.enderio.gui.IGuiOverlay;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.TextFieldEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiScrollableList;
-import crazypants.gui.GuiToolTip;
-import crazypants.gui.ListSelectionListener;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiHyperCube extends GuiContainerBase {
 
@@ -56,24 +56,24 @@ public class GuiHyperCube extends GuiContainerBase {
 
   private final TileHyperCube cube;
 
-  private IconButtonEIO addButton;
-  private ToggleButtonEIO privateButton;
+  private IconButton addButton;
+  private ToggleButton privateButton;
 
-  private TextFieldEIO newChannelTF;
+  private TextFieldEnder newChannelTF;
 
   private GuiChannelList publicChannelList;
   private GuiChannelList privateChannelList;
   private ListSelectionListener<Channel> selectionListener;
 
-  private IconButtonEIO selectPublicB;
-  private IconButtonEIO deletePublicB;
+  private IconButton selectPublicB;
+  private IconButton deletePublicB;
 
-  private IconButtonEIO selectPrivateB;
-  private IconButtonEIO deletePrivateB;
+  private IconButton selectPrivateB;
+  private IconButton deletePrivateB;
 
-  private IconButtonEIO powerB;
-  private IconButtonEIO fluidB;
-  private IconButtonEIO itemB;
+  private IconButton powerB;
+  private IconButton fluidB;
+  private IconButton itemB;
 
   private RedstoneModeButton rsB;
 
@@ -95,35 +95,35 @@ public class GuiHyperCube extends GuiContainerBase {
 
     });
 
-    addButton = new IconButtonEIO(this, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
+    addButton = new IconButton(this, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
     addButton.setToolTip(Lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
 
-    privateButton = new ToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
+    privateButton = new ToggleButton(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
     privateButton.setSelectedToolTip(Lang.localize("gui.trans.privateChannel"));
     privateButton.setUnselectedToolTip(Lang.localize("gui.trans.publicChannel"));
 
-    deletePublicB = new IconButtonEIO(this, DELETE_PUBLIC_BUTTON_ID, 74, 117, IconEIO.MINUS);
+    deletePublicB = new IconButton(this, DELETE_PUBLIC_BUTTON_ID, 74, 117, IconEIO.MINUS);
     deletePublicB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
-    selectPublicB = new IconButtonEIO(this, SELECT_PUBLIC_BUTTON_ID, 95, 117, IconEIO.TICK);
+    selectPublicB = new IconButton(this, SELECT_PUBLIC_BUTTON_ID, 95, 117, IconEIO.TICK);
     selectPublicB.setToolTip(Lang.localize("gui.trans.activateChannel"));
 
-    deletePrivateB = new IconButtonEIO(this, DELETE_PRIVATE_BUTTON_ID, 183, 117, IconEIO.MINUS);
+    deletePrivateB = new IconButton(this, DELETE_PRIVATE_BUTTON_ID, 183, 117, IconEIO.MINUS);
     deletePrivateB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
-    selectPrivateB = new IconButtonEIO(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
+    selectPrivateB = new IconButton(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
     selectPrivateB.setToolTip(Lang.localize("gui.trans.activateChannel"));
 
     int x = 163;
     int y = 12;
-    itemB = new IconButtonEIO(this, ITEM_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_ITEM);
+    itemB = new IconButton(this, ITEM_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_ITEM);
     itemB.setIconMargin(3, 3);
 
     x += 18;
-    powerB = new IconButtonEIO(this, POWER_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_POWER);
+    powerB = new IconButton(this, POWER_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_POWER);
     powerB.setIconMargin(3, 3);
 
     x += 18;
-    fluidB = new IconButtonEIO(this, FLUID_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_FLUID);
+    fluidB = new IconButton(this, FLUID_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_FLUID);
     fluidB.setIconMargin(3, 3);
 
     x += 24;
@@ -168,7 +168,7 @@ public class GuiHyperCube extends GuiContainerBase {
 
     y = 12;
     x = 8;
-    newChannelTF = new TextFieldEIO(Minecraft.getMinecraft().fontRenderer, x, y, 103, 16);
+    newChannelTF = new TextFieldEnder(Minecraft.getMinecraft().fontRenderer, x, y, 103, 16);
     newChannelTF.setCanLoseFocus(false);
     newChannelTF.setMaxStringLength(32);
     newChannelTF.setFocused(true);
@@ -377,28 +377,28 @@ public class GuiHyperCube extends GuiContainerBase {
 
     x = 163;
     if(itemMode.isRecieveEnabled()) {
-      IconEIO.INPUT_OLD.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.map.render(IconEIO.INPUT_OLD, guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
     x += 18;
     if(powerMode.isRecieveEnabled()) {
-      IconEIO.INPUT_OLD.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.map.render(IconEIO.INPUT_OLD, guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
     x += 18;
     if(fluidMode.isRecieveEnabled()) {
-      IconEIO.INPUT_OLD.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.map.render(IconEIO.INPUT_OLD, guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
 
     x = 163;
     if(itemMode.isSendEnabled()) {
-      IconEIO.OUTPUT_OLD.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+      IconEIO.map.render(IconEIO.OUTPUT_OLD, guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
     x += 18;
     if(powerMode.isSendEnabled()) {
-      IconEIO.OUTPUT_OLD.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+      IconEIO.map.render(IconEIO.OUTPUT_OLD, guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
     x += 18;
     if(fluidMode.isSendEnabled()) {
-      IconEIO.OUTPUT_OLD.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+      IconEIO.map.render(IconEIO.OUTPUT_OLD, guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
 
   }

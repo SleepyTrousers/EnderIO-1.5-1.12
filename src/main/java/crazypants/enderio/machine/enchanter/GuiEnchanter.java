@@ -1,19 +1,17 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.awt.Color;
-
-import org.lwjgl.opengl.GL11;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.vacuum.ContainerVacuumChest;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
 
 public class GuiEnchanter extends GuiContainer {
 
@@ -35,7 +33,7 @@ public class GuiEnchanter extends GuiContainer {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     
     if(EnderIO.proxy.isNeiInstalled()) {
-      IconEIO.RECIPE.renderIcon(sx + 155, sy + 8, 16, 16, 0, true);
+      IconEIO.map.render(IconEIO.RECIPE, sx + 155, sy + 8, 16, 16, 0, true);
     }
     
     int curCost = te.getCurrentEnchantmentCost();    

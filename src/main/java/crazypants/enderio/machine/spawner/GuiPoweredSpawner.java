@@ -8,22 +8,22 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Lang;
 
-import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
-  private final MultiIconButtonEIO modeB;
+  private final MultiIconButton modeB;
 
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
     super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te));
 
-    modeB = MultiIconButtonEIO.createRightArrowButton(this, 8888, 115, 10);
+    modeB = MultiIconButton.createRightArrowButton(this, 8888, 115, 10);
     modeB.setSize(10, 16);
   }
 

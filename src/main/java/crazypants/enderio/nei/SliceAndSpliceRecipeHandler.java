@@ -108,7 +108,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 100, 57, 0x808080, false);
 
-    IconEIO.RECIPE_BUTTON.renderIcon(149, 32, 16, 16, 0, true);
+    IconEIO.map.render(IconEIO.RECIPE_BUTTON, 149, 32, 16, 16, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

@@ -1,6 +1,6 @@
 package crazypants.enderio.material;
 
-
+import static com.enderio.core.common.util.OreDictionaryHelper.*;
 
 public enum PowderIngot {
 
@@ -34,7 +34,7 @@ public enum PowderIngot {
   }
 
   public boolean isDependancyMet() {
-    if(oreDictDependancy == null) {
+    if (oreDictDependancy == null) {
       return true;
     }
     return isRegistered(oreDictDependancy);

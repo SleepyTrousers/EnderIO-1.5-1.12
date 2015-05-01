@@ -2,9 +2,10 @@ package crazypants.enderio.waila;
 
 import java.util.List;
 
+import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 
 public interface IWailaInfoProvider {
   

@@ -7,21 +7,22 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.TextFieldEIO;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   private static final String TEXTURE_SIMPLE = "enderio:textures/gui/buffer.png";
   private static final String TEXTURE_FULL = "enderio:textures/gui/buffer_full.png";
 
-  private TextFieldEIO maxInput;
-  private TextFieldEIO maxOutput;
+  private TextFieldEnder maxInput;
+  private TextFieldEnder maxOutput;
 
   private int lastInput, lastOutput;
 
@@ -36,9 +37,9 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
       int x = (isFull() ? 20 : 58);
       int y = guiTop + 27;
 
-      maxInput = new TextFieldEIO(getFontRenderer(), x, y, 60, 12);
+      maxInput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
       y += 28;
-      maxOutput = new TextFieldEIO(getFontRenderer(), x, y, 60, 12);
+      maxOutput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
       
       textFields.add(maxInput);
       textFields.add(maxOutput);

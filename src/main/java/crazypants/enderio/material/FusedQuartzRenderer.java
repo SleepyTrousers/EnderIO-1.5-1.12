@@ -9,16 +9,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.ConnectedTextureRenderer.DefaultTextureCallback;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer.FacadeAccessWrapper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-import crazypants.render.ConnectedTextureRenderer;
-import crazypants.render.ConnectedTextureRenderer.DefaultTextureCallback;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.RenderUtil;
 
 public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 

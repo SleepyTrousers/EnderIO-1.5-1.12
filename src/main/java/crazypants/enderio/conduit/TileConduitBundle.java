@@ -21,6 +21,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
+
+import com.enderio.core.client.render.BoundingBox;
+
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,7 +43,6 @@ import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
-import crazypants.render.BoundingBox;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 

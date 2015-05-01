@@ -5,13 +5,14 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.TechneModelRenderer;
+import com.enderio.core.client.render.VertexRotationFacing;
+import com.enderio.core.client.render.VertexTransform;
+import com.enderio.core.client.render.VertexTransformComposite;
 import com.google.common.collect.ObjectArrays;
 
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.TechneModelRenderer;
-import crazypants.render.VertexRotationFacing;
-import crazypants.render.VertexTransform;
-import crazypants.render.VertexTransformComposite;
+import crazypants.enderio.EnderIO;
 
 public class TechneMachineRenderer<T extends AbstractMachineEntity> extends TechneModelRenderer {
 
@@ -19,7 +20,7 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
   private OverlayRenderer overlay = new OverlayRenderer();
 
   public TechneMachineRenderer(AbstractMachineBlock<T> block, String modelPath) {
-    super(modelPath, block.getRenderType(), new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
+    super(EnderIO.MODID, modelPath, block.getRenderType(), new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
   }
 
   public TechneMachineRenderer<T> addTransform(VertexTransform vt) {

@@ -10,14 +10,15 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class ModItemFilterGui implements IItemFilterGui {
 
@@ -32,7 +33,7 @@ public class ModItemFilterGui implements IItemFilterGui {
   
   private final Rectangle[] inputBounds;
   
-  private final IconButtonEIO[] deleteButs;
+  private final IconButton[] deleteButs;
   
   private final int inputOffsetX;
   private final int tfWidth;
@@ -66,10 +67,10 @@ public class ModItemFilterGui implements IItemFilterGui {
         new Rectangle(inputOffsetX,89,16,16)
       };
     
-    deleteButs = new IconButtonEIO[inputBounds.length];    
+    deleteButs = new IconButton[inputBounds.length];    
     for(int i=0; i < deleteButs.length; i++) {
       Rectangle r = inputBounds[i];
-      IconButtonEIO but = new IconButtonEIO(gui, GuiExternalConnection.nextButtonId(),  r.x + 19, r.y, IconEIO.MINUS);
+      IconButton but = new IconButton(gui, GuiExternalConnection.nextButtonId(),  r.x + 19, r.y, IconEIO.MINUS);
       deleteButs[i] = but;
     }
     
@@ -77,14 +78,14 @@ public class ModItemFilterGui implements IItemFilterGui {
 
   @Override
   public void deactivate() {   
-    for(IconButtonEIO but : deleteButs) {
+    for(IconButton but : deleteButs) {
       but.detach();
     }
   }
 
   @Override
   public void updateButtons() {
-    for(IconButtonEIO but : deleteButs) {
+    for(IconButton but : deleteButs) {
       but.onGuiInit();
     }
   }
@@ -92,7 +93,7 @@ public class ModItemFilterGui implements IItemFilterGui {
   @Override
   public void actionPerformed(GuiButton guiButton) {
     for(int i=0; i < deleteButs.length; i++) {
-      IconButtonEIO but = deleteButs[i];
+      IconButton but = deleteButs[i];
       if(but.id == guiButton.id) {
         setMod(i, null);
         return;

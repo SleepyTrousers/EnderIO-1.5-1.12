@@ -13,6 +13,10 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
@@ -22,12 +26,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
 
 public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
@@ -40,7 +40,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   private World world;
   private TileTelePad te;
 
-  private TextFieldEIO xTF, yTF, zTF, dimTF;
+  private TextFieldEnder xTF, yTF, zTF, dimTF;
   
   private int powerX = 8;
   private int powerY = 9;
@@ -78,10 +78,10 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     int x = 42;
     int y = 8;
-    xTF = new TextFieldEIO(fr, x, y, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
-    yTF = new TextFieldEIO(fr, x, y + xTF.height + 2, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
-    zTF = new TextFieldEIO(fr, x, y + (xTF.height * 2) + 4, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
-    dimTF = new TextFieldEIO(fr, x, y + (xTF.height * 3) + 6, xSize - x * 2, 12, TextFieldEIO.FILTER_NUMERIC);
+    xTF = new TextFieldEnder(fr, x, y, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
+    yTF = new TextFieldEnder(fr, x, y + xTF.height + 2, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
+    zTF = new TextFieldEnder(fr, x, y + (xTF.height * 2) + 4, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
+    dimTF = new TextFieldEnder(fr, x, y + (xTF.height * 3) + 6, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
 
     xTF.setText(Integer.toString(te.getX()));
     yTF.setText(Integer.toString(te.getY()));
@@ -151,7 +151,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
     }
   }
 
-  private int getIntFromTextBox(TextFieldEIO tf) {
+  private int getIntFromTextBox(TextFieldEnder tf) {
     String text = tf.getText();
     if("".equals(text) || "-".equals(text)) {
       return 0;
@@ -177,10 +177,10 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
 
     String[] text = { "X", "Y", "Z", "DIM" };
     for (int i = 0; i < text.length; i++) {
-      TextFieldEIO f = textFields.get(i);
+      TextFieldEnder f = textFields.get(i);
       fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 10, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
       if(!f.getCanLoseFocus()) {
-        IconEIO.LOCK_LOCKED.renderIcon(f.xPosition + f.width - 2, f.yPosition - 2, true);
+        IconEIO.map.render(IconEIO.LOCK_LOCKED, f.xPosition + f.width - 2, f.yPosition - 2, true);
       }
     }
 

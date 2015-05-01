@@ -7,8 +7,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
 
 public class ItemConduitRenderer implements IItemRenderer {
 

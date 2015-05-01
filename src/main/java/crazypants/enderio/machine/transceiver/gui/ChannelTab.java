@@ -6,13 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 
+import com.enderio.core.client.gui.ITabPanel;
+import com.enderio.core.client.gui.ListSelectionListener;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiScrollableList;
+import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.PlayerUtil;
 
-import crazypants.enderio.gui.ITabPanel;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.transceiver.Channel;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.ClientChannelRegister;
@@ -20,9 +23,6 @@ import crazypants.enderio.machine.transceiver.PacketAddRemoveChannel;
 import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiScrollableList;
-import crazypants.gui.ListSelectionListener;
-import crazypants.render.ColorUtil;
 
 public class ChannelTab implements ITabPanel {
 
@@ -36,8 +36,8 @@ public class ChannelTab implements ITabPanel {
   ChannelType type;
   GuiTransceiver parent;
 
-  IconButtonEIO addButton;
-  ToggleButtonEIO privateButton;
+  IconButton addButton;
+  ToggleButton privateButton;
 
   GuiTextField newChannelTF;
   GuiChannelList channelList;
@@ -45,9 +45,9 @@ public class ChannelTab implements ITabPanel {
   GuiChannelList sendChannels;
   GuiChannelList recieveChannels;
   
-  IconButtonEIO deleteChannelB;
-  IconButtonEIO sendB;
-  IconButtonEIO recieveB;
+  IconButton deleteChannelB;
+  IconButton sendB;
+  IconButton recieveB;
   
   ListSelectionListener<Channel> selectionListener;
   TileTransceiver transceiver;
@@ -58,11 +58,11 @@ public class ChannelTab implements ITabPanel {
     transceiver = guiTransceiver.getTransciever();
 
     newChannelTF = new GuiTextField(parent.getFontRenderer(), 7, 12, 103, 16);    
-    addButton = new IconButtonEIO(parent, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
+    addButton = new IconButton(parent, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
     addButton.setToolTip(Lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
 
-    privateButton = new ToggleButtonEIO(parent, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
+    privateButton = new ToggleButton(parent, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
     privateButton.setSelectedToolTip(Lang.localize("gui.trans.privateChannel"));
     privateButton.setUnselectedToolTip(Lang.localize("gui.trans.publicChannel"));
 
@@ -75,7 +75,7 @@ public class ChannelTab implements ITabPanel {
     channelList.setShowSelectionBox(true);
     channelList.setScrollButtonIds(100, 101);    
     
-    deleteChannelB = new IconButtonEIO(parent, DELETE_CHANNEL_BUTTON_ID, x + w - 20, y + h + 4, IconEIO.MINUS);
+    deleteChannelB = new IconButton(parent, DELETE_CHANNEL_BUTTON_ID, x + w - 20, y + h + 4, IconEIO.MINUS);
     deleteChannelB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
     
     
@@ -86,7 +86,7 @@ public class ChannelTab implements ITabPanel {
     sendChannels.setShowSelectionBox(true);
     sendChannels.setScrollButtonIds(200, 201);
     
-    sendB = new IconButtonEIO(parent,SEND_BUTTON_ID,x -24, y + h/2 - 9, IconEIO.ARROWS);
+    sendB = new IconButton(parent,SEND_BUTTON_ID,x -24, y + h/2 - 9, IconEIO.ARROWS);
     
     y += h + 20;
     recieveChannels = new GuiChannelList(parent, w, h, x, y);
@@ -94,7 +94,7 @@ public class ChannelTab implements ITabPanel {
     recieveChannels.setShowSelectionBox(true);
     recieveChannels.setScrollButtonIds(300, 301);
         
-    recieveB = new IconButtonEIO(parent,RECIEVE_BUTTON_ID,x -24, y + h/2 - 9, IconEIO.ARROWS);
+    recieveB = new IconButton(parent,RECIEVE_BUTTON_ID,x -24, y + h/2 - 9, IconEIO.ARROWS);
     
     
     selectionListener = new ListSelectionListener<Channel>() {

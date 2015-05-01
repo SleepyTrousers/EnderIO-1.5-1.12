@@ -34,8 +34,6 @@ import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
@@ -43,7 +41,11 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
+
+import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Lang;
+
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {

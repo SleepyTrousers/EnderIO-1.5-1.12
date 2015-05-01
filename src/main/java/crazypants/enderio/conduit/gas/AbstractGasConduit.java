@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.AbstractConduit;
@@ -20,7 +21,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
-import com.enderio.core.common.util.BlockCoord;
 
 public abstract class AbstractGasConduit extends AbstractConduit implements IGasConduit {
 

@@ -343,7 +343,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private int calculateTeleportPower() {
     if (worldObj.provider.dimensionId == targetDim) {
-      this.maxPower = new BlockCoord(this).distance(target) * 1000;
+      this.maxPower = new BlockCoord(this).getDist(target) * 1000;
     } else {
       this.maxPower = 100000;
     }

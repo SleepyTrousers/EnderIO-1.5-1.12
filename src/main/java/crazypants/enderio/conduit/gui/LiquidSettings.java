@@ -14,6 +14,12 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.Lang;
 
@@ -23,17 +29,11 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.gui.ColorButton;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class LiquidSettings extends BaseSettingsPanel {
 
@@ -60,8 +60,8 @@ public class LiquidSettings extends BaseSettingsPanel {
   private GuiToolTip[] filterToolTips;
 
   private boolean inOutShowIn = true;
-  private MultiIconButtonEIO inOutNextB;
-  private IconButtonEIO whiteListB;
+  private MultiIconButton inOutNextB;
+  private IconButton whiteListB;
 
   protected LiquidSettings(final GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, Lang.localize("itemLiquidConduit.name"), gui, con);
@@ -74,12 +74,12 @@ public class LiquidSettings extends BaseSettingsPanel {
       int x = gui.getXSize() - 20;
       int y = customTop;
 
-      inOutNextB = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
+      inOutNextB = MultiIconButton.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
       x = filterX - 20;
       y = filterY + 1;
 
-      whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
+      whiteListB = new IconButton(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
       whiteListB.setToolTip(Lang.localize("gui.conduit.fluid.whitelist"));
     } else {
       isEnder = false;

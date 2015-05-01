@@ -8,19 +8,19 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.Lang;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
 public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelisk> {
 
-  ToggleButtonEIO showRangeB;
+  ToggleButton showRangeB;
 
   private static final int RANGE_ID = 8738924;
 
@@ -28,7 +28,7 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
     super(te, new ContainerAversionObelisk(par1InventoryPlayer, te));
 
     int x = getXSize() - 5 - BUTTON_SIZE;
-    showRangeB = new ToggleButtonEIO(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override

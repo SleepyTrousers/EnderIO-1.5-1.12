@@ -7,27 +7,27 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.SoundUtil;
 
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
   private static final int XP_ID = 3489;
   private static final int XP10_ID = 34892;
 
-  private IconButtonEIO xpB;
-  private IconButtonEIO xp10B;
+  private IconButton xpB;
+  private IconButton xp10B;
 
   public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
@@ -47,10 +47,10 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
     });
 
-    xpB = new IconButtonEIO(this, XP_ID, 128, 56, IconEIO.XP);
+    xpB = new IconButton(this, XP_ID, 128, 56, IconEIO.XP);
     xpB.setToolTip(Lang.localize("killerJoe.giveXp.tooltip"));
 
-    xp10B = new IconButtonEIO(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);
+    xp10B = new IconButton(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);
     xp10B.setToolTip(Lang.localize("killerJoe.giveXp10.tooltip"));
 
   }

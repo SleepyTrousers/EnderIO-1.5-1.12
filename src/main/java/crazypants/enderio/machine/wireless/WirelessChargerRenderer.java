@@ -6,16 +6,16 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.VertexRotation;
+import com.enderio.core.client.render.VertexTransform;
+import com.enderio.core.client.render.VertexTransformComposite;
+import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.VertexRotation;
-import crazypants.render.VertexTransform;
-import crazypants.render.VertexTransformComposite;
-import crazypants.render.VertexTranslation;
 
 public class WirelessChargerRenderer implements ISimpleBlockRenderingHandler {
 

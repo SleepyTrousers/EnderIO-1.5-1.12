@@ -6,11 +6,13 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
-import crazypants.gui.GhostSlot;
 
 public class ModItemFilter implements IItemFilter {
 

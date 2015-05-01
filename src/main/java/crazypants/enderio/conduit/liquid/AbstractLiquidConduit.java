@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -31,8 +32,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   protected boolean redstoneStateDirty = true;
 
+  public static IFluidHandler getExternalFluidHandler(IBlockAccess world, BlockCoord bc) {
+    IFluidHandler con = FluidUtil.getFluidHandler(world, bc);
+    return (con != null && !(con instanceof IConduitBundle)) ? con : null;
+  }
+
   public IFluidHandler getExternalHandler(ForgeDirection direction) {
-    IFluidHandler con = FluidUtil.getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
+    IFluidHandler con = getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
