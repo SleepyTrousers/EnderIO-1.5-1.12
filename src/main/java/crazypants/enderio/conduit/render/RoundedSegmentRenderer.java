@@ -111,16 +111,6 @@ public class RoundedSegmentRenderer {
     return res;
   }
 
-  private static Vertex[] xformCoords(List<Vertex> refCoords, Matrix4d rotMat, Vector3d trans) {
-    Vertex[] res = new Vertex[refCoords.size()];
-    for (int i = 0; i < res.length; i++) {
-      res[i] = new Vertex(refCoords.get(i));
-      res[i].transform(rotMat);
-      res[i].translate(trans);
-    }
-    return res;
-  }
-
   public static Vertex[] createUnitCrossSection(double xOffset, double yOffset, double zOffset, int numCoords, int u) {
 
     Vertex[] crossSection = new Vertex[numCoords];

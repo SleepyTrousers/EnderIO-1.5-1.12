@@ -27,9 +27,6 @@ import crazypants.vecmath.Vector3d;
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private TravelEntitySpecialRenderer selectionRenderer = new TravelEntitySpecialRenderer() {
-    protected void renderBlock() {
-    }
-
     @Override
     public IIcon getSelectedIcon() {
       return EnderIO.blockEnderIo.selectedOverlayIcon;

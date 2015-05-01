@@ -91,10 +91,6 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
     return false;    
   }
 
-  private boolean isBlackListed(String entityId) {
-    return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
-  }
-  
   @Override
   public String getMachineName() {
     return ModObject.blockSoulBinder.unlocalisedName;

@@ -109,6 +109,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     return fakePlayer;
   }
 
+  @Override
   protected MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() - 2];
     int fromSlot = slotDefinition.minInputSlot;
@@ -172,17 +173,6 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
         if(((ManyToOneMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
           return true;
         }
-      }
-    }
-    return false;
-  }
-
-  private boolean isItemAlreadyInASlot(ItemStack itemstack) {
-    ItemStack currentStackType = null;
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
-      currentStackType = inventory[i];
-      if(currentStackType != null && currentStackType.isItemEqual(itemstack)) {
-        return true;
       }
     }
     return false;

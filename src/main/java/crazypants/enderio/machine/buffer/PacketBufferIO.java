@@ -6,7 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessage, IMessageHandler<PacketBufferIO, IMessage> {
+public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessageHandler<PacketBufferIO, IMessage> {
 
   public PacketBufferIO() {}
   

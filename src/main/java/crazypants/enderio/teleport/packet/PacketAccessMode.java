@@ -45,6 +45,7 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
     mode = TileTravelAnchor.AccessMode.values()[buf.readShort()];
   }
 
+  @Override
   public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);

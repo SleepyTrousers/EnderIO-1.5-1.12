@@ -68,14 +68,6 @@ public class ItemButton extends GuiButton {
 
       mouseDragged(par1Minecraft, par2, par3);
 
-      int l = 14737632;
-
-      if(!this.enabled) {
-        l = -6250336;
-      } else if(this.field_146123_n) {
-        l = 16777120;
-      }
-
       int xLoc = xPosition + hwidth - 8;
       int yLoc = yPosition + hheight - 10;
       ITEM_RENDERER.renderItemIntoGUI(fr, par1Minecraft.renderEngine, item, xLoc, yLoc);

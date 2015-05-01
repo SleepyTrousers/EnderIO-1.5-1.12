@@ -204,14 +204,12 @@ public class ExistingItemFilter implements IItemFilter {
     if(snapshot != null) {
       
       NBTTagList itemList = new NBTTagList();
-      int i = 0;
       for (ItemStack item : snapshot) {                
         if(item != null) {
           NBTTagCompound itemTag = new NBTTagCompound();
           item.writeToNBT(itemTag);
           itemList.appendTag(itemTag);
         }
-        i++;
       }
       nbtRoot.setTag("snapshot", itemList);
       

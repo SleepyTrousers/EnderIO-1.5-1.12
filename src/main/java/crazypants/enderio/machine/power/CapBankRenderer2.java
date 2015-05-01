@@ -29,8 +29,6 @@ import crazypants.vecmath.Vertex;
 
 public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
-  private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);
-  private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] { DEFAULT_BC };
   private static final double PIXEL_SIZE = 1 / 16d;
 
   private final List<IRenderFace> renderers = new ArrayList<IRenderFace>(2);
@@ -130,19 +128,6 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       }
     }
 
-    private List<GaugeBounds> calculateGaugeBounds(BlockCoord me, BlockCoord[] mb) {
-      List<GaugeBounds> res = new ArrayList<GaugeBounds>();
-      for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-        if(face != ForgeDirection.UP && face != ForgeDirection.DOWN) {
-          boolean isRight = isRightFace(me, mb, face);
-          if(isRight) {
-            res.add(new GaugeBounds(me, mb, face));
-          }
-        }
-      }
-      return res;
-    }
-
     private void renderGaugeOnFace(GaugeBounds gb, IIcon icon, List<Vertex> vertices, double x, double y, double z) {
       Tessellator tes = Tessellator.instance;
       Vector2f u = gb.getMinMaxU(icon);
@@ -230,20 +215,6 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
           tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), 0, 0);
         }
       }
-    }
-
-    private boolean isRightFace(BlockCoord me, BlockCoord[] mb, ForgeDirection dir) {
-      Vector4d uPlane = RenderUtil.getUPlaneForFace(dir);
-
-      int myRightVal = (int) uPlane.x * me.x + (int) uPlane.y * me.y + (int) uPlane.z * me.z;
-      int max = myRightVal;
-      for (BlockCoord bc : mb) {
-        int val = (int) uPlane.x * bc.x + (int) uPlane.y * bc.y + (int) uPlane.z * bc.z;
-        if(val > max) {
-          max = val;
-        }
-      }
-      return myRightVal == max;
     }
 
     private Vertex getClosestVertex(List<Vertex> vertices, Vector3d corner) {

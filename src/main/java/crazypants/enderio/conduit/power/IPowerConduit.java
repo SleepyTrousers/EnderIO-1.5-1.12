@@ -8,7 +8,7 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
 
-public interface IPowerConduit extends IConduit, IInternalPowerHandler, IExtractor {
+public interface IPowerConduit extends IInternalPowerHandler, IExtractor {
 
   public static final String ICON_KEY = "enderio:powerConduit";
   public static final String ICON_KEY_INPUT = "enderio:powerConduitInput";

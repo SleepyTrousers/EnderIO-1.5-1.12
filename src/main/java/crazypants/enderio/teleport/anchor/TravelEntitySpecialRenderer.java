@@ -132,7 +132,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
         isBlock = true;
       }
 
-      float alpha = 0.5f;
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
       float col = 0.5f;
       GL14.glBlendColor(col, col, col, col);

@@ -89,7 +89,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
       // TODO test
       int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
       Color color = getTileEntity().activeTask.color;
-      GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+      GL11.glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

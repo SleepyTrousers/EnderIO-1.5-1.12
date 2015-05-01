@@ -16,8 +16,6 @@ public class Enchantments {
     return instance;
   }
 
-  private EnchantmentSoulBound soulBound;
-
   private void registerEnchantments() {
     if(Config.enchantmentSoulBoundEnabled) {
       int id = Config.enchantmentSoulBoundId;
@@ -28,7 +26,7 @@ public class Enchantments {
         Log.error("Could not find an empty enchantment ID to add enchanments");
         return;
       }
-      soulBound = EnchantmentSoulBound.create(id);
+      EnchantmentSoulBound.create(id);
     }
   }
 

@@ -42,7 +42,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
     override = renderer.overrideBlockTexture;
     
     //Horrible hack to get the MC lighting engine to set the correct values for me
-    if(renderer != null && world != null) {
+    if (world != null) {
       renderer.setOverrideBlockTexture(IconUtil.blankTexture);
       renderer.renderStandardBlock(Blocks.stone, x, y, z);
       renderer.setOverrideBlockTexture(null);

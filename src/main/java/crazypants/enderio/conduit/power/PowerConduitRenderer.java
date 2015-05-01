@@ -60,7 +60,6 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
         Tessellator tessellator = Tessellator.instance;
         tessellator.setColorOpaque_I(c);
 
-        Offset offset = conduit.getBundle().getOffset(IPowerConduit.class, component.dir);
         BoundingBox bound = component.bound;
         if(conMode != ConnectionMode.IN_OUT) {
           Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);

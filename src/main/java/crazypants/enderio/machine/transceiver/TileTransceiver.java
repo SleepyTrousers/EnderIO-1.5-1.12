@@ -367,10 +367,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return getEnergyStored() - (int) (MIN_POWER_TO_SEND * getMaxEnergyStored());
   }
 
-  private float getEnergyStoredRatio() {
-    return (float) getEnergyStored() / getMaxEnergyStored();
-  }
-
   @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);

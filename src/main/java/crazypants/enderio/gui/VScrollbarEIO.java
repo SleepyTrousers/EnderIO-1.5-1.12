@@ -2,9 +2,12 @@ package crazypants.enderio.gui;
 
 import crazypants.gui.IGuiScreen;
 import crazypants.render.RenderUtil;
+
 import java.awt.Rectangle;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+
 import org.lwjgl.opengl.GL11;
 
 public class VScrollbarEIO {
@@ -154,7 +157,7 @@ public class VScrollbarEIO {
       int pos = y - (thumbArea.y + (int)IconEIO.VSCROLL_THUMB_OFF.height/2);
       int len = thumbArea.height - (int)IconEIO.VSCROLL_THUMB_OFF.height;
       if(len > 0) {
-        setScrollPos(Math.round(pos * (float)scrollMax / (float)len));
+        setScrollPos(Math.round(pos * (float) scrollMax / len));
       }
       return true;
     }

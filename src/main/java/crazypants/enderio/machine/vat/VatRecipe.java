@@ -91,7 +91,7 @@ public class VatRecipe implements IRecipe {
       return false;
     }
     for (RecipeInput ri : inputs) {
-      if(item != null && ri.getSlotNumber() == slot && ri.isInput(item)) {
+      if (ri.getSlotNumber() == slot && ri.isInput(item)) {
         return true;
       }
     }
@@ -150,9 +150,9 @@ public class VatRecipe implements IRecipe {
     return 1;
   }
 
+  @SuppressWarnings("null")
   public FluidStack getRequiredFluidInput(MachineRecipeInput[] inputs) {
     float inputFluidMul = 1;
-    float outputFluidMul = 1;
     FluidStack inputFluidStack = null;
     for (MachineRecipeInput ri : inputs) {
       if(!ri.isFluid()) {

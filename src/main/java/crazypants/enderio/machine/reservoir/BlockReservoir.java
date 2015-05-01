@@ -129,7 +129,7 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
       return;
     }
     TileReservoir tr = (TileReservoir) world.getTileEntity(x, y, z);
-    boolean res = tr.onBlockAdded();
+    tr.onBlockAdded();
 
   }
 

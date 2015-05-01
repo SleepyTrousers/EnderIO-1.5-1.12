@@ -225,7 +225,6 @@ public class CustomRenderBlocks extends RenderBlocks {
     double d15 = par6 + this.renderMaxZ;
 
     List<Vertex> result = new ArrayList<Vertex>(4);
-    Vertex v;
     if(enableAO) {
       result.add(new Vertex(d11, d13, d15, d7, d9, brightnessTopLeft, colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, 1));
       result.add(new Vertex(d11, d13, d14, d3, d5, brightnessBottomLeft, colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, 1));
@@ -331,8 +330,6 @@ public class CustomRenderBlocks extends RenderBlocks {
 
   private List<Vertex> calcFaceZPos(Block par1Block, double par2, double par4, double par6, IIcon par8Icon)
   {
-    Tessellator tessellator = Tessellator.instance;
-
     if(this.hasOverrideBlockTexture())
     {
       par8Icon = this.overrideBlockTexture;
@@ -413,7 +410,6 @@ public class CustomRenderBlocks extends RenderBlocks {
     double d15 = par6 + this.renderMaxZ;
 
     List<Vertex> result = new ArrayList<Vertex>();
-    Vertex v;
     if(enableAO) {
       result.add(new Vertex(d11, d14, d15, d3, d5, brightnessTopLeft, colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, 1));
       result.add(new Vertex(d11, d13, d15, d8, d10, brightnessBottomLeft, this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, 1));
@@ -502,7 +498,6 @@ public class CustomRenderBlocks extends RenderBlocks {
     double d15 = par6 + this.renderMinZ;
 
     List<Vertex> result = new ArrayList<Vertex>();
-    Vertex v;
     if(enableAO) {
       result.add(new Vertex(d11, d14, d15, d7, d9, brightnessTopLeft, colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, 1));
       result.add(new Vertex(d12, d14, d15, d3, d5, brightnessBottomLeft, colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, 1));
@@ -519,8 +514,6 @@ public class CustomRenderBlocks extends RenderBlocks {
 
   private List<Vertex> calcFaceXPos(Block par1Block, double par2, double par4, double par6, IIcon par8Icon)
   {
-    Tessellator tessellator = Tessellator.instance;
-
     if(this.hasOverrideBlockTexture())
     {
       par8Icon = this.overrideBlockTexture;
@@ -601,7 +594,6 @@ public class CustomRenderBlocks extends RenderBlocks {
     double d15 = par6 + this.renderMaxZ;
 
     List<Vertex> result = new ArrayList<Vertex>(4);
-    Vertex v;
     if(enableAO) {
       result.add(new Vertex(d11, d12, d15, d8, d10, brightnessTopLeft, colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft, 1));
       result.add(new Vertex(d11, d12, d14, d4, d6, brightnessBottomLeft, colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft, 1));

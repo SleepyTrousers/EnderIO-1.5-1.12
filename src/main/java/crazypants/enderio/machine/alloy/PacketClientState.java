@@ -43,6 +43,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
 
   }
 
+  @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
     TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileAlloySmelter) {

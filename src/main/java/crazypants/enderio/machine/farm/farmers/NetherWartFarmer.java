@@ -21,10 +21,6 @@ public class NetherWartFarmer extends CustomSeedFarmer {
     if(!farm.isOpen(bc)) {
       return false;
     }
-    World worldObj = farm.getWorldObj();
-    BlockCoord grn = bc.getLocation(ForgeDirection.DOWN);
-    Block blk = worldObj.getBlock(grn.x, grn.y, grn.z);
-    
     return plantFromInventory(farm, bc);
   }
 

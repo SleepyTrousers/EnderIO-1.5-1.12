@@ -16,8 +16,6 @@ import crazypants.enderio.conduit.render.ConduitRenderer;
 
 public class CommonProxy {
 
-  private static final DecimalFormat FORMAT = new DecimalFormat("########0.000");
-
   protected long serverTickCount = 0;
   protected long clientTickCount = 0;
   protected final TickTimer tickTimer = new TickTimer();

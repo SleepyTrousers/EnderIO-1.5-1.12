@@ -25,9 +25,6 @@ public class NetworkPowerManager {
   int maxEnergyStored;
   int energyStored;
 
-  private int updateRenderTicks = 10;
-  private int inactiveTicks = 100;
-
   private final List<ReceptorEntry> receptors = new ArrayList<PowerConduitNetwork.ReceptorEntry>();
   private ListIterator<ReceptorEntry> receptorIterator = receptors.listIterator();
 
@@ -254,7 +251,6 @@ public class NetworkPowerManager {
 
     float filledRatio = (float) energyStored / maxEnergyStored;
     int energyLeft = energyStored;
-    int given = 0;
     for (IPowerConduit con : network.getConduits()) {
       if(energyLeft > 0) {
         // NB: use ceil to ensure we dont through away any energy due to
@@ -264,7 +260,6 @@ public class NetworkPowerManager {
         give = Math.min(give, con.getMaxEnergyStored());
         give = Math.min(give, energyLeft);
         con.setEnergyStored(give);
-        given += give;
         energyLeft -= give;
       } else {
         con.setEnergyStored(0);
@@ -311,20 +306,6 @@ public class NetworkPowerManager {
   }
 
   void onNetworkDestroyed() {
-  }
-
-  private static class StarveBuffer {
-
-    int stored;
-
-    public StarveBuffer(int stored) {
-      this.stored = stored;
-    }
-
-    void addToStore(float val) {
-      stored += val;
-    }
-
   }
 
   private int minAbs(int amount, int limit) {

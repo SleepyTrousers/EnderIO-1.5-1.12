@@ -120,6 +120,7 @@ public class TreeHarvestUtil {
       this.woodMeta = woodMeta;
     }
 
+    @Override
     boolean isTarget(Block blk, int meta) {
       return super.isTarget(blk,meta) && ((meta & 3) == (woodMeta & 3));
     }

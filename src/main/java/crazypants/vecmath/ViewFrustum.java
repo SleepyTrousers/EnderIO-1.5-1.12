@@ -63,10 +63,6 @@ public class ViewFrustum {
     return true;
   }
 
-  private Vector3d toThreeComponent(Vector3d from) {
-    return new Vector3d(from.x, from.y, from.z);
-  }
-
   private double distanceFromPointToPlane(Vector4d plane, Vector3d point) {
     Vector4d newPoint = new Vector4d(point.x, point.y, point.z, 1);
     return plane.dot(newPoint);

@@ -19,7 +19,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.DyeColor;
 
-public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IInternalPoweredTile {
+public class TilePowerMonitor extends AbstractPowerConsumerEntity {
 
   int energyPerTick = 1;
 
@@ -162,18 +162,14 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     if(pm != null && update) {
       update(pm);
       Signal sig = null;
-      if(!engineControlEnabled) {
-        sig = null;
-      } else {
+      if (engineControlEnabled) {
         float percentFull = getPercentFull();        
         if(currentlyEmmittedSignal == null) {
           if(percentFull <= startLevel) {
             sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
           }
         } else {
-          if(percentFull >= stopLevel) {
-            sig = null;
-          } else {
+          if (percentFull < stopLevel) {
             sig = currentlyEmmittedSignal;
           }
         }

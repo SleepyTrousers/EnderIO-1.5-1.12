@@ -13,10 +13,6 @@ import crazypants.enderio.Log;
 
 public class HyperCubeRegister {
 
-  private static final String CATEGORY_PUBLIC_CHANNELS = "PublicChannels";
-  private static final String CATEGORY_PRIVATE_CHANNELS = "PrivateChannels";
-  private static final String KEY_PUBLIC_CHANNELS = "names";
-
   public static HyperCubeRegister instance;
 
   private final Map<Channel, List<TileHyperCube>> channelMapping = new HashMap<Channel, List<TileHyperCube>>();
@@ -39,7 +35,6 @@ public class HyperCubeRegister {
   }
 
   private void innerLoad() {
-    File f = DimensionManager.getCurrentSaveRootDirectory();
     conf = new HyperCubeConfig(new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/dimensionalTransceiver.cfg"));
     publicChannels.addAll(conf.getPublicChannels());
     userChannels.putAll(conf.getUserChannels());

@@ -239,13 +239,4 @@ public class BlockFusedQuartz extends BlockEio {
     return false;
   }
 
-  private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, Block sourceBlock, int sourceBlockMetadata) {
-    if(sourceBlock == null) {
-      return null;
-    }
-    ItemStack result = new ItemStack(EnderIO.instance.itemFusedQuartzFrame, 1, quartzBlockMeta);
-    PainterUtil.setSourceBlock(result, sourceBlock, sourceBlockMetadata);
-    return result;
-  }
-
 }

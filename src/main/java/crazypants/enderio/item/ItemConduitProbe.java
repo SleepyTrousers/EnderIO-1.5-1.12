@@ -25,8 +25,6 @@ import crazypants.enderio.network.PacketHandler;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades {
 
-  private static final NumberFormat NF = NumberFormat.getIntegerInstance();
-
   public static ItemConduitProbe create() {
 
     PacketHandler.INSTANCE.registerMessage(PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
@@ -86,7 +84,6 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     if(!(te instanceof IConduitBundle)) {
       return false;
     }
-    IConduitBundle cb = (IConduitBundle)te;    
     if(itemStack.getItemDamage() == 0) {      
       if(PacketConduitProbe.canCreatePacket(world, x, y, z)) {
         if(world.isRemote) {

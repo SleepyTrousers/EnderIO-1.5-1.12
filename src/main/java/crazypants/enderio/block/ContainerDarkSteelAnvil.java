@@ -42,15 +42,18 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
     this.inventorySlots.set(2, new Slot(outputSlot, 2, 134, 47) {
 
+      @Override
       public boolean isItemValid(ItemStack stack) {
         return false;
       }
 
+      @Override
       public boolean canTakeStack(EntityPlayer stack) {
         return (stack.capabilities.isCreativeMode || stack.experienceLevel >= ContainerDarkSteelAnvil.this.maximumCost)
             && ContainerDarkSteelAnvil.this.maximumCost > 0 && this.getHasStack();
       }
 
+      @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
         if(!player.capabilities.isCreativeMode) {
           player.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);

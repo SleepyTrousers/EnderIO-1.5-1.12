@@ -85,6 +85,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return false;
   }
   
+  @Override
   protected short getFacingForHeading(int heading) {
     switch (heading) {
     case 0:

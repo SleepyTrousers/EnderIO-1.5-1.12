@@ -191,7 +191,6 @@ public class RenderUtil {
     int j = i % 65536;
     int k = i / 65536;
 
-    float minLight = 0;
     //0.2 - 1
     float sunBrightness = worldObj.getSunBrightness(1);
 
@@ -200,8 +199,6 @@ public class RenderUtil {
     //Highest value recieved from a light
     float fromLights = j / 255f;
 
-    // 0 - 1 for sun only, 0 - 0.6 for light only
-    float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
     float highestValue = Math.max(fromLights, percentRecievedFromSun * sunBrightness);
     return Math.max(0.2f, highestValue);
   }
@@ -352,6 +349,7 @@ public class RenderUtil {
     }
 
     if(!forceAllEdges) {
+      @SuppressWarnings("null")
       Block check = blockAccess.getBlock(x, y, z);
       if(check == null) {
         return;
@@ -360,8 +358,6 @@ public class RenderUtil {
         return;
       }
     }
-
-    BlockCoord bc = new BlockCoord(x, y, z);
 
     List<ForgeDirection> edges;
     if(forceAllEdges) {
@@ -463,18 +459,14 @@ public class RenderUtil {
 
     float uWidth = 1;
     float vWidth = 1;
-    if(icon != null) {
-      uWidth = icon.getMaxU() - icon.getMinU();
-      vWidth = icon.getMaxV() - icon.getMinV();
-    }
+    uWidth = icon.getMaxU() - icon.getMinU();
+    vWidth = icon.getMaxV() - icon.getMinV();
 
     uv.x = (float) VecmathUtil.distanceFromPointToPlane(getUPlaneForFace(face), p);
     uv.y = (float) VecmathUtil.distanceFromPointToPlane(getVPlaneForFace(face), p);
 
-    if(icon != null) {
-      uv.x = icon.getMinU() + (uv.x * uWidth);
-      uv.y = icon.getMinV() + (uv.y * vWidth);
-    }
+    uv.x = icon.getMinU() + (uv.x * uWidth);
+    uv.y = icon.getMinV() + (uv.y * vWidth);
 
   }
 

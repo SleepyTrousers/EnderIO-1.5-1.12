@@ -120,7 +120,6 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-        Tessellator tessellator = Tessellator.instance;
         for (Vertex c : corners) {
           addVecWithUV(c.xyz, c.uv.x, c.uv.y);
         }

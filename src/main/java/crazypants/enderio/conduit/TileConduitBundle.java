@@ -864,7 +864,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "appliedenergistics2")
   public void setGridNode(Object node) {
-    this.node = (IGridNode) node;
+    this.node = node;
   }
 
   @Override

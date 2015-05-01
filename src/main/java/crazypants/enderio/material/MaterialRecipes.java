@@ -83,6 +83,7 @@ public class MaterialRecipes {
     Material.registerOres(EnderIO.itemMaterial);
   }
 
+  @SuppressWarnings("unused")
   public static void addRecipes() {
 
     //Common Ingredients
@@ -244,7 +245,6 @@ public class MaterialRecipes {
           addShapedRecipe(capacitor, " gr", "gig", "rg ", 'r', Items.redstone, 'g', gold, 'i', Items.iron_ingot);
     }
 
-    int dustCoal = OreDictionary.getOreID("dustCoal");
     ItemStack activatedCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 1);
     ItemStack energeticAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal());
     if(Config.useHardRecipes) {

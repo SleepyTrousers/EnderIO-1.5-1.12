@@ -199,7 +199,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private boolean canJoeSee(EntityLivingBase ent)
   {
-    Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double) ent.getEyeHeight(), ent.posZ);
+    Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
     for (int facing : frontFaceAndSides)
     {
       if(this.worldObj.rayTraceBlocks(

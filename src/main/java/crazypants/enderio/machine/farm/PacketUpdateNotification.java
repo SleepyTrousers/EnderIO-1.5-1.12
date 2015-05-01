@@ -8,7 +8,8 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> implements IMessage, IMessageHandler<PacketUpdateNotification, IMessage> {
+public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> implements
+    IMessageHandler<PacketUpdateNotification, IMessage> {
 
   private String notification;
 

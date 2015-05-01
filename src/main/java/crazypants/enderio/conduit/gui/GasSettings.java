@@ -104,19 +104,8 @@ public class GasSettings extends BaseSettingsPanel {
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     boolean isInput = isInput();
     if(isInput) {
-      int x = gui.getGuiLeft() + gap + gui.getFontRenderer().getStringWidth(autoExtractStr) + gap + 2;
-      int y = customTop;
       gui.getFontRenderer().drawString(autoExtractStr, left, top, ColorUtil.getRGB(Color.DARK_GRAY));
     }
-  }
-
-  private void renderGas(Gas f, int x, int y) {
-    IIcon icon = f.getIcon();
-    if(icon != null) {
-      RenderUtil.bindBlockTexture();
-      gui.drawTexturedModelRectFromIcon(x + 1, y + 1, icon, 16, 16);
-    }
-
   }
 
   private boolean isInput() {

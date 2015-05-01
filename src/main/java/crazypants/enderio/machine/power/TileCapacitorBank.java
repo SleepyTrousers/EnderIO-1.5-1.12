@@ -808,15 +808,15 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
         TileCapacitorBank cb = getCapBank(bc);
         if(cb != null) {
           totalStored += cb.doGetEnergyStored();
-        }
-        ItemStack[] inv = cb.inventory;
-        for (int i = 0; i < inv.length; i++) {
-          if(inv[i] != null) {
-            invItems.add(inv[i]);
-            inv[i] = null;
+          ItemStack[] inv = cb.inventory;
+          for (int i = 0; i < inv.length; i++) {
+            if (inv[i] != null) {
+              invItems.add(inv[i]);
+              inv[i] = null;
+            }
           }
+          cb.multiblockDirty = false;
         }
-        cb.multiblockDirty = false;
       }
       maxStoredEnergy = totalCap;
       doSetEnergyStored(totalStored);
@@ -872,19 +872,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
 
   public boolean isMultiblock() {
     return multiblock != null;
-  }
-
-  private boolean isCurrentMultiblockValid() {
-    if(multiblock == null) {
-      return false;
-    }
-    for (BlockCoord bc : multiblock) {
-      TileCapacitorBank res = getCapBank(bc);
-      if(res == null || !res.isMultiblock()) {
-        return false;
-      }
-    }
-    return true;
   }
 
   private TileCapacitorBank getCapBank(BlockCoord bc) {
@@ -1046,7 +1033,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
     inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
     outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
 
-    boolean wasMulti = isMultiblock();
     if(nbtRoot.getBoolean("isMultiblock")) {
       int[] coords = nbtRoot.getIntArray("multiblock");
       multiblock = new BlockCoord[coords.length / 3];

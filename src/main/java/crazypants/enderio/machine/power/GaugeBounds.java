@@ -18,13 +18,10 @@ class GaugeBounds {
 
   static List<GaugeBounds> calculateGaugeBounds(BlockCoord me, BlockCoord[] mbIn) {
 
-    BlockCoord myBC;
     BlockCoord[] mb;
     if(mbIn != null) {
-      myBC = me;
       mb = mbIn;
     } else {
-      myBC = me;
       DEFAULT_MB[0] = me;
       mb = DEFAULT_MB;
     }
@@ -101,7 +98,6 @@ class GaugeBounds {
   private VInfo getVPosForFace(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
     int maxY = me.y;
     int minY = me.y;
-    int vHeight = 1;
     for (BlockCoord bc : mb) {
       if(bc.x == me.x && bc.z == me.z && !containsLocaction(mb, bc.getLocation(face))) {
         maxY = Math.max(maxY, bc.y);

@@ -87,6 +87,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     super.breakBlock(world, x, y, z, block, meta);
   }
 
+  @Override
   public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }

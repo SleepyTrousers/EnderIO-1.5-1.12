@@ -71,8 +71,6 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   private IIcon iconEastWest;
   private IIcon iconEastWestTurned;
 
-  private int linkId;
-
   protected BlockEnderRail() {
     setBlockName(ModObject.blockEnderRail.unlocalisedName);
     setStepSound(Block.soundTypeMetal);

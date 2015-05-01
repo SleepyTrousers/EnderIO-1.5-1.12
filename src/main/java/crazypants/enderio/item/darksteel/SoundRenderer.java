@@ -32,8 +32,6 @@ public class SoundRenderer extends RenderEntity {
 
     GL11.glColor4f(1, 1, 1, alpha);
 
-    float scale = se.lifeSpan / 20f;
-
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);

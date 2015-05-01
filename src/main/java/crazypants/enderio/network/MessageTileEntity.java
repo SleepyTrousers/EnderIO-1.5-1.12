@@ -26,6 +26,7 @@ public abstract class MessageTileEntity<T extends TileEntity> implements IMessag
     z = tile.zCoord;
   }
 
+  @Override
   public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);

@@ -61,7 +61,7 @@ public class SolarUpgrade extends AbstractUpgrade {
 
   public SolarUpgrade(String unlocName, byte level, int levelCost) {
     super(UPGRADE_NAME, unlocName, createUpgradeItem(), levelCost);
-    this.level = (byte) level;
+    this.level = level;
   }
   
   @Override

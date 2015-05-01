@@ -35,7 +35,6 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
   @Override
   public int getBlockMetadata(int x, int y, int z) {
-    Block block = super.getBlock(x, y, z);
     TileEntity te = getTileEntity(x, y, z);
     if(te instanceof IPaintableTileEntity) {
       IPaintableTileEntity tcb = (IPaintableTileEntity) te;

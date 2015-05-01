@@ -34,7 +34,7 @@ public class ClearConfigRecipe implements IRecipe {
       input = count == 1 && checkStack != null ? checkStack : input;
     }
     
-    if (count == 1 && input.stackTagCompound != null && input.stackTagCompound.getBoolean("eio.abstractMachine")) {
+    if (count == 1 && input != null && input.stackTagCompound != null && input.stackTagCompound.getBoolean("eio.abstractMachine")) {
       ItemStack out = input.copy();
       out.stackTagCompound = new NBTTagCompound();
       out.stackTagCompound.setBoolean("clearedConfig", true);

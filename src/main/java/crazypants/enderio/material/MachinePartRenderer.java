@@ -15,8 +15,6 @@ import crazypants.enderio.Log;
 
 public class MachinePartRenderer implements IItemRenderer {
 
-  private ItemRenderer itemRenderer = new ItemRenderer(Minecraft.getMinecraft());
-  private RenderItem renderItem = new RenderItem();
   private boolean loggedError = false;
 
   public MachinePartRenderer() {

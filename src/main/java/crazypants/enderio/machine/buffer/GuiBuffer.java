@@ -30,8 +30,6 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     redstoneButton.setPosition(isFull() ? 153 : 120, 24);
     configB.setPosition(isFull() ? 153 : 120, 42);
 
-    FontRenderer fnt = Minecraft.getMinecraft().fontRenderer;
-    
     if(te.hasPower()) {
       int x = (isFull() ? 20 : 58);
       int y = guiTop + 27;
@@ -170,6 +168,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     return getTileEntity().hasInventory() && getTileEntity().hasPower();
   }
 
+  @Override
   public void renderSlotHighlights(IoMode mode) {
     if (!getTileEntity().hasInventory()) {
       return;

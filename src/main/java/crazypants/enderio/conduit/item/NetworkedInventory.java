@@ -117,13 +117,6 @@ public class NetworkedInventory {
     }
   }
 
-  private boolean canExtractThisTick(long tick) {
-    if(!con.isExtractionRedstoneConditionMet(conDir)) {
-      return false;
-    }
-    return true;
-  }
-
   private int nextSlot(int numSlots) {
     ++extractFromSlot;
     if(extractFromSlot >= numSlots || extractFromSlot < 0) {
@@ -360,9 +353,9 @@ public class NetworkedInventory {
       BlockCoord targetConLoc = null;
       if(target != null && target.inv != null && target.inv.con != null) {
         targetConLoc = target.inv.con.getLocation();
-      }
-      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
-        return target;
+        if (targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
+          return target;
+        }
       }
     }
     return null;

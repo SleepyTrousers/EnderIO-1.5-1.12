@@ -19,7 +19,6 @@ import crazypants.vecmath.Vertex;
 
 public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
 
-  private VertXForm xform = new VertXForm();
   private VertXForm2 xform2 = new VertXForm2();
 
   @Override
@@ -72,41 +71,6 @@ public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public int getRenderId() {
     return BlockObeliskAbstract.defaultObeliskRenderId;
-  }
-
-  private static class VertXForm implements VertexTransform {
-
-    public VertXForm() {
-    }
-
-    @Override
-    public void apply(Vertex vertex) {
-      apply(vertex.xyz);
-    }
-
-    @Override
-    public void apply(Vector3d vec) {
-      double pinch = 0.8;
-      if(vec.y > 0.5) {
-        pinch = 0.4;
-      }
-      vec.x -= 0.5;
-      vec.x *= pinch;
-      vec.x += 0.5;
-      vec.z -= 0.5;
-      vec.z *= pinch;
-      vec.z += 0.5;
-
-      double scale = 0.5;
-      vec.y -= 0.5;
-      vec.y *= scale;
-      vec.y += (0.5 * scale);
-    }
-
-    @Override
-    public void applyToNormal(Vector3f vec) {
-    }
-
   }
 
   private static class VertXForm2 implements VertexTransform {

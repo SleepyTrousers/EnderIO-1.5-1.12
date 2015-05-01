@@ -22,7 +22,6 @@ public class BlockPaintedGlowstoneRenderer implements ISimpleBlockRenderingHandl
   @Override
   public boolean renderWorldBlock(IBlockAccess ba, int x, int y, int z, Block block, int arg5, RenderBlocks rb) {
 
-    BlockPaintedGlowstone paintedGlowstone = (BlockPaintedGlowstone) block;
     TileEntity tile = ba.getTileEntity(x, y, z);
     if(!(tile instanceof TileEntityPaintedBlock)) {
       return false;

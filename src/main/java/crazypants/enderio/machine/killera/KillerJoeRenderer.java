@@ -40,8 +40,6 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
 
     World world = te.getWorldObj();
     TileKillerJoe gen = (TileKillerJoe) te;
-    float swingProg = gen.getSwingProgress(tick);
-
     float f = world.getBlockLightValue(te.xCoord, te.yCoord, te.zCoord);
     int l = world.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
     int l1 = l % 65536;

@@ -12,7 +12,7 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.util.IProgressTile;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IProgressTile {
+public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
@@ -232,15 +232,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected int mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
 
-    int res = 0;
-
     ItemStack copy = item.copy();
     //try to add it to existing stacks first
     for (ItemStack outStack : outputStacks) {
       if(outStack != null && copy != null) {
         int num = getNumCanMerge(outStack, copy);
         outStack.stackSize += num;
-        res += num;
         copy.stackSize -= num;
         if(copy.stackSize <= 0) {
           return item.stackSize;

@@ -10,7 +10,7 @@ import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.DyeColor;
 
-public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
+public interface IItemConduit extends IItemDuct, IExtractor {
 
   IIcon getTextureForInputMode();
 

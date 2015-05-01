@@ -19,8 +19,6 @@ import crazypants.enderio.power.Capacitors;
 
 public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
-  private static final BasicCapacitor CAP = new BasicCapacitor();
-
   public static ItemGliderWing create() {
     ItemGliderWing result = new ItemGliderWing();
     result.init();

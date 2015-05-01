@@ -393,7 +393,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public void setProgress(float progress) {
-    this.powerUsed = progress < 0 ? 0 : (int) (((float) maxPower) * progress);
+    this.powerUsed = progress < 0 ? 0 : (int) ((maxPower) * progress);
   }
 
   @Override

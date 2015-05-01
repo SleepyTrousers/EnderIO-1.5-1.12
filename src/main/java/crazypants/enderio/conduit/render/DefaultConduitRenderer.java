@@ -15,7 +15,6 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vertex;
-
 import static crazypants.render.CubeRenderer.*;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
@@ -82,7 +81,6 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-        Tessellator tessellator = Tessellator.instance;
         for (Vertex c : corners) {
           addVecWithUV(c.xyz, c.uv.x, c.uv.y);
         }
