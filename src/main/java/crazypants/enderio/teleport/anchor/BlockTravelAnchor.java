@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
 
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.FMLCommonHandler;

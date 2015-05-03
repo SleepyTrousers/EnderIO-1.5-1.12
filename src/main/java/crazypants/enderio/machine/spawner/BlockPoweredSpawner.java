@@ -25,7 +25,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;

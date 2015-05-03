@@ -17,7 +17,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.registry.GameRegistry;

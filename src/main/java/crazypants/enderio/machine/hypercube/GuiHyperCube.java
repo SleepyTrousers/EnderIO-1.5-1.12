@@ -10,9 +10,9 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.client.gui.IGuiOverlay;
+import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.GuiContainerBase;
-import com.enderio.core.client.gui.IGuiOverlay;
-import com.enderio.core.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;

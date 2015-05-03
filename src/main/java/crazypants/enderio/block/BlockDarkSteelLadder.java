@@ -1,6 +1,6 @@
 package crazypants.enderio.block;
 
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;

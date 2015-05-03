@@ -20,7 +20,7 @@ import org.lwjgl.input.Keyboard;
 
 import cofh.api.block.IDismantleable;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.registry.GameRegistry;

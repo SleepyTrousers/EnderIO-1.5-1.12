@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;

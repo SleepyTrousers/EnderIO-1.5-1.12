@@ -9,8 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;

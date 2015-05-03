@@ -9,8 +9,8 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
-import com.enderio.core.client.gui.IGuiOverlay;
-import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.api.client.gui.IGuiOverlay;
+import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;

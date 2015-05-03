@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 
-import com.enderio.core.client.gui.ITabPanel;
-import com.enderio.core.client.gui.ListSelectionListener;
+import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;

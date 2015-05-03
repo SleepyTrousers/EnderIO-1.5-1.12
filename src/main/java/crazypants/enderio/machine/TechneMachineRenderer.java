@@ -5,10 +5,10 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.CustomCubeRenderer;
 import com.enderio.core.client.render.TechneModelRenderer;
 import com.enderio.core.client.render.VertexRotationFacing;
-import com.enderio.core.client.render.VertexTransform;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.google.common.collect.ObjectArrays;
 

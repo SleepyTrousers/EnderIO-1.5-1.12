@@ -12,7 +12,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;
 

@@ -19,7 +19,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import cofh.api.energy.IEnergyContainerItem;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;
 import com.google.common.collect.Sets;

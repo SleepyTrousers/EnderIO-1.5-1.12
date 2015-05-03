@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.registry.GameRegistry;

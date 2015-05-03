@@ -2,7 +2,7 @@ package crazypants.enderio.gui;
 
 import net.minecraft.client.Minecraft;
 
-import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Lang;

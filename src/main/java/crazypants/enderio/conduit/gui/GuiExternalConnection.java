@@ -15,9 +15,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GuiContainerBase;
-import com.enderio.core.client.gui.ITabPanel;
-import com.enderio.core.client.render.IWidgetIcon;
 import com.enderio.core.client.render.RenderUtil;
 
 import cpw.mods.fml.common.Optional;

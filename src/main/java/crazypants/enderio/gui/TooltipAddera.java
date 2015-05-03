@@ -24,8 +24,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;
 

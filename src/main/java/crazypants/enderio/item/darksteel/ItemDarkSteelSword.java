@@ -25,7 +25,7 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import cofh.api.energy.IEnergyContainerItem;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;

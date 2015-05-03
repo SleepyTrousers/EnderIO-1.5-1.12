@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Keyboard;
 
-import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.common.util.Lang;
 

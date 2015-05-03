@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.IGuiOverlay;
-import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.api.client.gui.IGuiOverlay;
+import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Lang;

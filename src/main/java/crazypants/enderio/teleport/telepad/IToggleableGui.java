@@ -1,6 +1,6 @@
 package crazypants.enderio.teleport.telepad;
 
-import com.enderio.core.client.gui.IGuiScreen;
+import com.enderio.core.api.client.gui.IGuiScreen;
 
 public interface IToggleableGui extends IGuiScreen {
 

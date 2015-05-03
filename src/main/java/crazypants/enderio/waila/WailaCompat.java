@@ -42,8 +42,8 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Lang;
 
 import static crazypants.enderio.waila.IWailaInfoProvider.*;

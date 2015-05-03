@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.gui;
 
-import com.enderio.core.client.gui.ITabPanel;
+import com.enderio.core.api.client.gui.ITabPanel;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;

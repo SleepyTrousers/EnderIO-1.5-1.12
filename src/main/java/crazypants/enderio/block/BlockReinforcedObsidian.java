@@ -2,7 +2,7 @@ package crazypants.enderio.block;
 
 import java.util.List;
 
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;

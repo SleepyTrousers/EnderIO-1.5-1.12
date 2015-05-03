@@ -15,7 +15,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cofh.api.energy.ItemEnergyContainer;
 
-import com.enderio.core.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;

@@ -8,10 +8,10 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.ITabPanel;
+import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.IWidgetIcon;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.conduit.ConnectionMode;

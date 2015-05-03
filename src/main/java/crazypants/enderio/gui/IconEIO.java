@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 
-import com.enderio.core.client.render.IWidgetIcon;
-import com.enderio.core.client.render.IWidgetMap;
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.api.client.render.IWidgetMap;
 
 @AllArgsConstructor
 @Getter

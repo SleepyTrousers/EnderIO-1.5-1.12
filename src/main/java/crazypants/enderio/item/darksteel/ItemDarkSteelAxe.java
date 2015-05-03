@@ -22,7 +22,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import cofh.api.energy.IEnergyContainerItem;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;

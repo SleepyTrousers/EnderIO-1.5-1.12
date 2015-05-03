@@ -2,7 +2,7 @@ package crazypants.enderio.item.darksteel;
 
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider {
 
