@@ -264,7 +264,6 @@ public final class FarmersRegistry {
       }
   }
 
-  
   private FarmersRegistry() {
   }
 
