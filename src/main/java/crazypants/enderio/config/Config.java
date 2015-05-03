@@ -1152,8 +1152,6 @@ public final class Config {
 
     replaceWitherSkeletons = config.get(sectionMisc.name, "replaceWitherSkeletons", replaceWitherSkeletons,
             "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
-<<<<<<< HEAD
-=======
 
     enableWaterFromBottles = config
         .get(
@@ -1162,18 +1160,6 @@ public final class Config {
             enableWaterFromBottles,
             "Enables emptying vanilla water bottles without breaking the bottle. In combination with a water source block this allows duping of water without cost.")
         .getBoolean();
-
-    telepadLockDimension = config.get(sectionTelepad.name, "lockDimension", telepadLockDimension,
-        "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
-    telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
-        "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
-  }
-
-  public static void init() {
-    WeatherTask.CLEAR.setRequiredItem(getStackForString(weatherObeliskClearItem));
-    WeatherTask.RAIN.setRequiredItem(getStackForString(weatherObeliskRainItem));
-    WeatherTask.STORM.setRequiredItem(getStackForString(weatherObeliskThunderItem));
->>>>>>> f2f6bdd... Unify code to fill/empty buckets, Part 2
   }
 
   public static void postInit() {
