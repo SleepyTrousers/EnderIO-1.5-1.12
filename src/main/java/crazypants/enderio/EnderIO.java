@@ -307,6 +307,8 @@ public class EnderIO {
   public void preInit(FMLPreInitializationEvent event) {
 
     Config.load(event);
+    
+    proxy.loadIcons();
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
