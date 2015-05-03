@@ -335,7 +335,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
         <itemStack modID="ThermalExpansion" itemName="Glass" number="2" />
       </output>
     </recipe>
-    
+
     <recipe name="Bronze" energyCost="4000">
       <input>
         <itemStack oreDictionary="ingotCopper" number="3" />
@@ -345,7 +345,6 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
         <itemStack oreDictionary="ingotBronze" number="4" />
       </output>
     </recipe>
-    
 
     <recipe name="Enderium Base" energyCost="4000">
       <input>
@@ -358,7 +357,6 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </output>
     </recipe>
 
- 
     <recipe name="Enderium" energyCost="50000">
       <input>
         <itemStack oreDictionary="ingotEnderiumBase" number="2" />
@@ -369,7 +367,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
         <itemStack oreDictionary="ingotEnderium" number="2" />
       </output>
     </recipe>
-    
+
     <recipe name="Fluxed Electrum" energyCost="32000">
       <input>
         <itemStack oreDictionary="ingotElectrum" number="2" />
@@ -380,7 +378,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
         <itemStack oreDictionary="ingotElectrumFlux" number="2" />
       </output>
     </recipe>
-    
+
     <recipe name="Signalum" energyCost="32000">
       <input>
         <itemStack oreDictionary="ingotCopper" number="3" />
@@ -391,7 +389,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
         <itemStack oreDictionary="ingotSignalum" number="4" />
       </output>
     </recipe>
-    
+
     <recipe name="Lumium from dust" energyCost="32000">
       <input>
         <itemStack oreDictionary="ingotTin" number="3" />
@@ -402,7 +400,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
         <itemStack oreDictionary="ingotLumium" number="4" />
       </output>
     </recipe>
-    
+
     <recipe name="Lumium" energyCost="32000">
       <input>
         <itemStack oreDictionary="ingotTin" number="3" />
@@ -411,6 +409,50 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </input>
       <output>
         <itemStack oreDictionary="ingotLumium" number="4" />
+      </output>
+    </recipe>
+
+  <recipeGroup name="TConstruct">
+
+    <recipe name="Aluminum Brass" energyCost="2000">
+      <input>
+        <itemStack oreDictionary="ingotAluminum" number="3" />
+        <itemStack oreDictionary="ingotCopper" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotAluminumBrass" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Alumite" energyCost="5000">
+      <input>
+        <itemStack oreDictionary="ingotAluminum" number="5" />
+        <itemStack oreDictionary="ingotIron" number="2" />
+        <itemStack oreDictionary="ingotObsidian" number="2" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotAlumite" number="3" />
+      </output>
+    </recipe>
+
+    <recipe name="Manyullyn" energyCost="8000">
+      <input>
+        <itemStack oreDictionary="ingotArdite" number="1" />
+        <itemStack oreDictionary="ingotCobalt" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotManyullyn" number="1" />
+      </output>
+    </recipe>
+
+    <recipe name="Pig Iron" energyCost="6000">
+      <input>
+        <itemStack oreDictionary="ingotIron" number="2" />
+        <itemStack modID="minecraft" itemName="emerald" number="2" />
+		<itemStack modID="TConstruct" itemName="strangeFood" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotPigIron" number="2" />
       </output>
     </recipe>
     
