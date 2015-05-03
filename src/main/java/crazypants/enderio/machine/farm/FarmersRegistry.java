@@ -205,7 +205,7 @@ public final class FarmersRegistry {
 
   private static void addGrowableOres() {
     String mod = "B0bGrowsOre";
-    String[] growableOres = {
+    String[] growableOresList = {
             "coalReed", // Coal Ore Reed
             "copperReed",  // Copper Ore Reed
             "goldReed",  // Gold Ore Reed
@@ -256,12 +256,12 @@ public final class FarmersRegistry {
             "silverReed",  // Silver Ore Reed
             "tinReed"};  // Tin Ore Reed
 
-    for (int i = 0; i < growableOres.length; i++) {
-      Block growableOresBlock = GameRegistry.findBlock(mod, growableOres[i]);
-      Item growableOresItem = GameRegistry.findItem(mod, growableOres[i]);
-      if (growableOresBlock !=null && growableOresItem !=null)
-        FarmersCommune.joinCommune(new StemFarmer( growableOresBlock, new ItemStack(growableOresItem)));
-    }
+      for (String  growableOre : growableOresList) {
+          Block growableOresBlock = GameRegistry.findBlock(mod, growableOre);
+          Item growableOresItem = GameRegistry.findItem(mod, growableOre);
+          if (growableOresBlock !=null && growableOresItem !=null)
+              FarmersCommune.joinCommune(new StemFarmer( growableOresBlock, new ItemStack(growableOresItem)));
+      }
   }
 
   
@@ -269,4 +269,3 @@ public final class FarmersRegistry {
   }
 
 }
-
