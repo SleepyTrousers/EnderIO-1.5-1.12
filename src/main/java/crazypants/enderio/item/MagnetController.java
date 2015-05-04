@@ -46,7 +46,8 @@ public class MagnetController implements IEntitySelector {
 
   private ActiveMagnet getActiveMagnet(EntityPlayer player) {
     ItemStack[] inv = player.inventory.mainInventory;
-    for(int i=0;i<9;i++) {
+    int maxSlot = Config.magnetAllowInMainInventory ? 4 * 9 : 9;
+    for (int i = 0; i < maxSlot;i++) {
       if(ItemMagnet.isActive(inv[i]) && ItemMagnet.hasPower(inv[i])) {
         return new ActiveMagnet(inv[i], i);
       }
@@ -149,7 +150,7 @@ public class MagnetController implements IEntitySelector {
     if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
       return;
     }
-    if (type == SlotType.BAUBLES) {
+    if (!Config.magnetAllowDeactivatedInBaublesSlot && type == SlotType.BAUBLES && !isActive) {
       ItemStack[] inv = player.inventory.mainInventory;
       for (int i = 0; i < inv.length && dropOff < 0; i++) {
         if (inv[i] == null) {
@@ -169,8 +170,12 @@ public class MagnetController implements IEntitySelector {
     case ARMOR:
       return;
     case BAUBLES:
-      baubles.setInventorySlotContents(slot, null);
-      player.inventory.setInventorySlotContents(dropOff, stack);
+      if (dropOff < 0) {
+        player.inventory.setInventorySlotContents(slot, stack);
+      } else {
+        baubles.setInventorySlotContents(slot, null);
+        player.inventory.setInventorySlotContents(dropOff, stack);
+      }
       player.inventory.markDirty();
       break;
     }
