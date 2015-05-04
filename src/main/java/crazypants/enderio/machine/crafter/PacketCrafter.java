@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.crafter;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.network.MessageTileEntity;
 
 public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMessageHandler<PacketCrafter, IMessage> {
 

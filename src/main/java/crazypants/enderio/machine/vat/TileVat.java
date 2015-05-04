@@ -10,9 +10,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.ITankAccess;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;

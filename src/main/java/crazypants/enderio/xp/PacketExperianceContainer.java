@@ -1,5 +1,7 @@
 package crazypants.enderio.xp;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -8,7 +10,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.PacketHandler;
 
 public class PacketExperianceContainer extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketExperianceContainer, IMessage> {

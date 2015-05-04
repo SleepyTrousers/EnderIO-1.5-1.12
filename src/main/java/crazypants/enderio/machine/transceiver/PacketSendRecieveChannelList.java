@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,8 +16,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.MessageTileEntity;
-import crazypants.enderio.network.NetworkUtil;
 
 public class PacketSendRecieveChannelList extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketSendRecieveChannelList, IMessage> {
 

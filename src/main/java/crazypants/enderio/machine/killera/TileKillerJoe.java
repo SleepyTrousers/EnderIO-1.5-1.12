@@ -26,11 +26,11 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.util.ITankAccess;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.mojang.authlib.GameProfile;
 

@@ -9,9 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import cofh.api.energy.IEnergyContainerItem;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.enderio.network.NetworkUtil;
 
 /**
  *

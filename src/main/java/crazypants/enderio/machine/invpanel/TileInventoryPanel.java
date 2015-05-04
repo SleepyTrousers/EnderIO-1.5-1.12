@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.enderio.core.common.util.ITankAccess;
+import com.enderio.core.api.common.util.ITankAccess;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;

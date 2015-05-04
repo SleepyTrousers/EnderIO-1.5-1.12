@@ -8,8 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.IProgressTile;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;

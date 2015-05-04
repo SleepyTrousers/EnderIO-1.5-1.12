@@ -46,7 +46,6 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
-
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {

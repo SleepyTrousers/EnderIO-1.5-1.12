@@ -14,10 +14,10 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
-import com.enderio.core.common.util.ITankAccess;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.machine.AbstractMachineEntity;

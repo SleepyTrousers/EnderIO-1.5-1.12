@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -179,7 +180,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileTravelAnchor anchor = (TileTravelAnchor) te;
 
     if(anchor == null) {

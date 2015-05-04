@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -16,8 +19,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.MessageTileEntity;
-import crazypants.enderio.network.NetworkUtil;
 
 public class PacketItemInfo extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketItemInfo, IMessage> {
 

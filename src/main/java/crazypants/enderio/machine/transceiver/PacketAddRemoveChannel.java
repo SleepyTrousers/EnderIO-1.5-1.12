@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.transceiver;
 
+import com.enderio.core.common.network.NetworkUtil;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.network.NetworkUtil;
 import crazypants.enderio.network.PacketHandler;
 
 public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketAddRemoveChannel, IMessage>  {

@@ -5,12 +5,13 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.enderio.core.common.network.NetworkUtil;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.network.NetworkUtil;
 
 public class PacketChannelList implements IMessage, IMessageHandler<PacketChannelList, IMessage> {
 

@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.network.PacketProgress;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,7 +30,6 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
@@ -197,7 +198,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack stack) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack stack) {
     if(te != null) {
       ((AbstractMachineEntity) te).writeToItemStack(stack);
     }

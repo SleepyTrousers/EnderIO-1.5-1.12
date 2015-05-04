@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.gas;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -7,7 +9,6 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.network.MessageTileEntity;
 import crazypants.util.ClientUtil;
 
 public class PacketGasLevel extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketGasLevel, IMessage> {

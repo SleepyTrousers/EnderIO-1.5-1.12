@@ -22,8 +22,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 
+import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.IProgressTile;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;

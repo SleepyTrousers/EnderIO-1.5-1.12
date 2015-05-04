@@ -1,11 +1,14 @@
 package crazypants.enderio.machine.invpanel.client;
 
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
-import crazypants.enderio.network.CompressedDataInput;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import com.enderio.core.common.network.CompressedDataInput;
+
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 

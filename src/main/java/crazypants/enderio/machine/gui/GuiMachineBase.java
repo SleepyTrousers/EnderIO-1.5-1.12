@@ -11,12 +11,12 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.IProgressTile;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;

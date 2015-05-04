@@ -13,7 +13,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.common.util.IProgressTile;
+import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.machine.AbstractMachineEntity;

@@ -23,6 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -32,7 +33,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -217,7 +217,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
     if(tef != null) {
       ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());

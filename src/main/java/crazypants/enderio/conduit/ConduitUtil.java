@@ -49,6 +49,7 @@ import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
+
 import com.enderio.core.common.util.BlockCoord;
 
 public class ConduitUtil {

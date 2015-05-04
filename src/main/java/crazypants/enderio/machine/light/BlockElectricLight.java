@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.vecmath.Vector3f;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -181,7 +182,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileElectricLight light = (TileElectricLight) te;
     if(light == null) {
       return;

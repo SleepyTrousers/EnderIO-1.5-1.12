@@ -25,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -37,7 +38,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
@@ -443,7 +443,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     drop.stackTagCompound = new NBTTagCompound();
     if(te != null) {
       ((TileCapBank) te).writeCommonNBT(drop.stackTagCompound);
