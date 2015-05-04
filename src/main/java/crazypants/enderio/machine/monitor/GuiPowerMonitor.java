@@ -16,10 +16,11 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+
 import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
 
 public class GuiPowerMonitor extends GuiContainerBase {
@@ -71,19 +72,19 @@ public class GuiPowerMonitor extends GuiContainerBase {
     xSize = WIDTH;
     ySize = HEIGHT;    
 
-    titleStr = Lang.localize("gui.powerMonitor.engineControl");
-    engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
-    engineTxt2 = Lang.localize("gui.powerMonitor.engineSection2");
-    engineTxt3 = Lang.localize("gui.powerMonitor.engineSection3");
-    engineTxt4 = Lang.localize("gui.powerMonitor.engineSection4");
-    engineTxt5 = Lang.localize("gui.powerMonitor.engineSection5");
-    engineTxt6 = Lang.localize("gui.powerMonitor.engineSection6");
+    titleStr = EnderIO.lang.localize("gui.powerMonitor.engineControl");
+    engineTxt1 = EnderIO.lang.localize("gui.powerMonitor.engineSection1");
+    engineTxt2 = EnderIO.lang.localize("gui.powerMonitor.engineSection2");
+    engineTxt3 = EnderIO.lang.localize("gui.powerMonitor.engineSection3");
+    engineTxt4 = EnderIO.lang.localize("gui.powerMonitor.engineSection4");
+    engineTxt5 = EnderIO.lang.localize("gui.powerMonitor.engineSection5");
+    engineTxt6 = EnderIO.lang.localize("gui.powerMonitor.engineSection6");
 
-    monHeading1 = Lang.localize("gui.powerMonitor.monHeading1");
-    monHeading2 = Lang.localize("gui.powerMonitor.monHeading2");
-    monHeading3 = Lang.localize("gui.powerMonitor.monHeading3");
-    monHeading4 = Lang.localize("gui.powerMonitor.monHeading4");
-    monHeading5 = Lang.localize("gui.powerMonitor.monHeading5");
+    monHeading1 = EnderIO.lang.localize("gui.powerMonitor.monHeading1");
+    monHeading2 = EnderIO.lang.localize("gui.powerMonitor.monHeading2");
+    monHeading3 = EnderIO.lang.localize("gui.powerMonitor.monHeading3");
+    monHeading4 = EnderIO.lang.localize("gui.powerMonitor.monHeading4");
+    monHeading5 = EnderIO.lang.localize("gui.powerMonitor.monHeading5");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
@@ -99,8 +100,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
     int x = MARGIN + Minecraft.getMinecraft().fontRenderer.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBox(this, 21267, x, 8);
-    enabledB.setSelectedToolTip(Lang.localize("gui.enabled"));
-    enabledB.setUnselectedToolTip(Lang.localize("gui.disabled"));
+    enabledB.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
+    enabledB.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
 
 

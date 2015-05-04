@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -28,11 +28,11 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("zombieGenerator.fuelTank");
+        String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
         if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(Lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+          text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
         }
       }
     });
@@ -72,7 +72,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     if(gen.isActive()) {
       output = gen.outputPerTick;
     }
-    String txt = Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
@@ -84,7 +84,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if(gen.isActive()) {
-        txt = gen.tickPerBucketOfFuel / 1000 + " " + Lang.localize("power.tmb");
+        txt = gen.tickPerBucketOfFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }

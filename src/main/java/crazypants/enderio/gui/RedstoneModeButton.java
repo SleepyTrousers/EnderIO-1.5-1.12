@@ -5,8 +5,8 @@ import net.minecraft.client.Minecraft;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -33,7 +33,7 @@ public class RedstoneModeButton extends IconButton {
     this.model = model;
     this.bc = bc;
     curMode = model.getRedstoneControlMode();
-    setToolTip(Lang.localize("gui.tooltip.redstoneControlMode"), curMode.getTooltip());
+    setToolTip(EnderIO.lang.localize("gui.tooltip.redstoneControlMode"), curMode.getTooltip());
     setIcon(ICONS[curMode.ordinal()]);
   }
 
@@ -61,7 +61,7 @@ public class RedstoneModeButton extends IconButton {
 
   public void setTooltipKey(String tooltipKey) {
     this.tooltipKey = tooltipKey;
-    setToolTip(Lang.localize(tooltipKey, false), model.getRedstoneControlMode().getTooltip());
+    setToolTip(EnderIO.lang.localize(tooltipKey, false), model.getRedstoneControlMode().getTooltip());
   }
 
   private void nextMode() {
@@ -83,7 +83,7 @@ public class RedstoneModeButton extends IconButton {
       return;
     }
     curMode = mode;
-    setToolTip(Lang.localize(tooltipKey, false), mode.getTooltip());
+    setToolTip(EnderIO.lang.localize(tooltipKey, false), mode.getTooltip());
     setIcon(ICONS[mode.ordinal()]);
     model.setRedstoneControlMode(mode);
     if(bc != null) {

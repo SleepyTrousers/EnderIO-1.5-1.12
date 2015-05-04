@@ -21,9 +21,9 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.PlayerUtil;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
@@ -96,22 +96,22 @@ public class GuiHyperCube extends GuiContainerBase {
     });
 
     addButton = new IconButton(this, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
-    addButton.setToolTip(Lang.localize("gui.trans.addChannel"));
+    addButton.setToolTip(EnderIO.lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
 
     privateButton = new ToggleButton(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
-    privateButton.setSelectedToolTip(Lang.localize("gui.trans.privateChannel"));
-    privateButton.setUnselectedToolTip(Lang.localize("gui.trans.publicChannel"));
+    privateButton.setSelectedToolTip(EnderIO.lang.localize("gui.trans.privateChannel"));
+    privateButton.setUnselectedToolTip(EnderIO.lang.localize("gui.trans.publicChannel"));
 
     deletePublicB = new IconButton(this, DELETE_PUBLIC_BUTTON_ID, 74, 117, IconEIO.MINUS);
-    deletePublicB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
+    deletePublicB.setToolTip(EnderIO.lang.localize("gui.trans.deleteChannel"));
     selectPublicB = new IconButton(this, SELECT_PUBLIC_BUTTON_ID, 95, 117, IconEIO.TICK);
-    selectPublicB.setToolTip(Lang.localize("gui.trans.activateChannel"));
+    selectPublicB.setToolTip(EnderIO.lang.localize("gui.trans.activateChannel"));
 
     deletePrivateB = new IconButton(this, DELETE_PRIVATE_BUTTON_ID, 183, 117, IconEIO.MINUS);
-    deletePrivateB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
+    deletePrivateB.setToolTip(EnderIO.lang.localize("gui.trans.deleteChannel"));
     selectPrivateB = new IconButton(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
-    selectPrivateB.setToolTip(Lang.localize("gui.trans.activateChannel"));
+    selectPrivateB.setToolTip(EnderIO.lang.localize("gui.trans.activateChannel"));
 
     int x = 163;
     int y = 12;
@@ -182,7 +182,7 @@ public class GuiHyperCube extends GuiContainerBase {
     } else {
       powerB.setIcon(IconEIO.WRENCH_OVERLAY_POWER_OFF);
     }
-    powerB.setToolTip(Lang.localize("gui.trans.powerMode"), mode.getLocalisedName());
+    powerB.setToolTip(EnderIO.lang.localize("gui.trans.powerMode"), mode.getLocalisedName());
 
     mode = cube.getModeForChannel(SubChannel.FLUID);
     if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
@@ -190,7 +190,7 @@ public class GuiHyperCube extends GuiContainerBase {
     } else {
       fluidB.setIcon(IconEIO.WRENCH_OVERLAY_FLUID_OFF);
     }
-    fluidB.setToolTip(Lang.localize("gui.trans.fluidMode"), mode.getLocalisedName());
+    fluidB.setToolTip(EnderIO.lang.localize("gui.trans.fluidMode"), mode.getLocalisedName());
 
     mode = cube.getModeForChannel(SubChannel.ITEM);
     if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
@@ -198,7 +198,7 @@ public class GuiHyperCube extends GuiContainerBase {
     } else {
       itemB.setIcon(IconEIO.WRENCH_OVERLAY_ITEM_OFF);
     }
-    itemB.setToolTip(Lang.localize("gui.trans.itemMode"), mode.getLocalisedName());
+    itemB.setToolTip(EnderIO.lang.localize("gui.trans.itemMode"), mode.getLocalisedName());
   }
 
   private boolean isPublic(Channel chan) {
@@ -366,10 +366,10 @@ public class GuiHyperCube extends GuiContainerBase {
     int x = guiLeft + 12;
     int y = guiTop + 35;
     int rgb = ColorUtil.getRGB(Color.white);
-    drawString(getFontRenderer(), Lang.localize("gui.trans.publicHeading"), x, y, rgb);
+    drawString(getFontRenderer(), EnderIO.lang.localize("gui.trans.publicHeading"), x, y, rgb);
 
     x += 109;
-    drawString(getFontRenderer(), Lang.localize("gui.trans.privateHeading"), x, y, rgb);
+    drawString(getFontRenderer(), EnderIO.lang.localize("gui.trans.privateHeading"), x, y, rgb);
 
     IoMode fluidMode = cube.getModeForChannel(SubChannel.FLUID);
     IoMode powerMode = cube.getModeForChannel(SubChannel.POWER);

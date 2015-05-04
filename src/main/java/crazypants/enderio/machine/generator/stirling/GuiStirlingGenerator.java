@@ -14,10 +14,10 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.Capacitors;
@@ -30,9 +30,9 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
 
     final StirlingGeneratorContainer c = (StirlingGeneratorContainer)inventorySlots;
     Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));
-    MessageFormat fmt = new MessageFormat(Lang.localize("stirlingGenerator.upgrades"));
+    MessageFormat fmt = new MessageFormat(EnderIO.lang.localize("stirlingGenerator.upgrades"));
     ttMan.addToolTip(new GuiToolTip(r,
-            Lang.localize("stirlingGenerator.upgradeslot"),
+            EnderIO.lang.localize("stirlingGenerator.upgradeslot"),
             formatUpgrade(fmt, Capacitors.ACTIVATED_CAPACITOR),
             formatUpgrade(fmt, Capacitors.ENDER_CAPACITOR)) {
       @Override
@@ -52,7 +52,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   private static String formatUpgrade(MessageFormat fmt, Capacitors upgrade) {
     float efficiency = getFactor(upgrade) / getFactor(Capacitors.BASIC_CAPACITOR);
     Object[] args = new Object[] {
-      Lang.localize(upgrade.unlocalisedName.concat(".name"), false),
+      EnderIO.lang.localize(upgrade.unlocalisedName.concat(".name"), false),
       efficiency,
       EnumChatFormatting.WHITE,
       EnumChatFormatting.GRAY
@@ -71,7 +71,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     int remainingTicks = (int)(remaining * totalBurnTime);
     int remainingSecs = remainingTicks / 20;
     int remainingRF = getTileEntity().getPowerUsePerTick() * remainingTicks;
-    return MessageFormat.format(Lang.localize("stirlingGenerator.remaining"),
+    return MessageFormat.format(EnderIO.lang.localize("stirlingGenerator.remaining"),
             remaining, remainingSecs / 60, remainingSecs % 60, remainingRF);
   }
 
@@ -106,12 +106,12 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     if(getTileEntity().isActive()) {
       output = getTileEntity().getPowerUsePerTick();
     }
-    String txt = Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+    String txt = EnderIO.lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt = Lang.localize("stirlingGenerator.burnRate") + " " + (getTileEntity().getBurnTimeMultiplier()) + "x";
+    txt = EnderIO.lang.localize("stirlingGenerator.burnRate") + " " + (getTileEntity().getBurnTimeMultiplier()) + "x";
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

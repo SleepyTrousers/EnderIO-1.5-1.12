@@ -15,9 +15,9 @@ import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
@@ -72,15 +72,15 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     int y = 68;
 
     useMetaB = new ToggleButton(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
-    useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
+    useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData"));
+    useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
     stickyB = new ToggleButton(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
+    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
@@ -88,20 +88,20 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     x += 20;
     useNbtB = new ToggleButton(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
-    useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
-    useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
+    useNbtB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchNBT"));
+    useNbtB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
     x = butLeft;
     useOreDictB = new ToggleButton(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
-    useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
+    useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
+    useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
 
-    snapshotB = new GuiButton(ID_SNAPSHOT, 0, 0, 60, 20, Lang.localize("gui.conduit.button.snap"));
-    mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, Lang.localize("gui.conduit.button.merge"));
-    clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, Lang.localize("gui.conduit.button.clear"));
-    showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, Lang.localize("gui.conduit.button.show"));
+    snapshotB = new GuiButton(ID_SNAPSHOT, 0, 0, 60, 20, EnderIO.lang.localize("gui.conduit.button.snap"));
+    mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.merge"));
+    clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, EnderIO.lang.localize("gui.conduit.button.clear"));
+    showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.show"));
 
     snapshotOverlay = new SnapshotOverlay();
     gui.addOverlay(snapshotOverlay);

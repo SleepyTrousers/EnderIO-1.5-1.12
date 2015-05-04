@@ -28,7 +28,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
@@ -46,6 +45,7 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
+
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -125,7 +125,7 @@ public class WailaCompat implements IWailaDataProvider {
 
     registrar.registerNBTProvider(INSTANCE, TileEntityEio.class);
     
-    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
+    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", EnderIO.lang.localize("waila.config.hiddenfacades"));
   }
 
   // IGNORE deprecation, the new method requires forge 1234 which is too new for cauldron!
@@ -181,8 +181,8 @@ public class WailaCompat implements IWailaDataProvider {
       ForgeDirection side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
       currenttip.add(EnumChatFormatting.YELLOW
-          + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
-      currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
+          + String.format(EnderIO.lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase())));
+      currenttip.add(EnumChatFormatting.YELLOW + String.format(EnderIO.lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
     }
 
     if(block instanceof IWailaInfoProvider) {
@@ -272,7 +272,7 @@ public class WailaCompat implements IWailaDataProvider {
       if(nbtRoot.hasKey("fluidLocked") && nbtRoot.hasKey("FluidName")) {
         boolean fluidTypeLocked = nbtRoot.getBoolean("fluidLocked");
         FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbtRoot);
-        String lockedStr = fluidTypeLocked ? Lang.localize("itemLiquidConduit.lockedWaila") : "";
+        String lockedStr = fluidTypeLocked ? EnderIO.lang.localize("itemLiquidConduit.lockedWaila") : "";
         String fluidName = fluid.getLocalizedName();
         int fluidAmount = fluid.amount;
         if(fluidAmount > 0) {
@@ -292,7 +292,7 @@ public class WailaCompat implements IWailaDataProvider {
       if(nbtRoot.hasKey("isDense")) {
         boolean isDense = nbtRoot.getBoolean("isDense");
         int channelsInUse = nbtRoot.getInteger("channelsInUse");
-        currenttip.add(MessageFormat.format(Lang.localize("itemMEConduit.channelsUsed"),
+        currenttip.add(MessageFormat.format(EnderIO.lang.localize("itemMEConduit.channelsUsed"),
                 channelsInUse, isDense ? 32 : 8));
       }
     }

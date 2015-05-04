@@ -71,9 +71,9 @@ public class BucketHandler {
   //    if(fluid != null) {
   //      Fuel fuel = IronEngineFuel.getFuelForFluid(fluid);
   //      if(fuel != null) {
-  //        list.add(Lang.localize("fuel.tooltip.heading"));
+  //        list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
   //        list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.powerPerCycle));
-  //        list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " + Lang.localize("fuel.tooltip.burnTime"));
+  //        list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " + EnderIO.lang.localize("fuel.tooltip.burnTime"));
   //      }
   //    }
   //  }

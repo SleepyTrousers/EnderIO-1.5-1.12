@@ -27,7 +27,6 @@ import cofh.api.energy.IEnergyContainerItem;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -354,10 +353,10 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(str != null) {
       list.add(str);
     }
-    list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line1"));
+    list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

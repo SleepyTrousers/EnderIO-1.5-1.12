@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 
@@ -59,9 +59,9 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     int left = getGuiLeft();
     int top = getGuiTop();
 
-    String txt = Lang.localize("gui.machine.poweredspawner.spawn");
+    String txt = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
     if(!spawner.isSpawnMode()) {
-      txt = Lang.localize("gui.machine.poweredspawner.capture");
+      txt = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
     }
     FontRenderer fr = getFontRenderer();
     int x = left + xSize / 2 - fr.getStringWidth(txt) / 2;

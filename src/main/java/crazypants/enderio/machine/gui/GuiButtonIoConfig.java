@@ -7,8 +7,8 @@ import org.lwjgl.input.Keyboard;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
@@ -26,7 +26,7 @@ public class GuiButtonIoConfig extends ToggleButton {
     this.configOverlay = configOverlay;
     this.configOverlay.setConfigB(this);
 
-    String configTooltip = Lang.localize("gui.machine.ioMode.overlay.tooltip");
+    String configTooltip = EnderIO.lang.localize("gui.machine.ioMode.overlay.tooltip");
     setUnselectedToolTip(configTooltip);
 
     ArrayList<String> list = new ArrayList<String>();

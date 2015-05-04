@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 
@@ -35,10 +35,10 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
     if (ball == null) {
       return;
     }
-    list.add(EnumChatFormatting.BLUE + Lang.localize("darkGrindingBall.tooltip.detailed.line1"));
-    list.add(EnumChatFormatting.GRAY + Lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
-    list.add(EnumChatFormatting.GRAY + Lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
-    list.add(EnumChatFormatting.GRAY + Lang.localize("darkGrindingBall.tooltip.detailed.line4") + toPercent(1 - ball.getPowerMultiplier()));
+    list.add(EnumChatFormatting.BLUE + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line1"));
+    list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
+    list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
+    list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line4") + toPercent(1 - ball.getPowerMultiplier()));
   }
 
   private String toPercent(float fl) {

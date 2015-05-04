@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -231,7 +230,7 @@ public class IoDisplay implements IInfoRenderer {
     final int color;
 
     private HeadingText(int color) {
-      this.text = Lang.localize("capbank.iodisplay.".concat(name().toLowerCase(Locale.ENGLISH)));
+      this.text = EnderIO.lang.localize("capbank.iodisplay.".concat(name().toLowerCase(Locale.ENGLISH)));
       this.color = color;
     }
   }

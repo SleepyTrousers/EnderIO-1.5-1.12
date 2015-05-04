@@ -20,8 +20,8 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -64,7 +64,7 @@ public class GuiVacuumChest extends GuiContainerBase {
     int x = RANGE_LEFT;
     int y = RANGE_TOP;
 
-    rangeTooltip = new GuiToolTip(new Rectangle(x, y, RANGE_WIDTH, 16), Lang.localize("gui.vacuum.range"));
+    rangeTooltip = new GuiToolTip(new Rectangle(x, y, RANGE_WIDTH, 16), EnderIO.lang.localize("gui.vacuum.range"));
 
     x += RANGE_WIDTH;
     rangeUpB = MultiIconButton.createAddButton(this, ID_RANGE_UP, x, y);
@@ -79,24 +79,24 @@ public class GuiVacuumChest extends GuiContainerBase {
     x = FILTER_LEFT + TileVacuumChest.FILTER_SLOTS*18 + 2;
     y = 86;
     whiteListB = new ToggleButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST, IconEIO.FILTER_BLACKLIST);
-    whiteListB.setUnselectedToolTip(Lang.localize("gui.conduit.item.whitelist"));
-    whiteListB.setSelectedToolTip(Lang.localize("gui.conduit.item.blacklist"));
+    whiteListB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
     whiteListB.setPaintSelectedBorder(false);
 
     y += 18;
     useMetaB = new ToggleButton(this, ID_MATCHMETA, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
-    useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
+    useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData"));
+    useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
     for(int i=0 ; i<TileVacuumChest.FILTER_SLOTS ; i++) {
       ghostSlots.add(new FilterGhostSlot(i, FILTER_LEFT + i*18 + 1, FILTER_TOP + 1));
     }
 
-    headerChest = Lang.localize("gui.vacuum.header.chest");
-    headerFilter = Lang.localize("gui.vacuum.header.filter");
-    headerRange = Lang.localize("gui.vacuum.header.range");
-    headerInventory = Lang.localize("container.inventory", false);
+    headerChest = EnderIO.lang.localize("gui.vacuum.header.chest");
+    headerFilter = EnderIO.lang.localize("gui.vacuum.header.filter");
+    headerRange = EnderIO.lang.localize("gui.vacuum.header.range");
+    headerInventory = EnderIO.lang.localize("container.inventory", false);
 
     ((ContainerVacuumChest)inventorySlots).setFilterChangedCB(new Runnable() {
       @Override

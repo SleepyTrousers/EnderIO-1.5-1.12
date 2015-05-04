@@ -24,7 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -264,7 +263,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     public void onTooltip(ItemTooltipEvent event) {
       if (event.itemStack != null && Block.getBlockFromItem(event.itemStack.getItem()) == Blocks.glowstone && event.itemStack.stackTagCompound != null) {
         if (event.itemStack.stackTagCompound.getBoolean("wasPainted")) {
-          event.toolTip.add(Lang.localize("painter.tooltip.wasPainted"));
+          event.toolTip.add(EnderIO.lang.localize("painter.tooltip.wasPainted"));
         }
       }
     }

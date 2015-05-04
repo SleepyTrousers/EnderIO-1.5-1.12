@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.EntityUtil;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -369,13 +368,13 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       if(mobName != null) {
         par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
       } else {
-        par3List.add(Lang.localize("item.itemSoulVessel.tooltip.empty"));
+        par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
       }
 
       float health = getHealthFromStack(par1ItemStack);
       if(health >= 0) {
         float maxHealth = getMaxHealthFromStack(par1ItemStack);
-        String msg = Lang.localize("item.itemSoulVessel.tooltip.health");
+        String msg = EnderIO.lang.localize("item.itemSoulVessel.tooltip.health");
         if(maxHealth >= 0) {
           par3List.add(String.format("%s %3.1f/%3.1f", msg, health, maxHealth));
         } else {
@@ -387,13 +386,13 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       if(fluidName != null) {
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if(fluid != null) {
-          par3List.add(Lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + fluid.getLocalizedName());
+          par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + fluid.getLocalizedName());
         }
       }
 
       DyeColor color = getColorFromStack(par1ItemStack);
       if(color != null) {
-        par3List.add(Lang.localize("item.itemSoulVessel.tooltip.color") + " " + color.getLocalisedName());
+        par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.color") + " " + color.getLocalisedName());
       }
     }
   }

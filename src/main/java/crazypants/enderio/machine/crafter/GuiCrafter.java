@@ -12,8 +12,8 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.PacketItemBuffer;
@@ -32,8 +32,8 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
     int x = getXSize() - 5 - 16;
     int y = 43;
     bufferSizeB = new ToggleButton(this, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
-    bufferSizeB.setSelectedToolTip(Lang.localize("gui.machine.bufferingstacks"));
-    bufferSizeB.setUnselectedToolTip(Lang.localize("gui.machine.bufferingsingle"));
+    bufferSizeB.setSelectedToolTip(EnderIO.lang.localize("gui.machine.bufferingstacks"));
+    bufferSizeB.setUnselectedToolTip(EnderIO.lang.localize("gui.machine.bufferingsingle"));
     bufferSizeB.setSelected(te.isBufferStacks());
   }
 
@@ -91,7 +91,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   @Override
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation()
-        + " " + Lang.localize("gui.machine.percraft"));
+        + " " + EnderIO.lang.localize("gui.machine.percraft"));
     super.updatePowerBarTooltip(text);
   }
 

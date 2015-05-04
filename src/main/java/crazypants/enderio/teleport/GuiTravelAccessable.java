@@ -16,8 +16,8 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.network.PacketHandler;
@@ -56,9 +56,9 @@ public class GuiTravelAccessable extends GuiContainerBase {
     this.te = container.ta;
     this.world = container.world;
 
-    publicStr = Lang.localize("gui.travelAccessable.public");
-    privateStr = Lang.localize("gui.travelAccessable.private");
-    protectedStr = Lang.localize("gui.travelAccessable.protected");
+    publicStr = EnderIO.lang.localize("gui.travelAccessable.public");
+    privateStr = EnderIO.lang.localize("gui.travelAccessable.private");
+    protectedStr = EnderIO.lang.localize("gui.travelAccessable.protected");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 

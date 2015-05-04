@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import io.netty.buffer.ByteBuf;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
-import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;

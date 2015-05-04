@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
@@ -44,38 +44,38 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceOblisk> {
     p = new IconButton(this, 800, x, y, IconEIO.SINGLE_PLUS);
     p.setSize(bw, bw);
     p.setIconMargin(2, 2);
-    p.setToolTip(Lang.localize("gui.machine.button.storelevel"), Lang.localize("gui.machine.tooltip.storelevel"));
+    p.setToolTip(EnderIO.lang.localize("gui.machine.button.storelevel"), EnderIO.lang.localize("gui.machine.tooltip.storelevel"));
 
     x += spacing + bw;
     pp = new IconButton(this, 801, x, y, IconEIO.DOUBLE_PLUS);
     pp.setSize(bw, bw);
     pp.setIconMargin(2, 2);
-    pp.setToolTip(Lang.localize("gui.machine.button.storelevels"), Lang.localize("gui.machine.tooltip.storelevels"));
+    pp.setToolTip(EnderIO.lang.localize("gui.machine.button.storelevels"), EnderIO.lang.localize("gui.machine.tooltip.storelevels"));
 
     x += spacing + bw;
     ppp = new IconButton(this, 802, x, y, IconEIO.TRIPLE_PLUS);
     ppp.setSize(bw, bw);
     ppp.setIconMargin(2, 2);
-    ppp.setToolTip(Lang.localize("gui.machine.button.storeall"), Lang.localize("gui.machine.tooltip.storeall"));
+    ppp.setToolTip(EnderIO.lang.localize("gui.machine.button.storeall"), EnderIO.lang.localize("gui.machine.tooltip.storeall"));
 
     x = startX;
     y = 75;
     m = new IconButton(this, 803, x, y, IconEIO.SINGLE_MINUS);
     m.setSize(bw, bw);
     m.setIconMargin(2, 2);
-    m.setToolTip(Lang.localize("gui.machine.button.retrievelevel"), Lang.localize("gui.machine.tooltip.retrievelevel"));
+    m.setToolTip(EnderIO.lang.localize("gui.machine.button.retrievelevel"), EnderIO.lang.localize("gui.machine.tooltip.retrievelevel"));
 
     x += spacing + bw;
     mm = new IconButton(this, 804, x, y, IconEIO.DOUBLE_MINUS);
     mm.setSize(bw, bw);
     mm.setIconMargin(2, 2);
-    mm.setToolTip(Lang.localize("gui.machine.button.retrievelevels"), Lang.localize("gui.machine.tooltip.retrievelevels"));
+    mm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrievelevels"), EnderIO.lang.localize("gui.machine.tooltip.retrievelevels"));
 
     x += spacing + bw;
     mmm = new IconButton(this, 805, x, y, IconEIO.TRIPLE_MINUS);
     mmm.setSize(bw, bw);
     mmm.setIconMargin(2, 2);
-    mmm.setToolTip(Lang.localize("gui.machine.button.retrieveall"));
+    mmm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrieveall"));
   }
 
   @Override

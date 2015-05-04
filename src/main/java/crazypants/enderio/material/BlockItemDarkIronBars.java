@@ -6,11 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import com.enderio.core.common.util.Lang;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 
 public class BlockItemDarkIronBars extends ItemBlock {
 
@@ -22,6 +20,6 @@ public class BlockItemDarkIronBars extends ItemBlock {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    par3List.add(Lang.localize("blastResistant"));    
+    par3List.add(EnderIO.lang.localize("blastResistant"));    
   }
 }

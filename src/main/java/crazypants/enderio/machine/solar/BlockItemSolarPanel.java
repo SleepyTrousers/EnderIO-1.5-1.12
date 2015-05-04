@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -74,7 +73,7 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
     if(itemstack.getItemDamage() == 1) {
       prod = Config.maxPhotovoltaicAdvancedOutputRF;
     }
-    list.add(Lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
+    list.add(EnderIO.lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
   }
 
   @Override

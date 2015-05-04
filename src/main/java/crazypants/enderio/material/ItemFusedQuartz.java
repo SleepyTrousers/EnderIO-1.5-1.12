@@ -9,11 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-
-import com.enderio.core.common.util.Lang;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 
 public class ItemFusedQuartz extends ItemBlockWithMetadata {
@@ -45,10 +43,10 @@ public class ItemFusedQuartz extends ItemBlockWithMetadata {
     int meta = par1ItemStack.getItemDamage();
     meta = MathHelper.clamp_int(meta, 0, BlockFusedQuartz.Type.values().length - 1);
     if(meta == 0 || meta == 2) {
-      par3List.add(Lang.localize("blastResistant"));
+      par3List.add(EnderIO.lang.localize("blastResistant"));
     }
     if(meta > 1) {
-      par3List.add(Lang.localize("lightEmitter"));
+      par3List.add(EnderIO.lang.localize("lightEmitter"));
     }
   }
 

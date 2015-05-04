@@ -23,7 +23,6 @@ import cofh.api.energy.IEnergyContainerItem;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Interface;
@@ -32,6 +31,7 @@ import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
@@ -173,11 +173,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
       if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
-        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line1"));
-        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line2"));
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

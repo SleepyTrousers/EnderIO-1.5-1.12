@@ -12,9 +12,9 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
@@ -96,7 +96,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   
   @Override
   protected String getPowerOutputLabel() {
-    return Lang.localize("farm.gui.baseUse");
+    return EnderIO.lang.localize("farm.gui.baseUse");
   }
   
   @Override

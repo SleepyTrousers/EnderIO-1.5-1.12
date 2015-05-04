@@ -8,8 +8,8 @@ import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
@@ -62,19 +62,19 @@ public class BasicItemFilterGui implements IItemFilterGui {
     int x = butLeft;
     int y = yOffset + 1;
     whiteListB = new IconButton(gui, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
 
     x += 20;
     useMetaB = new ToggleButton(gui, ID_META + buttonIdOffset, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
-    useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
+    useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData"));
+    useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
     stickyB = new ToggleButton(gui, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
+    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
@@ -82,14 +82,14 @@ public class BasicItemFilterGui implements IItemFilterGui {
 
     x += 20;
     useNbtB = new ToggleButton(gui, ID_NBT + buttonIdOffset, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
-    useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
-    useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
+    useNbtB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchNBT"));
+    useNbtB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
     x = butLeft;
     useOreDictB = new ToggleButton(gui, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
-    useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
+    useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
+    useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
   }
 
@@ -129,10 +129,10 @@ public class BasicItemFilterGui implements IItemFilterGui {
     whiteListB.onGuiInit();
     if(activeFilter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(Lang.localize("gui.conduit.item.blacklist"));
+      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
+      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
     }
   }
   

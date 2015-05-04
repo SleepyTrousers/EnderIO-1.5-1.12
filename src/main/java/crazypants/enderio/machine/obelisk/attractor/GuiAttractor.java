@@ -12,9 +12,9 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
@@ -33,7 +33,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public List<String> getToolTipText() {
-        return Lists.newArrayList(Lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
       }
     });
   }
@@ -65,7 +65,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
+    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
   }
 
   @Override

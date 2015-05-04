@@ -10,10 +10,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-
-import com.enderio.core.common.util.Lang;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
 
 public class ClearConfigRecipe implements IRecipe {
   
@@ -67,7 +65,7 @@ public class ClearConfigRecipe implements IRecipe {
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
     if (output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + Lang.localize("machine.tooltip.clearConfig", true));
+      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig", true));
     }
   }
 }

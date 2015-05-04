@@ -12,8 +12,8 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
@@ -49,7 +49,7 @@ public class BaseSettingsPanel implements ITabPanel {
     this.gui = gui;
     this.con = con;
 
-    modeLabel = Lang.localize("gui.conduit.ioMode");
+    modeLabel = EnderIO.lang.localize("gui.conduit.ioMode");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);

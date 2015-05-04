@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -28,7 +28,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("combustionGenerator.coolantTank");
+        String heading = EnderIO.lang.localize("combustionGenerator.coolantTank");
         if(getTileEntity().getCoolantTank().getFluid() != null) {
           heading += ": " + getTileEntity().getCoolantTank().getFluid().getLocalizedName();
         }
@@ -43,7 +43,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("combustionGenerator.fuelTank");
+        String heading = EnderIO.lang.localize("combustionGenerator.fuelTank");
         if(getTileEntity().getFuelTank().getFluid() != null) {
           heading += ": " + getTileEntity().getFuelTank().getFluid().getLocalizedName();
         }
@@ -90,7 +90,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
     if(gen.isActive()) {
       output = gen.getGeneratedLastTick();
     }
-    String txt = Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
@@ -103,7 +103,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 4000, gen.getCoolantTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
-        txt = gen.getNumTicksPerMbCoolant() + " " + Lang.localize("power.tmb");
+        txt = gen.getNumTicksPerMbCoolant() + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
       }
@@ -125,7 +125,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       RenderUtil.renderGuiTank(gen.getFuelTank().getFluid(), 4000, gen.getFuelTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
-        txt = gen.getNumTicksPerMbFuel() + " " + Lang.localize("power.tmb");
+        txt = gen.getNumTicksPerMbFuel() + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
       }

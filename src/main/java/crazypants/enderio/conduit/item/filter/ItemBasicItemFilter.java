@@ -12,11 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -96,14 +96,14 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     if(FilterRegister.isFilterSet(par1ItemStack)) {
       if(!SpecialTooltipHandler.showAdvancedTooltips()) {
-        par3List.add(Lang.localize("itemConduitFilterUpgrade"));
+        par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
         SpecialTooltipHandler.addShowDetailsTooltip(par3List);
       } else {
-        par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
-        par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
+        par3List.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.configured"));
+        par3List.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
       }
     } else {
-      par3List.add(Lang.localize("itemConduitFilterUpgrade"));
+      par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
     }
   }
 

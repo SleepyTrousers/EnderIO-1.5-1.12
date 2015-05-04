@@ -8,10 +8,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-
-import com.enderio.core.common.util.Lang;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.FilterRegister;
 
 public class ClearFilterRecipe implements IRecipe{
@@ -65,7 +63,7 @@ public class ClearFilterRecipe implements IRecipe{
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
     if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigWarning", true));
+      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning", true));
     }
   }
 

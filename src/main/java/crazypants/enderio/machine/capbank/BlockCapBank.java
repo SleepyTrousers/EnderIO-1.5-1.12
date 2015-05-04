@@ -26,7 +26,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -141,7 +140,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         .getMaxEnergyStored()));
     if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Items")) {
       NBTTagList itemList = (NBTTagList) itemstack.stackTagCompound.getTag("Items");
-      String msg = Lang.localize("tile.blockCapBank.tooltip.hasItems", false);
+      String msg = EnderIO.lang.localize("tile.blockCapBank.tooltip.hasItems", false);
       list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
     }
   }
@@ -521,9 +520,9 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         if(SpecialTooltipHandler.showAdvancedTooltips()) {
           String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
           String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
-          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
-          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
-          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
           tooltip.add("");
         }
 

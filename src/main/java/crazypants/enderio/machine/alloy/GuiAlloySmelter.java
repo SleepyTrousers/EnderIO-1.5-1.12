@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.button.IIconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.EnderIO;
@@ -84,8 +83,8 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
     }
     vanillaFurnaceButton.setIcon(icon);
     vanillaFurnaceTooltip.setToolTipText(
-            Lang.localize("gui.alloy.mode.heading"),
-            Lang.localize(unlocText));
+            EnderIO.lang.localize("gui.alloy.mode.heading"),
+            EnderIO.lang.localize(unlocText));
   }
 
   /**

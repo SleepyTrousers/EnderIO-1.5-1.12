@@ -2,9 +2,6 @@ package crazypants.enderio.teleport.telepad;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
-
-import com.enderio.core.common.util.Lang;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.gui.IconEIO;
@@ -24,7 +21,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
     super(playerInv, te, world);
     this.te = te;
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
-    switchButton.setToolTip(Lang.localize("gui.telepad.configure.telepad"));
+    switchButton.setToolTip(EnderIO.lang.localize("gui.telepad.configure.telepad"));
   }
   
   public GuiAugmentedTravelAccessible(ContainerTravelAccessable container) {

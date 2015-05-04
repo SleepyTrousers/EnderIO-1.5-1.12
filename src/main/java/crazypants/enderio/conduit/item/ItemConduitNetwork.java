@@ -11,8 +11,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
@@ -182,7 +182,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
             if(input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
-              String s = Lang.localize(t.inv.getInventory().getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
+              String s = EnderIO.lang.localize(t.inv.getInventory().getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
               result.add(s);
             }
           }
@@ -199,7 +199,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(inv.hasTarget(con, dir)) {
         IItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(inv, input)) {
-          result.add(Lang.localize(inv.getInventory().getInventoryName(), false) + " " + inv.location);
+          result.add(EnderIO.lang.localize(inv.getInventory().getInventoryName(), false) + " " + inv.location);
         }
       }
     }

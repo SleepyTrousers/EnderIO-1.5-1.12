@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import com.enderio.core.common.network.MessageTileEntity;
-import com.enderio.core.common.network.NetworkUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;

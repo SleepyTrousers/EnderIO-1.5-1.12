@@ -25,10 +25,10 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
@@ -107,11 +107,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     textFields.add(tfFilter);
 
-    headerCrafting = Lang.localize("gui.inventorypanel.header.crafting");
-    headerReturn = Lang.localize("gui.inventorypanel.header.return");
-    headerInventory = Lang.localize("container.inventory", false);
-    infoTextFilter = Lang.localize("gui.inventorypanel.info.filter");
-    infoTextOffline = Lang.localize("gui.inventorypanel.info.offline");
+    headerCrafting = EnderIO.lang.localize("gui.inventorypanel.header.crafting");
+    headerReturn = EnderIO.lang.localize("gui.inventorypanel.header.return");
+    headerInventory = EnderIO.lang.localize("container.inventory", false);
+    infoTextFilter = EnderIO.lang.localize("gui.inventorypanel.info.filter");
+    infoTextOffline = EnderIO.lang.localize("gui.inventorypanel.info.offline");
 
     ArrayList<String> list = new ArrayList<String>();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
@@ -140,7 +140,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(Lang.localize("gui.inventorypanel.tooltip.fuelTank"));
+        text.add(EnderIO.lang.localize("gui.inventorypanel.tooltip.fuelTank"));
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
       }
     });

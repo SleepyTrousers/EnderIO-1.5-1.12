@@ -8,8 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.enderio.core.common.util.Lang;
 import com.google.common.base.Strings;
+
+import crazypants.enderio.EnderIO;
 
 public final class PainterUtil {
 
@@ -63,7 +64,7 @@ public final class PainterUtil {
         sourceName = is.getDisplayName();
       }
     }
-    return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
+    return EnderIO.lang.localize("blockPainter.paintedWith") + " " + sourceName;
   }
 
   public static void setSourceBlock(ItemStack item, Block source, int meta) {

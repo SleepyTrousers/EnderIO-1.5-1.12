@@ -12,8 +12,8 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterContainer;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
@@ -96,9 +96,9 @@ public class FilterTab implements ITabPanel {
       recGui.renderCustomOptions(0, par1, par2, par3);
     }
 
-    String txt = Lang.localize("gui.machine.sendfilter");
+    String txt = EnderIO.lang.localize("gui.machine.sendfilter");
     if(!showSend) {
-      txt = Lang.localize("gui.machine.receivefilter");
+      txt = EnderIO.lang.localize("gui.machine.receivefilter");
     }
     FontRenderer fr = parent.getFontRenderer();
     int x = left + container.getFilterOffset().x;

@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.PlayerUtil;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -91,7 +90,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
     }
 
     public String getLocalisedName() {
-      return Lang.localize(unlocalisedName);
+      return EnderIO.lang.localize(unlocalisedName);
     }
   }
 

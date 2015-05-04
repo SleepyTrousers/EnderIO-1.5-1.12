@@ -11,12 +11,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.util.Lang;
-
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -33,22 +31,22 @@ import crazypants.enderio.power.IInternalPoweredTile;
 
 public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
 
-  private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
-  private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";
-  private static final String CAP_BANK_STOR = " " + Lang.localize("gui.powerMonitor.monHeading2") + ": ";
-  private static final String MACH_BUF_STOR = " " + Lang.localize("gui.powerMonitor.monHeading3") + ": ";
-  private static final String AVE_OUT = " " + Lang.localize("gui.powerMonitor.monHeading4") + ": ";
-  private static final String AVE_IN = " " + Lang.localize("gui.powerMonitor.monHeading5") + ": ";
+  private static final String OF = " " + EnderIO.lang.localize("gui.powerMonitor.of") + " ";
+  private static final String CON_STORAGE = " " + EnderIO.lang.localize("gui.powerMonitor.monHeading1") + ": ";
+  private static final String CAP_BANK_STOR = " " + EnderIO.lang.localize("gui.powerMonitor.monHeading2") + ": ";
+  private static final String MACH_BUF_STOR = " " + EnderIO.lang.localize("gui.powerMonitor.monHeading3") + ": ";
+  private static final String AVE_OUT = " " + EnderIO.lang.localize("gui.powerMonitor.monHeading4") + ": ";
+  private static final String AVE_IN = " " + EnderIO.lang.localize("gui.powerMonitor.monHeading5") + ": ";
 
-  private static final String NET_HEADING = Lang.localize("gui.mjReader.networkHeading");
-  private static final String CON_BUF = " " + Lang.localize("gui.mjReader.conduitBuffer") + ": ";
+  private static final String NET_HEADING = EnderIO.lang.localize("gui.mjReader.networkHeading");
+  private static final String CON_BUF = " " + EnderIO.lang.localize("gui.mjReader.conduitBuffer") + ": ";
 
-  private static final String ITEM_HEADING = Lang.localize("gui.mjReader.itemHeading");
-  private static final String ITEM_NO_CONNECTIONS = Lang.localize("gui.mjReader.itemNoConnections");
+  private static final String ITEM_HEADING = EnderIO.lang.localize("gui.mjReader.itemHeading");
+  private static final String ITEM_NO_CONNECTIONS = EnderIO.lang.localize("gui.mjReader.itemNoConnections");
 
-  private static final String ENERGY_CONDUIT = Lang.localize("itemPowerConduit");
-  private static final String REQUEST_RANGE = " " + Lang.localize("gui.mjReader.requestRange") + ": ";;
-  private static final String CUR_REQUEST = " " + Lang.localize("gui.mjReader.currentRequest") + ": ";;
+  private static final String ENERGY_CONDUIT = EnderIO.lang.localize("itemPowerConduit");
+  private static final String REQUEST_RANGE = " " + EnderIO.lang.localize("gui.mjReader.requestRange") + ": ";;
+  private static final String CUR_REQUEST = " " + EnderIO.lang.localize("gui.mjReader.currentRequest") + ": ";;
 
   public static boolean canCreatePacket(World world, int x, int y, int z) {
     Block block = world.getBlock(x, y, z);
@@ -169,7 +167,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
       sb.append(ITEM_HEADING);
       sb.append(" ");
-      sb.append(Lang.localize("gui.mjReader.connectionDir"));
+      sb.append(EnderIO.lang.localize("gui.mjReader.connectionDir"));
       sb.append(" ");
       sb.append(dir);
       sb.append("\n");
@@ -180,9 +178,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
         sb.append(color);
 
         if(input == null) {
-          sb.append(Lang.localize("gui.mjReader.extractedItems"));
+          sb.append(EnderIO.lang.localize("gui.mjReader.extractedItems"));
         } else {
-          sb.append(Lang.localize("gui.mjReader.extractedItem"));
+          sb.append(EnderIO.lang.localize("gui.mjReader.extractedItem"));
           sb.append(" ");
           sb.append(input.getDisplayName());
         }
@@ -190,11 +188,11 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
         List<String> targets = icn.getTargetsForExtraction(conduit.getLocation().getLocation(dir), conduit, input);
         if(targets.isEmpty()) {
           sb.append(" ");
-          sb.append(Lang.localize("gui.mjReader.noOutputs"));
+          sb.append(EnderIO.lang.localize("gui.mjReader.noOutputs"));
           sb.append(".\n");
         } else {
           sb.append(" ");
-          sb.append(Lang.localize("gui.mjReader.insertedInto"));
+          sb.append(EnderIO.lang.localize("gui.mjReader.insertedInto"));
           sb.append("\n");
           for (String str : targets) {
             sb.append("  - ");
@@ -211,21 +209,21 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
         List<String> targets = icn.getInputSourcesFor(conduit, dir, input);
         if(targets.isEmpty()) {
           if(input == null) {
-            sb.append(Lang.localize("gui.mjReader.noItems"));
+            sb.append(EnderIO.lang.localize("gui.mjReader.noItems"));
           } else {
-            sb.append(Lang.localize("gui.mjReader.noItem"));
+            sb.append(EnderIO.lang.localize("gui.mjReader.noItem"));
             sb.append(" ");
             sb.append(input.getDisplayName());
           }
         } else {
           if(input == null) {
-            sb.append(Lang.localize("gui.mjReader.receiveItems"));
+            sb.append(EnderIO.lang.localize("gui.mjReader.receiveItems"));
           } else {
-            sb.append(Lang.localize("gui.mjReader.receiveItem1"));
+            sb.append(EnderIO.lang.localize("gui.mjReader.receiveItem1"));
             sb.append(" ");
             sb.append(input.getDisplayName());
             sb.append(" ");
-            sb.append(Lang.localize("gui.mjReader.receiveItem2"));
+            sb.append(EnderIO.lang.localize("gui.mjReader.receiveItem2"));
           }
           sb.append("\n");
           for (String str : targets) {

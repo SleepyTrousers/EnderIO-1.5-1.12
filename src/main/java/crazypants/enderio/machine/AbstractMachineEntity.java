@@ -20,7 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.InventoryWrapper;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -536,9 +535,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(stack.hasDisplayName()) {
       name = stack.getDisplayName();
     } else {
-      name = Lang.localize(stack.getUnlocalizedName() + ".name", false);
+      name = EnderIO.lang.localize(stack.getUnlocalizedName() + ".name", false);
     }
-    name += " " + Lang.localize("machine.tooltip.configured");
+    name += " " + EnderIO.lang.localize("machine.tooltip.configured");
     stack.setStackDisplayName(name);
   }
 

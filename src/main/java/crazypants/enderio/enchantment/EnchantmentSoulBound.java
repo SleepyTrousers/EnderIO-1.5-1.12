@@ -18,11 +18,11 @@ import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
 
@@ -159,6 +159,6 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
   @Override
   public String[] getTooltipDetails(ItemStack stack) {
-    return new String[] { Lang.localize("description.enchantment.enderio.soulBound", false) };
+    return new String[] { EnderIO.lang.localize("description.enchantment.enderio.soulBound", false) };
   }
 }

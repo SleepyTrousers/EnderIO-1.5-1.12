@@ -10,8 +10,8 @@ import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;
@@ -32,12 +32,12 @@ public class GasSettings extends BaseSettingsPanel {
 
   private ColorButton colorB;
 
-  private String autoExtractStr = Lang.localize("gui.conduit.gas.autoExtract");
+  private String autoExtractStr = EnderIO.lang.localize("gui.conduit.gas.autoExtract");
 
   private IGasConduit conduit;
 
   protected GasSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_GAS, Lang.localize("itemGasConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_GAS, EnderIO.lang.localize("itemGasConduit.name"), gui, con);
 
     conduit = (IGasConduit) con;
     gui.getContainer().setInventorySlotsVisible(false);
@@ -65,7 +65,7 @@ public class GasSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
   }
 

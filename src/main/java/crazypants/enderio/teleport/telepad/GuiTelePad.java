@@ -18,7 +18,6 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
@@ -96,7 +95,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
     textFields.addAll(Lists.newArrayList(xTF, yTF, zTF, dimTF));
 
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
-    switchButton.setToolTip(Lang.localize("gui.telepad.configure.travel"));
+    switchButton.setToolTip(EnderIO.lang.localize("gui.telepad.configure.travel"));
   }
 
   private String getPowerOutputLabel() {
@@ -118,7 +117,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
     super.initGui();
     switchButton.onGuiInit();
 
-    String text = Lang.localize("gui.telepad.teleport");
+    String text = EnderIO.lang.localize("gui.telepad.teleport");
     int width = getFontRenderer().getStringWidth(text) + 10;
 
     int x = guiLeft + (xSize / 2) - (width / 2);
@@ -189,7 +188,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
       String name = e.getCommandSenderName();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
     } else if(te.wasBlocked) {
-      String s = Lang.localize("gui.telepad.blocked");
+      String s = EnderIO.lang.localize("gui.telepad.blocked");
       fnt.drawString(s, sx + xSize / 2 - fnt.getStringWidth(s) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0xAA0000);
     }
 

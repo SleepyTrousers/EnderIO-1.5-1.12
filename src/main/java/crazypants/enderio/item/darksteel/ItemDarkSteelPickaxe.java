@@ -21,7 +21,6 @@ import cofh.api.energy.IEnergyContainerItem;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Lang;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -281,10 +280,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
-          + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " "
-          + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-      list.add(EnumChatFormatting.WHITE + "     " + "(" + Lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
+          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
+      list.add(EnumChatFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " "
           + PowerDisplayUtil.abrevation() + ")");
     }

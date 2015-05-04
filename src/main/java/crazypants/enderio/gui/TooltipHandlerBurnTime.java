@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
@@ -27,17 +27,17 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
       int rate = gen.getPowerUsePerTick();
 
       String msg = String.format("%s %s %s %s %s %s%s",
-          Lang.localize("power.generates"),
+          EnderIO.lang.localize("power.generates"),
           PowerDisplayUtil.formatPower((long)gen.getBurnTime(itemstack) * rate),
           PowerDisplayUtil.abrevation(),
-          Lang.localize("power.generation_rate"),
+          EnderIO.lang.localize("power.generation_rate"),
           PowerDisplayUtil.formatPower(rate),
           PowerDisplayUtil.abrevation(),
           PowerDisplayUtil.perTickStr());
 
       list.add(msg);
     } else if (Config.addFurnaceFuelTootip && (time = TileEntityFurnace.getItemBurnTime(itemstack)) > 0) {
-      list.add(Lang.localize("tooltip.burntime") + " " + time);
+      list.add(EnderIO.lang.localize("tooltip.burntime") + " " + time);
     }
   }
 

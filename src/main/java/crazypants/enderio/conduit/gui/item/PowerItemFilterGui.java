@@ -3,8 +3,8 @@ package crazypants.enderio.conduit.gui.item;
 import net.minecraft.client.gui.GuiButton;
 
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
@@ -48,9 +48,9 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
     x += 20;
     stickyB = new ToggleButton(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
+    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
     modeB = new GuiButton(ID_MORE, 0, 0, 40, 20, "");

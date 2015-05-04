@@ -23,7 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -366,9 +365,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
 
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, PowerDisplayUtil.formatPower(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, PowerDisplayUtil.formatPower(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", EnderIO.lang.localize("capbank.maxIO"),  format, PowerDisplayUtil.formatPower(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", EnderIO.lang.localize("capbank.maxIn"),  format, PowerDisplayUtil.formatPower(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", EnderIO.lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add("Deprecated. Convert by placing in crafting grid");
     }
   }

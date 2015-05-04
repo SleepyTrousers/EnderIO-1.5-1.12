@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -178,7 +177,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     if(PainterUtil.getSourceBlock(itemstack) == null) {
-      list.add(Lang.localize("item.itemConduitFacade.tooltip.notpainted"));
+      list.add(EnderIO.lang.localize("item.itemConduitFacade.tooltip.notpainted"));
     } else {
       list.add(PainterUtil.getTooltTipText(itemstack));
     }
@@ -191,7 +190,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == FacadeType.HARDENED.ordinal()) {
       list.add("");
-      list.add(Lang.localize(getUnlocalizedName(itemstack) + ".tooltip", false));
+      list.add(EnderIO.lang.localize(getUnlocalizedName(itemstack) + ".tooltip", false));
     }
   }
 

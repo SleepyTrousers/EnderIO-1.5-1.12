@@ -91,27 +91,27 @@ public class ItemEnderface extends Item implements IGuiHandler {
 //      int dimension = tag.getInteger(KEY_DIMENSION);
 //
 //      if(world.provider.dimensionId != dimension) {
-//        ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.wrongDimension"));
+//        ChatMessageComponent c = ChatMessageComponent.createFromText(EnderIO.lang.localize("itemEnderface.wrongDimension"));
 //        entityPlayer.sendChatToPlayer(c);
 //        return itemStack;
 //      }
 //
 //      Chunk c = world.getChunkFromBlockCoords(x, z);
 //      if(c == null || !c.isChunkLoaded) {
-//        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.tooFar"));
+//        ChatMessageComponent cm = ChatMessageComponent.createFromText(EnderIO.lang.localize("itemEnderface.tooFar"));
 //        entityPlayer.sendChatToPlayer(cm);
 //        return itemStack;
 //      }
 //      int blockId = world.getBlockId(x, y, z);
 //      if(blockId != EnderIO.blockEnderIo.blockID) {
-//        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.destroyed"));
+//        ChatMessageComponent cm = ChatMessageComponent.createFromText(EnderIO.lang.localize("itemEnderface.destroyed"));
 //        entityPlayer.sendChatToPlayer(cm);
 //        return itemStack;
 //      }
 //      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
 //      return itemStack;
 //    }
-//    ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.noSync"));
+//    ChatMessageComponent cm = ChatMessageComponent.createFromText(EnderIO.lang.localize("itemEnderface.noSync"));
 //    entityPlayer.sendChatToPlayer(cm);
     return itemStack;
   }

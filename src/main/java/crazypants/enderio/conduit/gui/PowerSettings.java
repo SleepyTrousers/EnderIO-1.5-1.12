@@ -4,8 +4,8 @@ import net.minecraft.client.gui.GuiButton;
 
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -26,7 +26,7 @@ public class PowerSettings extends BaseSettingsPanel {
   private ColorButton colorB;
 
   protected PowerSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_POWER, Lang.localize("itemPowerConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_POWER, EnderIO.lang.localize("itemPowerConduit.name"), gui, con);
     conduit = (IPowerConduit) con;
 
     int x = 38;
@@ -52,7 +52,7 @@ public class PowerSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
   }

@@ -18,8 +18,8 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
@@ -87,11 +87,11 @@ public class ItemSettings extends BaseSettingsPanel {
   private IItemFilterGui filterGui;
 
   public ItemSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_ITEM, Lang.localize("itemItemConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con);
     itemConduit = (IItemConduit) con;
 
-    inputHeading = Lang.localize("gui.conduit.item.extractionFilter");
-    outputHeading = Lang.localize("gui.conduit.item.insertionFilter");
+    inputHeading = EnderIO.lang.localize("gui.conduit.item.extractionFilter");
+    outputHeading = EnderIO.lang.localize("gui.conduit.item.insertionFilter");
 
     int x = 52;
     int y = customTop;
@@ -101,15 +101,15 @@ public class ItemSettings extends BaseSettingsPanel {
     x = 66;    
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
-    channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
+    channelB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
     
-    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.filterupgrade")) {
+    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilterUpgrades(isInputVisible()) && super.shouldDraw();
       }
     };
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.speedupgrade"), Lang.localize("gui.conduit.item.speedupgrade2")) {
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"), EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
@@ -119,7 +119,7 @@ public class ItemSettings extends BaseSettingsPanel {
     ArrayList<String> list = new ArrayList<String>();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
     for(FunctionUpgrade upgrade : FunctionUpgrade.values()) {
-      list.add(Lang.localize(upgrade.unlocName.concat(".name"), false));
+      list.add(EnderIO.lang.localize(upgrade.unlocName.concat(".name"), false));
     }
     functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 34, 18, 18), list) {
       @Override
@@ -152,21 +152,21 @@ public class ItemSettings extends BaseSettingsPanel {
     x += rsB.getWidth() + 4;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
-    colorB.setToolTipHeading(Lang.localize("gui.conduit.item.sigCol"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.sigCol"));
 
     x += 4 + colorB.getWidth();
     roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
-    roundRobinB.setSelectedToolTip(Lang.localize("gui.conduit.item.roundRobinEnabled"));
-    roundRobinB.setUnselectedToolTip(Lang.localize("gui.conduit.item.roundRobinDisabled"));
+    roundRobinB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinEnabled"));
+    roundRobinB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinDisabled"));
     roundRobinB.setPaintSelectedBorder(false);
 
     x += 4 + roundRobinB.getWidth();
     loopB = new ToggleButton(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
-    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
-    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
+    loopB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedEnabled"));
+    loopB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
 
-    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), Lang.localize("gui.conduit.item.priority"));
+    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), EnderIO.lang.localize("gui.conduit.item.priority"));
     
     x = priLeft + priWidth + 9;    
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);

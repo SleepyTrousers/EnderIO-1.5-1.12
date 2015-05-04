@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 
-import com.enderio.core.common.util.Lang;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
@@ -188,11 +187,11 @@ public class DarkSteelRecipeManager {
       }
     }
     if(!applyableUpgrades.isEmpty()) {
-      list.add(EnumChatFormatting.YELLOW + Lang.localize("tooltip.anvilupgrades") + " ");
+      list.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + Lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
+        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
         list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
-            + " " + Lang.localize("item.darkSteel.tooltip.lvs"));
+            + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
       }
     }
   }

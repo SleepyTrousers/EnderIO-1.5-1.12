@@ -17,7 +17,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
@@ -317,7 +316,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   public void setNotification(String unloc) {
-    String newNote = Lang.localize("farm.note." + unloc);
+    String newNote = EnderIO.lang.localize("farm.note." + unloc);
     if(!newNote.equals(notification)) {
       notification = newNote;
       sendNotification = true;

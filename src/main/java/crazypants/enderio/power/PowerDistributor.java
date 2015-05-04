@@ -7,8 +7,10 @@ import java.util.ListIterator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.machine.AbstractMachineEntity;
+
 import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class PowerDistributor {
 

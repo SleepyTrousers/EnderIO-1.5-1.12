@@ -18,7 +18,6 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
@@ -156,9 +155,9 @@ public class GuiCapBank extends GuiContainerBase {
       @Override
       protected String getLabelForMode(IoMode mode) {
         if(mode == IoMode.PUSH) {
-          return Lang.localize("gui.capBank.outputMode");
+          return EnderIO.lang.localize("gui.capBank.outputMode");
         } else if(mode == IoMode.PULL) {
-          return Lang.localize("gui.capBank.inputMode");
+          return EnderIO.lang.localize("gui.capBank.inputMode");
         }
         return super.getLabelForMode(mode);
       }
@@ -261,7 +260,7 @@ public class GuiCapBank extends GuiContainerBase {
 
     int midX = sx + xSize / 2;
 
-    String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) +
+    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) +
         " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
@@ -270,13 +269,13 @@ public class GuiCapBank extends GuiContainerBase {
 
     drawString(fontRenderer, str, x, y, -1);
 
-    str = Lang.localize("gui.capBank.maxInput") + ":";
+    str = EnderIO.lang.localize("gui.capBank.maxInput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + inputX - swid - 3;
     y = guiTop + inputY + 2;
     drawString(fontRenderer, str, x, y, -1);
 
-    str = Lang.localize("gui.capBank.maxOutput") + ":";
+    str = EnderIO.lang.localize("gui.capBank.maxOutput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;

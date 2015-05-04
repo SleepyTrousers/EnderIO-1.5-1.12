@@ -17,7 +17,6 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -180,7 +179,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   }
 
   protected String formatProgressTooltip(int scaledProgress, float progress) {
-    return MessageFormat.format(Lang.localize("gui.progress"), scaledProgress);
+    return MessageFormat.format(EnderIO.lang.localize("gui.progress"), scaledProgress);
   }
 
   protected int scaleProgressForTooltip(float progress) {

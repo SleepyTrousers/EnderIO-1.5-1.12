@@ -10,8 +10,6 @@ import net.minecraft.util.ChatComponentTranslation;
 
 import org.lwjgl.input.Keyboard;
 
-import com.enderio.core.common.util.Lang;
-
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -64,25 +62,25 @@ public class KeyTracker {
   private KeyBinding magnetKey;
   
   public KeyTracker() {
-    glideKey = new KeyBinding(Lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, Lang.localize("category.darksteelarmor"));
+    glideKey = new KeyBinding(EnderIO.lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(glideKey);
-    soundDetectorKey = new KeyBinding(Lang.localize("keybind.soundlocator"), Keyboard.KEY_L, Lang.localize("category.darksteelarmor"));
+    soundDetectorKey = new KeyBinding(EnderIO.lang.localize("keybind.soundlocator"), Keyboard.KEY_L, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(soundDetectorKey);        
-    nightVisionKey = new KeyBinding(Lang.localize("keybind.nightvision"), Keyboard.KEY_P, Lang.localize("category.darksteelarmor"));
+    nightVisionKey = new KeyBinding(EnderIO.lang.localize("keybind.nightvision"), Keyboard.KEY_P, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(nightVisionKey);
-    gogglesKey = new KeyBinding(Lang.localize("keybind.gogglesofrevealing"), Keyboard.KEY_R, Lang.localize("category.darksteelarmor"));
+    gogglesKey = new KeyBinding(EnderIO.lang.localize("keybind.gogglesofrevealing"), Keyboard.KEY_R, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(gogglesKey);
     
-    stepAssistKey = new KeyBinding(Lang.localize("keybind.stepassist"), Keyboard.KEY_NONE, Lang.localize("category.darksteelarmor"));
+    stepAssistKey = new KeyBinding(EnderIO.lang.localize("keybind.stepassist"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(stepAssistKey);
     
-    speedKey = new KeyBinding(Lang.localize("keybind.speed"), Keyboard.KEY_NONE, Lang.localize("category.darksteelarmor"));
+    speedKey = new KeyBinding(EnderIO.lang.localize("keybind.speed"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(speedKey);
     
-    yetaWrenchMode = new KeyBinding(Lang.localize("keybind.yetawrenchmode"), Keyboard.KEY_Y, Lang.localize("category.tools"));
+    yetaWrenchMode = new KeyBinding(EnderIO.lang.localize("keybind.yetawrenchmode"), Keyboard.KEY_Y, EnderIO.lang.localize("category.tools"));
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
 
-    magnetKey = new KeyBinding(Lang.localize("keybind.magnet"), Keyboard.CHAR_NONE, Lang.localize("category.tools"));
+    magnetKey = new KeyBinding(EnderIO.lang.localize("keybind.magnet"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.tools"));
     ClientRegistry.registerKeyBinding(magnetKey);
   }
   
@@ -131,9 +129,9 @@ public class KeyTracker {
       isSpeedActive = !isSpeedActive;
       String message;
       if(isSpeedActive) {
-        message = Lang.localize("darksteel.upgrade.speed.enabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.speed.enabled");
       } else {
-        message = Lang.localize("darksteel.upgrade.speed.disabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.speed.disabled");
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       DarkSteelController.instance.setSpeedActive(Minecraft.getMinecraft().thePlayer, isSpeedActive);
@@ -149,9 +147,9 @@ public class KeyTracker {
       isStepAssistActive = !isStepAssistActive;
       String message;
       if(isStepAssistActive) {
-        message = Lang.localize("darksteel.upgrade.stepAssist.enabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.stepAssist.enabled");
       } else {
-        message = Lang.localize("darksteel.upgrade.stepAssist.disabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.stepAssist.disabled");
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       DarkSteelController.instance.setStepAssistActive(Minecraft.getMinecraft().thePlayer, isStepAssistActive);
@@ -209,9 +207,9 @@ public class KeyTracker {
       isSoundDectorActive = !isSoundDectorActive;
       String message;
       if(isSoundDectorActive) {
-        message = Lang.localize("darksteel.upgrade.sound.enabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.sound.enabled");
       } else {
-        message = Lang.localize("darksteel.upgrade.sound.disabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.sound.disabled");
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       SoundDetector.instance.setEnabled(isSoundDectorActive);
@@ -227,9 +225,9 @@ public class KeyTracker {
       isGlideActive = !isGlideActive;
       String message;
       if(isGlideActive) {
-        message = Lang.localize("darksteel.upgrade.glider.enabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.glider.enabled");
       } else {
-        message = Lang.localize("darksteel.upgrade.glider.disabled");
+        message = EnderIO.lang.localize("darksteel.upgrade.glider.disabled");
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       DarkSteelController.instance.setGlideActive(Minecraft.getMinecraft().thePlayer, isGlideActive);

@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -155,15 +155,15 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    String invName = Lang.localize(getTileEntity().getInventoryName() + ".name", false);
+    String invName = EnderIO.lang.localize(getTileEntity().getInventoryName() + ".name", false);
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if(getTileEntity().hasPower()) {
       sx += isFull() ? 19 : 57;
       sy += 17;
 
-      getFontRenderer().drawStringWithShadow(Lang.localize("gui.simple.in"), sx, sy, 0xFFFFFF);
-      getFontRenderer().drawStringWithShadow(Lang.localize("gui.simple.out"), sx, sy + 27, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(EnderIO.lang.localize("gui.simple.in"), sx, sy, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(EnderIO.lang.localize("gui.simple.out"), sx, sy + 27, 0xFFFFFF);
     }
   }
 

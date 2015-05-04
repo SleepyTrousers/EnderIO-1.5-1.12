@@ -13,12 +13,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 
 public class BlockIngotStorage extends BlockEio implements IAdvancedTooltipProvider {
@@ -90,7 +90,7 @@ public class BlockIngotStorage extends BlockEio implements IAdvancedTooltipProvi
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(Lang.localize("tooltip.isBeaconBase"));
+    list.add(EnderIO.lang.localize("tooltip.isBeaconBase"));
   }
 
   @Override

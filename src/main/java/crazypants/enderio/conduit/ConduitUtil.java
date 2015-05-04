@@ -19,6 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -49,8 +50,6 @@ import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
-
-import com.enderio.core.common.util.BlockCoord;
 
 public class ConduitUtil {
 

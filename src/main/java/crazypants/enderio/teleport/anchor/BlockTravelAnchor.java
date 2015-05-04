@@ -19,7 +19,6 @@ import net.minecraftforge.common.UsernameCache;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -147,9 +146,9 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
     if(player.worldObj.isRemote && !player.isSneaking()) {
-      player.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " "
+      player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " "
           + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner) + EnumChatFormatting.WHITE + " "
-          + Lang.localize("gui.travelAccessable.privateBlock2")));
+          + EnderIO.lang.localize("gui.travelAccessable.privateBlock2")));
     }
   }
   

@@ -14,8 +14,8 @@ import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.network.MessageTileNBT;
-import com.enderio.core.common.util.Lang;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.PacketHandler;
 
@@ -30,7 +30,7 @@ public class GuiTravelAuth extends GuiContainerBase {
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
     super(new ContainerTravelAuth(player.inventory));
     this.ta = te;
-    title = Lang.localize("gui.travelAccessable.enterCode");  
+    title = EnderIO.lang.localize("gui.travelAccessable.enterCode");  
     this.player = player;
   }
 
@@ -39,7 +39,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     super.initGui();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
-    String str = Lang.localize("gui.travelAccessable.ok");
+    String str = EnderIO.lang.localize("gui.travelAccessable.ok");
     int strLen = getFontRenderer().getStringWidth(str);
     GuiButton okB = new GuiButton(0, width / 2 - (strLen / 2) - 5, sy + 50, strLen + 10, 20, str);
     buttonList.clear();

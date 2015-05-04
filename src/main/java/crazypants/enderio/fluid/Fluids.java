@@ -1,7 +1,7 @@
 package crazypants.enderio.fluid;
 
 import net.minecraftforge.fluids.IFluidTank;
-import com.enderio.core.common.util.Lang;
+import crazypants.enderio.EnderIO;
 
 public class Fluids {
 
@@ -21,7 +21,7 @@ public class Fluids {
   }
 
   public static String MB() {
-    return Lang.localize("fluid.millibucket.abr");
+    return EnderIO.lang.localize("fluid.millibucket.abr");
   }
 
 

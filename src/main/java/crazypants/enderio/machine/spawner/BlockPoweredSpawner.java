@@ -28,7 +28,6 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -296,7 +295,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     if(type != null) {
       list.add(StatCollector.translateToLocal("entity." + type + ".name"));
     } else {
-      list.add(Lang.localize("tile.blockPoweredSpawner.tooltip.empty", false));
+      list.add(EnderIO.lang.localize("tile.blockPoweredSpawner.tooltip.empty", false));
     }
   }
 
