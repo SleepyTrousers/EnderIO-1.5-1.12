@@ -676,11 +676,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public FluidTank[] getOutputTanks() {
-    if(getController().isMaster()) {
-      return new FluidTank[] { getController().regenTank, getController().tank };
-    } else {
-      return new FluidTank[] { getController().tank };
-    }
+    return new FluidTank[] { getController().tank };
   }
 
   @Override

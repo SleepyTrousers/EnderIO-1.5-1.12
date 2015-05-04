@@ -155,23 +155,6 @@ public class ClientProxy extends CommonProxy {
   };
   // @formatter:on
 
-  static {
-    RedstoneConduit.initIcons();
-    InsulatedRedstoneConduit.initIcons();
-    RedstoneSwitch.initIcons();
-    PowerConduit.initIcons();
-    LiquidConduit.initIcons();
-    AdvancedLiquidConduit.initIcons();
-    EnderLiquidConduit.initIcons();
-    ItemConduit.initIcons();
-    if(GasUtil.isGasConduitEnabled()) {
-      GasConduit.initIcons();
-    }
-    if(MEUtil.isMEEnabled()) {
-      MEConduit.initIcons();
-    }
-  }
-
   private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
 
   private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
@@ -212,6 +195,24 @@ public class ClientProxy extends CommonProxy {
 
   public void setCbr(ConduitBundleRenderer cbr) {
     this.cbr = cbr;
+  }
+  
+  @Override
+  public void loadIcons() {
+    RedstoneConduit.initIcons();
+    InsulatedRedstoneConduit.initIcons();
+    RedstoneSwitch.initIcons();
+    PowerConduit.initIcons();
+    LiquidConduit.initIcons();
+    AdvancedLiquidConduit.initIcons();
+    EnderLiquidConduit.initIcons();
+    ItemConduit.initIcons();
+    if(GasUtil.isGasConduitEnabled()) {
+      GasConduit.initIcons();
+    }
+    if(MEUtil.isMEEnabled()) {
+      MEConduit.initIcons();
+    }
   }
 
   @Override

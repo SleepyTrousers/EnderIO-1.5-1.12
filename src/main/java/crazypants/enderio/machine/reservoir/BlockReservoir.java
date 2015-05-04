@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import cpw.mods.fml.relauncher.Side;
@@ -71,10 +72,17 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
         }
         return true;
       }
+      if (FluidUtil.fillInternalTankFromPlayerHandItem(world, x, y, z, entityPlayer, tank)) {
+        return true;
+      }
+      if (FluidUtil.fillPlayerHandItemFromInternalTank(world, x, y, z, entityPlayer, tank)) {
+        return true;
+      }
     }
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
+
 
   @Override
   @SideOnly(Side.CLIENT)
