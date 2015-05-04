@@ -69,6 +69,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     }
     API.hideItem(new ItemStack(EnderIO.blockHyperCube));
     API.hideItem(new ItemStack(EnderIO.blockCapacitorBank, 1, OreDictionary.WILDCARD_VALUE));
+    API.hideItem(new ItemStack(EnderIO.abstractBlockFramework, 1, OreDictionary.WILDCARD_VALUE));
   }
 
   @Override

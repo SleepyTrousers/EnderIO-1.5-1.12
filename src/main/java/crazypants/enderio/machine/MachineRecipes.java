@@ -219,6 +219,17 @@ public class MachineRecipes {
     ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
     GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici", "ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
 
+    ItemStack machineFrame = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_FRAME.ordinal());
+    ItemStack frameTank = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.FRAME_TANK.ordinal());
+    ItemStack frameTanks = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.FRAME_TANKS.ordinal());
+    ItemStack machineFrameTank = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_FRAME_TANK.ordinal());
+
+    GameRegistry.addShapedRecipe(machineFrame, "dsd", "s s", "dsd", 's', electricSteel, 'd', darkSteel);
+    GameRegistry.addShapedRecipe(frameTank, "scs", "c c", "scs", 's', silicon, 'c', clearGlass);
+    GameRegistry.addShapelessRecipe(frameTanks, frameTank, frameTank, frameTank, frameTank);
+    GameRegistry.addShapelessRecipe(machineFrameTank, machineFrame, frameTank, frameTank, frameTank, frameTank);
+    GameRegistry.addShapelessRecipe(machineFrameTank, machineFrame, frameTanks);
+
     //Soul Binder
     ItemStack enderBit;
     if(Config.soulBinderRequiresEndermanSkull) {

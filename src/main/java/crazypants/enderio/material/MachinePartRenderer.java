@@ -12,19 +12,23 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.machine.framework.RendererFrameworkMachine;
+import crazypants.render.RenderUtil;
 
 public class MachinePartRenderer implements IItemRenderer {
 
   private ItemRenderer itemRenderer = new ItemRenderer(Minecraft.getMinecraft());
   private RenderItem renderItem = new RenderItem();
   private boolean loggedError = false;
+  private RendererFrameworkMachine frameRenderer;
 
-  public MachinePartRenderer() {
+  public MachinePartRenderer(RendererFrameworkMachine frameRenderer) {
+    this.frameRenderer = frameRenderer;
   }
 
   @Override
   public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    if(item != null && item.getItemDamage() == MachinePart.MACHINE_CHASSI.ordinal()) {
+    if (item != null && MachinePart.values()[item.getItemDamage()].render3d) {
       return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED || type == ItemRenderType.INVENTORY
           || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
     } else {
@@ -70,9 +74,14 @@ public class MachinePartRenderer implements IItemRenderer {
 
   private void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
     GL11.glEnable(GL11.GL_ALPHA_TEST);
-    renderBlocks.setOverrideBlockTexture(EnderIO.itemMachinePart.getIconFromDamage(item.getItemDamage()));
-    renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
-    renderBlocks.clearOverrideBlockTexture();
+    if (MachinePart.values()[item.getItemDamage()].renderAsFrameMachine) {
+      RenderUtil.bindBlockTexture();
+      frameRenderer.renderInventoryBlock(EnderIO.abstractBlockFramework, item.getItemDamage() + 16, 0, renderBlocks);
+    } else if (MachinePart.values()[item.getItemDamage()].render3d) {
+      renderBlocks.setOverrideBlockTexture(EnderIO.itemMachinePart.getIconFromDamage(item.getItemDamage()));
+      renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
+      renderBlocks.clearOverrideBlockTexture();
+    }
     GL11.glDisable(GL11.GL_ALPHA_TEST);
   }
 }

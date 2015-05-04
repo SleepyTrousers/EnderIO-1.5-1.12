@@ -635,16 +635,27 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(isSideDisabled(var1)) {
       return new int[0];
     }
-    return allSlots;
+
+    int[] res = new int[inventory.length - slotDefinition.getNumUpgradeSlots()];
+    int index = 0;
+    for (int i = 0; i < inventory.length; i++) {
+      if (!slotDefinition.isUpgradeSlot(i)) {
+        res[index] = i;
+        index++;
+      }
+    }
+    return res;
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack var2, int side) {
-    if(isSideDisabled(side)) {
+  public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+    if (isSideDisabled(side) || !slotDefinition.isInputSlot(slot) || !isMachineItemValidForSlot(slot, itemstack)
+        || !isItemValidForSlot(slot, itemstack)) {
       return false;
     }
-    return slotDefinition.isInputSlot(slot) && isMachineItemValidForSlot(slot, var2);
+    return inventory[slot] == null || inventory[slot].isItemEqual(itemstack);
   }
+
 
   @Override
   public boolean canExtractItem(int slot, ItemStack itemstack, int side) {

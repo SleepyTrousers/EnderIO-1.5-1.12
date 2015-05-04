@@ -65,6 +65,7 @@ public enum ModObject {
   blockTransceiver,
   blockBuffer,
   blockInventoryPanel,
+ blockDummy,
 
   blockPoweredSpawner,
   itemBrokenSpawner,

@@ -89,6 +89,7 @@ import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
+import crazypants.enderio.machine.framework.AbstractBlockFramework;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
@@ -302,6 +303,7 @@ public class EnderIO {
   public static ItemFrankenSkull itemFrankenSkull;
 
   public static BlockVacuumChest blockVacuumChest;
+  public static AbstractBlockFramework abstractBlockFramework;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -342,6 +344,7 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
+    abstractBlockFramework = AbstractBlockFramework.create();
 
     blockTransceiver = BlockTransceiver.create();
 
