@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -38,7 +39,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
@@ -149,7 +149,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
   }
 
   @Override
@@ -518,7 +518,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
           ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
         }
 
-        if(TooltipAddera.showAdvancedTooltips()) {
+        if(SpecialTooltipHandler.showAdvancedTooltips()) {
           String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
           String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
           tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));

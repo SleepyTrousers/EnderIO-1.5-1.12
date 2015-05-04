@@ -1,10 +1,13 @@
 package crazypants.enderio.machine.crusher;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
-
+  
   float chanceMultiplier = 1;
 
   float powerMultiplier = 1;

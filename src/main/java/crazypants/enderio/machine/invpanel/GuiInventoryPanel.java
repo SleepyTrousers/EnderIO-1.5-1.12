@@ -21,6 +21,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.gui.widget.VScrollbar;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
@@ -30,7 +31,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
@@ -114,11 +114,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     infoTextOffline = Lang.localize("gui.inventorypanel.info.offline");
 
     ArrayList<String> list = new ArrayList<String>();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
     addToolTip(new GuiToolTip(new Rectangle(6, 72, 5 * 18, 8), list));
 
     list.clear();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
     addToolTip(new GuiToolTip(new Rectangle(InventoryPanelContainer.FILTER_SLOT_X, InventoryPanelContainer.FILTER_SLOT_Y, 16, 16), list) {
       @Override
       public boolean shouldDraw() {
@@ -127,13 +127,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     });
 
     list.clear();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.refill.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.refill.line");
     ttRefill = new GuiToolTip(btnRefill, list);
     ttRefill.setVisible(false);
     addToolTip(ttRefill);
 
     list.clear();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
     addToolTip(new GuiToolTip(new Rectangle(12, 132, 15, 47), "") {
@@ -285,7 +285,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private void updateSortButton() {
     SortOrder order = view.getSortOrder();
     ArrayList<String> list = new ArrayList<String>();
-    TooltipAddera.addTooltipFromResources(list,
+    SpecialTooltipHandler.addTooltipFromResources(list,
         "enderio.gui.inventorypanel.tooltip.sort." + order.name().toLowerCase(Locale.ENGLISH) + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
     btnSort.setIcon(getSortOrderIcon());
     btnSort.setToolTip(list.toArray(new String[list.size()]));

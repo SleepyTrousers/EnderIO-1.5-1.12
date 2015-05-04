@@ -6,10 +6,10 @@ import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
@@ -31,7 +31,7 @@ public class GuiButtonIoConfig extends ToggleButton {
 
     ArrayList<String> list = new ArrayList<String>();
     list.add(configTooltip);
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
     if(list.size() > 1) {
       setSelectedToolTip(list.toArray(new String[list.size()]));
     }

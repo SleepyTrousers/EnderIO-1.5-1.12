@@ -13,6 +13,7 @@ import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
@@ -35,7 +36,6 @@ import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
@@ -117,7 +117,7 @@ public class ItemSettings extends BaseSettingsPanel {
     };
 
     ArrayList<String> list = new ArrayList<String>();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
     for(FunctionUpgrade upgrade : FunctionUpgrade.values()) {
       list.add(Lang.localize(upgrade.unlocName.concat(".name"), false));
     }

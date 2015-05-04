@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
@@ -15,7 +16,6 @@ import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
@@ -65,7 +65,7 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
     int maxIo = Config.gasConduitMaxIoRate;
     list.add(Lang.localize("itemGasConduit.tooltip.maxExtract") + " " + extractRate + gpt);
     list.add(Lang.localize("itemGasConduit.tooltip.maxIo") + " " + maxIo + gpt);
-    TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemGasConduit");
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemGasConduit");
   }
   
   @Override

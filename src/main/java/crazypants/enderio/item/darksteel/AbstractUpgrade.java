@@ -7,12 +7,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.gui.TooltipAddera;
 
 public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
@@ -66,21 +66,21 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.instance.addCommonTooltipFromResources(list, getUnlocalizedName());
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
-    TooltipAddera.instance.addDetailedTooltipFromResources(list, getUnlocalizedName());
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -90,10 +90,10 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     if(par1ItemStack != null && par1ItemStack.getItemDamage() > 0) {
       par3List.add(Lang.localize("machine.tooltip.upgrade"));
-      if(TooltipAddera.instance.showAdvancedTooltips()) {
-        TooltipAddera.instance.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
+      if(SpecialTooltipHandler.showAdvancedTooltips()) {
+        SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
       } else {
-        TooltipAddera.addShowDetailsTooltip(par3List);
+        SpecialTooltipHandler.addShowDetailsTooltip(par3List);
       }
     }
 

@@ -24,6 +24,12 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.Lang;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -34,17 +40,12 @@ import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.Lang;
 
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
@@ -200,17 +201,17 @@ public class WailaCompat implements IWailaDataProvider {
           adv.addCommonEntries(itemStack, player, currenttip, false);
         }
 
-        if(TooltipAddera.showAdvancedTooltips() && detailed) {
+        if(SpecialTooltipHandler.showAdvancedTooltips() && detailed) {
           adv.addDetailedEntries(itemStack, player, currenttip, false);
         } else if(detailed) { // show "<Hold Shift>"
-          TooltipAddera.addShowDetailsTooltip(currenttip);
+          SpecialTooltipHandler.addShowDetailsTooltip(currenttip);
         }
 
-        if(!TooltipAddera.showAdvancedTooltips() && basic) {
+        if(!SpecialTooltipHandler.showAdvancedTooltips() && basic) {
           adv.addBasicEntries(itemStack, player, currenttip, false);
         }
       } else if(block instanceof IResourceTooltipProvider) {
-        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
+        SpecialTooltipHandler.INSTANCE.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
 
       if(currenttip.size() > 0) {
@@ -222,11 +223,11 @@ public class WailaCompat implements IWailaDataProvider {
 
     else { 
       if(block instanceof IAdvancedTooltipProvider) {
-        TooltipAddera.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
+        SpecialTooltipHandler.INSTANCE.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
       } else if(item instanceof IAdvancedTooltipProvider) {
-        TooltipAddera.addInformation((IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
+        SpecialTooltipHandler.INSTANCE.addInformation((IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
       } else if(block instanceof IResourceTooltipProvider) {
-        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
+        SpecialTooltipHandler.INSTANCE.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
     }
 

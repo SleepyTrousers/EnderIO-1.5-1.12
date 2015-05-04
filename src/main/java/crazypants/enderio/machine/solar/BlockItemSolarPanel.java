@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
@@ -18,7 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvancedTooltipProvider, IResourceTooltipProvider {
@@ -58,7 +58,7 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
   @SuppressWarnings("rawtypes")
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addCommonTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addCommonTooltipFromResources(list, itemstack);
   }
 
   @SuppressWarnings("rawtypes")
@@ -69,7 +69,7 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     int prod = Config.maxPhotovoltaicOutputRF;
     if(itemstack.getItemDamage() == 1) {
       prod = Config.maxPhotovoltaicAdvancedOutputRF;

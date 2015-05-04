@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 import com.enderio.core.common.util.Util;
 
@@ -26,7 +27,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
@@ -188,7 +188,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == FacadeType.HARDENED.ordinal()) {
       list.add("");
       list.add(Lang.localize(getUnlocalizedName(itemstack) + ".tooltip", false));

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Lang;
 
 import cpw.mods.fml.relauncher.Side;
@@ -15,7 +16,6 @@ import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
@@ -83,9 +83,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     list.add(Lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
 
     if(itemstack.getItemDamage() == 0) {
-      TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
     } else if(itemstack.getItemDamage() == 2) {
-      TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
     }
 
   }
