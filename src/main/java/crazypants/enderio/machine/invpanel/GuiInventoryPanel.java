@@ -24,7 +24,6 @@ import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
-import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
 import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
@@ -32,6 +31,7 @@ import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
 import crazypants.gui.GhostSlot;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
@@ -198,7 +198,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     fr.drawString(headerInventory, sx + 38, sy + 120, headerColor);
 
     TileInventoryPanel te = getTileEntity();
-    NutrientTank fuelTank = te.fuelTank;
+    SmartTank fuelTank = te.fuelTank;
     if(fuelTank.getFluidAmount() > 0) {
       RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 12, sy + 132, zLevel, 16, 47);
     }

@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
@@ -170,7 +171,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
 
   private IIcon getLiquidTexture() {
     if(tex == null) {
-      tex = ReservoirTank.WATER.getFluid().getStillIcon();
+      tex = FluidRegistry.WATER.getStillIcon();
     }
     return tex;
   }

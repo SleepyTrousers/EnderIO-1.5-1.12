@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -20,12 +21,12 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
-import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
 import crazypants.util.ITankAccess;
 
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
@@ -35,7 +36,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public static final int SLOT_VIEW_FILTER = 10;
   public static final int SLOT_RETURN_START = 11;
 
-  protected final NutrientTank fuelTank;
+  protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
   private InventoryDatabaseServer dbServer;
@@ -48,7 +49,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
-    this.fuelTank = new NutrientTank(2000);
+    this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, 2000);
   }
 
   public InventoryDatabaseServer getDatabaseServer() {
@@ -294,7 +295,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public NutrientTank getNutrientTank() {
+  public SmartTank getNutrientTank() {
     return fuelTank;
   }
 
