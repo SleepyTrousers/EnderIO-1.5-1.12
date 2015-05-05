@@ -145,7 +145,7 @@ item.bucketXpjuice.name=Sceau d'Exp. Liquide
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Détails du carburant
-enderio.fuel.tooltip.burnTime=temps de combustion
+enderio.fuel.tooltip.burnTime=temps de combustion {0,number}
 enderio.fluid.millibucketsTick=mB/t
 enderio.coolant.tooltip.heading=Liquide de refroidissement
 enderio.coolant.tooltip.degreesPerBucket=Degrés par sceau
