@@ -49,6 +49,15 @@ public final class BlockCoord {
     return new BlockCoord(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
   }
   
+  public BlockCoord getLocation(ForgeDirection dir1, int dist1) {
+    return new BlockCoord(x + dir1.offsetX * dist1, y + dir1.offsetY * dist1, z + dir1.offsetZ * dist1);
+  }
+
+  public BlockCoord getLocation(ForgeDirection dir1, int dist1, ForgeDirection dir2, int dist2) {
+    return new BlockCoord(x + dir1.offsetX * dist1 + dir2.offsetX * dist2, y + dir1.offsetY * dist1 + dir2.offsetY * dist2, z
+        + dir1.offsetZ * dist1 + dir2.offsetZ * dist2);
+  }
+
   public BlockCoord(String x, String y, String z) {
     this(Strings.isNullOrEmpty(x) ? 0 : Integer.parseInt(x),
          Strings.isNullOrEmpty(y) ? 0 : Integer.parseInt(y),

@@ -35,7 +35,7 @@ import crazypants.util.Lang;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
 
-  private static final int TICKS_PER_WORK = 20;
+  private static final int TICKS_PER_NOTIFICATION = 20;
 
   public enum ToolType {
     HOE {
@@ -111,8 +111,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public static final String NOTIFICATION_NO_HOE = "noHoe";
   public static final String NOTIFICATION_NO_AXE = "noAxe";
   public static final String NOTIFICATION_NO_SEEDS = "noSeeds";
+  public static final String NOTIFICATION_NO_POWER = "noPower";
 
-  private BlockCoord lastScanned;
+  private int scanPos = 0;
   private EntityPlayerMP farmerJoe;
 
   public static final int NUM_TOOL_SLOTS = 3;
@@ -145,6 +146,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public int getFarmSize() {
     return Config.farmDefaultSize + getUpgradeDist();
+  }
+
+  public int getFarmSideLength() {
+    return getFarmSize() * 2 + 1;
+  }
+
+  public int getFarmArea() {
+    return getFarmSideLength() * getFarmSideLength();
   }
 
   public void actionPerformed(boolean isAxe) {
@@ -386,7 +395,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return false;
     }
     if(getEnergyStored() < getPowerUsePerTick()) {
-      setNotification("noPower");
+      setNotification(NOTIFICATION_NO_POWER);
       return false;
     }
     return true;
@@ -394,27 +403,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   protected void doTick() {
 
-    if (sendNotification && shouldDoWorkThisTick(TICKS_PER_WORK)) {
+    if (sendNotification && shouldDoWorkThisTick(TICKS_PER_NOTIFICATION)) {
       sendNotification = false;
       sendNotification();
     }
 
     if(!hasPower() && Config.farmActionEnergyUseRF > 0 && Config.farmAxeActionEnergyUseRF > 0) {
-      setNotification("noPower");
+      setNotification(NOTIFICATION_NO_POWER);
       return;
     }
-    if("noPower".equals(notification)) {
+    if(NOTIFICATION_NO_POWER.equals(notification)) {
       clearNotification();
     }
 
+    int lastPos = scanPos;
     BlockCoord bc = getNextCoord();
-    if(bc != null && bc.equals(getLocation())) { //don't try and harvest ourselves
-      bc = getNextCoord();
-    }
-    if(bc == null) {
-      return;
-    }
-    lastScanned = bc;
 
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
     if(block == null) {
@@ -427,6 +430,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
     if(isOpen(bc)) {
       FarmersCommune.instance.prepareBlock(this, bc, block, meta);
+      // TODO: Return if true?
       block = worldObj.getBlock(bc.x, bc.y, bc.z);
     }
 
@@ -436,52 +440,76 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
 
     if(!hasPower() && Config.farmActionEnergyUseRF > 0 && Config.farmAxeActionEnergyUseRF > 0) {
-      setNotification("noPower");
+      setNotification(NOTIFICATION_NO_POWER);
       return;
     }
 
     if(!isOpen(bc)) {
-      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
-      if(harvest != null && harvest.getDrops() != null) {
-        PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
-        for (EntityItem ei : harvest.getDrops()) {
-          if(ei != null) {
-            insertHarvestDrop(ei, bc);
-            if(!ei.isDead) {
-              worldObj.spawnEntityInWorld(ei);
-            }
-          }
+      // harvest patches of plants in one go so it looks as if we are faster
+      // than we really are. Then reset position so the first harvested tile
+      // will be replanted in the next tick.
+      if (harvest(bc, block, meta)) {
+        boolean working = true;
+        while (working) {
+          bc = getNextCoord();
+          block = worldObj.getBlock(bc.x, bc.y, bc.z);
+          meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
+          working = hasPower() && harvest(bc, block, meta);
         }
+        scanPos = lastPos;
         return;
       }
     }
 
     if(!hasPower() && (Config.farmBonemealActionEnergyUseRF > 0 || Config.farmBonemealTryEnergyUseRF > 0)) {
-      setNotification("noPower");
+      setNotification(NOTIFICATION_NO_POWER);
       return;
     }
 
     if (hasBonemeal() && bonemealCooldown-- <= 0) {
-      Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
-      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.x, bc.y, bc.z))) {
-        farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
-        farmerJoe.inventory.currentItem = 0;
-        if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
-          inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
-          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
-          if (inventory[minFirtSlot] != null && inventory[minFirtSlot].stackSize == 0) {
-            inventory[minFirtSlot] = null;
-          }
-          usePower(Config.farmBonemealActionEnergyUseRF);
-          bonemealCooldown = 20;
-        } else {
-          usePower(Config.farmBonemealTryEnergyUseRF);
-          bonemealCooldown = 5;
+      applyFertilizer(bc);
+    }
+  }
+
+  public void applyFertilizer(BlockCoord bc) {
+    Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
+    if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.x, bc.y, bc.z))) {
+      farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
+      farmerJoe.inventory.currentItem = 0;
+      if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
+        inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
+        PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+        if (inventory[minFirtSlot] != null && inventory[minFirtSlot].stackSize == 0) {
+          inventory[minFirtSlot] = null;
         }
-        farmerJoe.inventory.mainInventory[0] = null;
+        usePower(Config.farmBonemealActionEnergyUseRF);
+        bonemealCooldown = 20;
+      } else {
+        usePower(Config.farmBonemealTryEnergyUseRF);
+        bonemealCooldown = 5;
+      }
+      farmerJoe.inventory.mainInventory[0] = null;
+    }
+  }
+
+  public boolean harvest(BlockCoord bc, Block block, int meta) {
+    if (block != null) {
+      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
+      if (harvest != null && harvest.getDrops() != null) {
+        PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
+        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+        for (EntityItem ei : harvest.getDrops()) {
+          if (ei != null) {
+            insertHarvestDrop(ei, bc);
+            if (!ei.isDead) {
+              worldObj.spawnEntityInWorld(ei);
+            }
+          }
+        }
+        return true;
       }
     }
+    return false;
   }
 
   private int bonemealCooldown = 5; // no need to persist this
@@ -651,26 +679,22 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   private BlockCoord getNextCoord() {
+    int size = getFarmSideLength();
+    int offset = getFarmSize();
+    BlockCoord center = getLocation();
 
-    int size = getFarmSize();
-
-    BlockCoord loc = getLocation();
-    if(lastScanned == null) {
-      lastScanned = new BlockCoord(loc.x - size, loc.y, loc.z - size);
-      return lastScanned;
+    if (++scanPos >= getFarmArea()) {
+      scanPos = 0;
     }
 
-    int nextX = lastScanned.x + 1;
-    int nextZ = lastScanned.z;
-    if(nextX > loc.x + size) {
-      nextX = loc.x - size;
-      nextZ += 1;
-      if(nextZ > loc.z + size) {
-        lastScanned = null;
-        return getNextCoord();
-      }
+    BlockCoord next = center.getLocation(ForgeDirection.WEST, scanPos % size - offset, ForgeDirection.SOUTH, scanPos / size
+        - offset);
+
+    if (next.equals(center)) {
+      return getNextCoord();
     }
-    return new BlockCoord(nextX, lastScanned.y, nextZ);
+
+    return next;
   }
 
   public void toggleLockedState(int slot) {
