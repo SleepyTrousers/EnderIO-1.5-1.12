@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,7 +184,7 @@ public class TooltipAddera {
         if(showAdvancedTooltips()) {
           list.add(Lang.localize("fuel.tooltip.heading"));
           list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
-          list.add(EnumChatFormatting.ITALIC + " " + fuel.getTotalBurningTime() + " " + Lang.localize("fuel.tooltip.burnTime"));
+          list.add(EnumChatFormatting.ITALIC + " " + MessageFormat.format(Lang.localize("fuel.tooltip.burnTime"), fuel.getTotalBurningTime()));
         } else {
           addShowDetailsTooltip(list);
         }

@@ -311,6 +311,11 @@ public final class Config {
   public static String[] magnetBlacklist = new String[] { "appliedenergistics2:item.ItemCrystalSeed", "Botania:livingrock",
       "Botania:manaTablet" };
 
+  public static boolean magnetAllowInMainInventory = false;
+  public static boolean magnetAllowInBaublesSlot = true;
+  public static boolean magnetAllowDeactivatedInBaublesSlot = false;
+  public static String  magnetBaublesType = "AMULET";
+  
   public static boolean useCombustionGenModel = false;
 
   public static int crafterRfPerCraft = 2500;
@@ -1046,6 +1051,17 @@ public final class Config {
     magnetBlacklist = config.getStringList("magnetBlacklist", sectionMagnet.name, magnetBlacklist,
         "These items will not be picked up by the magnet.");
 
+    magnetAllowInMainInventory = config.get(sectionMagnet.name, "magnetAllowInMainInventory", magnetAllowInMainInventory,
+        "If true the magnet will also work in the main inventory, not just the hotbar").getBoolean(magnetAllowInMainInventory);
+    
+    magnetAllowInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowInBaublesSlot", magnetAllowInBaublesSlot,
+        "If true the magnet can be put into the 'amulet' Baubles slot (requires Baubles to be installed)").getBoolean(magnetAllowInBaublesSlot);
+    magnetAllowDeactivatedInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
+        "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getBoolean(magnetAllowDeactivatedInBaublesSlot);
+    
+    magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
+        "The BaulesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
+    
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
 

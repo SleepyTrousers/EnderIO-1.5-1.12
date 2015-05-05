@@ -146,7 +146,7 @@ item.bucketXpjuice.name=Ведро опыта
 enderio.fluid.millibucket.abr=мВ
 
 enderio.fuel.tooltip.heading=Информация о топливе
-enderio.fuel.tooltip.burnTime=время горения
+enderio.fuel.tooltip.burnTime=время горения {0,number}
 enderio.fluid.millibucketsTick=мВ/тик
 enderio.coolant.tooltip.heading=Хладагент
 enderio.coolant.tooltip.degreesPerBucket=Градус за ведро
