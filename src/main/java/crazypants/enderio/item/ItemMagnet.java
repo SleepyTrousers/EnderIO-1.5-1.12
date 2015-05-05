@@ -175,9 +175,15 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   @Override
-  @Method(modid = "Baubles")
+  @Method(modid = "Baubles|API")
   public BaubleType getBaubleType(ItemStack itemstack) {
-    return baubles.api.BaubleType.AMULET;
+    BaubleType t = null;
+    try {
+      t = BaubleType.valueOf(Config.magnetBaublesType);
+    } catch (Exception e) {
+      //NOP
+    }
+    return t != null ? t : BaubleType.AMULET;
   }
 
   @Override
@@ -208,7 +214,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
-    return isActive(itemstack);
+    return Config.magnetAllowInBaublesSlot && (Config.magnetAllowDeactivatedInBaublesSlot || isActive(itemstack));
   }
 
   @Override

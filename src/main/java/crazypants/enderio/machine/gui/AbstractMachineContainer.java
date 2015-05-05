@@ -160,39 +160,47 @@ public abstract class AbstractMachineContainer extends Container {
     return new SlotRange(startHotBarSlot, endHotBarSlot, false);
   }
 
+  protected void addInventorySlotRange(List<SlotRange> res, int start, int end) {
+    for (int i = start; i < end; i++) {
+      int slotNumber = getSlotFromInventory(tileEntity, i).slotNumber;
+      res.add(new SlotRange(slotNumber, slotNumber + 1, false));
+    }
+  }
+
   protected void addInputSlotRanges(List<SlotRange> res) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
     if(slotDef.getNumInputSlots() > 0) {
-      res.add(new SlotRange(slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false));
+      addInventorySlotRange(res, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1);
     }
   }
 
   protected void addUpgradeSlotRanges(List<SlotRange> res) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
     if(slotDef.getNumUpgradeSlots() > 0) {
-      res.add(new SlotRange(slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false));
+      addInventorySlotRange(res, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1);
     }
   }
 
   protected void addPlayerSlotRanges(List<SlotRange> res, int slotIndex) {
-    if(slotIndex <= endPlayerSlot) {
+    if (slotIndex < endPlayerSlot) {
       res.add(getPlayerHotbarSlotRange());
     }
-    if(slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+    if (slotIndex >= startHotBarSlot && slotIndex < endHotBarSlot) {
       res.add(getPlayerInventoryWithoutHotbarSlotRange());
     }
   }
 
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
-    SlotDefinition slotDef = tileEntity.getSlotDefinition();
-    if(slotDef.isInputSlot(slotIndex) || slotDef.isUpgradeSlot(slotIndex)) {
-      return Collections.singletonList(getPlayerInventorySlotRange(false));
-    }
-    if(slotDef.isOutputSlot(slotIndex)) {
-      return Collections.singletonList(getPlayerInventorySlotRange(true));
-    }
-    if(slotIndex >= startPlayerSlot) {
-      ArrayList<SlotRange> res = new ArrayList<SlotRange>();
+    if (slot.inventory == tileEntity) {
+      SlotDefinition slotDef = tileEntity.getSlotDefinition();
+      if (slotDef.isInputSlot(slot.slotNumber) || slotDef.isUpgradeSlot(slot.slotNumber)) {
+        return Collections.singletonList(getPlayerInventorySlotRange(false));
+      }
+      if (slotDef.isOutputSlot(slot.slotNumber)) {
+        return Collections.singletonList(getPlayerInventorySlotRange(true));
+      }
+    } else if (slotIndex >= startPlayerSlot) {
+      List<SlotRange> res = new ArrayList<SlotRange>();
       addInputSlotRanges(res);
       addUpgradeSlotRanges(res);
       addPlayerSlotRanges(res, slotIndex);
@@ -223,10 +231,10 @@ public abstract class AbstractMachineContainer extends Container {
         slot = (Slot) this.inventorySlots.get(checkIndex);
         itemstack1 = slot.getStack();
 
-        if(itemstack1 != null && itemstack1.getItem() == par1ItemStack.getItem()
+        if (itemstack1 != null && itemstack1.getItem() == par1ItemStack.getItem()
             && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == itemstack1.getItemDamage())
-            && ItemStack.areItemStackTagsEqual(par1ItemStack, itemstack1)
-            && slot.isItemValid(par1ItemStack)) {
+            && ItemStack.areItemStackTagsEqual(par1ItemStack, itemstack1) && slot.isItemValid(par1ItemStack)
+            && par1ItemStack != itemstack1) {
 
           int mergedSize = itemstack1.stackSize + par1ItemStack.stackSize;
           int maxStackSize =  Math.min(par1ItemStack.getMaxStackSize(), slot.getSlotStackLimit());

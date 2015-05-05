@@ -135,7 +135,7 @@ item.bucketXpjuice.name=Balde de XP
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Detalhes do Combustível
-enderio.fuel.tooltip.burnTime=tempo de queima
+enderio.fuel.tooltip.burnTime=tempo de queima {0,number}
 enderio.fluid.millibucketsTick=mB/t
 enderio.coolant.tooltip.heading=Refrigerante
 enderio.coolant.tooltip.degreesPerBucket=Graus por balde

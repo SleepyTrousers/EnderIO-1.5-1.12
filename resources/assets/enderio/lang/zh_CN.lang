@@ -144,7 +144,7 @@ item.bucketXpjuice.name=桶装液态XP
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=燃料详情
-enderio.fuel.tooltip.burnTime=燃烧时间
+enderio.fuel.tooltip.burnTime=燃烧时间 {0,number}
 enderio.fluid.millibucketsTick=mB/t
 coolant.tooltip.heading=冷却剂
 enderio.fuel.tooltip.degreesPerBucket=deg per bucket

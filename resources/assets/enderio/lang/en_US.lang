@@ -153,7 +153,7 @@ item.bucketXpjuice.name=XP Bucket
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Fuel Details
-enderio.fuel.tooltip.burnTime=burn time
+enderio.fuel.tooltip.burnTime=burn time {0,number}
 enderio.fluid.millibucketsTick=mB/t
 enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
@@ -1054,6 +1054,7 @@ enderio.keybind.magnet=Toggle Electromagnet
 enderio.nei.alloysmelter=Alloy Smelter
 enderio.nei.enchanter=Enchanter
 enderio.nei.sagmill=SAG Mill
+enderio.nei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
 enderio.nei.slicensplice=Slice'N'Splice
 enderio.nei.soulbinder=Soul Binder
 enderio.nei.vat=Vat

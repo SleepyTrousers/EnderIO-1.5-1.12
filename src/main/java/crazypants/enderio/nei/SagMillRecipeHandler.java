@@ -1,6 +1,7 @@
 package crazypants.enderio.nei;
 
 import java.awt.Rectangle;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -126,11 +127,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     float chance = recipe.getChanceForOutput(stack);
     if(chance > 0 && chance < 1) {
       int chanceInt = (int) (chance * 100);
-      if(chanceInt == 0) {
-        currenttip.add(EnumChatFormatting.GRAY + "Chance: <1%");
-      } else {
-        currenttip.add(EnumChatFormatting.GRAY + "Chance: " + chanceInt + "%");
-      }
+      currenttip.add(EnumChatFormatting.GRAY + MessageFormat.format(StatCollector.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
     }
     return currenttip;
   }
