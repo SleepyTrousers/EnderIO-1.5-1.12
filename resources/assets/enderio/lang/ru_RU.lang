@@ -604,8 +604,6 @@ item.darkSteel_pickaxe.name=Тёмная кирка
 item.darkSteel_axe.name=Тёмный топор
 item.darkSteel_shears.name=Тёмные ножницы
 
-enderio.item.tooltip.showDetails=<Зажмите Shift>
-enderio.item.darkSteel.tooltip.durability=Прочность:
 enderio.item.darkSteel.tooltip.lvs=уровней
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность при питании

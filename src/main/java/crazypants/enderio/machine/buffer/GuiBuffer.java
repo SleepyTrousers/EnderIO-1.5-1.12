@@ -155,7 +155,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    String invName = EnderIO.lang.localize(getTileEntity().getInventoryName() + ".name", false);
+    String invName = EnderIO.lang.localizeExact(getTileEntity().getInventoryName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if(getTileEntity().hasPower()) {

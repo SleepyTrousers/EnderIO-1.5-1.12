@@ -189,7 +189,7 @@ public class DarkSteelRecipeManager {
     if(!applyableUpgrades.isEmpty()) {
       list.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
+        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
         list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
             + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
       }

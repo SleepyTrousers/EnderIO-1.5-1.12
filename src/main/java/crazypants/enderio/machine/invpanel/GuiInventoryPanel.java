@@ -109,7 +109,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     headerCrafting = EnderIO.lang.localize("gui.inventorypanel.header.crafting");
     headerReturn = EnderIO.lang.localize("gui.inventorypanel.header.return");
-    headerInventory = EnderIO.lang.localize("container.inventory", false);
+    headerInventory = EnderIO.lang.localizeExact("container.inventory");
     infoTextFilter = EnderIO.lang.localize("gui.inventorypanel.info.filter");
     infoTextOffline = EnderIO.lang.localize("gui.inventorypanel.info.offline");
 

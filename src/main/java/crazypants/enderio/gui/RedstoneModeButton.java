@@ -61,7 +61,7 @@ public class RedstoneModeButton extends IconButton {
 
   public void setTooltipKey(String tooltipKey) {
     this.tooltipKey = tooltipKey;
-    setToolTip(EnderIO.lang.localize(tooltipKey, false), model.getRedstoneControlMode().getTooltip());
+    setToolTip(EnderIO.lang.localizeExact(tooltipKey), model.getRedstoneControlMode().getTooltip());
   }
 
   private void nextMode() {
@@ -83,7 +83,7 @@ public class RedstoneModeButton extends IconButton {
       return;
     }
     curMode = mode;
-    setToolTip(EnderIO.lang.localize(tooltipKey, false), mode.getTooltip());
+    setToolTip(EnderIO.lang.localizeExact(tooltipKey), mode.getTooltip());
     setIcon(ICONS[mode.ordinal()]);
     model.setRedstoneControlMode(mode);
     if(bc != null) {

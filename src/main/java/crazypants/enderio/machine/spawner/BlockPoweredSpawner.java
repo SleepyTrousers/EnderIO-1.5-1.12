@@ -295,7 +295,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     if(type != null) {
       list.add(StatCollector.translateToLocal("entity." + type + ".name"));
     } else {
-      list.add(EnderIO.lang.localize("tile.blockPoweredSpawner.tooltip.empty", false));
+      list.add(EnderIO.lang.localizeExact("tile.blockPoweredSpawner.tooltip.empty"));
     }
   }
 

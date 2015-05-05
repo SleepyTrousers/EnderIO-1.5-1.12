@@ -140,7 +140,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         .getMaxEnergyStored()));
     if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Items")) {
       NBTTagList itemList = (NBTTagList) itemstack.stackTagCompound.getTag("Items");
-      String msg = EnderIO.lang.localize("tile.blockCapBank.tooltip.hasItems", false);
+      String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
       list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
     }
   }

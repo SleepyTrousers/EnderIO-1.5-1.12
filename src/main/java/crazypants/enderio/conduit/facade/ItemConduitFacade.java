@@ -190,7 +190,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == FacadeType.HARDENED.ordinal()) {
       list.add("");
-      list.add(EnderIO.lang.localize(getUnlocalizedName(itemstack) + ".tooltip", false));
+      list.add(EnderIO.lang.localizeExact(getUnlocalizedName(itemstack) + ".tooltip"));
     }
   }
 

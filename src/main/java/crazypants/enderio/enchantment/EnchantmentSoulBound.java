@@ -159,6 +159,6 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
   @Override
   public String[] getTooltipDetails(ItemStack stack) {
-    return new String[] { EnderIO.lang.localize("description.enchantment.enderio.soulBound", false) };
+    return new String[] { EnderIO.lang.localizeExact("description.enchantment.enderio.soulBound") };
   }
 }

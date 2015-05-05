@@ -524,9 +524,6 @@ item.darkSteel_sword.name=디 엔더
 item.darkSteel_pickaxe.name=암흑의 곡괭이
 item.darkSteel_axe.name=암흑의 도끼
 
-enderio.item.tooltip.showDetails=<Shift를 누르십시오>
-enderio.item.darkSteel.tooltip.durability=내구도:
-
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=충전되어 있을 시 채굴 속도가 증가합니다.
 enderio.item.darkSteel_pickaxe.tooltip.effObs=흑요석에 대한 채굴 속도가 증가합니다.
 

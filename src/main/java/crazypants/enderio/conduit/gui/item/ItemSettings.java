@@ -119,7 +119,7 @@ public class ItemSettings extends BaseSettingsPanel {
     ArrayList<String> list = new ArrayList<String>();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
     for(FunctionUpgrade upgrade : FunctionUpgrade.values()) {
-      list.add(EnderIO.lang.localize(upgrade.unlocName.concat(".name"), false));
+      list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
     }
     functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 34, 18, 18), list) {
       @Override

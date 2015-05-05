@@ -535,7 +535,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(stack.hasDisplayName()) {
       name = stack.getDisplayName();
     } else {
-      name = EnderIO.lang.localize(stack.getUnlocalizedName() + ".name", false);
+      name = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
     }
     name += " " + EnderIO.lang.localize("machine.tooltip.configured");
     stack.setStackDisplayName(name);

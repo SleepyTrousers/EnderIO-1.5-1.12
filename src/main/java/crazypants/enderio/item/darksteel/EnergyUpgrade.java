@@ -202,7 +202,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
 
     List<String> upgradeStr = new ArrayList<String>();
-    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localize(getUnlocalizedName() + ".name", false));
+    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
     SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
     String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";

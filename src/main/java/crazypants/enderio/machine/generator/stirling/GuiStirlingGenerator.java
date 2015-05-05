@@ -52,7 +52,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   private static String formatUpgrade(MessageFormat fmt, Capacitors upgrade) {
     float efficiency = getFactor(upgrade) / getFactor(Capacitors.BASIC_CAPACITOR);
     Object[] args = new Object[] {
-      EnderIO.lang.localize(upgrade.unlocalisedName.concat(".name"), false),
+      EnderIO.lang.localizeExact(upgrade.unlocalisedName.concat(".name")),
       efficiency,
       EnumChatFormatting.WHITE,
       EnumChatFormatting.GRAY

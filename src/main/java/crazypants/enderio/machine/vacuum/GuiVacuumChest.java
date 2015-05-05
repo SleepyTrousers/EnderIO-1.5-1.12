@@ -96,7 +96,7 @@ public class GuiVacuumChest extends GuiContainerBase {
     headerChest = EnderIO.lang.localize("gui.vacuum.header.chest");
     headerFilter = EnderIO.lang.localize("gui.vacuum.header.filter");
     headerRange = EnderIO.lang.localize("gui.vacuum.header.range");
-    headerInventory = EnderIO.lang.localize("container.inventory", false);
+    headerInventory = EnderIO.lang.localizeExact("container.inventory");
 
     ((ContainerVacuumChest)inventorySlots).setFilterChangedCB(new Runnable() {
       @Override

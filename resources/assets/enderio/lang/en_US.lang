@@ -649,8 +649,6 @@ item.darkSteel_pickaxe.name=Dark Pick
 item.darkSteel_axe.name=Dark Axe
 item.darkSteel_shears.name=Dark Shears
 
-enderio.item.tooltip.showDetails=<Hold Shift>
-enderio.item.darkSteel.tooltip.durability=Durability:
 enderio.item.darkSteel.tooltip.lvs=lvs
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
