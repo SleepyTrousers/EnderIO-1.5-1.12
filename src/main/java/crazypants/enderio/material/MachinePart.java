@@ -7,7 +7,8 @@ public enum MachinePart {
   MACHINE_FRAME("machineFrame", true, true, true, null, false, false), //
   FRAME_TANK("frameTank", true, true, false, null, false, true), //
   FRAME_TANKS("frameTanks", true, true, false, null, true, false), //
-  MACHINE_FRAME_TANK("machineFrameTank", true, true, true, null, true, false); //
+  MACHINE_FRAME_TANK("machineFrameTank", true, true, true, null, true, false), //
+  COBBLE_CONTROLLER("cobbleController", true, true, false, "cobbleController", false, false); //
 
   public final String unlocalisedName;
   public final String iconKey;

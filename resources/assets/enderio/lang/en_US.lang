@@ -167,6 +167,7 @@ enderio.machineFrame.name=Empty Machine Framework
 enderio.frameTank.name=Machine Framework Tank
 enderio.frameTanks.name=Machine Framework Tanks
 enderio.machineFrameTank.name=Empty Machine Framework with Tanks
+enderio.cobbleController.name=Cobblestone Framework Controller
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.enderCrystal.name=Ender Crystal
@@ -474,6 +475,12 @@ tile.blockWeatherObelisk.name=Weather Obelisk
 tile.blockWeatherObelisk.tooltip.detailed.line1=Changes the current weather
 tile.blockWeatherObelisk.tooltip.detailed.line2=Requires a lot of power and
 tile.blockWeatherObelisk.tooltip.detailed.line3=a catalyst item
+
+tile.blockCobbleworks.name=Cobblestone Framework
+tile.blockCobbleworks.tooltip.detailed.line1=Creates cobblestone from energy.
+tile.blockCobbleworks.tooltip.detailed.line2=Can be upgraded with Alloy Smelters,
+tile.blockCobbleworks.tooltip.detailed.line3=SAG Mills and Crafters to produce
+tile.blockCobbleworks.tooltip.detailed.line4=different materials.
 
 tile.blockBuffer.item.name=Item Buffer
 tile.blockBuffer.power.name=Power Buffer

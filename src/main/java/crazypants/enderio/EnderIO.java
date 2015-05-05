@@ -82,6 +82,7 @@ import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.cobbleworks.BlockCobbleworks;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
@@ -304,6 +305,7 @@ public class EnderIO {
 
   public static BlockVacuumChest blockVacuumChest;
   public static AbstractBlockFramework abstractBlockFramework;
+  public static BlockCobbleworks blockCobbleworks;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -366,6 +368,7 @@ public class EnderIO {
     blockWeatherObelisk = BlockWeatherObelisk.create();
     blockInhibitorObelisk = BlockInhibitorObelisk.create();
     blockEnchanter = BlockEnchanter.create();
+    blockCobbleworks = BlockCobbleworks.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();

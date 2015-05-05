@@ -70,6 +70,10 @@ import crazypants.enderio.machine.TechneMachineRenderer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.render.CapBankRenderer;
+import crazypants.enderio.machine.cobbleworks.BlockCobbleworks;
+import crazypants.enderio.machine.cobbleworks.RendererCobbleworks;
+import crazypants.enderio.machine.cobbleworks.TESRCobbleworks;
+import crazypants.enderio.machine.cobbleworks.TileCobbleworks;
 import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -320,6 +324,10 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), vcr);
 
     RendererFrameworkMachine rendererFrameworkMachine = new RendererFrameworkMachine();
+
+    BlockCobbleworks.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new RendererCobbleworks(rendererFrameworkMachine));
+    ClientRegistry.bindTileEntitySpecialRenderer(TileCobbleworks.class, new TESRCobbleworks());
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer(rendererFrameworkMachine));
 
