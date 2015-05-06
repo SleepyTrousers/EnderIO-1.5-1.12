@@ -19,8 +19,10 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.BlockPlaceUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.HoeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
@@ -71,6 +73,8 @@ public class DarkSteelRecipeManager {
       upgrades.add(ApiaristArmorUpgrade.LEGS);
       upgrades.add(ApiaristArmorUpgrade.BOOTS);
     }
+    upgrades.add(BlockPlaceUpgrade.INSTANCE);
+    upgrades.add(HoeUpgrade.INSTANCE);
   }
 
   @SubscribeEvent

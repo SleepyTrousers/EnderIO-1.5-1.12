@@ -237,6 +237,8 @@ public final class Config {
 
   public static int darkSteelTravelCost = 30;
   public static int darkSteelSpoonCost = 10;
+  public static int darkSteelBlockPlaceCost = 5;
+  public static int darkSteelHoeCost = 10;
 
   public static int darkSteelSolarOneGen = 10;
   public static int darkSteelSolarOneCost = 15;
@@ -859,6 +861,12 @@ public final class Config {
 
     darkSteelSpoonCost = config.get(sectionDarkSteel.name, "darkSteelSpoonCost", darkSteelSpoonCost,
         "Number of levels required for the 'Spoon' upgrade.").getInt(darkSteelSpoonCost);
+
+    darkSteelBlockPlaceCost = config.get(sectionDarkSteel.name, "darkSteelBlockPlaceCost", darkSteelBlockPlaceCost,
+        "Number of levels required for the 'Block Placer' upgrade.").getInt(darkSteelBlockPlaceCost);
+
+    darkSteelHoeCost = config.get(sectionDarkSteel.name, "darkSteelHoeCost", darkSteelHoeCost,
+        "Number of levels required for the 'Hoe' upgrade.").getInt(darkSteelHoeCost);
 
     darkSteelSolarOneCost = config.get(sectionDarkSteel.name, "darkSteelSolarOneCost", darkSteelSolarOneCost,
         "Cost in XP levels of the Solar I upgrade.").getInt();

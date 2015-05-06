@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
@@ -27,16 +32,25 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.item.darksteel.upgrade.BlockPlaceUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.HoeUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IRightClickUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.IShiftRightClickUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.ISpoonUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
+public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem,
+    IRightClickUpgradable, IShiftRightClickUpgradable, IItemOfTravel, ISpoonUpgradable {
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -165,14 +179,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    if (world.isRemote) {
-      return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
-    }
-    return false;
-  }
-
-  @Override
   public void setDamage(ItemStack stack, int newDamage) {
     int oldDamage = getDamage(stack);
     if (newDamage <= oldDamage) {
@@ -295,6 +301,104 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
 
+  }
+
+  /* Upgrades Start */
+
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
+    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+  }
+
+  @Override
+  public boolean hasRightClickUpgrade(ItemStack item) {
+    return hasBlockPlaceUpgrade(item) || hasHoeUpgrade(item);
+  }
+
+  private boolean hasBlockPlaceUpgrade(ItemStack item) {
+    return BlockPlaceUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasSpoonUpgrade(ItemStack item) {
+    return SpoonUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasHoeUpgrade(ItemStack item) {
+    return HoeUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasTravelUpgrade(ItemStack item) {
+    return TravelUpgrade.loadFromItem(item) != null;
+  }
+
+  @Override
+  public boolean hasShiftRightClickUpgrade(ItemStack item) {
+    return hasTravelUpgrade(item);
+  }
+
+  @Override
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9,
+      float par10) {
+    if (player.isSneaking()) {
+      if (isTravelUpgradeActive(player, item) && TravelUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
+      }
+    } else {
+      if (hasBlockPlaceUpgrade(item) && BlockPlaceUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
+      }
+      if (hasHoeUpgrade(item) && HoeUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    if (player.isSneaking()) {
+      if (isTravelUpgradeActive(player, stack) && TravelUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+    } else {
+      if (hasBlockPlaceUpgrade(stack) && BlockPlaceUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+      if (hasHoeUpgrade(stack) && HoeUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+    }
+
+    return super.onItemRightClick(stack, world, player);
+  }
+
+  /* Upgrades End */
+
+  @Override
+  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
+    return isTravelUpgradeActive(ep, equipped);
+  }
+
+  @Override
+  public void extractInternal(ItemStack equipped, int power) {
+    extractEnergy(equipped, power, false);
+  }
+
+  @Override
+  public Set<String> getToolClasses(ItemStack stack) {
+    if (hasSpoonUpgrade(stack)) {
+      return ImmutableSet.of("axe", "shovel");
+    }
+    return super.getToolClasses(stack);
+  }
+
+  @Override
+  public boolean canHarvestBlock(Block block, ItemStack item) {
+    if (hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
+      return block == Blocks.snow_layer ? true : block == Blocks.snow || super.canHarvestBlock(block, item);
+    } else {
+      return super.canHarvestBlock(block, item);
+    }
   }
 
 }
