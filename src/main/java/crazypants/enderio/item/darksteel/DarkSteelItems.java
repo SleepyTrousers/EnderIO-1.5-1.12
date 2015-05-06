@@ -20,6 +20,7 @@ public class DarkSteelItems {
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
   public static ItemDarkSteelShears itemDarkSteelShears;
+  public static ItemDarkSteelHoe itemDarkSteelHoe;
 
   private DarkSteelItems() {
   }
@@ -36,6 +37,7 @@ public class DarkSteelItems {
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
     itemDarkSteelShears = ItemDarkSteelShears.create();
+    itemDarkSteelHoe = ItemDarkSteelHoe.create();
 
   }
 
@@ -66,5 +68,6 @@ public class DarkSteelItems {
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemDarkSteelHoe, dsr);
   }
 }

@@ -213,6 +213,8 @@ public final class Config {
   public static int darkSteelShearsBlockAreaBoostWhenPowered = 2;
   public static float darkSteelShearsEntityAreaBoostWhenPowered = 3.0f;
 
+  public static int darkSteelHoePowerUsePerDamagePoint = 750;
+
   public static int darkSteelUpgradeVibrantCost = 10;
   public static int darkSteelUpgradePowerOneCost = 10;
   public static int darkSteelUpgradePowerTwoCost = 15;
@@ -957,6 +959,10 @@ public final class Config {
         "The increase in effected area (radius) when powered and used on blocks.").getInt(darkSteelShearsBlockAreaBoostWhenPowered);
     darkSteelShearsEntityAreaBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelShearsEntityAreaBoostWhenPowered",
         darkSteelShearsEntityAreaBoostWhenPowered, "The increase in effected area (radius) when powered and used on sheep.").getDouble(darkSteelShearsEntityAreaBoostWhenPowered);
+
+    darkSteelHoePowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelHoePowerUsePerDamagePoint",
+        darkSteelHoePowerUsePerDamagePoint, "Power use (RF) per damage/durability point avoided.").getInt(
+        darkSteelHoePowerUsePerDamagePoint);
 
     darkSteelAnvilDamageChance = (float) config.get(sectionDarkSteel.name, "darkSteelAnvilDamageChance", darkSteelAnvilDamageChance, "Chance that the dark steel anvil will take damage after repairing something.").getDouble();
 

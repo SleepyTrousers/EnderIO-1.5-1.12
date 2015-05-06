@@ -19,6 +19,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.ItemDarkSteelHoe;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
@@ -41,6 +42,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     HOE {
       @Override
       boolean match(ItemStack item) {
+        if (item.getItem() instanceof ItemDarkSteelHoe) {
+          return true;
+        }
         for (ItemStack stack : Config.farmHoes) {
           if (stack.getItem() == item.getItem()) {
             return true;
