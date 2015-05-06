@@ -39,6 +39,8 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.teleport.TravelController;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
@@ -294,7 +296,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       if(eu != null) {
         eu.writeToItem(sword);
 
-        if(eu.energy > Config.darkSteelSwordPowerUsePerHit) {
+        if(eu.getEnergy() > Config.darkSteelSwordPowerUsePerHit) {
           extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelSwordPowerUsePerHit, false);
           String name = EntityList.getEntityString(entity);
           if(entity instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {

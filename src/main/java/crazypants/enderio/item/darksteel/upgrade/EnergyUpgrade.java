@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.IDarkSteelItem;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
 
@@ -202,7 +204,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
 
     List<String> upgradeStr = new ArrayList<String>();
-    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
+    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localize(getUnlocalizedName() + ".name", false));
     SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
     String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";
@@ -214,6 +216,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
       upgradeStr.set(i, str);
     }
     list.addAll(upgradeStr);
+
   }
 
   @Override

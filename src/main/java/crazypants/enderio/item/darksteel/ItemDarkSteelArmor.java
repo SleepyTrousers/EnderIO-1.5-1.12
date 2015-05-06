@@ -34,6 +34,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import forestry.api.apiculture.IArmorApiarist;
 import forestry.api.core.IArmorNaturalist;
@@ -63,6 +67,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   static {
     FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
+    MinecraftForge.EVENT_BUS.register(DarkSteelController.instance);
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }
 

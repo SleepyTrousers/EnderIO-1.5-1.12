@@ -16,6 +16,8 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+
 public class PoweredItemRenderer implements IItemRenderer {
 
   private RenderItem ri = new RenderItem();
