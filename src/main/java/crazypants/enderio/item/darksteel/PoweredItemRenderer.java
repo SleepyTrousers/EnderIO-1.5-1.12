@@ -11,6 +11,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;

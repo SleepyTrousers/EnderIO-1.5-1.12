@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
 import java.util.List;
 
@@ -89,6 +89,11 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   @Override
   public String getUnlocalizedName() {
     return unlocName;
+  }
+  
+  @Override
+  public IRenderUpgrade getRender() {
+    return null;
   }
 
   @Override

@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.item.darksteel.IDarkSteelItem;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
 import crazypants.util.Lang;

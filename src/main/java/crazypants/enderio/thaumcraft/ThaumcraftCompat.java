@@ -15,7 +15,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.darksteel.IDarkSteelUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;

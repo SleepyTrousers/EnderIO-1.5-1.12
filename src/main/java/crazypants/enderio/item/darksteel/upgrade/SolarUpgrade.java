@@ -1,11 +1,24 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.render.RenderUtil;
+
+import static org.lwjgl.opengl.GL11.glDepthMask;
 
 public class SolarUpgrade extends AbstractUpgrade {
 
@@ -15,6 +28,8 @@ public class SolarUpgrade extends AbstractUpgrade {
   
   public static final SolarUpgrade SOLAR_ONE = new SolarUpgrade("enderio.darksteel.upgrade.solar_one", (byte) 1, Config.darkSteelSolarOneCost);
   public static final SolarUpgrade SOLAR_TWO = new SolarUpgrade("enderio.darksteel.upgrade.solar_two", (byte) 2, Config.darkSteelSolarTwoCost);
+  
+  private Render render = new Render();
 
   public static SolarUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
@@ -85,5 +100,34 @@ public class SolarUpgrade extends AbstractUpgrade {
 
   public int getRFPerSec() {
     return level == 1 ? Config.darkSteelSolarOneGen : Config.darkSteelSolarTwoGen;
+  }
+  
+  @Override
+  public IRenderUpgrade getRender() {
+    return render;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  private class Render implements IRenderUpgrade {
+
+    private EntityItem item = new EntityItem(Minecraft.getMinecraft().theWorld);
+    private ItemStack panel1 = new ItemStack(EnderIO.blockSolarPanel, 1, 0);
+    private ItemStack panel2 = new ItemStack(EnderIO.blockSolarPanel, 1, 1);
+
+    @Override
+    public void render(RenderPlayerEvent event, ItemStack stack, boolean head) {
+      if (head) {
+        RenderUtil.bindItemTexture();
+        glDepthMask(true);
+        item.hoverStart = 0;
+        GL11.glTranslated(0, -0.08, 0);
+        GL11.glTranslated(0, (event.entityPlayer != Minecraft.getMinecraft().thePlayer ? 1.62F : 0F) - event.entityPlayer.getDefaultEyeHeight() + (event.entityPlayer.isSneaking() ? 0.0625 : 0), 0);
+        GL11.glRotated(180, 1, 0, 0);
+        GL11.glScalef(2.1f, 2.1f, 2.1f);
+        byte level = loadFromItem(stack).level;
+        item.setEntityItemStack(level == 0 ? panel1 : panel2);
+        RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
+      }
+    }
   }
 }
