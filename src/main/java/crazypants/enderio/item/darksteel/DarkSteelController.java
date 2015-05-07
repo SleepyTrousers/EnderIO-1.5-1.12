@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -17,6 +18,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import org.lwjgl.opengl.GL11;
 
@@ -28,6 +30,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
@@ -77,8 +80,21 @@ public class DarkSteelController {
   private DarkSteelController() {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
+  public boolean isActive(EntityPlayer player, Type type) {
+    switch(type) {
+    case GLIDE:
+      return isGlideActive(player);
+    case SPEED:
+      return isSpeedActive(player);
+    case STEP_ASSIST:
+      return isStepAssistActive(player);
+    }
+    return false;
+  }
+  
   public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
     if(player.getGameProfile().getId() != null) {
       glideActiveMap.put(player.getGameProfile().getId(), isGlideActive);
@@ -359,6 +375,15 @@ public class DarkSteelController {
       res = armor.getEnergyStored(stack);
     }
     return res;
+  }
+  
+  @SubscribeEvent
+  public void onStartTracking(PlayerEvent.StartTracking event) {
+    if (event.target instanceof EntityPlayerMP) {
+      for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
+        PacketHandler.sendTo(new PacketUpgradeState(type, isActive((EntityPlayer) event.target, type), event.target.getEntityId()), (EntityPlayerMP) event.entityPlayer);
+      }
+    }
   }
 
   @SideOnly(Side.CLIENT)
