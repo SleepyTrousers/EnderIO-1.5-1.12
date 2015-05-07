@@ -92,6 +92,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   }
   
   @Override
+  @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
     return null;
   }

@@ -22,7 +22,8 @@ public class GliderUpgrade extends AbstractUpgrade {
   
   public static final GliderUpgrade INSTANCE = new GliderUpgrade();
   
-  private final Render render = new Render();
+  @SideOnly(Side.CLIENT)
+  private Render render;
   
   public static GliderUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
@@ -59,8 +60,9 @@ public class GliderUpgrade extends AbstractUpgrade {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
-    return render;
+    return render == null ? render = new Render() : render;
   }
 
   @Override
