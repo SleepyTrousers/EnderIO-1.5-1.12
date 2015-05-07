@@ -40,6 +40,7 @@ import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade.Helper;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Util;
@@ -428,6 +429,9 @@ public class DarkSteelController {
     float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.partialRenderTick;
 
     GL11.glPushMatrix();
+    if(player.isSneaking()) {
+      GL11.glTranslatef(0, 0.0625f, 0);
+    }
     GL11.glRotatef(yawOffset, 0, -1, 0);
     GL11.glRotatef(yaw - 270, 0, 1, 0);
     GL11.glRotatef(pitch, 0, 0, 1);

@@ -16,8 +16,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade.Helper;
 import crazypants.render.RenderUtil;
-
 import static org.lwjgl.opengl.GL11.glDepthMask;
 
 public class SolarUpgrade extends AbstractUpgrade {
@@ -106,7 +106,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   public IRenderUpgrade getRender() {
     return render;
   }
-  
+
   @SideOnly(Side.CLIENT)
   private class Render implements IRenderUpgrade {
 
@@ -120,8 +120,8 @@ public class SolarUpgrade extends AbstractUpgrade {
         RenderUtil.bindItemTexture();
         glDepthMask(true);
         item.hoverStart = 0;
+        Helper.translateToHeadLevel(event.entityPlayer);
         GL11.glTranslated(0, -0.08, 0);
-        GL11.glTranslated(0, (event.entityPlayer != Minecraft.getMinecraft().thePlayer ? 1.62F : 0F) - event.entityPlayer.getDefaultEyeHeight() + (event.entityPlayer.isSneaking() ? 0.0625 : 0), 0);
         GL11.glRotated(180, 1, 0, 0);
         GL11.glScalef(2.1f, 2.1f, 2.1f);
         byte level = loadFromItem(stack).level;
