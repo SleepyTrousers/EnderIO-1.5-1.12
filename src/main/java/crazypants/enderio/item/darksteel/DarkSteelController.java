@@ -2,10 +2,12 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.particle.EntityReddustFX;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -40,7 +42,6 @@ import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade.Helper;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Util;
@@ -480,6 +481,14 @@ public class DarkSteelController {
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
       player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.jump", 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f, false);
+      Random rand = player.worldObj.rand;
+      for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
+        EntityReddustFX fx = new EntityReddustFX(player.worldObj, player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.yOffset, player.posZ
+            + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
+        fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
+            player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+        Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+      }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
     }
 

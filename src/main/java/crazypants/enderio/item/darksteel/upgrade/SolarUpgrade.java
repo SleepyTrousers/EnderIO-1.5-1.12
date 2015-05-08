@@ -122,7 +122,7 @@ public class SolarUpgrade extends AbstractUpgrade {
         glDepthMask(true);
         item.hoverStart = 0;
         Helper.translateToHeadLevel(event.entityPlayer);
-        GL11.glTranslated(0, -0.08, 0);
+        GL11.glTranslated(0, -0.155, 0);
         GL11.glRotated(180, 1, 0, 0);
         GL11.glScalef(2.1f, 2.1f, 2.1f);
         byte level = loadFromItem(stack).level;
