@@ -238,6 +238,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     return cleared;
   }
 
+  public boolean hasCraftingRecipe() {
+    return getSlot(slotCraftResult).getHasStack();
+  }
+
   @Override
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
     if((slotIndex == slotCraftResult) || (slotIndex >= firstSlotReturn && slotIndex < endSlotReturn)) {
