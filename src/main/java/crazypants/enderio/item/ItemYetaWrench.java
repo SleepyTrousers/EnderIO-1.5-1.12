@@ -8,8 +8,10 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,7 +40,7 @@ import crazypants.enderio.tool.ToolUtil;
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
   public static ItemYetaWrench create() {
-    if(Config.useSneakMouseWheelYetaWrench) {
+    if (Config.useSneakMouseWheelYetaWrench) {
       PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
     }
     ItemYetaWrench result = new ItemYetaWrench();
@@ -69,26 +71,43 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
     Block block = world.getBlock(x, y, z);
     boolean ret = false;
-    if(block != null) {
+    if (block != null) {
       PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, side, world);
-      if(MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.useBlock == Result.DENY || e.useItem == Result.DENY) {
+      if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.useBlock == Result.DENY || e.useItem == Result.DENY) {
         return false;
       }
-      if(player.isSneaking() && block instanceof IDismantleable && ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
-        if(!world.isRemote) {
+      if (player.isSneaking() && block instanceof IDismantleable && ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
+        if (!world.isRemote) {
           ((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
         }
         ret = true;
-      } else if(!player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+      } else if (!player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        if (block == Blocks.chest) {
+          // This works around a forge bug where you can rotate double chests to invalid directions
+          TileEntityChest te = (TileEntityChest) world.getTileEntity(x, y, z);
+          if (te.adjacentChestXNeg != null || te.adjacentChestXPos != null || te.adjacentChestZNeg != null || te.adjacentChestZPos != null) {
+            // Render master is always the chest to the negative direction
+            TileEntityChest masterChest = te.adjacentChestXNeg == null && te.adjacentChestZNeg == null ? te : te.adjacentChestXNeg == null ? te.adjacentChestZNeg: te.adjacentChestXNeg;
+            if (masterChest != te) {
+              int meta = world.getBlockMetadata(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord);
+              // Black magic
+              int newMeta = meta + (meta % 2 == 0 ? 1 : -1);
+              world.setBlockMetadataWithNotify(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord, newMeta, 3);
+            } else {
+              // If this is the master chest, we can just rotate twice
+              block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side));
+            }
+          }
+        }
         ret = true;
-      } else if(block instanceof IRotatableFacade && !player.isSneaking()
+      } else if (block instanceof IRotatableFacade && !player.isSneaking()
           && (block != EnderIO.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
-        if(((IRotatableFacade) block).tryRotateFacade(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        if (((IRotatableFacade) block).tryRotateFacade(world, x, y, z, ForgeDirection.getOrientation(side))) {
           ret = true;
         }
       }
     }
-    if(ret) {
+    if (ret) {
       player.swingItem();
     }
     return ret && !world.isRemote;
@@ -96,14 +115,14 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
-    if(!Config.useSneakRightClickYetaWrench) {
+    if (!Config.useSneakRightClickYetaWrench) {
       return equipped;
     }
-    if(!player.isSneaking()) {
+    if (!player.isSneaking()) {
       return equipped;
     }
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
-    if(curMode == null) {
+    if (curMode == null) {
       curMode = ConduitDisplayMode.ALL;
     }
     ConduitDisplayMode newMode = curMode.next();
@@ -166,7 +185,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     ArrayList<String> tmp = new ArrayList<String>();
     TooltipAddera.addDetailedTooltipFromResources(tmp, getUnlocalizedName());
     String keyName = Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode());
-    for(String line : tmp) {
+    for (String line : tmp) {
       list.add(String.format(line, keyName));
     }
   }
