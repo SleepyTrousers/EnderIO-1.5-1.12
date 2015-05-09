@@ -25,6 +25,7 @@ import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
 import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
@@ -55,6 +56,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final TextFieldEIO tfFilter;
   private final IconButtonEIO btnSort;
   private final GuiToolTip ttRefill;
+  private final GuiToolTip ttSetReceipe;
   private final VScrollbarEIO scrollbar;
   private final MultiIconButtonEIO btnClear;
 
@@ -131,6 +133,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     addToolTip(ttRefill);
 
     list.clear();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.setrecipe.line");
+    ttSetReceipe = new GuiToolTip(btnRefill, list) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && getContainer().hasCraftingRecipe();
+      }
+    };
+    addToolTip(ttSetReceipe);
+
+    list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
@@ -147,6 +159,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   public void setCraftingHelper(ICraftingHelper craftingHelper) {
     this.craftingHelper = craftingHelper;
     ttRefill.setVisible(craftingHelper != null);
+    ttSetReceipe.setVisible(craftingHelper == null);
   }
 
   @Override
@@ -170,7 +183,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       if(getContainer().clearCraftingGrid()) {
         if(craftingHelper != null) {
           craftingHelper.remove();
-          craftingHelper = null;
+          setCraftingHelper(null);
         }
       }
     }
@@ -188,6 +201,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(craftingHelper != null) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
       int iconX = hover ? (isShiftKeyDown() ? 48 : 24) : 0;
+      drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
+    } else if(getContainer().hasCraftingRecipe()) {
+      boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
+      int iconX = hover ? 96 : 72;
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
     }
 
@@ -328,10 +345,19 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     x -= guiLeft;
     y -= guiTop;
 
-    if(craftingHelper != null && btnRefill.contains(x, y)) {
-      mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-      craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
+    if(btnRefill.contains(x, y)) {
+      if(craftingHelper != null) {
+        playClickSound();
+        craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
+      } else if(getContainer().hasCraftingRecipe()) {
+        playClickSound();
+        setCraftingHelper(CraftingHelper.createFromSlots(getContainer().getCraftingGridSlots()));
+      }
     }
+  }
+
+  private void playClickSound() {
+    mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
   }
 
   @Override
