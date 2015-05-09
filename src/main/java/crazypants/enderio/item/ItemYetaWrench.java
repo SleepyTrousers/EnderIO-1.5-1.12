@@ -90,9 +90,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
             TileEntityChest masterChest = te.adjacentChestXNeg == null && te.adjacentChestZNeg == null ? te : te.adjacentChestXNeg == null ? te.adjacentChestZNeg: te.adjacentChestXNeg;
             if (masterChest != te) {
               int meta = world.getBlockMetadata(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord);
-              // Black magic
-              int newMeta = meta + (meta % 2 == 0 ? 1 : -1);
-              world.setBlockMetadataWithNotify(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord, newMeta, 3);
+              world.setBlockMetadataWithNotify(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord, meta ^ 1, 3);
             } else {
               // If this is the master chest, we can just rotate twice
               block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side));
