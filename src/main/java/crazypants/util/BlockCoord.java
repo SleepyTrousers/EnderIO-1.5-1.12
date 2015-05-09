@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public final class BlockCoord {
@@ -51,11 +51,11 @@ public final class BlockCoord {
     return (int)Math.ceil(Math.sqrt(dsq)); 
   }
   
-  public Block getBlock(World world) {
+  public Block getBlock(IBlockAccess world) {
     return world.getBlock(x, y, z);
   }
 
-  public TileEntity getTileEntity(World world) {
+  public TileEntity getTileEntity(IBlockAccess world) {
     return world.getTileEntity(x, y, z);
   }
 
