@@ -33,8 +33,10 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.util.BlockCoord;
 import crazypants.util.IFacade;
 import crazypants.util.Lang;
+import crazypants.util.Util;
 
 public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade, IRotatableFacade {
 
@@ -185,7 +187,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     }
     return Blocks.anvil.getIcon(world, x, y, z, blockSide);
   }
-
+  
   @SideOnly(Side.CLIENT)
   @Override
   public void registerBlockIcons(IIconRegister IIconRegister) {
@@ -238,6 +240,11 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     public PainterTemplate() {
       super(Blocks.glowstone, BlockPaintedGlowstone.this);
       MinecraftForge.EVENT_BUS.register(this);
+    }
+    
+    @Override
+    public boolean isValidPaintSource(ItemStack paintSource) {
+      return super.isValidPaintSource(paintSource) && Util.getBlockFromItemId(paintSource).isOpaqueCube();
     }
 
     @Override
