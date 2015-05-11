@@ -1,7 +1,5 @@
 package crazypants.util;
 
-import com.google.common.base.Strings;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -11,8 +9,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.base.Strings;
 
 public final class BlockCoord {
 
@@ -126,10 +125,10 @@ public final class BlockCoord {
 
   public String chatString(EnumChatFormatting defaultColor) {
     return String.format(
-        "x%s%d%s y%s%d%s z%s%d",
+        "x%s%d%s y%s%d%s z%s%d%s",
         EnumChatFormatting.GREEN, x, defaultColor,
         EnumChatFormatting.GREEN, y, defaultColor,
-        EnumChatFormatting.GREEN, z
+        EnumChatFormatting.GREEN, z, defaultColor
         );
   }
 
