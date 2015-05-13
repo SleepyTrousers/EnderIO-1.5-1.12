@@ -194,7 +194,7 @@ public class EnderIO {
   //Teleporting
   public static BlockTravelAnchor blockTravelPlatform;
   public static BlockTelePad blockTelePad;
-  public static ItemCoordSelector itemCoordsCard;
+  public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
 
   // Painter
@@ -353,7 +353,7 @@ public class EnderIO {
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
     blockTelePad = BlockTelePad.create();
-    itemCoordsCard = ItemCoordSelector.create();
+    itemCoordSelector = ItemCoordSelector.create();
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();
