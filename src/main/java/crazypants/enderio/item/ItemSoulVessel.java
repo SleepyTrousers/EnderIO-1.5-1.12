@@ -202,22 +202,27 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     setDisplayNameFromEntityNameTag(capturedMobVessel, entity);
 
     player.swingItem();
-    if(!isCreative) {
+    if (!isCreative) {
       entity.setDead();
-      if(entity.isDead) {
-        item.stackSize--;
-        if (!player.inventory.addItemStackToInventory(capturedMobVessel))
-        {
-        	entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj,entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+      if (entity.isDead) {
+        if (item.stackSize <= 0) {
+          player.setCurrentItemOrArmor(0, null);
+        } else if (item.stackSize == 1) {
+          player.setCurrentItemOrArmor(0, capturedMobVessel);
+        } else {
+          item.stackSize--;
+          if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
+            entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+          }
+          player.setCurrentItemOrArmor(0, item);
+          player.inventoryContainer.detectAndSendChanges();
         }
-        player.setCurrentItemOrArmor(0, item);
-        ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         return true;
       }
     } else {
       if (!player.inventory.addItemStackToInventory(capturedMobVessel)) //Inventory full, drop it in the world!
       {
-      	entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj,entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
       }
       ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
       return true;
