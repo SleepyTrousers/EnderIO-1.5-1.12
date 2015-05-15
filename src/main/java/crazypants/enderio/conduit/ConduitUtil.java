@@ -330,7 +330,7 @@ public class ConduitUtil {
     if(typeName == null || conduitBody == null) {
       return null;
     }
-    if ((typeName.contains("conduit.me") && MEUtil.isMEEnabled()) || typeName.contains("conduit.gas") && GasUtil.isGasConduitEnabled()) {
+    if ((typeName.contains("conduit.me") && !MEUtil.isMEEnabled()) || typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled()) {
       return null;
     }
     if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
