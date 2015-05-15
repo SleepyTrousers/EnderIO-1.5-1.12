@@ -853,6 +853,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return null;
   }
 
+  public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer) {
+    return 0; // Invalid use of v8 API
+  }
+
+  public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer) {
+    return null; // Invalid use of v8 API
+  }
+  
   @Override
   public boolean canReceiveGas(ForgeDirection side, Gas type) {
     IGasConduit gc = getConduit(IGasConduit.class);
