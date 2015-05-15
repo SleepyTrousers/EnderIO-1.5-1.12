@@ -23,7 +23,9 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
 
   public static ItemGasConduit create() {
     ItemGasConduit result = new ItemGasConduit();
-    result.init(subtypes);
+    if (GasUtil.isGasConduitEnabled()) {
+      result.init(subtypes);
+    }
     return result;
   }
 
