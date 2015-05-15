@@ -15,11 +15,14 @@ public final class GasUtil {
   private static boolean isGasConduitEnabled = false;
 
   public static boolean isGasConduitEnabled() {
-    if(!useCheckPerformed) {
+    if (!useCheckPerformed) {
       String configOption = Config.isGasConduitEnabled;
-      if(configOption.equalsIgnoreCase("auto")) {
-        isGasConduitEnabled = Loader.isModLoaded("Mekanism");        
-      } else if(configOption.equalsIgnoreCase("true")) {
+      if (configOption.equalsIgnoreCase("auto")) {
+        isGasConduitEnabled = Loader.isModLoaded("Mekanism");
+        if (isGasConduitEnabled) {
+          isGasConduitEnabled = Loader.instance().getIndexedModList().get("Mekanism").getVersion().startsWith("7");
+        }
+      } else if (configOption.equalsIgnoreCase("true")) {
         isGasConduitEnabled = true;
       } else {
         isGasConduitEnabled = false;
