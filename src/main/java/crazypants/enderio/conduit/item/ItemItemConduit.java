@@ -19,12 +19,12 @@ public class ItemItemConduit extends AbstractItemConduit {
 
   public static ItemItemConduit create() {
     ItemItemConduit result = new ItemItemConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemItemConduit() {
-    super(ModObject.itemItemConduit);
+    super(ModObject.itemItemConduit, subtypes);
   }
 
   @Override

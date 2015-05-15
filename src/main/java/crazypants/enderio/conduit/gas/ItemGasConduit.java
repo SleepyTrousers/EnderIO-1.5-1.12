@@ -24,13 +24,13 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
   public static ItemGasConduit create() {
     ItemGasConduit result = new ItemGasConduit();
     if (GasUtil.isGasConduitEnabled()) {
-      result.init(subtypes);
+      result.init();
     }
     return result;
   }
 
   protected ItemGasConduit() {
-    super(ModObject.itemGasConduit);
+    super(ModObject.itemGasConduit, subtypes);
     if(!GasUtil.isGasConduitEnabled()) {
       setCreativeTab(null);
     }

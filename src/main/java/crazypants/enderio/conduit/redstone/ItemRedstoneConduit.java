@@ -18,12 +18,12 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
 
   public static ItemRedstoneConduit create() {
     ItemRedstoneConduit result = new ItemRedstoneConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemRedstoneConduit() {
-    super(ModObject.itemRedstoneConduit);
+    super(ModObject.itemRedstoneConduit, subtypes);
   }
 
   @Override
