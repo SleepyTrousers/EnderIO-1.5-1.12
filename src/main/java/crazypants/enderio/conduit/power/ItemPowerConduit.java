@@ -27,12 +27,12 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   public static ItemPowerConduit create() {
     ItemPowerConduit result = new ItemPowerConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemPowerConduit() {
-    super(ModObject.itemPowerConduit);
+    super(ModObject.itemPowerConduit, subtypes);
   }
 
   @Override
