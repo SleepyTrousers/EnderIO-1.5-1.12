@@ -41,6 +41,10 @@ public class CommonProxy {
     return 5;
   }
 
+  public void loadIcons() {
+    ;
+  }
+  
   public void load() {
     FMLCommonHandler.instance().bus().register(tickTimer);
   }
@@ -79,7 +83,5 @@ public class CommonProxy {
         onClientTick();
       }
     }
-
   }
-
 }

@@ -27,6 +27,7 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
 import crazypants.enderio.conduit.gas.GasConduit;
 import crazypants.enderio.conduit.gas.GasConduitRenderer;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
@@ -35,6 +36,7 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.me.MEConduit;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -141,19 +143,6 @@ public class ClientProxy extends CommonProxy {
       { 5, 4, 5, 4, 2, 3 } };
   // @formatter:on
 
-  static {
-    RedstoneConduit.initIcons();
-    InsulatedRedstoneConduit.initIcons();
-    RedstoneSwitch.initIcons();
-    PowerConduit.initIcons();
-    LiquidConduit.initIcons();
-    AdvancedLiquidConduit.initIcons();
-    EnderLiquidConduit.initIcons();
-    ItemConduit.initIcons();
-    GasConduit.initIcons();
-    MEConduit.initIcons();
-  }
-
   private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
 
   private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
@@ -194,6 +183,24 @@ public class ClientProxy extends CommonProxy {
 
   public void setCbr(ConduitBundleRenderer cbr) {
     this.cbr = cbr;
+  }
+  
+  @Override
+  public void loadIcons() {
+    RedstoneConduit.initIcons();
+    InsulatedRedstoneConduit.initIcons();
+    RedstoneSwitch.initIcons();
+    PowerConduit.initIcons();
+    LiquidConduit.initIcons();
+    AdvancedLiquidConduit.initIcons();
+    EnderLiquidConduit.initIcons();
+    ItemConduit.initIcons();
+    if(GasUtil.isGasConduitEnabled()) {
+      GasConduit.initIcons();
+    }
+    if(MEUtil.isMEEnabled()) {
+      MEConduit.initIcons();
+    }
   }
 
   @Override
