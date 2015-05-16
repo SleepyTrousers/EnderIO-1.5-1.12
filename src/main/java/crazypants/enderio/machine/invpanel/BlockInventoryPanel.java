@@ -7,13 +7,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ClientProxy;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
@@ -34,6 +38,13 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public BlockInventoryPanel() {
     super(ModObject.blockInventoryPanel, TileInventoryPanel.class);
+  }
+
+  @Override
+  protected void init() {
+    GameRegistry.registerBlock(this, BlockItemInventoryPanel.class, modObject.unlocalisedName);
+    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
+    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
   }
 
   @Override
@@ -72,6 +83,12 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
     int facing = getFacing(world, x, y, z);
     switch (facing) {
+    case 0:
+      setBlockBounds(0.0f, 1.0f - BLOCK_SIZE, 0.0f, 1.0f, 1.0f, 1.0f);
+      break;
+    case 1:
+      setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, BLOCK_SIZE, 1.0f);
+      break;
     case 2:
       setBlockBounds(0.0f, 0.0f, 1.0f - BLOCK_SIZE, 1.0f, 1.0f, 1.0f);
       break;
@@ -96,6 +113,11 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
       return ((TileInventoryPanel) te).getFacing();
     }
     return 0;
+  }
+
+  @Override
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    // this is handled by BlockItemInventoryPanel.placeBlockAt
   }
 
   @SideOnly(Side.CLIENT)
