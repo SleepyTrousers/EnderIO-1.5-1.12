@@ -515,6 +515,7 @@ enderio.gui.inventorypanel.tooltip.setrecipe.line3=current recipe from the netwo
 enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
 enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
 enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
+enderio.gui.inventorypanel.tooltip.itemsstored=Items Stored: %s
 
 enderio.machine.tooltip.configured=(Configured)
 

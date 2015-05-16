@@ -47,6 +47,9 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public Container eventHandler;
   private IItemFilter itemFilter;
 
+  private int guiSortMode;
+  private String guiFilterString = "";
+
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
     this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, 2000);
@@ -201,16 +204,38 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     return false;
   }
 
+  public int getGuiSortMode() {
+    return guiSortMode;
+  }
+
+  public String getGuiFilterString() {
+    return guiFilterString;
+  }
+
+  public void setGuiParameter(int sortMode, String filterString) {
+    this.guiSortMode = sortMode;
+    this.guiFilterString = filterString;
+    if(worldObj != null && worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(this, sortMode, filterString));
+    } else {
+      markDirty();
+    }
+  }
+
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     fuelTank.writeCommon("fuelTank", nbtRoot);
+    nbtRoot.setInteger("guiSortMode", guiSortMode);
+    nbtRoot.setString("guiFilterString", guiFilterString);
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
     fuelTank.readCommon("fuelTank", nbtRoot);
+    guiSortMode = nbtRoot.getInteger("guiSortMode");
+    guiFilterString = nbtRoot.getString("guiFilterString");
   }
 
   @Override
