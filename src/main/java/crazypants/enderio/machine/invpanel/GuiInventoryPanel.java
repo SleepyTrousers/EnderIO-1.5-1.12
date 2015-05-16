@@ -1,7 +1,9 @@
 package crazypants.enderio.machine.invpanel;
 
+import cpw.mods.fml.common.Optional;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
@@ -11,6 +13,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -38,6 +41,7 @@ import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
+import net.minecraft.client.gui.inventory.GuiContainer;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -61,6 +65,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final MultiIconButtonEIO btnClear;
 
   private int scrollPos;
+  private int ghostSlotTooltipStacksize;
 
   private final String headerCrafting;
   private final String headerReturn;
@@ -83,10 +88,18 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     this.view = new DatabaseView();
 
+    int sortMode = te.getGuiSortMode();
+    int sortOrderIdx = sortMode >> 1;
+    SortOrder[] orders = SortOrder.values();
+    if(sortOrderIdx >= 0 && te.getGuiSortMode() < orders.length) {
+      view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
+    }
+
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     tfFilter = new TextFieldEIO(fr, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
+    tfFilter.setText(te.getGuiFilterString());
     btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(Minecraft mc, int x, int y) {
@@ -154,6 +167,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
       }
     });
+  }
+
+  @Override
+  public void onGuiClosed() {
+    int sortMode = (view.getSortOrder().ordinal() << 1);
+    if(view.isSortOrderInverted()) {
+      sortMode |= 1;
+    }
+    getTileEntity().setGuiParameter(sortMode, tfFilter.getText());
+    super.onGuiClosed();
   }
 
   public void setCraftingHelper(ICraftingHelper craftingHelper) {
@@ -251,11 +274,38 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       font = fontRendererObj;
     }
     String str = null;
-    if(stack.stackSize > 999) {
-      str = (stack.stackSize / 1000) + "k";
+    if(stack.stackSize >= 1000) {
+      int value = stack.stackSize / 1000;
+      String unit = "k";
+      if(value >= 1000) {
+        value /= 1000;
+        unit = "m";
+      }
+      str = value + unit;
     }
     itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
     itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, str);
+  }
+
+  @Override
+  protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
+    ItemStack stack = slot.getStack();
+    if(stack != null) {
+      ghostSlotTooltipStacksize = stack.stackSize;
+      try {
+        renderToolTip(stack, mouseX, mouseY);
+      } finally {
+        ghostSlotTooltipStacksize = 0;
+      }
+    }
+  }
+
+  @Override
+  public void drawHoveringText(List list, int mouseX, int mouseY, FontRenderer font) {
+    if(ghostSlotTooltipStacksize >= 1000) {
+      list.add(EnumChatFormatting.WHITE + Lang.localize("gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
+    }
+    super.drawHoveringText(list, mouseX, mouseY, font);
   }
 
   public InventoryPanelContainer getContainer() {
@@ -336,6 +386,19 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Override
   public int getYSize() {
     return 212;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    // NEI seems to have an issue with the shifted GUI position - so let's work around it
+    if(x+w >= guiLeft && x < guiLeft+xSize && y+h >= guiTop && y < guiTop+49) {
+      return true;
+    }
+    if(x+w >= guiLeft && x < guiLeft+232 && x+h >= guiTop+49 && y < guiTop+ySize) {
+      return true;
+    }
+    return false;
   }
 
   @Override

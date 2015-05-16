@@ -337,10 +337,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     if(draggingScrollbar == null) {
       if(hoverGhostSlot != null && mc.thePlayer.inventory.getItemStack() == null) {
-        ItemStack stack = hoverGhostSlot.getStack();
-        if(stack != null) {
-          renderToolTip(stack, par1, par2);
-        }
+        drawGhostSlotTooltip(hoverGhostSlot, par1, par2);
       }
 
       ttMan.drawTooltips(this, par1, par2);
@@ -394,6 +391,13 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     GL11.glPopAttrib();
     itemRender.zLevel = 0.0F;
     zLevel = 0.0F;
+  }
+
+  protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
+    ItemStack stack = slot.getStack();
+    if(stack != null) {
+      renderToolTip(stack, mouseX, mouseY);
+    }
   }
 
   protected void drawGhostSlots(int mouseX, int mouseY) {
