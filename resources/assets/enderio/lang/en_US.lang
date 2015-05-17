@@ -129,6 +129,7 @@ tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
 tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
+enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
 enderio.dustWheat.name=Flour
 
@@ -183,6 +184,8 @@ enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
 enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
 enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
+enderio.blockFusedQuartz.darkFusedQuartz.name=Dark Fused Quartz
+enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
 
 item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
