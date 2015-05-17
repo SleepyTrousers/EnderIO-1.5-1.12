@@ -72,8 +72,7 @@ public class GuiExternalConnection extends GuiContainerBase {
     ySize = 166 + 29;
     xSize = 206;
 
-    container.setInputSlotsVisible(false);
-    container.setOutputSlotsVisible(false);
+    container.setInoutSlotsVisible(false, false);
     container.setInventorySlotsVisible(false);
 
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
