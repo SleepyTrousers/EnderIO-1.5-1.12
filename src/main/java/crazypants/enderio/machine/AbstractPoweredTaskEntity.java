@@ -67,7 +67,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   @Override
   public float getProgress() {
-    return currentTask == null ? 0 : currentTask.getProgress();
+    return currentTask == null ? -1 : currentTask.getProgress();
   }
 
   @Override
@@ -132,11 +132,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
         // this chance value has been used up
         nextChance = Float.NaN;
       }
-      sendTaskProgressPacket();
       startFailed = !started;
     } else {
       startFailed = true;
     }
+    sendTaskProgressPacket();
 
     return requiresClientSync;
   }
@@ -181,7 +181,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     markDirty();
     currentTask = null;
     lastProgressScaled = 0;
-    sendTaskProgressPacket();
   }
 
   protected void mergeResults(ResultStack[] results) {

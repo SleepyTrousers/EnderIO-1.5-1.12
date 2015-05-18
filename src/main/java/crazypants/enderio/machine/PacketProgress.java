@@ -19,9 +19,6 @@ public class PacketProgress extends MessageTileEntity<TileEntity> implements IMe
   public PacketProgress(IProgressTile tile) {
     super(tile.getTileEntity());
     progress = tile.getProgress();
-    if (progress == 0) {
-      progress = -1;
-    }
   }
 
   @Override
