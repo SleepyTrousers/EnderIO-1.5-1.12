@@ -468,6 +468,8 @@ public final class Config {
 
   public static boolean telepadLockDimension = true;
   public static boolean telepadLockCoords = true;
+  public static int telepadPowerCoefficient = 100000;
+  public static int telepadPowerInterdimensional = 100000;
 
   public static float inventoryPanelPowerPerMB = 800.0f;
   public static float inventoryPanelScanCostPerSlot = 0.1f;
@@ -1266,6 +1268,10 @@ public final class Config {
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
     telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
         "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
+    telepadPowerCoefficient = config.get(sectionTelepad.name, "powerCoefficient", telepadPowerCoefficient,
+        "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
+    telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
+        "The amount of RF required for an interdimensional teleport.").getInt();
 
     inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
             "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
