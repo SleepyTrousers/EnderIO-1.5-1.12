@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import tterrag.core.common.event.ConfigFileChangedEvent;
@@ -12,10 +13,13 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.vecmath.VecmathUtil;
 
 public final class Config {
@@ -477,6 +481,7 @@ public final class Config {
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
   public static void load(FMLPreInitializationEvent event) {
+    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
     FMLCommonHandler.instance().bus().register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.MODID.toLowerCase());
@@ -507,7 +512,7 @@ public final class Config {
 
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {
-    if(event.modID.equals(EnderIO.MODID)) {
+    if (event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
       postInit();
@@ -523,6 +528,11 @@ public final class Config {
       event.setSuccessful();
       postInit();
     }
+  }
+
+  @SubscribeEvent
+  public void onPlayerLoggon(PlayerLoggedInEvent evt) {
+    PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
   }
 
   public static void processConfig(Configuration config) {
