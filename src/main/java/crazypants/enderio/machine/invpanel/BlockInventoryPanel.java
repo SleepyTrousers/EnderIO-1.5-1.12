@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -21,7 +22,7 @@ import net.minecraft.item.ItemStack;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
-  private static final float BLOCK_SIZE = 3.0f / 16.0f;
+  private static final float BLOCK_SIZE = 3f / 16f;
 
   public static BlockInventoryPanel create() {
     PacketHandler.INSTANCE.registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
@@ -79,32 +80,40 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   public void setBlockBoundsForItemRender() {
     setBlockBounds(0.0f, 0.0f, 0.5f - BLOCK_SIZE / 2, 1.0f, 1.0f, 0.5f + BLOCK_SIZE / 2);
   }
-
+  
+  @Override
+  public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+   return getBoundingBox(world, x, y, z);
+  }
+  
+  @Override
+  public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+    return getBoundingBox(world, x, y, z);
+  }
+  
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+    AxisAlignedBB bb = getBoundingBox(world, x, y, z);
+    setBlockBounds((float) bb.minX - x, (float) bb.minY - y, (float) bb.minZ - z, (float) bb.maxX - x, (float) bb.maxY - y, (float) bb.maxZ - z);
+  }
+
+  public AxisAlignedBB getBoundingBox(IBlockAccess world, int x, int y, int z) {
     int facing = getFacing(world, x, y, z);
     switch (facing) {
     case 0:
-      setBlockBounds(0.0f, 1.0f - BLOCK_SIZE, 0.0f, 1.0f, 1.0f, 1.0f);
-      break;
+      return AxisAlignedBB.getBoundingBox(x, y + (1 - BLOCK_SIZE), z, x + 1, y + 1, z + 1);
     case 1:
-      setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, BLOCK_SIZE, 1.0f);
-      break;
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + BLOCK_SIZE, z + 1);
     case 2:
-      setBlockBounds(0.0f, 0.0f, 1.0f - BLOCK_SIZE, 1.0f, 1.0f, 1.0f);
-      break;
+      return AxisAlignedBB.getBoundingBox(x, y, z + (1- BLOCK_SIZE), x + 1, y + 1, z + 1);
     case 3:
-      setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, BLOCK_SIZE);
-      break;
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, BLOCK_SIZE);
     case 4:
-      setBlockBounds(1.0f - BLOCK_SIZE, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-      break;
+      return AxisAlignedBB.getBoundingBox(x + (1 - BLOCK_SIZE), y, z, x + 1, y + 1, z + 1);
     case 5:
-      setBlockBounds(0.0f, 0.0f, 0.0f, BLOCK_SIZE, 1.0f, 1.0f);
-      break;
+      return AxisAlignedBB.getBoundingBox(x, y, z, BLOCK_SIZE, y + 1, z + 1);
     default:
-      setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-      break;
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
     }
   }
 
