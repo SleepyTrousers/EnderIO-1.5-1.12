@@ -64,12 +64,12 @@ public class ExternalConnectionContainer extends Container {
 
       x = 10;
       y = 47;
-      slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(ui, 3, x, y));
+      slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(ui, 3, x, y));
       slotLocations.add(new Point(x, y));
 
       x = 10;
       y = 47;
-      slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(ui, 2, x, y));
+      slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(ui, 2, x, y));
       slotLocations.add(new Point(x, y));
 
       x = 28;

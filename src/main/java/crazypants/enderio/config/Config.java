@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 
@@ -15,10 +16,13 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.network.PacketHandler;
 
 public final class Config {
 
@@ -470,6 +474,8 @@ public final class Config {
 
   public static boolean telepadLockDimension = true;
   public static boolean telepadLockCoords = true;
+  public static int telepadPowerCoefficient = 100000;
+  public static int telepadPowerInterdimensional = 100000;
 
   public static float inventoryPanelPowerPerMB = 800.0f;
   public static float inventoryPanelScanCostPerSlot = 0.1f;
@@ -477,6 +483,7 @@ public final class Config {
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
   public static void load(FMLPreInitializationEvent event) {
+    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
     FMLCommonHandler.instance().bus().register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.MODID.toLowerCase());
@@ -507,7 +514,7 @@ public final class Config {
 
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {
-    if(event.modID.equals(EnderIO.MODID)) {
+    if (event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
       postInit();
@@ -523,6 +530,11 @@ public final class Config {
       event.setSuccessful();
       postInit();
     }
+  }
+
+  @SubscribeEvent
+  public void onPlayerLoggon(PlayerLoggedInEvent evt) {
+    PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
   }
 
   public static void processConfig(Configuration config) {
@@ -627,10 +639,10 @@ public final class Config {
         "Number of millibuckets per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
 
     advancedFluidConduitExtractRate = config.get(sectionEfficiency.name, "advancedFluidConduitExtractRate", advancedFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by pressurised fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
+        "Number of millibuckets per tick extracted by pressurized fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
 
     advancedFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "advancedFluidConduitMaxIoRate", advancedFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to an pressurised fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
+        "Number of millibuckets per tick that can pass through a single connection to an pressurized fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
 
     enderFluidConduitExtractRate = config.get(sectionEfficiency.name, "enderFluidConduitExtractRate", enderFluidConduitExtractRate,
         "Number of millibuckets per tick extracted by ender fluid conduits auto extracting").getInt(enderFluidConduitExtractRate);
@@ -714,9 +726,9 @@ public final class Config {
         "Travel Anchors send a chat warning when skipping inaccessible anchors").getBoolean(travelAnchorSkipWarning);
 
     travelStaffMaxDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaxDistance,
-        "Maximum number of blocks that can be traveled using the Staff of the Traveling.").getInt(travelStaffMaxDistance);
+        "Maximum number of blocks that can be traveled using the Staff of Traveling.").getInt(travelStaffMaxDistance);
     travelStaffPowerPerBlockRF = (float) config.get(sectionStaff.name, "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
-        "Number of RF required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlockRF);
+        "Number of RF required per block traveled using the Staff of Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
     travelStaffMaxBlinkDistance = config.get(sectionStaff.name, "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
         "Max number of blocks teleported when shift clicking the staff.").getInt(travelStaffMaxBlinkDistance);
@@ -1062,7 +1074,7 @@ public final class Config {
         "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getBoolean(magnetAllowDeactivatedInBaublesSlot);
     
     magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
-        "The BaulesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
+        "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
     
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
@@ -1226,7 +1238,7 @@ public final class Config {
     lootTheEnder = config.getBoolean("lootTheEnder", sectionLootConfig.name, lootTheEnder, "Adds The Ender to loot tables");
     lootDarkSteelBoots = config.getBoolean("lootDarkSteelBoots", sectionLootConfig.name, lootDarkSteelBoots, "Adds Darksteel Boots to loot tables");
 
-    enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Wether Ender Rails are enabled");
+    enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Whether Ender Rails are enabled");
     enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions,
         "The amount of power required to transport a cart across dimensions").getInt(enderRailPowerRequireCrossDimensions);
     enderRailPowerRequiredPerBlock = config.get(sectionRailConfig.name, "enderRailPowerRequiredPerBlock", enderRailPowerRequiredPerBlock,
@@ -1241,7 +1253,7 @@ public final class Config {
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
-    xpJuiceName = config.getString("xpJuiceName", sectionMisc.name, xpJuiceName, "Id of liquid XP fluid (WARNING: only for users who know what they are doing - changing this id can break worlds) - this should match the with OpenBlocks when installed");
+    xpJuiceName = config.getString("xpJuiceName", sectionMisc.name, xpJuiceName, "Id of liquid XP fluid (WARNING: only for users who know what they are doing - changing this id can break worlds) - this should match with OpenBlocks when installed");
 
     clearGlassSameTexture = config.getBoolean("clearGlassSameTexture", sectionMisc.name, clearGlassSameTexture, "If true, quite clear glass will use the fused quartz border texture for the block instead of the white border.");
     clearGlassConnectToFusedQuartz = config.getBoolean("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.");
@@ -1268,6 +1280,10 @@ public final class Config {
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
     telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
         "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
+    telepadPowerCoefficient = config.get(sectionTelepad.name, "powerCoefficient", telepadPowerCoefficient,
+        "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
+    telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
+        "The amount of RF required for an interdimensional teleport.").getInt();
 
     inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
             "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");

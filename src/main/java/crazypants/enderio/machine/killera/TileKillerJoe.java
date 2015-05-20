@@ -40,10 +40,10 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
-import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
@@ -63,7 +63,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   protected WirelessChargedLocation chargedLocation;
 
-  final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
+  final SmartTank fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   int lastFluidLevelUpdate;
 
@@ -569,7 +569,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  public NutrientTank getNutrientTank() {
+  public SmartTank getNutrientTank() {
     return fuelTank;
   }
 

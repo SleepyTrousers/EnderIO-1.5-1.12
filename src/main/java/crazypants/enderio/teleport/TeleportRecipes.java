@@ -43,5 +43,8 @@ public class TeleportRecipes {
       ItemStack fq = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal());
       GameRegistry.addRecipe(new ShapedOreRecipe(telepad, "gSg", "dAd", "dod", 'g', fq, 'S', staff, 'd', "ingotDarkSteel", 'A', travelBlock, 'o', octadic));
     }
+    
+    ItemStack coordSelector = new ItemStack(EnderIO.itemCoordSelector);
+    GameRegistry.addRecipe(new ShapedOreRecipe(coordSelector, "sps", " cs", "  s", 's', "ingotElectricalSteel", 'p', Items.ender_pearl, 'c', Items.compass));
   }
 }

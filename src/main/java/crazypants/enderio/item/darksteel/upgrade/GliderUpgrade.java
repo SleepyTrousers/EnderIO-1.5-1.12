@@ -25,7 +25,8 @@ public class GliderUpgrade extends AbstractUpgrade {
   
   public static final GliderUpgrade INSTANCE = new GliderUpgrade();
   
-  private final Render render = new Render();
+  @SideOnly(Side.CLIENT)
+  private Render render;
   
   public static GliderUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
@@ -62,8 +63,9 @@ public class GliderUpgrade extends AbstractUpgrade {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
-    return render;
+    return render == null ? render = new Render() : render;
   }
 
   @Override
@@ -86,8 +88,9 @@ public class GliderUpgrade extends AbstractUpgrade {
         RenderUtil.bindItemTexture();
         glDepthMask(true);
         item.hoverStart = 0;
+        Helper.rotateIfSneaking(event.entityPlayer);
         GL11.glTranslatef(-0, 1, 0.25f);
-        GL11.glRotatef(180, 0, 0, 1);
+        GL11.glRotatef(180, 1, 0, 0);
         GL11.glScalef(3, 3, 3);
         RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
       }

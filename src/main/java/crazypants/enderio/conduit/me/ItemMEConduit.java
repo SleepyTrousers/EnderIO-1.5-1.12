@@ -18,13 +18,13 @@ public class ItemMEConduit extends AbstractItemConduit {
   public static ItemMEConduit create() {
     ItemMEConduit result = new ItemMEConduit();
     if (MEUtil.isMEEnabled()) {
-      result.init(subtypes);
+      result.init();
     }
     return result;
   }
 
   protected ItemMEConduit() {
-    super(ModObject.itemMEConduit);
+    super(ModObject.itemMEConduit, subtypes);
   }
 
   @Override

@@ -2,15 +2,18 @@ package crazypants.enderio.machine.invpanel;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -26,19 +29,21 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
 import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -59,8 +64,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final GuiToolTip ttRefill;
   private final VScrollbar scrollbar;
   private final MultiIconButton btnClear;
+  private final GuiToolTip ttSetReceipe;
 
   private int scrollPos;
+  private int ghostSlotTooltipStacksize;
 
   private final String headerCrafting;
   private final String headerReturn;
@@ -83,10 +90,18 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     this.view = new DatabaseView();
 
+    int sortMode = te.getGuiSortMode();
+    int sortOrderIdx = sortMode >> 1;
+    SortOrder[] orders = SortOrder.values();
+    if(sortOrderIdx >= 0 && te.getGuiSortMode() < orders.length) {
+      view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
+    }
+
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     tfFilter = new TextFieldEnder(fr, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
+    tfFilter.setText(te.getGuiFilterString());
     btnSort = new IconButton(this, ID_SORT, 233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(Minecraft mc, int x, int y) {
@@ -133,6 +148,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     addToolTip(ttRefill);
 
     list.clear();
+
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.setrecipe.line");
+    ttSetReceipe = new GuiToolTip(btnRefill, list) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && getContainer().hasCraftingRecipe();
+      }
+    };
+    addToolTip(ttSetReceipe);
+
+    list.clear();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
@@ -146,9 +172,20 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     });
   }
 
+  @Override
+  public void onGuiClosed() {
+    int sortMode = (view.getSortOrder().ordinal() << 1);
+    if(view.isSortOrderInverted()) {
+      sortMode |= 1;
+    }
+    getTileEntity().setGuiParameter(sortMode, tfFilter.getText());
+    super.onGuiClosed();
+  }
+
   public void setCraftingHelper(ICraftingHelper craftingHelper) {
     this.craftingHelper = craftingHelper;
     ttRefill.setVisible(craftingHelper != null);
+    ttSetReceipe.setVisible(craftingHelper == null);
   }
 
   @Override
@@ -172,7 +209,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       if(getContainer().clearCraftingGrid()) {
         if(craftingHelper != null) {
           craftingHelper.remove();
-          craftingHelper = null;
+          setCraftingHelper(null);
         }
       }
     }
@@ -191,6 +228,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
       int iconX = hover ? (isShiftKeyDown() ? 48 : 24) : 0;
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
+    } else if(getContainer().hasCraftingRecipe()) {
+      boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
+      int iconX = hover ? 96 : 72;
+      drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
     }
 
     int headerColor = 0x404040;
@@ -200,7 +241,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     fr.drawString(headerInventory, sx + 38, sy + 120, headerColor);
 
     TileInventoryPanel te = getTileEntity();
-    NutrientTank fuelTank = te.fuelTank;
+    SmartTank fuelTank = te.fuelTank;
     if(fuelTank.getFluidAmount() > 0) {
       RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 12, sy + 132, zLevel, 16, 47);
     }
@@ -236,11 +277,38 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       font = fontRendererObj;
     }
     String str = null;
-    if(stack.stackSize > 999) {
-      str = (stack.stackSize / 1000) + "k";
+    if(stack.stackSize >= 1000) {
+      int value = stack.stackSize / 1000;
+      String unit = "k";
+      if(value >= 1000) {
+        value /= 1000;
+        unit = "m";
+      }
+      str = value + unit;
     }
     itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
     itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, str);
+  }
+
+  @Override
+  protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
+    ItemStack stack = slot.getStack();
+    if(stack != null) {
+      ghostSlotTooltipStacksize = stack.stackSize;
+      try {
+        renderToolTip(stack, mouseX, mouseY);
+      } finally {
+        ghostSlotTooltipStacksize = 0;
+      }
+    }
+  }
+
+  @Override
+  public void drawHoveringText(List list, int mouseX, int mouseY, FontRenderer font) {
+    if(ghostSlotTooltipStacksize >= 1000) {
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
+    }
+    super.drawHoveringText(list, mouseX, mouseY, font);
   }
 
   public InventoryPanelContainer getContainer() {
@@ -324,16 +392,38 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    // NEI seems to have an issue with the shifted GUI position - so let's work around it
+    if(x+w >= guiLeft && x < guiLeft+xSize && y+h >= guiTop && y < guiTop+49) {
+      return true;
+    }
+    if(x+w >= guiLeft && x < guiLeft+232 && x+h >= guiTop+49 && y < guiTop+ySize) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
   protected void mouseClicked(int x, int y, int button) {
     super.mouseClicked(x, y, button);
 
     x -= guiLeft;
     y -= guiTop;
 
-    if(craftingHelper != null && btnRefill.contains(x, y)) {
-      mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-      craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
+    if(btnRefill.contains(x, y)) {
+      if(craftingHelper != null) {
+        playClickSound();
+        craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
+      } else if(getContainer().hasCraftingRecipe()) {
+        playClickSound();
+        setCraftingHelper(CraftingHelper.createFromSlots(getContainer().getCraftingGridSlots()));
+      }
     }
+  }
+
+  private void playClickSound() {
+    mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
   }
 
   @Override

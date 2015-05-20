@@ -30,7 +30,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   public static final SolarUpgrade SOLAR_ONE = new SolarUpgrade("enderio.darksteel.upgrade.solar_one", (byte) 1, Config.darkSteelSolarOneCost);
   public static final SolarUpgrade SOLAR_TWO = new SolarUpgrade("enderio.darksteel.upgrade.solar_two", (byte) 2, Config.darkSteelSolarTwoCost);
   
-  private Render render = new Render();
+  private Render render;
 
   public static SolarUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
@@ -104,10 +104,11 @@ public class SolarUpgrade extends AbstractUpgrade {
   }
   
   @Override
+  @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
-    return render;
+    return render == null ? render = new Render() : render;
   }
-  
+
   @SideOnly(Side.CLIENT)
   private class Render implements IRenderUpgrade {
 
@@ -121,8 +122,8 @@ public class SolarUpgrade extends AbstractUpgrade {
         RenderUtil.bindItemTexture();
         glDepthMask(true);
         item.hoverStart = 0;
-        GL11.glTranslated(0, -0.08, 0);
-        GL11.glTranslated(0, (event.entityPlayer != Minecraft.getMinecraft().thePlayer ? 1.62F : 0F) - event.entityPlayer.getDefaultEyeHeight() + (event.entityPlayer.isSneaking() ? 0.0625 : 0), 0);
+        Helper.translateToHeadLevel(event.entityPlayer);
+        GL11.glTranslated(0, -0.155, 0);
         GL11.glRotated(180, 1, 0, 0);
         GL11.glScalef(2.1f, 2.1f, 2.1f);
         byte level = loadFromItem(stack).level;

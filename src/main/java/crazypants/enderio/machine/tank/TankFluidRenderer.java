@@ -13,6 +13,7 @@ import com.enderio.core.client.render.RenderUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.tool.SmartTank;
 
 @SideOnly(Side.CLIENT)
 public class TankFluidRenderer extends TileEntitySpecialRenderer {
@@ -27,7 +28,7 @@ public class TankFluidRenderer extends TileEntitySpecialRenderer {
     renderTankFluid(tank.tank, (float)x, (float)y, (float)z);
   }
 
-  public static void renderTankFluid(FluidTankEio tank, float x, float y, float z) {
+  public static void renderTankFluid(SmartTank tank, float x, float y, float z) {
     if(tank == null || tank.getFluid() == null) {
       return;
     }

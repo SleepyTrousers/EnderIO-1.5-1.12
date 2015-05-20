@@ -28,12 +28,12 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   public static ItemLiquidConduit create() {
     ItemLiquidConduit result = new ItemLiquidConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemLiquidConduit() {
-    super(ModObject.itemLiquidConduit);
+    super(ModObject.itemLiquidConduit, subtypes);
   }
 
   @Override

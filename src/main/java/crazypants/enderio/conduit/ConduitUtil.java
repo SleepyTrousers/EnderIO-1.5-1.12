@@ -31,6 +31,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
@@ -42,6 +43,7 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.me.MEConduitNetwork;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -329,7 +331,10 @@ public class ConduitUtil {
     if(typeName == null || conduitBody == null) {
       return null;
     }
-    if(nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
+    if ((typeName.contains("conduit.me") && !MEUtil.isMEEnabled()) || typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled()) {
+      return null;
+    }
+    if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
       Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
       typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
     }

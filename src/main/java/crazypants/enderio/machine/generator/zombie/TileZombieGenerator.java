@@ -23,12 +23,13 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.tool.SmartTank;
 
 public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
   private static int IO_MB_TICK = 250;
 
-  final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
+  final SmartTank fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   int outputPerTick = Config.zombieGeneratorRfPerTick;
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
@@ -276,7 +277,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   @Override
-  public NutrientTank getNutrientTank() {
+  public SmartTank getNutrientTank() {
     return fuelTank;
   }
 

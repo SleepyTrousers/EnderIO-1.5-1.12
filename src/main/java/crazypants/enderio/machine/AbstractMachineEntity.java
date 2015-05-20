@@ -213,11 +213,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public float getPitch() {
     return 1.0f;
   }
+  
+  protected boolean shouldPlaySound() {
+    return isActive() && !isInvalid();
+  }
 
   @SideOnly(Side.CLIENT)
   private void updateSound() {
     if(Config.machineSoundsEnabled && hasSound()) {
-      if(isActive() && !isInvalid()) {
+      if(shouldPlaySound()) {
         if(sound == null) {
           sound = new MachineSound(soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
           FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);

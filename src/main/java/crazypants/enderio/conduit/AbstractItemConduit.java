@@ -32,23 +32,23 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   protected IIcon[] icons;
 
-  protected AbstractItemConduit(ModObject modObj) {
+  protected AbstractItemConduit(ModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
+    this.subtypes = subtypes;
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(modObj.unlocalisedName);
     setMaxStackSize(64);
     setHasSubtypes(true);
   }
 
-  protected void init(ItemConduitSubtype[] subtypes) {
-    this.subtypes = subtypes;
-    icons = new IIcon[subtypes.length];
+  protected void init() {
     GameRegistry.registerItem(this, modObj.unlocalisedName);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
+    icons = new IIcon[subtypes.length];
     int index = 0;
     for (ItemConduitSubtype subtype : subtypes) {
       icons[index] = IIconRegister.registerIcon(subtype.iconKey);

@@ -182,7 +182,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
             if(input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
-              String s = EnderIO.lang.localizeExact(t.inv.getInventory().getInventoryName()) + " " + t.inv.location + " Distance [" + t.distance + "] ";
+              String s = EnderIO.lang.localizeExact(t.inv.getInventory().getInventoryName()) + " " + t.inv.location.chatString() + " Distance [" + t.distance + "] ";
               result.add(s);
             }
           }
@@ -199,7 +199,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(inv.hasTarget(con, dir)) {
         IItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(inv, input)) {
-          result.add(EnderIO.lang.localizeExact(inv.getInventory().getInventoryName()) + " " + inv.location);
+          result.add(EnderIO.lang.localizeExact(inv.getInventory().getInventoryName()) + " " + inv.location.chatString());
         }
       }
     }

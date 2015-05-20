@@ -20,6 +20,7 @@ import com.enderio.core.common.vecmath.Vector3f;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.tool.SmartTank;
 
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
@@ -68,9 +69,9 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   // Position within multiblock
   Pos pos = Pos.UNKNOWN;
 
-  ReservoirTank tank = new ReservoirTank(BUCKET_VOLUME);
+  SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
 
-  ReservoirTank regenTank = null;
+  SmartTank regenTank = null;
 
   boolean autoEject;
 
@@ -107,8 +108,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       if(autoEject && neighboursDirty) {
         doUpdateTankNeighbours();
       }
-      if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
-        int ejectable = tank.getAmount();
+      if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getFluidAmount() > 0) {
+        int ejectable = tank.getFluidAmount();
         int amountPerNeighbour = ejectable / tankNeighbours.size();
         FluidStack source = WATER_BUCKET.copy();
         int used = 0;
@@ -258,13 +259,14 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     if(liquid != null) {
       tank.setFluid(liquid);
     } else {
-      tank.setAmount(0);
+      tank.setFluidAmount(0);
     }
 
     if(regenLiquid == null) {
       regenTank = null;
     } else {
-      regenTank = new ReservoirTank(regenLiquid, BUCKET_VOLUME * 2);
+      regenTank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME * 2);
+      regenTank.setFluidAmount(regenLiquid.amount);
     }
 
     boolean wasMulti = isMultiblock();
@@ -301,7 +303,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
     nbtRoot.setBoolean("autoEject", autoEject);
 
-    if(tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid().fluidID) != null) {
+    if(tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid()) != null) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
     }
     if(regenTank != null) {
@@ -418,19 +420,19 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
     if(isMaster()) {
 
-      regenTank = new ReservoirTank(BUCKET_VOLUME * 2);
+      regenTank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME * 2);
       tank.setCapacity(BUCKET_VOLUME * 2);
       for (BlockCoord bc : multiblock) {
         TileReservoir res = getReservoir(bc);
         if(res != null) {
           FluidStack drained = res.doDrain(ForgeDirection.UNKNOWN, regenTank.getAvailableSpace(), true);
           if(drained != null) {
-            regenTank.addAmount(drained.amount);
+            regenTank.addFluidAmount(drained.amount);
           }
           // incase regen tank is full, add to normal tank
           drained = res.doDrain(ForgeDirection.UNKNOWN, tank.getAvailableSpace(), true);
           if(drained != null) {
-            tank.addAmount(drained.amount);
+            tank.addFluidAmount(drained.amount);
           }
         }
       }
@@ -683,10 +685,10 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public void setTanksDirty() {
     if (isMaster() && regenTank != null && tank != null) {
-      if (!regenTank.isFull() && tank.getAmount() > 0) {
-        int toMove = Math.min(tank.getAmount(), regenTank.getCapacity() - regenTank.getAmount());
-        regenTank.setAmount(regenTank.getAmount() + toMove);
-        tank.setAmount(tank.getAmount() - toMove);
+      if (!regenTank.isFull() && tank.getFluidAmount() > 0) {
+        int toMove = Math.min(tank.getFluidAmount(), regenTank.getCapacity() - regenTank.getFluidAmount());
+        regenTank.setFluidAmount(regenTank.getFluidAmount() + toMove);
+        tank.setFluidAmount(tank.getFluidAmount() - toMove);
       }
     }
     tankDirty = true;

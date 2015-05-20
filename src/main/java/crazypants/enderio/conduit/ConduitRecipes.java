@@ -10,6 +10,7 @@ import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
 import crazypants.enderio.conduit.me.MEUtil;
@@ -58,8 +59,11 @@ public class ConduitRecipes {
         Blocks.lever);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#',
         redstoneAlloy);
-    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', conduitBinder, '#',
-        electricalSteel, 'g', fusedGlass);
+
+    if (GasUtil.isGasConduitEnabled()) {
+      GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', conduitBinder, '#', electricalSteel, 'g',
+          fusedGlass);
+    }
 
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);

@@ -49,7 +49,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   
   private boolean inNetwork;
 
-  private EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
+  EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
 
   private EnergyStorage energy = new EnergyStorage(100000, 1000, 1000);
 
@@ -343,9 +343,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private int calculateTeleportPower() {
     if (worldObj.provider.dimensionId == targetDim) {
-      this.maxPower = new BlockCoord(this).getDist(target) * 1000;
+      int distance = new BlockCoord(this).getDist(target);
+      double base = Math.log((0.005 * distance) + 1);
+      this.maxPower = (int) (base * Config.telepadPowerCoefficient);
+
     } else {
-      this.maxPower = 100000;
+      this.maxPower = Config.telepadPowerInterdimensional;
     }
     return this.maxPower;
   }
@@ -389,6 +392,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public float getProgress() {
     return ((float) powerUsed) / ((float) maxPower);
+  }
+  
+  @Override
+  protected int getProgressUpdateFreq() {
+    return 1;
   }
 
   @Override

@@ -1,10 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.PacketHandler;
 
 public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgradeState, IMessage> {
 
@@ -19,28 +21,36 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
   
   private boolean isActive;
   private Type type;
-  
+  private int entityID;
+
   public PacketUpgradeState(Type type, boolean isActive) {
+    this(type, isActive, 0);
+  }
+
+  public PacketUpgradeState(Type type, boolean isActive, int entityID) {
     this.type = type;
     this.isActive = isActive;
+    this.entityID = entityID;
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     buf.writeShort(type.ordinal());
-    buf.writeBoolean(isActive);    
+    buf.writeBoolean(isActive);
+    buf.writeInt(entityID);
   }
   
   @Override
   public void fromBytes(ByteBuf buf) {
     type = Type.values()[buf.readShort()];
-    isActive = buf.readBoolean();    
+    isActive = buf.readBoolean();
+    entityID = buf.readInt();
   }
-  
+
   @Override
   public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    switch(message.type) {
+    EntityPlayer player = (EntityPlayer) (ctx.side.isClient() ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID) : ctx.getServerHandler().playerEntity);
+    switch (message.type) {
     case GLIDE:
       DarkSteelController.instance.setGlideActive(player, message.isActive);
       break;
@@ -51,9 +61,12 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
       DarkSteelController.instance.setStepAssistActive(player, message.isActive);
       break;
     default:
-      break;    
-    }    
+      break;
+    }
+    if (ctx.side.isServer()) {
+      message.entityID = player.getEntityId();
+      PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.dimensionId);
+    }
     return null;
   }
-
 }
