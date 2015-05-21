@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -180,4 +181,17 @@ public abstract class BlockEio extends Block {
     }
   }
 
+  // Because the vanilla method takes floats...
+  public void setBlockBounds(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+    this.minX = minX;
+    this.minY = minY;
+    this.minZ = minZ;
+    this.maxX = maxX;
+    this.maxY = maxY;
+    this.maxZ = maxZ;
+  }
+  
+  public void setBlockBounds(AxisAlignedBB bb) {
+    setBlockBounds(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+  }
 }

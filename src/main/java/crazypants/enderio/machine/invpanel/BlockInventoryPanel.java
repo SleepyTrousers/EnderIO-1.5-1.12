@@ -90,15 +90,19 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
     return getBoundingBox(world, x, y, z);
   }
-  
+
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-    AxisAlignedBB bb = getBoundingBox(world, x, y, z);
-    setBlockBounds((float) bb.minX - x, (float) bb.minY - y, (float) bb.minZ - z, (float) bb.maxX - x, (float) bb.maxY - y, (float) bb.maxZ - z);
+    AxisAlignedBB bb = getBoundingBox(0, 0, 0, getFacing(world, x, y, z));
+    setBlockBounds(bb);
   }
 
   public AxisAlignedBB getBoundingBox(IBlockAccess world, int x, int y, int z) {
     int facing = getFacing(world, x, y, z);
+    return getBoundingBox(x, y, z, facing);
+  }
+
+  public AxisAlignedBB getBoundingBox(int x, int y, int z, int facing) {
     switch (facing) {
     case 0:
       return AxisAlignedBB.getBoundingBox(x, y + (1 - BLOCK_SIZE), z, x + 1, y + 1, z + 1);
