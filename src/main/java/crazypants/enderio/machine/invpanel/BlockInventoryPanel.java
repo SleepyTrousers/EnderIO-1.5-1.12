@@ -107,11 +107,11 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     case 2:
       return AxisAlignedBB.getBoundingBox(x, y, z + (1- BLOCK_SIZE), x + 1, y + 1, z + 1);
     case 3:
-      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, BLOCK_SIZE);
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + BLOCK_SIZE);
     case 4:
       return AxisAlignedBB.getBoundingBox(x + (1 - BLOCK_SIZE), y, z, x + 1, y + 1, z + 1);
     case 5:
-      return AxisAlignedBB.getBoundingBox(x, y, z, BLOCK_SIZE, y + 1, z + 1);
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + BLOCK_SIZE, y + 1, z + 1);
     default:
       return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
     }

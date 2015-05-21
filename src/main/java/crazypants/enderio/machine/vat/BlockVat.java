@@ -4,12 +4,9 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityReddustFX;
 import net.minecraft.client.particle.EntitySmokeFX;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -23,8 +20,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.VertexRotation;
-import crazypants.vecmath.Vector3d;
 
 public class BlockVat extends AbstractMachineBlock<TileVat> {
 
@@ -183,13 +178,13 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    // If active, randomly throw some smoke around
+    // Spit some "steam" out the spout
     if (isActive(world, x, y, z)) {
       TileVat te = (TileVat) world.getTileEntity(x, y, z);
       float pX = x + 0.5f;
       float pY = y + 0.7f;
       float pZ = z + 0.5f;
-      
+
       ForgeDirection dir = te.getFacingDir();
       pX += 0.6f * dir.offsetX;
       pZ += 0.6f * dir.offsetZ;
