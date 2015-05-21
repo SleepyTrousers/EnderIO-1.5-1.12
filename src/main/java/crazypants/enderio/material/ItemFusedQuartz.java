@@ -8,10 +8,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.material.BlockFusedQuartz.Type;
 import crazypants.util.Lang;
 
 public class ItemFusedQuartz extends ItemBlockWithMetadata {
@@ -24,8 +24,8 @@ public class ItemFusedQuartz extends ItemBlockWithMetadata {
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, BlockFusedQuartz.Type.values().length - 1);
-    return "enderio.blockFusedQuartz." + BlockFusedQuartz.Type.values()[meta].unlocalisedName;
+    Type type = Type.byMeta(meta);
+    return "enderio.blockFusedQuartz." + type.unlocalisedName;
   }
 
   @Override
@@ -41,12 +41,15 @@ public class ItemFusedQuartz extends ItemBlockWithMetadata {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, BlockFusedQuartz.Type.values().length - 1);
-    if(meta == 0 || meta == 2) {
+    Type type = Type.byMeta(meta);
+    if (type.blastResistance) {
       par3List.add(Lang.localize("blastResistant"));
     }
-    if(meta > 1) {
+    if (type.enlightened) {
       par3List.add(Lang.localize("lightEmitter"));
+    }
+    if (type.lightOpacity > 0) {
+      par3List.add(Lang.localize("lightBlocker"));
     }
   }
 
