@@ -2793,6 +2793,19 @@ addOreDictionaryTooltips=true
     </recipe>
   </recipeGroup>
 
+  <recipeGroup name="Natura">
+
+    <recipe name="Barley" energyCost="800">
+      <input>
+        <itemStack modID="Natura" itemName="barleyFood" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="8" number="2" />
+        <itemStack modID="Natura" itemName="barley.seed" chance="0.2" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
   <grindingBalls>
     <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85"
       durationRF="24000">

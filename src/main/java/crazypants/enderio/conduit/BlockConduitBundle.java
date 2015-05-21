@@ -45,6 +45,7 @@ import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
 import crazypants.enderio.conduit.gui.PacketFluidFilter;
 import crazypants.enderio.conduit.gui.PacketOpenConduitUI;
+import crazypants.enderio.conduit.gui.PacketSlotVisibility;
 import crazypants.enderio.conduit.gui.item.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.conduit.gui.item.PacketModItemFilter;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
@@ -88,6 +89,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(),
         Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
