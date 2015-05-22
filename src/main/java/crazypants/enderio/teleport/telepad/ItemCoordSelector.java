@@ -51,13 +51,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     list.add(stack);
   }
 
-  @Override
-  public void onCreated(ItemStack stack, World world, EntityPlayer player) {
-    super.onCreated(stack, world, player);
-    init(stack);
-  }
-
-  private void init(ItemStack stack) {
+  public static void init(ItemStack stack) {
     stack.stackTagCompound = new NBTTagCompound();
     new BlockCoord().writeToNBT(stack.stackTagCompound);
     stack.stackTagCompound.setBoolean("default", true);
