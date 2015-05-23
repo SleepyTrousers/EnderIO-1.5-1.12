@@ -47,6 +47,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private static final Rectangle btnRefill = new Rectangle(24+85, 32, 20, 20);
 
+  private static final Rectangle btnReturnArea = new Rectangle(24+6, 72, 5 * 18, 8);
+
   private static final int ID_SORT = 9876;
   private static final int ID_CLEAR = 9877;
 
@@ -66,6 +68,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private final String headerCrafting;
   private final String headerReturn;
+  private final String headerStorage;
   private final String headerInventory;
   private final String infoTextFilter;
   private final String infoTextOffline;
@@ -125,13 +128,28 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     headerCrafting = Lang.localize("gui.inventorypanel.header.crafting");
     headerReturn = Lang.localize("gui.inventorypanel.header.return");
+    headerStorage = Lang.localize("gui.inventorypanel.header.storage");
     headerInventory = Lang.localize("container.inventory", false);
     infoTextFilter = Lang.localize("gui.inventorypanel.info.filter");
     infoTextOffline = Lang.localize("gui.inventorypanel.info.offline");
 
     ArrayList<String> list = new ArrayList<String>();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
-    addToolTip(new GuiToolTip(new Rectangle(24+6, 72, 5 * 18, 8), list));
+    addToolTip(new GuiToolTip(btnReturnArea, list) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && !getTileEntity().isExtractionDisabled();
+      }
+    });
+
+    list.clear();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.storage.line");
+    addToolTip(new GuiToolTip(btnReturnArea, list) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && getTileEntity().isExtractionDisabled();
+      }
+    });
 
     list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
@@ -276,9 +294,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     int headerColor = 0x404040;
+    int focusedColor = 0x648494;
     FontRenderer fr = getFontRenderer();
     fr.drawString(headerCrafting, sx + 24 + 7, sy + 6, headerColor);
-    fr.drawString(headerReturn, sx + 24 + 7, sy + 72, headerColor);
+    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 24 + 7, sy + 72,
+            btnReturnArea.contains(mouseX - sx, mouseY - sy) ? focusedColor : headerColor);
     fr.drawString(headerInventory, sx + 24 + 38, sy + 120, headerColor);
 
     SmartTank fuelTank = te.fuelTank;
@@ -471,6 +491,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           te.addStoredCraftingRecipe(recipe);
         }
       }
+    }
+
+    if(btnReturnArea.contains(x, y)) {
+      TileInventoryPanel te = getTileEntity();
+      playClickSound();
+      te.setExtractionDisabled(!te.isExtractionDisabled());
     }
   }
 

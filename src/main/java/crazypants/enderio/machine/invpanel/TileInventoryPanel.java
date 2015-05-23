@@ -47,6 +47,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   private InventoryDatabaseClient dbClient;
 
   private boolean active;
+  private boolean extractionDisabled;
 
   public InventoryPanelContainer eventHandler;
   private IItemFilter itemFilter;
@@ -84,6 +85,11 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   @Override
   public boolean canInsertItem(int slot, ItemStack var2, int side) {
     return false;
+  }
+
+  @Override
+  protected boolean canExtractItem(int slot, ItemStack itemstack) {
+    return !extractionDisabled && super.canExtractItem(slot, itemstack);
   }
 
   @Override
@@ -260,12 +266,36 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     }
   }
 
+  public boolean isExtractionDisabled() {
+    return extractionDisabled;
+  }
+
+  public void setExtractionDisabled(boolean extractionDisabled) {
+    if(worldObj != null) {
+      if(worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToServer(new PacketSetExtractionDisabled(this, extractionDisabled));
+      } else if(this.extractionDisabled != extractionDisabled) {
+        this.extractionDisabled = extractionDisabled;
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.dimensionId);
+      }
+    }
+  }
+
+  /**
+   * This is called by PacketUpdateExtractionDisabled on the client side
+   * @param extractionDisabled if extraction is disabled
+   */
+  void updateExtractionDisabled(boolean extractionDisabled) {
+    this.extractionDisabled = extractionDisabled;
+  }
+
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     fuelTank.writeCommon("fuelTank", nbtRoot);
     nbtRoot.setInteger("guiSortMode", guiSortMode);
     nbtRoot.setString("guiFilterString", guiFilterString);
+    nbtRoot.setBoolean("extractionDisabled", extractionDisabled);
 
     if(!storedCraftingRecipes.isEmpty()) {
       NBTTagList recipesNBT = new NBTTagList();
@@ -284,6 +314,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.readCommon("fuelTank", nbtRoot);
     guiSortMode = nbtRoot.getInteger("guiSortMode");
     guiFilterString = nbtRoot.getString("guiFilterString");
+    extractionDisabled = nbtRoot.getBoolean("extractionDisabled");
     faceModes = null;
 
     storedCraftingRecipes.clear();
