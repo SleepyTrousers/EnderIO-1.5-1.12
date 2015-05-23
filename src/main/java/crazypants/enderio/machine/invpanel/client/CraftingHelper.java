@@ -187,7 +187,9 @@ public class CraftingHelper {
     }
     Candidate candidate = new Candidate(stack);
     InventoryPanelContainer container = gui.getContainer();
-    findCandidates(candidate, stack, container.getReturnAreaSlots());
+    if(container.getInventoryPanel().isExtractionDisabled()) {
+      findCandidates(candidate, stack, container.getReturnAreaSlots());
+    }
     findCandidates(candidate, stack, container.getPlayerInventorySlots());
     findCandidates(candidate, stack, container.getPlayerHotbarSlots());
     if (candidate.available == 0 && db != null) {
