@@ -40,6 +40,7 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
@@ -180,7 +181,9 @@ public class WailaCompat implements IWailaDataProvider {
       IoMode mode = machine.getIoMode(side);
       currenttip.add(EnumChatFormatting.YELLOW
           + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
-      currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
+      if(!(te instanceof TileInventoryPanel)) {
+        currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
+      }
     }
 
     if(block instanceof IWailaInfoProvider) {

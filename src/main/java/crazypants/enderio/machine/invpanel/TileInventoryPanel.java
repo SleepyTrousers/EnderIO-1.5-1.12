@@ -20,6 +20,7 @@ import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
@@ -283,6 +284,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.readCommon("fuelTank", nbtRoot);
     guiSortMode = nbtRoot.getInteger("guiSortMode");
     guiFilterString = nbtRoot.getString("guiFilterString");
+    faceModes = null;
 
     storedCraftingRecipes.clear();
     NBTTagList recipesNBT = (NBTTagList) nbtRoot.getTag("craftingRecipes");
@@ -317,6 +319,20 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   @Override
   public String getMachineName() {
     return ModObject.blockInventoryPanel.unlocalisedName;
+  }
+
+  @Override
+  public IoMode getIoMode(ForgeDirection face) {
+    return face == getIODirection() ? IoMode.NONE : IoMode.DISABLED;
+  }
+
+  @Override
+  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+  }
+
+  @Override
+  public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
+    return getIoMode(faceHit);
   }
 
   private ForgeDirection getIODirection() {
