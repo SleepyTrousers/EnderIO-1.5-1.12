@@ -52,6 +52,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private int firstSlotCraftingGrid;
   private int endSlotCraftingGrid;
 
+  private boolean updateReturnAreaSlots;
+
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
     te.eventHandler = this;
@@ -257,6 +259,39 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       return Collections.singletonList(new SlotRange(firstSlotReturn, endSlotReturn, false));
     }
     return Collections.emptyList();
+  }
+
+  @Override
+  protected boolean mergeItemStack(ItemStack par1ItemStack, int fromIndex, int toIndex, boolean reversOrder) {
+    if(!super.mergeItemStack(par1ItemStack, fromIndex, toIndex, reversOrder)) {
+      return false;
+    }
+    if(fromIndex < endSlotReturn && toIndex > firstSlotReturn) {
+      updateReturnAreaSlots = true;
+    }
+    return true;
+  }
+
+  @Override
+  public void detectAndSendChanges() {
+    if(updateReturnAreaSlots) {
+      updateReturnAreaSlots = false;
+      sendReturnAreaSlots();
+    }
+    super.detectAndSendChanges();
+  }
+
+  private void sendReturnAreaSlots() {
+    for (int slotIdx = firstSlotReturn; slotIdx < endSlotReturn; slotIdx++) {
+      ItemStack stack = ((Slot) inventorySlots.get(slotIdx)).getStack();
+      if(stack != null) {
+        stack = stack.copy();
+      }
+      inventoryItemStacks.set(slotIdx, stack);
+      for (Object crafter : this.crafters) {
+        ((ICrafting) crafter).sendSlotContents(this, slotIdx, stack);
+      }
+    }
   }
 
   @Override
