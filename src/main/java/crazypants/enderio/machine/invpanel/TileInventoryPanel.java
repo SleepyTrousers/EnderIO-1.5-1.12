@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.invpanel;
 
-import net.minecraft.inventory.Container;
+import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -36,6 +37,8 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public static final int SLOT_VIEW_FILTER = 10;
   public static final int SLOT_RETURN_START = 11;
 
+  public static final int MAX_STORED_CRAFTING_RECIPES = 6;
+
   protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
@@ -44,15 +47,18 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   private boolean active;
 
-  public Container eventHandler;
+  public InventoryPanelContainer eventHandler;
   private IItemFilter itemFilter;
 
   private int guiSortMode;
   private String guiFilterString = "";
 
+  private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
+
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
     this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, 2000);
+    this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 
   public InventoryDatabaseServer getDatabaseServer() {
@@ -222,12 +228,53 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     }
   }
 
+  public int getStoredCraftingRecipes() {
+    return storedCraftingRecipes.size();
+  }
+
+  public StoredCraftingRecipe getStoredCraftingRecipe(int index) {
+    if(index < 0 || index >= storedCraftingRecipes.size()) {
+      return null;
+    }
+    return storedCraftingRecipes.get(index);
+  }
+
+  public void addStoredCraftingRecipe(StoredCraftingRecipe recipe) {
+    if(worldObj != null && worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
+    } else {
+      storedCraftingRecipes.add(recipe);
+      markDirty();
+      updateBlock();
+    }
+  }
+
+  public void removeStoredCraftingRecipe(int index) {
+    if(worldObj != null && worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
+    } else if(index >= 0 && index < storedCraftingRecipes.size()) {
+      storedCraftingRecipes.remove(index);
+      markDirty();
+      updateBlock();
+    }
+  }
+
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     fuelTank.writeCommon("fuelTank", nbtRoot);
     nbtRoot.setInteger("guiSortMode", guiSortMode);
     nbtRoot.setString("guiFilterString", guiFilterString);
+
+    if(!storedCraftingRecipes.isEmpty()) {
+      NBTTagList recipesNBT = new NBTTagList();
+      for(StoredCraftingRecipe recipe : storedCraftingRecipes) {
+        NBTTagCompound recipeNBT = new NBTTagCompound();
+        recipe.writeToNBT(recipeNBT);
+        recipesNBT.appendTag(recipeNBT);
+      }
+      nbtRoot.setTag("craftingRecipes", recipesNBT);
+    }
   }
 
   @Override
@@ -236,6 +283,22 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.readCommon("fuelTank", nbtRoot);
     guiSortMode = nbtRoot.getInteger("guiSortMode");
     guiFilterString = nbtRoot.getString("guiFilterString");
+
+    storedCraftingRecipes.clear();
+    NBTTagList recipesNBT = (NBTTagList) nbtRoot.getTag("craftingRecipes");
+    if(recipesNBT != null) {
+      for (int idx = 0; idx < recipesNBT.tagCount() && storedCraftingRecipes.size() < MAX_STORED_CRAFTING_RECIPES; idx++) {
+        NBTTagCompound recipeNBT = recipesNBT.getCompoundTagAt(idx);
+        StoredCraftingRecipe recipe = new StoredCraftingRecipe();
+        if(recipe.readFromNBT(recipeNBT)) {
+          storedCraftingRecipes.add(recipe);
+        }
+      }
+    }
+
+    if(eventHandler != null) {
+      eventHandler.checkCraftingRecipes();
+    }
   }
 
   @Override

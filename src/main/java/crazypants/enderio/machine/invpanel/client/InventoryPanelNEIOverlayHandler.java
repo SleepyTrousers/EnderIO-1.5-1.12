@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import codechicken.nei.LayoutManager;
 import codechicken.nei.OffsetPositioner;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.DefaultOverlayRenderer;
@@ -16,20 +15,18 @@ import net.minecraft.item.ItemStack;
 
 public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
 
-  private static final int NEI_OFFSET_X = 25;
-  private static final int NEI_OFFSET_Y = 6;
+  public static final int NEI_OFFSET_X = 25;
+  public static final int NEI_OFFSET_Y = 6;
 
   private static final int CRAFTING_GRID_OFFSET_X = InventoryPanelContainer.CRAFTING_GRID_X - NEI_OFFSET_X;
   private static final int CRAFTING_GRID_OFFSET_Y = InventoryPanelContainer.CRAFTING_GRID_Y - NEI_OFFSET_Y;
 
-  private final IStackPositioner positioner = new OffsetPositioner(CRAFTING_GRID_OFFSET_X, CRAFTING_GRID_OFFSET_Y);
+  public static final IStackPositioner positioner = new OffsetPositioner(CRAFTING_GRID_OFFSET_X, CRAFTING_GRID_OFFSET_Y);
 
   @Override
   public void overlayRecipe(GuiContainer gui, IRecipeHandler recipe, int recipeIndex, boolean shift) {
     GuiInventoryPanel guiInvPanel = (GuiInventoryPanel) gui;
     List<PositionedStack> ingredients = recipe.getIngredientStacks(recipeIndex);
-
-    LayoutManager.overlayRenderer = new DefaultOverlayRenderer(ingredients, positioner);
 
     if(shift) {
       shift = guiInvPanel.getContainer().clearCraftingGrid();
@@ -37,13 +34,8 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
 
     ItemStack[][] slots = mapSlots(ingredients, guiInvPanel.getContainer());
     if(slots != null) {
-      CraftingHelper helper = new CraftingHelper(slots) {
-        @Override
-        public void remove() {
-          super.remove();
-          LayoutManager.overlayRenderer = null;
-        }
-      };
+      CraftingHelperNEI helper = new CraftingHelperNEI(slots);
+      helper.overlayRenderer = new DefaultOverlayRenderer(ingredients, positioner);
       guiInvPanel.setCraftingHelper(helper);
       if(shift) {
         helper.refill(guiInvPanel, 64);
