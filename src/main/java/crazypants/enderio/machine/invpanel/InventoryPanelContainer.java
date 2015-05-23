@@ -32,13 +32,13 @@ import crazypants.util.ItemUtil;
 
 public class InventoryPanelContainer extends AbstractMachineContainer implements ChangeLog {
 
-  public static final int CRAFTING_GRID_X = 7;
+  public static final int CRAFTING_GRID_X = 24+7;
   public static final int CRAFTING_GRID_Y = 16;
 
-  public static final int RETURN_INV_X = 7;
+  public static final int RETURN_INV_X = 24+7;
   public static final int RETURN_INV_Y = 82;
 
-  public static final int FILTER_SLOT_X = 233;
+  public static final int FILTER_SLOT_X = 24+233;
   public static final int FILTER_SLOT_Y = 7;
 
   private final HashSet<ItemEntry> changedItems;
@@ -53,6 +53,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private int endSlotCraftingGrid;
 
   private boolean updateReturnAreaSlots;
+  private boolean storedRecipeExists;
 
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
@@ -128,7 +129,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   public Point getPlayerInventoryOffset() {
-    return new Point(39, 130);
+    return new Point(24+39, 130);
   }
 
   @Override
@@ -140,7 +141,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     removeChangeLog();
   }
 
-  private TileInventoryPanel getInventoryPanel() {
+  public TileInventoryPanel getInventoryPanel() {
     return (TileInventoryPanel) tileEntity;
   }
 
@@ -220,6 +221,22 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     }
 
     tileEntity.setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, tileEntity.getWorldObj()));
+
+    checkCraftingRecipes();
+  }
+
+  public void checkCraftingRecipes() {
+    storedRecipeExists = false;
+    int storedCraftingRecipes = getInventoryPanel().getStoredCraftingRecipes();
+    if(hasCraftingRecipe() && storedCraftingRecipes > 0) {
+      List<Slot> craftingGrid = getCraftingGridSlots();
+      for(int idx = 0; idx < storedCraftingRecipes; idx++) {
+        if(getInventoryPanel().getStoredCraftingRecipe(idx).isEqual(craftingGrid)) {
+          storedRecipeExists = true;
+          break;
+        }
+      }
+    }
   }
 
   @Override
@@ -242,6 +259,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   public boolean hasCraftingRecipe() {
     return getSlot(slotCraftResult).getHasStack();
+  }
+
+  public boolean hasNewCraftingRecipe() {
+    return hasCraftingRecipe() && !storedRecipeExists;
   }
 
   @Override

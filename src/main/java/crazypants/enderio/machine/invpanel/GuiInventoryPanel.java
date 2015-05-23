@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.invpanel;
 
-import cpw.mods.fml.common.Optional;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
-import crazypants.enderio.machine.invpanel.client.ICraftingHelper;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
@@ -41,14 +39,13 @@ import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
-import net.minecraft.client.gui.inventory.GuiContainer;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final Rectangle inventoryArea = new Rectangle(107, 27, 108, 90);
+  private static final Rectangle inventoryArea = new Rectangle(24+107, 27, 108, 90);
 
-  private static final Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
+  private static final Rectangle btnRefill = new Rectangle(24+85, 32, 20, 20);
 
   private static final int ID_SORT = 9876;
   private static final int ID_CLEAR = 9877;
@@ -73,7 +70,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final String infoTextFilter;
   private final String infoTextOffline;
 
-  private ICraftingHelper craftingHelper;
+  private CraftingHelper craftingHelper;
+
+  private final Rectangle btnAddStoredRecipe = new Rectangle();
 
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
     super(te, container);
@@ -82,8 +81,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        ghostSlots.add(new InvSlot(108 + x * 18, 28 + y * 18));
+        ghostSlots.add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
       }
+    }
+
+    for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; i++) {
+      ghostSlots.add(new RecipeSlot(i, 7, 7 + i * 20));
     }
 
     this.view = new DatabaseView();
@@ -97,10 +100,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEIO(fr, 108, 11, 106, 10);
+    tfFilter = new TextFieldEIO(fr, 24+108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     tfFilter.setText(te.getGuiFilterString());
-    btnSort = new IconButtonEIO(this, ID_SORT, 233, 27, getSortOrderIcon()) {
+    btnSort = new IconButtonEIO(this, ID_SORT, 24+233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(Minecraft mc, int x, int y) {
         return mousePressedButton(mc, x, y, 0);
@@ -115,8 +118,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         return false;
       }
     };
-    scrollbar = new VScrollbarEIO(this, 215, 27, 90);
-    btnClear = new MultiIconButtonEIO(this, ID_CLEAR, 65, 60, IconEIO.X_BUT, IconEIO.X_BUT_PRESSED, IconEIO.X_BUT_HOVER);
+    scrollbar = new VScrollbarEIO(this, 24+215, 27, 90);
+    btnClear = new MultiIconButtonEIO(this, ID_CLEAR, 24+65, 60, IconEIO.X_BUT, IconEIO.X_BUT_PRESSED, IconEIO.X_BUT_HOVER);
 
     textFields.add(tfFilter);
 
@@ -128,7 +131,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     ArrayList<String> list = new ArrayList<String>();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
-    addToolTip(new GuiToolTip(new Rectangle(6, 72, 5 * 18, 8), list));
+    addToolTip(new GuiToolTip(new Rectangle(24+6, 72, 5 * 18, 8), list));
 
     list.clear();
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.filterslot.line");
@@ -159,7 +162,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
-    addToolTip(new GuiToolTip(new Rectangle(12, 132, 15, 47), "") {
+    addToolTip(new GuiToolTip(new Rectangle(24+12, 132, 15, 47), "") {
       @Override
       protected void updateText() {
         text.clear();
@@ -167,6 +170,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
       }
     });
+
+    list.clear();
+    TooltipAddera.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.addrecipe.line");
+    addToolTip(new GuiToolTip(btnAddStoredRecipe, list));
   }
 
   @Override
@@ -179,10 +186,28 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.onGuiClosed();
   }
 
-  public void setCraftingHelper(ICraftingHelper craftingHelper) {
+  public void setCraftingHelper(CraftingHelper craftingHelper) {
+    if(this.craftingHelper != null) {
+      this.craftingHelper.remove();
+    }
     this.craftingHelper = craftingHelper;
     ttRefill.setVisible(craftingHelper != null);
     ttSetReceipe.setVisible(craftingHelper == null);
+    if(craftingHelper != null) {
+      craftingHelper.install();
+    }
+  }
+
+  public void fillFromStoredRecipe(int index, boolean shift) {
+    StoredCraftingRecipe recipe = getTileEntity().getStoredCraftingRecipe(index);
+    if(recipe == null) {
+      return;
+    }
+    if(getContainer().clearCraftingGrid()) {
+      CraftingHelper helper = CraftingHelper.createFromRecipe(recipe);
+      setCraftingHelper(helper);
+      helper.refill(this, shift ? 64 : 1);
+    }
   }
 
   @Override
@@ -195,19 +220,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  protected void fixupGuiPosition() {
-    guiLeft = (width - 232) / 2; // account for the tabs
-  }
-
-  @Override
   public void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == ID_CLEAR) {
       if(getContainer().clearCraftingGrid()) {
-        if(craftingHelper != null) {
-          craftingHelper.remove();
-          setCraftingHelper(null);
-        }
+        setCraftingHelper(null);
       }
     }
   }
@@ -219,7 +236,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int sx = guiLeft;
     int sy = guiTop;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    drawTexturedModalRect(sx+24, sy, 0, 0, 256, ySize);
 
     if(craftingHelper != null) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
@@ -231,16 +248,42 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
     }
 
+    TileInventoryPanel te = getTileEntity();
+
+    int y = sy;
+    int numStoredRecipes = te.getStoredCraftingRecipes();
+    if(numStoredRecipes == 1) {
+      drawTexturedModalRect(sx, y, 227, 225, 28, 30); y += 30;
+    } else if(numStoredRecipes > 1) {
+      drawTexturedModalRect(sx, y, 227, 225, 28, 24); y += 24;
+      for(int i = 1; i < numStoredRecipes - 1; i++) {
+        drawTexturedModalRect(sx, y, 198, 229, 28, 20); y += 20;
+      }
+      drawTexturedModalRect(sx, y, 198, 229, 28, 26); y += 26;
+    }
+
+    if(numStoredRecipes < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES && getContainer().hasNewCraftingRecipe()) {
+      y += 2;
+      btnAddStoredRecipe.x = 13;
+      btnAddStoredRecipe.y = y - sy;
+      btnAddStoredRecipe.width = 12;
+      btnAddStoredRecipe.height = 14;
+      boolean hover = btnAddStoredRecipe.contains(mouseX - sx, mouseY - sy);
+      drawTexturedModalRect(sx + 13, y, 182, hover ? 241 : 225, 15, 14);
+    } else {
+      btnAddStoredRecipe.width = 0;
+      btnAddStoredRecipe.height = 0;
+    }
+
     int headerColor = 0x404040;
     FontRenderer fr = getFontRenderer();
-    fr.drawString(headerCrafting, sx + 7, sy + 6, headerColor);
-    fr.drawString(headerReturn, sx + 7, sy + 72, headerColor);
-    fr.drawString(headerInventory, sx + 38, sy + 120, headerColor);
+    fr.drawString(headerCrafting, sx + 24 + 7, sy + 6, headerColor);
+    fr.drawString(headerReturn, sx + 24 + 7, sy + 72, headerColor);
+    fr.drawString(headerInventory, sx + 24 + 38, sy + 120, headerColor);
 
-    TileInventoryPanel te = getTileEntity();
     SmartTank fuelTank = te.fuelTank;
     if(fuelTank.getFluidAmount() > 0) {
-      RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 12, sy + 132, zLevel, 16, 47);
+      RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 132, zLevel, 16, 47);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
@@ -282,9 +325,23 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         unit = "m";
       }
       str = value + unit;
+    } else if(stack.stackSize > 1) {
+      str = Integer.toString(stack.stackSize);
     }
     itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
-    itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, str);
+    if(str != null) {
+      GL11.glDisable(GL11.GL_LIGHTING);
+      GL11.glDisable(GL11.GL_DEPTH_TEST);
+      GL11.glDisable(GL11.GL_BLEND);
+      GL11.glPushMatrix();
+      GL11.glTranslatef(x + 16, y + 16, 0);
+      GL11.glScalef(0.8f, 0.8f, 1.0f);
+      font.drawStringWithShadow(str, 1 - font.getStringWidth(str), -8, 0xFFFFFF);
+      GL11.glPopMatrix();
+      GL11.glEnable(GL11.GL_LIGHTING);
+      GL11.glEnable(GL11.GL_DEPTH_TEST);
+    }
+    itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, "");
   }
 
   @Override
@@ -380,25 +437,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   public int getXSize() {
-    return 256;
+    return 280;
   }
 
   @Override
   public int getYSize() {
     return 212;
-  }
-
-  @Override
-  @Optional.Method(modid = "NotEnoughItems")
-  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
-    // NEI seems to have an issue with the shifted GUI position - so let's work around it
-    if(x+w >= guiLeft && x < guiLeft+xSize && y+h >= guiTop && y < guiTop+49) {
-      return true;
-    }
-    if(x+w >= guiLeft && x < guiLeft+232 && x+h >= guiTop+49 && y < guiTop+ySize) {
-      return true;
-    }
-    return false;
   }
 
   @Override
@@ -415,6 +459,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       } else if(getContainer().hasCraftingRecipe()) {
         playClickSound();
         setCraftingHelper(CraftingHelper.createFromSlots(getContainer().getCraftingGridSlots()));
+      }
+    }
+
+    if(btnAddStoredRecipe.contains(x, y)) {
+      TileInventoryPanel te = getTileEntity();
+      if(te.getStoredCraftingRecipes() < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES && getContainer().hasNewCraftingRecipe()) {
+        StoredCraftingRecipe recipe = new StoredCraftingRecipe();
+        if(recipe.loadFromCraftingGrid(getContainer().getCraftingGridSlots())) {
+          playClickSound();
+          te.addStoredCraftingRecipe(recipe);
+        }
       }
     }
   }
@@ -485,6 +540,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
       }
+    } else if(slot instanceof RecipeSlot) {
+      RecipeSlot recipeSlot = (RecipeSlot) slot;
+      if(recipeSlot.isVisible()) {
+        if(button == 0) {
+          fillFromStoredRecipe(recipeSlot.index, isShiftKeyDown());
+        } else if(button == 1) {
+          getTileEntity().removeStoredCraftingRecipe(recipeSlot.index);
+        }
+      }
     }
   }
 
@@ -494,6 +558,28 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     InvSlot(int x, int y) {
       this.x = x;
       this.y = y;
+    }
+  }
+
+  class RecipeSlot extends GhostSlot {
+    final int index;
+
+    RecipeSlot(int index, int x, int y) {
+      this.index = index;
+      this.x = x;
+      this.y = y;
+    }
+
+    @Override
+    public ItemStack getStack() {
+      TileInventoryPanel te = getTileEntity();
+      StoredCraftingRecipe recipe = te.getStoredCraftingRecipe(index);
+      return recipe != null ? recipe.getResult(te) : null;
+    }
+
+    @Override
+    public boolean isVisible() {
+      return index < getTileEntity().getStoredCraftingRecipes();
     }
   }
 }

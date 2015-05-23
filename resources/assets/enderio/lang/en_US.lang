@@ -101,7 +101,9 @@ item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awaren
 item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
 item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
 item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
-item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory independent
+item.itemInventoryPanelUpgrade.tooltip.detailed.line5=of the conduit mode.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(No need to set the conduit to extract)
 
 enderio.itemGasConduit.name=Gas Conduit
 
@@ -519,6 +521,13 @@ enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
 enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
 enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
 enderio.gui.inventorypanel.tooltip.itemsstored=Items Stored: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
 
 enderio.machine.tooltip.configured=(Configured)
 
