@@ -34,7 +34,7 @@ public class MagnetController implements IEntitySelector {
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     
     ActiveMagnet mag = getActiveMagnet(event.player);
-    if(mag != null) {   
+    if (mag != null && event.player.getHealth() > 0f) {
       doHoover(event.player);
       if(event.side == Side.SERVER && event.player.worldObj.getTotalWorldTime() % 20 == 0) {
         ItemMagnet.drainPerSecondPower(mag.item);
