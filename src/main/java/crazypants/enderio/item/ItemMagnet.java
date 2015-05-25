@@ -186,7 +186,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-    if(player instanceof EntityPlayer && hasPower(itemstack)) {
+    if (player instanceof EntityPlayer && hasPower(itemstack) && ((EntityPlayer) player).getHealth() > 0f) {
       controller.doHoover((EntityPlayer) player);
       if(!player.worldObj.isRemote && player.worldObj.getTotalWorldTime() % 20 == 0) {
         ItemMagnet.drainPerSecondPower(itemstack);
