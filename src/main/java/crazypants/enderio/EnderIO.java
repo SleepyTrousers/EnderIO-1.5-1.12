@@ -82,6 +82,7 @@ import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.cobbleworks.BlockCobbleworks;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
@@ -89,6 +90,7 @@ import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
+import crazypants.enderio.machine.framework.AbstractBlockFramework;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
@@ -303,6 +305,8 @@ public class EnderIO {
   public static ItemFrankenSkull itemFrankenSkull;
 
   public static BlockVacuumChest blockVacuumChest;
+  public static AbstractBlockFramework abstractBlockFramework;
+  public static BlockCobbleworks blockCobbleworks;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -347,6 +351,7 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
+    abstractBlockFramework = AbstractBlockFramework.create();
 
     blockTransceiver = BlockTransceiver.create();
 
@@ -368,6 +373,7 @@ public class EnderIO {
     blockWeatherObelisk = BlockWeatherObelisk.create();
     blockInhibitorObelisk = BlockInhibitorObelisk.create();
     blockEnchanter = BlockEnchanter.create();
+    blockCobbleworks = BlockCobbleworks.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();

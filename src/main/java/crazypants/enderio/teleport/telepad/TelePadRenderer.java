@@ -20,19 +20,31 @@ import crazypants.util.BlockCoord;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
-  public static final Map<String, GroupObject> all = TechneUtil.getModel("models/telePad");
-
   public TelePadRenderer() {
-    super(getModel(), BlockTelePad.renderId);
+    super(TechneUtil.getModel("models/telePad"), BlockTelePad.renderId);
   }
 
-  private static Collection<GroupObject> getModel() {
+  protected Collection<GroupObject> getModel() {
     Collection<GroupObject> model = Lists.newArrayList();
-    for (String s : all.keySet()) {
+    for (String s : this.model.keySet()) {
       if(!s.equals("glass") && !s.contains("blade")) {
-        model.add(all.get(s));
+        model.add(this.model.get(s));
       }
     }
+    return model;
+  }
+
+  @Override
+  protected Collection<GroupObject> getModel(Block block, int metadata) {
+    return getModel();
+  }
+
+  @Override
+  protected Collection<GroupObject> getModel(IBlockAccess world, int x, int y, int z) {
+    return getModel();
+  }
+
+  Map<String, GroupObject> getFullModel() {
     return model;
   }
 

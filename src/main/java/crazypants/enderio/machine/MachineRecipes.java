@@ -219,6 +219,28 @@ public class MachineRecipes {
     ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
     GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici", "ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
 
+    //Cobbleworks
+    ItemStack machineFrame = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_FRAME.ordinal());
+    ItemStack frameTank = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.FRAME_TANK.ordinal());
+    ItemStack frameTanks = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.FRAME_TANKS.ordinal());
+    ItemStack machineFrameTank = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_FRAME_TANK.ordinal());
+    ItemStack cobbleController = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.COBBLE_CONTROLLER.ordinal());
+    ItemStack cobbleworks = new ItemStack(EnderIO.blockCobbleworks);
+
+    GameRegistry.addShapedRecipe(machineFrame, "dsd", "s s", "dsd", 's', electricSteel, 'd', darkSteel);
+    GameRegistry.addShapedRecipe(frameTank, "scs", "c c", "scs", 's', silicon, 'c', clearGlass);
+    GameRegistry.addShapelessRecipe(frameTanks, frameTank, frameTank, frameTank, frameTank);
+    GameRegistry.addShapelessRecipe(machineFrameTank, machineFrame, frameTank, frameTank, frameTank, frameTank);
+    GameRegistry.addShapelessRecipe(machineFrameTank, machineFrame, frameTanks);
+    ItemStack crystal = Config.useHardRecipes ? endCry : pulCry;
+    GameRegistry.addShapedRecipe(cobbleController, "sis", "lMw", "pzp", 'i', Items.iron_ingot, 's', electricSteel, 'M',
+        machineChassi, 'z', zombieBit, 'l', Items.lava_bucket, 'w', Items.water_bucket, 'p', crystal);
+    GameRegistry.addShapedRecipe(cobbleController, "sis", "wMl", "pzp", 'i', Items.iron_ingot, 's', electricSteel, 'M',
+        machineChassi, 'z', zombieBit, 'l', Items.lava_bucket, 'w', Items.water_bucket, 'p', crystal);
+    GameRegistry.addShapelessRecipe(cobbleworks, machineFrameTank, cobbleController);
+    GameRegistry.addShapelessRecipe(cobbleworks, machineFrame, frameTank, frameTank, frameTank, frameTank, cobbleController);
+    GameRegistry.addShapelessRecipe(cobbleworks, machineFrame, frameTanks, cobbleController);
+
     //Soul Binder
     ItemStack enderBit;
     if(Config.soulBinderRequiresEndermanSkull) {

@@ -28,39 +28,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   @Override
-  public int[] getAccessibleSlotsFromSide(int var1) {
-    ForgeDirection dir = ForgeDirection.getOrientation(var1);
-    IoMode mode = getIoMode(dir);
-    if(mode == IoMode.DISABLED) {
-      return new int[0];
-    }
-
-    int[] res = new int[inventory.length - slotDefinition.getNumUpgradeSlots()];
-    int index = 0;
-    for (int i = 0; i < inventory.length; i++) {
-      if(!slotDefinition.isUpgradeSlot(i)) {
-        res[index] = i;
-        index++;
-      }
-    }
-    return res;
-  }
-
-  @Override
-  public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-    if(!super.canInsertItem(i, itemstack, j)) {
-      return false;
-    }
-    if(!isItemValidForSlot(i, itemstack)) {
-      return false;
-    }
-    if(inventory[i] == null) {
-      return true;
-    }
-    return inventory[i].isItemEqual(itemstack);
-  }
-
-  @Override
   public boolean isActive() {
     return currentTask == null ? false : currentTask.getProgress() >= 0 && hasPower() && redstoneCheckPassed;
   }

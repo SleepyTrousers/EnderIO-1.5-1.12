@@ -75,6 +75,7 @@ public final class Config {
   public static final Section sectionWeather = new Section("Weather", "weather");
   public static final Section sectionTelepad = new Section("Telepad", "telepad");
   public static final Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
+  public static final Section sectionCobbleWorks = new Section("Cobbleworks", "cobbleworks");
   public static final Section sectionMisc = new Section("Misc", "misc");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
@@ -323,6 +324,12 @@ public final class Config {
   public static boolean useCombustionGenModel = false;
 
   public static int crafterRfPerCraft = 2500;
+
+  public static int cobbleWorksRfPerCobblestone = 100;
+  public static int cobbleWorksRfDiscountForCrafting = 10; // %
+  public static int cobbleWorksRfDiscountForSmelting = 10; // %
+  public static int cobbleWorksRfDiscountForCrushing = 10; // %
+  public static int cobbleWorksRfDiscountPerUpgrade = 10; // %
 
   public static int capacitorBankMaxIoRF = 5000;
   public static int capacitorBankMaxStorageRF = 5000000;
@@ -1079,6 +1086,26 @@ public final class Config {
 
     crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft,
         "RF used per autocrafted recipe").getInt(crafterRfPerCraft);
+
+    cobbleWorksRfPerCobblestone = config.get(sectionCobbleWorks.name, "cobbleWorksRfPerCobblestone", cobbleWorksRfPerCobblestone,
+        "RF used per generated cobblestone").getInt(cobbleWorksRfPerCobblestone);
+
+    cobbleWorksRfDiscountForCrafting = config.get(sectionCobbleWorks.name, "cobbleWorksRfDiscountForCrafting",
+        cobbleWorksRfDiscountForCrafting, "Discount on the RF cost of crafting operations in percent (0-100)").getInt(
+        cobbleWorksRfDiscountForCrafting);
+    cobbleWorksRfDiscountForSmelting = config.get(sectionCobbleWorks.name, "cobbleWorksRfDiscountForSmelting",
+        cobbleWorksRfDiscountForSmelting, "Discount on the RF cost of smelting operations in percent (0-100)").getInt(
+        cobbleWorksRfDiscountForSmelting);
+    cobbleWorksRfDiscountForCrushing = config.get(sectionCobbleWorks.name, "cobbleWorksRfDiscountForCrushing",
+        cobbleWorksRfDiscountForCrushing, "Discount on the RF cost of crusing (sagmilling) operations in percent (0-100)").getInt(
+        cobbleWorksRfDiscountForCrushing);
+    cobbleWorksRfDiscountPerUpgrade = config
+        .get(
+            sectionCobbleWorks.name,
+            "cobbleWorksRfDiscountPerUpgrade",
+            cobbleWorksRfDiscountPerUpgrade,
+            "Discount on the RF cost of any operation in percent (0-100). This discount is applied once for a double-layer capacitor and twice for an octadic capacitor upgrade.")
+        .getInt(cobbleWorksRfDiscountPerUpgrade);
 
     poweredSpawnerMinDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMinDelayTicks", poweredSpawnerMinDelayTicks,
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);

@@ -70,12 +70,17 @@ import crazypants.enderio.machine.TechneMachineRenderer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.render.CapBankRenderer;
+import crazypants.enderio.machine.cobbleworks.BlockCobbleworks;
+import crazypants.enderio.machine.cobbleworks.RendererCobbleworks;
+import crazypants.enderio.machine.cobbleworks.TESRCobbleworks;
+import crazypants.enderio.machine.cobbleworks.TileCobbleworks;
 import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.framework.RendererFrameworkMachine;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
@@ -315,6 +320,14 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(vcr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), vcr);
 
+    RendererFrameworkMachine rendererFrameworkMachine = new RendererFrameworkMachine();
+
+    BlockCobbleworks.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new RendererCobbleworks(rendererFrameworkMachine));
+    ClientRegistry.bindTileEntitySpecialRenderer(TileCobbleworks.class, new TESRCobbleworks());
+
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer(rendererFrameworkMachine));
+
     ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
@@ -345,10 +358,10 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockTravelAnchor.renderId, EnderIO.blockTravelPlatform));
 
     BlockTelePad.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new TelePadRenderer());
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
+    TelePadRenderer telePadRenderer = new TelePadRenderer();
+    RenderingRegistry.registerBlockHandler(telePadRenderer);
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer(telePadRenderer));
 
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
 
     cbr = new ConduitBundleRenderer((float) Config.conduitScale);
