@@ -57,5 +57,17 @@
         "telepad/teleport1",
         "telepad/teleport2"
     ]
+  },
+  "silence.dig": {
+    "category": "block",
+    "sounds": [
+      "silence"
+    ]
+  },
+  "silence.step": {
+    "category": "block",
+    "sounds": [
+      "silence"
+    ]
   }
 }

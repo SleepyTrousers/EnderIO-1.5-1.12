@@ -8,6 +8,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,8 +22,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
 import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
@@ -64,6 +67,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.IFacade;
 import crazypants.util.Util;
 
@@ -111,6 +115,17 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
+    this.stepSound = new SoundType("silence", 0, 0) {
+      @Override
+      public String getBreakSound() {
+        return "EnderIO:" + soundName + ".dig";
+      }
+
+      @Override
+      public String getStepResourcePath() {
+        return "EnderIO:" + soundName + ".step";
+      }
+    };
   }
 
   @SideOnly(Side.CLIENT)
@@ -157,7 +172,6 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       }
     }
     return true;
-
   }
 
   @SideOnly(Side.CLIENT)
@@ -183,6 +197,39 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     digFX.applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
     digFX.setParticleIcon(tex);
     effectRenderer.addEffect(digFX);
+  }
+
+  @SubscribeEvent
+  public void onPlaySound(PlaySoundSourceEvent event) {
+    String path = event.sound.getPositionedSoundLocation().getResourcePath();
+    if ("silence.step".equals(path)) {
+      ISound snd = event.sound;
+      World world = EnderIO.proxy.getClientWorld();
+      BlockCoord bc = new BlockCoord(snd.getXPosF(), snd.getYPosF(), snd.getZPosF());
+      TileConduitBundle te = (TileConduitBundle) bc.getTileEntity(world);
+      if (te != null && te.hasFacade()) {
+        Block facade = getFacade(world, bc.x, bc.y, bc.z, -1);
+        ConduitUtil.playHitSound(facade.stepSound, world, bc.x, bc.y, bc.z);
+      } else {
+        ConduitUtil.playHitSound(Block.soundTypeMetal, world, bc.x, bc.y, bc.z);
+      }
+    }
+  }
+
+  @SubscribeEvent
+  public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
+    String path = event.name;
+    World world = event.entity.worldObj;
+    if ("EnderIO:silence.step".equals(path) && world.isRemote) {
+      BlockCoord bc = new BlockCoord(event.entity.posX, event.entity.posY - 2, event.entity.posZ);
+      TileConduitBundle te = (TileConduitBundle) bc.getTileEntity(world);
+      if (te != null && te.hasFacade()) {
+        Block facade = getFacade(world, bc.x, bc.y, bc.z, -1);
+        ConduitUtil.playStepSound(facade.stepSound, world, bc.x, bc.y, bc.z);
+      } else {
+        ConduitUtil.playStepSound(Block.soundTypeMetal, world, bc.x, bc.y, bc.z);
+      }
+    }
   }
 
   @Override
@@ -379,6 +426,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
       PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
       drop.add(fac);
+      ConduitUtil.playBreakSound(te.getFacadeId().stepSound, world, x, y, z);
       te.setFacadeId(null);
       te.setFacadeMetadata(0);
       te.setFacadeType(FacadeType.BASIC);
@@ -447,6 +495,9 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
         drop.addAll(con.getDrops());
       }
     }
+    
+    BlockCoord bc = te.getLocation();
+    ConduitUtil.playBreakSound(Block.soundTypeMetal, te.getWorld(), bc.x, bc.y, bc.z);
 
     return true;
   }
@@ -598,8 +649,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       if(!world.isRemote) {
         bundle.addConduit(equipped.createConduit(stack, player));
         if(!player.capabilities.isCreativeMode) {
-          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(), (stepSound.getVolume() + 1.0F) / 2.0F,
-              stepSound.getPitch() * 0.8F);
+          ConduitUtil.playBreakSound(soundTypeMetal, world, x, y, z);
           player.getCurrentEquippedItem().stackSize--;
         }
       }
@@ -625,7 +675,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     bundle.setFacadeId(facadeID);
     bundle.setFacadeMetadata(facadeMeta);
     bundle.setFacadeType(FacadeType.values()[player.getCurrentEquippedItem().getItemDamage()]);
-    if(!player.capabilities.isCreativeMode) {
+    ConduitUtil.playBreakSound(facadeID.stepSound, world, x, y, z);
+    if (!player.capabilities.isCreativeMode) {
       stack.stackSize--;
     }
     world.markBlockForUpdate(x, y, z);

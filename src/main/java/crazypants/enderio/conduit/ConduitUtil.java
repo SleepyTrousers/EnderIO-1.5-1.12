@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -418,4 +420,39 @@ public class ConduitUtil {
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
   }
 
+  public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientBreakSound(snd);
+    }
+  }
+
+  private static void playClientBreakSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  }
+
+  public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientHitSound(snd);
+    }
+  }
+
+  private static void playClientHitSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch() * 0.5F);
+  }
+
+  public static void playStepSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientStepSound(snd);
+    }
+  }
+
+  private static void playClientStepSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+  }
 }

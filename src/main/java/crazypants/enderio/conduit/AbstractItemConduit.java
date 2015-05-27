@@ -65,9 +65,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(stack, player));
-            Block b = EnderIO.blockConduitBundle;
-            world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getStepResourcePath(),
-                (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
+            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, placeAt.x, placeAt.y, placeAt.z);
           }
         }
       }
@@ -98,6 +96,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
               return false;
             }
             bundle.addConduit(con);
+            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, placeX, placeY, placeZ);
             if(!player.capabilities.isCreativeMode) {
               stack.stackSize--;
             }
