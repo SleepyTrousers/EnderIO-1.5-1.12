@@ -8,19 +8,22 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerPoweredSpawner extends AbstractMachineContainer {
 
+  private Slot slotInput;
+  private Slot slotOutput;
+
   public ContainerPoweredSpawner(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);
   }
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(tileEntity, 0, 54, 42) {
+    slotInput = addSlotToContainer(new Slot(tileEntity, 0, 54, 42) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isItemValidForSlot(0, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 1, 105, 42) {
+    slotOutput = addSlotToContainer(new Slot(tileEntity, 1, 105, 42) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return false;
@@ -28,5 +31,9 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer {
     });
   }
 
+  public void setSlotVisibility(boolean visible) {
+    slotInput.yDisplayPosition = visible ? 42 : -3000;
+    slotOutput.yDisplayPosition = visible ? 42 : -3000;
+  }
 
 }

@@ -6,9 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -40,15 +38,16 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public static final int MIN_PLAYER_DISTANCE = Config.poweredSpawnerMaxPlayerDistance;
   public static final boolean USE_VANILLA_SPAWN_CHECKS = Config.poweredSpawnerUseVanillaSpawChecks;
 
-  private final SpawnerLogic logic = new SpawnerLogic();
-
   private static final String NULL_ENTITY_NAME = "None";
 
+  private String entityTypeName;
   private boolean isSpawnMode = true;
+  private int powerUsePerTick;
+  private int remainingSpawnTries;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(1, 1, 1));
-    logic.setEntityName(NULL_ENTITY_NAME);
+    entityTypeName = NULL_ENTITY_NAME;
   }
 
   public boolean isSpawnMode() {
@@ -66,16 +65,17 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   protected void taskComplete() {
     super.taskComplete();
     if(isSpawnMode) {
-      logic.spawnDelay = 0;
+      remainingSpawnTries = Config.poweredSpawnerSpawnCount + Config.poweredSpawnerMaxSpawnTries;
+      for (int i = 0; i < Config.poweredSpawnerSpawnCount && remainingSpawnTries > 0; ++i) {
+        if(!trySpawnEntity()) {
+          break;
+        }
+      }
     } else {
-      if(getStackInSlot(0) == null || getStackInSlot(1) != null) {
+      if(getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntityName()) {
         return;
       }
-      String name = logic.getEntityNameToSpawn();
-      if(NULL_ENTITY_NAME.equals(name)) {
-        return;
-      }
-      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntityStub(logic.getEntityNameToSpawn());
+      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntityStub(getEntityName());
       decrStackSize(0, 1);
       setInventorySlotContents(1, res);
     }
@@ -83,20 +83,26 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public void onCapacitorTypeChange() {
-    ICapacitor refCap = null;
+    ICapacitor refCap;
+    int basePowerUse;
     switch (getCapacitorType()) {
+    default:
     case BASIC_CAPACITOR:
       refCap = CAP_ONE;
+      basePowerUse = POWER_PER_TICK_ONE;
       break;
     case ACTIVATED_CAPACITOR:
       refCap = CAP_TWO;
+      basePowerUse = POWER_PER_TICK_TWO;
       break;
     case ENDER_CAPACITOR:
       refCap = CAP_THREE;
+      basePowerUse = POWER_PER_TICK_THREE;
       break;
     }
-    double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
-    setCapacitor(new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored()));
+    double multiplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(getEntityName());
+    setCapacitor(new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multiplier), refCap.getMaxEnergyStored()));
+    powerUsePerTick = (int) Math.ceil(basePowerUse * multiplier);
     forceClientUpdate = true;
   }
 
@@ -118,9 +124,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
+    if(!hasEntityName()) {
+      return null;
+    }
     if(isSpawnMode) {
-      if(logic.getEntityNameToSpawn() == null || logic.getEntityNameToSpawn().equals(NULL_ENTITY_NAME)) {
-        return null;
+      if(MIN_PLAYER_DISTANCE > 0) {
+        if(worldObj.getClosestPlayer(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, MIN_PLAYER_DISTANCE) == null) {
+          return null;
+        }
       }
     } else {
       if(getStackInSlot(0) == null || getStackInSlot(1) != null) {
@@ -137,13 +148,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public int getPowerUsePerTick() {
-    double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
-    if(getCapacitorType().ordinal() == 0) {
-      return (int) Math.round(POWER_PER_TICK_ONE * multuplier);
-    } else if(getCapacitorType().ordinal() == 1) {
-      return (int) Math.round(POWER_PER_TICK_TWO * multuplier);
-    }
-    return (int) Math.round(POWER_PER_TICK_THREE * multuplier);
+    return powerUsePerTick;
   }
 
   @Override
@@ -157,28 +162,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    logic.readFromNBT(nbtRoot);
-    super.readCustomNBT(nbtRoot);
-
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    logic.writeToNBT(nbtRoot);
-    super.writeCustomNBT(nbtRoot);
-
-  }
-
-  @Override
   public void readCommon(NBTTagCompound nbtRoot) {
-    //Must read the mob type first so we no the multiplier to be used when calculating input/output power
+    //Must read the mob type first so we know the multiplier to be used when calculating input/output power
     String mobType = BlockPoweredSpawner.readMobTypeFromNBT(nbtRoot);
     if(mobType == null) {
       mobType = NULL_ENTITY_NAME;
     }
-    logic.setEntityName(mobType);
-    logic.resetTimer();
+    entityTypeName = mobType;
     if(!nbtRoot.hasKey("isSpawnMode")) {
       isSpawnMode = true;
     } else {
@@ -189,29 +179,25 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
-    String mobType = logic.getEntityNameToSpawn();
-    if(mobType == null || mobType.equals(NULL_ENTITY_NAME)) {
-      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null);
+    if(hasEntityName()) {
+      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, getEntityName());
     } else {
-      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, mobType);
+      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null);
     }
     nbtRoot.setBoolean("isSpawnMode", isSpawnMode);
     super.writeCommon(nbtRoot);
   }
 
   @Override
-  public void doUpdate() {
-    logic.updateSpawner();
-    super.doUpdate();
-  }
-
-  /**
-   * Called when a client event is received with the event number and argument,
-   * see World.sendClientEvent
-   */
-  @Override
-  public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
-    return logic.setDelayToMin(p_145842_1_) ? true : super.receiveClientEvent(p_145842_1_, p_145842_2_);
+  protected void updateEntityClient() {
+    if(isActive()) {
+        double x = xCoord + worldObj.rand.nextFloat();
+        double y = yCoord + worldObj.rand.nextFloat();
+        double z = zCoord + worldObj.rand.nextFloat();
+        worldObj.spawnParticle("smoke", x, y, z, 0.0D, 0.0D, 0.0D);
+        worldObj.spawnParticle("flame", x, y, z, 0.0D, 0.0D, 0.0D);
+    }
+    super.updateEntityClient();
   }
 
   @Override
@@ -246,138 +232,58 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     return spaceClear;
   }
 
+  Entity createEntity(boolean forceAlive) {
+    Entity ent = EntityList.createEntityByName(getEntityName(), worldObj);
+    if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
+       ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
+      ((EntityLiving) ent).func_110163_bv();
+    }
+    return ent;
+  }
+
+  protected boolean trySpawnEntity() {
+    Entity entity = createEntity(true);
+    if(!(entity instanceof EntityLiving)) {
+      return false;
+    }
+    EntityLiving entityliving = (EntityLiving) entity;
+    int spawnRange = Config.poweredSpawnerSpawnRange;
+
+    if(Config.poweredSpawnerMaxNearbyEntities > 0) {
+      int nearbyEntities = worldObj.getEntitiesWithinAABB(
+          entity.getClass(),
+          AxisAlignedBB.getBoundingBox(
+                  xCoord - spawnRange*2, yCoord - 4, zCoord - spawnRange*2,
+                  xCoord + spawnRange*2, yCoord + 4, zCoord + spawnRange*2)).size();
+
+      if(nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
+        return false;
+      }
+    }
+
+    while(remainingSpawnTries-- > 0) {
+      double x = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      double y = yCoord + worldObj.rand.nextInt(3) - 1;
+      double z = zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      entity.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+
+      if(canSpawnEntity(entityliving)) {
+        entityliving.onSpawnWithEgg(null);
+        worldObj.spawnEntityInWorld(entityliving);
+        worldObj.playAuxSFX(2004, xCoord, yCoord, zCoord, 0);
+        entityliving.spawnExplosionParticle();
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public String getEntityName() {
-    return logic.getEntityNameToSpawn();
+    return entityTypeName;
   }
 
-  class SpawnerLogic extends MobSpawnerBaseLogic {
-
-    private int spawnCount = 4;
-    private int maxNearbyEntities = 6;
-    private int spawnRange = 4;
-
-    @Override
-    public void func_98267_a(int par1) {
-      worldObj.addBlockEvent(xCoord, yCoord, zCoord, EnderIO.blockPoweredSpawner, par1, 0);
-    }
-
-    @Override
-    public World getSpawnerWorld() {
-      return worldObj;
-    }
-
-    @Override
-    public int getSpawnerX() {
-      return xCoord;
-    }
-
-    @Override
-    public int getSpawnerY() {
-      return yCoord;
-    }
-
-    @Override
-    public int getSpawnerZ() {
-      return zCoord;
-    }
-
-    @Override
-    public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart par1WeightedRandomMinecart) {
-      super.setRandomEntity(par1WeightedRandomMinecart);
-      if(getSpawnerWorld() != null) {
-        getSpawnerWorld().markBlockForUpdate(xCoord, yCoord, zCoord);
-      }
-    }
-
-    /**
-     * Returns true if there's a player close enough to this mob spawner to
-     * activate it.
-     */
-    @Override
-    public boolean isActivated() {
-      if(MIN_PLAYER_DISTANCE > 0) {
-        //TODO: Add this to main 'hasPower' like check so turn of the machine if the player is out of range?
-        boolean playerInRange = worldObj.getClosestPlayer(getSpawnerX() + 0.5D, getSpawnerY() + 0.5D, getSpawnerZ() + 0.5D,
-            MIN_PLAYER_DISTANCE) != null;
-        if(!playerInRange) {
-          return false;
-        }
-      }
-      return isActive();
-    }
-
-    @Override
-    public void updateSpawner() {
-
-      if(isActivated()) {
-        double d2;
-
-        if(getSpawnerWorld().isRemote) {
-          double d0 = getSpawnerX() + getSpawnerWorld().rand.nextFloat();
-          double d1 = getSpawnerY() + getSpawnerWorld().rand.nextFloat();
-          d2 = getSpawnerZ() + getSpawnerWorld().rand.nextFloat();
-          getSpawnerWorld().spawnParticle("smoke", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-          getSpawnerWorld().spawnParticle("flame", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-
-          field_98284_d = field_98287_c;
-          field_98287_c = (field_98287_c + 1000.0F / (spawnDelay + 200.0F)) % 360.0D;
-        } else {
-
-          if(spawnDelay > 0) {
-            return;
-          }
-          resetTimer();
-
-          for (int i = 0; i < spawnCount; ++i) {
-
-            Entity entity = createEntity(true);
-            if(entity == null) {
-              return;
-            }
-
-            int j = getSpawnerWorld().getEntitiesWithinAABB(
-                entity.getClass(),
-                AxisAlignedBB.getBoundingBox(getSpawnerX(), getSpawnerY(), getSpawnerZ(), getSpawnerX() + 1,
-                    getSpawnerY() + 1, getSpawnerZ() + 1).expand(spawnRange * 2, 4.0D, spawnRange * 2)).size();
-
-            if(j >= maxNearbyEntities) {
-              resetTimer();
-              return;
-            }
-
-            d2 = getSpawnerX() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * spawnRange;
-            double d3 = getSpawnerY() + getSpawnerWorld().rand.nextInt(3) - 1;
-            double d4 = getSpawnerZ() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * spawnRange;
-            EntityLiving entityliving = entity instanceof EntityLiving ? (EntityLiving) entity : null;
-            entity.setLocationAndAngles(d2, d3, d4, getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
-
-            if(entityliving != null && canSpawnEntity(entityliving)) {
-              func_98265_a(entity);
-              getSpawnerWorld().playAuxSFX(2004, getSpawnerX(), getSpawnerY(), getSpawnerZ(), 0);
-
-              if(entityliving != null)
-              {
-                entityliving.spawnExplosionParticle();
-              }
-            }
-          }
-        }
-      }
-    }
-
-    Entity createEntity(boolean forceAlive) {
-      Entity ent = EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());     
-      if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
-         ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, getSpawnerWorld().getTotalWorldTime());
-        ((EntityLiving) ent).func_110163_bv();
-      }
-      return ent;
-    }
-
-    void resetTimer() {
-      spawnDelay = Integer.MAX_VALUE;
-    }
-
+  public boolean hasEntityName() {
+    return !NULL_ENTITY_NAME.equals(entityTypeName);
   }
-
 }
