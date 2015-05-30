@@ -534,6 +534,7 @@ enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operat
 enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
 enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
 enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
+enderio.gui.inventorypanel.tooltip.sync=NEI Sync
 
 enderio.machine.tooltip.configured=(Configured)
 

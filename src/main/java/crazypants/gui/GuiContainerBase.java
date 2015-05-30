@@ -64,8 +64,8 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   @Override
   protected void keyTyped(char c, int key) {
-    GuiTextField focused = null;
-    for (GuiTextField f : textFields) {
+    TextFieldEIO focused = null;
+    for (TextFieldEIO f : textFields) {
       if (f.isFocused()) {
         focused = f;
       }
@@ -98,7 +98,9 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     // If there is a focused text field, attempt to type into it
     if(focused != null) {
+      String old = focused.getText();
       if(focused.textboxKeyTyped(c, key)) {
+        onTextFieldChanged(focused, old);
         return;
       }
     }
@@ -119,6 +121,16 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     // If the key was not captured, let NEI do its thing
     super.keyTyped(c, key);
+  }
+  
+  protected final void setText(TextFieldEIO tf, String newText) {
+    String old = tf.getText();
+    tf.setText(newText);
+    onTextFieldChanged(tf, old);
+  }
+  
+  protected void onTextFieldChanged(TextFieldEIO tf, String old) {
+    
   }
 
   public boolean hideOverlays() {
@@ -212,7 +224,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     if(button == 1) {
       for (TextFieldEIO tf : textFields) {
         if(tf.contains(x, y)) {
-          tf.setText("");
+          setText(tf, "");
         }
       }
     }

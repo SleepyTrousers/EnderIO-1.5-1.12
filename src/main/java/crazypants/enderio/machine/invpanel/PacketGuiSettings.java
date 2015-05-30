@@ -13,15 +13,17 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
 
   private int sortMode;
   private String filterString;
-
+  private boolean sync;
+  
   public PacketGuiSettings() {
     filterString = "";
   }
 
-  public PacketGuiSettings(TileInventoryPanel tile, int sortMode, String filterString) {
+  public PacketGuiSettings(TileInventoryPanel tile, int sortMode, String filterString, boolean sync) {
     super(tile);
     this.sortMode = sortMode;
     this.filterString = filterString;
+    this.sync = sync;
   }
 
   @Override
@@ -64,7 +66,7 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
-      teInvPanel.setGuiParameter(message.sortMode, message.filterString);
+      teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
     }
     return null;
   }

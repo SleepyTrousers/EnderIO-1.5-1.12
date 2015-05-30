@@ -17,6 +17,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import codechicken.nei.LayoutManager;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.fluid.Fluids;
@@ -24,6 +26,7 @@ import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.TextFieldEIO;
+import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.gui.VScrollbarEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
@@ -51,6 +54,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private static final int ID_SORT = 9876;
   private static final int ID_CLEAR = 9877;
+  private static final int ID_SYNC = 9878;
 
   private static final int GHOST_COLUMNS = 6;
   private static final int GHOST_ROWS = 5;
@@ -58,6 +62,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final DatabaseView view;
   private final TextFieldEIO tfFilter;
   private final IconButtonEIO btnSort;
+  private final ToggleButtonEIO btnSync;
   private final GuiToolTip ttRefill;
   private final GuiToolTip ttSetReceipe;
   private final VScrollbarEIO scrollbar;
@@ -103,9 +108,18 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
+    btnSync = new ToggleButtonEIO(this, ID_SYNC, 24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
+    btnSync.setToolTip(Lang.localize("gui.inventorypanel.tooltip.sync"));
+    btnSync.setSelectedToolTip(Lang.localize("gui.enabled"));
+    btnSync.setUnselectedToolTip(Lang.localize("gui.disabled"));
+    btnSync.setSelected(getTileEntity().getGuiSync());
+    if (!Loader.isModLoaded("NotEnoughItems")) {
+      btnSync.enabled = false;
+    }
+
     tfFilter = new TextFieldEIO(fr, 24+108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
-    tfFilter.setText(te.getGuiFilterString());
+    setText(tfFilter, te.getGuiFilterString());
     btnSort = new IconButtonEIO(this, ID_SORT, 24+233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(Minecraft mc, int x, int y) {
@@ -121,6 +135,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         return false;
       }
     };
+
     scrollbar = new VScrollbarEIO(this, 24+215, 27, 90);
     btnClear = new MultiIconButtonEIO(this, ID_CLEAR, 24+65, 60, IconEIO.X_BUT, IconEIO.X_BUT_PRESSED, IconEIO.X_BUT_HOVER);
 
@@ -200,7 +215,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(view.isSortOrderInverted()) {
       sortMode |= 1;
     }
-    getTileEntity().setGuiParameter(sortMode, tfFilter.getText());
+    getTileEntity().setGuiParameter(sortMode, tfFilter.getText(), btnSync.isSelected());
     super.onGuiClosed();
   }
 
@@ -234,15 +249,20 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     updateSortButton();
     btnSort.onGuiInit();
     btnClear.onGuiInit();
+    btnSync.onGuiInit();
     addScrollbar(scrollbar);
   }
 
   @Override
   public void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
-    if(b.id == ID_CLEAR) {
-      if(getContainer().clearCraftingGrid()) {
+    if (b.id == ID_CLEAR) {
+      if (getContainer().clearCraftingGrid()) {
         setCraftingHelper(null);
+      }
+    } else if (b.id == ID_SYNC) {
+      if (Loader.isModLoaded("NotEnoughItems")) {
+        updateNEI(((ToggleButtonEIO) b).isSelected() ? tfFilter.getText() : "");
       }
     }
   }
@@ -325,9 +345,20 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
     } else {
       tfFilter.setEnabled(false);
-      tfFilter.setText("");
+      setText(tfFilter, "");
       fr.drawString(infoTextOffline, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
     }
+  }
+
+  @Override
+  protected void onTextFieldChanged(TextFieldEIO tf, String old) {
+    if (tf == tfFilter && btnSync.enabled && tfFilter.isFocused() && Loader.isModLoaded("NotEnoughItems")) {
+      updateNEI(tfFilter.getText());
+    }
+  }
+
+  private void updateNEI(String text) {
+    LayoutManager.searchField.setText(text);
   }
 
   @Override

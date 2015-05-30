@@ -54,6 +54,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   private int guiSortMode;
   private String guiFilterString = "";
+  private boolean guiSync;
 
   private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
 
@@ -224,12 +225,17 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public String getGuiFilterString() {
     return guiFilterString;
   }
+  
+  public boolean getGuiSync() {
+    return guiSync;
+  }
 
-  public void setGuiParameter(int sortMode, String filterString) {
+  public void setGuiParameter(int sortMode, String filterString, boolean sync) {
     this.guiSortMode = sortMode;
     this.guiFilterString = filterString;
+    this.guiSync = sync;
     if(worldObj != null && worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(this, sortMode, filterString));
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(this, sortMode, filterString, sync));
     } else {
       markDirty();
     }
@@ -295,6 +301,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.writeCommon("fuelTank", nbtRoot);
     nbtRoot.setInteger("guiSortMode", guiSortMode);
     nbtRoot.setString("guiFilterString", guiFilterString);
+    nbtRoot.setBoolean("guiSync", guiSync);
     nbtRoot.setBoolean("extractionDisabled", extractionDisabled);
 
     if(!storedCraftingRecipes.isEmpty()) {
@@ -314,6 +321,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.readCommon("fuelTank", nbtRoot);
     guiSortMode = nbtRoot.getInteger("guiSortMode");
     guiFilterString = nbtRoot.getString("guiFilterString");
+    guiSync = nbtRoot.getBoolean("guiSync");
     extractionDisabled = nbtRoot.getBoolean("extractionDisabled");
     faceModes = null;
 
