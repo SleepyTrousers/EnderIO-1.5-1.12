@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.invpanel;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.network.MessageTileEntity;
-import io.netty.buffer.ByteBuf;
-import java.io.UnsupportedEncodingException;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketGuiSettings, IMessage> {
 
@@ -30,34 +30,16 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     sortMode = buf.readInt();
-    int len = buf.readUnsignedShort();
-    if(len > 0) {
-      byte[] utf8 = new byte[len];
-      buf.readBytes(utf8);
-      try {
-        filterString = new String(utf8, "UTF8");
-      } catch (UnsupportedEncodingException ex) {
-        // should not happen - if it does we can't do anything
-      }
-    }
+    ByteBufUtils.writeUTF8String(buf, filterString);
+    sync = buf.readBoolean();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
     buf.writeInt(sortMode);
-    if(filterString.isEmpty()) {
-      buf.writeShort(0);
-    } else {
-      try {
-        byte[] utf8 = filterString.getBytes("UTF8");
-        buf.writeShort((short) utf8.length);
-        buf.writeBytes(utf8);
-      } catch (UnsupportedEncodingException ex) {
-        // should not happen - if it does we can't do anything
-        buf.writeShort(0);
-      }
-    }
+    filterString = ByteBufUtils.readUTF8String(buf);
+    buf.writeBoolean(sync);
   }
 
   @Override
