@@ -199,6 +199,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     effectRenderer.addEffect(digFX);
   }
 
+  @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onPlaySound(PlaySoundSourceEvent event) {
     String path = event.sound.getPositionedSoundLocation().getResourcePath();
@@ -216,6 +217,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
   }
 
+  @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
     String path = event.name;
