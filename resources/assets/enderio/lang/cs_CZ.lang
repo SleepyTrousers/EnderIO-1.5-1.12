@@ -547,6 +547,10 @@ enderio.darksteel.upgrade.sound.disabled=Zvukový lokátor zakázán
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Odhalení
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis sleva: 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=Vis sleva: 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=Vis sleva: 2%
+item.ItemBootsRobe.tooltip.detailed.line1=Vis sleva: 1%
+
 item.itemGliderWing.name=Kluzácké křídlo
 item.itemGliderWings.name=Kluzácké křídla
 item.itemGliderWings.tooltip.detailed.line1=Vylepšení pro tmavou ocel

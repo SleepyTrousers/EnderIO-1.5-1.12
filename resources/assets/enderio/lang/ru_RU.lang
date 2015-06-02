@@ -668,6 +668,10 @@ enderio.darksteel.upgrade.sound.disabled=Звуколокатор отключе
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Откровение
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Снижение затрат Вис: 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=Снижение затрат Вис: 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=Снижение затрат Вис: 2%
+item.ItemBootsRobe.tooltip.detailed.line1=Снижение затрат Вис: 1%
+
 enderio.darksteel.upgrade.naturalistEye.name=Глаз натуралиста
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Показывает опылённую листву
 

@@ -633,6 +633,10 @@ enderio.darksteel.upgrade.sound.disabled=声波定位禁用
 enderio.darksteel.upgrade.gogglesOfRevealing.name=揭示
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=要素减免: 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=要素减免: 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=要素减免: 2%
+item.ItemBootsRobe.tooltip.detailed.line1=要素减免: 1%
+
 enderio.darksteel.upgrade.naturalistEye.name=自然之眼
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=显示已授粉的树叶
 

@@ -598,6 +598,10 @@ enderio.darksteel.upgrade.sound.disabled=聲波定位停用
 enderio.darksteel.upgrade.gogglesOfRevealing.name=揭示
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=要素減免: 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=要素減免: 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=要素減免: 2%
+item.ItemBootsRobe.tooltip.detailed.line1=要素減免: 1%
+
 item.itemGliderWing.name=滑翔翼
 item.itemGliderWings.name=滑翔翼
 item.itemGliderWings.tooltip.detailed.line1=用於升級

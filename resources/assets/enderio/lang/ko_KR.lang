@@ -585,6 +585,10 @@ enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 
+item.ItemChestplateRobe.tooltip.detailed.line1=Vis Discount: 2%
+item.ItemLeggingsRobe.tooltip.detailed.line1=Vis Discount: 2%
+item.ItemBootsRobe.tooltip.detailed.line1=Vis Discount: 1%
+
 item.itemGliderWing.name=Glider Wing
 item.itemGliderWings.name=Glider Wings
 item.itemGliderWings.tooltip.detailed.line1=Upgrade for Dark Steel

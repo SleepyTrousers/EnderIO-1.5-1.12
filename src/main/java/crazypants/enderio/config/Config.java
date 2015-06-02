@@ -228,6 +228,7 @@ public final class Config {
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
 
   public static int darkSteelGogglesOfRevealingCost = 10;
+  public static int darkSteelThaumaturgeArmorCost = 10;
 
   public static int darkSteelApiaristArmorCost = 10;
 
@@ -862,7 +863,9 @@ public final class Config {
 
     darkSteelGogglesOfRevealingCost= config.get(sectionDarkSteel.name, "darkSteelGogglesOfRevealingCost", darkSteelGogglesOfRevealingCost,
         "Number of levels required for the Goggles of Revealing upgrade.").getInt(darkSteelGogglesOfRevealingCost);
-
+    darkSteelThaumaturgeArmorCost = config.get(sectionDarkSteel.name, "darkSteelThaumaturgeArmorCost", darkSteelThaumaturgeArmorCost,
+        "Number of levels required for the Thaumaturge's Armor upgrade.").getInt(darkSteelThaumaturgeArmorCost);
+    
     darkSteelApiaristArmorCost= config.get(sectionDarkSteel.name, "darkSteelApiaristArmorCost", darkSteelApiaristArmorCost,
         "Number of levels required for the Apiarist Armor upgrade.").getInt(darkSteelApiaristArmorCost);
 
