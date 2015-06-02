@@ -343,6 +343,10 @@ public final class Config {
   public static int poweredSpawnerLevelThreePowerPerTickRF = 1500;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static int poweredSpawnerDespawnTimeSeconds = 120;
+  public static int poweredSpawnerSpawnCount = 4;
+  public static int poweredSpawnerSpawnRange = 4;
+  public static int poweredSpawnerMaxNearbyEntities = 6;
+  public static int poweredSpawnerMaxSpawnTries = 3;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
   public static String[] brokenSpawnerToolBlacklist = new String[] {
@@ -1095,6 +1099,14 @@ public final class Config {
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerDespawnTimeSeconds = config.get(sectionSpawner.name, "poweredSpawnerDespawnTimeSeconds" , poweredSpawnerDespawnTimeSeconds,
         "Number of seconds in which spawned entities are protected from despawning").getInt(poweredSpawnerDespawnTimeSeconds);
+    poweredSpawnerSpawnCount = config.get(sectionSpawner.name, "poweredSpawnerSpawnCount" , poweredSpawnerSpawnCount,
+        "Number of entities to spawn each time").getInt(poweredSpawnerSpawnCount);
+    poweredSpawnerSpawnRange = config.get(sectionSpawner.name, "poweredSpawnerSpawnRange" , poweredSpawnerSpawnRange,
+        "Spawning range in X/Z").getInt(poweredSpawnerSpawnRange);
+    poweredSpawnerMaxNearbyEntities = config.get(sectionSpawner.name, "poweredSpawnerMaxNearbyEntities" , poweredSpawnerMaxNearbyEntities,
+        "Max number of entities in the nearby area until no more are spawned. A zero value will remove this check").getInt(poweredSpawnerMaxNearbyEntities);
+    poweredSpawnerMaxSpawnTries = config.get(sectionSpawner.name, "poweredSpawnerMaxSpawnTries" , poweredSpawnerMaxSpawnTries,
+        "Number of tries to find a suitable spawning location").getInt(poweredSpawnerMaxSpawnTries);
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
     brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
