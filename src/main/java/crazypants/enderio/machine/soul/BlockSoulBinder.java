@@ -99,6 +99,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
     return "enderio:blockSoulMachineBlank";
   }
   
+  @Override
   protected String getTopIconKey(boolean active) {
     return "enderio:blockSoulMachineTop";
   }

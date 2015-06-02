@@ -130,6 +130,7 @@ public class MagnetController implements IEntitySelector {
     }        
   }
 
+  @SuppressWarnings("null")
   public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean isActive) {
     ItemStack stack = null;
     IInventory baubles = null;

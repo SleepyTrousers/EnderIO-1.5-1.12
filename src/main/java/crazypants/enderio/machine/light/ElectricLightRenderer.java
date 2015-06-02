@@ -16,8 +16,6 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 
     BoundingBox bb = new BoundingBox(0, 0, 0, 1, 0.2, 1);
-    boolean doDraw = false;
-
     Tessellator.instance.startDrawingQuads();
 
     IIcon[] textures = RenderUtil.getBlockTextures(block, metadata);

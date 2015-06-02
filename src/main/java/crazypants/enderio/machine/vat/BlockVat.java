@@ -44,6 +44,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     super(ModObject.blockVat, TileVat.class);
   }
 
+  @Override
   protected String getModelIconKey(boolean active) {
     return "enderio:vatModel";
   }

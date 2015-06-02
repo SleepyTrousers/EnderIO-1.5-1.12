@@ -36,7 +36,6 @@ public class GuiTravelAuth extends GuiContainerBase {
   @Override
   public void initGui() {
     super.initGui();
-    int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     String str = Lang.localize("gui.travelAccessable.ok");
     int strLen = getFontRenderer().getStringWidth(str);

@@ -71,6 +71,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     this(mo, teClass, new Material(MapColor.ironColor));
   }
 
+  @Override
   protected void init() {
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
@@ -82,6 +83,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return renderId;
   }
 
+  @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     if(!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);

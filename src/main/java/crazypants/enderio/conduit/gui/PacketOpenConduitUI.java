@@ -35,6 +35,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
     dir = ForgeDirection.values()[buf.readShort()];
   }
 
+  @Override
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity tile = message.getWorld(ctx).getTileEntity(message.x, message.y, message.z);

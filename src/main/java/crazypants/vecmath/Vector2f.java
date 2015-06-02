@@ -77,7 +77,7 @@ public class Vector2f {
   }
 
   public double distanceSquared(Vector2f v) {
-    double dx, dy, dz;
+    double dx, dy;
     dx = x - v.x;
     dy = y - v.y;
     return (dx * dx + dy * dy);

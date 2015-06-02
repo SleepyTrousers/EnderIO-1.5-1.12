@@ -75,9 +75,6 @@ public class LiquidConduit extends AbstractTankConduit {
 
   // -----------------------------
 
-  private long lastEmptyTick = 0;
-  private int numEmptyEvents = 0;
-
   public static final int MAX_EXTRACT_PER_TICK = Config.fluidConduitExtractRate;
 
   public static final int MAX_IO_PER_TICK = Config.fluidConduitMaxIoRate;
@@ -125,8 +122,9 @@ public class LiquidConduit extends AbstractTankConduit {
       return;
     }
 
-    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
-    int token = network == null ? -1 : network.getNextPushToken();
+    if (network != null) {
+      network.getNextPushToken();
+    }
     for (ForgeDirection dir : externalConnections) {
       if(autoExtractForDir(dir)) {
 
@@ -302,7 +300,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(resource != null && !resource.isFluidEqual(tank.getFluid())) {
+    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
     return drain(from, resource.amount, doDrain);

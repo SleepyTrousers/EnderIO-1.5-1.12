@@ -70,6 +70,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     return true;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int p_149691_1_, int p_149691_2_)
   {
@@ -84,6 +85,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     }
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register)
   {

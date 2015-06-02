@@ -95,14 +95,14 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
     UUID linkA = getLinkA(newCart);
     if(linkA != null && linkA.equals(existingCart.getPersistentID())) {
       if(!linkMan.areLinked(existingCart, newCart)) {
-        boolean res = linkMan.createLink(existingCart, newCart);
+        linkMan.createLink(existingCart, newCart);
       }
       return;
     }
     UUID linkB = getLinkB(newCart);
     if(linkB != null && linkB.equals(existingCart.getPersistentID())) {
       if(!linkMan.areLinked(existingCart, newCart)) {
-        boolean res = linkMan.createLink(existingCart, newCart);
+        linkMan.createLink(existingCart, newCart);
       }
       return;
     }
@@ -170,7 +170,7 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
   @Override
   public List<EntityMinecart> getCartsInTrain(EntityMinecart cart) {
     if(cart == null) {
-      Collections.emptyList();
+      return Collections.emptyList();
     }
     List<EntityMinecart> result = new ArrayList<EntityMinecart>();
     ILinkageManager linkMan = CartTools.getLinkageManager(cart.worldObj);

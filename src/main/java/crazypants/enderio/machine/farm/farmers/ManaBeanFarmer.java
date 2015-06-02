@@ -13,6 +13,7 @@ public class ManaBeanFarmer extends CustomSeedFarmer
         this.requiresFarmland = false;
     }
 
+  @Override
     protected boolean canPlant(World worldObj, BlockCoord bc)
     {
         return getPlantedBlock().canPlaceBlockOnSide(worldObj,bc.x,bc.y,bc.z,0);

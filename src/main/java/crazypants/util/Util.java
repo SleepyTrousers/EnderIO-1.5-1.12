@@ -416,7 +416,6 @@ public class Util {
             d5 = (d2 - startVec.zCoord) / d8;
           }
 
-          boolean flag5 = false;
           byte b0;
 
           if(d3 < d4 && d3 < d5) {

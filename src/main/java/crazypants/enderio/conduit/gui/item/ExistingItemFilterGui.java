@@ -201,6 +201,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));    
   }
 
+  @Override
   public void deactivate() {
     useNbtB.detach();
     useMetaB.detach();
@@ -212,6 +213,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     gui.removeButton(mergeB);
   }
 
+  @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
 //    GL11.glColor3f(1, 1, 1);
 //    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");

@@ -81,6 +81,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
   }
 
+  @SuppressWarnings("null")
   @Override
   public void onCapacitorTypeChange() {
     ICapacitor refCap = null;
@@ -355,10 +356,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
               func_98265_a(entity);
               getSpawnerWorld().playAuxSFX(2004, getSpawnerX(), getSpawnerY(), getSpawnerZ(), 0);
 
-              if(entityliving != null)
-              {
-                entityliving.spawnExplosionParticle();
-              }
+              entityliving.spawnExplosionParticle();
             }
           }
         }

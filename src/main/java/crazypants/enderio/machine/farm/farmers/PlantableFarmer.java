@@ -159,23 +159,21 @@ public class PlantableFarmer implements IFarmerJoe {
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
-    boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
-        if(stack != null && !removed && isPlantableForBlock(stack, block)) {
+        if (stack != null && removedPlantable == null && isPlantableForBlock(stack, block)) {
           stack.stackSize--;
-          removed = true;
           removedPlantable = stack.copy();
           if(stack.stackSize > 0) {
             result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
           }
-        } else {
+        } else if (stack != null) {
           result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
         }
       }
     }
 
-    if(removed) {
+    if (removedPlantable != null) {
       if(!plant(farm, worldObj, bc, (IPlantable) removedPlantable.getItem())) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, removedPlantable.copy()));
         worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);

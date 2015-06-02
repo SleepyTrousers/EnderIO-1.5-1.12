@@ -105,7 +105,6 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
     }
 
     Block block = cb.getFacadeId();
-    int meta = cb.getFacadeMetadata();
     if(block == null || block == this) {
       return;
     }

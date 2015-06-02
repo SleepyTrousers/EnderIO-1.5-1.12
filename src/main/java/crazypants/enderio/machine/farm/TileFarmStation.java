@@ -771,6 +771,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     nbtRoot.setInteger("slotLayoutVersion", 3);
   }
 
+  @Override
   public int getInventoryStackLimit(int slot) {
     if (slot >= minSupSlot && slot <= maxSupSlot) {
       switch (getCapacitorType()) {

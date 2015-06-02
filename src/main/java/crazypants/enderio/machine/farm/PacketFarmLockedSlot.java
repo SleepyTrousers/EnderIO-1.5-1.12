@@ -6,7 +6,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> implements IMessage, IMessageHandler<PacketFarmLockedSlot, IMessage> {
+public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> implements
+    IMessageHandler<PacketFarmLockedSlot, IMessage> {
 
   public PacketFarmLockedSlot() {}
   

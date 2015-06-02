@@ -78,7 +78,7 @@ public class Vector2d {
   }
 
   public double distanceSquared(Vector2d v) {
-    double dx, dy, dz;
+    double dx, dy;
     dx = x - v.x;
     dy = y - v.y;
     return (dx * dx + dy * dy);

@@ -25,6 +25,7 @@ public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk>
     buf.writeInt(taskid);
   }
 
+  @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     taskid = buf.readInt();

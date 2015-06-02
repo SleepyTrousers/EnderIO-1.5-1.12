@@ -116,8 +116,6 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   private Channel registeredChannel = null;
   private UUID owner;
 
-  private boolean init = true;
-
   private float milliBucketsTransfered = 0;
 
   private EnumMap<SubChannel, IoMode> ioModes = new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(SubChannel.class);
@@ -192,7 +190,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
         return false;
       }
     }
-    return cons != null && cons.size() > 1 && getEnergyStored() > 0;
+    return cons.size() > 1 && getEnergyStored() > 0;
   }
 
   private void sendEnergyToOtherNodes() {

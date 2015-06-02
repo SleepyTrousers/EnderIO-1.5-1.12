@@ -17,8 +17,6 @@ import crazypants.render.RenderUtil;
 
 public class TankItemRenderer implements IItemRenderer {
 
-  private RenderItem ri = new RenderItem();
-
   @Override
   public boolean handleRenderType(ItemStack item, ItemRenderType type) {
     return true;
@@ -38,13 +36,11 @@ public class TankItemRenderer implements IItemRenderer {
 
   public void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
 
-    boolean hasFluid = false;
     if(item.stackTagCompound != null) {
       TileTank tt = new TileTank();
       tt.readCommon(item.stackTagCompound);
 
       TankFluidRenderer.renderTankFluid(tt.tank, 0, -0.1f, 0);
-      hasFluid = true;
     }
 
     GL11.glEnable(GL11.GL_ALPHA_TEST);

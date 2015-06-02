@@ -87,7 +87,6 @@ public class CustomSeedFarmer implements IFarmerJoe {
       return false;
     }
     if(requiresFarmland()) {
-      World worldObj = farm.getWorldObj();
       if(isGroundTilled(farm, bc)) {
         return plantFromInventory(farm, bc);
       }

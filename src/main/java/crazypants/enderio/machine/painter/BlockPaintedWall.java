@@ -191,7 +191,6 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    int id = -1;
     Block b = PainterUtil.getSourceBlock(stack);
 
     TileEntity te = world.getTileEntity(x, y, z);

@@ -72,7 +72,6 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
       return entity.motionY < 0.01;
     }
     if(entity instanceof EntityItem) {
-      ItemStack stack = ((EntityItem) entity).getEntityItem();
       return true;
     }
     return false;

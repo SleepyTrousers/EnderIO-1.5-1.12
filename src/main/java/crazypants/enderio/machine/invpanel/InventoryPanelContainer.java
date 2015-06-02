@@ -46,7 +46,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private Slot slotFilter;
 
   private int slotCraftResult;
-  @SuppressWarnings("unused")
   private int firstSlotReturn;
   private int endSlotReturn;
   private int firstSlotCraftingGrid;

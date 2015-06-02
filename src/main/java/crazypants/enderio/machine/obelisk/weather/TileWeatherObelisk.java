@@ -102,6 +102,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
+  @Override
   public void doUpdate() {
     super.doUpdate();
     if(worldObj.isRemote) {
@@ -114,7 +115,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   @SideOnly(Side.CLIENT)
   private void spawnParticle() {
     EntitySmokeFX fx = new EntitySmokeFX(getWorldObj(), xCoord + 0.5, yCoord + 0.3, zCoord + 0.5, 0, 0, 0);
-    fx.setRBGColorF((float) particleColor.getRed() / 255f, (float) particleColor.getGreen() / 255f, (float) particleColor.getBlue() / 255f);
+    fx.setRBGColorF(particleColor.getRed() / 255f, particleColor.getGreen() / 255f, particleColor.getBlue() / 255f);
     fx.setVelocity(worldObj.rand.nextDouble() * 0.1 - 0.05, 0.35, worldObj.rand.nextDouble() * 0.1 - 0.05);
     Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     activeParticleTicks--;

@@ -23,8 +23,6 @@ import crazypants.util.Lang;
 
 public class ItemCapacitor extends Item implements ICapacitorItem {
 
-  private static final BasicCapacitor CAP = new BasicCapacitor();
-
   public static ItemCapacitor create() {
     ItemCapacitor result = new ItemCapacitor();
     result.init();

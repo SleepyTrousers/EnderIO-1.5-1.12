@@ -16,8 +16,6 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   private final int energyRequired;
   private final ItemStack output;
 
-  private final float expPerItem;
-
   private final RecipeBonusType bonusType;
 
   private final Recipe recipe;
@@ -25,7 +23,6 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   public BasicManyToOneRecipe(Recipe recipe) {
     this.recipe = recipe;
     this.output = recipe.getOutputs()[0].getOutput().copy();
-    expPerItem = recipe.getOutputs()[0].getExperiance();
     energyRequired = recipe.getEnergyRequired();
     bonusType = recipe.getBonusType();
   }

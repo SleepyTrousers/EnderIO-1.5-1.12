@@ -120,7 +120,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
         int maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;
         int numUsedPower = 0;
         for (int i = 0; numUsedPower < maxBlocks && i < sortedTargets.size(); i++) {
-          if (doMultiHarvest(player, player.worldObj, sortedTargets.get(i), block, blockMetadata % 4)) {
+          if (doMultiHarvest(player, player.worldObj, sortedTargets.get(i), block)) {
             numUsedPower++;
           }
         }
@@ -130,7 +130,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return false;
   }
 
-  private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockCoord bc, Block refBlock, int refMeta) {  
+  private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockCoord bc, Block refBlock) {
     
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
     int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
@@ -287,7 +287,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     public int compare(BlockCoord arg0, BlockCoord arg1) {
       int d1 = refPoint.distanceSquared(arg0);
       int d2 = refPoint.distanceSquared(arg1);
-      return compare(d1, d1);
+      return compare(d1, d2);
     }
 
     //NB: Copy of Integer.compare, which i sonly in Java 1.7+

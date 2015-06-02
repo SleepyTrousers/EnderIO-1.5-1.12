@@ -71,7 +71,6 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
       Vector3d absFac = ForgeDirectionOffsets.absolueOffset(facingDir);
 
       double scaleX = absFac.x == 0 ? 0.95 : 1 - facingOffset / 2;
-      double scaleY = 0.85 * fullness;
       double scaleZ = absFac.z == 0 ? 0.95 : 1 - facingOffset / 2;
 
       bb = bb.scale(scaleX, 0.85 * fullness, scaleZ);

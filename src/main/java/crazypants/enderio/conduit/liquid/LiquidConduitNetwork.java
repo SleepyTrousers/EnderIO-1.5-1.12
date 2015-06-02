@@ -26,10 +26,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   private int lastPushToken = 0;
 
-  private int inputVolume;
-
-  private int outputVolume;
-
   private boolean inputLocked = false;
 
   public boolean lockNetworkForFill() {
@@ -80,11 +76,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   void addedFromExternal(int res) {
-    inputVolume += res;
   }
 
   void outputedToExternal(int filled) {
-    outputVolume += filled;
   }
 
   int getNextPushToken() {
@@ -268,13 +262,11 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     Collection<ILiquidConduit> connections =
         ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorldObj(),
             loc.x, loc.y, loc.z, ILiquidConduit.class);
-    int numTargets = 0;
     for (ILiquidConduit n : connections) {
       LiquidConduit neighbour = (LiquidConduit) n;
       if(canFlowTo(con, neighbour)) { // can only flow within same network
         totalAmount += neighbour.getTank().getFluidAmount();
         totalCapacity += neighbour.getTank().getCapacity();
-        numTargets++;
       }
     }
 

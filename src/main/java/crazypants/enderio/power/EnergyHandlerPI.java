@@ -4,8 +4,6 @@ import cofh.api.energy.IEnergyHandler;
 
 public class EnergyHandlerPI extends EnergyReceiverPI {
 
-  private IEnergyHandler rfPower;
-
   public EnergyHandlerPI(IEnergyHandler powerReceptor) {
     super(powerReceptor);
   }

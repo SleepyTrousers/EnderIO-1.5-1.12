@@ -103,13 +103,4 @@ public class PoweredItemRenderer implements IItemRenderer {
     RenderUtil.renderQuad2D(2, y, 0, 12, 1, bg);
     RenderUtil.renderQuad2D(2, y, 0, barLength, 1, fg);
   }
-
-  private void renderBar(int y, double maxDam, double dispDamage) {
-    int ratio = (int) Math.round(255.0D - dispDamage * 255.0D / maxDam);
-    int fgCol = 255 - ratio << 16 | ratio << 8;
-    int bgCol = (255 - ratio) / 4 << 16 | 16128;
-    int barLength = (int) Math.round(12.0D - dispDamage * 12.0D / maxDam);
-    RenderUtil.renderQuad2D(2, y, 0, 12, 1, bgCol);
-    RenderUtil.renderQuad2D(2, y, 0, barLength, 1, fgCol);
-  }
 }

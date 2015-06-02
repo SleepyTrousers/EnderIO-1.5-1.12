@@ -57,8 +57,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
   private String engineTxt3;
   private String engineTxt4;
   private String engineTxt5;
-  private String engineTxt6;
-
   private String monHeading1;
   private String monHeading2;
   private String monHeading3;
@@ -77,7 +75,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
     engineTxt3 = Lang.localize("gui.powerMonitor.engineSection3");
     engineTxt4 = Lang.localize("gui.powerMonitor.engineSection4");
     engineTxt5 = Lang.localize("gui.powerMonitor.engineSection5");
-    engineTxt6 = Lang.localize("gui.powerMonitor.engineSection6");
 
     monHeading1 = Lang.localize("gui.powerMonitor.monHeading1");
     monHeading2 = Lang.localize("gui.powerMonitor.monHeading2");

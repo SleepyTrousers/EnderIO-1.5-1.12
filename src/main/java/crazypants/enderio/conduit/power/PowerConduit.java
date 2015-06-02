@@ -276,7 +276,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
  
   private boolean isRedstoneEnabled(ForgeDirection dir) {
-    boolean result;
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
     if(mode == RedstoneControlMode.NEVER) {
       return false;
@@ -371,7 +370,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       return 0;
     }
     int freeSpace = getMaxEnergyStored() - getEnergyStored();
-    int result = (int) Math.min(maxReceive, freeSpace);
+    int result = Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
       setEnergyStored(getEnergyStored() + result);      
 

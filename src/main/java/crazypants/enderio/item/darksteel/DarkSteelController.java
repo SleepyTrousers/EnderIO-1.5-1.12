@@ -175,7 +175,9 @@ public class DarkSteelController {
       return;
     }
     
-    int RFperSecond = Math.round((float) upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ)));
+    int RFperSecond = Math.round(upgrade.getRFPerSec()
+        * TileEntitySolarPanel.calculateLightRatio(player.worldObj, MathHelper.floor_double(player.posX),
+            MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ)));
     
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
@@ -337,7 +339,6 @@ public class DarkSteelController {
     if(cost == 0) {
       return;
     }
-    boolean extracted = false;
     int remaining = cost;
     if(Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
@@ -345,7 +346,6 @@ public class DarkSteelController {
           IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
           int used = cont.extractEnergy(stack, remaining, false);
           remaining -= used;
-          extracted |= used > 0;
           if(remaining <= 0) {    
             return;
           }
@@ -355,8 +355,7 @@ public class DarkSteelController {
     if(armor != null && remaining > 0) {
       ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
       if(stack != null) {
-        int used = armor.extractEnergy(stack, remaining, false);
-        extracted |= used > 0;
+        armor.extractEnergy(stack, remaining, false);
       }
     }
   }

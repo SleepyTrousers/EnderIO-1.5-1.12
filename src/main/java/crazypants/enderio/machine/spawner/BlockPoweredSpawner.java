@@ -338,25 +338,4 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     writeMobTypeToNBT(stack.stackTagCompound, mob);
     return stack;
   }
-
-  private static class DropInfo {
-
-    BlockEvent.BreakEvent evt;
-    ItemStack drop;
-
-    DropInfo(BreakEvent evt, ItemStack stack) {
-      super();
-      this.evt = evt;
-      drop = stack;
-    }
-
-    void doDrop() {
-      if(evt.isCanceled()) {
-        return;
-      }
-
-      Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);
-    }
-
-  }
 }

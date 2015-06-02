@@ -42,7 +42,7 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
+public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
   private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 

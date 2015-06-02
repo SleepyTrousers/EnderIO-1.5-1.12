@@ -17,7 +17,7 @@ import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.IProgressTile;
 
-public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
+public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile {
 
   public static final int ENERGY_PER_TICK = Config.stirlingGeneratorBaseRfPerTick;
 

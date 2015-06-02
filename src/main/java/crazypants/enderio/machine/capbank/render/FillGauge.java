@@ -27,10 +27,6 @@ import crazypants.vecmath.Vertex;
 
 public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener {
 
-  private static final double HEIGHT = 0.75;
-  private static final double VERT_BORDER = (1 - HEIGHT) / 2;
-  private static final double WIDTH = 0.25;
-
   enum Type {
     SINGLE,
     TOP,
@@ -200,11 +196,7 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
   protected List<Vertex> createGaugeBoundForFace(GaugeKey key, IIcon icon) {
 
     ForgeDirection dir = key.dir;
-    Type type = key.type;
-
     double widthScale = 0.25;
-    double heightScale = 0.8;
-
     double xScale = dir.offsetX == 0 ? widthScale : 1;
     double yScale = 1;
     double zScale = dir.offsetZ == 0 ? widthScale : 1;

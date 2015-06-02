@@ -128,6 +128,7 @@ public class ConduitGasTank extends GasTank {
     return GasUtil.isGasValid(stored);
   }
 
+  @Override
   public NBTTagCompound write(NBTTagCompound nbt) {
     if(containsValidGas()) {
       stored.write(nbt);
@@ -137,6 +138,7 @@ public class ConduitGasTank extends GasTank {
     return nbt;
   }
 
+  @Override
   public void read(NBTTagCompound nbt) {
     if(!nbt.hasKey("emptyGasTank")) {
       GasStack gas = GasStack.readFromNBT(nbt);

@@ -58,8 +58,6 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
 
   private boolean redstoneStateDirty = true;
-  private boolean isRecievingRedstoneSignal;
-
   private final List<EnergyReceptor> receptors = new ArrayList<EnergyReceptor>();
   private boolean receptorsDirty = true;
 

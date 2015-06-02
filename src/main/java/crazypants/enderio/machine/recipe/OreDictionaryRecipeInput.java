@@ -23,6 +23,7 @@ public class OreDictionaryRecipeInput extends RecipeInput {
     oreId = copy.oreId;
   }
 
+  @Override
   public RecipeInput copy() {
     return new OreDictionaryRecipeInput(this);
   }

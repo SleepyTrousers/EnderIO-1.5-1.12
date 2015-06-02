@@ -12,9 +12,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 
-public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
-
-  private static final short MAX_POWER_USE_PER_TICK = 6;
+public class TileEntityPainter extends AbstractPoweredTaskEntity {
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot

@@ -85,7 +85,6 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   }
 
   private void doExtract() {
-    BlockCoord loc = getLocation();
     // Extraction can happen on extract mode or in/out mode
     if(!hasExtractableMode()) {
       return;
@@ -101,7 +100,6 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
       return;
     }
 
-    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
     for (ForgeDirection dir : externalConnections) {
       if(autoExtractForDir(dir)) {
         if(network.extractFrom(this, dir, MAX_EXTRACT_PER_TICK)) {

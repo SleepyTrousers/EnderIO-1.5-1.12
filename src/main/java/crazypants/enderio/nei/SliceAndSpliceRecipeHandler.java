@@ -144,7 +144,6 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     }
 
     public SliceAndSpliceRecipe(IRecipe recipe) {
-      int recipeSize = recipe.getInputs().length;
       input = new ArrayList<PositionedStack>();
       int yOff = 11;
       int xOff = 13;
