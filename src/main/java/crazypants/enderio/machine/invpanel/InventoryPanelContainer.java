@@ -34,13 +34,13 @@ import crazypants.enderio.network.PacketHandler;
 
 public class InventoryPanelContainer extends AbstractMachineContainer implements ChangeLog {
 
-  public static final int CRAFTING_GRID_X = 7;
+  public static final int CRAFTING_GRID_X = 24+7;
   public static final int CRAFTING_GRID_Y = 16;
 
-  public static final int RETURN_INV_X = 7;
+  public static final int RETURN_INV_X = 24+7;
   public static final int RETURN_INV_Y = 82;
 
-  public static final int FILTER_SLOT_X = 233;
+  public static final int FILTER_SLOT_X = 24+233;
   public static final int FILTER_SLOT_Y = 7;
 
   private final HashSet<ItemEntry> changedItems;
@@ -53,6 +53,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private int endSlotReturn;
   private int firstSlotCraftingGrid;
   private int endSlotCraftingGrid;
+
+  private boolean updateReturnAreaSlots;
+  private boolean storedRecipeExists;
 
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
@@ -128,7 +131,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
 
   @Override
   public Point getPlayerInventoryOffset() {
-    return new Point(39, 130);
+    return new Point(24+39, 130);
   }
 
   @Override
@@ -140,7 +143,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     removeChangeLog();
   }
 
-  private TileInventoryPanel getInventoryPanel() {
+  public TileInventoryPanel getInventoryPanel() {
     return (TileInventoryPanel) tileEntity;
   }
 
@@ -220,6 +223,22 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     }
 
     tileEntity.setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, tileEntity.getWorldObj()));
+
+    checkCraftingRecipes();
+  }
+
+  public void checkCraftingRecipes() {
+    storedRecipeExists = false;
+    int storedCraftingRecipes = getInventoryPanel().getStoredCraftingRecipes();
+    if(hasCraftingRecipe() && storedCraftingRecipes > 0) {
+      List<Slot> craftingGrid = getCraftingGridSlots();
+      for(int idx = 0; idx < storedCraftingRecipes; idx++) {
+        if(getInventoryPanel().getStoredCraftingRecipe(idx).isEqual(craftingGrid)) {
+          storedRecipeExists = true;
+          break;
+        }
+      }
+    }
   }
 
   @Override
@@ -244,6 +263,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     return getSlot(slotCraftResult).getHasStack();
   }
 
+  public boolean hasNewCraftingRecipe() {
+    return hasCraftingRecipe() && !storedRecipeExists;
+  }
+
   @Override
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
     if((slotIndex == slotCraftResult) || (slotIndex >= firstSlotReturn && slotIndex < endSlotReturn)) {
@@ -259,6 +282,39 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
       return Collections.singletonList(new SlotRange(firstSlotReturn, endSlotReturn, false));
     }
     return Collections.emptyList();
+  }
+
+  @Override
+  protected boolean mergeItemStack(ItemStack par1ItemStack, int fromIndex, int toIndex, boolean reversOrder) {
+    if(!super.mergeItemStack(par1ItemStack, fromIndex, toIndex, reversOrder)) {
+      return false;
+    }
+    if(fromIndex < endSlotReturn && toIndex > firstSlotReturn) {
+      updateReturnAreaSlots = true;
+    }
+    return true;
+  }
+
+  @Override
+  public void detectAndSendChanges() {
+    if(updateReturnAreaSlots) {
+      updateReturnAreaSlots = false;
+      sendReturnAreaSlots();
+    }
+    super.detectAndSendChanges();
+  }
+
+  private void sendReturnAreaSlots() {
+    for (int slotIdx = firstSlotReturn; slotIdx < endSlotReturn; slotIdx++) {
+      ItemStack stack = ((Slot) inventorySlots.get(slotIdx)).getStack();
+      if(stack != null) {
+        stack = stack.copy();
+      }
+      inventoryItemStacks.set(slotIdx, stack);
+      for (Object crafter : this.crafters) {
+        ((ICrafting) crafter).sendSlotContents(this, slotIdx, stack);
+      }
+    }
   }
 
   @Override

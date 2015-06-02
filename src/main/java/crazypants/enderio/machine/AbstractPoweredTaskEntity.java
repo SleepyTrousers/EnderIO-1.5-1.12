@@ -49,20 +49,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   @Override
-  public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-    if(!super.canInsertItem(i, itemstack, j)) {
-      return false;
-    }
-    if(!isItemValidForSlot(i, itemstack)) {
-      return false;
-    }
-    if(inventory[i] == null) {
-      return true;
-    }
-    return inventory[i].isItemEqual(itemstack);
-  }
-
-  @Override
   public boolean isActive() {
     return currentTask == null ? false : currentTask.getProgress() >= 0 && hasPower() && redstoneCheckPassed;
   }

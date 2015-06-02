@@ -99,6 +99,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
           entry.count = 0;
         }
         clientItems.clear();
+        requestedItems.clear();
 
         int count = cdi.readVariable();
         while(count > 0) {

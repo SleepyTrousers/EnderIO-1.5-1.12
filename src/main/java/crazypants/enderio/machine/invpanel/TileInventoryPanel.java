@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.invpanel;
 
-import net.minecraft.inventory.Container;
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -22,6 +24,7 @@ import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
@@ -38,6 +41,8 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public static final int SLOT_VIEW_FILTER = 10;
   public static final int SLOT_RETURN_START = 11;
 
+  public static final int MAX_STORED_CRAFTING_RECIPES = 6;
+
   protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
@@ -45,16 +50,21 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   private InventoryDatabaseClient dbClient;
 
   private boolean active;
+  private boolean extractionDisabled;
 
-  public Container eventHandler;
+  public InventoryPanelContainer eventHandler;
   private IItemFilter itemFilter;
 
   private int guiSortMode;
   private String guiFilterString = "";
+  private boolean guiSync;
+
+  private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
     this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, 2000);
+    this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 
   public InventoryDatabaseServer getDatabaseServer() {
@@ -79,6 +89,11 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   @Override
   public boolean canInsertItem(int slot, ItemStack var2, int side) {
     return false;
+  }
+
+  @Override
+  protected boolean canExtractItem(int slot, ItemStack itemstack) {
+    return !extractionDisabled && super.canExtractItem(slot, itemstack);
   }
 
   @Override
@@ -213,15 +228,74 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public String getGuiFilterString() {
     return guiFilterString;
   }
+  
+  public boolean getGuiSync() {
+    return guiSync;
+  }
 
-  public void setGuiParameter(int sortMode, String filterString) {
+  public void setGuiParameter(int sortMode, String filterString, boolean sync) {
     this.guiSortMode = sortMode;
     this.guiFilterString = filterString;
+    this.guiSync = sync;
     if(worldObj != null && worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(this, sortMode, filterString));
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(this, sortMode, filterString, sync));
     } else {
       markDirty();
     }
+  }
+
+  public int getStoredCraftingRecipes() {
+    return storedCraftingRecipes.size();
+  }
+
+  public StoredCraftingRecipe getStoredCraftingRecipe(int index) {
+    if(index < 0 || index >= storedCraftingRecipes.size()) {
+      return null;
+    }
+    return storedCraftingRecipes.get(index);
+  }
+
+  public void addStoredCraftingRecipe(StoredCraftingRecipe recipe) {
+    if(worldObj != null && worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
+    } else {
+      storedCraftingRecipes.add(recipe);
+      markDirty();
+      updateBlock();
+    }
+  }
+
+  public void removeStoredCraftingRecipe(int index) {
+    if(worldObj != null && worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
+    } else if(index >= 0 && index < storedCraftingRecipes.size()) {
+      storedCraftingRecipes.remove(index);
+      markDirty();
+      updateBlock();
+    }
+  }
+
+  public boolean isExtractionDisabled() {
+    return extractionDisabled;
+  }
+
+  public void setExtractionDisabled(boolean extractionDisabled) {
+    if(worldObj != null) {
+      if(worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToServer(new PacketSetExtractionDisabled(this, extractionDisabled));
+      } else if(this.extractionDisabled != extractionDisabled) {
+        this.extractionDisabled = extractionDisabled;
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.dimensionId);
+      }
+    }
+  }
+
+  /**
+   * This is called by PacketUpdateExtractionDisabled on the client side
+   * @param extractionDisabled if extraction is disabled
+   */
+  void updateExtractionDisabled(boolean extractionDisabled) {
+    this.extractionDisabled = extractionDisabled;
   }
 
   @Override
@@ -230,6 +304,18 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.writeCommon("fuelTank", nbtRoot);
     nbtRoot.setInteger("guiSortMode", guiSortMode);
     nbtRoot.setString("guiFilterString", guiFilterString);
+    nbtRoot.setBoolean("guiSync", guiSync);
+    nbtRoot.setBoolean("extractionDisabled", extractionDisabled);
+
+    if(!storedCraftingRecipes.isEmpty()) {
+      NBTTagList recipesNBT = new NBTTagList();
+      for(StoredCraftingRecipe recipe : storedCraftingRecipes) {
+        NBTTagCompound recipeNBT = new NBTTagCompound();
+        recipe.writeToNBT(recipeNBT);
+        recipesNBT.appendTag(recipeNBT);
+      }
+      nbtRoot.setTag("craftingRecipes", recipesNBT);
+    }
   }
 
   @Override
@@ -238,6 +324,25 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     fuelTank.readCommon("fuelTank", nbtRoot);
     guiSortMode = nbtRoot.getInteger("guiSortMode");
     guiFilterString = nbtRoot.getString("guiFilterString");
+    guiSync = nbtRoot.getBoolean("guiSync");
+    extractionDisabled = nbtRoot.getBoolean("extractionDisabled");
+    faceModes = null;
+
+    storedCraftingRecipes.clear();
+    NBTTagList recipesNBT = (NBTTagList) nbtRoot.getTag("craftingRecipes");
+    if(recipesNBT != null) {
+      for (int idx = 0; idx < recipesNBT.tagCount() && storedCraftingRecipes.size() < MAX_STORED_CRAFTING_RECIPES; idx++) {
+        NBTTagCompound recipeNBT = recipesNBT.getCompoundTagAt(idx);
+        StoredCraftingRecipe recipe = new StoredCraftingRecipe();
+        if(recipe.readFromNBT(recipeNBT)) {
+          storedCraftingRecipes.add(recipe);
+        }
+      }
+    }
+
+    if(eventHandler != null) {
+      eventHandler.checkCraftingRecipes();
+    }
   }
 
   @Override
@@ -256,6 +361,20 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   @Override
   public String getMachineName() {
     return ModObject.blockInventoryPanel.unlocalisedName;
+  }
+
+  @Override
+  public IoMode getIoMode(ForgeDirection face) {
+    return face == getIODirection() ? IoMode.NONE : IoMode.DISABLED;
+  }
+
+  @Override
+  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+  }
+
+  @Override
+  public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
+    return getIoMode(faceHit);
   }
 
   private ForgeDirection getIODirection() {

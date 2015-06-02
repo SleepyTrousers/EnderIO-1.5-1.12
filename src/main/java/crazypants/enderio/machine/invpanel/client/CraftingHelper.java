@@ -12,16 +12,28 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.machine.invpanel.PacketFetchItem;
+import crazypants.enderio.machine.invpanel.StoredCraftingRecipe;
 import crazypants.enderio.network.PacketHandler;
 
-public class CraftingHelper implements ICraftingHelper {
+public class CraftingHelper {
   final ItemStack[][] ingredients;
 
-  public CraftingHelper(ItemStack[][] ingredients) {
+  protected CraftingHelper(ItemStack[][] ingredients) {
     this.ingredients = ingredients;
   }
 
-  public static ICraftingHelper createFromSlots(List<Slot> slots) {
+  public static CraftingHelper createFromRecipe(StoredCraftingRecipe recipe) {
+    ItemStack[][] ingredients = new ItemStack[9][];
+    for (int idx = 0; idx < 9; idx++) {
+      ItemStack stack = recipe.get(idx);
+      if(stack != null) {
+        ingredients[idx] = new ItemStack[] { stack };
+      }
+    }
+    return new CraftingHelperNEI(ingredients);
+  }
+
+  public static CraftingHelper createFromSlots(List<Slot> slots) {
     if (slots.size() != 9) {
       return null;
     }
@@ -38,16 +50,17 @@ public class CraftingHelper implements ICraftingHelper {
       }
     }
     if (count > 0) {
-      return new CraftingHelper(ingredients);
+      return new CraftingHelperNEI(ingredients);
     }
     return null;
   }
 
-  @Override
+  public void install() {
+  }
+
   public void remove() {
   }
 
-  @Override
   public void refill(GuiInventoryPanel gui, int amount) {
     InventoryPanelContainer container = gui.getContainer();
     InventoryDatabaseClient db = gui.getDatabase();
@@ -177,7 +190,9 @@ public class CraftingHelper implements ICraftingHelper {
     }
     Candidate candidate = new Candidate(stack);
     InventoryPanelContainer container = gui.getContainer();
-    findCandidates(candidate, stack, container.getReturnAreaSlots());
+    if(container.getInventoryPanel().isExtractionDisabled()) {
+      findCandidates(candidate, stack, container.getReturnAreaSlots());
+    }
     findCandidates(candidate, stack, container.getPlayerInventorySlots());
     findCandidates(candidate, stack, container.getPlayerHotbarSlots());
     if (candidate.available == 0 && db != null) {

@@ -11,6 +11,7 @@ import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 
 public class TeleportRecipes {
 
@@ -45,6 +46,7 @@ public class TeleportRecipes {
     }
     
     ItemStack coordSelector = new ItemStack(EnderIO.itemCoordSelector);
+    ItemCoordSelector.init(coordSelector);
     GameRegistry.addRecipe(new ShapedOreRecipe(coordSelector, "sps", " cs", "  s", 's', "ingotElectricalSteel", 'p', Items.ender_pearl, 'c', Items.compass));
   }
 }

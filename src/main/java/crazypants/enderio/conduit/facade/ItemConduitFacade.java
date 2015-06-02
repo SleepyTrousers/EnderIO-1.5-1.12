@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
@@ -129,7 +130,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       bundle.setFacadeId(facadeID);
       bundle.setFacadeMetadata(facadeMeta);
       bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
-      if(!player.capabilities.isCreativeMode) {
+      ConduitUtil.playBreakSound(facadeID.stepSound, world, x, y, z);
+      if (!player.capabilities.isCreativeMode) {
         itemStack.stackSize--;
       }
       return true;

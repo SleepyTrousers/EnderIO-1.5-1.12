@@ -106,7 +106,7 @@ public class FluidFuelRegister implements IFluidRegister {
     if(!tag.hasKey(KEY_TOTAL_BURN_TIME)) {
       return;
     }
-    addFuel(tag.getString(KEY_FLUID_NAME), tag.getInteger(KEY_FLUID_NAME), tag.getInteger(KEY_TOTAL_BURN_TIME));
+    addFuel(tag.getString(KEY_FLUID_NAME), tag.getInteger(KEY_POWER_PER_CYCLE), tag.getInteger(KEY_TOTAL_BURN_TIME));
   }
 
   public void addFuel(String fluidName, int powerPerCycleRF, int totalBurnTime) {

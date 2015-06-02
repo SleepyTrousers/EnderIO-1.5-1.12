@@ -32,6 +32,9 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     PacketHandler.INSTANCE.registerMessage(PacketMoveItems.class, PacketMoveItems.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketDatabaseReset.class, PacketDatabaseReset.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketGuiSettings.class, PacketGuiSettings.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketStoredCraftingRecipe.class, PacketStoredCraftingRecipe.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketSetExtractionDisabled.class, PacketSetExtractionDisabled.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpdateExtractionDisabled.class, PacketUpdateExtractionDisabled.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockInventoryPanel panel = new BlockInventoryPanel();
     panel.init();
@@ -93,12 +96,16 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-    AxisAlignedBB bb = getBoundingBox(world, x, y, z);
-    setBlockBounds((float) bb.minX - x, (float) bb.minY - y, (float) bb.minZ - z, (float) bb.maxX - x, (float) bb.maxY - y, (float) bb.maxZ - z);
+    AxisAlignedBB bb = getBoundingBox(0, 0, 0, getFacing(world, x, y, z));
+    setBlockBounds(bb);
   }
 
   public AxisAlignedBB getBoundingBox(IBlockAccess world, int x, int y, int z) {
     int facing = getFacing(world, x, y, z);
+    return getBoundingBox(x, y, z, facing);
+  }
+
+  public AxisAlignedBB getBoundingBox(int x, int y, int z, int facing) {
     switch (facing) {
     case 0:
       return AxisAlignedBB.getBoundingBox(x, y + (1 - BLOCK_SIZE), z, x + 1, y + 1, z + 1);
@@ -107,11 +114,11 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     case 2:
       return AxisAlignedBB.getBoundingBox(x, y, z + (1- BLOCK_SIZE), x + 1, y + 1, z + 1);
     case 3:
-      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, BLOCK_SIZE);
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + BLOCK_SIZE);
     case 4:
       return AxisAlignedBB.getBoundingBox(x + (1 - BLOCK_SIZE), y, z, x + 1, y + 1, z + 1);
     case 5:
-      return AxisAlignedBB.getBoundingBox(x, y, z, BLOCK_SIZE, y + 1, z + 1);
+      return AxisAlignedBB.getBoundingBox(x, y, z, x + BLOCK_SIZE, y + 1, z + 1);
     default:
       return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
     }

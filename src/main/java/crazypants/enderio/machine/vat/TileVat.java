@@ -196,6 +196,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   @Override
   protected void sendTaskProgressPacket() {
     PacketHandler.sendToAllAround(new PacketVatProgress(this), this);
+    ticksSinceLastProgressUpdate = 0;
   }
 
   @Override

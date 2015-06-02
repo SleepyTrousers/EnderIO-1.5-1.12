@@ -10,12 +10,17 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
+import crazypants.enderio.network.PacketHandler;
 
 public class ExternalConnectionContainer extends Container {
 
@@ -26,6 +31,7 @@ public class ExternalConnectionContainer extends Container {
   private static final int outputFilterUpgradeSlot = 36;
   private static final int inputFilterUpgradeSlot = 37;
   private static final int speedUpgradeSlot = 38;
+  private static final int functionUpgradeSlot = 39;
 
   private Slot slotSpeedUpgrades;
   private Slot slotFunctionUpgrades;
@@ -128,20 +134,18 @@ public class ExternalConnectionContainer extends Container {
     return slot != null && slot.getHasStack();
   }
 
-  public void setInputSlotsVisible(boolean visible) {
+  public void setInoutSlotsVisible(boolean inputVisible, boolean outputVisible) {
     if(itemConduit == null) {
       return;
     }
-    setSlotsVisible(visible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
-    setSlotsVisible(visible, speedUpgradeSlot, speedUpgradeSlot + 1);
-  }
-
-  public void setOutputSlotsVisible(boolean visible) {
-    if(itemConduit == null) {
-      return;
+    setSlotsVisible(inputVisible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
+    setSlotsVisible(inputVisible, speedUpgradeSlot, speedUpgradeSlot + 1);
+    setSlotsVisible(outputVisible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
+    setSlotsVisible(inputVisible || outputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
+    World world = itemConduit.getBundle().getWorld();
+    if(world.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(inputVisible, outputVisible));
     }
-    
-    setSlotsVisible(visible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
   }
 
   public void setInventorySlotsVisible(boolean visible) {
@@ -169,10 +173,7 @@ public class ExternalConnectionContainer extends Container {
   @Override
   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
     ItemStack st = par4EntityPlayer.inventory.getItemStack();
-    if(st != null && st.getItem() == EnderIO.itemExtractSpeedUpgrade) {
-      SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(st);
-      speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
-    }
+    setSpeedUpgradeSlotLimit(st);
     try {
       return super.slotClick(par1, par2, par3, par4EntityPlayer);
     } catch (Exception e) {
@@ -182,9 +183,88 @@ public class ExternalConnectionContainer extends Container {
     }
   }
 
+  private void setSpeedUpgradeSlotLimit(ItemStack st) {
+    if(st != null && st.getItem() == EnderIO.itemExtractSpeedUpgrade) {
+      SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(st);
+      speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
+    }
+  }
+
+  private boolean mergeItemStackSpecial(ItemStack origStack, Slot targetSlot) {
+    if (!targetSlot.isItemValid(origStack)) {
+      return false;
+    }
+
+    setSpeedUpgradeSlotLimit(origStack);
+    ItemStack curStack = targetSlot.getStack();
+    int maxStackSize =  Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
+
+    if(curStack == null) {
+      curStack = origStack.copy();
+      curStack.stackSize = Math.min(origStack.stackSize, maxStackSize);
+      origStack.stackSize -= curStack.stackSize;
+      targetSlot.putStack(curStack);
+      targetSlot.onSlotChanged();
+      return true;
+    } else if(ItemUtil.areStackMergable(curStack, origStack)) {
+      int mergedSize = curStack.stackSize + origStack.stackSize;
+      if(mergedSize <= maxStackSize) {
+        origStack.stackSize = 0;
+        curStack.stackSize = mergedSize;
+        targetSlot.onSlotChanged();
+        return true;
+      } else if(curStack.stackSize < maxStackSize) {
+        origStack.stackSize -= maxStackSize - curStack.stackSize;
+        curStack.stackSize = maxStackSize;
+        targetSlot.onSlotChanged();
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    return null;
+    ItemStack copystack = null;
+    Slot slot = (Slot) inventorySlots.get(slotIndex);
+    if(slot != null && slot.getHasStack()) {
+      ItemStack origStack = slot.getStack();
+      copystack = origStack.copy();
+
+      boolean merged = false;
+      if (slotIndex < outputFilterUpgradeSlot) {
+        for (int targetSlotIdx = outputFilterUpgradeSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
+          Slot targetSlot = (Slot) inventorySlots.get(targetSlotIdx);
+          if(targetSlot.xDisplayPosition >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
+            merged = true;
+            break;
+          }
+        }
+      } else {
+        merged = mergeItemStack(origStack, 0, outputFilterUpgradeSlot, false);
+      }
+
+      if(!merged) {
+        return null;
+      }
+
+      slot.onSlotChange(origStack, copystack);
+
+      if(origStack.stackSize == 0) {
+        slot.putStack((ItemStack) null);
+      } else {
+        slot.onSlotChanged();
+      }
+
+      if(origStack.stackSize == copystack.stackSize) {
+        return null;
+      }
+
+      slot.onPickupFromSlot(entityPlayer, origStack);
+    }
+
+    return copystack;
   }
 
   private class FilterSlot extends Slot {
