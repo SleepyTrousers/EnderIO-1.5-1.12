@@ -207,8 +207,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       ISound snd = event.sound;
       World world = EnderIO.proxy.getClientWorld();
       BlockCoord bc = new BlockCoord(snd.getXPosF(), snd.getYPosF(), snd.getZPosF());
-      TileConduitBundle te = (TileConduitBundle) bc.getTileEntity(world);
-      if (te != null && te.hasFacade()) {
+      TileEntity te = bc.getTileEntity(world);
+      if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
         Block facade = getFacade(world, bc.x, bc.y, bc.z, -1);
         ConduitUtil.playHitSound(facade.stepSound, world, bc.x, bc.y, bc.z);
       } else {
@@ -224,8 +224,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     World world = event.entity.worldObj;
     if ("EnderIO:silence.step".equals(path) && world.isRemote) {
       BlockCoord bc = new BlockCoord(event.entity.posX, event.entity.posY - 2, event.entity.posZ);
-      TileConduitBundle te = (TileConduitBundle) bc.getTileEntity(world);
-      if (te != null && te.hasFacade()) {
+      TileEntity te = bc.getTileEntity(world);
+      if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
         Block facade = getFacade(world, bc.x, bc.y, bc.z, -1);
         ConduitUtil.playStepSound(facade.stepSound, world, bc.x, bc.y, bc.z);
       } else {
