@@ -1,6 +1,11 @@
 package crazypants.enderio.gui;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.google.common.collect.Lists;
+
 import net.minecraft.client.Minecraft;
+import crazypants.gui.GuiToolTip;
 import crazypants.gui.IGuiScreen;
 
 public class ToggleButtonEIO extends IconButtonEIO {
@@ -8,9 +13,8 @@ public class ToggleButtonEIO extends IconButtonEIO {
   private boolean selected;
   private final IconEIO unselectedIcon;
   private final IconEIO selectedIcon;
-
-  private String[] selectedTooltip;
-  private String[] unselectedTooltip;
+  
+  private GuiToolTip selectedTooltip, unselectedTooltip;
   private boolean paintSelectionBorder;
 
   public ToggleButtonEIO(IGuiScreen gui, int id, int x, int y, IconEIO unselectedIcon, IconEIO selectedIcon) {
@@ -64,12 +68,14 @@ public class ToggleButtonEIO extends IconButtonEIO {
   }
 
   public void setSelectedToolTip(String... tt) {
-    this.selectedTooltip = tt;
+    String[] combinedTooltip = ArrayUtils.addAll(toolTipText, tt);
+    selectedTooltip = new GuiToolTip(getBounds(), Lists.newArrayList(combinedTooltip));
     setSelected(selected);
   }
 
   public void setUnselectedToolTip(String... tt) {
-    this.unselectedTooltip = tt;
+    String[] combinedTooltip = ArrayUtils.addAll(toolTipText, tt);
+    unselectedTooltip = new GuiToolTip(getBounds(), Lists.newArrayList(combinedTooltip));
     setSelected(selected);
   }
 

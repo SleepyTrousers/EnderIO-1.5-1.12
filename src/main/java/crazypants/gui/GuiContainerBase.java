@@ -54,7 +54,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public void initGui() {
     super.initGui();
-    fixupGuiPosition();
     for (IGuiOverlay overlay : overlays) {
       overlay.init(this);
     }
@@ -63,13 +62,10 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     }
   }
 
-  protected void fixupGuiPosition() {
-  }
-
   @Override
   protected void keyTyped(char c, int key) {
-    GuiTextField focused = null;
-    for (GuiTextField f : textFields) {
+    TextFieldEIO focused = null;
+    for (TextFieldEIO f : textFields) {
       if (f.isFocused()) {
         focused = f;
       }
@@ -102,7 +98,9 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     // If there is a focused text field, attempt to type into it
     if(focused != null) {
+      String old = focused.getText();
       if(focused.textboxKeyTyped(c, key)) {
+        onTextFieldChanged(focused, old);
         return;
       }
     }
@@ -123,6 +121,16 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     // If the key was not captured, let NEI do its thing
     super.keyTyped(c, key);
+  }
+  
+  protected final void setText(TextFieldEIO tf, String newText) {
+    String old = tf.getText();
+    tf.setText(newText);
+    onTextFieldChanged(tf, old);
+  }
+  
+  protected void onTextFieldChanged(TextFieldEIO tf, String old) {
+    
   }
 
   public boolean hideOverlays() {
@@ -216,7 +224,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     if(button == 1) {
       for (TextFieldEIO tf : textFields) {
         if(tf.contains(x, y)) {
-          tf.setText("");
+          setText(tf, "");
         }
       }
     }
@@ -337,10 +345,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
     if(draggingScrollbar == null) {
       if(hoverGhostSlot != null && mc.thePlayer.inventory.getItemStack() == null) {
-        ItemStack stack = hoverGhostSlot.getStack();
-        if(stack != null) {
-          renderToolTip(stack, par1, par2);
-        }
+        drawGhostSlotTooltip(hoverGhostSlot, par1, par2);
       }
 
       ttMan.drawTooltips(this, par1, par2);
@@ -394,6 +399,13 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     GL11.glPopAttrib();
     itemRender.zLevel = 0.0F;
     zLevel = 0.0F;
+  }
+
+  protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
+    ItemStack stack = slot.getStack();
+    if(stack != null) {
+      renderToolTip(stack, mouseX, mouseY);
+    }
   }
 
   protected void drawGhostSlots(int mouseX, int mouseY) {

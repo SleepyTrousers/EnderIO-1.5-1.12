@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -18,16 +19,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
-import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
@@ -39,6 +41,7 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.me.MEConduitNetwork;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -328,7 +331,10 @@ public class ConduitUtil {
     if(typeName == null || conduitBody == null) {
       return null;
     }
-    if(nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
+    if ((typeName.contains("conduit.me") && !MEUtil.isMEEnabled()) || typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled()) {
+      return null;
+    }
+    if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
       Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
       typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
     }
@@ -414,4 +420,39 @@ public class ConduitUtil {
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
   }
 
+  public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientBreakSound(snd);
+    }
+  }
+
+  private static void playClientBreakSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  }
+
+  public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientHitSound(snd);
+    }
+  }
+
+  private static void playClientHitSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch() * 0.5F);
+  }
+
+  public static void playStepSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientStepSound(snd);
+    }
+  }
+
+  private static void playClientStepSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+  }
 }

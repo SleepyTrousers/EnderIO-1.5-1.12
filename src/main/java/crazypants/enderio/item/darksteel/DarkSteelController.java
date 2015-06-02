@@ -2,19 +2,28 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.particle.EntityReddustFX;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import org.lwjgl.opengl.GL11;
+
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -23,6 +32,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Util;
@@ -63,8 +82,21 @@ public class DarkSteelController {
   private DarkSteelController() {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
+  public boolean isActive(EntityPlayer player, Type type) {
+    switch(type) {
+    case GLIDE:
+      return isGlideActive(player);
+    case SPEED:
+      return isSpeedActive(player);
+    case STEP_ASSIST:
+      return isStepAssistActive(player);
+    }
+    return false;
+  }
+  
   public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
     if(player.getGameProfile().getId() != null) {
       glideActiveMap.put(player.getGameProfile().getId(), isGlideActive);
@@ -263,16 +295,16 @@ public class DarkSteelController {
 
       double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
       double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
-      costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
+      costModifier = costModifier + (costModifier * speedUpgrade.getWalkMultiplier());
       int cost = (int) (horzMovement * costModifier);
       int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings);
 
       if(totalEnergy > 0) {
         usePlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings, cost);
         if(player.isSprinting()) {
-          moveInst.applyModifier(sprintModifiers[speedUpgrade.level - 1]);
+          moveInst.applyModifier(sprintModifiers[speedUpgrade.getLevel() - 1]);
         } else {
-          moveInst.applyModifier(walkModifiers[speedUpgrade.level - 1]);
+          moveInst.applyModifier(walkModifiers[speedUpgrade.getLevel() - 1]);
         }
       }
     }
@@ -346,6 +378,15 @@ public class DarkSteelController {
     }
     return res;
   }
+  
+  @SubscribeEvent
+  public void onStartTracking(PlayerEvent.StartTracking event) {
+    if (event.target instanceof EntityPlayerMP) {
+      for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
+        PacketHandler.sendTo(new PacketUpgradeState(type, isActive((EntityPlayer) event.target, type), event.target.getEntityId()), (EntityPlayerMP) event.entityPlayer);
+      }
+    }
+  }
 
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
@@ -367,11 +408,59 @@ public class DarkSteelController {
         jumpCount = 0;
       }
       ticksSinceLastJump++;
-            
+
       updateNightvision(player);
     }
-    
-    
+  }
+
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onPlayerRender(RenderPlayerEvent.Specials.Post event) {
+    if (event.entityLiving.getActivePotionEffect(Potion.invisibility) != null) {
+      return;
+    }
+
+    EntityPlayer player = event.entityPlayer;
+    ItemStack[] armors = player.inventory.armorInventory;
+
+    dispatchRenders(armors, event, false);
+
+    float yaw = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * event.partialRenderTick;
+    float yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick;
+    float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.partialRenderTick;
+
+    GL11.glPushMatrix();
+    if(player.isSneaking()) {
+      GL11.glTranslatef(0, 0.0625f, 0);
+    }
+    GL11.glRotatef(yawOffset, 0, -1, 0);
+    GL11.glRotatef(yaw - 270, 0, 1, 0);
+    GL11.glRotatef(pitch, 0, 0, 1);
+    dispatchRenders(armors, event, true);
+    GL11.glPopMatrix();
+  }
+
+  private void dispatchRenders(ItemStack[] armors, RenderPlayerEvent event, boolean head) {
+    for (int i = 0; i < armors.length; i++) {
+      ItemStack stack = armors[i];
+      if (stack != null) {
+        Item item = stack.getItem();
+
+        if (item instanceof IDarkSteelItem) {
+          for (IDarkSteelUpgrade upg : DarkSteelRecipeManager.instance.getUpgrades()) {
+            if (upg.hasUpgrade(stack)) {
+              GL11.glPushMatrix();
+              GL11.glColor4f(1F, 1F, 1F, 1F);
+              IRenderUpgrade render = upg.getRender();
+              if (render != null) {
+                upg.getRender().render(event, stack, head);
+              }
+              GL11.glPopMatrix();
+            }
+          }
+        }
+      }
+    }
   }
 
   @SideOnly(Side.CLIENT)
@@ -386,12 +475,20 @@ public class DarkSteelController {
 
     int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1, 2.5);
     int availablePower = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
-    if(availablePower > 0 && requiredPower <= availablePower && jumpCount < jumpUpgrade.level) {
+    if(availablePower > 0 && requiredPower <= availablePower && jumpCount < jumpUpgrade.getLevel()) {
       jumpCount++;
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
       player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.jump", 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f, false);
+      Random rand = player.worldObj.rand;
+      for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
+        EntityReddustFX fx = new EntityReddustFX(player.worldObj, player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.yOffset, player.posZ
+            + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
+        fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
+            player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+        Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+      }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
     }
 

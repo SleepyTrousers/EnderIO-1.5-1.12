@@ -301,6 +301,58 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </output>
     </recipe>
 
+
+    <recipe name="Dark Fused Quartz" energyCost="5000">
+      <input>
+        <itemStack modID="minecraft" itemName="quartz" number="4" />
+        <itemStack oreDictionary="dyeBlack" number="4" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="4" exp="0.5" />
+      </output>
+    </recipe>
+
+    <recipe name="Dark Fused Quartz from Block" energyCost="5000">
+      <input>
+        <itemStack modID="minecraft" itemName="quartz_block" number="1" />
+        <itemStack oreDictionary="dyeBlack" number="4" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="4" exp="0.5" />
+      </output>
+    </recipe>
+
+    <recipe name="Dark Fused Quartz from Block 2" energyCost="5000">
+      <input>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0" />
+        <itemStack oreDictionary="dyeBlack" number="4" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="4" exp="0.5" />
+      </output>
+    </recipe>
+
+
+    <recipe name="Dark Fused Glass" energyCost="2500">
+      <input>
+        <itemStack oreDictionary="sand" />
+        <itemStack oreDictionary="dyeBlack" number="4" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="5" exp="0.2" />
+      </output>
+    </recipe>
+
+    <recipe name="Dark Fused Glass 2" energyCost="2500">
+      <input>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" />
+        <itemStack oreDictionary="dyeBlack" number="4" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="5" exp="0.2" />
+      </output>
+    </recipe>
+
   </recipeGroup>
 
 

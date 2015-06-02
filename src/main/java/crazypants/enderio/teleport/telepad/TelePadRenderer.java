@@ -9,12 +9,14 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.Lists;
 
 import crazypants.render.CubeRenderer;
 import crazypants.render.TechneModelRenderer;
 import crazypants.render.TechneUtil;
+import crazypants.util.BlockCoord;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
@@ -37,20 +39,40 @@ public class TelePadRenderer extends TechneModelRenderer {
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
     TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
-    IIcon cached = renderer.overrideBlockTexture;
     boolean ret = true;
-    if(te.inNetwork()) {
-      renderer.overrideBlockTexture = null;
-      if(te.isMaster()) {
-        super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
+    if (te.inNetwork()) {
+      if (renderer.hasOverrideBlockTexture()) {
+        IIcon icon = renderer.overrideBlockTexture;
+        renderer.renderFaceYNeg(block, x, y, z, icon);
+        renderer.renderFaceYPos(block, x, y, z, icon);
+        BlockCoord bc = te.getLocation();
+        if (!isTelepad(world, bc, ForgeDirection.EAST)) {
+          renderer.renderFaceXPos(block, x, y, z, icon);
+        }
+        if (!isTelepad(world, bc, ForgeDirection.WEST)) {
+          renderer.renderFaceXNeg(block, x, y, z, icon);
+        }
+        if (!isTelepad(world, bc, ForgeDirection.SOUTH)) {
+          renderer.renderFaceZPos(block, x, y, z, icon);
+        }
+        if (!isTelepad(world, bc, ForgeDirection.NORTH)) {
+          renderer.renderFaceZNeg(block, x, y, z, icon);
+        }
       } else {
-        ret = false;
+        if (te.isMaster()) {
+          super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
+        } else {
+          ret = false;
+        }
       }
     } else {
       renderer.renderStandardBlock(block, x, y, z);
     }
-    renderer.overrideBlockTexture = cached;
     return ret;
+  }
+  
+  private boolean isTelepad(IBlockAccess world, BlockCoord pos, ForgeDirection dir) {
+    return pos.getLocation(dir).getTileEntity(world) instanceof TileTelePad;
   }
 
   @Override

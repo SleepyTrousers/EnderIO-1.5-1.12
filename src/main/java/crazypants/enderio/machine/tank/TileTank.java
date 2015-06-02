@@ -18,6 +18,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ITankAccess;
@@ -28,7 +29,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   private static int IO_MB_TICK = 100;
 
-  protected FluidTankEio tank;// = new FluidTankEio(16000);
+  protected SmartTank tank;// = new FluidTankEio(16000);
   protected int lastUpdateLevel = -1;
   
   private boolean tankDirty = false;
@@ -37,9 +38,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   public TileTank(int meta) {
     super(new SlotDefinition(0, 1, 2, 3, -1, -1));
     if(meta == 1) {
-      tank = new FluidTankEio(32000);
+      tank = new SmartTank(32000);
     } else {
-      tank = new FluidTankEio(16000);
+      tank = new SmartTank(16000);
     }
   }
 
@@ -346,9 +347,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     int tankType = nbtRoot.getInteger("tankType");
     tankType = MathHelper.clamp_int(tankType, 0, 1);
     if(tankType == 1) {
-      tank = new FluidTankEio(32000);
+      tank = new SmartTank(32000);
     } else {
-      tank = new FluidTankEio(16000);
+      tank = new SmartTank(16000);
     }
     
     if(nbtRoot.hasKey("tankContents")) {

@@ -1,12 +1,12 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class JumpUpgrade extends AbstractUpgrade {
 
@@ -18,7 +18,7 @@ public class JumpUpgrade extends AbstractUpgrade {
   public static JumpUpgrade JUMP_TWO = new JumpUpgrade("enderio.darksteel.upgrade.jump_two", 2, Config.darkSteelJumpTwoCost);
   public static JumpUpgrade JUMP_THREE = new JumpUpgrade("enderio.darksteel.upgrade.jump_three", 3, Config.darkSteelJumpThreeCost);
 
-  protected short level;
+  private short level;
 
   public static boolean isEquipped(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);    
@@ -40,12 +40,12 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   public JumpUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
-    level = tag.getShort(KEY_LEVEL);
+    this.level = tag.getShort(KEY_LEVEL);
   }
 
-  public JumpUpgrade(String unlocName,int level, int levelCost) {
+  public JumpUpgrade(String unlocName, int level, int levelCost) {
     super(UPGRADE_NAME, unlocName, new ItemStack(Blocks.piston), levelCost);
-    this.level = (short)level;
+    this.level = (short) level;
   }
 
   @Override
@@ -55,9 +55,9 @@ public class JumpUpgrade extends AbstractUpgrade {
     }
     JumpUpgrade up = loadFromItem(stack);
     if(up == null) {
-      return level == 1;
+      return getLevel() == 1;
     }
-    return up.level == level - 1;
+    return up.getLevel() == getLevel() - 1;
   }
 
 
@@ -75,7 +75,10 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   @Override
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
-    upgradeRoot.setShort(KEY_LEVEL, level);
+    upgradeRoot.setShort(KEY_LEVEL, getLevel());
   }
 
+  public short getLevel() {
+    return level;
+  }
 }

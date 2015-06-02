@@ -156,6 +156,7 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
+import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.EntityUtil;
 import static crazypants.enderio.EnderIO.*;
 
@@ -194,7 +195,7 @@ public class EnderIO {
   //Teleporting
   public static BlockTravelAnchor blockTravelPlatform;
   public static BlockTelePad blockTelePad;
-  public static ItemCoordSelector itemCoordsCard;
+  public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
 
   // Painter
@@ -306,6 +307,8 @@ public class EnderIO {
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
+    EnderIOCrashCallable.create();
+
     Config.load(event);
     
     proxy.loadIcons();
@@ -353,7 +356,7 @@ public class EnderIO {
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
     blockTelePad = BlockTelePad.create();
-    itemCoordsCard = ItemCoordSelector.create();
+    itemCoordSelector = ItemCoordSelector.create();
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();

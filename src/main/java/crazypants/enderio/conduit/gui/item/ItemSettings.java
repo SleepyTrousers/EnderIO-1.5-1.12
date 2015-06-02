@@ -227,15 +227,13 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if(showInput) {
       activeFilter = itemConduit.getInputFilter(gui.getDir());
       gui.getContainer().setInventorySlotsVisible(true);
-      gui.getContainer().setInputSlotsVisible(true);
-      gui.getContainer().setOutputSlotsVisible(false);
+      gui.getContainer().setInoutSlotsVisible(true, false);
       if(activeFilter != null) {
         filterGui = getFilterGui(activeFilter, true);
       }
     } else if(showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
-      gui.getContainer().setInputSlotsVisible(false);
-      gui.getContainer().setOutputSlotsVisible(true);
+      gui.getContainer().setInoutSlotsVisible(false, true);
       gui.getContainer().setInventorySlotsVisible(true);
       if(activeFilter != null) {
         filterGui = getFilterGui(activeFilter, false);
@@ -426,8 +424,7 @@ public class ItemSettings extends BaseSettingsPanel {
   @Override
   public void deactivate() {
     gui.getContainer().setInventorySlotsVisible(false);
-    gui.getContainer().setInputSlotsVisible(false);
-    gui.getContainer().setOutputSlotsVisible(false);
+    gui.getContainer().setInoutSlotsVisible(false, false);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();

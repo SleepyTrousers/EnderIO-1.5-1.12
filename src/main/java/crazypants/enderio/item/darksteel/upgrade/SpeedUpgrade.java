@@ -1,15 +1,12 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionHelper;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.Material;
-import crazypants.util.Util;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -35,8 +32,8 @@ public class SpeedUpgrade extends AbstractUpgrade {
   public static SpeedUpgrade SPEED_TWO = new SpeedUpgrade("enderio.darksteel.upgrade.speed_two", 2, Config.darkSteelSpeedTwoCost);
   public static SpeedUpgrade SPEED_THREE = new SpeedUpgrade("enderio.darksteel.upgrade.speed_three", 3, Config.darkSteelSpeedThreeCost);
 
-  protected short level;
-  protected float walkMultiplier;
+  private short level;
+  private float walkMultiplier;
   protected float sprintMultiplier;
 
   public static boolean isEquipped(EntityPlayer player) {
@@ -67,7 +64,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   public SpeedUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
-    level = tag.getShort(KEY_LEVEL);
+    this.level = tag.getShort(KEY_LEVEL);
   }
 
   public SpeedUpgrade(String unlocName, int level, int levelCost) {
@@ -82,9 +79,9 @@ public class SpeedUpgrade extends AbstractUpgrade {
     }
     SpeedUpgrade up = loadFromItem(stack);
     if(up == null) {
-      return level == 1;
+      return getLevel() == 1;
     }
-    return up.level == level - 1;
+    return up.getLevel() == getLevel() - 1;
   }
 
   @Override
@@ -101,7 +98,15 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
-    upgradeRoot.setShort(KEY_LEVEL, level);
-    upgradeRoot.setFloat(KEY_MULTIPLIER, walkMultiplier);
+    upgradeRoot.setShort(KEY_LEVEL, getLevel());
+    upgradeRoot.setFloat(KEY_MULTIPLIER, getWalkMultiplier());
+  }
+
+  public short getLevel() {
+    return level;
+  }
+
+  public float getWalkMultiplier() {
+    return walkMultiplier;
   }
 }

@@ -101,7 +101,9 @@ item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awaren
 item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
 item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
 item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
-item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory independent
+item.itemInventoryPanelUpgrade.tooltip.detailed.line5=of the conduit mode.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(No need to set the conduit to extract)
 
 enderio.itemGasConduit.name=Gas Conduit
 
@@ -129,6 +131,7 @@ tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
 tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
+enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
 enderio.dustWheat.name=Flour
 
@@ -183,6 +186,8 @@ enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
 enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
 enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
+enderio.blockFusedQuartz.darkFusedQuartz.name=Dark Fused Quartz
+enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
 
 item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
@@ -484,11 +489,17 @@ tile.blockInventoryPanel.tooltip.detailed.line3=Uses Nutrient Distillation for p
 tile.blockInventoryPanel.tooltip.detailed.line4=Offers a persistent crafting grid.
 enderio.gui.inventorypanel.header.crafting=Crafting grid
 enderio.gui.inventorypanel.header.return=Return area
+enderio.gui.inventorypanel.header.storage=Storage area
 enderio.gui.inventorypanel.info.filter=<filter by name>
 enderio.gui.inventorypanel.info.offline=<OFFLINE>
 enderio.gui.inventorypanel.tooltip.return.line1=Item return area
 enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
-enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit
+enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit, but will not be
+enderio.gui.inventorypanel.tooltip.return.line4=used for crafting.
+enderio.gui.inventorypanel.tooltip.return.line5=Click to change into storage area.
+enderio.gui.inventorypanel.tooltip.storage.line1=Item storage area
+enderio.gui.inventorypanel.tooltip.storage.line2=Small temporary item storage area.
+enderio.gui.inventorypanel.tooltip.storage.line3=Click to change into return area
 enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
 enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
 enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
@@ -509,9 +520,21 @@ enderio.gui.inventorypanel.tooltip.refill.line2=A normal click puts items
 enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting opperations,
 enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
 enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
+enderio.gui.inventorypanel.tooltip.setrecipe.line1=Learn the current crafting recipe
+enderio.gui.inventorypanel.tooltip.setrecipe.line2=Allows the refilling for the
+enderio.gui.inventorypanel.tooltip.setrecipe.line3=current recipe from the network.
 enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
 enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
 enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
+enderio.gui.inventorypanel.tooltip.itemsstored=Items Stored: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
+enderio.gui.inventorypanel.tooltip.sync=NEI Sync
 
 enderio.machine.tooltip.configured=(Configured)
 
@@ -550,6 +573,9 @@ enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
 
 tile.blockTelePad.name=Telepad Block
+tile.blockTelePad.tooltip.detailed.line1=Uses power to teleport entities
+tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
+tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
 enderio.gui.telepad.teleport=Teleport!
 
 item.itemTravelStaff.name=Staff of Traveling

@@ -30,23 +30,23 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   protected IIcon[] icons;
 
-  protected AbstractItemConduit(ModObject modObj) {
+  protected AbstractItemConduit(ModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
+    this.subtypes = subtypes;
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(modObj.unlocalisedName);
     setMaxStackSize(64);
     setHasSubtypes(true);
   }
 
-  protected void init(ItemConduitSubtype[] subtypes) {
-    this.subtypes = subtypes;
-    icons = new IIcon[subtypes.length];
+  protected void init() {
     GameRegistry.registerItem(this, modObj.unlocalisedName);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
+    icons = new IIcon[subtypes.length];
     int index = 0;
     for (ItemConduitSubtype subtype : subtypes) {
       icons[index] = IIconRegister.registerIcon(subtype.iconKey);
@@ -65,9 +65,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(stack, player));
-            Block b = EnderIO.blockConduitBundle;
-            world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getStepResourcePath(),
-                (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
+            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, placeAt.x, placeAt.y, placeAt.z);
           }
         }
       }
@@ -98,6 +96,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
               return false;
             }
             bundle.addConduit(con);
+            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, placeX, placeY, placeZ);
             if(!player.capabilities.isCreativeMode) {
               stack.stackSize--;
             }

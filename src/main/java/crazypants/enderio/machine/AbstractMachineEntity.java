@@ -212,11 +212,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public float getPitch() {
     return 1.0f;
   }
+  
+  protected boolean shouldPlaySound() {
+    return isActive() && !isInvalid();
+  }
 
   @SideOnly(Side.CLIENT)
   private void updateSound() {
     if(Config.machineSoundsEnabled && hasSound()) {
-      if(isActive() && !isInvalid()) {
+      if(shouldPlaySound()) {
         if(sound == null) {
           sound = new MachineSound(soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
           FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
@@ -639,11 +643,18 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack var2, int side) {
-    if(isSideDisabled(side)) {
+  public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+    if(isSideDisabled(side) || !slotDefinition.isInputSlot(slot)) {
       return false;
     }
-    return slotDefinition.isInputSlot(slot) && isMachineItemValidForSlot(slot, var2);
+    ItemStack existing = inventory[slot];
+    if(existing != null) {
+      // no point in checking the recipes if an item is already in the slot
+      // worst case we get more of the wrong item - but that doesn't change anything
+      return existing.isStackable() && existing.isItemEqual(itemstack);
+    }
+    // no need to call isItemValidForSlot as upgrade slots are not input slots
+    return isMachineItemValidForSlot(slot, itemstack);
   }
 
   @Override

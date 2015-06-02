@@ -1,11 +1,14 @@
-package crazypants.enderio.teleport.packet;
+package crazypants.enderio.config;
 
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.config.Config;
 
+/**
+ * Syncs some configs that are only used clientside, but must use the serverside
+ * value for balance purposes.
+ */
 public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigSync, IMessage> {
 
   @Override
@@ -20,6 +23,8 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
     buf.writeInt(Config.travelStaffMaxDistance);
     buf.writeInt(Config.travelStaffMaxBlinkDistance);
     buf.writeFloat(Config.travelStaffPowerPerBlockRF);
+    buf.writeBoolean(Config.telepadLockCoords);
+    buf.writeBoolean(Config.telepadLockDimension);
   }
 
   @Override
@@ -34,6 +39,8 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
     Config.travelStaffMaxDistance = data.readInt();
     Config.travelStaffMaxBlinkDistance = data.readInt();
     Config.travelStaffPowerPerBlockRF = data.readFloat();
+    Config.telepadLockCoords = data.readBoolean();
+    Config.telepadLockDimension = data.readBoolean();
   }
 
   @Override

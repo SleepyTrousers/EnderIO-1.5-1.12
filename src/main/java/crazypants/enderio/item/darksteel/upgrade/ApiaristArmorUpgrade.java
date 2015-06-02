@@ -1,7 +1,8 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item.darksteel.upgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
