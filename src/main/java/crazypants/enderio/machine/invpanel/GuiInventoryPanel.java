@@ -352,7 +352,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void onTextFieldChanged(TextFieldEIO tf, String old) {
-    if (tf == tfFilter && btnSync.enabled && tfFilter.isFocused() && Loader.isModLoaded("NotEnoughItems")) {
+    if (tf == tfFilter && btnSync.isSelected() && tfFilter.isFocused() && Loader.isModLoaded("NotEnoughItems")) {
       updateNEI(tfFilter.getText());
     }
   }
