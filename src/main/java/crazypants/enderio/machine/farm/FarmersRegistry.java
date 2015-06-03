@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.Iterator;
+import java.util.regex.Pattern;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.farmers.*;
 import net.minecraft.block.Block;
@@ -23,6 +26,7 @@ public final class FarmersRegistry {
     addMFR();
     addThaumcraft();
     addFlowers();
+    addGrowableOres();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -200,6 +204,25 @@ public final class FarmersRegistry {
         GameRegistry.findBlock("BiomesOPlenty", "flowers2"), 
         GameRegistry.findBlock("Botany", "flower"), 
         GameRegistry.findBlock("Botania", "flower") ) );
+  }
+
+  @SuppressWarnings("unchecked")
+  private static void addGrowableOres() {
+    String mod = "B0bGrowsOre";
+    String[] growableOres = { "(.+)Reed", "oreGrowable(.+)" };
+
+    Iterator<Block> blockIter = Block.blockRegistry.iterator();
+    while (blockIter.hasNext()) {
+      Block block = blockIter.next();
+      String name = Block.blockRegistry.getNameForObject(block);
+      if (name.startsWith(mod)) {
+        for (String blockName : growableOres) {
+          if (Pattern.compile(blockName).matcher(name).find()) {
+            FarmersCommune.joinCommune(new StemFarmer(block, new ItemStack(block)));
+          }
+        }
+      }
+    }
   }
   
   private FarmersRegistry() {
