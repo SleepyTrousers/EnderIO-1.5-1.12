@@ -232,16 +232,22 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   private double getAbsorptionRatio(ItemStack stack) {
+    return Config.darkSteelPowerDamgeAbsorptionRatios[getEmpoweredLevel(stack) - 1];
+  }
+
+  public static int getEmpoweredLevel(ItemStack stack) {
     AbstractUpgrade upgrade = loadFromItem(stack);
-    int index = 0;
-    if (upgrade.unlocName.equals(EMPOWERED_TWO.unlocName)) {
-      index = 1;
-    } else if (upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
-      index = 2;
-    } else if (upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
-      index = 3;
+    if (upgrade != null) {
+      if (upgrade.unlocName.equals(EMPOWERED_TWO.unlocName)) {
+        return 2;
+      } else if (upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
+        return 3;
+      } else if (upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
+        return 4;
+      }
+      return 1;
     }
-    return Config.darkSteelPowerDamgeAbsorptionRatios[index];
+    return 0;
   }
 
   public int getEnergy() {

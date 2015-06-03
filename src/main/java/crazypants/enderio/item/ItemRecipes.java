@@ -66,5 +66,9 @@ public class ItemRecipes {
     GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "woodStick"));
     GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "woodStick"));
     GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelHoe.createItemStack(), "ss ", " w ", " w ", 's',
+        darkSteel, 'w', "woodStick"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(DarkSteelItems.itemDarkSteelHoe.createItemStack(), "ss ", " w ", " w ", 's',
+        darkSteel, 'w', "stickWood"));
   }
 }
