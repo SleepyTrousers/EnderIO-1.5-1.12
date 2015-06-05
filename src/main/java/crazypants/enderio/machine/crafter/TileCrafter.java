@@ -3,6 +3,7 @@ package crazypants.enderio.machine.crafter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -10,9 +11,16 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
@@ -29,6 +37,8 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   private boolean bufferStacks = true;
 
   private long ticksSinceLastCraft = 0;
+  
+  private FakePlayer playerInst;
 
   public TileCrafter() {
     super(new SlotDefinition(9, 1));
@@ -123,6 +133,9 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }    
   }
 
+  private static final UUID uuid = UUID.fromString("9b381cae-3c95-4a64-b958-1e25b0a4c790");
+  private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioCrafter]");
+
   private void craftRecipe() {
 
     // (1) Find the items to craft with and put a copy into a temp crafting grid;
@@ -157,6 +170,10 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     
     // (3) If we got a result, ...
     if (output != null) {
+      if (playerInst == null) {
+        playerInst = new FakePlayerEIO(worldObj, getLocation(), DUMMY_PROFILE);
+      }
+      MinecraftForge.EVENT_BUS.post(new ItemCraftedEvent(playerInst, output, inv));
 
       // (3a) ... remove the used up items and ...
       for (int i = 0; i < 9; i++) {
