@@ -23,6 +23,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine));
+    setYSize(ySize + 3);
   }
   
   @SuppressWarnings("unchecked")
@@ -102,5 +103,4 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   protected int getPowerHeight() {
     return super.getPowerHeight() + 3;
   }
-
 }
