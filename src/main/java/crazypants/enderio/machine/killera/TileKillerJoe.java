@@ -502,7 +502,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     ItemStack prevWeapon;
 
     public Attackera() {
-      super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), getLocation(), DUMMY_PROFILE);
+      super(getWorldObj(), getLocation(), DUMMY_PROFILE);
     }
 
     @Override
