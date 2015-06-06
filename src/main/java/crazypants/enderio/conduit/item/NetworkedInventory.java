@@ -11,6 +11,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -389,6 +390,17 @@ public class NetworkedInventory {
 
   public void setInventorySide(int inventorySide) {
     this.inventorySide = inventorySide;
+  }
+
+  public String getLocalizedInventoryName() {
+    String inventoryName = getInventory().getInventoryName();
+    if(inventoryName == null) {
+      return "null";
+    } else {
+      // don't use Lang.localize as that passes the localized string to
+      // String.format which might crash when it contains formatting specifiers
+      return StatCollector.translateToLocal(inventoryName);
+    }
   }
 
   static class Target implements Comparable<Target> {
