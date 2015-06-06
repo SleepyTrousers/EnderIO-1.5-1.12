@@ -14,7 +14,6 @@ import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
@@ -180,7 +179,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
             if(input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
-              String s = Lang.localize(t.inv.getInventory().getInventoryName(), false) + " " + t.inv.location.chatString() + " Distance [" + t.distance + "] ";
+              String s = t.inv.getLocalizedInventoryName() + " " + t.inv.location.chatString() + " Distance [" + t.distance + "] ";
               result.add(s);
             }
           }
@@ -197,7 +196,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(inv.hasTarget(con, dir)) {
         IItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(inv, input)) {
-          result.add(Lang.localize(inv.getInventory().getInventoryName(), false) + " " + inv.location.chatString());
+          result.add(inv.getLocalizedInventoryName() + " " + inv.location.chatString());
         }
       }
     }
