@@ -82,7 +82,7 @@ public class ContainerCrafter extends AbstractMachineContainer {
       if(refStack == null || itemStack == null) {
         return false;
       }
-      return refStack.isItemEqual(itemStack);
+      return TileCrafter.compareDamageable(itemStack, refStack);
     }
   }
 

@@ -32,7 +32,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 
-  private List<ItemStack> containerItems;
+  private final List<ItemStack> containerItems;
 
   private boolean bufferStacks = true;
 
@@ -63,7 +63,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     if(!slotDefinition.isInputSlot(slot)) {
       return false;
     }
-    return craftingGrid.inv[slot] != null && craftingGrid.inv[slot].isItemEqual(itemstack);
+    return craftingGrid.inv[slot] != null && compareDamageable(itemstack, craftingGrid.inv[slot]);
   }
 
   @Override
@@ -99,10 +99,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       return false;
     }
 
-    List<ItemStack> required = new ArrayList<ItemStack>();
-    craftingGrid.copyRequiredInputs(required);
-    if(hasRequiredInput(required)) {
-      craftRecipe();
+    if(craftRecipe()) {
       int used = Math.min(getEnergyStored(), Config.crafterRfPerCraft);
       setEnergyStored(getEnergyStored() - used);
     }
@@ -133,10 +130,20 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }    
   }
 
+  static boolean compareDamageable(ItemStack stack, ItemStack req) {
+    if(stack.isItemEqual(req)) {
+      return true;
+    }
+    if(stack.isItemStackDamageable() && stack.getItem() == req.getItem()) {
+      return stack.getItemDamage() < stack.getMaxDamage();
+    }
+    return false;
+  }
+
   private static final UUID uuid = UUID.fromString("9b381cae-3c95-4a64-b958-1e25b0a4c790");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioCrafter]");
 
-  private void craftRecipe() {
+  private boolean craftRecipe() {
 
     // (1) Find the items to craft with and put a copy into a temp crafting grid;
     //     also record what was used to destroy it later
@@ -147,27 +154,30 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       }
     }, 3, 3);
 
-    ItemStack[] shadowInventory = new ItemStack[9];
-    for (int i = 0; i < 9; i++) {
-      shadowInventory[i] = inventory[i] == null ? null : inventory[i].copy();
-    }
+    int[] usedItems = new int[9];
     
     for (int j = 0; j < 9; j++) {
       ItemStack req = craftingGrid.getStackInSlot(j);
-      for (int i = 0; i < 9 && req != null; i++) {
-        if (shadowInventory[i] != null && shadowInventory[i].stackSize > 0 && shadowInventory[i].isItemEqual(req)) {
-          req = null;
-          shadowInventory[i].stackSize--;
-          ItemStack craftingItem = shadowInventory[i].copy();
-          craftingItem.stackSize = 1;
-          inv.setInventorySlotContents(j, craftingItem);
+      if (req != null) {
+        for (int i = 0; i < 9; i++) {
+          if (inventory[i] != null && inventory[i].stackSize > usedItems[i] && compareDamageable(inventory[i], req)) {
+            req = null;
+            usedItems[i]++;
+            ItemStack craftingItem = inventory[i].copy();
+            craftingItem.stackSize = 1;
+            inv.setInventorySlotContents(j, craftingItem);
+            break;
+          }
+        }
+        if (req != null) {
+          return false;
         }
       }
     }
 
     // (2) Try to craft with the temp grid
     ItemStack output = CraftingManager.getInstance().findMatchingRecipe(inv, worldObj);
-    
+
     // (3) If we got a result, ...
     if (output != null) {
       if (playerInst == null) {
@@ -177,7 +187,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
       // (3a) ... remove the used up items and ...
       for (int i = 0; i < 9; i++) {
-        while (shadowInventory[i] != null && inventory[i] != null && shadowInventory[i].stackSize < inventory[i].stackSize) {
+        for (int j = 0; j < usedItems[i] && inventory[i] != null; j++) {
           setInventorySlotContents(i, eatOneItemForCrafting(inventory[i].copy()));
         }
       }
@@ -205,14 +215,20 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       // Crafting failed. This is not supposed to happen, but if a recipe is nbt-sensitive, it can.
       // To avoid being stuck in a dead loop, we flush the non-working input items.
       for (int j = 0; j < 9; j++) {
-        if (shadowInventory[j] != null) {
-          setInventorySlotContents(j, shadowInventory[j].stackSize > 0 ? shadowInventory[j] : null);
-        }
-        if (craftingGrid.getStackInSlot(j) != null) {
-          containerItems.add(craftingGrid.getStackInSlot(j));
+        if (usedItems[j] > 0 && inventory[j] != null) {
+          ItemStack rejected = inventory[j].copy();
+          rejected.stackSize = Math.min(inventory[j].stackSize, usedItems[j]);
+          containerItems.add(rejected);
+          if (inventory[j].stackSize <= usedItems[j]) {
+            inventory[j] = null;
+          } else {
+            inventory[j].stackSize -= usedItems[j];
+          }
         }
       }
     }
+
+    return true;
   }
 
   private ItemStack eatOneItemForCrafting(ItemStack avail) {
@@ -267,30 +283,6 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       return false;
     }
     return output.getMaxStackSize() >= (inventory[9].stackSize + output.stackSize);
-  }
-
-  private boolean hasRequiredInput(List<ItemStack> required) {
-    List<ItemStack> available = new ArrayList<ItemStack>();
-    for (int i = 0; i < 9; i++) {
-      ItemStack is = inventory[i];
-      if(is != null) {
-        available.add(is.copy());
-      }
-    }
-    for (ItemStack req : required) {
-      boolean foundReq = false;
-      for (ItemStack avail : available) {
-        if(req.isItemEqual(avail) && avail.stackSize > 0) {
-          avail.stackSize--;
-          foundReq = true;
-          break;
-        }
-      }
-      if(!foundReq) {
-        return false;
-      }
-    }
-    return true;
   }
 
   @Override
