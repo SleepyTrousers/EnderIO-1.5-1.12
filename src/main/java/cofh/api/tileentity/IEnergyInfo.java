@@ -2,11 +2,11 @@ package cofh.api.tileentity;
 
 /**
  * Implement this interface on objects which can report information about their energy usage.
- * 
+ *
  * This is used for reporting purposes - Energy transactions are handled through IEnergyHandler!
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface IEnergyInfo {
 

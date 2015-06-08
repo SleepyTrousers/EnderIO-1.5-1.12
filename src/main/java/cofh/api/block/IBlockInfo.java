@@ -12,15 +12,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 /**
  * Implement this interface on blocks which can provide information about themselves. If the block contains Tile Entities, then it is recommended that this
  * function serve as a passthrough for {@link ITileInfo}.
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface IBlockInfo {
 
 	/**
 	 * This function appends information to a list provided to it.
-	 * 
+	 *
 	 * @param world
 	 *            Reference to the world.
 	 * @param x

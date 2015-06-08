@@ -4,9 +4,9 @@ import net.minecraft.item.ItemStack;
 
 /**
  * Implemented on objects which support Augments.
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface IAugmentable {
 

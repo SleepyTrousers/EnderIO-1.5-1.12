@@ -1,7 +1,5 @@
 package cofh.api.transport;
 
-import gnu.trove.map.hash.THashMap;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,22 +8,68 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
 public final class RegistryEnderAttuned {
 
-	public static Map<String, Map<Integer, List<IEnderItemHandler>>> inputItem = new THashMap<String, Map<Integer, List<IEnderItemHandler>>>();
-	public static Map<String, Map<Integer, List<IEnderFluidHandler>>> inputFluid = new THashMap<String, Map<Integer, List<IEnderFluidHandler>>>();
-	public static Map<String, Map<Integer, List<IEnderEnergyHandler>>> inputEnergy = new THashMap<String, Map<Integer, List<IEnderEnergyHandler>>>();
+	public static Map<String, Map<Integer, List<IEnderItemHandler>>> inputItem = new HashMap<String, Map<Integer, List<IEnderItemHandler>>>();
+	public static Map<String, Map<Integer, List<IEnderFluidHandler>>> inputFluid = new HashMap<String, Map<Integer, List<IEnderFluidHandler>>>();
+	public static Map<String, Map<Integer, List<IEnderEnergyHandler>>> inputEnergy = new HashMap<String, Map<Integer, List<IEnderEnergyHandler>>>();
 
-	public static Map<String, Map<Integer, List<IEnderItemHandler>>> outputItem = new THashMap<String, Map<Integer, List<IEnderItemHandler>>>();
-	public static Map<String, Map<Integer, List<IEnderFluidHandler>>> outputFluid = new THashMap<String, Map<Integer, List<IEnderFluidHandler>>>();
-	public static Map<String, Map<Integer, List<IEnderEnergyHandler>>> outputEnergy = new THashMap<String, Map<Integer, List<IEnderEnergyHandler>>>();
+	public static Map<String, Map<Integer, List<IEnderItemHandler>>> outputItem = new HashMap<String, Map<Integer, List<IEnderItemHandler>>>();
+	public static Map<String, Map<Integer, List<IEnderFluidHandler>>> outputFluid = new HashMap<String, Map<Integer, List<IEnderFluidHandler>>>();
+	public static Map<String, Map<Integer, List<IEnderEnergyHandler>>> outputEnergy = new HashMap<String, Map<Integer, List<IEnderEnergyHandler>>>();
+
+	public static Map<String, Map<Integer, EnderDestination>> outputTeleport = new HashMap<String, Map<Integer, EnderDestination>>();
 
 	public static Configuration linkConf;
 
 	public static Map<String, String> clientFrequencyNames = new LinkedHashMap<String, String>();
 	public static Map<String, String> clientFrequencyNamesReversed = new LinkedHashMap<String, String>();
+
+	private static class EnderDestination {
+
+		private final int dimension;
+		private final int x, y, z;
+		private IEnderDestination output;
+
+		public EnderDestination(IEnderDestination output) {
+
+			x = output.x();
+			y = output.y();
+			z = output.z();
+			dimension = output.dimension();
+			this.output = output;
+		}
+
+		public boolean hasOutput() {
+
+			return DimensionManager.isDimensionRegistered(dimension);
+		}
+
+		public IEnderDestination getOutput() {
+
+			if (output == null || output.isNotValid()) {
+				output = null;
+				if (!DimensionManager.isDimensionRegistered(dimension)) {
+					return null;
+				}
+				WorldServer world = DimensionManager.getWorld(dimension);
+				if (world == null) {
+					DimensionManager.initDimension(dimension);
+					world = DimensionManager.getWorld(dimension);
+				}
+				TileEntity te = world.getTileEntity(x, y, z);
+				if (te instanceof IEnderDestination) {
+					output = (IEnderDestination) te;
+				}
+			}
+			return output;
+		}
+	}
 
 	public static void clear() {
 
@@ -83,6 +127,31 @@ public final class RegistryEnderAttuned {
 			return null;
 		}
 		return outputEnergy.get(theAttuned.getChannelString()).get(theAttuned.getFrequency());
+	}
+
+	public static boolean hasDestination(IEnderDestination theAttuned) {
+
+		return hasDestination(theAttuned, true);
+	}
+
+	public static boolean hasDestination(IEnderDestination theAttuned, boolean to) {
+
+		Map<Integer, EnderDestination> map = outputTeleport.get(theAttuned.getChannelString());
+		if (map == null) {
+			return false;
+		}
+		EnderDestination dest = map.get(to ? theAttuned.getDestination() : theAttuned.getFrequency());
+		return dest == null ? false : dest.hasOutput();
+	}
+
+	public static IEnderDestination getDestination(IEnderDestination theAttuned) {
+
+		Map<Integer, EnderDestination> map = outputTeleport.get(theAttuned.getChannelString());
+		if (map == null) {
+			return null;
+		}
+		EnderDestination dest = map.get(theAttuned.getDestination());
+		return dest == null ? null : dest.getOutput();
 	}
 
 	/* HELPER FUNCTIONS */
@@ -164,6 +233,16 @@ public final class RegistryEnderAttuned {
 		}
 	}
 
+	public static void addDestination(IEnderDestination theAttuned) {
+
+		if (!hasDestination(theAttuned, false)) {
+			if (outputTeleport.get(theAttuned.getChannelString()) == null) {
+				outputTeleport.put(theAttuned.getChannelString(), new HashMap<Integer, EnderDestination>());
+			}
+			outputTeleport.get(theAttuned.getChannelString()).put(theAttuned.getFrequency(), new EnderDestination(theAttuned));
+		}
+	}
+
 	public static void removeItemHandler(IEnderItemHandler theAttuned) {
 
 		if (inputItem.get(theAttuned.getChannelString()) != null) {
@@ -224,6 +303,23 @@ public final class RegistryEnderAttuned {
 		}
 	}
 
+	public static void removeDestination(IEnderDestination theAttuned) {
+
+		Map<Integer, EnderDestination> map = outputTeleport.get(theAttuned.getChannelString());
+		if (map == null) {
+			return;
+		}
+		EnderDestination dest = map.get(theAttuned.getFrequency());
+		if (dest == null) {
+			return;
+		}
+		if (dest.dimension == theAttuned.dimension()) {
+			if (dest.x == theAttuned.x() && dest.y == theAttuned.x() && dest.z == theAttuned.x()) {
+				map.remove(theAttuned.getFrequency());
+			}
+		}
+	}
+
 	public static void add(IEnderAttuned theAttuned) {
 
 		if (theAttuned instanceof IEnderItemHandler) {
@@ -234,6 +330,9 @@ public final class RegistryEnderAttuned {
 		}
 		if (theAttuned instanceof IEnderEnergyHandler) {
 			addEnergyHandler((IEnderEnergyHandler) theAttuned);
+		}
+		if (theAttuned instanceof IEnderDestination) {
+			addDestination((IEnderDestination) theAttuned);
 		}
 	}
 
@@ -247,6 +346,9 @@ public final class RegistryEnderAttuned {
 		}
 		if (theAttuned instanceof IEnderEnergyHandler) {
 			removeEnergyHandler((IEnderEnergyHandler) theAttuned);
+		}
+		if (theAttuned instanceof IEnderDestination) {
+			removeDestination((IEnderDestination) theAttuned);
 		}
 	}
 

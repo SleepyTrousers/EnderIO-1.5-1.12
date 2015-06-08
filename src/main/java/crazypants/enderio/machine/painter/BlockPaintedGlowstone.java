@@ -294,4 +294,19 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     }
     return this;
   }
+
+  @Override
+  public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacade(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public int getVisualMeta(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacadeMetadata(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public boolean supportsVisualConnections() {
+    return true;
+  }
 }

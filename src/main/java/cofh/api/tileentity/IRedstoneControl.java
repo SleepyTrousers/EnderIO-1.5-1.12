@@ -3,9 +3,9 @@ package cofh.api.tileentity;
 /**
  * Implement this interface on Tile Entities which have Redstone Control functionality. This means that a tile can be set to ignore redstone entirely, or
  * respond to a low or high redstone state.
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface IRedstoneControl extends IRedstoneCache {
 

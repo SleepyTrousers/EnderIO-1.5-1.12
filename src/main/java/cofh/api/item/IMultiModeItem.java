@@ -10,23 +10,38 @@ import net.minecraft.item.ItemStack;
  * @author King Lemming
  *
  */
-public interface IEmpowerableItem {
+public interface IMultiModeItem {
 
 	/**
-	 * Check whether or not a given item is currently in an empowered state.
+	 * Get the current mode of an item.
 	 */
-	boolean isEmpowered(ItemStack stack);
+	int getMode(ItemStack stack);
 
 	/**
 	 * Attempt to set the empowered state of the item.
 	 *
 	 * @param stack
-	 *            ItemStack to be empowered/disempowered.
-	 * @param state
-	 *            Desired state.
+	 *            ItemStack to set the mode on.
+	 * @param mode
+	 *            Desired mode.
 	 * @return TRUE if the operation was successful, FALSE if it was not.
 	 */
-	boolean setEmpoweredState(ItemStack stack, boolean state);
+	boolean setMode(ItemStack stack, int mode);
+
+	/**
+	 * Increment the current mode of an item.
+	 */
+	boolean incrMode(ItemStack stack);
+
+	/**
+	 * Decrement the current mode of an item.
+	 */
+	boolean decrMode(ItemStack stack);
+
+	/**
+	 * Returns the number of possible modes.
+	 */
+	int getNumModes(ItemStack stack);
 
 	/**
 	 * Callback method for reacting to a state change. Useful in KeyBinding handlers.
@@ -36,6 +51,6 @@ public interface IEmpowerableItem {
 	 * @param stack
 	 *            The item being held.
 	 */
-	void onStateChange(EntityPlayer player, ItemStack stack);
+	void onModeChange(EntityPlayer player, ItemStack stack);
 
 }
