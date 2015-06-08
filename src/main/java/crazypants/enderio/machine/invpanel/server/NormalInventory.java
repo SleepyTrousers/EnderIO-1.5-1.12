@@ -12,17 +12,17 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  int scanInventory(InventoryDatabaseServer db, int aiIndex) {
+  int scanInventory(InventoryDatabaseServer db) {
     ISidedInventory inv = ni.getInventoryRecheck();
     int side = ni.getInventorySide();
     int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
     if (slotIndices == null || slotIndices.length == 0) {
-      setEmpty(db, aiIndex);
+      setEmpty(db);
       return 0;
     }
     int count = slotIndices.length;
-    if (count != slotItems.length) {
-      reset(db, count, aiIndex);
+    if (count != slotKeys.length) {
+      reset(db, count);
     }
     for (int slot = 0; slot < count; slot++) {
       int invSlot = slotIndices[slot];
@@ -30,13 +30,13 @@ class NormalInventory extends AbstractInventory {
       if (stack != null && !inv.canExtractItem(invSlot, stack, side)) {
         stack = null;
       }
-      updateSlot(db, slot, aiIndex, stack);
+      updateSlot(db, slot, stack);
     }
     return count;
   }
 
   @Override
-  public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int aiIndex, int count) {
+  public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int count) {
     ISidedInventory inv = ni.getInventoryRecheck();
     int side = ni.getInventorySide();
     int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
@@ -57,7 +57,7 @@ class NormalInventory extends AbstractInventory {
     }
     ni.itemExtracted(invSlot, count);
     remaining -= count;
-    updateCount(db, slot, aiIndex, entry, remaining);
+    updateCount(db, slot, entry, remaining);
     return count;
   }
 

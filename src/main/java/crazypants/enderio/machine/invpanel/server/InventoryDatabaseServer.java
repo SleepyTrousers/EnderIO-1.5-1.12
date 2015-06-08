@@ -234,7 +234,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     }
 
     AbstractInventory inv = inventories[currentInventory];
-    int slots = inv.scanInventory(this, currentInventory);
+    int slots = inv.scanInventory(this);
 
     currentInventory = (currentInventory+1) % inventories.length;
     tickPause += 1 + (slots + 8) / 9;
