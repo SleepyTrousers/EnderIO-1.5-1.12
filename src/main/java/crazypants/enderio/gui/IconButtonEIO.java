@@ -23,6 +23,7 @@ public class IconButtonEIO extends GuiButton {
   private int xOrigin;
   private int yOrigin;
 
+  protected boolean isOnGui;
   protected IGuiScreen gui;
   protected String[] toolTipText;
 
@@ -51,11 +52,11 @@ public class IconButtonEIO extends GuiButton {
   }
 
   protected void setToolTip(GuiToolTip newToolTip) {
-    if (toolTip != null) {
+    if (isOnGui && toolTip != null) {
       gui.removeToolTip(toolTip);
     }
     toolTip = newToolTip;
-    if (toolTip != null) {
+    if (isOnGui && toolTip != null) {
       gui.addToolTip(toolTip);
     }
   }
@@ -65,17 +66,23 @@ public class IconButtonEIO extends GuiButton {
   }
   
   public void onGuiInit() {
-    gui.addButton(this);
-    if(toolTip != null) {
-      gui.addToolTip(toolTip);
+    if(!isOnGui) {
+      gui.addButton(this);
+      if(toolTip != null) {
+        gui.addToolTip(toolTip);
+      }
+      isOnGui = true;
     }
     xPosition = xOrigin + gui.getGuiLeft();
     yPosition = yOrigin + gui.getGuiTop();
   }
 
   public void detach() {
-    gui.removeToolTip(toolTip);
-    gui.removeButton(this);
+    if(isOnGui) {
+      gui.removeToolTip(toolTip);
+      gui.removeButton(this);
+      isOnGui = false;
+    }
   }
 
   public void setSize(int width, int height) {
