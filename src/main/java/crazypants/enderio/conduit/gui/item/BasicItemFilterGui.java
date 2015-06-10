@@ -163,7 +163,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   }
   
   @Override
-  public void deactivate() {        
+  public void deactivate() {
     useNbtB.detach();
     useMetaB.detach();
     useOreDictB.detach();
