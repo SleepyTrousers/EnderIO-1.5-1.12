@@ -41,6 +41,7 @@ public class ConduitRecipes {
     ItemStack redstoneAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal());
     ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+    ItemStack vibrantCrystal = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
 
     //Recipes
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.BASIC.ordinal()), "bbb", "b b", "bbb", 'b', conduitBinder);
@@ -53,6 +54,7 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', energeticGold);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedGold);
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 3), "bbb", "###", "bbb", 'b', conduitBinder, '#', vibrantCrystal);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 0), "###", '#', redstoneAlloy);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', conduitBinder, 'c', redstoneConduit, 'l',
         Blocks.lever);

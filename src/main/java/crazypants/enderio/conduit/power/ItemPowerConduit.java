@@ -22,7 +22,8 @@ public class ItemPowerConduit extends AbstractItemConduit {
   static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
       new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
-      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder")
+      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder"),
+      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ultimate", "enderio:itemPowerConduitUltimate")
   };
 
   public static ItemPowerConduit create() {
