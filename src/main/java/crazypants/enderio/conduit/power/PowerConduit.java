@@ -48,14 +48,15 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   
   private static ICapacitor[] capacitors;
 
-  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
+  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender", "Ultimate" };
 
   static ICapacitor[] getCapacitors() {
     if(capacitors == null) {
       capacitors = new BasicCapacitor[] {
         new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
         new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
-        new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF)
+        new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF),
+        new BasicCapacitor(Config.powerConduitTierFourRF, Config.powerConduitTierFourRF)
       };
     }
     return capacitors;
