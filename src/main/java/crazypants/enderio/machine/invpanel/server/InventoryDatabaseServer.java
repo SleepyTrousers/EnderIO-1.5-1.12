@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
@@ -179,11 +178,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
       this.inventories = new AbstractInventory[sources.size()];
       for(int i=0; i<sources.size(); i++) {
         NetworkedInventory ni = sources.get(i);
-        if(ni.getInventory() instanceof IDeepStorageUnit) {
-          inventories[i] = new DSUInventory((IDeepStorageUnit) ni.getInventory());
-        } else {
-          inventories[i] = new NormalInventory(ni);
-        }
+        inventories[i] = InventoryFactory.createInventory(ni);
       }
     }
 
