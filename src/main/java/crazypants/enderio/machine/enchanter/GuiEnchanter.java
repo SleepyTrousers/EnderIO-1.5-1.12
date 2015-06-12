@@ -1,29 +1,39 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.awt.Color;
-
-import org.lwjgl.opengl.GL11;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.vacuum.ContainerVacuumChest;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiEnchanter extends GuiContainer {
+import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconButtonEIO;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.gui.GuiContainerBase;
+import crazypants.render.RenderUtil;
+
+public class GuiEnchanter extends GuiContainerBase {
 
   private TileEnchanter te;
   private ContainerEnchanter container;
+  private IconButtonEIO recipeButton;
   
   public GuiEnchanter(EntityPlayer player, InventoryPlayer inventory, TileEnchanter te) {
     super(new ContainerEnchanter(player, inventory, te));
     container = (ContainerEnchanter)inventorySlots;
     this.te = te;
+    
+    recipeButton = new IconButtonEIO(this, 100, 154, 8, IconEIO.RECIPE);
+    recipeButton.visible = false;
+    recipeButton.setIconMargin(3, 3);
+  }
+  
+  @Override
+  public void initGui() {
+    super.initGui();
+    recipeButton.onGuiInit();
+    recipeButton.visible = EnderIO.proxy.isNeiInstalled();
   }
   
   @Override
@@ -33,10 +43,6 @@ public class GuiEnchanter extends GuiContainer {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-    
-    if(EnderIO.proxy.isNeiInstalled()) {
-      IconEIO.RECIPE.renderIcon(sx + 155, sy + 8, 16, 16, 0, true);
-    }
     
     int curCost = te.getCurrentEnchantmentCost();    
     if(curCost > 0) {
@@ -54,5 +60,4 @@ public class GuiEnchanter extends GuiContainer {
       drawCenteredString(Minecraft.getMinecraft().fontRenderer, s, sx + xSize/2, sy + 57, col);
     }
   }
-
 }
