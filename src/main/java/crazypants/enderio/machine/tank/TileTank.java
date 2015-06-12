@@ -34,18 +34,24 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   
   private boolean tankDirty = false;
   private Fluid lastFluid = null;
+  private int metaTankType;
 
   public TileTank(int meta) {
     super(new SlotDefinition(0, 1, 2, 3, -1, -1));
-    if(meta == 1) {
-      tank = new SmartTank(32000);
-    } else {
-      tank = new SmartTank(16000);
-    }
+    tank = makeTank(meta);
+    metaTankType = meta;
   }
 
   public TileTank() {
     this(0);
+  }
+
+  private static SmartTank makeTank(int tankType) {
+    if (tankType == 1) {
+      return new SmartTank(32000);
+    } else {
+      return new SmartTank(16000);
+    }
   }
 
   @Override
@@ -333,31 +339,47 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
-    nbtRoot.setInteger("tankType",getBlockMetadata());
     if(tank.getFluidAmount() > 0) {
       NBTTagCompound fluidRoot = new NBTTagCompound();
       tank.getFluid().writeToNBT(fluidRoot);
       nbtRoot.setTag("tankContents", fluidRoot);
+    } else {
+      nbtRoot.removeTag("tankContents");
     }
+  }
+
+  public static SmartTank readTankFromItem(ItemStack stack) {
+    if (stack == null || stack.stackTagCompound == null) {
+      return null;
+    }
+    return readTankFromNbt(stack.getItemDamage(), stack.stackTagCompound);
+  }
+
+  private static SmartTank readTankFromNbt(int tankSize, NBTTagCompound nbtRoot) {
+    SmartTank result = nbtRoot.hasKey("tankType") ? makeTank(nbtRoot.getInteger("tankType")) : makeTank(tankSize);
+    if (nbtRoot.hasKey("tankContents")) {
+      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) nbtRoot.getTag("tankContents"));
+      result.setFluid(fl);
+    }
+    return result;
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-    int tankType = nbtRoot.getInteger("tankType");
-    tankType = MathHelper.clamp_int(tankType, 0, 1);
-    if(tankType == 1) {
-      tank = new SmartTank(32000);
-    } else {
-      tank = new SmartTank(16000);
-    }
-    
-    if(nbtRoot.hasKey("tankContents")) {
-      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) nbtRoot.getTag("tankContents"));
-      tank.setFluid(fl);
-    } else {
-      tank.setFluid(null);
-    }
+    tank = readTankFromNbt(metaTankType, nbtRoot);
+  }
+
+  @Override
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
+    metaTankType = getBlockMetadata();
+    super.readCustomNBT(nbtRoot);
+  }
+
+  @Override
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    nbtRoot.setInteger("tankType", getBlockMetadata());
+    super.writeCustomNBT(nbtRoot);
   }
 
   @Override

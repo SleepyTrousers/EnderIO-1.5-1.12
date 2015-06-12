@@ -540,7 +540,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     } else {
       name = Lang.localize(stack.getUnlocalizedName() + ".name", false);
     }
-    name += " " + Lang.localize("machine.tooltip.configured");
+    if (!name.endsWith(Lang.localize("machine.tooltip.configured"))) {
+      name += " " + Lang.localize("machine.tooltip.configured");
+    }
     stack.setStackDisplayName(name);
   }
 
