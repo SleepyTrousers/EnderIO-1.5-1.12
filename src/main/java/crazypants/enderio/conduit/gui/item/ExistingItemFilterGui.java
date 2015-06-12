@@ -131,8 +131,6 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     if(!isInput) {
       stickyB.onGuiInit();
       stickyB.setSelected(activeFilter.isSticky());
-    } else {
-      stickyB.detach();
     }
 
     useMetaB.onGuiInit();

@@ -47,8 +47,8 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
   }
 
   @Override
-  public void removeToolTip(GuiToolTip toolTip) {
-    ttMan.removeToolTip(toolTip);
+  public boolean removeToolTip(GuiToolTip toolTip) {
+    return ttMan.removeToolTip(toolTip);
   }
 
   @Override

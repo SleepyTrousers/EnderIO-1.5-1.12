@@ -118,11 +118,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
       if(isStickyModeAvailable) {
         stickyB.onGuiInit();
         stickyB.setSelected(activeFilter.isSticky());
-      } else {
-        stickyB.detach();
       }
-    } else {
-      stickyB.detach();
     }
 
     useMetaB.onGuiInit();

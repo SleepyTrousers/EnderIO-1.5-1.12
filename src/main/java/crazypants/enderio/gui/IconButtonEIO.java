@@ -37,7 +37,6 @@ public class IconButtonEIO extends GuiButton {
     texture = IconEIO.TEXTURE;
     this.xOrigin = x;
     this.yOrigin = y;
-
   }
  
   public void setToolTip(String... tooltipText) {
@@ -51,11 +50,12 @@ public class IconButtonEIO extends GuiButton {
   }
 
   protected void setToolTip(GuiToolTip newToolTip) {
+    boolean addTooltip = false;
     if (toolTip != null) {
-      gui.removeToolTip(toolTip);
+      addTooltip = gui.removeToolTip(toolTip);
     }
     toolTip = newToolTip;
-    if (toolTip != null) {
+    if (addTooltip && toolTip != null) {
       gui.addToolTip(toolTip);
     }
   }
