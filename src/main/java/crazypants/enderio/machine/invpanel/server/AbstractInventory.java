@@ -22,24 +22,40 @@ abstract class AbstractInventory {
   }
 
   protected void updateSlot(InventoryDatabaseServer db, int slot, ItemStack stack) {
+    if (stack == null) {
+      emptySlot(db, slot);
+    } else {
+      updateSlot(db, slot, stack, stack.stackSize);
+    }
+  }
+
+  protected void updateSlot(InventoryDatabaseServer db, int slot, ItemStack stack, int count) {
     SlotKey slotKey = slotKeys[slot];
     ItemEntry current = slotKey != null ? slotKey.item : null;
     ItemEntry key = db.lookupItem(stack, current, true);
     if (key != current) {
-      updateSlotKey(db, slot, slotKey, key, stack);
-    } else if (slotKey != null && slotKey.count != stack.stackSize) {
-      slotKey.count = stack.stackSize;
+      updateSlotKey(db, slot, slotKey, key, count);
+    } else if (slotKey != null && slotKey.count != count) {
+      slotKey.count = count;
       db.entryChanged(current);
     }
   }
 
-  private void updateSlotKey(InventoryDatabaseServer db, int slot, SlotKey slotKey, ItemEntry key, ItemStack stack) {
+  protected void emptySlot(InventoryDatabaseServer db, int slot) {
+    SlotKey slotKey = slotKeys[slot];
+    if (slotKey != null) {
+      slotKey.remove(db);
+      slotKeys[slot] = null;
+    }
+  }
+
+  private void updateSlotKey(InventoryDatabaseServer db, int slot, SlotKey slotKey, ItemEntry key, int count) {
     if (slotKey != null) {
       slotKey.remove(db);
       slotKey = null;
     }
     if (key != null)  {
-      slotKey = new SlotKey(this, slot, key, stack.stackSize);
+      slotKey = new SlotKey(this, slot, key, count);
       key.addSlot(slotKey);
       db.entryChanged(key);
     }
