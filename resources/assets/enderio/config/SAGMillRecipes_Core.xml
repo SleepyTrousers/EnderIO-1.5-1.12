@@ -9,11 +9,11 @@
 
   Examples:
 
-  <recipeGroup name="EnderIO">
+  <recipeGroup name="EnderIO" >
     <recipe>...</recipe>
     <recipe>...</recipe>
   <recipeGroup/>
-  <recipeGroup name="EnderIO" enabled="false">
+  <recipeGroup name="EnderIO" enabled="false" >
     <recipe>...</recipe>
     <recipe>...</recipe>
   <recipeGroup/>
@@ -24,7 +24,7 @@
 
   Examples:
 
-  <recipe name="Blah">
+  <recipe name="Blah" >
     <input>
       <itemStack/>
     </input>
@@ -32,7 +32,7 @@
       <itemStack/>
     </output>
   </recipe>
-  <recipe name="BlahBlah" energyCost="2400">
+  <recipe name="BlahBlah" energyCost="2400" >
     <input>
       <itemStack/> </input>
     <output>
@@ -78,8 +78,8 @@
 
   Recipes can also be added using forge IMC messages. For example, in the init method of a mod:
   String recipe =
-       "<recipeGroup name=\"cheaty\">" +
-         "<recipe name=\"foo\" energyCost=\"2400\">" +
+       "<recipeGroup name=\"cheaty\" >" +
+         "<recipe name=\"foo\" energyCost=\"2400\" >" +
            "<input>" +
             "<itemStack modID=\"minecraft\" itemName=\"dirt\" />" +
            "</input>" +
@@ -97,15 +97,17 @@
   processed.
 
   Examples:
-  
+
   - Adding a new grinding ball:
 
   <grindingBalls>
-    <grindingBall id="Diamond" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.5" durationRF="50000">
+    <grindingBall id="Diamond" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.5" durationRF="50000" >
       <itemStack modID="minecraft" itemName="diamond" />
     </grindingBall>
   </grindingBalls>
+
   - Removing an existing grinding ball:
+
   <grindingBalls>
     <grindingBall id="Flint" remove="true" />
   </grindingBalls>
@@ -120,21 +122,28 @@
   </grindingBalls>
 
  Item Information and data dumps:
+
   To write all registered items to config/modObjectsRegistery.txt include:
-  <dumpRegistry modObjects="true/>
+
+  <dumpRegistry modObjects="true" />
+
   To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt include:
+
   <dumpRegistery oreDictionary="true" />
+
   To show ore dictionary and/or registered names, in the EnderIO config set:
+
   addRegisterdNameTooltip=true
   addOreDictionaryTooltips=true
+
 -->
 
 <SAGMillRecipes>
 
   <!-- <dumpRegistery oreDictionary="true" modObjects="true" /> -->
-  <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
+  <recipeGroup name="EnderIO" > <!-- Required for EnderIO to function correctly. -->
     <!-- Sand to Silicon -->
-    <recipe name="Silicon" energyCost="720">
+    <recipe name="Silicon" energyCost="720" >
       <input>
         <itemStack modID="minecraft" itemName="sand" />
       </input>
@@ -142,7 +151,7 @@
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="0" chance="0.5" />
       </output>
     </recipe>
-    <recipe name="SiliconRedSand" energyCost="720">
+    <recipe name="SiliconRedSand" energyCost="720" >
       <input>
         <itemStack modID="minecraft" itemName="sand" itemMeta="1" />
       </input>
@@ -150,7 +159,7 @@
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="0" chance="0.5" />
       </output>
     </recipe>
-    <recipe name="CoalOre" energyCost="3600">
+    <recipe name="CoalOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreCoal" />
       </input>
@@ -161,7 +170,7 @@
         <itemStack modID="minecraft" itemName="diamond" chance="0.001" />
       </output>
     </recipe>
-    <recipe name="Coal" energyCost="2400">
+    <recipe name="Coal" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="coal" />
       </input>
@@ -171,7 +180,7 @@
         <itemStack oreDictionary="dustSulfur" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Charcoal" energyCost="2400">
+    <recipe name="Charcoal" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="coal" itemMeta="1" />
       </input>
@@ -179,7 +188,7 @@
         <itemStack oreDictionary="dustCharcoal" number="1" />
       </output>
     </recipe>
-    <recipe name="IronOre" energyCost="3600">
+    <recipe name="IronOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreIron" />
       </input>
@@ -190,7 +199,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="IronIngot" energyCost="2400">
+    <recipe name="IronIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotIron" />
       </input>
@@ -198,7 +207,7 @@
         <itemStack oreDictionary="dustIron" number="1" />
       </output>
     </recipe>
-    <recipe name="GoldOre" energyCost="3600">
+    <recipe name="GoldOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreGold" />
       </input>
@@ -208,7 +217,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="GoldIngot" energyCost="2400">
+    <recipe name="GoldIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotGold" />
       </input>
@@ -216,7 +225,7 @@
         <itemStack oreDictionary="dustGold" number="1" />
       </output>
     </recipe>
-    <recipe name="EnderPearl" energyCost="1600">
+    <recipe name="EnderPearl" energyCost="1600" >
       <input>
         <itemStack modID="minecraft" itemName="ender_pearl" />
       </input>
@@ -226,8 +235,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Vanilla">
-    <recipe name="StoneBricks" energyCost="2400">
+  <recipeGroup name="Vanilla" >
+    <recipe name="StoneBricks" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="stonebrick" />
       </input>
@@ -235,7 +244,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" />
       </output>
     </recipe>
-    <recipe name="CrackedBricks" energyCost="2000">
+    <recipe name="CrackedBricks" energyCost="2000" >
       <input>
         <itemStack modID="minecraft" itemName="stonebrick" itemMeta="2" />
       </input>
@@ -243,7 +252,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" />
       </output>
     </recipe>
-    <recipe name="ChisledBricks" energyCost="2800">
+    <recipe name="ChisledBricks" energyCost="2800" >
       <input>
         <itemStack modID="minecraft" itemName="stonebrick" itemMeta="3" />
       </input>
@@ -251,7 +260,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" />
       </output>
     </recipe>
-    <recipe name="Stone" energyCost="2400">
+    <recipe name="Stone" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="stone" />
       </input>
@@ -259,7 +268,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" />
       </output>
     </recipe>
-    <recipe name="Cobblestone" energyCost="2400">
+    <recipe name="Cobblestone" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="cobblestone" />
       </input>
@@ -268,7 +277,7 @@
         <itemStack modID="minecraft" itemName="gravel" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Sandstone" energyCost="2400">
+    <recipe name="Sandstone" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="sandstone" />
       </input>
@@ -278,7 +287,7 @@
         <itemStack oreDictionary="dustSaltpeter" number="1" chance ="0.15" />
       </output>
     </recipe>
-    <recipe name="Glass" energyCost="1200">
+    <recipe name="Glass" energyCost="1200" >
       <input>
         <itemStack oreDictionary="glass" />
       </input>
@@ -286,7 +295,7 @@
         <itemStack modID="minecraft" itemName="sand" />
       </output>
     </recipe>
-    <recipe name="Gravel" energyCost="2400">
+    <recipe name="Gravel" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="gravel" />
       </input>
@@ -296,7 +305,7 @@
         <itemStack modID="minecraft" itemName="sand" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Netherrack" energyCost="2400">
+    <recipe name="Netherrack" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="netherrack" />
       </input>
@@ -304,7 +313,7 @@
         <itemStack oreDictionary="dustSulfur" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="BlazeRod" energyCost="2400">
+    <recipe name="BlazeRod" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="blaze_rod" />
       </input>
@@ -313,7 +322,7 @@
         <itemStack oreDictionary="dustSulfur" chance="0.5" />
       </output>
     </recipe>
-    <recipe name="GlowStone" energyCost="2400">
+    <recipe name="GlowStone" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="glowstone" />
       </input>
@@ -322,7 +331,7 @@
         <itemStack modID="minecraft" itemName="glowstone_dust" number="1" chance="0.8" />
       </output>
     </recipe>
-    <recipe name="Bone" energyCost="2400">
+    <recipe name="Bone" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="bone" />
       </input>
@@ -331,7 +340,7 @@
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="2" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="ClayBlock" energyCost="2400">
+    <recipe name="ClayBlock" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="clay" />
       </input>
@@ -341,7 +350,7 @@
         <itemStack modID="EnderIO" itemName="itemMaterial" number="2" itemMeta="0" chance="0.8" />
       </output>
     </recipe>
-    <recipe name="Wool" energyCost="1200">
+    <recipe name="Wool" energyCost="1200" >
       <input>
         <itemStack modID="minecraft" itemName="wool" itemMeta="*" />
       </input>
@@ -350,7 +359,7 @@
         <itemStack modID="minecraft" itemName="string" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Wheat" energyCost="800">
+    <recipe name="Wheat" energyCost="800" >
       <input>
         <itemStack modID="minecraft" itemName="wheat" />
       </input>
@@ -359,7 +368,7 @@
         <itemStack modID="minecraft" itemName="wheat_seeds" chance="0.2" />
       </output>
     </recipe>
-    <recipe name="RedstoneOre" energyCost="3000">
+    <recipe name="RedstoneOre" energyCost="3000" >
       <input>
         <itemStack oreDictionary="oreRedstone" />
       </input>
@@ -370,7 +379,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="DiamondOre" energyCost="3000">
+    <recipe name="DiamondOre" energyCost="3000" >
       <input>
         <itemStack oreDictionary="oreDiamond" />
       </input>
@@ -379,7 +388,7 @@
         <itemStack modID="minecraft" itemName="diamond" number="1" chance="0.25" />
       </output>
     </recipe>
-    <recipe name="EmeraldOre" energyCost="3000">
+    <recipe name="EmeraldOre" energyCost="3000" >
       <input>
         <itemStack oreDictionary="oreEmerald" />
       </input>
@@ -388,7 +397,7 @@
         <itemStack modID="minecraft" itemName="emerald" number="1" chance="0.25" />
       </output>
     </recipe>
-    <recipe name="LapisLazuliOre" energyCost="3000">
+    <recipe name="LapisLazuliOre" energyCost="3000" >
       <input>
         <itemStack oreDictionary="oreLapis" />
       </input>
@@ -398,7 +407,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="Quartz Ore" energyCost="7200">
+    <recipe name="Quartz Ore" energyCost="7200" >
       <input>
         <itemStack oreDictionary="oreQuartz" />
       </input>
@@ -407,7 +416,7 @@
         <itemStack oreDictionary="dustNetherQuartz" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Block of Quartz" energyCost="2400">
+    <recipe name="Block of Quartz" energyCost="2400" >
       <input>
         <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*" />
       </input>
@@ -416,7 +425,7 @@
         <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
       </output>
     </recipe>
-    <recipe name="Quartz Stairs" energyCost="1200">
+    <recipe name="Quartz Stairs" energyCost="1200" >
       <input>
         <itemStack modID="minecraft" itemName="quartz_stairs" />
       </input>
@@ -425,7 +434,7 @@
         <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
       </output>
     </recipe>
-    <recipe name="Quartz Slab" energyCost="1200">
+    <recipe name="Quartz Slab" energyCost="1200" >
       <input>
         <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
       </input>
@@ -436,8 +445,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Common Ores/Ingots">
-    <recipe name="CopperOre" energyCost="3600">
+  <recipeGroup name="Common Ores/Ingots" >
+    <recipe name="CopperOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreCopper" />
       </input>
@@ -447,7 +456,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="CopperIngot" energyCost="2400">
+    <recipe name="CopperIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotCopper" />
       </input>
@@ -455,7 +464,7 @@
         <itemStack oreDictionary="dustCopper" number="1" />
       </output>
     </recipe>
-    <recipe name="TinOre" energyCost="3600">
+    <recipe name="TinOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreTin" />
       </input>
@@ -464,7 +473,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="TinIngot" energyCost="2400">
+    <recipe name="TinIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotTin" />
       </input>
@@ -472,7 +481,7 @@
         <itemStack oreDictionary="dustTin" number="1" />
       </output>
     </recipe>
-    <recipe name="LeadOre" energyCost="3600">
+    <recipe name="LeadOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreLead" />
       </input>
@@ -482,7 +491,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="LeadIngot" energyCost="2400">
+    <recipe name="LeadIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotLead" />
       </input>
@@ -490,7 +499,7 @@
         <itemStack oreDictionary="dustLead" />
       </output>
     </recipe>
-    <recipe name="SilverOre" energyCost="3600">
+    <recipe name="SilverOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreSilver" />
       </input>
@@ -499,7 +508,7 @@
         <itemStack oreDictionary="dustLead" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="SilverIngot" energyCost="2400">
+    <recipe name="SilverIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotSilver" />
       </input>
@@ -507,7 +516,7 @@
         <itemStack oreDictionary="dustSilver" />
       </output>
     </recipe>
-    <recipe name="BronzeIngot" energyCost="2400">
+    <recipe name="BronzeIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotBronze" />
       </input>
@@ -515,7 +524,7 @@
         <itemStack oreDictionary="dustBronze" />
       </output>
     </recipe>
-    <recipe name="NickelIngot" energyCost="2400">
+    <recipe name="NickelIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotNickel" />
       </input>
@@ -523,7 +532,7 @@
         <itemStack oreDictionary="dustNickel" />
       </output>
     </recipe>
-    <recipe name="NickelOre" energyCost="3600">
+    <recipe name="NickelOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreNickel" />
       </input>
@@ -532,7 +541,7 @@
         <itemStack oreDictionary="dustPlatinum" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="AluminiumOre" energyCost="2400">
+    <recipe name="AluminiumOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreAluminium" />
       </input>
@@ -540,7 +549,7 @@
         <itemStack oreDictionary="dustAluminium" number="2" />
       </output>
     </recipe>
-    <recipe name="AluminiumIngot" energyCost="2400">
+    <recipe name="AluminiumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAluminium" />
       </input>
@@ -548,7 +557,7 @@
         <itemStack oreDictionary="dustAluminium" />
       </output>
     </recipe>
-    <recipe name="AluminumOre" energyCost="2400">
+    <recipe name="AluminumOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreAluminum" />
       </input>
@@ -556,7 +565,7 @@
         <itemStack oreDictionary="dustAluminum" number="2" />
       </output>
     </recipe>
-    <recipe name="AluminumIngot" energyCost="2400">
+    <recipe name="AluminumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAluminum" />
       </input>
@@ -564,7 +573,7 @@
         <itemStack oreDictionary="dustAluminum" />
       </output>
     </recipe>
-    <recipe name="NaturalAluminumOre" energyCost="2400">
+    <recipe name="NaturalAluminumOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreNaturalAluminum" />
       </input>
@@ -572,7 +581,7 @@
         <itemStack oreDictionary="dustNaturalAluminum" number="2" />
       </output>
     </recipe>
-    <recipe name="NaturalAluminumIngot" energyCost="2400">
+    <recipe name="NaturalAluminumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotNaturalAluminum" />
       </input>
@@ -582,8 +591,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Thermal Expansion">
-    <recipe name="Obsidian" energyCost="4000">
+  <recipeGroup name="Thermal Expansion" >
+    <recipe name="Obsidian" energyCost="4000" >
       <input>
         <itemStack modID="minecraft" itemName="obsidian" />
       </input>
@@ -593,8 +602,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Forestry">
-    <recipe name="Log" energyCost="2400">
+  <recipeGroup name="Forestry" >
+    <recipe name="Log" energyCost="2400" >
       <input>
         <itemStack oreDictionary="logWood" />
       </input>
@@ -605,7 +614,7 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Plank" energyCost="1200">
+    <recipe name="Plank" energyCost="1200" >
       <input>
         <itemStack oreDictionary="plankWood" />
       </input>
@@ -613,7 +622,7 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.9" />
       </output>
     </recipe>
-    <recipe name="Stairs" energyCost="1200">
+    <recipe name="Stairs" energyCost="1200" >
       <input>
         <itemStack oreDictionary="stairsWood" />
       </input>
@@ -621,7 +630,7 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.8" />
       </output>
     </recipe>
-    <recipe name="Stair" energyCost="1200">
+    <recipe name="Stair" energyCost="1200" >
       <input>
         <itemStack oreDictionary="stairWood" />
       </input>
@@ -629,7 +638,7 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.8" />
       </output>
     </recipe>
-    <recipe name="SlabWood" energyCost="1200">
+    <recipe name="SlabWood" energyCost="1200" >
       <input>
         <itemStack oreDictionary="slabWood" />
       </input>
@@ -637,7 +646,7 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.7" />
       </output>
     </recipe>
-    <recipe name="Stick" energyCost="800">
+    <recipe name="Stick" energyCost="800" >
       <input>
         <itemStack oreDictionary="stickWood" />
       </input>
@@ -647,8 +656,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Applied Energistics 2">
-    <recipe name="ChargedCertusQuartzOre" energyCost="2400">
+  <recipeGroup name="Applied Energistics 2" >
+    <recipe name="ChargedCertusQuartzOre" energyCost="2400" >
       <input>
         <itemStack modID="appliedenergistics2" itemName="tile.OreQuartzCharged" />
       </input>
@@ -657,7 +666,7 @@
         <itemStack oreDictionary="dustCertusQuartz" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="CertusQuartzOre" energyCost="2400">
+    <recipe name="CertusQuartzOre" energyCost="2400" >
       <input>
         <itemStack modID="appliedenergistics2" itemName="tile.OreQuartz" />
       </input>
@@ -666,7 +675,7 @@
         <itemStack oreDictionary="dustCertusQuartz" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="CertusQuartzCrystal" energyCost="800">
+    <recipe name="CertusQuartzCrystal" energyCost="800" >
       <input>
         <itemStack oreDictionary="crystalCertusQuartz" />
       </input>
@@ -674,7 +683,7 @@
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>
-   	<recipe name="ChargedCertusQuartzCrystal" energyCost="800">
+   	<recipe name="ChargedCertusQuartzCrystal" energyCost="800" >
       <input>
         <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1" />
       </input>
@@ -682,7 +691,7 @@
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>
-    <recipe name="FluixCrystal" energyCost="800">
+    <recipe name="FluixCrystal" energyCost="800" >
       <input>
         <itemStack oreDictionary="crystalFluix" />
       </input>
@@ -690,7 +699,7 @@
         <itemStack oreDictionary="dustFluix" />
       </output>
     </recipe>
-    <recipe name="NetherQuartz" energyCost="800">
+    <recipe name="NetherQuartz" energyCost="800" >
       <input>
         <itemStack modID="minecraft" itemName="quartz" />
       </input>
@@ -700,8 +709,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Railcraft">
-    <recipe name="Sulfur Ore" energyCost="2400">
+  <recipeGroup name="Railcraft" >
+    <recipe name="Sulfur Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreSulfur" />
       </input>
@@ -709,7 +718,7 @@
         <itemStack oreDictionary="dustSulfur" number="6" />
       </output>
     </recipe>
-    <recipe name="CrushedObsidian" energyCost="2400">
+    <recipe name="CrushedObsidian" energyCost="2400" >
       <input>
         <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" />
       </input>
@@ -720,8 +729,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Dense Ores">
-    <recipe name="Dense Iron Ore" energyCost="2400">
+  <recipeGroup name="Dense Ores" >
+    <recipe name="Dense Iron Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreIron" />
       </input>
@@ -729,7 +738,7 @@
         <itemStack oreDictionary="oreIron" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Gold Ore" energyCost="2400">
+    <recipe name="Dense Gold Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreGold" />
       </input>
@@ -737,7 +746,7 @@
         <itemStack oreDictionary="oreGold" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Copper Ore" energyCost="2400">
+    <recipe name="Dense Copper Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreCopper" />
       </input>
@@ -745,7 +754,7 @@
         <itemStack oreDictionary="oreCopper" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Lead Ore" energyCost="2400">
+    <recipe name="Dense Lead Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreLead" />
       </input>
@@ -753,7 +762,7 @@
         <itemStack oreDictionary="oreLead" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Silver Ore" energyCost="2400">
+    <recipe name="Dense Silver Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreSilver" />
       </input>
@@ -761,7 +770,7 @@
         <itemStack oreDictionary="oreSilver" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Tin Ore" energyCost="2400">
+    <recipe name="Dense Tin Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreTin" />
       </input>
@@ -769,7 +778,7 @@
         <itemStack oreDictionary="oreTin" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Nickel Ore" energyCost="2400">
+    <recipe name="Dense Nickel Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreNickel" />
       </input>
@@ -777,7 +786,7 @@
         <itemStack oreDictionary="oreNickel" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Platinum Ore" energyCost="2400">
+    <recipe name="Dense Platinum Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseorePlatinum" />
       </input>
@@ -785,7 +794,7 @@
         <itemStack oreDictionary="orePlatinum" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Mithril Ore" energyCost="2400">
+    <recipe name="Dense Mithril Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreMithril" />
       </input>
@@ -793,7 +802,7 @@
         <itemStack oreDictionary="oreMithril" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Cobalt Ore" energyCost="2400">
+    <recipe name="Dense Cobalt Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreCobalt" />
       </input>
@@ -801,7 +810,7 @@
         <itemStack oreDictionary="oreCobalt" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Ardite Ore" energyCost="2400">
+    <recipe name="Dense Ardite Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreArdite" />
       </input>
@@ -809,7 +818,7 @@
         <itemStack oreDictionary="oreArdite" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Coal Ore" energyCost="2400">
+    <recipe name="Dense Coal Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreCoal" />
       </input>
@@ -817,7 +826,7 @@
         <itemStack oreDictionary="oreCoal" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Diamond Ore" energyCost="2400">
+    <recipe name="Dense Diamond Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreDiamond" />
       </input>
@@ -825,7 +834,7 @@
         <itemStack oreDictionary="oreDiamond" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Lapis Ore" energyCost="2400">
+    <recipe name="Dense Lapis Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreLapis" />
       </input>
@@ -833,7 +842,7 @@
         <itemStack oreDictionary="oreLapis" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Emerald Ore" energyCost="2400">
+    <recipe name="Dense Emerald Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreEmerald" />
       </input>
@@ -841,7 +850,7 @@
         <itemStack oreDictionary="oreEmerald" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Redstone Ore" energyCost="2400">
+    <recipe name="Dense Redstone Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreRedstone" />
       </input>
@@ -849,7 +858,7 @@
         <itemStack oreDictionary="oreRedstone" number="4" />
       </output>
     </recipe>
-    <recipe name="Dense Quartz Ore" energyCost="2400">
+    <recipe name="Dense Quartz Ore" energyCost="2400" >
       <input>
         <itemStack oreDictionary="denseoreQuartz" />
       </input>
@@ -859,8 +868,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Biomes O' Plenty">
-    <recipe name="SmallBoneSegment" energyCost="2600">
+  <recipeGroup name="Biomes O' Plenty" >
+    <recipe name="SmallBoneSegment" energyCost="2600" >
       <input>
         <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="0" />
       </input>
@@ -868,7 +877,7 @@
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="8" />
       </output>
     </recipe>
-    <recipe name="MediumBoneSegment" energyCost="3200">
+    <recipe name="MediumBoneSegment" energyCost="3200" >
       <input>
         <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="1" />
       </input>
@@ -876,7 +885,7 @@
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="12" />
       </output>
     </recipe>
-    <recipe name="LargeBoneSegment" energyCost="4800">
+    <recipe name="LargeBoneSegment" energyCost="4800" >
       <input>
         <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="2" />
       </input>
@@ -884,7 +893,7 @@
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="24" />
       </output>
     </recipe>
-    <recipe name="RubyOre" energyCost="2400">
+    <recipe name="RubyOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreRuby" />
       </input>
@@ -894,7 +903,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="PeridotOre" energyCost="2400">
+    <recipe name="PeridotOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="orePeridot" />
       </input>
@@ -904,7 +913,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="TopazOre" energyCost="2400">
+    <recipe name="TopazOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreTopaz" />
       </input>
@@ -914,7 +923,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="TanzaniteOre" energyCost="2400">
+    <recipe name="TanzaniteOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreTanzanite" />
       </input>
@@ -924,7 +933,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="MalachiteOre" energyCost="2400">
+    <recipe name="MalachiteOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreMalachite" />
       </input>
@@ -934,7 +943,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="SapphireOre" energyCost="2400">
+    <recipe name="SapphireOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreSapphire" />
       </input>
@@ -944,7 +953,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="AmberOre" energyCost="2400">
+    <recipe name="AmberOre" energyCost="2400" >
       <input>
         <itemStack oreDictionary="oreAmber" />
       </input>
@@ -954,7 +963,7 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="AmethystOre" energyCost="2400">
+    <recipe name="AmethystOre" energyCost="2400" >
       <input>
         <itemStack modID="BiomesOPlenty" itemName="gemOre" />
       </input>
@@ -966,8 +975,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Nether Ores">
-    <recipe name="NetherIron" energyCost="3200">
+  <recipeGroup name="Nether Ores" >
+    <recipe name="NetherIron" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherIron" />
       </input>
@@ -976,7 +985,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherGold" energyCost="3200">
+    <recipe name="NetherGold" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherGold" />
       </input>
@@ -985,7 +994,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherDiamond" energyCost="3200">
+    <recipe name="NetherDiamond" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherDiamond" />
       </input>
@@ -994,7 +1003,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherCoal" energyCost="3200">
+    <recipe name="NetherCoal" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherCoal" />
       </input>
@@ -1003,7 +1012,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherLapis" energyCost="3200">
+    <recipe name="NetherLapis" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherLapis" />
       </input>
@@ -1012,7 +1021,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherRedstone" energyCost="3200">
+    <recipe name="NetherRedstone" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherRedstone" />
       </input>
@@ -1021,7 +1030,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherCopper" energyCost="3200">
+    <recipe name="NetherCopper" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherCopper" />
       </input>
@@ -1030,7 +1039,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherTin" energyCost="3200">
+    <recipe name="NetherTin" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherTin" />
       </input>
@@ -1039,7 +1048,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherEmerald" energyCost="3200">
+    <recipe name="NetherEmerald" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherEmerald" />
       </input>
@@ -1048,7 +1057,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherSilver" energyCost="3200">
+    <recipe name="NetherSilver" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherSilver" />
       </input>
@@ -1057,7 +1066,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherLead" energyCost="3200">
+    <recipe name="NetherLead" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherLead" />
       </input>
@@ -1066,7 +1075,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherUranium" energyCost="3200">
+    <recipe name="NetherUranium" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherUranium" />
       </input>
@@ -1075,7 +1084,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherRuby" energyCost="3200">
+    <recipe name="NetherRuby" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherRuby" />
       </input>
@@ -1084,7 +1093,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherPeridot" energyCost="3200">
+    <recipe name="NetherPeridot" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherPeridot" />
       </input>
@@ -1093,7 +1102,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherSapphire" energyCost="3200">
+    <recipe name="NetherSapphire" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherSapphire" />
       </input>
@@ -1102,7 +1111,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherPlatinum" energyCost="3200">
+    <recipe name="NetherPlatinum" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherPlatinum" />
       </input>
@@ -1111,7 +1120,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherNickel" energyCost="3200">
+    <recipe name="NetherNickel" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherNickel" />
       </input>
@@ -1120,7 +1129,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherSulfur" energyCost="3200">
+    <recipe name="NetherSulfur" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherSulfur" />
       </input>
@@ -1129,7 +1138,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherMithril" energyCost="3200">
+    <recipe name="NetherMithril" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherMithril" />
       </input>
@@ -1138,7 +1147,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherAmber" energyCost="3200">
+    <recipe name="NetherAmber" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherAmber" />
       </input>
@@ -1147,7 +1156,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
-    <recipe name="NetherSaltpeter" energyCost="3200">
+    <recipe name="NetherSaltpeter" energyCost="3200" >
       <input>
         <itemStack oreDictionary="oreNetherSaltpeter" />
       </input>
@@ -1158,9 +1167,9 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Metallurgy">
+  <recipeGroup name="Metallurgy" >
     <!-- Metals -->
-    <recipe name="ManganeseOre" energyCost="3600">
+    <recipe name="ManganeseOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreManganese" />
       </input>
@@ -1168,7 +1177,7 @@
         <itemStack oreDictionary="dustManganese" number="2" />
       </output>
     </recipe>
-    <recipe name="ZincOre" energyCost="3600">
+    <recipe name="ZincOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreZinc" />
       </input>
@@ -1176,7 +1185,7 @@
         <itemStack oreDictionary="dustZinc" number="2" />
       </output>
     </recipe>
-    <recipe name="SilverOre" energyCost="3600">
+    <recipe name="SilverOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreSilver" />
       </input>
@@ -1184,7 +1193,7 @@
         <itemStack oreDictionary="dustSilver" number="2" />
       </output>
     </recipe>
-    <recipe name="PlatinumOre" energyCost="3600">
+    <recipe name="PlatinumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="orePlatinum" />
       </input>
@@ -1192,7 +1201,7 @@
         <itemStack oreDictionary="dustPlatinum" number="2" />
       </output>
     </recipe>
-    <recipe name="IgnatiusOre" energyCost="3600">
+    <recipe name="IgnatiusOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreIgnatius" />
       </input>
@@ -1200,7 +1209,7 @@
         <itemStack oreDictionary="dustIgnatius" number="2" />
       </output>
     </recipe>
-    <recipe name="ShadowIronOre" energyCost="3600">
+    <recipe name="ShadowIronOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreShadowIron" />
       </input>
@@ -1208,7 +1217,7 @@
         <itemStack oreDictionary="dustShadowIron" number="2" />
       </output>
     </recipe>
-    <recipe name="LemuriteOre" energyCost="3600">
+    <recipe name="LemuriteOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreLemurite" />
       </input>
@@ -1216,7 +1225,7 @@
         <itemStack oreDictionary="dustLemurite" number="2" />
       </output>
     </recipe>
-    <recipe name="MidasiumOre" energyCost="3600">
+    <recipe name="MidasiumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreMidasium" />
       </input>
@@ -1224,7 +1233,7 @@
         <itemStack oreDictionary="dustMidasium" number="2" />
       </output>
     </recipe>
-    <recipe name="VyroxeresOre" energyCost="3600">
+    <recipe name="VyroxeresOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreVyroxeres" />
       </input>
@@ -1232,7 +1241,7 @@
         <itemStack oreDictionary="dustVyroxeres" number="2" />
       </output>
     </recipe>
-    <recipe name="CeruclaseOre" energyCost="3600">
+    <recipe name="CeruclaseOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreCeruclase" />
       </input>
@@ -1240,7 +1249,7 @@
         <itemStack oreDictionary="dustCeruclase" number="2" />
       </output>
     </recipe>
-    <recipe name="KalendriteOre" energyCost="3600">
+    <recipe name="KalendriteOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreKalendrite" />
       </input>
@@ -1248,7 +1257,7 @@
         <itemStack oreDictionary="dustKalendrite" number="2" />
       </output>
     </recipe>
-    <recipe name="VulcaniteOre" energyCost="3600">
+    <recipe name="VulcaniteOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreVulcanite" />
       </input>
@@ -1256,7 +1265,7 @@
         <itemStack oreDictionary="dustVulcanite" number="2" />
       </output>
     </recipe>
-    <recipe name="SanguiniteOre" energyCost="3600">
+    <recipe name="SanguiniteOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreSanguinite" />
       </input>
@@ -1264,7 +1273,7 @@
         <itemStack oreDictionary="dustSanguinite" number="2" />
       </output>
     </recipe>
-    <recipe name="PrometheumOre" energyCost="3600">
+    <recipe name="PrometheumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="orePrometheum" />
       </input>
@@ -1272,7 +1281,7 @@
         <itemStack oreDictionary="dustPrometheum" number="2" />
       </output>
     </recipe>
-    <recipe name="DeepIronOre" energyCost="3600">
+    <recipe name="DeepIronOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreDeepIron" />
       </input>
@@ -1280,7 +1289,7 @@
         <itemStack oreDictionary="dustDeepIron" number="2" />
       </output>
     </recipe>
-    <recipe name="InfuscoliumOre" energyCost="3600">
+    <recipe name="InfuscoliumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreInfuscolium" />
       </input>
@@ -1288,7 +1297,7 @@
         <itemStack oreDictionary="dustInfuscolium" number="2" />
       </output>
     </recipe>
-    <recipe name="OureclaseOre" energyCost="3600">
+    <recipe name="OureclaseOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreOureclase" />
       </input>
@@ -1296,7 +1305,7 @@
         <itemStack oreDictionary="dustOureclase" number="2" />
       </output>
     </recipe>
-    <recipe name="AstralSilverOre" energyCost="3600">
+    <recipe name="AstralSilverOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreAstralSilver" />
       </input>
@@ -1304,7 +1313,7 @@
         <itemStack oreDictionary="dustAstralSilver" number="2" />
       </output>
     </recipe>
-    <recipe name="CarmotOre" energyCost="3600">
+    <recipe name="CarmotOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreCarmot" />
       </input>
@@ -1312,7 +1321,7 @@
         <itemStack oreDictionary="dustCarmot" number="2" />
       </output>
     </recipe>
-    <recipe name="MithrilOre" energyCost="3600">
+    <recipe name="MithrilOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreMithril" />
       </input>
@@ -1320,7 +1329,7 @@
         <itemStack oreDictionary="dustMithril" number="2" />
       </output>
     </recipe>
-    <recipe name="RubraciumOre" energyCost="3600">
+    <recipe name="RubraciumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreRubracium" />
       </input>
@@ -1328,7 +1337,7 @@
         <itemStack oreDictionary="dustRubracium" number="2" />
       </output>
     </recipe>
-    <recipe name="OrichalcumOre" energyCost="3600">
+    <recipe name="OrichalcumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreOrichalcum" />
       </input>
@@ -1336,7 +1345,7 @@
         <itemStack oreDictionary="dustOrichalcum" number="2" />
       </output>
     </recipe>
-    <recipe name="AdamantineOre" energyCost="3600">
+    <recipe name="AdamantineOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreAdamantine" />
       </input>
@@ -1344,7 +1353,7 @@
         <itemStack oreDictionary="dustAdamantine" number="2" />
       </output>
     </recipe>
-    <recipe name="AtlarusOre" energyCost="3600">
+    <recipe name="AtlarusOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreAtlarus" />
       </input>
@@ -1353,7 +1362,7 @@
       </output>
     </recipe>
     <!-- Alloys and Ingots -->
-    <recipe name="ManganeseIngot" energyCost="2400">
+    <recipe name="ManganeseIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotManganese" />
       </input>
@@ -1361,7 +1370,7 @@
         <itemStack oreDictionary="dustManganese" number="1" />
       </output>
     </recipe>
-    <recipe name="ZincIngot" energyCost="2400">
+    <recipe name="ZincIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotZinc" />
       </input>
@@ -1369,7 +1378,7 @@
         <itemStack oreDictionary="dustZinc" number="1" />
       </output>
     </recipe>
-    <recipe name="SilverIngot" energyCost="2400">
+    <recipe name="SilverIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotSilver" />
       </input>
@@ -1377,7 +1386,7 @@
         <itemStack oreDictionary="dustSilver" number="1" />
       </output>
     </recipe>
-    <recipe name="PlatinumIngot" energyCost="2400">
+    <recipe name="PlatinumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotPlatinum" />
       </input>
@@ -1385,7 +1394,7 @@
         <itemStack oreDictionary="dustPlatinum" number="1" />
       </output>
     </recipe>
-    <recipe name="IgnatiusIngot" energyCost="2400">
+    <recipe name="IgnatiusIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotIgnatius" />
       </input>
@@ -1393,7 +1402,7 @@
         <itemStack oreDictionary="dustIgnatius" number="1" />
       </output>
     </recipe>
-    <recipe name="ShadowIronIngot" energyCost="2400">
+    <recipe name="ShadowIronIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotShadowIron" />
       </input>
@@ -1401,7 +1410,7 @@
         <itemStack oreDictionary="dustShadowIron" number="1" />
       </output>
     </recipe>
-    <recipe name="LemuriteIngot" energyCost="2400">
+    <recipe name="LemuriteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotLemurite" />
       </input>
@@ -1409,7 +1418,7 @@
         <itemStack oreDictionary="dustLemurite" number="1" />
       </output>
     </recipe>
-    <recipe name="MidasiumIngot" energyCost="2400">
+    <recipe name="MidasiumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotMidasium" />
       </input>
@@ -1417,7 +1426,7 @@
         <itemStack oreDictionary="dustMidasium" number="1" />
       </output>
     </recipe>
-    <recipe name="VyroxeresIngot" energyCost="2400">
+    <recipe name="VyroxeresIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotVyroxeres" />
       </input>
@@ -1425,7 +1434,7 @@
         <itemStack oreDictionary="dustVyroxeres" number="1" />
       </output>
     </recipe>
-    <recipe name="CeruclaseIngot" energyCost="2400">
+    <recipe name="CeruclaseIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotCeruclase" />
       </input>
@@ -1433,7 +1442,7 @@
         <itemStack oreDictionary="dustCeruclase" number="1" />
       </output>
     </recipe>
-    <recipe name="KalendriteIngot" energyCost="2400">
+    <recipe name="KalendriteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotKalendrite" />
       </input>
@@ -1441,7 +1450,7 @@
         <itemStack oreDictionary="dustKalendrite" number="1" />
       </output>
     </recipe>
-    <recipe name="VulcaniteIngot" energyCost="2400">
+    <recipe name="VulcaniteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotVulcanite" />
       </input>
@@ -1449,7 +1458,7 @@
         <itemStack oreDictionary="dustVulcanite" number="1" />
       </output>
     </recipe>
-    <recipe name="SanguiniteIngot" energyCost="2400">
+    <recipe name="SanguiniteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotSanguinite" />
       </input>
@@ -1457,7 +1466,7 @@
         <itemStack oreDictionary="dustSanguinite" number="1" />
       </output>
     </recipe>
-    <recipe name="PrometheumIngot" energyCost="2400">
+    <recipe name="PrometheumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotPrometheum" />
       </input>
@@ -1465,7 +1474,7 @@
         <itemStack oreDictionary="dustPrometheum" number="1" />
       </output>
     </recipe>
-    <recipe name="DeepIronIngot" energyCost="2400">
+    <recipe name="DeepIronIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotDeepIron" />
       </input>
@@ -1473,7 +1482,7 @@
         <itemStack oreDictionary="dustDeepIron" number="1" />
       </output>
     </recipe>
-    <recipe name="InfuscoliumIngot" energyCost="2400">
+    <recipe name="InfuscoliumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotInfuscolium" />
       </input>
@@ -1481,7 +1490,7 @@
         <itemStack oreDictionary="dustInfuscolium" number="1" />
       </output>
     </recipe>
-    <recipe name="OureclaseIngot" energyCost="2400">
+    <recipe name="OureclaseIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotOureclase" />
       </input>
@@ -1489,7 +1498,7 @@
         <itemStack oreDictionary="dustOureclase" number="1" />
       </output>
     </recipe>
-    <recipe name="AstralSilverIngot" energyCost="2400">
+    <recipe name="AstralSilverIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAstral Silver" />
       </input>
@@ -1497,7 +1506,7 @@
         <itemStack oreDictionary="dustAstral Silver" number="1" />
       </output>
     </recipe>
-    <recipe name="CarmotIngot" energyCost="2400">
+    <recipe name="CarmotIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotCarmot" />
       </input>
@@ -1505,7 +1514,7 @@
         <itemStack oreDictionary="dustCarmot" number="1" />
       </output>
     </recipe>
-    <recipe name="MithrilIngot" energyCost="2400">
+    <recipe name="MithrilIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotMithril" />
       </input>
@@ -1513,7 +1522,7 @@
         <itemStack oreDictionary="dustMithril" number="1" />
       </output>
     </recipe>
-    <recipe name="RubraciumIngot" energyCost="2400">
+    <recipe name="RubraciumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotRubracium" />
       </input>
@@ -1521,7 +1530,7 @@
         <itemStack oreDictionary="dustRubracium" number="1" />
       </output>
     </recipe>
-    <recipe name="OrichalcumIngot" energyCost="2400">
+    <recipe name="OrichalcumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotOrichalcum" />
       </input>
@@ -1529,7 +1538,7 @@
         <itemStack oreDictionary="dustOrichalcum" number="1" />
       </output>
     </recipe>
-    <recipe name="AdamantineIngot" energyCost="2400">
+    <recipe name="AdamantineIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAdamantine" />
       </input>
@@ -1537,7 +1546,7 @@
         <itemStack oreDictionary="dustAdamantine" number="1" />
       </output>
     </recipe>
-    <recipe name="AtlarusIngot" energyCost="2400">
+    <recipe name="AtlarusIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAtlarus" />
       </input>
@@ -1545,7 +1554,7 @@
         <itemStack oreDictionary="dustAtlarus" number="1" />
       </output>
     </recipe>
-    <recipe name="BronzeIngot" energyCost="2400">
+    <recipe name="BronzeIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotBronze" />
       </input>
@@ -1553,7 +1562,7 @@
         <itemStack oreDictionary="dustBronze" number="1" />
       </output>
     </recipe>
-    <recipe name="HepatizonIngot" energyCost="2400">
+    <recipe name="HepatizonIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotHepatizon" />
       </input>
@@ -1561,7 +1570,7 @@
         <itemStack oreDictionary="dustHepatizon" number="1" />
       </output>
     </recipe>
-    <recipe name="DamascusSteelIngot" energyCost="2400">
+    <recipe name="DamascusSteelIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotDamascusSteel" />
       </input>
@@ -1569,7 +1578,7 @@
         <itemStack oreDictionary="dustDamascusSteel" number="1" />
       </output>
     </recipe>
-    <recipe name="AngmallenIngot" energyCost="2400">
+    <recipe name="AngmallenIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAngmallen" />
       </input>
@@ -1577,7 +1586,7 @@
         <itemStack oreDictionary="dustAngmallen" number="1" />
       </output>
     </recipe>
-    <recipe name="SteelIngot" energyCost="2400">
+    <recipe name="SteelIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotSteel" />
       </input>
@@ -1585,7 +1594,7 @@
         <itemStack oreDictionary="dustSteel" number="1" />
       </output>
     </recipe>
-    <recipe name="BrassIngot" energyCost="2400">
+    <recipe name="BrassIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotBrass" />
       </input>
@@ -1593,7 +1602,7 @@
         <itemStack oreDictionary="dustBrass" number="1" />
       </output>
     </recipe>
-    <recipe name="ElectrumIngot" energyCost="2400">
+    <recipe name="ElectrumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotElectrum" />
       </input>
@@ -1601,7 +1610,7 @@
         <itemStack oreDictionary="dustElectrum" number="1" />
       </output>
     </recipe>
-    <recipe name="ShadowSteelIngot" energyCost="2400">
+    <recipe name="ShadowSteelIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotShadowSteel" />
       </input>
@@ -1609,7 +1618,7 @@
         <itemStack oreDictionary="dustShadowSteel" number="1" />
       </output>
     </recipe>
-    <recipe name="InolashiteIngot" energyCost="2400">
+    <recipe name="InolashiteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotInolashite" />
       </input>
@@ -1617,7 +1626,7 @@
         <itemStack oreDictionary="dustInolashite" number="1" />
       </output>
     </recipe>
-    <recipe name="AmordrineIngot" energyCost="2400">
+    <recipe name="AmordrineIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAmordrine" />
       </input>
@@ -1625,7 +1634,7 @@
         <itemStack oreDictionary="dustAmordrine" number="1" />
       </output>
     </recipe>
-    <recipe name="BlackSteelIngot" energyCost="2400">
+    <recipe name="BlackSteelIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotBlackSteel" />
       </input>
@@ -1633,7 +1642,7 @@
         <itemStack oreDictionary="dustBlackSteel" number="1" />
       </output>
     </recipe>
-    <recipe name="QuicksilverIngot" energyCost="2400">
+    <recipe name="QuicksilverIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotQuicksilver" />
       </input>
@@ -1641,7 +1650,7 @@
         <itemStack oreDictionary="dustQuicksilver" number="1" />
       </output>
     </recipe>
-    <recipe name="HaderothIngot" energyCost="2400">
+    <recipe name="HaderothIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotHaderoth" />
       </input>
@@ -1649,7 +1658,7 @@
         <itemStack oreDictionary="dustHaderoth" number="1" />
       </output>
     </recipe>
-    <recipe name="CelenegilIngot" energyCost="2400">
+    <recipe name="CelenegilIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotCelenegil" />
       </input>
@@ -1657,7 +1666,7 @@
         <itemStack oreDictionary="dustCelenegil" number="1" />
       </output>
     </recipe>
-    <recipe name="TartariteIngot" energyCost="2400">
+    <recipe name="TartariteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotTartarite" />
       </input>
@@ -1666,7 +1675,7 @@
       </output>
     </recipe>
     <!-- Blocks -->
-    <recipe name="ManganeseBlock" energyCost="3600">
+    <recipe name="ManganeseBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockManganese" />
       </input>
@@ -1674,7 +1683,7 @@
         <itemStack oreDictionary="dustManganese" number="9" />
       </output>
     </recipe>
-    <recipe name="ZincBlock" energyCost="3600">
+    <recipe name="ZincBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockZinc" />
       </input>
@@ -1682,7 +1691,7 @@
         <itemStack oreDictionary="dustZinc" number="9" />
       </output>
     </recipe>
-    <recipe name="SilverBlock" energyCost="3600">
+    <recipe name="SilverBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockSilver" />
       </input>
@@ -1690,7 +1699,7 @@
         <itemStack oreDictionary="dustSilver" number="9" />
       </output>
     </recipe>
-    <recipe name="PlatinumBlock" energyCost="3600">
+    <recipe name="PlatinumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockPlatinum" />
       </input>
@@ -1698,7 +1707,7 @@
         <itemStack oreDictionary="dustPlatinum" number="9" />
       </output>
     </recipe>
-    <recipe name="IgnatiusBlock" energyCost="3600">
+    <recipe name="IgnatiusBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockIgnatius" />
       </input>
@@ -1706,7 +1715,7 @@
         <itemStack oreDictionary="dustIgnatius" number="9" />
       </output>
     </recipe>
-    <recipe name="ShadowIronBlock" energyCost="3600">
+    <recipe name="ShadowIronBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockShadowIron" />
       </input>
@@ -1714,7 +1723,7 @@
         <itemStack oreDictionary="dustShadowIron" number="9" />
       </output>
     </recipe>
-    <recipe name="LemuriteBlock" energyCost="3600">
+    <recipe name="LemuriteBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockLemurite" />
       </input>
@@ -1722,7 +1731,7 @@
         <itemStack oreDictionary="dustLemurite" number="9" />
       </output>
     </recipe>
-    <recipe name="MidasiumBlock" energyCost="3600">
+    <recipe name="MidasiumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockMidasium" />
       </input>
@@ -1730,7 +1739,7 @@
         <itemStack oreDictionary="dustMidasium" number="9" />
       </output>
     </recipe>
-    <recipe name="VyroxeresBlock" energyCost="3600">
+    <recipe name="VyroxeresBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockVyroxeres" />
       </input>
@@ -1738,7 +1747,7 @@
         <itemStack oreDictionary="dustVyroxeres" number="9" />
       </output>
     </recipe>
-    <recipe name="CeruclaseBlock" energyCost="3600">
+    <recipe name="CeruclaseBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockCeruclase" />
       </input>
@@ -1746,7 +1755,7 @@
         <itemStack oreDictionary="dustCeruclase" number="9" />
       </output>
     </recipe>
-    <recipe name="KalendriteBlock" energyCost="3600">
+    <recipe name="KalendriteBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockKalendrite" />
       </input>
@@ -1754,7 +1763,7 @@
         <itemStack oreDictionary="dustKalendrite" number="9" />
       </output>
     </recipe>
-    <recipe name="VulcaniteBlock" energyCost="3600">
+    <recipe name="VulcaniteBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockVulcanite" />
       </input>
@@ -1762,7 +1771,7 @@
         <itemStack oreDictionary="dustVulcanite" number="9" />
       </output>
     </recipe>
-    <recipe name="SanguiniteBlock" energyCost="3600">
+    <recipe name="SanguiniteBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockSanguinite" />
       </input>
@@ -1770,7 +1779,7 @@
         <itemStack oreDictionary="dustSanguinite" number="9" />
       </output>
     </recipe>
-    <recipe name="PrometheumBlock" energyCost="3600">
+    <recipe name="PrometheumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockPrometheum" />
       </input>
@@ -1778,7 +1787,7 @@
         <itemStack oreDictionary="dustPrometheum" number="9" />
       </output>
     </recipe>
-    <recipe name="DeepIronBlock" energyCost="3600">
+    <recipe name="DeepIronBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockDeepIron" />
       </input>
@@ -1786,7 +1795,7 @@
         <itemStack oreDictionary="dustDeepIron" number="9" />
       </output>
     </recipe>
-    <recipe name="InfuscoliumBlock" energyCost="3600">
+    <recipe name="InfuscoliumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockInfuscolium" />
       </input>
@@ -1794,7 +1803,7 @@
         <itemStack oreDictionary="dustInfuscolium" number="9" />
       </output>
     </recipe>
-    <recipe name="OureclaseBlock" energyCost="3600">
+    <recipe name="OureclaseBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockOureclase" />
       </input>
@@ -1802,7 +1811,7 @@
         <itemStack oreDictionary="dustOureclase" number="9" />
       </output>
     </recipe>
-    <recipe name="AstralSilverBlock" energyCost="3600">
+    <recipe name="AstralSilverBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockAstralSilver" />
       </input>
@@ -1810,7 +1819,7 @@
         <itemStack oreDictionary="dustAstralSilver" number="9" />
       </output>
     </recipe>
-    <recipe name="CarmotBlock" energyCost="3600">
+    <recipe name="CarmotBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockCarmot" />
       </input>
@@ -1818,7 +1827,7 @@
         <itemStack oreDictionary="dustCarmot" number="9" />
       </output>
     </recipe>
-    <recipe name="MithrilBlock" energyCost="3600">
+    <recipe name="MithrilBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockMithril" />
       </input>
@@ -1826,7 +1835,7 @@
         <itemStack oreDictionary="dustMithril" number="9" />
       </output>
     </recipe>
-    <recipe name="RubraciumBlock" energyCost="3600">
+    <recipe name="RubraciumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockRubracium" />
       </input>
@@ -1834,7 +1843,7 @@
         <itemStack oreDictionary="dustRubracium" number="9" />
       </output>
     </recipe>
-    <recipe name="OrichalcumBlock" energyCost="3600">
+    <recipe name="OrichalcumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockOrichalcum" />
       </input>
@@ -1842,7 +1851,7 @@
         <itemStack oreDictionary="dustOrichalcum" number="9" />
       </output>
     </recipe>
-    <recipe name="AdamantineBlock" energyCost="3600">
+    <recipe name="AdamantineBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockAdamantine" />
       </input>
@@ -1850,7 +1859,7 @@
         <itemStack oreDictionary="dustAdamantine" number="9" />
       </output>
     </recipe>
-    <recipe name="AtlarusBlock" energyCost="3600">
+    <recipe name="AtlarusBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockAtlarus" />
       </input>
@@ -1858,7 +1867,7 @@
         <itemStack oreDictionary="dustAtlarus" number="9" />
       </output>
     </recipe>
-    <recipe name="BronzeBlock" energyCost="3600">
+    <recipe name="BronzeBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockBronze" />
       </input>
@@ -1866,7 +1875,7 @@
         <itemStack oreDictionary="dustBronze" number="9" />
       </output>
     </recipe>
-    <recipe name="HepatizonBlock" energyCost="3600">
+    <recipe name="HepatizonBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockHepatizon" />
       </input>
@@ -1874,7 +1883,7 @@
         <itemStack oreDictionary="dustHepatizon" number="9" />
       </output>
     </recipe>
-    <recipe name="DamascusSteelBlock" energyCost="3600">
+    <recipe name="DamascusSteelBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockDamascusSteel" />
       </input>
@@ -1882,7 +1891,7 @@
         <itemStack oreDictionary="dustDamascusSteel" number="9" />
       </output>
     </recipe>
-    <recipe name="AngmallenBlock" energyCost="3600">
+    <recipe name="AngmallenBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockAngmallen" />
       </input>
@@ -1890,7 +1899,7 @@
         <itemStack oreDictionary="dustAngmallen" number="9" />
       </output>
     </recipe>
-    <recipe name="SteelBlock" energyCost="3600">
+    <recipe name="SteelBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockSteel" />
       </input>
@@ -1898,7 +1907,7 @@
         <itemStack oreDictionary="dustSteel" number="9" />
       </output>
     </recipe>
-    <recipe name="BrassBlock" energyCost="3600">
+    <recipe name="BrassBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockBrass" />
       </input>
@@ -1906,7 +1915,7 @@
         <itemStack oreDictionary="dustBrass" number="9" />
       </output>
     </recipe>
-    <recipe name="ElectrumBlock" energyCost="3600">
+    <recipe name="ElectrumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockElectrum" />
       </input>
@@ -1914,7 +1923,7 @@
         <itemStack oreDictionary="dustElectrum" number="9" />
       </output>
     </recipe>
-    <recipe name="ShadowSteelBlock" energyCost="3600">
+    <recipe name="ShadowSteelBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockShadowSteel" />
       </input>
@@ -1922,7 +1931,7 @@
         <itemStack oreDictionary="dustShadowSteel" number="9" />
       </output>
     </recipe>
-    <recipe name="InolashiteBlock" energyCost="3600">
+    <recipe name="InolashiteBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockInolashite" />
       </input>
@@ -1930,7 +1939,7 @@
         <itemStack oreDictionary="dustInolashite" number="9" />
       </output>
     </recipe>
-    <recipe name="AmordrineBlock" energyCost="3600">
+    <recipe name="AmordrineBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockAmordrine" />
       </input>
@@ -1938,7 +1947,7 @@
         <itemStack oreDictionary="dustAmordrine" number="9" />
       </output>
     </recipe>
-    <recipe name="BlackSteelBlock" energyCost="3600">
+    <recipe name="BlackSteelBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockBlackSteel" />
       </input>
@@ -1946,7 +1955,7 @@
         <itemStack oreDictionary="dustBlackSteel" number="9" />
       </output>
     </recipe>
-    <recipe name="QuicksilverBlock" energyCost="3600">
+    <recipe name="QuicksilverBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockQuicksilver" />
       </input>
@@ -1954,7 +1963,7 @@
         <itemStack oreDictionary="dustQuicksilver" number="9" />
       </output>
     </recipe>
-    <recipe name="HaderothBlock" energyCost="3600">
+    <recipe name="HaderothBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockHaderoth" />
       </input>
@@ -1962,7 +1971,7 @@
         <itemStack oreDictionary="dustHaderoth" number="9" />
       </output>
     </recipe>
-    <recipe name="CelenegilBlock" energyCost="3600">
+    <recipe name="CelenegilBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockCelenegil" />
       </input>
@@ -1970,7 +1979,7 @@
         <itemStack oreDictionary="dustCelenegil" number="9" />
       </output>
     </recipe>
-    <recipe name="TartariteBlock" energyCost="3600">
+    <recipe name="TartariteBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockTartarite" />
       </input>
@@ -1980,9 +1989,9 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Mekanism">
+  <recipeGroup name="Mekanism" >
     <!-- Metals -->
-    <recipe name="OsmiumOre" energyCost="3600">
+    <recipe name="OsmiumOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreOsmium" />
       </input>
@@ -1992,7 +2001,7 @@
       </output>
     </recipe>
     <!-- Alloys and Ingots -->
-    <recipe name="OsmiumIngot" energyCost="2400">
+    <recipe name="OsmiumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotOsmium" />
       </input>
@@ -2001,7 +2010,7 @@
       </output>
     </recipe>
     <!-- Blocks -->
-    <recipe name="OsmiumBlock" energyCost="3600">
+    <recipe name="OsmiumBlock" energyCost="3600" >
       <input>
         <itemStack oreDictionary="blockOsmium" />
       </input>
@@ -2011,9 +2020,9 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="BigReactors">
+  <recipeGroup name="BigReactors" >
     <!-- Metals -->
-    <recipe name="YelloriteOre" energyCost="3600">
+    <recipe name="YelloriteOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreYellorite" />
       </input>
@@ -2023,7 +2032,7 @@
       </output>
     </recipe>
     <!-- Alloys and Ingots -->
-    <recipe name="YelloriteIngot" energyCost="2400">
+    <recipe name="YelloriteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotYellorium" />
       </input>
@@ -2031,7 +2040,7 @@
         <itemStack oreDictionary="dustUranium" number="1" />
       </output>
     </recipe>
-    <recipe name="CyaniteIngot" energyCost="2400">
+    <recipe name="CyaniteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotCyanite" />
       </input>
@@ -2039,7 +2048,7 @@
         <itemStack oreDictionary="dustCyanite" number="1" />
       </output>
     </recipe>
-    <recipe name="BlutoniumIngot" energyCost="2400">
+    <recipe name="BlutoniumIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotBlutonium" />
       </input>
@@ -2047,7 +2056,7 @@
         <itemStack oreDictionary="dustBlutonium" number="1" />
       </output>
     </recipe>
-    <recipe name="GraphiteIngot" energyCost="2400">
+    <recipe name="GraphiteIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotGraphite" />
       </input>
@@ -2057,9 +2066,9 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="TConstruct">
+  <recipeGroup name="TConstruct" >
     <!-- Metals -->
-    <recipe name="ArditeOre" energyCost="3600">
+    <recipe name="ArditeOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreArdite" />
       </input>
@@ -2067,7 +2076,7 @@
         <itemStack oreDictionary="dustArdite" number="2" />
       </output>
     </recipe>
-    <recipe name="CobaltOre" energyCost="3600">
+    <recipe name="CobaltOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreCobalt" />
       </input>
@@ -2076,7 +2085,7 @@
       </output>
     </recipe>
     <!-- Alloys and Ingots -->
-    <recipe name="ArditeIngot" energyCost="2400">
+    <recipe name="ArditeIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotArdite" />
       </input>
@@ -2084,7 +2093,7 @@
         <itemStack oreDictionary="dustArdite" number="1" />
       </output>
     </recipe>
-    <recipe name="CobaltIngot" energyCost="2400">
+    <recipe name="CobaltIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotCobalt" />
       </input>
@@ -2092,7 +2101,7 @@
         <itemStack oreDictionary="dustCobalt" number="1" />
       </output>
     </recipe>
-    <recipe name="ManyullynIngot" energyCost="2400">
+    <recipe name="ManyullynIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotManyullyn" />
       </input>
@@ -2100,7 +2109,7 @@
         <itemStack oreDictionary="dustManyullyn" number="1" />
       </output>
     </recipe>
-    <recipe name="AluminumBrassIngot" energyCost="2400">
+    <recipe name="AluminumBrassIngot" energyCost="2400" >
       <input>
         <itemStack oreDictionary="ingotAluminumBrass" />
       </input>
@@ -2110,8 +2119,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="UndergroundBiomesConstruct">
-    <recipe name="Red Granite" energyCost="2400">
+  <recipeGroup name="UndergroundBiomesConstruct" >
+    <recipe name="Red Granite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="0" />
       </input>
@@ -2119,7 +2128,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="0" />
       </output>
     </recipe>
-    <recipe name="Black Granite" energyCost="2400">
+    <recipe name="Black Granite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="1" />
       </input>
@@ -2127,7 +2136,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="1" />
       </output>
     </recipe>
-    <recipe name="Rhyolite" energyCost="2400">
+    <recipe name="Rhyolite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="2" />
       </input>
@@ -2135,7 +2144,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="2" />
       </output>
     </recipe>
-    <recipe name="Andesite" energyCost="2400">
+    <recipe name="Andesite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="3" />
       </input>
@@ -2143,7 +2152,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="3" />
       </output>
     </recipe>
-    <recipe name="Gabbro" energyCost="2400">
+    <recipe name="Gabbro" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="4" />
       </input>
@@ -2151,7 +2160,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="4" />
       </output>
     </recipe>
-    <recipe name="Basalt" energyCost="2400">
+    <recipe name="Basalt" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="5" />
       </input>
@@ -2159,7 +2168,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="5" />
       </output>
     </recipe>
-    <recipe name="Komatiite" energyCost="2400">
+    <recipe name="Komatiite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="6" />
       </input>
@@ -2167,7 +2176,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="6" />
       </output>
     </recipe>
-    <recipe name="Dacite" energyCost="2400">
+    <recipe name="Dacite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="7" />
       </input>
@@ -2175,7 +2184,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="7" />
       </output>
     </recipe>
-    <recipe name="Red Granite Brick" energyCost="2400">
+    <recipe name="Red Granite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="0" />
       </input>
@@ -2183,7 +2192,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="0" number="4" />
       </output>
     </recipe>
-    <recipe name="Black Granite Brick" energyCost="2400">
+    <recipe name="Black Granite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="1" />
       </input>
@@ -2191,7 +2200,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="1" number="4" />
       </output>
     </recipe>
-    <recipe name="Rhyolite Brick" energyCost="2400">
+    <recipe name="Rhyolite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="2" />
       </input>
@@ -2199,7 +2208,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="2" number="4" />
       </output>
     </recipe>
-    <recipe name="Andesite Brick" energyCost="2400">
+    <recipe name="Andesite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="3" />
       </input>
@@ -2207,7 +2216,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="3" number="4" />
       </output>
     </recipe>
-    <recipe name="Gabbro Brick" energyCost="2400">
+    <recipe name="Gabbro Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="4" />
       </input>
@@ -2215,7 +2224,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="4" number="4" />
       </output>
     </recipe>
-    <recipe name="Basalt Brick" energyCost="2400">
+    <recipe name="Basalt Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="5" />
       </input>
@@ -2223,7 +2232,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="5" number="4" />
       </output>
     </recipe>
-    <recipe name="Komatiite Brick" energyCost="2400">
+    <recipe name="Komatiite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="6" />
       </input>
@@ -2231,7 +2240,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="6" number="4" />
       </output>
     </recipe>
-    <recipe name="Dacite Brick" energyCost="2400">
+    <recipe name="Dacite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="7" />
       </input>
@@ -2239,7 +2248,7 @@
         <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="7" number="4" />
       </output>
     </recipe>
-    <recipe name="Gneiss" energyCost="2400">
+    <recipe name="Gneiss" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="0" />
       </input>
@@ -2247,7 +2256,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="0" />
       </output>
     </recipe>
-    <recipe name="Eclogite" energyCost="2400">
+    <recipe name="Eclogite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="1" />
       </input>
@@ -2255,7 +2264,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="1" />
       </output>
     </recipe>
-    <recipe name="Marble" energyCost="2400">
+    <recipe name="Marble" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="2" />
       </input>
@@ -2263,7 +2272,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="2" />
       </output>
     </recipe>
-    <recipe name="Quartzite" energyCost="2400">
+    <recipe name="Quartzite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="3" />
       </input>
@@ -2271,7 +2280,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="3" />
       </output>
     </recipe>
-    <recipe name="Blue Schist" energyCost="2400">
+    <recipe name="Blue Schist" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="4" />
       </input>
@@ -2279,7 +2288,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="4" />
       </output>
     </recipe>
-    <recipe name="Green Schist" energyCost="2400">
+    <recipe name="Green Schist" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="5" />
       </input>
@@ -2287,7 +2296,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="5" />
       </output>
     </recipe>
-    <recipe name="Soapstone" energyCost="2400">
+    <recipe name="Soapstone" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="6" />
       </input>
@@ -2295,7 +2304,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="6" />
       </output>
     </recipe>
-    <recipe name="Migmatite" energyCost="2400">
+    <recipe name="Migmatite" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="7" />
       </input>
@@ -2303,7 +2312,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="7" />
       </output>
     </recipe>
-    <recipe name="Gneiss Brick" energyCost="2400">
+    <recipe name="Gneiss Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="0" />
       </input>
@@ -2311,7 +2320,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="0" number="4" />
       </output>
     </recipe>
-    <recipe name="Eclogite Brick" energyCost="2400">
+    <recipe name="Eclogite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="1" />
       </input>
@@ -2319,7 +2328,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="1" number="4" />
       </output>
     </recipe>
-    <recipe name="Marble Brick" energyCost="2400">
+    <recipe name="Marble Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="2" />
       </input>
@@ -2327,7 +2336,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="2" number="4" />
       </output>
     </recipe>
-    <recipe name="Quartzite Brick" energyCost="2400">
+    <recipe name="Quartzite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="3" />
       </input>
@@ -2335,7 +2344,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="3" number="4" />
       </output>
     </recipe>
-    <recipe name="Blue Schist Brick" energyCost="2400">
+    <recipe name="Blue Schist Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="4" />
       </input>
@@ -2343,7 +2352,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="4" number="4" />
       </output>
     </recipe>
-    <recipe name="Green Schist Brick" energyCost="2400">
+    <recipe name="Green Schist Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="5" />
       </input>
@@ -2351,7 +2360,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="5" number="4" />
       </output>
     </recipe>
-    <recipe name="Soapstone Brick" energyCost="2400">
+    <recipe name="Soapstone Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="6" />
       </input>
@@ -2359,7 +2368,7 @@
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="6" number="4" />
       </output>
     </recipe>
-    <recipe name="Migmatite Brick" energyCost="2400">
+    <recipe name="Migmatite Brick" energyCost="2400" >
       <input>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="7" />
       </input>
@@ -2369,8 +2378,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="ExNihilo">
-    <recipe name="iron_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+  <recipeGroup name="ExNihilo" >
+    <recipe name="iron_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="iron_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.iron_crushed" number="4" itemMeta="0" />
@@ -2378,7 +2387,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.iron_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="iron_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="iron_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="iron_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.iron_powdered" number="4" itemMeta="0" />
@@ -2386,7 +2395,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.iron_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="gold_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="gold_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="gold_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.gold_crushed" number="4" itemMeta="0" />
@@ -2394,7 +2403,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.gold_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="gold_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="gold_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="gold_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.gold_powdered" number="4" itemMeta="0" />
@@ -2402,7 +2411,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.gold_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="copper_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="copper_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="copper_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.copper_crushed" number="4" itemMeta="0" />
@@ -2410,7 +2419,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.copper_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="copper_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="copper_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="copper_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.copper_powdered" number="4" itemMeta="0" />
@@ -2418,7 +2427,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.copper_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="tin_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="tin_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="tin_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.tin_crushed" number="4" itemMeta="0" />
@@ -2426,7 +2435,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.tin_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="tin_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="tin_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="tin_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.tin_powdered" number="4" itemMeta="0" />
@@ -2434,7 +2443,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.tin_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="silver_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="silver_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="silver_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.silver_crushed" number="4" itemMeta="0" />
@@ -2442,7 +2451,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.silver_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="silver_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="silver_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="silver_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.silver_powdered" number="4" itemMeta="0" />
@@ -2450,7 +2459,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.silver_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="lead_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="lead_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="lead_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.lead_crushed" number="4" itemMeta="0" />
@@ -2458,7 +2467,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.lead_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="lead_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="lead_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="lead_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.lead_powdered" number="4" itemMeta="0" />
@@ -2466,7 +2475,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.lead_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="nickel_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="nickel_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="nickel_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.nickel_crushed" number="4" itemMeta="0" />
@@ -2474,7 +2483,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.nickel_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="nickel_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="nickel_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="nickel_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.nickel_powdered" number="4" itemMeta="0" />
@@ -2482,7 +2491,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.nickel_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="platinum_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="platinum_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="platinum_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.platinum_crushed" number="4" itemMeta="0" />
@@ -2490,7 +2499,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.platinum_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="platinum_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="platinum_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="platinum_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.platinum_powdered" number="4" itemMeta="0" />
@@ -2498,7 +2507,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.platinum_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="aluminum_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="aluminum_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="aluminum_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.aluminum_crushed" number="4" itemMeta="0" />
@@ -2506,7 +2515,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.aluminum_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="aluminum_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="aluminum_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="aluminum_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.aluminum_powdered" number="4" itemMeta="0" />
@@ -2514,7 +2523,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.aluminum_powdered" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="osmium_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+    <recipe name="osmium_gravel_to_crushed" energyCost="500" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="osmium_gravel" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.osmium_crushed" number="4" itemMeta="0" />
@@ -2522,7 +2531,7 @@
         <itemStack modID="exnihilo" itemName="exnihilo.osmium_crushed" number="1" itemMeta="0" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="osmium_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+    <recipe name="osmium_sand_to_powdered" energyCost="1000" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="osmium_sand" /></input>
       <output>
         <itemStack modID="exnihilo" itemName="exnihilo.osmium_powdered" number="4" itemMeta="0" />
@@ -2531,70 +2540,70 @@
       </output>
     </recipe>
     <!-- dust to dust -->
-    <recipe name="iron_dust_to_dustIron" energyCost="3200" bonusType="chance_only">
+    <recipe name="iron_dust_to_dustIron" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="iron_dust" /></input>
       <output>
         <itemStack oreDictionary="dustIron" number="2" />
         <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="gold_dust_to_dustGold" energyCost="3200" bonusType="chance_only">
+    <recipe name="gold_dust_to_dustGold" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="gold_dust" /></input>
       <output>
         <itemStack oreDictionary="dustGold" number="2" />
         <itemStack oreDictionary="dustCopper" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="copper_dust_to_dustCopper" energyCost="3200" bonusType="chance_only">
+    <recipe name="copper_dust_to_dustCopper" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="copper_dust" /></input>
       <output>
         <itemStack oreDictionary="dustCopper" number="2" />
         <itemStack oreDictionary="dustGold" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="tin_dust_to_dustTin" energyCost="3200" bonusType="chance_only">
+    <recipe name="tin_dust_to_dustTin" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="tin_dust" /></input>
       <output>
         <itemStack oreDictionary="dustTin" number="2" />
         <itemStack oreDictionary="dustIron" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="silver_dust_to_dustSilver" energyCost="3200" bonusType="chance_only">
+    <recipe name="silver_dust_to_dustSilver" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="silver_dust" /></input>
       <output>
         <itemStack oreDictionary="dustSilver" number="2" />
         <itemStack oreDictionary="dustLead" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="lead_dust_to_dustLead" energyCost="3200" bonusType="chance_only">
+    <recipe name="lead_dust_to_dustLead" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="lead_dust" /></input>
       <output>
         <itemStack oreDictionary="dustLead" number="2" />
         <itemStack oreDictionary="dustSilver" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="nickel_dust_to_dustNickel" energyCost="3200" bonusType="chance_only">
+    <recipe name="nickel_dust_to_dustNickel" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="nickel_dust" /></input>
       <output>
         <itemStack oreDictionary="dustNickel" number="2" />
         <itemStack oreDictionary="dustPlatinum" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="platinum_dust_to_dustPlatinum" energyCost="3200" bonusType="chance_only">
+    <recipe name="platinum_dust_to_dustPlatinum" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="platinum_dust" /></input>
       <output>
         <itemStack oreDictionary="dustPlatinum" number="2" />
         <itemStack oreDictionary="dustPlatinum" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="aluminum_dust_to_dustAluminum" energyCost="3200" bonusType="chance_only">
+    <recipe name="aluminum_dust_to_dustAluminum" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="aluminum_dust" /></input>
       <output>
         <itemStack oreDictionary="dustAluminum" number="2" />
         <itemStack oreDictionary="dustAluminum" number="1" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="osmium_dust_to_dustOsmium" energyCost="3200" bonusType="chance_only">
+    <recipe name="osmium_dust_to_dustOsmium" energyCost="3200" bonusType="chance_only" >
       <input><itemStack modID="exnihilo" itemName="osmium_dust" /></input>
       <output>
         <itemStack oreDictionary="dustOsmium" number="2" />
@@ -2603,8 +2612,8 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Natura">
-    <recipe name="Barley" energyCost="800">
+  <recipeGroup name="Natura" >
+    <recipe name="Barley" energyCost="800" >
       <input>
         <itemStack modID="Natura" itemName="barleyFood" />
       </input>
@@ -2616,10 +2625,10 @@
   </recipeGroup>
 
   <grindingBalls>
-    <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000">
+    <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000" >
       <itemStack modID="minecraft" itemName="flint" />
     </grindingBall>
-    <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000">
+    <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000" >
       <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="7" />
     </grindingBall>
 
