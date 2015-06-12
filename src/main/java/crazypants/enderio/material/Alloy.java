@@ -1,6 +1,10 @@
 package crazypants.enderio.material;
 
+import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.EnderIO;
 
 public enum Alloy {
 
@@ -15,19 +19,35 @@ public enum Alloy {
 
   public final String unlocalisedName;
   public final String iconKey;
-  public final String oredictIngotName;
-  public final String oredictBlockName;
+  public final String oreIngot;
+  public final String oreBlock;
   private final float hardness;
 
   private Alloy(String baseName, float hardness) {
     this.unlocalisedName = "enderio." + baseName;
     this.iconKey = "enderio:" + baseName;
-    this.oredictIngotName = "ingot" + StringUtils.capitalize(baseName);
-    this.oredictBlockName = "block" + StringUtils.capitalize(baseName);
+    this.oreIngot = "ingot" + StringUtils.capitalize(baseName);
+    this.oreBlock = "block" + StringUtils.capitalize(baseName);
     this.hardness = hardness;
   }
 
   public float getHardness() {
     return hardness;
+  }
+
+  public ItemStack getStackIngot() {
+    return getStackIngot(1);
+  }
+
+  public ItemStack getStackIngot(int size) {
+    return new ItemStack(EnderIO.itemAlloy, size, ordinal());
+  }
+
+  public ItemStack getStackBlock() {
+    return getStackIngot(1);
+  }
+
+  public ItemStack getStackBlock(int size) {
+    return new ItemStack(EnderIO.blockIngotStorage, size, ordinal());
   }
 }

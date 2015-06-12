@@ -36,38 +36,38 @@ public class ThaumcraftCompat {
     ThaumcraftApi.registerObjectTag("dustCoal", new AspectList().add(getAspects(Items.coal)));
     ThaumcraftApi.registerObjectTag("itemSilicon", new AspectList().add(Aspect.FIRE, 1).add(Aspect.ORDER, 1).add(Aspect.SENSES, 1));
 
-    ThaumcraftApi.registerObjectTag(Alloy.ELECTRICAL_STEEL.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.ELECTRICAL_STEEL.oreIngot, new AspectList()
         .add(getAspects("dustCoal"))
         .add(getAspects(Items.iron_ingot))
         .add(getAspects("itemSilicon")));
 
-    ThaumcraftApi.registerObjectTag(Alloy.ENERGETIC_ALLOY.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.ENERGETIC_ALLOY.oreIngot, new AspectList()
         .add(getAspects(Items.glowstone_dust))
         .add(getAspects(Items.redstone))
         .add(getAspects(Items.gold_ingot)));
 
-    ThaumcraftApi.registerObjectTag(Alloy.PHASED_GOLD.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.PHASED_GOLD.oreIngot, new AspectList()
         .add(getAspects(Items.ender_pearl))
         .add(getAspects("ingotEnergeticAlloy")));
 
-    ThaumcraftApi.registerObjectTag(Alloy.REDSTONE_ALLOY.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.REDSTONE_ALLOY.oreIngot, new AspectList()
         .add(getAspects(Items.redstone))
         .add(getAspects("itemSilicon")));
 
-    ThaumcraftApi.registerObjectTag(Alloy.CONDUCTIVE_IRON.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.CONDUCTIVE_IRON.oreIngot, new AspectList()
         .add(getAspects(Items.redstone))
         .add(getAspects(Items.iron_ingot)));
 
-    ThaumcraftApi.registerObjectTag(Alloy.PHASED_IRON.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.PHASED_IRON.oreIngot, new AspectList()
         .add(getAspects(Items.ender_pearl))
         .add(getAspects(Items.iron_ingot)));
 
-    ThaumcraftApi.registerObjectTag(Alloy.DARK_STEEL.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.DARK_STEEL.oreIngot, new AspectList()
         .add(getAspects(Items.iron_ingot))
         .add(getAspects("dustCoal"))
         .add(getAspects(Blocks.obsidian)));
 
-    ThaumcraftApi.registerObjectTag(Alloy.SOULARIUM.oredictIngotName, new AspectList()
+    ThaumcraftApi.registerObjectTag(Alloy.SOULARIUM.oreIngot, new AspectList()
         .add(getAspects(Blocks.soul_sand))
         .add(getAspects(Items.gold_ingot)));
 
@@ -80,19 +80,19 @@ public class ThaumcraftCompat {
         .add(getAspects(EnderIO.blockEndermanSkull))
         .add(getAspects(Items.potionitem)).add(getAspects(Items.potionitem))
         .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
-        .add(getAspects(Alloy.SOULARIUM.oredictIngotName)).add(getAspects(Alloy.SOULARIUM.oredictIngotName)));
+        .add(getAspects(Alloy.SOULARIUM.oreIngot)).add(getAspects(Alloy.SOULARIUM.oreIngot)));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_ELECTRODE.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.skull, 1, 2)))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
         .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
-        .add(getAspects(Alloy.ENERGETIC_ALLOY.oredictIngotName)).add(getAspects(Alloy.ENERGETIC_ALLOY.oredictIngotName)));
+        .add(getAspects(Alloy.ENERGETIC_ALLOY.oreIngot)).add(getAspects(Alloy.ENERGETIC_ALLOY.oreIngot)));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.skull, 1, 2)))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
         .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
-        .add(getAspects(Alloy.SOULARIUM.oredictIngotName)).add(getAspects(Alloy.SOULARIUM.oredictIngotName)));
+        .add(getAspects(Alloy.SOULARIUM.oreIngot)).add(getAspects(Alloy.SOULARIUM.oreIngot)));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal()), new AspectList()
         .add(Aspect.UNDEAD, 2)
@@ -103,8 +103,8 @@ public class ThaumcraftCompat {
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ENDER_RESONATOR.ordinal()), new AspectList()
         .add(getAspects(EnderIO.blockEndermanSkull))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
-        .add(getAspects(Alloy.PHASED_GOLD.oredictIngotName))
-        .add(getAspects(Alloy.SOULARIUM.oredictIngotName)).add(getAspects(Alloy.SOULARIUM.oredictIngotName)));
+        .add(getAspects(Alloy.PHASED_GOLD.oreIngot))
+        .add(getAspects(Alloy.SOULARIUM.oreIngot)).add(getAspects(Alloy.SOULARIUM.oreIngot)));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal()), new AspectList()
         .add(Aspect.AIR, 2)

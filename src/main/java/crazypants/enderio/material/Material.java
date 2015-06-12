@@ -6,6 +6,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.StringUtils;
 
+import crazypants.enderio.EnderIO;
+
 public enum Material {
 
   SILICON("silicon"),
@@ -40,5 +42,13 @@ public enum Material {
     for (Material m : values()) {
       OreDictionary.registerOre(m.oreDict, new ItemStack(item, 1, m.ordinal()));
     }
+  }
+
+  public ItemStack getStack() {
+    return getStack(1);
+  }
+  
+  public ItemStack getStack(int size) {
+    return new ItemStack(EnderIO.itemMaterial, size, ordinal());
   }
 }
