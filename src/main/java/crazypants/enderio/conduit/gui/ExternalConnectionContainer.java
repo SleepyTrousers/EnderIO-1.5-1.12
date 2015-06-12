@@ -113,7 +113,6 @@ public class ExternalConnectionContainer extends Container {
   }
 
   protected void filterChanged() {
-    System.out.println("filterChanged " + filterListeners.size());
     for (FilterChangeListener list : filterListeners) {
       list.onFilterChanged();
     }

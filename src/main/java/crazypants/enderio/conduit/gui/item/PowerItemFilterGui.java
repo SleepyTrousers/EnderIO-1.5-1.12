@@ -64,6 +64,8 @@ public class PowerItemFilterGui implements IItemFilterGui {
     if(!isInput) {
       stickyB.onGuiInit();
       stickyB.setSelected(filter.isSticky());
+    } else {
+      stickyB.detach();
     }
 
     int x0 = gui.getGuiLeft() + 80;

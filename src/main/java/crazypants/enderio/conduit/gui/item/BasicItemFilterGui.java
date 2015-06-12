@@ -52,7 +52,6 @@ public class BasicItemFilterGui implements IItemFilterGui {
     this.yOffset = yOffset;
     this.buttonIdOffset = buttonIdOffset;
 
-
     filter = filterContainer.getItemFilter();
     
     isAdvanced = filter.isAdvanced();
@@ -119,7 +118,11 @@ public class BasicItemFilterGui implements IItemFilterGui {
       if(isStickyModeAvailable) {
         stickyB.onGuiInit();
         stickyB.setSelected(activeFilter.isSticky());
+      } else {
+        stickyB.detach();
       }
+    } else {
+      stickyB.detach();
     }
 
     useMetaB.onGuiInit();
