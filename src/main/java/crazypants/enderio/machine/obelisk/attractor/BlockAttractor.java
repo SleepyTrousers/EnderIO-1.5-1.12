@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
@@ -15,6 +16,7 @@ public class BlockAttractor extends BlockObeliskAbstract<TileAttractor> {
   public static BlockAttractor create() {
     BlockAttractor res = new BlockAttractor();
     res.init();
+    MinecraftForge.EVENT_BUS.register(new EndermanFixer());
     return res;
   }
   
