@@ -20,7 +20,7 @@ public class PainterContainer extends AbstractMachineContainer {
         return tileEntity.isItemValidForSlot(0, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 1, 37, 34) {
+    addSlotToContainer(new Slot(tileEntity, 1, 38, 34) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isItemValidForSlot(1, itemStack);
