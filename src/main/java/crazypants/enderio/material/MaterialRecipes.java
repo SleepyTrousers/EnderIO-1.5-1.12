@@ -93,7 +93,7 @@ public class MaterialRecipes {
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
 
     //Conduit Binder
-    ItemStack cbc = CONDUIT_BINDER.getStack(8);
+    ItemStack cbc = BINDER_COMPOSITE.getStack(8);
     if (Config.useAlternateBinderRecipe) {
       addShaped(cbc, "gcg", "sgs", "gcg", 'g', Blocks.gravel, 's', Blocks.sand, 'c', Items.clay_ball);
     } else {
