@@ -44,7 +44,7 @@ public enum Alloy {
   }
 
   public ItemStack getStackBlock() {
-    return getStackIngot(1);
+    return getStackBlock(1);
   }
 
   public ItemStack getStackBlock(int size) {
