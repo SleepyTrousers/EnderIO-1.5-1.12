@@ -346,6 +346,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       int distance = new BlockCoord(this).distance(target);
       double base = Math.log((0.005 * distance) + 1);
       this.maxPower = (int) (base * Config.telepadPowerCoefficient);
+      if (this.maxPower <= 0) {
+        this.maxPower = 1;
+      }
     } else {
       this.maxPower = Config.telepadPowerInterdimensional;
     }
@@ -523,7 +526,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         this.target = coords;
         this.coordsChanged = true;
       } else {
-        this.master.setCoords(coords);
+        this.master.setCoords_internal(coords);
       }
     }
   }
