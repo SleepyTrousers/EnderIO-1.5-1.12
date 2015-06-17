@@ -16,15 +16,25 @@ import crazypants.render.TechneUtil;
 
 public class TelePadSpecialRenderer extends TileEntitySpecialRenderer {
 
-  private static GroupObject blade1 = TelePadRenderer.all.get("blade1");
-  private static GroupObject blade2 = TelePadRenderer.all.get("blade2");
-  private static GroupObject blade3 = TelePadRenderer.all.get("blade3");
+  private final GroupObject blade1;
+  private final GroupObject blade2;
+  private final GroupObject blade3;
   // Reverse order for top to bottom
-  private static List<GroupObject> blades = Lists.newArrayList(blade3, blade2, blade1);
+  private final List<GroupObject> blades;
 
-  private static GroupObject glass = TelePadRenderer.all.get("glass");
+  private final GroupObject glass;
 
   private static Random rand = new Random();
+
+  public TelePadSpecialRenderer(TelePadRenderer telePadRenderer) {
+    super();
+    blade1 = telePadRenderer.getFullModel().get("blade1");
+    blade2 = telePadRenderer.getFullModel().get("blade2");
+    blade3 = telePadRenderer.getFullModel().get("blade3");
+    blades = Lists.newArrayList(blade3, blade2, blade1);
+
+    glass = telePadRenderer.getFullModel().get("glass");
+  }
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_) {
@@ -51,8 +61,8 @@ public class TelePadSpecialRenderer extends TileEntitySpecialRenderer {
 
   private void render(GroupObject model, TileEntity te, Tessellator tes) {
     tes.startDrawingQuads();
-    TechneUtil.renderWithIcon(model, te.getBlockType().getIcon(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, 0), null, Tessellator.instance,
-        te.getWorldObj(), 0, 0, 0, null, false);
+    TechneUtil.renderWithIcon(model, te.getBlockType().getIcon(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, 0), null,
+        Tessellator.instance, te.getWorldObj(), 0, 0, 0, null, false);
     tes.draw();
   }
 }

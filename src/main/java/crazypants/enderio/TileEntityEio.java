@@ -117,6 +117,9 @@ public abstract class TileEntityEio extends TileEntity {
   /**
    * Called directly after the TE is constructed. This is the place to call
    * non-final methods.
+   * 
+   * Note: This will not be called when the TE is loaded from the save. Hook
+   * into the nbt methods for that.
    */
   public void init() {
   }
