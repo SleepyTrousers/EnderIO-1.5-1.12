@@ -56,6 +56,11 @@ public class MachineRecipes {
     String binder = CONDUIT_BINDER.oreDict;
     String silicon = SILICON.oreDict;
 
+    if (Config.addPeacefulRecipes) {
+      addShaped(frankenZombie, "gdg", "dzd", "gdg", 'g', Items.gold_ingot, 'd', Items.diamond, 'z', zombieController);
+      addShaped(sentientEnder, "ddd", "ded", "dgd", 'g', Blocks.gold_block, 'd', Items.diamond, 'e', enderRes);
+    }
+
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
     addShaped(stirlingGen, "bbb", "bfb", "gpg", 'b', Blocks.stonebrick, 'f', Blocks.furnace, 'p', Blocks.piston, 'g', basicGear);
