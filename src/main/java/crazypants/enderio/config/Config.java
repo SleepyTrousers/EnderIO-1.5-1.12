@@ -104,6 +104,7 @@ public final class Config {
   public static File configDirectory;
 
   public static boolean useHardRecipes = false;
+  public static boolean addPeacefulRecipes = false;
   public static boolean allowExternalTickSpeedup = true;
 
   public static boolean useSteelInChassi = false;
@@ -586,6 +587,8 @@ public final class Config {
 
     useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
+    addPeacefulRecipes = config.get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
+        .getBoolean(addPeacefulRecipes);
     soulBinderRequiresEndermanSkull = config.getBoolean("soulBinderRequiresEndermanSkull", sectionRecipe.name, soulBinderRequiresEndermanSkull,
         "When true the Soul Binder requires an Enderman Skull to craft");
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,

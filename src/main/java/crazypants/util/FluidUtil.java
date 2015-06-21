@@ -250,7 +250,8 @@ public class FluidUtil {
     if (source != null && source.getItem() != null) {
 
       if (source.getItem() instanceof IFluidContainerItem) {
-        IFluidTank targetTank = tank.getInputTank(((IFluidContainerItem) source.getItem()).getFluid(source));
+        FluidStack fluid = ((IFluidContainerItem) source.getItem()).getFluid(source);
+        IFluidTank targetTank = fluid != null ? tank.getInputTank(fluid) : null;
         if (targetTank != null) {
           FluidStack target = targetTank.getFluid();
           int maxDrain = targetTank.getCapacity() - (target != null ? target.amount : 0);
