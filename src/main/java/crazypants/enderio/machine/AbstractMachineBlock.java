@@ -117,7 +117,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     iconBuffer[0][11] = iIconRegister.registerIcon(side);
     
     iconBuffer[1][0] = iIconRegister.registerIcon(getModelIconKey(false));
-    iconBuffer[1][1] = iIconRegister.registerIcon(getModelIconKey(false));
+    iconBuffer[1][1] = iIconRegister.registerIcon(getModelIconKey(true));
 
     registerOverlayIcons(iIconRegister);
 

@@ -9,6 +9,7 @@ import com.google.common.collect.ObjectArrays;
 
 import crazypants.render.CustomCubeRenderer;
 import crazypants.render.TechneModelRenderer;
+import crazypants.render.TechneUtil;
 import crazypants.render.VertexRotationFacing;
 import crazypants.render.VertexTransform;
 import crazypants.render.VertexTransformComposite;
@@ -20,6 +21,10 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
 
   public TechneMachineRenderer(AbstractMachineBlock<T> block, String modelPath) {
     super(modelPath, block.getRenderType(), new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
+  }
+
+  public TechneMachineRenderer(int renderId, String modelPath) {
+    super(TechneUtil.getModel(modelPath), renderId, new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
   }
 
   public TechneMachineRenderer<T> addTransform(VertexTransform vt) {
