@@ -11,6 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -184,4 +185,18 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return this;
   }
 
+  @Override
+  public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacade(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public int getVisualMeta(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacadeMetadata(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public boolean supportsVisualConnections() {
+    return true;
+  }
 }

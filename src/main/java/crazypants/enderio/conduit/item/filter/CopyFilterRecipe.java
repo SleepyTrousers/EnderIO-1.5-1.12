@@ -19,30 +19,30 @@ public class CopyFilterRecipe implements IRecipe{
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
     
-    ItemStack blankInput = null;
+    int blankCount = 0;
     ItemStack filterInput = null;
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
       if (checkStack != null && checkStack.getItem() instanceof IItemFilterUpgrade) {
         if(FilterRegister.isFilterSet(checkStack)) {
-          if(filterInput != null || !isSameTypeOrNull(blankInput, checkStack)) {
-            return false;
-          }          
-          filterInput = checkStack;
-        } else {
-          if(blankInput != null || !isSameTypeOrNull(filterInput, checkStack)) {
+          if(filterInput != null) {
             return false;
           }
-          blankInput = checkStack;
+          filterInput = checkStack;
+        } else {
+          if(!isSameTypeOrNull(filterInput, checkStack)) {
+            return false;
+          }
+          blankCount++;
         }
       }
     }
     
-    if(blankInput == null || filterInput == null) {      
+    if(blankCount == 0 || filterInput == null) {      
       return false;
     }
     output = filterInput.copy();
-    output.stackSize = 2;
+    output.stackSize = blankCount + 1;
     return true;
 
   }

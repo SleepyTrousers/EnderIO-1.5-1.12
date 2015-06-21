@@ -110,7 +110,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
     startTF = new TextFieldEnder(getFontRenderer(), x, y, 28, 14);
     startTF.setCanLoseFocus(true);
     startTF.setMaxStringLength(3);
-    startTF.setFocused(true);
     startTF.setVisible(false);
     startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
 
@@ -119,7 +118,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
     endTF = new TextFieldEnder(getFontRenderer(), x, y, 28, 14);
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
-    endTF.setFocused(false);
     endTF.setVisible(false);
     endTF.setText(INT_NF.format(te.asPercentInt(te.stopLevel)));
     

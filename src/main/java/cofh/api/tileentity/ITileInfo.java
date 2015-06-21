@@ -8,15 +8,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implement this interface on Tile Entities which can provide information about themselves.
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface ITileInfo {
 
 	/**
 	 * This function appends information to a list provided to it.
-	 * 
+	 *
 	 * @param info
 	 *            The list that the information should be appended to.
 	 * @param side

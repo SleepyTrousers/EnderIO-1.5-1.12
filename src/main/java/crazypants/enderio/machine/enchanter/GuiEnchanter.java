@@ -1,27 +1,40 @@
 package crazypants.enderio.machine.enchanter;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 
-public class GuiEnchanter extends GuiContainer {
+public class GuiEnchanter extends GuiContainerBase {
 
   private TileEnchanter te;
   private ContainerEnchanter container;
+  private IconButton recipeButton;
   
   public GuiEnchanter(EntityPlayer player, InventoryPlayer inventory, TileEnchanter te) {
     super(new ContainerEnchanter(player, inventory, te));
     container = (ContainerEnchanter)inventorySlots;
     this.te = te;
+    
+    recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE);
+    recipeButton.visible = false;
+    recipeButton.setIconMargin(3, 3);
+  }
+  
+  @Override
+  public void initGui() {
+    super.initGui();
+    recipeButton.onGuiInit();
+    recipeButton.visible = EnderIO.proxy.isNeiInstalled();
   }
   
   @Override
@@ -52,5 +65,4 @@ public class GuiEnchanter extends GuiContainer {
       drawCenteredString(Minecraft.getMinecraft().fontRenderer, s, sx + xSize/2, sy + 57, col);
     }
   }
-
 }

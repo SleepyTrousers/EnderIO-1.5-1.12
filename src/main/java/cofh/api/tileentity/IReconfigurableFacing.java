@@ -2,11 +2,11 @@ package cofh.api.tileentity;
 
 /**
  * Implement this interface on Tile Entities which allow for reconfiguration of their facing.
- * 
+ *
  * Coordination with the containing block is required.
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface IReconfigurableFacing {
 
@@ -22,14 +22,14 @@ public interface IReconfigurableFacing {
 
 	/**
 	 * Attempt to rotate the block. Arbitrary based on implementation.
-	 * 
+	 *
 	 * @return True if rotation was successful, false otherwise.
 	 */
 	boolean rotateBlock();
 
 	/**
 	 * Set the facing of the block.
-	 * 
+	 *
 	 * @param side
 	 *            The side to set the facing to.
 	 * @return True if the facing was set, false otherwise.

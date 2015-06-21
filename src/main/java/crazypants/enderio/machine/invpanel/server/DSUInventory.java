@@ -8,23 +8,18 @@ class DSUInventory extends AbstractInventory {
 
   DSUInventory(IDeepStorageUnit dsu) {
     this.dsu = dsu;
+    this.slotKeys = new SlotKey[1];
   }
 
   @Override
-  public int scanInventory(InventoryDatabaseServer db, int aiIndex) {
-    if (slotItems.length != 1) {
-      reset(db, 1, aiIndex);
-    }
+  public int scanInventory(InventoryDatabaseServer db) {
     ItemStack stack = dsu.getStoredItemType();
-    updateSlot(db, 0, aiIndex, stack);
+    updateSlot(db, 0, stack);
     return 1;
   }
 
   @Override
-  public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int aiIndex, int count) {
-    if (slotItems.length != 1) {
-      return 0;
-    }
+  public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int count) {
     ItemStack stack = dsu.getStoredItemType();
     if (db.lookupItem(stack, entry, false) != entry) {
       return 0;
@@ -35,7 +30,7 @@ class DSUInventory extends AbstractInventory {
     }
     remaining -= count;
     dsu.setStoredItemCount(remaining);
-    updateCount(db, slot, aiIndex, entry, remaining);
+    updateCount(db, 0, entry, remaining);
     return count;
   }
 

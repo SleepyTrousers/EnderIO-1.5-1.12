@@ -16,6 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityEnder;
@@ -73,7 +74,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   private BlockTravelAnchor() {
     super(ModObject.blockTravelAnchor.unlocalisedName, TileTravelAnchor.class);
-    if(!Config.travelAnchorEnabled) {
+    if (!Config.travelAnchorEnabled) {
       setCreativeTab(null);
     }
   }
@@ -94,9 +95,9 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTravelAnchor) {
+    if (te instanceof TileTravelAnchor) {
       TileTravelAnchor tef = (TileTravelAnchor) te;
-      if(tef.getSourceBlock() != null) {
+      if (tef.getSourceBlock() != null) {
         return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
@@ -110,9 +111,9 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
-    if(entity instanceof EntityPlayer) {
+    if (entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileTravelAnchor) {
+      if (te instanceof TileTravelAnchor) {
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
         Block b = PainterUtil.getSourceBlock(par6ItemStack);
@@ -126,9 +127,9 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof ITravelAccessable) {
+    if (te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
-      if(ta.canUiBeAccessed(entityPlayer)) {
+      if (ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         sendPrivateChatMessage(entityPlayer, ta.getPlacedBy());
@@ -136,7 +137,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     }
     return true;
   }
-  
+
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
     if(player.worldObj.isRemote && !player.isSneaking()) {
       player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " "
@@ -144,12 +145,12 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
           + EnderIO.lang.localize("gui.travelAccessable.privateBlock2")));
     }
   }
-  
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof ITravelAccessable) {
-      if(ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
+    if (te instanceof ITravelAccessable) {
+      if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
         return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
       } else {
         return new ContainerTravelAuth(player.inventory);
@@ -161,8 +162,8 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof ITravelAccessable) {
-      if(ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
+    if (te instanceof ITravelAccessable) {
+      if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
         return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);
       } else {
         return new GuiTravelAuth(player, (ITravelAccessable) te, world);
@@ -175,13 +176,13 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileTravelAnchor anchor = (TileTravelAnchor) te;
 
-    if(anchor == null) {
+    if (anchor == null) {
       return;
     }
 
     ItemStack itemStack = new ItemStack(this);
     Block srcBlk = anchor.getSourceBlock();
-    if(srcBlk != null) {
+    if (srcBlk != null) {
       itemStack = createItemStackForSourceBlock(anchor.getSourceBlock(), anchor.getSourceBlockMetadata());
       drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
     }
@@ -196,9 +197,9 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @SideOnly(Side.CLIENT)
   public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTravelAnchor) {
+    if (te instanceof TileTravelAnchor) {
       TileTravelAnchor tef = (TileTravelAnchor) te;
-      if(tef.getSourceBlock() != null) {
+      if (tef.getSourceBlock() != null) {
         return tef.getSourceBlock().colorMultiplier(world, x, y, z);
       }
     }
@@ -216,7 +217,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   public ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    if(block == this) {
+    if (block == this) {
       return new ItemStack(this);
     }
     ItemStack result = new ItemStack(this, 1, damage);
@@ -238,7 +239,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     @Override
     public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-      if(paintSource == null) {
+      if (paintSource == null) {
         return new ResultStack[0];
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
@@ -248,7 +249,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTravelAnchor) {
+    if (te instanceof TileTravelAnchor) {
       return ((TileTravelAnchor) te).getSourceBlockMetadata();
     }
     return 0;
@@ -257,9 +258,24 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTravelAnchor) {
+    if (te instanceof TileTravelAnchor) {
       return ((TileTravelAnchor) te).getSourceBlock();
     }
     return this;
+  }
+
+  @Override
+  public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacade(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public int getVisualMeta(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacadeMetadata(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public boolean supportsVisualConnections() {
+    return true;
   }
 }

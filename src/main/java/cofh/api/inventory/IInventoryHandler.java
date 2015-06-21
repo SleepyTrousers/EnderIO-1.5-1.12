@@ -7,18 +7,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implement this interface on TileEntities which should handle items.
- * 
+ *
  * A reference implementation is provided {@link TileInventoryHandler}.
- * 
+ *
  * @author King Lemming
- * 
+ *
  */
 public interface IInventoryHandler extends IInventoryConnection {
 
 	/**
 	 * Insert an ItemStack into the IInventoryHandler, internal distribution is left entirely to the IInventoryHandler. This returns what is remaining of the
 	 * original stack - a null return means that the entire stack was accepted!
-	 * 
+	 *
 	 * @param from
 	 *            Orientation the item is inserted from.
 	 * @param item
@@ -32,7 +32,7 @@ public interface IInventoryHandler extends IInventoryConnection {
 	/**
 	 * Extract an ItemStack from an IInventoryHandler, internal distribution is left entirely to the IInventoryHandler. This returns the resulting stack - a
 	 * null return means that nothing was extracted!
-	 * 
+	 *
 	 * @param from
 	 *            Orientation the item is extracted from.
 	 * @param item
@@ -47,7 +47,7 @@ public interface IInventoryHandler extends IInventoryConnection {
 	/**
 	 * Extract an ItemStack from an IInventoryHandler, internal distribution is left entirely to the IInventoryHandler. This returns the resulting stack - a
 	 * null return means that nothing was extracted!
-	 * 
+	 *
 	 * @param from
 	 *            Orientation the item is extracted from.
 	 * @param maxExtract

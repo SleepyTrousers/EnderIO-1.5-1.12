@@ -965,6 +965,21 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
+  public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacade(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public int getVisualMeta(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacadeMetadata(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public boolean supportsVisualConnections() {
+    return true;
+  }
+
+  @Override
   public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
     IRedstoneConduit conduit = getRedstoneConduit(world, x, y, z);
     if(conduit == null) {

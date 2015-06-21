@@ -111,6 +111,14 @@ task exportJavadoc(type: Javadoc) {
     source = sourceSets.main.allSource
 }
 
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
 build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
 
 publishing {

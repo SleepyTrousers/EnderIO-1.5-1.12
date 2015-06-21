@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -104,6 +106,31 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
             }
           }
           return true;
+        } else {
+          // There's not really any good way to compare conduits...
+          IConduit existingConduit = bundle.getConduit(getBaseConduitType());
+          ItemStack existingConduitAsItemStack = existingConduit.createItem();
+          if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
+            if (!world.isRemote) {
+              IConduit newConduit = createConduit(stack, player);
+              if (newConduit == null) {
+                System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
+                return false;
+              }
+              bundle.removeConduit(existingConduit);
+              bundle.addConduit(newConduit);
+              if (!player.capabilities.isCreativeMode) {
+                stack.stackSize--;
+                for (ItemStack drop : existingConduit.getDrops()) {
+                  EntityItem entityitem = new EntityItem(world, x + hitX, y + hitY, z + hitZ, drop);
+                  entityitem.delayBeforeCanPickup = 10;
+                  world.spawnEntityInWorld(entityitem);
+                }
+              }
+            }
+            return true;
+          }
+
         }
       }
     }

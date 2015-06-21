@@ -21,7 +21,6 @@ import com.enderio.core.common.network.CompressedDataOutput;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
@@ -182,11 +181,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
       this.inventories = new AbstractInventory[sources.size()];
       for(int i=0; i<sources.size(); i++) {
         NetworkedInventory ni = sources.get(i);
-        if(ni.getInventory() instanceof IDeepStorageUnit) {
-          inventories[i] = new DSUInventory((IDeepStorageUnit) ni.getInventory());
-        } else {
-          inventories[i] = new NormalInventory(ni);
-        }
+        inventories[i] = InventoryFactory.createInventory(ni);
       }
     }
 
@@ -237,7 +232,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     }
 
     AbstractInventory inv = inventories[currentInventory];
-    int slots = inv.scanInventory(this, currentInventory);
+    int slots = inv.scanInventory(this);
 
     currentInventory = (currentInventory+1) % inventories.length;
     tickPause += 1 + (slots + 8) / 9;

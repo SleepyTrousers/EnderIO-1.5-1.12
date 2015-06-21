@@ -570,13 +570,15 @@ public class EnderIO {
       SkeletonHandler.registerSkeleton(this);
     }
 
+    MaterialRecipes.registerDependantOresInDictionary();
+
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
     ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();
-
+    
     proxy.load();
   }
 
@@ -587,15 +589,9 @@ public class EnderIO {
 
     //Regsiter the enchants
     Enchantments.getInstance();
-
-    MaterialRecipes.registerDependantOresInDictionary();
-
+    
     //This must be loaded before parsing the recipes so we get the preferred outputs
     OreDictionaryPreferences.loadConfig();
-
-    MaterialRecipes.addOreDictionaryRecipes();
-    MachineRecipes.addOreDictionaryRecipes();
-    ItemRecipes.addOreDictionaryRecipes();
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();

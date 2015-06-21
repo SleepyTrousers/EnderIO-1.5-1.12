@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.spawner;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -11,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.Lang;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -19,12 +21,20 @@ import crazypants.enderio.network.PacketHandler;
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
   private final MultiIconButton modeB;
+  private final Rectangle progressTooltipRect;
+  private boolean wasSpawnMode;
+  private String header;
 
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
     super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te));
 
     modeB = MultiIconButton.createRightArrowButton(this, 8888, 115, 10);
     modeB.setSize(10, 16);
+
+    addProgressTooltip(80, 34, 14, 14);
+    progressTooltipRect = progressTooltips.get(0).getBounds();
+
+    updateSpawnMode(te.isSpawnMode());
   }
 
   @Override
@@ -43,6 +53,25 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     }
   }
 
+  private void updateSpawnMode(boolean spawnMode) {
+    wasSpawnMode = spawnMode;
+    ((ContainerPoweredSpawner) inventorySlots).setSlotVisibility(!spawnMode);
+
+    if(spawnMode) {
+      header = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
+      progressTooltipRect.x = 80;
+      progressTooltipRect.y = 34;
+      progressTooltipRect.width = 14;
+      progressTooltipRect.height = 14;
+    } else {
+      header = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
+      progressTooltipRect.x = 52;
+      progressTooltipRect.y = 40;
+      progressTooltipRect.width = 72;
+      progressTooltipRect.height = 21;
+    }
+  }
+
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -55,36 +84,32 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     TilePoweredSpawner spawner = getTileEntity();
-    
-    int left = getGuiLeft();
-    int top = getGuiTop();
+    boolean spawnMode = spawner.isSpawnMode();
 
-    String txt = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
-    if(!spawner.isSpawnMode()) {
-      txt = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
+    if(spawnMode != wasSpawnMode) {
+      updateSpawnMode(spawnMode);
     }
+
     FontRenderer fr = getFontRenderer();
-    int x = left + xSize / 2 - fr.getStringWidth(txt) / 2;
-    int y = top + fr.FONT_HEIGHT + 6;
-    fr.drawStringWithShadow(txt, x, y, ColorUtil.getRGB(Color.WHITE));
+    int x = sx + xSize / 2 - fr.getStringWidth(header) / 2;
+    int y = sy + fr.FONT_HEIGHT + 6;
+    fr.drawStringWithShadow(header, x, y, ColorUtil.getRGB(Color.WHITE));
 
     RenderUtil.bindTexture("enderio:textures/gui/poweredSpawner.png");
 
-    if(spawner.isSpawnMode()) {
-      int yOff = 34;
-      drawTexturedModalRect(left + 80, top + yOff, 207, 0, 17, 15);
-      if(spawner.getProgress() < 1 && spawner.getProgress() > 0) {
+    if(spawnMode) {
+      drawTexturedModalRect(sx + 80, sy + 34, 207, 0, 17, 15);
+      if(shouldRenderProgress()) {
         int scaled = getProgressScaled(14) + 1;
-        drawTexturedModalRect(left + 81, top + yOff + 14 - scaled, 176, 14 - scaled, 14, scaled);
+        drawTexturedModalRect(sx + 81, sy + 34 + 14 - scaled, 176, 14 - scaled, 14, scaled);
       }
     } else {
-      drawTexturedModalRect(left + 52, top + 40, 52, 170, 72, 21);
-      if(spawner.getProgress() < 1 && spawner.getProgress() > 0) {
+      drawTexturedModalRect(sx + 52, sy + 40, 52, 170, 72, 21);
+      if(shouldRenderProgress()) {
         int scaled = getProgressScaled(24);
-        drawTexturedModalRect(left + 76, top + 43, 176, 14, scaled + 1, 16);
+        drawTexturedModalRect(sx + 76, sy + 43, 176, 14, scaled + 1, 16);
       }
     }
-
   }
 
   @Override

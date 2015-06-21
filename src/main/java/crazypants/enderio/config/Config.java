@@ -106,6 +106,7 @@ public final class Config {
   public static File configDirectory;
 
   public static boolean useHardRecipes = false;
+  public static boolean addPeacefulRecipes = false;
   public static boolean allowExternalTickSpeedup = true;
 
   public static boolean useSteelInChassi = false;
@@ -345,6 +346,10 @@ public final class Config {
   public static int poweredSpawnerLevelThreePowerPerTickRF = 1500;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static int poweredSpawnerDespawnTimeSeconds = 120;
+  public static int poweredSpawnerSpawnCount = 4;
+  public static int poweredSpawnerSpawnRange = 4;
+  public static int poweredSpawnerMaxNearbyEntities = 6;
+  public static int poweredSpawnerMaxSpawnTries = 3;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
   public static String[] brokenSpawnerToolBlacklist = new String[] {
@@ -584,6 +589,8 @@ public final class Config {
 
     useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
+    addPeacefulRecipes = config.get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
+        .getBoolean(addPeacefulRecipes);
     soulBinderRequiresEndermanSkull = config.getBoolean("soulBinderRequiresEndermanSkull", sectionRecipe.name, soulBinderRequiresEndermanSkull,
         "When true the Soul Binder requires an Enderman Skull to craft");
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
@@ -1097,6 +1104,14 @@ public final class Config {
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerDespawnTimeSeconds = config.get(sectionSpawner.name, "poweredSpawnerDespawnTimeSeconds" , poweredSpawnerDespawnTimeSeconds,
         "Number of seconds in which spawned entities are protected from despawning").getInt(poweredSpawnerDespawnTimeSeconds);
+    poweredSpawnerSpawnCount = config.get(sectionSpawner.name, "poweredSpawnerSpawnCount" , poweredSpawnerSpawnCount,
+        "Number of entities to spawn each time").getInt(poweredSpawnerSpawnCount);
+    poweredSpawnerSpawnRange = config.get(sectionSpawner.name, "poweredSpawnerSpawnRange" , poweredSpawnerSpawnRange,
+        "Spawning range in X/Z").getInt(poweredSpawnerSpawnRange);
+    poweredSpawnerMaxNearbyEntities = config.get(sectionSpawner.name, "poweredSpawnerMaxNearbyEntities" , poweredSpawnerMaxNearbyEntities,
+        "Max number of entities in the nearby area until no more are spawned. A zero value will remove this check").getInt(poweredSpawnerMaxNearbyEntities);
+    poweredSpawnerMaxSpawnTries = config.get(sectionSpawner.name, "poweredSpawnerMaxSpawnTries" , poweredSpawnerMaxSpawnTries,
+        "Number of tries to find a suitable spawning location").getInt(poweredSpawnerMaxSpawnTries);
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
     brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,

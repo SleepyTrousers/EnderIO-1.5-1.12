@@ -9,6 +9,7 @@ import java.util.Set;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
@@ -25,6 +26,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -38,6 +40,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
@@ -166,12 +169,39 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
           onEntityTick(ent);
         } else if(tracking.size() < maxMobsAttracted && trackMob(ent)) {
           trackingThisTick.add(ent);
+          onTracked(ent);
         }
+      }
+    }
+    for (EntityLiving e : tracking) {
+      if (!trackingThisTick.contains(e)) {
+        onUntracked(e);
       }
     }
     tracking.clear();
     tracking = trackingThisTick;
     return false;
+  }
+  
+  private void onUntracked(EntityLiving e) {
+    if (e instanceof EntityEnderman) {
+      e.getEntityData().setBoolean("EIO:tracked", false);
+    }
+  }
+  
+  private void onTracked(EntityLiving e) {
+    if (e instanceof EntityEnderman) {
+      e.getEntityData().setBoolean("EIO:tracked", true);
+    }
+  }
+  
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    for (EntityLiving e : tracking) {
+      onUntracked(e);
+    }
+    tracking.clear();
   }
 
   protected double usePower() {
@@ -281,10 +311,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   private boolean applySpecialCase(EntityLiving ent) {
-    return ent instanceof EntitySlime || ent instanceof EntitySilverfish || ent instanceof EntityBlaze;
-  }
-
-  private boolean useSpecialCase(EntityLiving ent) {
     if(ent instanceof EntitySlime) {
       ent.faceEntity(getTarget(), 10.0F, 20.0F);
       return true;
@@ -296,6 +322,10 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       return true;
     }
     return false;
+  }
+
+  private boolean useSpecialCase(EntityLiving ent) {
+    return ent instanceof EntitySlime || ent instanceof EntitySilverfish || ent instanceof EntityBlaze;
   }
 
   private void onEntityTick(EntityLiving ent) {
@@ -325,7 +355,9 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       }
     } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {  
       forceMove(ent);
-    } 
+    } else if(ent instanceof EntityEnderman) {
+      ((EntityEnderman) ent).setTarget(getTarget());
+    }
   }
 
   private void forceMove(EntityLiving ent) {
@@ -346,19 +378,14 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   private boolean useSetTarget(EntityLiving ent) {
-    return ent instanceof EntityEnderman || ent instanceof EntityPigZombie || ent instanceof EntitySpider || ent instanceof EntitySilverfish;
+    return ent instanceof EntityPigZombie || ent instanceof EntitySpider || ent instanceof EntitySilverfish;
   }
 
-  private class Target extends FakePlayer {
-
-    ItemStack prevWeapon;
+  private class Target extends FakePlayerEIO {
 
     public Target() {
-      super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), new GameProfile(null,
-          ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
-      posX = xCoord + 0.5;
-      posY = yCoord + 1.5;
-      posZ = zCoord + 0.5;
+      super(getWorldObj(), getLocation(), new GameProfile(null, ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
+      posY += 1;
     }
   }
 

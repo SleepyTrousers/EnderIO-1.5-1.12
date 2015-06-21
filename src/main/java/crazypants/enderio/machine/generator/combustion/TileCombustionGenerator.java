@@ -421,11 +421,13 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (FluidFuelRegister.instance.getCoolant(forFluidType.getFluid()) != null) {
-      return coolantTank;
-    }
-    if (FluidFuelRegister.instance.getFuel(forFluidType.getFluid()) != null) {
-      return fuelTank;
+    if (forFluidType != null) {
+      if (FluidFuelRegister.instance.getCoolant(forFluidType.getFluid()) != null) {
+        return coolantTank;
+      }
+      if (FluidFuelRegister.instance.getFuel(forFluidType.getFluid()) != null) {
+        return fuelTank;
+      }
     }
     return null;
   }

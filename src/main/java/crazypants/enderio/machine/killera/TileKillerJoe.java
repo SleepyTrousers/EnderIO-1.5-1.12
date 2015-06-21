@@ -38,6 +38,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
@@ -496,15 +497,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
 
-  private class Attackera extends FakePlayer {
+  private class Attackera extends FakePlayerEIO {
 
     ItemStack prevWeapon;
 
     public Attackera() {
-      super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), DUMMY_PROFILE);
-      posX = xCoord + 0.5;
-      posY = yCoord + 0.5;
-      posZ = zCoord + 0.5;
+      super(getWorldObj(), getLocation(), DUMMY_PROFILE);
     }
 
     @Override
@@ -526,23 +524,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       }
 
       getChargedLocation().chargeItems(inventory.mainInventory);
-    }
-
-    // These do things with packets...which crash since the net handler is null. Potion effects are not needed anyways.
-    @Override
-    protected void onNewPotionEffect(PotionEffect p_70670_1_) {
-    }
-
-    @Override
-    protected void onChangedPotionEffect(PotionEffect p_70695_1_, boolean p_70695_2_) {
-    }
-
-    @Override
-    protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
-    }
-    
-    @Override
-    public void addChatMessage(IChatComponent p_145747_1_) {
     }
   }
 
