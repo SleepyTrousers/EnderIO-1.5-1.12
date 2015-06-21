@@ -296,6 +296,38 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     }
     return network.getTankInfo(this, from);
   }
+  
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
+    super.readTypeSettings(dir, dataRoot);
+    if (dataRoot.hasKey("outputFilters")) {
+      FluidFilter out = new FluidFilter();
+      out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
+      outputFilters.put(dir, out);
+    }
+    if (dataRoot.hasKey("inputFilters")) {
+      FluidFilter in = new FluidFilter();
+      in.readFromNBT(dataRoot.getCompoundTag("inputFilters"));
+      inputFilters.put(dir, in);
+    }
+  }
+
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    super.writeTypeSettingsToNbt(dir, dataRoot);
+    FluidFilter out = outputFilters.get(dir);
+    if (out != null) {
+      NBTTagCompound outTag = new NBTTagCompound();
+      out.writeToNBT(outTag);
+      dataRoot.setTag("outputFilters", outTag);
+    }
+    FluidFilter in = inputFilters.get(dir);
+    if (in != null) {
+      NBTTagCompound inTag = new NBTTagCompound();
+      in.writeToNBT(inTag);
+      dataRoot.setTag("inputFilters", inTag);
+    }
+  }
 
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
@@ -320,7 +352,6 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         }
       }
     }
-
   }
 
   @Override
