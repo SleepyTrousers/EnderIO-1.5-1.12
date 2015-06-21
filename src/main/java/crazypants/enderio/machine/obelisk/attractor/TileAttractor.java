@@ -194,6 +194,15 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       e.getEntityData().setBoolean("EIO:tracked", true);
     }
   }
+  
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    for (EntityLiving e : tracking) {
+      onUntracked(e);
+    }
+    tracking.clear();
+  }
 
   protected double usePower() {
     return usePower(getPowerUsePerTick());
