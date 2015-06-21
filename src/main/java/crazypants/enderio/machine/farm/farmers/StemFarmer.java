@@ -50,18 +50,23 @@ public class StemFarmer extends CustomSeedFarmer {
     boolean done = false;
     do{
       harvestCoord = harvestCoord.getLocation(ForgeDirection.UP);
-      if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasHoe()) {
+      boolean hasHoe = farm.hasHoe();
+      if(plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
         res.harvestedBlocks.add(harvestCoord);
         ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorldObj(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
         if(drops != null) {
           for(ItemStack drop : drops) {
             res.drops.add(new EntityItem(farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
           }
-
         }
         farm.damageHoe(1, harvestCoord);
         farm.actionPerformed(false);
       } else {
+        if (!hasHoe) {
+          farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
+        } else {
+          farm.clearNotification();
+        }
         done = true;
       }
     } while(!done);
