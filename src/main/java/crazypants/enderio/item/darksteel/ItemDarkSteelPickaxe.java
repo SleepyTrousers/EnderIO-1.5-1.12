@@ -5,7 +5,6 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,21 +23,24 @@ import com.google.common.collect.Sets;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.item.darksteel.upgrade.BlockPlaceUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.HoeUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IRightClickUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.IShiftRightClickUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.ISpoonUpgradable;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.teleport.TravelController;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem,
+    IItemOfTravel, IRightClickUpgradable, IShiftRightClickUpgradable, ISpoonUpgradable {
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -64,8 +66,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
-
-  private long lastBlickTick = -1;
 
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);
@@ -110,44 +110,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
     @Override
-    public boolean onItemUse(ItemStack item, EntityPlayer player, World world,
-	    int x, int y, int z, int side, float par8, float par9, float par10) {
-	if (!isTravelUpgradeActive(player, item) && world.isRemote) {
-	    return doRightClickItemPlace(player, world, x, y, z, side, par8,
-		    par9, par10);
-	}
-	return false;
-    }
-
-    @SideOnly(Side.CLIENT)
-    static boolean doRightClickItemPlace(EntityPlayer player, World world,
-	    int x, int y, int z, int side, float par8, float par9, float par10) {
-	int current = player.inventory.currentItem;
-	int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
-	if (slot < 9
-		&& player.inventory.mainInventory[slot] != null
-		&& !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-	    /*
-	     * this will not work with buckets unless we don't switch back to
-	     * the current item (the pick); there's probably some client <->
-	     * server event thing going on with buckets, so our item-switch
-	     * within the same tick would be a problem.
-	     */
-	    player.inventory.currentItem = slot;
-	    Minecraft mc = Minecraft.getMinecraft();
-	    boolean result = mc.playerController.onPlayerRightClick(
-		    mc.thePlayer, mc.theWorld,
-		    player.inventory.mainInventory[slot],
-		    mc.objectMouseOver.blockX, mc.objectMouseOver.blockY,
-		    mc.objectMouseOver.blockZ, mc.objectMouseOver.sideHit,
-		    mc.objectMouseOver.hitVec);
-	    player.inventory.currentItem = current;
-	    return (result);
-	}
-	return false;
-    }
-
-  @Override
   public void setDamage(ItemStack stack, int newDamage) {
     int oldDamage = getDamage(stack);
     if (newDamage <= oldDamage) {
@@ -180,10 +142,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     } else {
       return super.canHarvestBlock(block, item);
     }
-  }
-
-  private boolean hasSpoonUpgrade(ItemStack item) {
-    return SpoonUpgrade.loadFromItem(item) != null;
   }
 
   @Override
@@ -308,34 +266,75 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     extractEnergy(equipped, power, false);
   }
 
+  /* Upgrades Start */
+
   private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
     return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
 
   @Override
-  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-    if(isTravelUpgradeActive(player, stack)) {
-      if(world.isRemote) {
-        if(TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
-          player.swingItem();
-          return stack;
-        }
-      }
+  public boolean hasRightClickUpgrade(ItemStack item) {
+    return hasBlockPlaceUpgrade(item) || hasHoeUpgrade(item);
+  }
 
-      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
-      if(ticksSinceBlink < 0) {
-        lastBlickTick = -1;
+  private boolean hasSpoonUpgrade(ItemStack item) {
+    return SpoonUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasBlockPlaceUpgrade(ItemStack item) {
+    return BlockPlaceUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasHoeUpgrade(ItemStack item) {
+    return HoeUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasTravelUpgrade(ItemStack item) {
+    return TravelUpgrade.loadFromItem(item) != null;
+  }
+
+  @Override
+  public boolean hasShiftRightClickUpgrade(ItemStack item) {
+    return hasTravelUpgrade(item);
+  }
+
+  @Override
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9,
+      float par10) {
+    if (player.isSneaking()) {
+      if (isTravelUpgradeActive(player, item) && TravelUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
       }
-      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if(TravelController.instance.doBlink(stack, player)) {
-          player.swingItem();
-          lastBlickTick = EnderIO.proxy.getTickCount();
-        }
+    } else {
+      if (hasBlockPlaceUpgrade(item) && BlockPlaceUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
       }
-      return stack;
+      if (hasHoeUpgrade(item) && HoeUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    if (player.isSneaking()) {
+      if (isTravelUpgradeActive(player, stack) && TravelUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+    } else {
+      if (hasBlockPlaceUpgrade(stack) && BlockPlaceUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+      if (hasHoeUpgrade(stack) && HoeUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
     }
 
     return super.onItemRightClick(stack, world, player);
   }
+
+  /* Upgrades End */
 
 }

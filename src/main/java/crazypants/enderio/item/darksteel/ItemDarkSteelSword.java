@@ -35,14 +35,20 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.item.darksteel.upgrade.BlockPlaceUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.HoeUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IRightClickUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.IShiftRightClickUpgradable;
+import crazypants.enderio.item.darksteel.upgrade.ISpoonUpgradable;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
+public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem,
+    IItemOfTravel, IRightClickUpgradable, IShiftRightClickUpgradable {
 
   private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
@@ -376,34 +382,71 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     extractEnergy(equipped, power, false);
   }
 
+  /* Upgrades Start */
+
   private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
     return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
 
   @Override
-  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-    if(isTravelUpgradeActive(player, stack)) {
-      if(world.isRemote) {
-        if(TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
-          player.swingItem();
-          return stack;
-        }
-      }
+  public boolean hasRightClickUpgrade(ItemStack item) {
+    return hasBlockPlaceUpgrade(item) || hasHoeUpgrade(item);
+  }
 
-      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
-      if(ticksSinceBlink < 0) {
-        lastBlickTick = -1;
+  private boolean hasBlockPlaceUpgrade(ItemStack item) {
+    return BlockPlaceUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasHoeUpgrade(ItemStack item) {
+    return HoeUpgrade.loadFromItem(item) != null;
+  }
+
+  private boolean hasTravelUpgrade(ItemStack item) {
+    return TravelUpgrade.loadFromItem(item) != null;
+  }
+
+  @Override
+  public boolean hasShiftRightClickUpgrade(ItemStack item) {
+    return hasTravelUpgrade(item);
+  }
+
+  @Override
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9,
+      float par10) {
+    if (player.isSneaking()) {
+      if (isTravelUpgradeActive(player, item) && TravelUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
       }
-      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if(TravelController.instance.doBlink(stack, player)) {
-          player.swingItem();
-          lastBlickTick = EnderIO.proxy.getTickCount();
-        }
+    } else {
+      if (hasBlockPlaceUpgrade(item) && BlockPlaceUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
       }
-      return stack;
+      if (hasHoeUpgrade(item) && HoeUpgrade.handleItemUse(item, player, world, x, y, z, side, par8, par9, par10)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    if (player.isSneaking()) {
+      if (isTravelUpgradeActive(player, stack) && TravelUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+    } else {
+      if (hasBlockPlaceUpgrade(stack) && BlockPlaceUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
+      if (hasHoeUpgrade(stack) && HoeUpgrade.handleRightClick(stack, world, player)) {
+        return stack;
+      }
     }
 
     return super.onItemRightClick(stack, world, player);
   }
+
+  /* Upgrades End */
 
 }
