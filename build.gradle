@@ -33,6 +33,8 @@ minecraft {
 }
 
 configurations {
+    shade
+    compile.extendsFrom shade
     compile.extendsFrom exportedCompile
 }
 
@@ -50,8 +52,13 @@ dependencies {
     
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}:dev"
-    compile "com.enderio.core:EnderCore:${endercore_version}:dev"
     compile "net.sengir.forestry:${forestry_version}:api"
+        
+    String endercore = "com.enderio.core:EnderCore:${minecraft_version}-${endercore_version}:dev"
+    compile endercore
+    shade (endercore) {
+        transitive = false
+    }
 }
 
 sourceSets {
@@ -87,6 +94,16 @@ jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+task allJar(type: Jar) {
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**', '*.info'
+        }
+    }
+    from sourceSets.main.output
+    classifier = 'all'
+}
+
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
@@ -102,7 +119,6 @@ task apiJar(type: Jar) {
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    exclude 'powercrystals/**'
     classifier = 'dev'
 }
 
@@ -119,7 +135,7 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
+build.dependsOn allJar, sourceJar, deobfJar, apiJar, exportJavadoc
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -127,6 +143,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
 
+            artifact allJar
             artifact sourceJar
             artifact apiJar
             artifact deobfJar
@@ -167,14 +184,15 @@ curse {
     dependsOn 'reobf'
     
     onlyIf {
-        return project.hasProperty('cp_curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
+        return project.hasProperty('curseforge_key')// && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
     }
 
-    if (project.hasProperty('cp_curseforge_key')) apiKey = project.curseforge_key
+    if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
     projectId = project.curse_projectId
     changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
-    additionalArtifact deobfJar, sourceJar, apiJar
+    artifact allJar
+    additionalArtifact jar, deobfJar
 }
 
 task checkTranslations << {
