@@ -184,7 +184,7 @@ curse {
     dependsOn 'reobf'
     
     onlyIf {
-        return project.hasProperty('curseforge_key')// && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
+        return project.hasProperty('curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
     }
 
     if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
