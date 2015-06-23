@@ -8,7 +8,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.GuiTravelAccessable;
-import crazypants.util.Lang;
 
 public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements IToggleableGui {
 
@@ -22,7 +21,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
     super(playerInv, te, world);
     this.te = te;
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
-    switchButton.setToolTip(Lang.localize("gui.telepad.configure.telepad"));
+    switchButton.setToolTip(EnderIO.lang.localize("gui.telepad.configure.telepad"));
   }
   
   public GuiAugmentedTravelAccessible(ContainerTravelAccessable container) {

@@ -25,6 +25,12 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.lwjgl.opengl.GL11;
 
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4d;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -44,10 +50,6 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Util;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4d;
 
 public class DarkSteelController {
 

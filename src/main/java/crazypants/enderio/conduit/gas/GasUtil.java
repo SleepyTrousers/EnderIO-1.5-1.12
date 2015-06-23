@@ -4,11 +4,13 @@ import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
 
 public final class GasUtil {
 

@@ -4,6 +4,12 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -13,10 +19,6 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
 
 public class PowerConduitRenderer extends DefaultConduitRenderer {
 

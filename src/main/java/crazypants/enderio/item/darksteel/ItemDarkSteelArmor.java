@@ -20,6 +20,10 @@ import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
@@ -27,16 +31,14 @@ import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 import forestry.api.apiculture.IArmorApiarist;
 import forestry.api.core.IArmorNaturalist;
 
@@ -176,11 +178,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
       if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
-        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line1"));
-        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line2"));
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

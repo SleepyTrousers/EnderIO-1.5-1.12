@@ -1,18 +1,16 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
+import com.enderio.core.common.util.BlockCoord;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
-import crazypants.util.BlockCoord;
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class RubberTreeFarmerIC2 extends TreeFarmer {
 

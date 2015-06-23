@@ -7,21 +7,22 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.TextFieldEIO;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   private static final String TEXTURE_SIMPLE = "enderio:textures/gui/buffer.png";
   private static final String TEXTURE_FULL = "enderio:textures/gui/buffer_full.png";
 
-  private TextFieldEIO maxInput;
-  private TextFieldEIO maxOutput;
+  private TextFieldEnder maxInput;
+  private TextFieldEnder maxOutput;
 
   private int lastInput, lastOutput;
 
@@ -36,9 +37,9 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
       int x = (isFull() ? 20 : 58);
       int y = guiTop + 27;
 
-      maxInput = new TextFieldEIO(getFontRenderer(), x, y, 60, 12);
+      maxInput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
       y += 28;
-      maxOutput = new TextFieldEIO(getFontRenderer(), x, y, 60, 12);
+      maxOutput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
       
       textFields.add(maxInput);
       textFields.add(maxOutput);
@@ -154,15 +155,15 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    String invName = Lang.localize(getTileEntity().getInventoryName() + ".name", false);
+    String invName = EnderIO.lang.localizeExact(getTileEntity().getInventoryName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if(getTileEntity().hasPower()) {
       sx += isFull() ? 19 : 57;
       sy += 17;
 
-      getFontRenderer().drawStringWithShadow(Lang.localize("gui.simple.in"), sx, sy, 0xFFFFFF);
-      getFontRenderer().drawStringWithShadow(Lang.localize("gui.simple.out"), sx, sy + 27, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(EnderIO.lang.localize("gui.simple.in"), sx, sy, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(EnderIO.lang.localize("gui.simple.out"), sx, sy + 27, 0xFFFFFF);
     }
   }
 

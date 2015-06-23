@@ -2,12 +2,24 @@ package crazypants.enderio.conduit.gui.item;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
@@ -22,21 +34,11 @@ import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.MultiIconButtonEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.DyeColor;
-import crazypants.util.Lang;
-import java.util.ArrayList;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -57,13 +59,13 @@ public class ItemSettings extends BaseSettingsPanel {
   private String inputHeading;
   private String outputHeading;
 
-  private final MultiIconButtonEIO nextFilterB;
+  private final MultiIconButton nextFilterB;
 
-  private final ToggleButtonEIO loopB;
-  private final ToggleButtonEIO roundRobinB;
+  private final ToggleButton loopB;
+  private final ToggleButton roundRobinB;
 
-  private final MultiIconButtonEIO priUpB;
-  private final MultiIconButtonEIO priDownB;
+  private final MultiIconButton priUpB;
+  private final MultiIconButton priDownB;
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
@@ -85,29 +87,29 @@ public class ItemSettings extends BaseSettingsPanel {
   private IItemFilterGui filterGui;
 
   public ItemSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_ITEM, Lang.localize("itemItemConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con);
     itemConduit = (IItemConduit) con;
 
-    inputHeading = Lang.localize("gui.conduit.item.extractionFilter");
-    outputHeading = Lang.localize("gui.conduit.item.insertionFilter");
+    inputHeading = EnderIO.lang.localize("gui.conduit.item.extractionFilter");
+    outputHeading = EnderIO.lang.localize("gui.conduit.item.insertionFilter");
 
     int x = 52;
     int y = customTop;
 
-    nextFilterB = MultiIconButtonEIO.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
+    nextFilterB = MultiIconButton.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
     x = 66;    
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
-    channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
+    channelB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
     
-    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.filterupgrade")) {
+    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilterUpgrades(isInputVisible()) && super.shouldDraw();
       }
     };
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), Lang.localize("gui.conduit.item.speedupgrade"), Lang.localize("gui.conduit.item.speedupgrade2")) {
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"), EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
@@ -115,9 +117,9 @@ public class ItemSettings extends BaseSettingsPanel {
     };
 
     ArrayList<String> list = new ArrayList<String>();
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
     for(FunctionUpgrade upgrade : FunctionUpgrade.values()) {
-      list.add(Lang.localize(upgrade.unlocName.concat(".name"), false));
+      list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
     }
     functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 34, 18, 18), list) {
       @Override
@@ -150,27 +152,27 @@ public class ItemSettings extends BaseSettingsPanel {
     x += rsB.getWidth() + 4;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
-    colorB.setToolTipHeading(Lang.localize("gui.conduit.item.sigCol"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.sigCol"));
 
     x += 4 + colorB.getWidth();
-    roundRobinB = new ToggleButtonEIO(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
-    roundRobinB.setSelectedToolTip(Lang.localize("gui.conduit.item.roundRobinEnabled"));
-    roundRobinB.setUnselectedToolTip(Lang.localize("gui.conduit.item.roundRobinDisabled"));
+    roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    roundRobinB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinEnabled"));
+    roundRobinB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinDisabled"));
     roundRobinB.setPaintSelectedBorder(false);
 
     x += 4 + roundRobinB.getWidth();
-    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
-    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
-    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
+    loopB = new ToggleButton(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    loopB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedEnabled"));
+    loopB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
 
-    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), Lang.localize("gui.conduit.item.priority"));
+    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), EnderIO.lang.localize("gui.conduit.item.priority"));
     
     x = priLeft + priWidth + 9;    
-    priUpB = MultiIconButtonEIO.createAddButton(gui, ID_PRIORITY_UP, x, y);
+    priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
 
     y += 8;
-    priDownB = MultiIconButtonEIO.createMinusButton(gui, ID_PRIORITY_DOWN, x, y);
+    priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y);
 
     gui.getContainer().addFilterListener(new FilterChangeListener() {
       @Override
@@ -397,7 +399,7 @@ public class ItemSettings extends BaseSettingsPanel {
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
       GL11.glColor3f(1, 1, 1);
-      IconEIO.BUTTON_DOWN.renderIcon(left + priLeft, top - 5, priWidth, 16, 0, true);
+      IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
       String str = itemConduit.getOutputPriority(gui.getDir()) + "";
       int sw = fr.getStringWidth(str);
       fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));

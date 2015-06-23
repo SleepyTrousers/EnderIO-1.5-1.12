@@ -4,8 +4,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.render.RenderUtil;
 
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 

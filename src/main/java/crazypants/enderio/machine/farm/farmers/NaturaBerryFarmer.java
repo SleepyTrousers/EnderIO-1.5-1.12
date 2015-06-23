@@ -6,9 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.util.BlockCoord;
 
 public class NaturaBerryFarmer extends PickableFarmer {
 

@@ -16,6 +16,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.client.render.IconUtil;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -53,7 +57,9 @@ import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
-import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.gui.TooltipHandlerBurnTime;
+import crazypants.enderio.gui.TooltipHandlerFluid;
+import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
 import crazypants.enderio.item.ToolTickHandler;
@@ -134,7 +140,6 @@ import crazypants.enderio.teleport.telepad.TelePadRenderer;
 import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
-import crazypants.render.IconUtil;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -214,9 +219,12 @@ public class ClientProxy extends CommonProxy {
   public void load() {
     super.load();
 
-    //make sure the tooltip stuff is registered
-    @SuppressWarnings("unused")
-    TooltipAddera tta = TooltipAddera.instance;
+    SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
+    tt.addCallback(new TooltipHandlerGrinding());
+    tt.addCallback(new TooltipHandlerBurnTime());
+    if (Config.addFuelTooltipsToAllFluidContainers) {
+      tt.addCallback(new TooltipHandlerFluid());
+    }
 
     // Renderers
 

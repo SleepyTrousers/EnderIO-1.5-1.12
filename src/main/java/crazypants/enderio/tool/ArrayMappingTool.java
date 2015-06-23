@@ -1,9 +1,6 @@
 package crazypants.enderio.tool;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-
-import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class ArrayMappingTool<T extends Object> {
 

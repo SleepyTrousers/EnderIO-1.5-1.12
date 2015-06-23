@@ -13,9 +13,15 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.gui.TextFieldEIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -27,12 +33,6 @@ import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.vecmath.VecmathUtil;
 
 public class GuiCapBank extends GuiContainerBase {
 
@@ -62,8 +62,8 @@ public class GuiCapBank extends GuiContainerBase {
   private RedstoneModeButton inputRsButton;
   private RedstoneModeButton outputRsButton;
 
-  private TextFieldEIO maxInputTF;
-  private TextFieldEIO maxOutputTF;
+  private TextFieldEnder maxInputTF;
+  private TextFieldEnder maxOutputTF;
 
   private final GuiOverlayIoConfig configOverlay;
   private final GuiButtonIoConfig configB;
@@ -155,9 +155,9 @@ public class GuiCapBank extends GuiContainerBase {
       @Override
       protected String getLabelForMode(IoMode mode) {
         if(mode == IoMode.PUSH) {
-          return Lang.localize("gui.capBank.outputMode");
+          return EnderIO.lang.localize("gui.capBank.outputMode");
         } else if(mode == IoMode.PULL) {
-          return Lang.localize("gui.capBank.inputMode");
+          return EnderIO.lang.localize("gui.capBank.inputMode");
         }
         return super.getLabelForMode(mode);
       }
@@ -171,15 +171,15 @@ public class GuiCapBank extends GuiContainerBase {
     
     x = inputX - 24;
     y = inputY;
-    maxInputTF = new TextFieldEIO(fontRenderer, x, y, 68, 16);
+    maxInputTF = new TextFieldEnder(fontRenderer, x, y, 68, 16);
     maxInputTF.setMaxStringLength(10);
-    maxInputTF.setCharFilter(TextFieldEIO.FILTER_NUMERIC);
+    maxInputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
     
     x = outputX - 24;
     y = outputY;
-    maxOutputTF = new TextFieldEIO(fontRenderer, x, y, 68, 16);
+    maxOutputTF = new TextFieldEnder(fontRenderer, x, y, 68, 16);
     maxOutputTF.setMaxStringLength(10);
-    maxOutputTF.setCharFilter(TextFieldEIO.FILTER_NUMERIC);
+    maxOutputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
     textFields.add(maxInputTF);
     textFields.add(maxOutputTF);
@@ -260,7 +260,7 @@ public class GuiCapBank extends GuiContainerBase {
 
     int midX = sx + xSize / 2;
 
-    String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) +
+    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) +
         " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
@@ -269,13 +269,13 @@ public class GuiCapBank extends GuiContainerBase {
 
     drawString(fontRenderer, str, x, y, -1);
 
-    str = Lang.localize("gui.capBank.maxInput") + ":";
+    str = EnderIO.lang.localize("gui.capBank.maxInput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + inputX - swid - 3;
     y = guiTop + inputY + 2;
     drawString(fontRenderer, str, x, y, -1);
 
-    str = Lang.localize("gui.capBank.maxOutput") + ":";
+    str = EnderIO.lang.localize("gui.capBank.maxOutput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;

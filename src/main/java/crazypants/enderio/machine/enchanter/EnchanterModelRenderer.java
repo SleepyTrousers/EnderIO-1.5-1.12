@@ -12,9 +12,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.render.RenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements IItemRenderer {

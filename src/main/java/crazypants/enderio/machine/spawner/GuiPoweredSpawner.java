@@ -9,16 +9,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.MultiIconButtonEIO;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.Lang;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
-  private final MultiIconButtonEIO modeB;
+  private final MultiIconButton modeB;
   private final Rectangle progressTooltipRect;
   private boolean wasSpawnMode;
   private String header;
@@ -26,7 +28,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
     super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te));
 
-    modeB = MultiIconButtonEIO.createRightArrowButton(this, 8888, 115, 10);
+    modeB = MultiIconButton.createRightArrowButton(this, 8888, 115, 10);
     modeB.setSize(10, 16);
 
     addProgressTooltip(80, 34, 14, 14);
@@ -56,13 +58,13 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     ((ContainerPoweredSpawner) inventorySlots).setSlotVisibility(!spawnMode);
 
     if(spawnMode) {
-      header = Lang.localize("gui.machine.poweredspawner.spawn");
+      header = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
       progressTooltipRect.x = 80;
       progressTooltipRect.y = 34;
       progressTooltipRect.width = 14;
       progressTooltipRect.height = 14;
     } else {
-      header = Lang.localize("gui.machine.poweredspawner.capture");
+      header = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
       progressTooltipRect.x = 52;
       progressTooltipRect.y = 40;
       progressTooltipRect.width = 72;
@@ -108,7 +110,6 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
         drawTexturedModalRect(sx + 76, sy + 43, 176, 14, scaled + 1, 16);
       }
     }
-
   }
 
   @Override

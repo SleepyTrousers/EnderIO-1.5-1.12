@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.util.Lang;
+import crazypants.enderio.EnderIO;
 
 public class PowerDisplayUtil {
 
@@ -33,11 +33,11 @@ public class PowerDisplayUtil {
   }
 
   public static String perTickStr() {
-    return Lang.localize("power.tick");
+    return EnderIO.lang.localize("power.tick");
   }
 
   public static String ofStr() {
-    return Lang.localize("gui.powerMonitor.of");
+    return EnderIO.lang.localize("gui.powerMonitor.of");
   }
  
   static {
@@ -54,7 +54,7 @@ public class PowerDisplayUtil {
     }
 
     IEnergyContainerItem ci = (IEnergyContainerItem)item.getItem();
-    return Lang.localize("item.tooltip.power")+ " "+ PowerDisplayUtil.formatPower(ci.getEnergyStored(item)) + "/"
+    return EnderIO.lang.localize("item.tooltip.power")+ " "+ PowerDisplayUtil.formatPower(ci.getEnergyStored(item)) + "/"
     + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored(item)) + " " + PowerDisplayUtil.abrevation();
   }
 
@@ -106,7 +106,7 @@ public class PowerDisplayUtil {
   }
 
   public static String abrevation() {
-    return Lang.localize("power.rf");
+    return EnderIO.lang.localize("power.rf");
   }
   
   @SideOnly(Side.CLIENT)

@@ -1,12 +1,14 @@
 package crazypants.enderio.machine.invpanel;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.network.MessageTileEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSetExtractionDisabled extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketSetExtractionDisabled, IMessage> {
 

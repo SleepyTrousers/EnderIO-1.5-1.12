@@ -8,8 +8,14 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -17,9 +23,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
-import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
-import crazypants.util.FluidUtil;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -29,8 +32,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   protected boolean redstoneStateDirty = true;
 
+  public static IFluidHandler getExternalFluidHandler(IBlockAccess world, BlockCoord bc) {
+    IFluidHandler con = FluidUtil.getFluidHandler(world, bc);
+    return (con != null && !(con instanceof IConduitBundle)) ? con : null;
+  }
+
   public IFluidHandler getExternalHandler(ForgeDirection direction) {
-    IFluidHandler con = FluidUtil.getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
+    IFluidHandler con = getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 

@@ -7,24 +7,25 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.RenderUtil;
 
 public class GuiEnchanter extends GuiContainerBase {
 
   private TileEnchanter te;
   private ContainerEnchanter container;
-  private IconButtonEIO recipeButton;
+  private IconButton recipeButton;
   
   public GuiEnchanter(EntityPlayer player, InventoryPlayer inventory, TileEnchanter te) {
     super(new ContainerEnchanter(player, inventory, te));
     container = (ContainerEnchanter)inventorySlots;
     this.te = te;
     
-    recipeButton = new IconButtonEIO(this, 100, 154, 8, IconEIO.RECIPE);
+    recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE);
     recipeButton.visible = false;
     recipeButton.setIconMargin(3, 3);
   }
@@ -43,6 +44,10 @@ public class GuiEnchanter extends GuiContainerBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    
+    if(EnderIO.proxy.isNeiInstalled()) {
+      IconEIO.map.render(IconEIO.RECIPE, sx + 155, sy + 8, 16, 16, 0, true);
+    }
     
     int curCost = te.getCurrentEnchantmentCost();    
     if(curCost > 0) {

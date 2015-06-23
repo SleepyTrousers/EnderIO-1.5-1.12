@@ -10,6 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cofh.api.energy.ItemEnergyContainer;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,7 +22,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {

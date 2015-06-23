@@ -17,6 +17,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.UsernameCache;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.TileEntityEnder;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,7 +31,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
@@ -43,7 +46,6 @@ import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.IFacade;
-import crazypants.util.Lang;
 
 public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
 
@@ -137,9 +139,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
-    if (player.worldObj.isRemote && !player.isSneaking()) {
-      player.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED
-          + UsernameCache.getLastKnownUsername(owner) + EnumChatFormatting.WHITE + " " + Lang.localize("gui.travelAccessable.privateBlock2")));
+    if(player.worldObj.isRemote && !player.isSneaking()) {
+      player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " "
+          + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner) + EnumChatFormatting.WHITE + " "
+          + EnderIO.lang.localize("gui.travelAccessable.privateBlock2")));
     }
   }
 
@@ -170,7 +173,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileTravelAnchor anchor = (TileTravelAnchor) te;
 
     if (anchor == null) {

@@ -1,19 +1,21 @@
 package crazypants.enderio.machine.painter;
 
-import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
-
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.util.Util;
+
+import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
 public abstract class BasicPainterTemplate implements IMachineRecipe {
 

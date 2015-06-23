@@ -8,16 +8,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.util.Lang;
 
 public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -56,7 +57,7 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
   @SuppressWarnings("rawtypes")
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addCommonTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addCommonTooltipFromResources(list, itemstack);
   }
 
   @SuppressWarnings("rawtypes")
@@ -67,12 +68,12 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     int prod = Config.maxPhotovoltaicOutputRF;
     if(itemstack.getItemDamage() == 1) {
       prod = Config.maxPhotovoltaicAdvancedOutputRF;
     }
-    list.add(Lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
+    list.add(EnderIO.lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
   }
 
   @Override

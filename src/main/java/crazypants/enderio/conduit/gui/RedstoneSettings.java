@@ -3,17 +3,19 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 
 import net.minecraft.client.gui.GuiButton;
+
+import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.enderio.gui.CheckBoxEIO;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.util.DyeColor;
-import crazypants.util.Lang;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
@@ -21,16 +23,16 @@ public class RedstoneSettings extends BaseSettingsPanel {
   private static final int ID_STRONG_BUTTON = GuiExternalConnection.nextButtonId();
   private ColorButton cb;
 
-  private CheckBoxEIO strongCB;
+  private CheckBox strongCB;
 
-  private String signalColorStr = Lang.localize("gui.conduit.redstone.color");
-  private String signalStringthStr = Lang.localize("gui.conduit.redstone.signalStrengh");
+  private String signalColorStr = EnderIO.lang.localize("gui.conduit.redstone.color");
+  private String signalStringthStr = EnderIO.lang.localize("gui.conduit.redstone.signalStrengh");
   private IInsulatedRedstoneConduit insCon;
 
   private int stongLabelX;
 
   public RedstoneSettings(GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, Lang.localize("itemRedstoneConduitInsulated.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con);
 
     int x = 0;
     int y = customTop;
@@ -43,7 +45,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
       if(!insCon.isSpecialConnection(gui.getDir())) {
         x += gap + gap + 2 + gui.getFontRenderer().getStringWidth(signalColorStr);
         cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-        cb.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
+        cb.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
         DyeColor sigCol = insCon.getSignalColor(gui.getDir());
         cb.setColorIndex(sigCol.ordinal());
         x += cb.getButtonWidth();
@@ -51,8 +53,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
       }
       stongLabelX = x;
       x += gap + gui.getFontRenderer().getStringWidth(signalStringthStr) + gap + 3;
-      strongCB = new CheckBoxEIO(gui, ID_STRONG_BUTTON, x, y);
-      strongCB.setToolTip(Lang.localize("gui.conduit.redstone.signalStrengh.tooltip"));
+      strongCB = new CheckBox(gui, ID_STRONG_BUTTON, x, y);
+      strongCB.setToolTip(EnderIO.lang.localize("gui.conduit.redstone.signalStrengh.tooltip"));
     }
   }
 

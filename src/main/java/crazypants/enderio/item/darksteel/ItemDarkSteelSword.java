@@ -24,6 +24,11 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -34,13 +39,9 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
@@ -354,10 +355,10 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(str != null) {
       list.add(str);
     }
-    list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line1"));
+    list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

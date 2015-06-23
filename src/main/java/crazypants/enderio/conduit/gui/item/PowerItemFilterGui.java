@@ -1,14 +1,16 @@
 package crazypants.enderio.conduit.gui.item;
 
 import net.minecraft.client.gui.GuiButton;
+
+import com.enderio.core.client.gui.button.ToggleButton;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Lang;
 
 public class PowerItemFilterGui implements IItemFilterGui {
 
@@ -20,7 +22,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
   private final IItemConduit itemConduit;
   private final GuiExternalConnection gui;
 
-  private final ToggleButtonEIO stickyB;
+  private final ToggleButton stickyB;
 
   private final GuiButton modeB;
   private final GuiButton levelB;
@@ -45,10 +47,10 @@ public class PowerItemFilterGui implements IItemFilterGui {
     int y = 68;
 
     x += 20;
-    stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
+    stickyB = new ToggleButton(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
     modeB = new GuiButton(ID_MORE, 0, 0, 40, 20, "");

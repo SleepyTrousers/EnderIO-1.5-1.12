@@ -19,22 +19,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
@@ -268,9 +269,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(Lang.localize("item.darkSteel_axe.tooltip.multiHarvest"));
+      list.add(EnderIO.lang.localize("item.darkSteel_axe.tooltip.multiHarvest"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelAxeEffeciencyBoostWhenPowered + " "
-          + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
@@ -285,8 +286,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
     @Override
     public int compare(BlockCoord arg0, BlockCoord arg1) {
-      int d1 = refPoint.distanceSquared(arg0);
-      int d2 = refPoint.distanceSquared(arg1);
+      int d1 = refPoint.getDistSq(arg0);
+      int d2 = refPoint.getDistSq(arg1);
       return compare(d1, d1);
     }
 

@@ -1,6 +1,6 @@
 package crazypants.enderio.machine;
 
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public interface IItemBuffer {
 

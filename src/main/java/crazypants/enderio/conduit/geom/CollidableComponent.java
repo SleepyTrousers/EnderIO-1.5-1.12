@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.geom;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+
 import crazypants.enderio.conduit.IConduit;
-import crazypants.render.BoundingBox;
 
 public class CollidableComponent {
 

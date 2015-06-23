@@ -14,14 +14,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.util.BlockCoord;
-import crazypants.util.Util;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
@@ -107,7 +110,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           // There's not really any good way to compare conduits...
           IConduit existingConduit = bundle.getConduit(getBaseConduitType());
           ItemStack existingConduitAsItemStack = existingConduit.createItem();
-          if (!crazypants.util.ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
+          if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
             if (!world.isRemote) {
               IConduit newConduit = createConduit(stack, player);
               if (newConduit == null) {

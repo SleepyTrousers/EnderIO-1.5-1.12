@@ -14,14 +14,16 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.RoundRobinIterator;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.util.BlockCoord;
-import crazypants.util.InventoryWrapper;
-import crazypants.util.ItemUtil;
-import crazypants.util.RoundRobinIterator;
 
 public class NetworkedInventory {
 
@@ -370,7 +372,7 @@ public class NetworkedInventory {
   }
 
   private int distanceTo(NetworkedInventory other) {
-    return con.getLocation().distanceSquared(other.con.getLocation());
+    return con.getLocation().getDistSq(other.con.getLocation());
   }
 
   public ISidedInventory getInventory() {

@@ -4,16 +4,18 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
-import crazypants.util.Lang;
 
 public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
@@ -60,12 +62,12 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    String gpt = " " + Lang.localize("gas.gasTick");
+    String gpt = " " + EnderIO.lang.localize("gas.gasTick");
     int extractRate = Config.gasConduitExtractRate;
     int maxIo = Config.gasConduitMaxIoRate;
-    list.add(Lang.localize("itemGasConduit.tooltip.maxExtract") + " " + extractRate + gpt);
-    list.add(Lang.localize("itemGasConduit.tooltip.maxIo") + " " + maxIo + gpt);
-    TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemGasConduit");
+    list.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxExtract") + " " + extractRate + gpt);
+    list.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " " + maxIo + gpt);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemGasConduit");
   }
   
   @Override

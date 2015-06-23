@@ -7,8 +7,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import com.enderio.core.client.gui.widget.TemplateSlot;
+
 import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.gui.TemplateSlot;
 import crazypants.util.ArrayInventory;
 
 public class ContainerTravelAccessable extends Container {

@@ -10,6 +10,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.vecmath.Vector3f;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,7 +21,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.vecmath.Vector3f;
 
 public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
 
@@ -179,7 +182,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileElectricLight light = (TileElectricLight) te;
     if(light == null) {
       return;

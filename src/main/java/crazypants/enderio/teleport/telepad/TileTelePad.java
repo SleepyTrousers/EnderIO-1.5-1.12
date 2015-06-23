@@ -22,6 +22,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
@@ -41,9 +44,6 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
-import crazypants.util.BlockCoord;
-import crazypants.util.IProgressTile;
-import crazypants.util.Util;
 
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
   
@@ -343,7 +343,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private int calculateTeleportPower() {
     if (worldObj.provider.dimensionId == targetDim) {
-      int distance = new BlockCoord(this).distance(target);
+      int distance = new BlockCoord(this).getDist(target);
       double base = Math.log((0.005 * distance) + 1);
       this.maxPower = (int) (base * Config.telepadPowerCoefficient);
       if (this.maxPower <= 0) {

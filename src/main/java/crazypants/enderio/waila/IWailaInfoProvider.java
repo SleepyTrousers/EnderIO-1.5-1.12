@@ -4,7 +4,8 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 public interface IWailaInfoProvider {
   

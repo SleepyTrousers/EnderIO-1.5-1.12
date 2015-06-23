@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
-import crazypants.util.ItemUtil;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -9,6 +9,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.common.util.ItemUtil;
 
 public class StoredCraftingRecipe {
 

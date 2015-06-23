@@ -5,6 +5,9 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.gas.IGasConduit;

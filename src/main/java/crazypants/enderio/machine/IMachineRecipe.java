@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 /**

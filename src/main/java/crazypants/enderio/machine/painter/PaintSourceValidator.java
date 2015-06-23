@@ -7,10 +7,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.util.ItemUtil;
-import crazypants.util.Util;
 
 public class PaintSourceValidator {
 

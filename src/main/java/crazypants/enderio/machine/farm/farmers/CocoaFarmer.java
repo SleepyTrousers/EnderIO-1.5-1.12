@@ -8,9 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.util.BlockCoord;
 
 public class CocoaFarmer extends CustomSeedFarmer
 {

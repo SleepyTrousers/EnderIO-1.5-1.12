@@ -1,11 +1,6 @@
 package crazypants.enderio.material;
 
-import static crazypants.util.OreDictionaryHelper.DUST_ENDERPEARL;
-import static crazypants.util.OreDictionaryHelper.INGOT_COPPER;
-import static crazypants.util.OreDictionaryHelper.INGOT_ENDERIUM;
-import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
-import static crazypants.util.OreDictionaryHelper.isRegistered;
-
+import static com.enderio.core.common.util.OreDictionaryHelper.*;
 
 public enum PowderIngot {
 
@@ -39,7 +34,7 @@ public enum PowderIngot {
   }
 
   public boolean isDependancyMet() {
-    if(oreDictDependancy == null) {
+    if (oreDictDependancy == null) {
       return true;
     }
     return isRegistered(oreDictDependancy);

@@ -6,8 +6,10 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.gui.GhostSlot;
 
 public interface IItemFilter {
 

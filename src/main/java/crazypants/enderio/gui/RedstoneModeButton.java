@@ -1,15 +1,18 @@
 package crazypants.enderio.gui;
 
 import net.minecraft.client.Minecraft;
+
+import com.enderio.core.api.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.IGuiScreen;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
-public class RedstoneModeButton extends IconButtonEIO {
+public class RedstoneModeButton extends IconButton {
 
   private static IconEIO[] ICONS = new IconEIO[] { IconEIO.REDSTONE_MODE_ALWAYS, IconEIO.REDSTONE_MODE_WITH_SIGNAL, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL,
       IconEIO.REDSTONE_MODE_NEVER };
@@ -30,7 +33,7 @@ public class RedstoneModeButton extends IconButtonEIO {
     this.model = model;
     this.bc = bc;
     curMode = model.getRedstoneControlMode();
-    setToolTip(Lang.localize("gui.tooltip.redstoneControlMode"), curMode.getTooltip());
+    setToolTip(EnderIO.lang.localize("gui.tooltip.redstoneControlMode"), curMode.getTooltip());
     setIcon(ICONS[curMode.ordinal()]);
   }
 
@@ -58,7 +61,7 @@ public class RedstoneModeButton extends IconButtonEIO {
 
   public void setTooltipKey(String tooltipKey) {
     this.tooltipKey = tooltipKey;
-    setToolTip(Lang.localize(tooltipKey, false), model.getRedstoneControlMode().getTooltip());
+    setToolTip(EnderIO.lang.localizeExact(tooltipKey), model.getRedstoneControlMode().getTooltip());
   }
 
   private void nextMode() {
@@ -80,7 +83,7 @@ public class RedstoneModeButton extends IconButtonEIO {
       return;
     }
     curMode = mode;
-    setToolTip(Lang.localize(tooltipKey, false), mode.getTooltip());
+    setToolTip(EnderIO.lang.localizeExact(tooltipKey), mode.getTooltip());
     setIcon(ICONS[mode.ordinal()]);
     model.setRedstoneControlMode(mode);
     if(bc != null) {

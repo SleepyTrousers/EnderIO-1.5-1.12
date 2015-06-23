@@ -6,11 +6,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.GuiMachineBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
@@ -25,7 +26,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("tank.tank");
+        String heading = EnderIO.lang.localize("tank.tank");
         if(entity.tank.getFluid() != null) {
           heading += ": " + entity.tank.getFluid().getLocalizedName();
         }

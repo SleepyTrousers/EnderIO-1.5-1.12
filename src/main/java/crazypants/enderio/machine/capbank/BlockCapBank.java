@@ -22,6 +22,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -30,10 +37,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
@@ -50,9 +54,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.util.Lang;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
 
 public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable {
 
@@ -139,7 +140,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         .getMaxEnergyStored()));
     if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Items")) {
       NBTTagList itemList = (NBTTagList) itemstack.stackTagCompound.getTag("Items");
-      String msg = Lang.localize("tile.blockCapBank.tooltip.hasItems", false);
+      String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
       list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
     }
   }
@@ -147,7 +148,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
   }
 
   @Override
@@ -441,7 +442,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     drop.stackTagCompound = new NBTTagCompound();
     if(te != null) {
       ((TileCapBank) te).writeCommonNBT(drop.stackTagCompound);
@@ -516,12 +517,12 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
           ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
         }
 
-        if(TooltipAddera.showAdvancedTooltips()) {
+        if(SpecialTooltipHandler.showAdvancedTooltips()) {
           String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
           String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
-          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
-          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
-          tooltip.add(String.format("%s : %s%s%s", Lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
+          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
           tooltip.add("");
         }
 

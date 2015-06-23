@@ -7,9 +7,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.power.PacketPowerStorage;
-import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.util.BlockCoord;
 
 public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStoredEnergy, IMessage> {
 

@@ -4,11 +4,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
 public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {

@@ -9,9 +9,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.conduit.IConduit;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 

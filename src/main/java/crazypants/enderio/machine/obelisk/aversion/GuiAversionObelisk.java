@@ -8,19 +8,19 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelisk> {
 
-  ToggleButtonEIO showRangeB;
+  ToggleButton showRangeB;
 
   private static final int RANGE_ID = 8738924;
 
@@ -28,12 +28,12 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
     super(te, new ContainerAversionObelisk(par1InventoryPlayer, te));
 
     int x = getXSize() - 5 - BUTTON_SIZE;
-    showRangeB = new ToggleButtonEIO(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public List<String> getToolTipText() {
-        return Lists.newArrayList(Lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
       }
     });
   }
@@ -57,7 +57,7 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
+    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
         ColorUtil.getRGB(Color.white));
   }
 

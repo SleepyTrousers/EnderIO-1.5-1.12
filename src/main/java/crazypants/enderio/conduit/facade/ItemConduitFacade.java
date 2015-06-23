@@ -12,6 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,15 +27,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -178,7 +179,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     if(PainterUtil.getSourceBlock(itemstack) == null) {
-      list.add(Lang.localize("item.itemConduitFacade.tooltip.notpainted"));
+      list.add(EnderIO.lang.localize("item.itemConduitFacade.tooltip.notpainted"));
     } else {
       list.add(PainterUtil.getTooltTipText(itemstack));
     }
@@ -188,10 +189,10 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == FacadeType.HARDENED.ordinal()) {
       list.add("");
-      list.add(Lang.localize(getUnlocalizedName(itemstack) + ".tooltip", false));
+      list.add(EnderIO.lang.localizeExact(getUnlocalizedName(itemstack) + ".tooltip"));
     }
   }
 

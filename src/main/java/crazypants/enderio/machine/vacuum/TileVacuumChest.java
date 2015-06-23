@@ -2,6 +2,7 @@ package crazypants.enderio.machine.vacuum;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
@@ -12,6 +13,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
@@ -21,9 +26,6 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.render.BoundingBox;
-import crazypants.util.ItemUtil;
-import net.minecraft.block.Block;
 
 public class TileVacuumChest extends TileEntityEio implements IEntitySelector, IInventory, IRedstoneModeControlable {
 

@@ -32,9 +32,7 @@ import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
-import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
-import crazypants.util.Lang;
 
 public class DarkSteelRecipeManager {
 
@@ -202,11 +200,11 @@ public class DarkSteelRecipeManager {
       }
     }
     if(!applyableUpgrades.isEmpty()) {
-      list.add(EnumChatFormatting.YELLOW + Lang.localize("tooltip.anvilupgrades") + " ");
+      list.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + Lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
+        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
         list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
-            + " " + Lang.localize("item.darkSteel.tooltip.lvs"));
+            + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
       }
     }
   }

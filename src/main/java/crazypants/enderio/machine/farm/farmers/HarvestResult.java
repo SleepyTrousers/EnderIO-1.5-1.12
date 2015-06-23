@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
-import crazypants.util.BlockCoord;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public class HarvestResult implements IHarvestResult {
 

@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.util.Util;
 
 public class ManyToOneRecipeManager {
   

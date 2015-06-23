@@ -18,6 +18,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -37,10 +43,6 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.render.BoundingBox;
-import crazypants.render.IconUtil;
-import crazypants.util.DyeColor;
-import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 

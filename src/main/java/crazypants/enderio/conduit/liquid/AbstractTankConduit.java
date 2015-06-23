@@ -12,13 +12,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
@@ -101,7 +103,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           if(network.fluidTypeLocked) {
             network.setFluidTypeLocked(false);
             numEmptyEvents = 0;
-            player.addChatComponentMessage(new ChatComponentText(Lang.localize("itemLiquidConduit.unlockedType")));
+            player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("itemLiquidConduit.unlockedType")));
           }
         } else if(network != null) {
           network.setFluidType(null);
@@ -119,7 +121,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
               && (network.getFluidType() == null || network.getTotalVolume() < 500 || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
             network.setFluidType(fluid);
             network.setFluidTypeLocked(true);
-            player.addChatComponentMessage(new ChatComponentText(Lang.localize("itemLiquidConduit.lockedType") + " "
+            player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("itemLiquidConduit.lockedType") + " "
                 + FluidRegistry.getFluidName(fluid)));
           }
         }

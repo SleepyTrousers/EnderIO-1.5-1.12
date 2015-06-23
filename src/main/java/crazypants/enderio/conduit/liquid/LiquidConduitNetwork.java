@@ -8,8 +8,10 @@ import java.util.Set;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.util.BlockCoord;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
@@ -175,7 +177,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     int closestDistance = Integer.MAX_VALUE;
     LocatedFluidHandler closestTank = null;
     for (LocatedFluidHandler lh : externals) {
-      int distance = lh.bc.distanceSquared(conLoc);
+      int distance = lh.bc.getDistSq(conLoc);
       if(distance < closestDistance && con.canOutputToDir(lh.dir.getOpposite())) {
         int couldFill = lh.tank.fill(lh.dir, toDrain.copy(), false);
         if(couldFill > 0) {

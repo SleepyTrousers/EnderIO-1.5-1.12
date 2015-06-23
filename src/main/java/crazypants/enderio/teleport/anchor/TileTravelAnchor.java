@@ -11,13 +11,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+
+import com.enderio.core.common.util.PlayerUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
-import crazypants.util.PlayerUtil;
 
 public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
 

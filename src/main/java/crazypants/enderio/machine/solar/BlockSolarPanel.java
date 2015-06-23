@@ -14,15 +14,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.util.Lang;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -140,9 +142,9 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
       if(!solar.canSeeSun()) {
-        tooltip.add(EnumChatFormatting.RED + Lang.localize("tooltip.sunlightBlocked"));
+        tooltip.add(EnumChatFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
       } else {
-        tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
+        tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
             EnumChatFormatting.WHITE, efficiency * 100));
       }
     }

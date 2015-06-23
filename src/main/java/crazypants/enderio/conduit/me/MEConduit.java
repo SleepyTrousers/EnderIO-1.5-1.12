@@ -17,6 +17,10 @@ import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
+
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -29,8 +33,6 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
 

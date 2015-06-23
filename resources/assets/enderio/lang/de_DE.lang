@@ -348,9 +348,6 @@ item.darkSteel_sword.name=Der Ender
 item.darkSteel_pickaxe.name=Dunkelspitzhacke
 item.darkSteel_axe.name=Dunkelaxt
 
-enderio.item.tooltip.showDetails=<Halte Shift>
-enderio.item.darkSteel.tooltip.durability=Haltbarkeit:
-
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Effizienz, wenn aktiviert
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Effizienz baut Obsidian ab
 

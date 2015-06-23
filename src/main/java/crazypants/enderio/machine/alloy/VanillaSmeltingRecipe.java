@@ -15,9 +15,9 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.Recipe;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.material.OreDictionaryPreferences;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {

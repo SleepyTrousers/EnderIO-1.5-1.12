@@ -8,14 +8,15 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.IconButtonEIO;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import crazypants.vecmath.Vector4f;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
@@ -40,8 +41,8 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
   }
   
-  private IconButtonEIO createLockButton(int slot, int x, int y) {
-    return new ToggleButtonEIO(this, LOCK_ID + slot, x, y, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED).setSelected(getTileEntity().isSlotLocked(slot));
+  private IconButton createLockButton(int slot, int x, int y) {
+    return new ToggleButton(this, LOCK_ID + slot, x, y, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED).setSelected(getTileEntity().isSlotLocked(slot));
   }
 
   @Override
@@ -96,7 +97,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   
   @Override
   protected String getPowerOutputLabel() {
-    return Lang.localize("farm.gui.baseUse");
+    return EnderIO.lang.localize("farm.gui.baseUse");
   }
   
   @Override

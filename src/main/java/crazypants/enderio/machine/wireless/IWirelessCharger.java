@@ -2,7 +2,8 @@ package crazypants.enderio.machine.wireless;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import crazypants.util.BlockCoord;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public interface IWirelessCharger {
 

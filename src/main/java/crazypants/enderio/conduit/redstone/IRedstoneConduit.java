@@ -4,8 +4,10 @@ import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.conduit.IConduit;
-import crazypants.util.DyeColor;
 
 public interface IRedstoneConduit extends IConduit {
 

@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.capbank.network;
 
 import io.netty.buffer.ByteBuf;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.util.BlockCoord;
 
 public class NetworkState {
 

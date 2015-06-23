@@ -12,12 +12,13 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.IconButtonEIO;
+import com.enderio.core.client.gui.button.IconButton;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Lang;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
@@ -37,16 +38,16 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     int x = (xSize / 2) - (BUTTON_SIZE / 2);
     int y = 8;
 
-    addButton(new IconButtonEIO(this, 0, x - 30, y, IconEIO.SUN), WeatherTask.CLEAR);
-    addButton(new IconButtonEIO(this, 1, x, y, IconEIO.RAIN), WeatherTask.RAIN);
-    addButton(new IconButtonEIO(this, 2, x + 30, y, IconEIO.THUNDER), WeatherTask.STORM);
+    addButton(new IconButton(this, 0, x - 30, y, IconEIO.SUN), WeatherTask.CLEAR);
+    addButton(new IconButton(this, 1, x, y, IconEIO.RAIN), WeatherTask.RAIN);
+    addButton(new IconButton(this, 2, x + 30, y, IconEIO.THUNDER), WeatherTask.STORM);
     refreshButtons();
   }
 
-  private void addButton(IconButtonEIO button, WeatherTask task) {
-    String tt1 = EnumChatFormatting.WHITE + Lang.localize("gui.weather.task." + task.name().toLowerCase(Locale.ENGLISH));
-    String tt2 = EnumChatFormatting.AQUA + String.format(Lang.localize("gui.weather.requireditem"), EnumChatFormatting.WHITE + task.requiredItem().getDisplayName());
-    String tt3 = String.format("%s%s %s%s", EnumChatFormatting.GREEN, fmt.format(task.power), EnumChatFormatting.WHITE, Lang.localize("power.rf"));
+  private void addButton(IconButton button, WeatherTask task) {
+    String tt1 = EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.weather.task." + task.name().toLowerCase(Locale.ENGLISH));
+    String tt2 = EnumChatFormatting.AQUA + String.format(EnderIO.lang.localize("gui.weather.requireditem"), EnumChatFormatting.WHITE + task.requiredItem().getDisplayName());
+    String tt3 = String.format("%s%s %s%s", EnumChatFormatting.GREEN, fmt.format(task.power), EnumChatFormatting.WHITE, EnderIO.lang.localize("power.rf"));
     button.setToolTip(tt1, tt2, tt3);
     button.onGuiInit();
   }

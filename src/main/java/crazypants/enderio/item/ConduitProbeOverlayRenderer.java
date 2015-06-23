@@ -51,8 +51,8 @@ public class ConduitProbeOverlayRenderer {
     double offsetX = res.getScaledWidth() - 48;
     double offsetY = res.getScaledHeight() - 16;
     GL11.glColor4f(1, 1, 1, 0.75f);
-    icon1.renderIcon(offsetX - 32, offsetY - 32, 32, 32, 0, true);
-    icon2.renderIcon(offsetX, offsetY - 32, 32, 32, 0, true);
+    icon1.getMap().render(icon1, offsetX - 32, offsetY - 32, 32, 32, 0, true);
+    icon2.getMap().render(icon2, offsetX, offsetY - 32, 32, 32, 0, true);
   }
 
 }

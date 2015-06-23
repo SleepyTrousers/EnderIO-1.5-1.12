@@ -3,9 +3,11 @@ package crazypants.enderio.machine.painter;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.common.util.IBlockAccessWrapper;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.util.IBlockAccessWrapper;
 
 public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 

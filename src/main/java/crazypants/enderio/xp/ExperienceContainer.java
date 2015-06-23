@@ -1,8 +1,9 @@
 package crazypants.enderio.xp;
 
+import io.netty.buffer.ByteBuf;
+
 import java.security.InvalidParameterException;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;

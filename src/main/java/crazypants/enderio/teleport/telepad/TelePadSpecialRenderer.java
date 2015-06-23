@@ -10,9 +10,8 @@ import net.minecraftforge.client.model.obj.GroupObject;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.TechneUtil;
 import com.google.common.collect.Lists;
-
-import crazypants.render.TechneUtil;
 
 public class TelePadSpecialRenderer extends TileEntitySpecialRenderer {
 

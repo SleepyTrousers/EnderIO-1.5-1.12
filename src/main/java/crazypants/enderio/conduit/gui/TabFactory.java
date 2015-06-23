@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.gui;
 
+import com.enderio.core.api.client.gui.ITabPanel;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
@@ -8,7 +10,6 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.gui.ITabPanel;
 
 public class TabFactory {
 

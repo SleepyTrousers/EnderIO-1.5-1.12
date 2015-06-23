@@ -2,10 +2,12 @@ package crazypants.enderio.machine.vat;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fluids.FluidTank;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.network.MessageTileEntity;
 
 public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessageHandler<PacketDumpTank, IMessage> {
   

@@ -8,10 +8,12 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
 
 public class AversionObeliskController {
 

@@ -11,16 +11,18 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.vecmath.Vector3d;
 
 public class BlockReservoir extends BlockEio implements IResourceTooltipProvider {
 

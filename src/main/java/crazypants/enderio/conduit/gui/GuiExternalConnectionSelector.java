@@ -11,14 +11,16 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.util.BlockCoord;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 

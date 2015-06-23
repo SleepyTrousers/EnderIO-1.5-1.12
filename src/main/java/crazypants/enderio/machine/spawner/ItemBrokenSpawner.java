@@ -9,13 +9,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemBrokenSpawner extends Item {
 
@@ -87,6 +89,7 @@ public class ItemBrokenSpawner extends Item {
   }
 
 
+  @SuppressWarnings("unchecked")
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
@@ -95,10 +98,10 @@ public class ItemBrokenSpawner extends Item {
       if(mobName != null) {
         par3List.add(StatCollector.translateToLocal("entity." + mobName + ".name"));
       }
-      if(!TooltipAddera.instance.showAdvancedTooltips()) {
-        TooltipAddera.instance.addShowDetailsTooltip(par3List);
+      if(!SpecialTooltipHandler.showAdvancedTooltips()) {
+        SpecialTooltipHandler.addShowDetailsTooltip(par3List);
       } else {
-        TooltipAddera.instance.addDetailedTooltipFromResources(par3List, par1ItemStack);
+        SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, par1ItemStack);
       }
     }
 

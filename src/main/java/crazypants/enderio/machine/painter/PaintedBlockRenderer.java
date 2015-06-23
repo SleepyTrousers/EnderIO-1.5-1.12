@@ -6,9 +6,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
 
 public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 

@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
-
 import java.util.Locale;
 
 import javax.xml.parsers.SAXParser;
@@ -27,13 +26,14 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.enderio.core.common.util.OreDictionaryHelper;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
 import crazypants.enderio.material.OreDictionaryPreferences;
-import crazypants.util.OreDictionaryHelper;
 
 public class RecipeConfigParser extends DefaultHandler {
 

@@ -7,12 +7,14 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.EntityUtil;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.util.BlockCoord;
-import crazypants.util.EntityUtil;
 
 public class PlayerTeleportHandler {
 

@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.hypercube;
 
-import crazypants.util.PlayerUtil;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -8,6 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+
+import com.enderio.core.common.util.PlayerUtil;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

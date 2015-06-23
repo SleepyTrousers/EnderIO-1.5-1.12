@@ -21,6 +21,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BaublesUtil;
+
 import static crazypants.enderio.EnderIO.itemMagnet;
 
 public class MagnetController implements IEntitySelector {

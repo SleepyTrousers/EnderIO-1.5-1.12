@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.buffer;
 
 import io.netty.buffer.ByteBuf;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.network.MessageTileEntity;
 
 public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessage, IMessageHandler<PacketBufferIO, IMessage> {
 

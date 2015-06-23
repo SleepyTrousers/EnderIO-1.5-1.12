@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-
 public class MachineRecipeRegistry {
 
   public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();

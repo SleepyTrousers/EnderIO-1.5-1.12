@@ -1,17 +1,20 @@
 package crazypants.enderio.machine.gui;
 
+import java.util.ArrayList;
+
+import org.lwjgl.input.Keyboard;
+
+import com.enderio.core.api.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.IGuiScreen;
-import crazypants.util.Lang;
-import java.util.ArrayList;
-import org.lwjgl.input.Keyboard;
 
-public class GuiButtonIoConfig extends ToggleButtonEIO {
+public class GuiButtonIoConfig extends ToggleButton {
 
   private final IIoConfigurable config;
   private final GuiOverlayIoConfig configOverlay;
@@ -23,12 +26,12 @@ public class GuiButtonIoConfig extends ToggleButtonEIO {
     this.configOverlay = configOverlay;
     this.configOverlay.setConfigB(this);
 
-    String configTooltip = Lang.localize("gui.machine.ioMode.overlay.tooltip");
+    String configTooltip = EnderIO.lang.localize("gui.machine.ioMode.overlay.tooltip");
     setUnselectedToolTip(configTooltip);
 
     ArrayList<String> list = new ArrayList<String>();
     list.add(configTooltip);
-    TooltipAddera.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
+    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
     if(list.size() > 1) {
       setSelectedToolTip(list.toArray(new String[list.size()]));
     }

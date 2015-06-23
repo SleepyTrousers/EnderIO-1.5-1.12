@@ -70,14 +70,14 @@ public class YetaWrenchOverlayRenderer {
       GL11.glColor4f(1, 1, 1, 0.75f);
       int index = indices.get(mode);
       Point p = iconOffsets[index];
-      onIcons[index].renderIcon(offsetX + p.x, offsetY + p.y, 16, 16, 0, true);
+      onIcons[index].getMap().render(onIcons[index], offsetX + p.x, offsetY + p.y, 16, 16, 0, true);
     }
   }
 
   private void renderAll(IconEIO[] icons, double offsetX, double offsetY) {
     int i = 0;
     for (Point p : iconOffsets) {
-      icons[i].renderIcon(offsetX + p.x, offsetY + p.y, 16, 16, 0, true);
+      icons[i].getMap().render(icons[i], offsetX + p.x, offsetY + p.y, 16, 16, 0, true);
       i++;
     }
   }

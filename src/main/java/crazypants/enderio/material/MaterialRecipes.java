@@ -7,16 +7,18 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import com.enderio.core.common.util.OreDictionaryHelper;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-import crazypants.util.OreDictionaryHelper;
 
+import static com.enderio.core.common.util.OreDictionaryHelper.*;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.*;
 import static crazypants.enderio.material.Material.*;
-import static crazypants.util.OreDictionaryHelper.*;
 import static crazypants.util.RecipeUtil.*;
 
 public class MaterialRecipes {
@@ -43,7 +45,7 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustIron", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()));
     OreDictionary.registerOre("dustGold", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()));
     OreDictionary.registerOre("dustObsidian", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_OBSIDIAN.ordinal()));
-
+    
     for (Alloy alloy : Alloy.values()) {
       OreDictionary.registerOre(alloy.oreIngot, new ItemStack(EnderIO.itemAlloy, 1, alloy.ordinal()));
       OreDictionary.registerOre(alloy.oreBlock, new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));

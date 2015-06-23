@@ -11,15 +11,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
 

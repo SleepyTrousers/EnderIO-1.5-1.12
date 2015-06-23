@@ -10,22 +10,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.render.IRenderFace;
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.GaugeBounds.VPos;
-import crazypants.render.ConnectedTextureRenderer;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.CustomRenderBlocks;
-import crazypants.render.IRenderFace;
-import crazypants.render.IconUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4d;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
 
 public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
@@ -204,7 +206,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
       Tessellator tes = Tessellator.instance;
       Vector2f u = gb.getMinMaxU(icon);
-      List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
+      List<com.enderio.core.common.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
       for (Vertex coord : corners) {
         coord.xyz.add(ForgeDirectionOffsets.offsetScaled(gb.face, 0.002f));
 

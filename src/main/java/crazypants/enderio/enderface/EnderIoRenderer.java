@@ -12,16 +12,17 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
 
 @SideOnly(Side.CLIENT)
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {

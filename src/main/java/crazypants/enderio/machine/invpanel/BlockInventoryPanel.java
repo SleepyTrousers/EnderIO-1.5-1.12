@@ -2,7 +2,9 @@ package crazypants.enderio.machine.invpanel;
 
 import java.util.Random;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -17,8 +19,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
@@ -93,7 +93,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
     return getBoundingBox(world, x, y, z);
   }
-
+  
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
     AxisAlignedBB bb = getBoundingBox(0, 0, 0, getFacing(world, x, y, z));

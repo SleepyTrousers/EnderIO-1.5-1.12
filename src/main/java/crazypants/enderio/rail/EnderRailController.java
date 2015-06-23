@@ -23,12 +23,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.util.BlockCoord;
-import crazypants.util.EntityUtil;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
 
 public class EnderRailController {
 

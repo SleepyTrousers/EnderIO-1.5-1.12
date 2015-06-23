@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.ranged;
 
 import net.minecraft.world.World;
-import crazypants.util.BlockCoord;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public interface IRanged {
 

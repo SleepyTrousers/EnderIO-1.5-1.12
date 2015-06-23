@@ -24,6 +24,12 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -37,15 +43,10 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
 
@@ -294,7 +295,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     if(type != null) {
       list.add(StatCollector.translateToLocal("entity." + type + ".name"));
     } else {
-      list.add(Lang.localize("tile.blockPoweredSpawner.tooltip.empty", false));
+      list.add(EnderIO.lang.localizeExact("tile.blockPoweredSpawner.tooltip.empty"));
     }
   }
 
@@ -306,9 +307,9 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     String type = getSpawnerTypeFromItemStack(itemstack);
     if(type == null) {
-      TooltipAddera.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner.empty");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner.empty");
     } else {
-      TooltipAddera.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner");
     }
   }
 

@@ -11,13 +11,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class IoDisplay implements IInfoRenderer {
 
@@ -230,7 +230,7 @@ public class IoDisplay implements IInfoRenderer {
     final int color;
 
     private HeadingText(int color) {
-      this.text = Lang.localize("capbank.iodisplay.".concat(name().toLowerCase(Locale.ENGLISH)));
+      this.text = EnderIO.lang.localize("capbank.iodisplay.".concat(name().toLowerCase(Locale.ENGLISH)));
       this.color = color;
     }
   }

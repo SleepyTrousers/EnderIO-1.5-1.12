@@ -5,20 +5,22 @@ import java.awt.Color;
 import mekanism.api.gas.Gas;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.IIcon;
+
+import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.DyeColor;
-import crazypants.util.Lang;
 
 public class GasSettings extends BaseSettingsPanel {
 
@@ -30,12 +32,12 @@ public class GasSettings extends BaseSettingsPanel {
 
   private ColorButton colorB;
 
-  private String autoExtractStr = Lang.localize("gui.conduit.gas.autoExtract");
+  private String autoExtractStr = EnderIO.lang.localize("gui.conduit.gas.autoExtract");
 
   private IGasConduit conduit;
 
   protected GasSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_GAS, Lang.localize("itemGasConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_GAS, EnderIO.lang.localize("itemGasConduit.name"), gui, con);
 
     conduit = (IGasConduit) con;
     gui.getContainer().setInventorySlotsVisible(false);
@@ -63,7 +65,7 @@ public class GasSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
   }
 

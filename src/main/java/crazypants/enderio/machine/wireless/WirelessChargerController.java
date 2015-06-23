@@ -9,13 +9,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
-import crazypants.util.BlockCoord;
 
 public class WirelessChargerController {
 
@@ -68,7 +70,7 @@ public class WirelessChargerController {
   public void getChargers(World world, BlockCoord bc, Collection<IWirelessCharger> res) {
     Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(world);
     for (IWirelessCharger wc : chargers.values()) {
-      if(wc.getLocation().distanceSquared(bc) <= RANGE_SQ) {
+      if(wc.getLocation().getDistSq(bc) <= RANGE_SQ) {
         res.add(wc);
       }
     }
@@ -81,7 +83,7 @@ public class WirelessChargerController {
     }
     BlockCoord bc = new BlockCoord(player);
     for (IWirelessCharger capBank : chargers.values()) {
-      if(capBank.isActive() && capBank.getLocation().distanceSquared(bc) <= RANGE_SQ) {
+      if(capBank.isActive() && capBank.getLocation().getDistSq(bc) <= RANGE_SQ) {
         boolean done = chargeFromCapBank(player, capBank);
         if(done) {
           return;

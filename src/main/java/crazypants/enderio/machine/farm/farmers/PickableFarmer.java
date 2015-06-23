@@ -8,8 +8,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.util.BlockCoord;
 
 public class PickableFarmer extends CustomSeedFarmer {
   

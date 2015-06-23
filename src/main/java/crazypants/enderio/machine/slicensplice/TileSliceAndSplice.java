@@ -18,7 +18,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 

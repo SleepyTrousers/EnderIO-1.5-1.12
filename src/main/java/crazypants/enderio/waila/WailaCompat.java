@@ -24,6 +24,11 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -34,9 +39,6 @@ import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -44,7 +46,7 @@ import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
-import crazypants.util.Lang;
+
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -124,7 +126,7 @@ public class WailaCompat implements IWailaDataProvider {
 
     registrar.registerNBTProvider(INSTANCE, TileEntityEio.class);
     
-    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
+    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", EnderIO.lang.localize("waila.config.hiddenfacades"));
   }
 
   // IGNORE deprecation, the new method requires forge 1234 which is too new for cauldron!
@@ -180,9 +182,9 @@ public class WailaCompat implements IWailaDataProvider {
       ForgeDirection side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
       currenttip.add(EnumChatFormatting.YELLOW
-          + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
+          + String.format(EnderIO.lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase())));
       if(!(te instanceof TileInventoryPanel)) {
-        currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
+        currenttip.add(EnumChatFormatting.YELLOW + String.format(EnderIO.lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
       }
     }
 
@@ -201,17 +203,17 @@ public class WailaCompat implements IWailaDataProvider {
           adv.addCommonEntries(itemStack, player, currenttip, false);
         }
 
-        if(TooltipAddera.showAdvancedTooltips() && detailed) {
+        if(SpecialTooltipHandler.showAdvancedTooltips() && detailed) {
           adv.addDetailedEntries(itemStack, player, currenttip, false);
         } else if(detailed) { // show "<Hold Shift>"
-          TooltipAddera.addShowDetailsTooltip(currenttip);
+          SpecialTooltipHandler.addShowDetailsTooltip(currenttip);
         }
 
-        if(!TooltipAddera.showAdvancedTooltips() && basic) {
+        if(!SpecialTooltipHandler.showAdvancedTooltips() && basic) {
           adv.addBasicEntries(itemStack, player, currenttip, false);
         }
       } else if(block instanceof IResourceTooltipProvider) {
-        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
+        SpecialTooltipHandler.INSTANCE.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
 
       if(currenttip.size() > 0) {
@@ -223,11 +225,11 @@ public class WailaCompat implements IWailaDataProvider {
 
     else { 
       if(block instanceof IAdvancedTooltipProvider) {
-        TooltipAddera.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
+        SpecialTooltipHandler.INSTANCE.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
       } else if(item instanceof IAdvancedTooltipProvider) {
-        TooltipAddera.addInformation((IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
+        SpecialTooltipHandler.INSTANCE.addInformation((IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
       } else if(block instanceof IResourceTooltipProvider) {
-        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
+        SpecialTooltipHandler.INSTANCE.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
     }
 
@@ -273,7 +275,7 @@ public class WailaCompat implements IWailaDataProvider {
       if(nbtRoot.hasKey("fluidLocked") && nbtRoot.hasKey("FluidName")) {
         boolean fluidTypeLocked = nbtRoot.getBoolean("fluidLocked");
         FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbtRoot);
-        String lockedStr = fluidTypeLocked ? Lang.localize("itemLiquidConduit.lockedWaila") : "";
+        String lockedStr = fluidTypeLocked ? EnderIO.lang.localize("itemLiquidConduit.lockedWaila") : "";
         String fluidName = fluid.getLocalizedName();
         int fluidAmount = fluid.amount;
         if(fluidAmount > 0) {
@@ -293,7 +295,7 @@ public class WailaCompat implements IWailaDataProvider {
       if(nbtRoot.hasKey("isDense")) {
         boolean isDense = nbtRoot.getBoolean("isDense");
         int channelsInUse = nbtRoot.getInteger("channelsInUse");
-        currenttip.add(MessageFormat.format(Lang.localize("itemMEConduit.channelsUsed"),
+        currenttip.add(MessageFormat.format(EnderIO.lang.localize("itemMEConduit.channelsUsed"),
                 channelsInUse, isDense ? 32 : 8));
       }
     }

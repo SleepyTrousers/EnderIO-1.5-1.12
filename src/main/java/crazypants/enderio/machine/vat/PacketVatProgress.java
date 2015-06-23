@@ -2,6 +2,9 @@ package crazypants.enderio.machine.vat;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -11,7 +14,6 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTaskProgress;
-import crazypants.enderio.network.MessageTileEntity;
 
 public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMessageHandler<PacketVatProgress, IMessage> {
 

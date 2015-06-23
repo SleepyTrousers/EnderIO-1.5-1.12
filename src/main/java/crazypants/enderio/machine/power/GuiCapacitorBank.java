@@ -14,20 +14,21 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.IconButtonEIO;
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
 
 public class GuiCapacitorBank extends GuiContainerBase {
 
@@ -59,7 +60,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private GuiTextField maxOutputTF;
 
   private GuiOverlayIoConfig configOverlay;
-  private IconButtonEIO configB;
+  private IconButton configB;
 
   public GuiCapacitorBank(Entity player, InventoryPlayer playerInv, TileCapacitorBank te) {
     super(new ContainerCapacitorBank(player, playerInv, te));
@@ -112,8 +113,8 @@ public class GuiCapacitorBank extends GuiContainerBase {
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
 
     y += 20;
-    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
-    configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
+    configB = new IconButton(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
+    configB.setToolTip(EnderIO.lang.localize("gui.machine.ioMode.overlay.tooltip"));
 
     List<BlockCoord> coords = new ArrayList<BlockCoord>();
     if(te.isMultiblock()) {
@@ -138,9 +139,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected String getLabelForMode(IoMode mode) {
         if(mode == IoMode.PUSH) {
-          return Lang.localize("gui.capBank.outputMode");
+          return EnderIO.lang.localize("gui.capBank.outputMode");
         } else if(mode == IoMode.PULL) {
-          return Lang.localize("gui.capBank.inputMode");
+          return EnderIO.lang.localize("gui.capBank.inputMode");
         }
         return super.getLabelForMode(mode);
       }
@@ -277,7 +278,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     int midX = sx + xSize / 2;
 
-    String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
+    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
         " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
@@ -286,13 +287,13 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     drawString(fontRenderer, str, x, y, -1);
 
-    str = Lang.localize("gui.capBank.maxInput") + ":";
+    str = EnderIO.lang.localize("gui.capBank.maxInput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + inputX - swid - 3;
     y = guiTop + inputY + 2;
     drawString(fontRenderer, str, x, y, -1);
 
-    str = Lang.localize("gui.capBank.maxOutput") + ":";
+    str = EnderIO.lang.localize("gui.capBank.maxOutput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;

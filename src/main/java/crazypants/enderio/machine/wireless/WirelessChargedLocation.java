@@ -1,14 +1,14 @@
 package crazypants.enderio.machine.wireless;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import crazypants.util.BlockCoord;
-import java.util.Collections;
-import java.util.Comparator;
+import com.enderio.core.common.util.BlockCoord;
 
 public class WirelessChargedLocation {
 
@@ -35,8 +35,8 @@ public class WirelessChargedLocation {
     Collections.sort(chargers, new Comparator<IWirelessCharger>() {
       @Override
       public int compare(IWirelessCharger o1, IWirelessCharger o2) {
-        int dist1 = o1.getLocation().distanceSquared(bc);
-        int dist2 = o2.getLocation().distanceSquared(bc);
+        int dist1 = o1.getLocation().getDistSq(bc);
+        int dist2 = o2.getLocation().getDistSq(bc);
         return dist1 - dist2;
       }
     });

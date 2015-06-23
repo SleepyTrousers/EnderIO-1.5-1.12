@@ -12,13 +12,15 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.ItemUtil;
 
 public class ExternalConnectionContainer extends Container {
 

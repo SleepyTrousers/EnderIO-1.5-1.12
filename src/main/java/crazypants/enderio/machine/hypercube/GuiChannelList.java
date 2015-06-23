@@ -7,8 +7,9 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import crazypants.gui.GuiScrollableList;
-import crazypants.render.ColorUtil;
+
+import com.enderio.core.client.gui.widget.GuiScrollableList;
+import com.enderio.core.client.render.ColorUtil;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 

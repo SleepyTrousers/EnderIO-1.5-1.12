@@ -8,15 +8,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.Lang;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
-import crazypants.util.Lang;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
@@ -202,8 +204,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
 
     List<String> upgradeStr = new ArrayList<String>();
-    upgradeStr.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
-    TooltipAddera.instance.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
+    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localize(getUnlocalizedName() + ".name", false));
+    SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
     String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";
     String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();

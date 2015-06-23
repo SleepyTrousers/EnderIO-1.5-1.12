@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.EntityUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.util.EntityUtil;
+import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 
 public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
 

@@ -2,13 +2,15 @@ package crazypants.enderio.machine.obelisk.inhibitor;
 
 import java.awt.Color;
 
+import net.minecraft.inventory.Container;
+
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.inventory.Container;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiInhibitorObelisk extends GuiPoweredMachineBase<TileInhibitorObelisk> {
 
@@ -28,7 +30,7 @@ public class GuiInhibitorObelisk extends GuiPoweredMachineBase<TileInhibitorObel
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
+    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
         ColorUtil.getRGB(Color.white));
   }
 }

@@ -7,15 +7,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.render.BoundingBox;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.CustomRenderBlocks;
-import crazypants.render.IRenderFace;
-import crazypants.render.RenderUtil;
-import crazypants.render.VertexTransform;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
+
+import com.enderio.core.api.client.render.IRenderFace;
+import com.enderio.core.api.client.render.VertexTransform;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
 
 public class TranslatedCubeRenderer {
 

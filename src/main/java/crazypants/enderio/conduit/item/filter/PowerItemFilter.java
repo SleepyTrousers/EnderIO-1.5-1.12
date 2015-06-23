@@ -2,17 +2,16 @@ package crazypants.enderio.conduit.item.filter;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.Collections;
 import java.util.List;
 
-import cofh.api.energy.IEnergyContainerItem;
-
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.network.NetworkUtil;
+
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.enderio.network.NetworkUtil;
-import crazypants.gui.GhostSlot;
 
 /**
  *

@@ -9,9 +9,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
+import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -19,8 +23,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
@@ -135,14 +137,14 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
           continue;
         }
 
-        tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));
+        tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase()));
 
         if(!isEmpty(recieve)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
               + EnumChatFormatting.WHITE, recieve));
         }
         if(!isEmpty(send)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
               + EnumChatFormatting.WHITE, send));
         }
       }

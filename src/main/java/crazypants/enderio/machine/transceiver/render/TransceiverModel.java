@@ -7,8 +7,9 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.render.RenderUtil;
 
 public class TransceiverModel extends ModelBase implements IModel {
   

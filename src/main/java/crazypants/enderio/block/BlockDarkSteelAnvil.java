@@ -1,5 +1,7 @@
 package crazypants.enderio.block;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.gui.GuiRepair;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,7 +19,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 
 public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider {
 

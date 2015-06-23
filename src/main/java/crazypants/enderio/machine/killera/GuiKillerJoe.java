@@ -7,26 +7,27 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.SoundUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import crazypants.util.SoundUtil;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
   private static final int XP_ID = 3489;
   private static final int XP10_ID = 34892;
 
-  private IconButtonEIO xpB;
-  private IconButtonEIO xp10B;
+  private IconButton xpB;
+  private IconButton xp10B;
 
   public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
@@ -36,21 +37,21 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("killerJoe.fuelTank");
+        String heading = EnderIO.lang.localize("killerJoe.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
         if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(Lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+          text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
         }
       }
 
     });
 
-    xpB = new IconButtonEIO(this, XP_ID, 128, 56, IconEIO.XP);
-    xpB.setToolTip(Lang.localize("killerJoe.giveXp.tooltip"));
+    xpB = new IconButton(this, XP_ID, 128, 56, IconEIO.XP);
+    xpB.setToolTip(EnderIO.lang.localize("killerJoe.giveXp.tooltip"));
 
-    xp10B = new IconButtonEIO(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);
-    xp10B.setToolTip(Lang.localize("killerJoe.giveXp10.tooltip"));
+    xp10B = new IconButton(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);
+    xp10B.setToolTip(EnderIO.lang.localize("killerJoe.giveXp10.tooltip"));
 
   }
 

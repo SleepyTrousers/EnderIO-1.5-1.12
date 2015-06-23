@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.power;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,6 +19,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -28,17 +34,11 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
 
 public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
 
@@ -102,7 +102,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
   }
 
   @Override
@@ -365,9 +365,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
 
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, PowerDisplayUtil.formatPower(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, PowerDisplayUtil.formatPower(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", EnderIO.lang.localize("capbank.maxIO"),  format, PowerDisplayUtil.formatPower(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", EnderIO.lang.localize("capbank.maxIn"),  format, PowerDisplayUtil.formatPower(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", EnderIO.lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add("Deprecated. Convert by placing in crafting grid");
     }
   }

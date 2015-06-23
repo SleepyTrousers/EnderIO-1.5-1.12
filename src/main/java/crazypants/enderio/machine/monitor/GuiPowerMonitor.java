@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.text.NumberFormat;
@@ -12,15 +10,18 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.CheckBoxEIO;
-import crazypants.enderio.gui.TextFieldEIO;
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+
+import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
 
 public class GuiPowerMonitor extends GuiContainerBase {
 
@@ -45,10 +46,10 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
   private boolean isRedstoneMode = false;
 
-  private CheckBoxEIO enabledB;
+  private CheckBox enabledB;
 
-  private TextFieldEIO startTF;
-  private TextFieldEIO endTF;
+  private TextFieldEnder startTF;
+  private TextFieldEnder endTF;
 
   private String titleStr;
 
@@ -71,19 +72,19 @@ public class GuiPowerMonitor extends GuiContainerBase {
     xSize = WIDTH;
     ySize = HEIGHT;    
 
-    titleStr = Lang.localize("gui.powerMonitor.engineControl");
-    engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
-    engineTxt2 = Lang.localize("gui.powerMonitor.engineSection2");
-    engineTxt3 = Lang.localize("gui.powerMonitor.engineSection3");
-    engineTxt4 = Lang.localize("gui.powerMonitor.engineSection4");
-    engineTxt5 = Lang.localize("gui.powerMonitor.engineSection5");
-    engineTxt6 = Lang.localize("gui.powerMonitor.engineSection6");
+    titleStr = EnderIO.lang.localize("gui.powerMonitor.engineControl");
+    engineTxt1 = EnderIO.lang.localize("gui.powerMonitor.engineSection1");
+    engineTxt2 = EnderIO.lang.localize("gui.powerMonitor.engineSection2");
+    engineTxt3 = EnderIO.lang.localize("gui.powerMonitor.engineSection3");
+    engineTxt4 = EnderIO.lang.localize("gui.powerMonitor.engineSection4");
+    engineTxt5 = EnderIO.lang.localize("gui.powerMonitor.engineSection5");
+    engineTxt6 = EnderIO.lang.localize("gui.powerMonitor.engineSection6");
 
-    monHeading1 = Lang.localize("gui.powerMonitor.monHeading1");
-    monHeading2 = Lang.localize("gui.powerMonitor.monHeading2");
-    monHeading3 = Lang.localize("gui.powerMonitor.monHeading3");
-    monHeading4 = Lang.localize("gui.powerMonitor.monHeading4");
-    monHeading5 = Lang.localize("gui.powerMonitor.monHeading5");
+    monHeading1 = EnderIO.lang.localize("gui.powerMonitor.monHeading1");
+    monHeading2 = EnderIO.lang.localize("gui.powerMonitor.monHeading2");
+    monHeading3 = EnderIO.lang.localize("gui.powerMonitor.monHeading3");
+    monHeading4 = EnderIO.lang.localize("gui.powerMonitor.monHeading4");
+    monHeading5 = EnderIO.lang.localize("gui.powerMonitor.monHeading5");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
@@ -98,15 +99,15 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
     int x = MARGIN + Minecraft.getMinecraft().fontRenderer.getStringWidth(titleStr) + SPACING;
 
-    enabledB = new CheckBoxEIO(this, 21267, x, 8);
-    enabledB.setSelectedToolTip(Lang.localize("gui.enabled"));
-    enabledB.setUnselectedToolTip(Lang.localize("gui.disabled"));
+    enabledB = new CheckBox(this, 21267, x, 8);
+    enabledB.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
+    enabledB.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
 
 
     x = MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
     int y = MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
-    startTF = new TextFieldEIO(getFontRenderer(), x, y, 28, 14);
+    startTF = new TextFieldEnder(getFontRenderer(), x, y, 28, 14);
     startTF.setCanLoseFocus(true);
     startTF.setMaxStringLength(3);
     startTF.setVisible(false);
@@ -114,7 +115,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
     y = y + getFontRenderer().FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
     x = 5 + MARGIN + getFontRenderer().getStringWidth(engineTxt5);
-    endTF = new TextFieldEIO(getFontRenderer(), x, y, 28, 14);
+    endTF = new TextFieldEnder(getFontRenderer(), x, y, 28, 14);
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
     endTF.setVisible(false);

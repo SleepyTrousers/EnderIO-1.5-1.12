@@ -11,6 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.RoundRobinIterator;
+
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
@@ -26,8 +30,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
-import crazypants.util.BlockCoord;
-import crazypants.util.RoundRobinIterator;
 
 public class CapBankNetwork implements ICapBankNetwork {
 

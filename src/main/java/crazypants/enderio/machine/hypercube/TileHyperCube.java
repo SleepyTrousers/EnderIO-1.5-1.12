@@ -1,23 +1,30 @@
 package crazypants.enderio.machine.hypercube;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.UUID;
 
-import com.mojang.authlib.GameProfile;
-import crazypants.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.PlayerUtil;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
@@ -28,10 +35,6 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
-import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntityEio implements IInternalPowerHandler, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
 
@@ -87,7 +90,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
     }
 
     public String getLocalisedName() {
-      return Lang.localize(unlocalisedName);
+      return EnderIO.lang.localize(unlocalisedName);
     }
   }
 

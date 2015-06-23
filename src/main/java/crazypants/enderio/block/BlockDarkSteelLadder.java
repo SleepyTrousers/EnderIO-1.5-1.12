@@ -1,5 +1,7 @@
 package crazypants.enderio.block;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.material.Material;
@@ -12,7 +14,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 
 public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider {
   

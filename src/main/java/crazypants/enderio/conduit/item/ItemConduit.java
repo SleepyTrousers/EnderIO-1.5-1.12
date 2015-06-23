@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cofh.api.inventory.IInventoryConnection;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,6 +17,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.api.inventory.IInventoryConnection;
+
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -32,9 +37,6 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 

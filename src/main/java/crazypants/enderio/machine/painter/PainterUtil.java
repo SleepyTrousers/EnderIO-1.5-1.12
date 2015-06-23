@@ -1,15 +1,16 @@
 package crazypants.enderio.machine.painter;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.util.Lang;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.base.Strings;
+
+import crazypants.enderio.EnderIO;
 
 public final class PainterUtil {
 
@@ -63,7 +64,7 @@ public final class PainterUtil {
         sourceName = is.getDisplayName();
       }
     }
-    return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
+    return EnderIO.lang.localize("blockPainter.paintedWith") + " " + sourceName;
   }
 
   public static void setSourceBlock(ItemStack item, Block source, int meta) {

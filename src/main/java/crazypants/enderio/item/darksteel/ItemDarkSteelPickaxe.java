@@ -19,6 +19,8 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import cofh.api.energy.IEnergyContainerItem;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -29,14 +31,11 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
@@ -284,10 +283,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
-          + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " "
-          + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-      list.add(EnumChatFormatting.WHITE + "     " + "(" + Lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
+          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
+      list.add(EnumChatFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " "
           + PowerDisplayUtil.abrevation() + ")");
     }

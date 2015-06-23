@@ -3,7 +3,7 @@ package crazypants.enderio.api.teleport;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
-import crazypants.util.BlockCoord;
+import com.enderio.core.common.util.BlockCoord;
 
 public interface ITelePad extends ITravelAccessable {
 

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -11,6 +12,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -29,7 +33,6 @@ import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
-import crazypants.util.ITankAccess;
 
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 

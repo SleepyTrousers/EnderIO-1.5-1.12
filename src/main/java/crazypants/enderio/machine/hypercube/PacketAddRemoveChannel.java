@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.hypercube;
 
-import java.util.UUID;
-
-import crazypants.util.PlayerUtil;
 import io.netty.buffer.ByteBuf;
+
+import com.enderio.core.common.util.PlayerUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

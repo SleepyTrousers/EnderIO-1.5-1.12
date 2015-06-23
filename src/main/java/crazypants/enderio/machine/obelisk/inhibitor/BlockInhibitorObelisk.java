@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -16,7 +17,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
-import crazypants.util.BlockCoord;
 
 public class BlockInhibitorObelisk extends BlockObeliskAbstract<TileInhibitorObelisk> {
 
@@ -60,7 +60,7 @@ public class BlockInhibitorObelisk extends BlockObeliskAbstract<TileInhibitorObe
   public void onTeleport(TeleportEntityEvent event) {
     for (Entry<BlockCoord, Float> e : activeInhibitors.entrySet()) {
       BlockCoord bc = e.getKey();
-      int dist = bc.distance(new BlockCoord(event.targetX, event.targetY, event.targetZ));
+      int dist = bc.getDist(new BlockCoord(event.targetX, event.targetY, event.targetZ));
       if(dist < e.getValue()) {
         TileEntity te = bc.getTileEntity(event.entity.worldObj);
         if(te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive()) {

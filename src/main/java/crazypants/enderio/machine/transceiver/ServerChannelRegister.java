@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import crazypants.util.PlayerUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,14 +24,15 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.apache.commons.io.FileUtils;
 
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.PlayerUtil;
+import com.enderio.core.common.util.RoundRobinIterator;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.util.ItemUtil;
-import crazypants.util.RoundRobinIterator;
 
 public class ServerChannelRegister extends ChannelRegister {
 

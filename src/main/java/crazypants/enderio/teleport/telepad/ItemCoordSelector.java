@@ -16,17 +16,19 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
 
 public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
 
@@ -101,7 +103,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
             tp.setCoords(bc);
           }
           if(!world.isRemote) {
-            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
+            player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
           }
         }
 
@@ -112,7 +114,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
             tp.setTargetDim(dim);
           }
           if(!world.isRemote) {
-            player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.setDimension", EnumChatFormatting.GREEN.toString(),
+            player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.setDimension", EnumChatFormatting.GREEN.toString(),
                 Integer.toString(dim))));
           }
         }
@@ -183,13 +185,13 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
   private void onCoordsChanged(EntityPlayer player, BlockCoord bc) {
     if(!player.worldObj.isRemote) {
-      player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
+      player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
     }
   }
   
   private void onDimensionChanged(EntityPlayer player, int dim) {
     if(!player.worldObj.isRemote) {
-      player.addChatMessage(new ChatComponentText(Lang.localize("itemCoordSelector.chat.newDimension", EnumChatFormatting.GREEN.toString(), Integer.toString(dim))));
+      player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.newDimension", EnumChatFormatting.GREEN.toString(), Integer.toString(dim))));
     }
   }
 

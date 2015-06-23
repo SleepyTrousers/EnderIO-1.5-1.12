@@ -9,12 +9,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.RoundRobinIterator;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.util.RoundRobinIterator;
 
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
 
@@ -213,7 +214,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       this.conDir = conDir;
       conduitLoc = con.getLocation();
       tankDir = conDir.getOpposite();
-      externalTank = FluidUtil.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
+      externalTank = AbstractLiquidConduit.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
       acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
     }
 

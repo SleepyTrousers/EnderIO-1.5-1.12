@@ -9,6 +9,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -17,9 +22,6 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.util.ITankAccess;
 
 public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess {
 

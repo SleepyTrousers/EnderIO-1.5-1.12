@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.me;
 
-import appeng.api.AEApi;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import appeng.api.AEApi;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;

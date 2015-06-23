@@ -1,17 +1,8 @@
 package crazypants.enderio.machine.soul;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.material.FrankenSkull;
 
 public class SoulBinderReanimationRecipe extends AbstractSoulBinderRecipe {

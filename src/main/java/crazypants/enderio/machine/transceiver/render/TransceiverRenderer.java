@@ -13,16 +13,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.CustomRenderBlocks;
-import crazypants.render.RenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class TransceiverRenderer extends TileEntitySpecialRenderer implements IItemRenderer {

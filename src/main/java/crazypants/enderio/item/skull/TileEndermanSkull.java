@@ -1,7 +1,7 @@
 package crazypants.enderio.item.skull;
 
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.TileEntityEio;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEndermanSkull extends TileEntityEio {
 

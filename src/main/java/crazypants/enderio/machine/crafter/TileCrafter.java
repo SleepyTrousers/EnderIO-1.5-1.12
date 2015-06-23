@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 
+import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
@@ -26,7 +27,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.util.ItemUtil;
 
 public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer {
 

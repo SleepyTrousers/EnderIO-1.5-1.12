@@ -8,8 +8,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.InventoryWrapper;
+
 import crazypants.enderio.ModObject;
-import crazypants.util.InventoryWrapper;
 
 public class CompositeInventory implements ISidedInventory {
 
