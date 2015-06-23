@@ -21,19 +21,32 @@ import crazypants.enderio.EnderIO;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
-  public static final Map<String, GroupObject> all = TechneUtil.getModel(EnderIO.MODID, "models/telePad");
+  private final Collection<GroupObject> strippedModel = Lists.newArrayList();
 
   public TelePadRenderer() {
-    super(getModel(), BlockTelePad.renderId);
-  }
-
-  private static Collection<GroupObject> getModel() {
-    Collection<GroupObject> model = Lists.newArrayList();
-    for (String s : all.keySet()) {
+    super(TechneUtil.getModel(EnderIO.MODID, "models/telePad"), BlockTelePad.renderId);
+    for (String s : this.model.keySet()) {
       if(!s.equals("glass") && !s.contains("blade")) {
-        model.add(all.get(s));
+        strippedModel.add(this.model.get(s));
       }
     }
+  }
+
+  protected Collection<GroupObject> getModel() {
+    return strippedModel;
+  }
+
+  @Override
+  protected Collection<GroupObject> getModel(Block block, int metadata) {
+    return getModel();
+  }
+
+  @Override
+  protected Collection<GroupObject> getModel(IBlockAccess world, int x, int y, int z) {
+    return getModel();
+  }
+
+  Map<String, GroupObject> getFullModel() {
     return model;
   }
 

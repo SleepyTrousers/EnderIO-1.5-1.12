@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.CustomCubeRenderer;
 import com.enderio.core.client.render.TechneModelRenderer;
+import com.enderio.core.client.render.TechneUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.google.common.collect.ObjectArrays;
@@ -22,6 +23,10 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
 
   public TechneMachineRenderer(AbstractMachineBlock<T> block, String modelPath) {
     super(EnderIO.MODID, modelPath, block.getRenderType(), new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
+  }
+
+  public TechneMachineRenderer(int renderId, String modelPath) {
+    super(TechneUtil.getModel(EnderIO.MODID, modelPath), renderId, new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
   }
 
   public TechneMachineRenderer<T> addTransform(VertexTransform vt) {
