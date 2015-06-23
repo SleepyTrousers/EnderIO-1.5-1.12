@@ -1,18 +1,18 @@
 /*
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2013 AlgorithmX2
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -25,6 +25,7 @@ package appeng.api.config;
 
 
 import java.util.EnumSet;
+import javax.annotation.Nonnull;
 
 
 public enum Settings
@@ -55,18 +56,21 @@ public enum Settings
 
 	STORAGE_FILTER( EnumSet.allOf( StorageFilter.class ) ), PLACE_BLOCK( EnumSet.of( YesNo.YES, YesNo.NO ) );
 
-	private final EnumSet values;
+	private final EnumSet<? extends Enum<?>> values;
 
-	public EnumSet getPossibleValues()
+	Settings( @Nonnull EnumSet<? extends Enum<?>> possibleOptions )
 	{
-		return this.values;
+		if ( possibleOptions.isEmpty() )
+		{
+			throw new IllegalArgumentException( "Tried to instantiate an empty setting." );
+		}
+
+		this.values = possibleOptions;
 	}
 
-	private Settings( EnumSet set )
+	public EnumSet<? extends Enum<?>> getPossibleValues()
 	{
-		if ( set == null || set.isEmpty() )
-			throw new RuntimeException( "Invalid configuration." );
-		this.values = set;
+		return this.values;
 	}
 
 }
