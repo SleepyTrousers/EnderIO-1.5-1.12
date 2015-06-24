@@ -12,16 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.client.render.VertexRotation;
-import com.enderio.core.common.vecmath.Vector3d;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 
@@ -57,34 +52,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     return 0;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    // used to render the block in the world
-    TileEntity te = world.getTileEntity(x, y, z);
-    boolean on = false;
-    if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity) te;
-      on = me.isActive();
-    }
-
-    if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
-      return topIcon;
-    } else if(blockSide == ForgeDirection.EAST.ordinal() || blockSide == ForgeDirection.WEST.ordinal()) {
-      if(on) {
-        return blockIconSingleOn;
-      } else {
-        return blockIconSingle;
-      }
-    }
-
-    if(on) {
-      return onIcon;
-    } else {
-      return blockIcon;
-    }
-  }
-
   @SideOnly(Side.CLIENT)
   @Override
   protected void registerOverlayIcons(IIconRegister iIconRegister) {
@@ -114,15 +81,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       }
       return overlays[0][mode.ordinal()];
     }
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int blockSide, int blockMeta) {
-    if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
-      return topIcon;
-    }
-    return blockIcon;
   }
 
   @Override
