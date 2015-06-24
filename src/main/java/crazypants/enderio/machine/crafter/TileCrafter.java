@@ -11,6 +11,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -311,6 +312,15 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     } else {
       bufferStacks = true;
     }
+
+    containerItems.clear();
+    NBTTagList itemList = (NBTTagList) nbtRoot.getTag("containerItems");
+    if(itemList != null) {
+      for (int i = 0; i < itemList.tagCount(); i++) {
+        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
+        containerItems.add(ItemStack.loadItemStackFromNBT(itemStack));
+      }
+    }
   }
 
   @Override
@@ -321,6 +331,18 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     nbtRoot.setTag("craftingGrid", craftingRoot);
 
     nbtRoot.setBoolean("bufferStacks", bufferStacks);
+
+    if (containerItems.isEmpty()) {
+      nbtRoot.removeTag("containerItems");
+    } else {
+      NBTTagList itemList = new NBTTagList();
+      for (ItemStack stack : containerItems) {
+        NBTTagCompound itemStackNBT = new NBTTagCompound();
+        stack.writeToNBT(itemStackNBT);
+        itemList.appendTag(itemStackNBT);
+      }
+      nbtRoot.setTag("containerItems", itemList);
+    }
   }
 
   public void updateCraftingOutput() {
