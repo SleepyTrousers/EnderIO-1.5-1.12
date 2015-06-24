@@ -29,6 +29,7 @@ minecraft {
     runDir = 'run'
 
     replace "@VERSION@", project.version
+   	replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:MineFactoryReloaded;after:Waila@[${waila_version},);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)"
     replaceIn "EnderIO.java"
 }
 
