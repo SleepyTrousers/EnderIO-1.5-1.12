@@ -182,9 +182,9 @@ public class WailaCompat implements IWailaDataProvider {
       ForgeDirection side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
       currenttip.add(EnumChatFormatting.YELLOW
-          + String.format(EnderIO.lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase())));
+          + EnderIO.lang.localize("gui.machine.side", EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase())));
       if(!(te instanceof TileInventoryPanel)) {
-        currenttip.add(EnumChatFormatting.YELLOW + String.format(EnderIO.lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
+        currenttip.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", mode.colorLocalisedName()));
       }
     }
 
