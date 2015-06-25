@@ -34,8 +34,6 @@ minecraft {
 }
 
 configurations {
-    shade
-    compile.extendsFrom shade
     compile.extendsFrom exportedCompile
 }
 
@@ -51,15 +49,11 @@ repositories {
 dependencies {
     exportedCompile 'cglib:cglib-nodep:3.1'
     
+    compile "com.enderio.core:EnderCore:${minecraft_version}-${endercore_version}:dev"
+
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}_${minecraft_version}:dev"
-    compile "net.sengir.forestry:${forestry_version}:api"
-        
-    String endercore = "com.enderio.core:EnderCore:${minecraft_version}-${endercore_version}:dev"
-    compile endercore
-    shade (endercore) {
-        transitive = false
-    }
+    compile "net.sengir.forestry:${forestry_version}:api"        
 }
 
 sourceSets {
@@ -95,16 +89,6 @@ jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-task allJar(type: Jar) {
-    configurations.shade.each { dep ->
-        from(project.zipTree(dep)){
-            exclude 'META-INF', 'META-INF/**', '*.info'
-        }
-    }
-    from sourceSets.main.output
-    classifier = 'all'
-}
-
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
@@ -136,7 +120,7 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-build.dependsOn allJar, sourceJar, deobfJar, apiJar, exportJavadoc
+build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -144,7 +128,6 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
 
-            artifact allJar
             artifact sourceJar
             artifact apiJar
             artifact deobfJar
@@ -192,8 +175,7 @@ curse {
     projectId = project.curse_projectId
     changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
-    artifact allJar
-    additionalArtifact jar, deobfJar
+    additionalArtifact deobfJar
 }
 
 task checkTranslations << {
