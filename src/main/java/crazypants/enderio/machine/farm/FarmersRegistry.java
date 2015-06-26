@@ -40,6 +40,7 @@ public final class FarmersRegistry {
     addThaumcraft();
     addFlowers();
     addGrowableOres();
+    addImmersiveEngineering();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -238,6 +239,14 @@ public final class FarmersRegistry {
           }
         }
       }
+    }
+  }
+
+  private static void addImmersiveEngineering() {
+    Block hemp = GameRegistry.findBlock("ImmersiveEngineering", "hemp");
+    Item hempSeed = GameRegistry.findItem("ImmersiveEngineering", "hemp");
+    if (hemp != null && hempSeed != null) {
+      FarmersCommune.joinCommune(new StemFarmer(hemp, new ItemStack(hempSeed)));
     }
   }
   
