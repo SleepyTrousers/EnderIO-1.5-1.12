@@ -97,7 +97,7 @@ public class KeyTracker {
   }
 
   private void handleMagnet() {
-    if(magnetKey.getIsKeyPressed()) {
+    if(magnetKey.isPressed()) {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
       ItemStack[] inv = player.inventory.mainInventory;
       for (int i = 0; i < 9; i++) {
@@ -126,7 +126,7 @@ public class KeyTracker {
     if(!SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
       return;
     }
-    if(speedKey.getIsKeyPressed()) {      
+    if(speedKey.isPressed()) {      
       isSpeedActive = !isSpeedActive;
       String message;
       if(isSpeedActive) {
@@ -144,7 +144,7 @@ public class KeyTracker {
     if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
       return;
     }
-    if(stepAssistKey.getIsKeyPressed()) {      
+    if(stepAssistKey.isPressed()) {      
       isStepAssistActive = !isStepAssistActive;
       String message;
       if(isStepAssistActive) {
@@ -164,7 +164,7 @@ public class KeyTracker {
     if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
       return;
     }
-    if(gogglesKey.getIsKeyPressed()) {      
+    if(gogglesKey.isPressed()) {      
       DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(!DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive());
     }
     
@@ -204,7 +204,7 @@ public class KeyTracker {
       SoundDetector.instance.setEnabled(false);
       return;
     }
-    if(soundDetectorKey.getIsKeyPressed()) {      
+    if(soundDetectorKey.isPressed()) {      
       isSoundDectorActive = !isSoundDectorActive;
       String message;
       if(isSoundDectorActive) {
@@ -222,7 +222,7 @@ public class KeyTracker {
     if(!DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
       return;
     }
-    if(glideKey.getIsKeyPressed()) {      
+    if(glideKey.isPressed()) {      
       isGlideActive = !isGlideActive;
       String message;
       if(isGlideActive) {
@@ -242,7 +242,7 @@ public class KeyTracker {
       isNightVisionActive = false;
       return;
     }
-    if(nightVisionKey.getIsKeyPressed()) {      
+    if(nightVisionKey.isPressed()) {      
       isNightVisionActive = !isNightVisionActive;
       if(isNightVisionActive) {
         player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.nightvision.on", 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
