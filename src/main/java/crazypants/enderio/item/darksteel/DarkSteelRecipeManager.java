@@ -12,7 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
+import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.Loader;
@@ -77,16 +79,11 @@ public class DarkSteelRecipeManager {
       return;
     }
 
-    if(evt.left.getItem() instanceof IDarkSteelItem && 
-        evt.right.getItem() == EnderIO.itemAlloy && 
-        evt.right.getItemDamage() == Alloy.DARK_STEEL.ordinal()) {
-
+    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.oreIngot)) {
       handleRepair(evt);
-            
     } else {    
       handleUpgrade(evt);
     }
-
   }
 
   private void handleRepair(AnvilUpdateEvent evt) {
