@@ -65,7 +65,7 @@ public class ClearConfigRecipe implements IRecipe {
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
     if (output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig", true));
+      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
     }
   }
 }
