@@ -29,7 +29,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.BaublesUtil;
 
-import static crazypants.enderio.EnderIO.itemMagnet;
+import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
 
 public class KeyTracker {
 

@@ -7,6 +7,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.ItemMagnet;
 
 public class DarkSteelItems {
 
@@ -20,6 +21,8 @@ public class DarkSteelItems {
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
   public static ItemDarkSteelShears itemDarkSteelShears;
+
+  public static ItemMagnet itemMagnet;
 
   private DarkSteelItems() {
   }
@@ -37,6 +40,7 @@ public class DarkSteelItems {
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
     itemDarkSteelShears = ItemDarkSteelShears.create();
 
+    itemMagnet = ItemMagnet.create();
   }
 
   public static void addLoot() {

@@ -72,7 +72,6 @@ import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemConduitProbe;
-import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
@@ -299,7 +298,6 @@ public class EnderIO {
   // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
-  public static ItemMagnet itemMagnet;
   public static ItemXpTransfer itemXpTransfer;
 
   public static ItemSoulVessel itemSoulVessel;
@@ -421,7 +419,6 @@ public class EnderIO {
     itemTravelStaff = ItemTravelStaff.create();
     itemConduitProbe = ItemConduitProbe.create();
 
-    itemMagnet = ItemMagnet.create();
     itemXpTransfer = ItemXpTransfer.create();
 
     itemSoulVessel = ItemSoulVessel.create();

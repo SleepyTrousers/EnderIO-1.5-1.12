@@ -29,8 +29,8 @@ public class ItemRecipes {
     addShaped(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
 
     //Magnet
-    ItemStack magnet = new ItemStack(EnderIO.itemMagnet, 1, 0);
-    EnderIO.itemMagnet.setEnergy(magnet, 0);
+    ItemStack magnet = new ItemStack(DarkSteelItems.itemMagnet, 1, 0);
+    DarkSteelItems.itemMagnet.setEnergy(magnet, 0);
     addShaped(magnet, "scc", "  v", "scc", 's', electricalSteel, 'c', conductiveIron, 'v', vibCry);
 
     //Dark Steel
