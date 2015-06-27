@@ -14,6 +14,7 @@ public interface ISoulBinderRecipe {
   
   int getEnergyRequired();
   
+  int getExperienceLevelsRequired();
+
   int getExperienceRequired();
-  
 }

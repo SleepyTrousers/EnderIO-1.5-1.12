@@ -14,11 +14,20 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
+import crazypants.enderio.xp.XpUtil;
 
 public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
   public static SoulBinderSpawnerRecipe instance = new SoulBinderSpawnerRecipe();
-  
+
+  private final int xpLevelsRequired;
+  private final int xpRequired;
+
+  public SoulBinderSpawnerRecipe() {
+    xpLevelsRequired = Config.soulBinderBrokenSpawnerLevels;
+    xpRequired = XpUtil.getExperienceForLevel(xpLevelsRequired);
+  }
+
   @Override
   public String getUid() {
     return "SoulFuserSpawnerRecipe";
@@ -35,8 +44,13 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   }
 
   @Override
-  public int getExperienceRequired() {   
-    return Config.soulBinderBrokenSpawnerLevels;
+  public int getExperienceLevelsRequired() {
+    return xpLevelsRequired;
+  }
+
+  @Override
+  public int getExperienceRequired() {
+    return xpRequired;
   }
 
   @Override
