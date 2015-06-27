@@ -85,7 +85,18 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     }
     return null;
   }
-  
+
+  public boolean needsXP() {
+    if(currentTask != null) {
+      return false;
+    }
+    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    if(! (nextRecipe instanceof ISoulBinderRecipe)) {
+      return false;
+    }
+    return ((ISoulBinderRecipe)nextRecipe).getExperienceRequired() > getContainer().getExperienceTotal();
+  }
+
   public int getCurrentlyRequiredLevel() {
     if(currentTask != null) {
       return -1;
@@ -94,18 +105,18 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if(! (nextRecipe instanceof ISoulBinderRecipe)) {
       return -1;
     }
-    return ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();    
+    return ((ISoulBinderRecipe)nextRecipe).getExperienceLevelsRequired();
   }
   
 
   @Override
   protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
     int xpRequired = ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();
-    if(xpCont.getExperienceLevel() < xpRequired) {
+    if(xpCont.getExperienceTotal() < xpRequired) {
       return false;
-    }        
-    if(super.startNextTask(nextRecipe, chance)) {           
-      xpCont.drain(ForgeDirection.UNKNOWN, XpUtil.getLiquidForLevel(xpRequired), true);
+    }
+    if(super.startNextTask(nextRecipe, chance)) {
+      xpCont.drain(ForgeDirection.UNKNOWN, XpUtil.experienceToLiquid(xpRequired), true);
       return true;
     }
     return false;

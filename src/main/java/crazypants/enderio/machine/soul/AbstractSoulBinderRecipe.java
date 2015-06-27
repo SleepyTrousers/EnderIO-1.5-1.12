@@ -10,29 +10,28 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
+import crazypants.enderio.xp.XpUtil;
+import java.util.Arrays;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
-  private int energyRequired;
-  private String uid;
-  private int xpRequired;
+  private final int energyRequired;
+  private final String uid;
+  private final int xpLevelsRequired;
+  private final int xpRequired;
   
-  private List<String> supportedEntities = new  ArrayList<String>();
+  private final List<String> supportedEntities;
   
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpRequired, String uid, Class<?> entityClass) {  
-    this.energyRequired = energyRequired;
-    this.xpRequired = xpRequired;
-    this.uid = uid;    
-    supportedEntities.add((String)EntityList.classToStringMapping.get(entityClass));    
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid, Class<?> entityClass) {
+    this(energyRequired, xpLevelsRequired, uid, (String)EntityList.classToStringMapping.get(entityClass));
   }
   
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpRequired, String uid, String... entityNames) {  
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid, String... entityNames) {
     this.energyRequired = energyRequired;
-    this.xpRequired = xpRequired;
-    this.uid = uid;    
-    for(String name : entityNames) {
-      supportedEntities.add(name);
-    }       
+    this.xpLevelsRequired = xpLevelsRequired;
+    this.xpRequired = XpUtil.getExperienceForLevel(xpLevelsRequired);
+    this.uid = uid;
+    this.supportedEntities = Arrays.asList(entityNames);
   }
 
   @Override
@@ -41,7 +40,12 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
     
   @Override
-  public int getExperienceRequired() {  
+  public int getExperienceLevelsRequired() {
+    return xpLevelsRequired;
+  }
+
+  @Override
+  public int getExperienceRequired() {
     return xpRequired;
   }
 
@@ -139,10 +143,4 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   public int getEnergyRequired() {
     return energyRequired;
   }
-
-  public void setEnergyRequired(int energyRequired) {
-    this.energyRequired = energyRequired;
-  }
-
-
 }

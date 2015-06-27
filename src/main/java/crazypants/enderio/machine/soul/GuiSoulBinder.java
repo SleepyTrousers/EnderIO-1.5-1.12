@@ -71,9 +71,8 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
       drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);
     }
 
-    boolean needsXp = binder.getCurrentlyRequiredLevel() > 0 && binder.getCurrentlyRequiredLevel() > binder.getContainer().getExperienceLevel();
-    usePlayerXP.visible = needsXp;        
-    
+    usePlayerXP.visible = binder.needsXP();
+
     ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, binder.getContainer(), binder.getCurrentlyRequiredLevel());
     
     RenderUtil.bindTexture("enderio:textures/gui/soulFuser.png");

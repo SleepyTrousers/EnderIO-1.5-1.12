@@ -173,7 +173,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
     }
 
     public SoulBinderRecipeNEI(ISoulBinderRecipe recipe) {
-      this(recipe.getInputStack(), recipe.getOutputStack(), recipe.getEnergyRequired(), recipe.getExperienceRequired(), recipe.getSupportedSouls());
+      this(recipe.getInputStack(), recipe.getOutputStack(), recipe.getEnergyRequired(), recipe.getExperienceLevelsRequired(), recipe.getSupportedSouls());
     }
 
     public SoulBinderRecipeNEI(ItemStack inputStack, ItemStack result, int energy, int experience, List<String> list) {
