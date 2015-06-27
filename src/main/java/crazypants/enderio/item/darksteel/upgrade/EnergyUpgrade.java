@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.Lang;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -204,7 +203,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
 
     List<String> upgradeStr = new ArrayList<String>();
-    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localize(getUnlocalizedName() + ".name", false));
+    upgradeStr.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
     SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
     String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";

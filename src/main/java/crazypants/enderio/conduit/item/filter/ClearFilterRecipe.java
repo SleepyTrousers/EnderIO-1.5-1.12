@@ -63,7 +63,7 @@ public class ClearFilterRecipe implements IRecipe{
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
     if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning", true));
+      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
     }
   }
 

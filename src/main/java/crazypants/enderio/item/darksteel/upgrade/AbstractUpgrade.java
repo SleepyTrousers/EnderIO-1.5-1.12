@@ -73,13 +73,13 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localize(getUnlocalizedName() + ".name", false));
+    list.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localize(getUnlocalizedName() + ".name", false));
+    list.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
 

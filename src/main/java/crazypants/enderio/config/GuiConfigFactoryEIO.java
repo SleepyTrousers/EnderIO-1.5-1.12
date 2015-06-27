@@ -17,7 +17,7 @@ import static crazypants.enderio.config.Config.config;
 public class GuiConfigFactoryEIO extends GuiConfig {
 
   public GuiConfigFactoryEIO(GuiScreen parentScreen) {
-    super(parentScreen, getConfigElements(parentScreen), EnderIO.MODID, false, false, EnderIO.lang.localize("config.title", true));
+    super(parentScreen, getConfigElements(parentScreen), EnderIO.MODID, false, false, EnderIO.lang.localize("config.title"));
   }
 
   private static List<IConfigElement> getConfigElements(GuiScreen parent) {
