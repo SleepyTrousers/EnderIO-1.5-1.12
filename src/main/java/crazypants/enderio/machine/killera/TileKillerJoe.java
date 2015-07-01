@@ -1,24 +1,25 @@
 package crazypants.enderio.machine.killera;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,8 +33,11 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -52,6 +56,20 @@ import crazypants.enderio.xp.XpUtil;
 
 public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector, IHaveExperience, ITankAccess, IHasNutrientTank {
 
+  public static class ZombieCache {
+    
+    private Set<EntityZombie> cache = Sets.newHashSet();
+    
+    @SubscribeEvent
+    public void onSummonAid(SummonAidEvent event) {
+      if (!cache.isEmpty() && cache.remove(event.getSummoner())) {
+        event.setResult(Result.DENY);
+      }
+    }
+  }
+  
+  public static ZombieCache zCache;
+  
   private static final int IO_MB_TICK = 250;
 
   protected AxisAlignedBB killBounds;
@@ -84,6 +102,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
+    if (zCache == null) {
+      zCache = new ZombieCache();
+      MinecraftForge.EVENT_BUS.register(zCache);
+    }
   }
 
   @Override
@@ -175,10 +197,16 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
       for (EntityLivingBase ent : entsInBounds) {
         if(!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable() && ent.hurtResistantTime == 0) {
-          if(ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage)
+          if(ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
             continue; //Ignore players in creative, can't damage them;
-          if(Config.killerJoeMustSee && !canJoeSee(ent))
+          }
+          if(Config.killerJoeMustSee && !canJoeSee(ent)) {
             continue;
+          }
+          
+          if(ent instanceof EntityZombie) {
+            zCache.cache.add((EntityZombie) ent);
+          }
           FakePlayer fakee = getAttackera();
           fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
           fakee.attackTargetEntityWithCurrentItem(ent);
