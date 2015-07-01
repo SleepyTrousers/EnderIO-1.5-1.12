@@ -1,6 +1,12 @@
 package mekanism.api.gas;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import mekanism.api.Coord4D;
+import mekanism.api.transmitters.ITransmitterTile;
 import mekanism.api.transmitters.TransmissionType;
 
 import net.minecraft.item.ItemStack;
@@ -14,28 +20,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public final class GasTransmission
 {
-	/**
-	 * Gets all the tubes around a tile entity.
-	 * @param tileEntity - center tile entity
-	 * @return array of TileEntities
-	 */
-	public static TileEntity[] getConnectedTubes(TileEntity tileEntity)
-	{
-		TileEntity[] tubes = new TileEntity[] {null, null, null, null, null, null};
-
-		for(ForgeDirection orientation : ForgeDirection.VALID_DIRECTIONS)
-		{
-			TileEntity tube = Coord4D.get(tileEntity).getFromSide(orientation).getTileEntity(tileEntity.getWorldObj());
-
-			if(TransmissionType.checkTransmissionType(tube, TransmissionType.GAS, tileEntity))
-			{
-				tubes[orientation.ordinal()] = tube;
-			}
-		}
-
-		return tubes;
-	}
-
 	/**
 	 * Gets all the acceptors around a tile entity.
 	 * @param tileEntity - center tile entity
@@ -88,7 +72,7 @@ public final class GasTransmission
 	 */
 	public static boolean canConnect(TileEntity tileEntity, ForgeDirection side)
 	{
-		if(tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
+		if(tileEntity instanceof ITubeConnection && (!(tileEntity instanceof ITransmitterTile) || TransmissionType.checkTransmissionType(((ITransmitterTile)tileEntity).getTransmitter(), TransmissionType.GAS)))
 		{
 			if(((ITubeConnection)tileEntity).canTubeConnect(side.getOpposite()))
 			{
@@ -137,5 +121,61 @@ public final class GasTransmission
 		}
 
 		return 0;
+	}
+	
+	/**
+	 * Emits gas from a central block by splitting the received stack among the sides given.
+	 * @param sides - the list of sides to output from
+	 * @param stack - the stack to output
+	 * @param from - the TileEntity to output from
+	 * @return the amount of gas emitted
+	 */
+	public static int emit(List<ForgeDirection> sides, GasStack stack, TileEntity from)
+	{
+		if(stack == null)
+		{
+			return 0;
+		}
+		
+		List<IGasHandler> availableAcceptors = new ArrayList<IGasHandler>();
+		IGasHandler[] possibleAcceptors = getConnectedAcceptors(from);
+		
+		for(int i = 0; i < possibleAcceptors.length; i++)
+		{
+			IGasHandler handler = possibleAcceptors[i];
+			
+			if(handler != null && handler.canReceiveGas(ForgeDirection.getOrientation(i).getOpposite(), stack.getGas()))
+			{
+				availableAcceptors.add(handler);
+			}
+		}
+
+		Collections.shuffle(availableAcceptors);
+
+		int toSend = stack.amount;
+		int prevSending = toSend;
+
+		if(!availableAcceptors.isEmpty())
+		{
+			int divider = availableAcceptors.size();
+			int remaining = toSend % divider;
+			int sending = (toSend-remaining)/divider;
+
+			for(IGasHandler acceptor : availableAcceptors)
+			{
+				int currentSending = sending;
+
+				if(remaining > 0)
+				{
+					currentSending++;
+					remaining--;
+				}
+				
+				ForgeDirection dir = ForgeDirection.getOrientation(Arrays.asList(possibleAcceptors).indexOf(acceptor)).getOpposite();
+				toSend -= acceptor.receiveGas(dir, new GasStack(stack.getGas(), currentSending), true);
+			}
+		}
+
+		return prevSending-toSend;
 	}
 }

@@ -48,6 +48,11 @@ public class MekanismConfig
 		public static boolean enableAmbientLighting;
 		public static int ambientLightingLevel;
 		public static boolean prefilledPortableTanks;
+		public static double armoredJetpackDamageRatio;
+		public static int armoredJetpackDamageMax;
+		public static boolean aestheticWorldDamage;
+		public static boolean opsBypassRestrictions;
+		public static double solarEvaporationSpeed;
 	}
 
 	public static class client
