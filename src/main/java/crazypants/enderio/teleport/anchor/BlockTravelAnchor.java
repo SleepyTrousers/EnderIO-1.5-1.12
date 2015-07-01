@@ -127,7 +127,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof ITravelAccessable) {
+    if (!world.isRemote && te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if (ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
@@ -139,7 +139,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
-    if(player.worldObj.isRemote && !player.isSneaking()) {
+    if(!player.isSneaking()) {
       player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " "
           + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner) + EnumChatFormatting.WHITE + " "
           + EnderIO.lang.localize("gui.travelAccessable.privateBlock2")));

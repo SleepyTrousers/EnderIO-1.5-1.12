@@ -65,7 +65,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     modObject = mo;
     setHardness(2.0F);
     setStepSound(soundTypeMetal);
-    setCreativeTab(EnderIOTab.tabEnderIO);
     setHarvestLevel("pickaxe", 0);
     random = new Random();
   }
