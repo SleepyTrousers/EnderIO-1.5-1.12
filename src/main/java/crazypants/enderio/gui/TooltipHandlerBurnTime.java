@@ -17,15 +17,13 @@ import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class TooltipHandlerBurnTime implements ITooltipCallback {
-
-  private TileEntityStirlingGenerator gen = null;
   
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     int time = 0;
-    if (gen != null) {
+    TileEntityStirlingGenerator gen = getStirlingGen(itemstack);
+    if (isStirlingGen(itemstack, gen)) {
       int rate = gen.getPowerUsePerTick();
-
       String msg = String.format("%s %s %s %s %s %s%s",
           EnderIO.lang.localize("power.generates"),
           PowerDisplayUtil.formatPower((long)gen.getBurnTime(itemstack) * rate),
@@ -57,16 +55,22 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
     return time > 0 || isStirlingGen(item);
   }
 
-  private boolean isStirlingGen(ItemStack stack) {
+  private TileEntityStirlingGenerator getStirlingGen(ItemStack stack) {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     if (player != null && player.openContainer instanceof StirlingGeneratorContainer) {
       AbstractMachineEntity te = ((StirlingGeneratorContainer) player.openContainer).getTileEntity();
       if (te instanceof TileEntityStirlingGenerator) {
-        gen = (TileEntityStirlingGenerator) te;
-        int burnTime = gen.getBurnTime(stack);
-        return burnTime > 0;
+        return (TileEntityStirlingGenerator) te;
       }
     }
-    return false;
+    return null;
+  }
+  
+  private boolean isStirlingGen(ItemStack stack) {
+    return isStirlingGen(stack, getStirlingGen(stack));
+  }
+  
+  private boolean isStirlingGen(ItemStack stack, TileEntityStirlingGenerator gen) {
+    return gen == null ? false : gen.getBurnTime(stack) > 0;
   }
 }

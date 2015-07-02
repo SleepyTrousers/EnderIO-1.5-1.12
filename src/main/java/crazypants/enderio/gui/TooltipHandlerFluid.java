@@ -17,8 +17,6 @@ import crazypants.enderio.fluid.IFluidFuel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class TooltipHandlerFluid implements ITooltipCallback {
-
-  private FluidStack fluid;
   
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
@@ -32,6 +30,7 @@ public class TooltipHandlerFluid implements ITooltipCallback {
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(itemstack);
     if (fluid != null) {
       IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
       if (fuel != null) {
@@ -51,8 +50,7 @@ public class TooltipHandlerFluid implements ITooltipCallback {
 
   @Override
   public boolean shouldHandleItem(ItemStack item) {
-    fluid = FluidContainerRegistry.getFluidForFilledItem(item);
-    return fluid != null;
+    return FluidContainerRegistry.getFluidForFilledItem(item) != null;
   }
 
 }

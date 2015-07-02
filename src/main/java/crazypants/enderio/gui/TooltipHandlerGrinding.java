@@ -16,25 +16,21 @@ import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 
 public class TooltipHandlerGrinding implements ITooltipCallback {
 
-  IGrindingMultiplier ball;
-
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
 
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if (ball == null) {
-      return;
-    }
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    IGrindingMultiplier ball = CrusherRecipeManager.getInstance().getGrindballFromStack(itemstack);
     list.add(EnumChatFormatting.BLUE + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line1"));
     list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
     list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
@@ -49,6 +45,6 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
 
   @Override
   public boolean shouldHandleItem(ItemStack item) {
-    return (ball = CrusherRecipeManager.getInstance().getGrindballFromStack(item)) != null;
+    return CrusherRecipeManager.getInstance().getGrindballFromStack(item) != null;
   }
 }
