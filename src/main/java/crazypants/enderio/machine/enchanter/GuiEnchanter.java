@@ -27,7 +27,7 @@ public class GuiEnchanter extends GuiContainerBase {
     
     recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE);
     recipeButton.visible = false;
-    recipeButton.setIconMargin(3, 3);
+    recipeButton.setIconMargin(1, 1);
   }
   
   @Override

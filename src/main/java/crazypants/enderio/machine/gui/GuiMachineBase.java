@@ -69,7 +69,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     y += 19;
     recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
     recipeButton.visible = false;
-    recipeButton.setIconMargin(3, 3);
+    recipeButton.setIconMargin(1, 1);
   }
 
   @Override

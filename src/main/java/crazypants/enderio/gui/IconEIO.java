@@ -84,7 +84,6 @@ public enum IconEIO implements IWidgetIcon {
   IO_WHATSIT(128, 208),
 
   RECIPE(0, 224),
-  RECIPE_BUTTON(80, 208),
 
   SOUND(176, 208),
 

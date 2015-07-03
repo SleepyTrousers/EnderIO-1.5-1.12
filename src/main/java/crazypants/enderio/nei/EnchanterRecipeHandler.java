@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.enderio.core.client.render.EnderWidget;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
@@ -125,7 +127,9 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(s, 83, 46, 0x80FF20);
     }
 
-    IconEIO.map.render(IconEIO.RECIPE_BUTTON, 149, -3, 16, 16, 0, true);
+    int x = 149, y = -3;
+    EnderWidget.map.render(EnderWidget.BUTTON, x, y, 16, 16, 0, true);
+    IconEIO.map.render(IconEIO.RECIPE, x + 1, y + 1, 14, 14, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

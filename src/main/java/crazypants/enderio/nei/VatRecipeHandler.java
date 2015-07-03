@@ -20,6 +20,7 @@ import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
+import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.FluidUtil;
 
@@ -171,7 +172,9 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }
 
-    IconEIO.map.render(IconEIO.RECIPE_BUTTON, 149, 32, 16, 16, 0, true);
+    int x = 149, y = 32;
+    EnderWidget.map.render(EnderWidget.BUTTON, x, y, 16, 16, 0, true);
+    IconEIO.map.render(IconEIO.RECIPE, x + 1, y + 1, 14, 14, 0, true);
   }
 
   @Override

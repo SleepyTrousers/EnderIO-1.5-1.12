@@ -12,6 +12,8 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.EnderWidget;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -108,7 +110,9 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 100, 57, 0x808080, false);
 
-    IconEIO.map.render(IconEIO.RECIPE_BUTTON, 149, 32, 16, 16, 0, true);
+    int x = 149, y = 32;
+    EnderWidget.map.render(EnderWidget.BUTTON, x, y, 16, 16, 0, true);
+    IconEIO.map.render(IconEIO.RECIPE, x + 1, y + 1, 14, 14, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

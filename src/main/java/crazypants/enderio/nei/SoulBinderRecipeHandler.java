@@ -13,6 +13,8 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.EnderWidget;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -134,7 +136,9 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(s, 83, 55, 0x80FF20);
     }
 
-    IconEIO.map.render(IconEIO.RECIPE_BUTTON, 149, 32, 16, 16, 0, true);
+    int x = 149, y = 32;
+    EnderWidget.map.render(EnderWidget.BUTTON, x, y, 16, 16, 0, true);
+    IconEIO.map.render(IconEIO.RECIPE, x + 1, y + 1, 14, 14, 0, true);
   }
 
   private static final ArrayList<PositionedStack> EMPTY_VIAL_OUTPUT = new ArrayList<PositionedStack>();
