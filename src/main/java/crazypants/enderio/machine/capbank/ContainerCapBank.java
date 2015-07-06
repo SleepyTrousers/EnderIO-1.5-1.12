@@ -3,7 +3,6 @@ package crazypants.enderio.machine.capbank;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
@@ -12,10 +11,11 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.enderio.machine.gui.ContainerEIO;
 import crazypants.util.BaublesUtil;
 import crazypants.util.ShadowInventory;
 
-public class ContainerCapBank extends Container {
+public class ContainerCapBank extends ContainerEIO {
 
   private final TileCapBank tileEntity;
   private final InventoryImpl inv;
@@ -39,33 +39,9 @@ public class ContainerCapBank extends Container {
     }
     
     int armorOffset = 21;
-    addSlotToContainer(new Slot(inv, 0, 59 + armorOffset, 59) {
-      @Override
-      public boolean isItemValid(ItemStack itemStack) {
-        return inv.isItemValidForSlot(0, itemStack);
-      }
-    });
-
-    addSlotToContainer(new Slot(inv, 1, 79 + armorOffset, 59) {
-      @Override
-      public boolean isItemValid(ItemStack itemStack) {
-        return inv.isItemValidForSlot(1, itemStack);
-      }
-    });
-
-    addSlotToContainer(new Slot(inv, 2, 99 + armorOffset, 59) {
-      @Override
-      public boolean isItemValid(ItemStack itemStack) {
-        return inv.isItemValidForSlot(2, itemStack);
-      }
-    });
-
-    addSlotToContainer(new Slot(inv, 3, 119 + armorOffset, 59) {
-      @Override
-      public boolean isItemValid(ItemStack itemStack) {
-        return inv.isItemValidForSlot(3, itemStack);
-      }
-    });
+    for(int i = 0; i < 4; i++) {
+      addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i*20, 59));
+    }
 
     // add players inventory
     for (int i = 0; i < 3; ++i) {
@@ -225,4 +201,14 @@ public class ContainerCapBank extends Container {
     return false;
   }
 
+  private static class SlotImpl extends Slot {
+    public SlotImpl(IInventory inv, int idx, int x, int y) {
+      super(inv, idx, x, y);
+    }
+
+    @Override
+    public boolean isItemValid(ItemStack itemStack) {
+      return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
+    }
+  }
 }
