@@ -304,23 +304,18 @@ public class CapBankNetwork implements ICapBankNetwork {
     boolean chargedItem = false;
     int available = getEnergyAvailableForTick(getMaxIO());
     for (ItemStack item : items) {
-      if(item != null && available > 0) {
-        int used = 0;
-        if(item.getItem() instanceof IEnergyContainerItem) {
-          IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
-
-          int max = chargable.getMaxEnergyStored(item);
-          int cur = chargable.getEnergyStored(item);
+      if(item != null && available > 0 && item.stackSize == 1 && item.getItem() instanceof IEnergyContainerItem) {
+        IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
+        int max = chargable.getMaxEnergyStored(item);
+        int cur = chargable.getEnergyStored(item);
+        if(cur < max) {
           int canUse = Math.min(available, max - cur);
-          if(cur < max) {
-            used = chargable.receiveEnergy(item, canUse, false);
+          int used = chargable.receiveEnergy(item, canUse, false);
+          if(used > 0) {
+            addEnergy(-used);
+            chargedItem = true;
+            available -= used;
           }
-
-        }
-        if(used > 0) {
-          addEnergy(-used);
-          chargedItem = true;
-          available -= used;
         }
       }
     }
