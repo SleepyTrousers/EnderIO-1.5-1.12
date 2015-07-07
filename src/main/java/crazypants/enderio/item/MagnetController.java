@@ -172,7 +172,7 @@ public class MagnetController implements IEntitySelector {
       return;
     case BAUBLES:
       if (dropOff < 0) {
-        player.inventory.setInventorySlotContents(slot, stack);
+        baubles.setInventorySlotContents(slot, stack);
       } else {
         baubles.setInventorySlotContents(slot, null);
         player.inventory.setInventorySlotContents(dropOff, stack);
