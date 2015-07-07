@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
 
@@ -44,7 +43,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileSoulBinder) {
-      return new ContainerSoulBinder(player.inventory, (AbstractMachineEntity) te);
+      return new ContainerSoulBinder(player.inventory, (TileSoulBinder) te);
     }
     return null;
   }

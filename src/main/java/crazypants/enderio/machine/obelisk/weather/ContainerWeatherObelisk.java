@@ -5,7 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerWeatherObelisk extends AbstractMachineContainer {
+public class ContainerWeatherObelisk extends AbstractMachineContainer<TileWeatherObelisk> {
 
   public static final int MAX_SCALE = 31;
   
@@ -15,10 +15,10 @@ public class ContainerWeatherObelisk extends AbstractMachineContainer {
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(tileEntity, 0, 80, 62) {
+    addSlotToContainer(new Slot(getInv(), 0, 80, 62) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(0, itemStack);
+        return getInv().isItemValidForSlot(0, itemStack);
       }
     });
   }

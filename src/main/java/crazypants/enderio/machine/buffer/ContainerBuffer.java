@@ -6,7 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerBuffer extends AbstractMachineContainer {
+public class ContainerBuffer extends AbstractMachineContainer<TileBuffer> {
   
   public ContainerBuffer(InventoryPlayer playerInv, TileBuffer te) {
     super(playerInv, te);
@@ -14,11 +14,11 @@ public class ContainerBuffer extends AbstractMachineContainer {
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    TileBuffer buf = (TileBuffer) tileEntity;
+    TileBuffer buf = (TileBuffer) getInv();
     if(buf.hasInventory()) {
       Point point = new Point(buf.hasInventory() && buf.hasPower() ? 96 : 62, 15);
       for (int i = 0; i < 9; i++) {
-        addSlotToContainer(new Slot(this.tileEntity, i, point.x + ((i % 3) * 18), point.y + ((i / 3) * 18)));
+        addSlotToContainer(new Slot(this.getInv(), i, point.x + ((i % 3) * 18), point.y + ((i / 3) * 18)));
       }
     }
   }

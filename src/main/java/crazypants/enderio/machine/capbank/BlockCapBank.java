@@ -220,7 +220,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapBank) {
-      return new ContainerCapBank(player, player.inventory, (TileCapBank) te);
+      return new ContainerCapBank(player.inventory, (TileCapBank) te);
     }
     return null;
   }

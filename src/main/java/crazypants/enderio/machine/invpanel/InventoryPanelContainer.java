@@ -32,7 +32,7 @@ import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
 
-public class InventoryPanelContainer extends AbstractMachineContainer implements ChangeLog {
+public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
   public static final int CRAFTING_GRID_X = 24+7;
   public static final int CRAFTING_GRID_Y = 16;
@@ -48,7 +48,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   private Slot slotFilter;
 
   private int slotCraftResult;
-  @SuppressWarnings("unused")
   private int firstSlotReturn;
   private int endSlotReturn;
   private int firstSlotCraftingGrid;
@@ -71,17 +70,17 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
     slotCraftResult = inventorySlots.size();
-    addSlotToContainer(new SlotCrafting(playerInv.player, tileEntity, tileEntity, TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59,
+    addSlotToContainer(new SlotCrafting(playerInv.player, getInv(), getInv(), TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59,
         CRAFTING_GRID_Y + 18) {
       @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
-        FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, tileEntity);
+        FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, getInv());
         for (int i = TileInventoryPanel.SLOT_CRAFTING_START; i < TileInventoryPanel.SLOT_CRAFTING_RESULT; i++) {
-          ItemStack itemstack = tileEntity.getStackInSlot(i);
+          ItemStack itemstack = getInv().getStackInSlot(i);
           if(itemstack == null)
             continue;
 
-          tileEntity.decrStackSize(i, 1);
+          getInv().decrStackSize(i, 1);
           if(!itemstack.getItem().hasContainerItem(itemstack))
             continue;
 
@@ -90,13 +89,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
             MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerIS));
           } else {
             if(itemstack.getItem().doesContainerItemLeaveCraftingGrid(itemstack)) {
-              if(ItemUtil.doInsertItem(tileEntity, 10, 20, itemstack) > 0)
+              if(ItemUtil.doInsertItem(getInv(), 10, 20, itemstack) > 0)
                 continue;
               if(player.inventory.addItemStackToInventory(containerIS))
                 continue;
             }
-            if(tileEntity.getStackInSlot(i) == null) {
-              tileEntity.setInventorySlotContents(i, containerIS);
+            if(getInv().getStackInSlot(i) == null) {
+              getInv().setInventorySlotContents(i, containerIS);
             } else {
               player.dropPlayerItemWithRandomChoice(containerIS, false);
             }
@@ -108,12 +107,12 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     firstSlotCraftingGrid = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_CRAFTING_START; y < 3; y++) {
       for (int x = 0; x < 3; x++, i++) {
-        addSlotToContainer(new Slot(tileEntity, i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
+        addSlotToContainer(new Slot(getInv(), i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
       }
     }
     endSlotCraftingGrid = inventorySlots.size();
 
-    slotFilter = addSlotToContainer(new Slot(tileEntity, TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
+    slotFilter = addSlotToContainer(new Slot(getInv(), TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
       @Override
       public int getSlotStackLimit() {
         return 1;
@@ -123,7 +122,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     firstSlotReturn = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_RETURN_START; y < 2; y++) {
       for (int x = 0; x < 5; x++, i++) {
-        addSlotToContainer(new Slot(tileEntity, i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
+        addSlotToContainer(new Slot(getInv(), i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
       }
     }
     endSlotReturn = inventorySlots.size();
@@ -137,14 +136,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
   @Override
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
-    if(!tileEntity.getWorldObj().isRemote) {
-      ((TileInventoryPanel) tileEntity).eventHandler = null;
+    if(!getInv().getWorldObj().isRemote) {
+      ((TileInventoryPanel) getInv()).eventHandler = null;
     }
     removeChangeLog();
   }
 
   public TileInventoryPanel getInventoryPanel() {
-    return (TileInventoryPanel) tileEntity;
+    return (TileInventoryPanel) getInv();
   }
 
   public Slot getSlotFilter() {
@@ -219,10 +218,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     }, 3, 3);
 
     for (int i = 0; i < 9; i++) {
-      tmp.setInventorySlotContents(i, tileEntity.getStackInSlot(i));
+      tmp.setInventorySlotContents(i, getInv().getStackInSlot(i));
     }
 
-    tileEntity.setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, tileEntity.getWorldObj()));
+    getInv().setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, getInv().getWorldObj()));
 
     checkCraftingRecipes();
   }
@@ -304,6 +303,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     super.detectAndSendChanges();
   }
 
+  @SuppressWarnings("unchecked")
   private void sendReturnAreaSlots() {
     for (int slotIdx = firstSlotReturn; slotIdx < endSlotReturn; slotIdx++) {
       ItemStack stack = ((Slot) inventorySlots.get(slotIdx)).getStack();
@@ -420,7 +420,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer implements
     if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
       return false;
     }
-    if(getTileEntity().getWorldObj().isRemote) {
+    if(getInv().getWorldObj().isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
     }
     return true;

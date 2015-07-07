@@ -3,41 +3,33 @@ package crazypants.enderio.machine.gui;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 
-public abstract class AbstractMachineContainer extends ContainerEIO {
-
-  protected final AbstractMachineEntity tileEntity;
-  
-  protected Map<Slot, Point> playerSlotLocations = new HashMap<Slot, Point>();
-
+public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> extends ContainerEnder<T> {
+ 
   protected Slot upgradeSlot;
+
+  public AbstractMachineContainer(InventoryPlayer playerInv, T te) {
+    super(playerInv, te);
+  }
   
-  protected final int startPlayerSlot;
-  protected final int endPlayerSlot;
-  protected final int startHotBarSlot;
-  protected final int endHotBarSlot;
-
-  @SuppressWarnings("OverridableMethodCallInConstructor")
-  public AbstractMachineContainer(InventoryPlayer playerInv, AbstractMachineEntity te) {
-    this.tileEntity = te;
-
+  @Override
+  protected void addSlots(InventoryPlayer playerInv) {
     addMachineSlots(playerInv);
-
+    
+    final T te = getInv();
     if(te.getSlotDefinition().getNumUpgradeSlots() == 1) {
       upgradeSlot = new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
 
@@ -48,40 +40,16 @@ public abstract class AbstractMachineContainer extends ContainerEIO {
 
         @Override
         public boolean isItemValid(ItemStack itemStack) {
-          return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
+          return te.isItemValidForSlot(te.getSlotDefinition().getMinUpgradeSlot(), itemStack);
         }
       };
       addSlotToContainer(upgradeSlot);
     }
-
-    int x = getPlayerInventoryOffset().x;
-    int y = getPlayerInventoryOffset().y;        
-    
-    // add players inventory
-    startPlayerSlot = inventorySlots.size();
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        Point loc = new Point(x + j * 18, y + i * 18);
-        Slot slot = new Slot(playerInv, j + i * 9 + 9, loc.x, loc.y);
-        addSlotToContainer(slot);
-        playerSlotLocations.put(slot, loc);
-      }
-    }
-    endPlayerSlot = inventorySlots.size();
-
-    startHotBarSlot = inventorySlots.size();
-    for (int i = 0; i < 9; ++i) {
-      Point loc = new Point(x + i * 18, y + 58);
-      Slot slot = new Slot(playerInv, i, loc.x, loc.y);
-      addSlotToContainer(slot);      
-      playerSlotLocations.put(slot, loc);
-    }
-    endHotBarSlot = inventorySlots.size();
   }
 
   @Override
   public boolean canInteractWith(EntityPlayer entityplayer) {
-    return tileEntity.isUseableByPlayer(entityplayer);
+    return getInv().isUseableByPlayer(entityplayer);
   }
 
   public Point getPlayerInventoryOffset() {
@@ -96,15 +64,11 @@ public abstract class AbstractMachineContainer extends ContainerEIO {
     return upgradeSlot;
   }
 
-  public AbstractMachineEntity getTileEntity() {
-    return tileEntity;
-  }
-
   protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    SlotDefinition slotDef = tileEntity.getSlotDefinition();
+    SlotDefinition slotDef = getInv().getSlotDefinition();
 
     ItemStack copystack = null;
     Slot slot = (Slot) inventorySlots.get(slotIndex);
@@ -162,20 +126,20 @@ public abstract class AbstractMachineContainer extends ContainerEIO {
 
   protected void addInventorySlotRange(List<SlotRange> res, int start, int end) {
     for (int i = start; i < end; i++) {
-      int slotNumber = getSlotFromInventory(tileEntity, i).slotNumber;
+      int slotNumber = getSlotFromInventory(getInv(), i).slotNumber;
       res.add(new SlotRange(slotNumber, slotNumber + 1, false));
     }
   }
 
   protected void addInputSlotRanges(List<SlotRange> res) {
-    SlotDefinition slotDef = tileEntity.getSlotDefinition();
+    SlotDefinition slotDef = getInv().getSlotDefinition();
     if(slotDef.getNumInputSlots() > 0) {
       addInventorySlotRange(res, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1);
     }
   }
 
   protected void addUpgradeSlotRanges(List<SlotRange> res) {
-    SlotDefinition slotDef = tileEntity.getSlotDefinition();
+    SlotDefinition slotDef = getInv().getSlotDefinition();
     if(slotDef.getNumUpgradeSlots() > 0) {
       addInventorySlotRange(res, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1);
     }
@@ -191,8 +155,8 @@ public abstract class AbstractMachineContainer extends ContainerEIO {
   }
 
   protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
-    if (slot.inventory == tileEntity) {
-      SlotDefinition slotDef = tileEntity.getSlotDefinition();
+    if (slot.inventory == getInv()) {
+      SlotDefinition slotDef = getInv().getSlotDefinition();
       if (slotDef.isInputSlot(slot.slotNumber) || slotDef.isUpgradeSlot(slot.slotNumber)) {
         return Collections.singletonList(getPlayerInventorySlotRange(false));
       }
@@ -210,8 +174,8 @@ public abstract class AbstractMachineContainer extends ContainerEIO {
   }
 
   protected int getProgressScaled(int scale) {
-    if(getTileEntity() instanceof IProgressTile) {
-      Util.getProgressScaled(scale, (IProgressTile) getTileEntity());
+    if(getInv() instanceof IProgressTile) {
+      Util.getProgressScaled(scale, (IProgressTile) getInv());
     }
     return 0;
   }

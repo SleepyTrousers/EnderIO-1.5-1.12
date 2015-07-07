@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank;
 
-import net.minecraft.entity.Entity;
+import java.awt.Point;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -8,50 +9,48 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import com.enderio.core.common.ContainerEnder;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.enderio.machine.gui.ContainerEIO;
 import crazypants.util.BaublesUtil;
 import crazypants.util.ShadowInventory;
 
-public class ContainerCapBank extends ContainerEIO {
+public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
-  private final TileCapBank tileEntity;
-  private final InventoryImpl inv;
+  private InventoryImpl inv;
 
   // Note: Modifying the Baubles inventory on the client side of an integrated
   // server is a bad idea as Baubles does some very bad things...
   private IInventory baubles;
 
-  public ContainerCapBank(final Entity player, InventoryPlayer playerInv, TileCapBank cb) {
-    tileEntity = cb;
-    if(tileEntity.getNetwork() != null && tileEntity.getNetwork().getInventory() != null) {
-      inv = cb.getNetwork().getInventory();
+  public ContainerCapBank(InventoryPlayer playerInv, TileCapBank cb) {
+    super(playerInv, cb);
+  }
+
+  public boolean hasBaublesSlots() {
+    return baubles != null;
+  }
+  
+  @Override
+  protected void addSlots(final InventoryPlayer playerInv) {
+    if(getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
+      inv = getInv().getNetwork().getInventory();
     } else {
       inv = new InventoryImpl();
     }
 
-    baubles = BaublesUtil.instance().getBaubles((EntityPlayer) player);
+    baubles = BaublesUtil.instance().getBaubles(playerInv.player);
 
-    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
+    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
       baubles = new ShadowInventory(baubles);
     }
     
     int armorOffset = 21;
     for(int i = 0; i < 4; i++) {
       addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i*20, 59));
-    }
-
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, +armorOffset + 8 + j * 18, 84 + i * 18));
-      }
-    }
-
-    for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, +armorOffset + 8 + i * 18, 142));
     }
 
     //armor slots
@@ -69,7 +68,7 @@ public class ContainerCapBank extends ContainerEIO {
           if(par1ItemStack == null) {
             return false;
           }
-          return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, player);
+          return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, playerInv.player);
         }
 
         @Override
@@ -90,16 +89,11 @@ public class ContainerCapBank extends ContainerEIO {
         });
       }
     }
-    
-  }
-
-  public boolean hasBaublesSlots() {
-    return baubles != null;
   }
   
   public void updateInventory() {
-    if(tileEntity.getNetwork() != null && tileEntity.getNetwork().getInventory() != null) {
-      inv.setCapBank(tileEntity.getNetwork().getInventory().getCapBank());
+    if(getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
+      inv.setCapBank(getInv().getNetwork().getInventory().getCapBank());
     }
   }
 
@@ -108,6 +102,13 @@ public class ContainerCapBank extends ContainerEIO {
     return true;
   }
 
+  @Override
+  public Point getPlayerInventoryOffset() {
+    Point p = super.getPlayerInventoryOffset();
+    p.translate(21, 0);
+    return p;
+  }
+  
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
 

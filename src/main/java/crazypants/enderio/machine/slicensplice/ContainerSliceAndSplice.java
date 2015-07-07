@@ -5,10 +5,9 @@ import java.awt.Point;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerSliceAndSplice extends AbstractMachineContainer {
+public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 
   public static final Point[] INPUT_SLOTS = new Point[] {      
       new Point(44,40),
@@ -23,7 +22,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer {
   
   public static final Point OUTPUT_SLOT = new Point(134, 49); 
   
-  public ContainerSliceAndSplice(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerSliceAndSplice(InventoryPlayer playerInv, TileSliceAndSplice te) {
     super(playerInv, te);
   }
 
@@ -33,16 +32,16 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer {
     for(int i=0;i<INPUT_SLOTS.length;i++) {
       Point p = INPUT_SLOTS[i];
       final int slot = i; 
-      addSlotToContainer(new Slot(tileEntity, i, p.x, p.y) {
+      addSlotToContainer(new Slot(getInv(), i, p.x, p.y) {
         @Override
         public boolean isItemValid(ItemStack itemStack) {
-          return tileEntity.isItemValidForSlot(slot, itemStack);
+          return getInv().isItemValidForSlot(slot, itemStack);
         }
       });
     }
     
     
-    addSlotToContainer(new Slot(tileEntity, 8, OUTPUT_SLOT.x, OUTPUT_SLOT.y) {
+    addSlotToContainer(new Slot(getInv(), 8, OUTPUT_SLOT.x, OUTPUT_SLOT.y) {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;

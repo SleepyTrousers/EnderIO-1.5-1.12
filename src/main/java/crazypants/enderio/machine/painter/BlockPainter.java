@@ -10,7 +10,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
@@ -35,7 +34,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
     // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPainter) {
-      return new PainterContainer(player.inventory, (AbstractMachineEntity) te);
+      return new PainterContainer(player.inventory, (TileEntityPainter) te);
     }
     return null;
   }

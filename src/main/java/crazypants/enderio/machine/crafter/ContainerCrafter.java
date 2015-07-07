@@ -13,13 +13,10 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
 
-public class ContainerCrafter extends AbstractMachineContainer {
-
-  private final TileCrafter crafter;
+public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
 
   public ContainerCrafter(InventoryPlayer playerInv, TileCrafter te) {
     super(playerInv, te);
-    crafter = (TileCrafter) tileEntity;
   }
 
   public void addCrafterSlots(List<GhostSlot> ghostSlots) {
@@ -59,11 +56,11 @@ public class ContainerCrafter extends AbstractMachineContainer {
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        addSlotToContainer(new InputSlot(tileEntity, index, x, y));
+        addSlotToContainer(new InputSlot(getInv(), index, x, y));
         index++;
       }
     }
-    addSlotToContainer(new Slot(tileEntity, 9, 172, 34) {
+    addSlotToContainer(new Slot(getInv(), 9, 172, 34) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return false;
@@ -80,7 +77,7 @@ public class ContainerCrafter extends AbstractMachineContainer {
     @Override
     public boolean isItemValid(ItemStack itemStack) {
 
-      ItemStack refStack = crafter.craftingGrid.getStackInSlot(slotNumber);
+      ItemStack refStack = getInv().craftingGrid.getStackInSlot(slotNumber);
       if(refStack == null || itemStack == null) {
         return false;
       }
@@ -99,7 +96,7 @@ public class ContainerCrafter extends AbstractMachineContainer {
 
     @Override
     public ItemStack getStack() {
-      return crafter.craftingGrid.getStackInSlot(slotIndex);
+      return getInv().craftingGrid.getStackInSlot(slotIndex);
     }
 
     @Override
@@ -111,7 +108,7 @@ public class ContainerCrafter extends AbstractMachineContainer {
         stack = stack.copy();
         stack.stackSize = 1;
       }
-      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(crafter, slotIndex, stack));
+      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getInv(), slotIndex, stack));
     }
   }
 }

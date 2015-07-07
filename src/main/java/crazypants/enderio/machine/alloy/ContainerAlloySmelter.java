@@ -12,38 +12,36 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerAlloySmelter extends AbstractMachineContainer {
+public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
 
   private final EntityPlayer thePlayer;
-  private final TileAlloySmelter smelter;
 
   public ContainerAlloySmelter(InventoryPlayer playerInv, TileAlloySmelter te) {
     super(playerInv, te);
     thePlayer = playerInv.player;
-    smelter = te;
   }
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(tileEntity, 0, 54, 17) {
+    addSlotToContainer(new Slot(getInv(), 0, 54, 17) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(0, itemStack);
+        return getInv().isItemValidForSlot(0, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 1, 79, 7) {
+    addSlotToContainer(new Slot(getInv(), 1, 79, 7) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(1, itemStack);
+        return getInv().isItemValidForSlot(1, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 2, 103, 17) {
+    addSlotToContainer(new Slot(getInv(), 2, 103, 17) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(2, itemStack);
+        return getInv().isItemValidForSlot(2, itemStack);
       }
     });
-    addSlotToContainer(new SlotSmelter(tileEntity, 3, 79, 57));
+    addSlotToContainer(new SlotSmelter(getInv(), 3, 79, 57));
 
   }
 
@@ -86,7 +84,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
       if(!thePlayer.worldObj.isRemote) {
         ItemStack outputSized = output.copy();
         outputSized.stackSize = numResults;
-        float experience = smelter.getExperienceForOutput(outputSized);
+        float experience = getInv().getExperienceForOutput(outputSized);
         Util.giveExperience(thePlayer, experience);
       }
       numResults = 0;

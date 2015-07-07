@@ -11,7 +11,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 
-public class ContainerTransceiver extends AbstractMachineContainer {
+public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> {
 
   public static final int GUI_WIDTH = 256;
 
@@ -23,30 +23,25 @@ public class ContainerTransceiver extends AbstractMachineContainer {
 
   static final Point FILTER_OFFSET = new Point(PLAYER_INV_OFFSET.x, 30);
 
-  private TileTransceiver trans;
-
   public ContainerTransceiver(InventoryPlayer inventory, TileTransceiver te) {
     super(inventory, te);
-    trans = te;
   }
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
 
-    trans = (TileTransceiver) tileEntity;
-
     int i;
     for (i = 0; i < 8; i++) {
-      addSlotToContainer(new Slot(tileEntity, i, 0, 0) {
+      addSlotToContainer(new Slot(getInv(), i, 0, 0) {
         @Override
         public boolean isItemValid(ItemStack itemstack) {
-          return trans.isItemValidForSlot(getSlotIndex(), itemstack);
+          return getInv().isItemValidForSlot(getSlotIndex(), itemstack);
           //return true;
         }
       });
     }
     for (; i < 16; i++) {
-      addSlotToContainer(new Slot(tileEntity, i, 0, 0) {
+      addSlotToContainer(new Slot(getInv(), i, 0, 0) {
         @Override
         public boolean isItemValid(ItemStack p_75214_1_) {
           return false;

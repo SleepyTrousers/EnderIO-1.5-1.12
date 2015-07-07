@@ -76,7 +76,7 @@ public class GuiCapBank extends GuiContainerBase {
   private final ContainerCapBank container;
 
   public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te) {
-    super(new ContainerCapBank(player, playerInv, te));
+    super(new ContainerCapBank(playerInv, te));
     capBank = te;
     container = (ContainerCapBank) inventorySlots;
 

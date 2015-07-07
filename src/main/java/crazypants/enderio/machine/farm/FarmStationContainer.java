@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class FarmStationContainer extends AbstractMachineContainer {
+public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
   private static final int ROW_TOOLS = 19;
   private static final int ROW_IO = 44;
@@ -54,15 +54,15 @@ public class FarmStationContainer extends AbstractMachineContainer {
     for(Point p : points) {
       final int slot = i;
       i++;
-      addSlotToContainer(new Slot(tileEntity, slot, p.x, p.y) {
+      addSlotToContainer(new Slot(getInv(), slot, p.x, p.y) {
         @Override
         public boolean isItemValid(ItemStack itemStack) {
-          return tileEntity.isItemValidForSlot(slot, itemStack);
+          return getInv().isItemValidForSlot(slot, itemStack);
         }
 
         @Override
         public int getSlotStackLimit() {             
-          return ((TileFarmStation)tileEntity).getInventoryStackLimit(slot);
+          return ((TileFarmStation)getInv()).getInventoryStackLimit(slot);
         }
       });
     }
