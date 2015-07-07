@@ -33,7 +33,9 @@ public class MagnetController implements IEntitySelector {
   
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    
+    if (event.phase != TickEvent.Phase.END) {
+      return;
+    }
     ActiveMagnet mag = getActiveMagnet(event.player);
     if (mag != null && event.player.getHealth() > 0f) {
       doHoover(event.player);
