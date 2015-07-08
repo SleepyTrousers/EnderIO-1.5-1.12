@@ -32,7 +32,7 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     sortMode = buf.readInt();
-    ByteBufUtils.writeUTF8String(buf, filterString);
+    filterString = ByteBufUtils.readUTF8String(buf);
     sync = buf.readBoolean();
   }
 
@@ -40,7 +40,7 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
     buf.writeInt(sortMode);
-    filterString = ByteBufUtils.readUTF8String(buf);
+    ByteBufUtils.writeUTF8String(buf, filterString);
     buf.writeBoolean(sync);
   }
 
