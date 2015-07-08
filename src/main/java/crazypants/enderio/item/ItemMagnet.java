@@ -58,7 +58,8 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   public static boolean hasPower(ItemStack itemStack) {
-    return DarkSteelItems.itemMagnet.getEnergyStored(itemStack) > 0;
+    int energyStored = DarkSteelItems.itemMagnet.getEnergyStored(itemStack);
+    return energyStored > 0 && energyStored >= Config.magnetPowerUsePerSecondRF;
   }
 
   public static void drainPerSecondPower(ItemStack itemStack) {
@@ -188,7 +189,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-    if (player instanceof EntityPlayer && hasPower(itemstack) && ((EntityPlayer) player).getHealth() > 0f) {
+    if (player instanceof EntityPlayer && isActive(itemstack) && hasPower(itemstack) && ((EntityPlayer) player).getHealth() > 0f) {
       controller.doHoover((EntityPlayer) player);
       if(!player.worldObj.isRemote && player.worldObj.getTotalWorldTime() % 20 == 0) {
         ItemMagnet.drainPerSecondPower(itemstack);

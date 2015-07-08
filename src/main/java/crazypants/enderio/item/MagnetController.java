@@ -33,7 +33,9 @@ public class MagnetController implements IEntitySelector {
   
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    
+    if (event.phase != TickEvent.Phase.END) {
+      return;
+    }
     ActiveMagnet mag = getActiveMagnet(event.player);
     if (mag != null && event.player.getHealth() > 0f) {
       doHoover(event.player);
@@ -172,7 +174,7 @@ public class MagnetController implements IEntitySelector {
       return;
     case BAUBLES:
       if (dropOff < 0) {
-        player.inventory.setInventorySlotContents(slot, stack);
+        baubles.setInventorySlotContents(slot, stack);
       } else {
         baubles.setInventorySlotContents(slot, null);
         player.inventory.setInventorySlotContents(dropOff, stack);
