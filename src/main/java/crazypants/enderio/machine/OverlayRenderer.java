@@ -43,6 +43,7 @@ public class OverlayRenderer implements IRenderFace {
       IoMode mode = te.getIoMode(face);
       IIcon tex = ((AbstractMachineBlock<AbstractMachineEntity>) par1Block).getOverlayIconForMode(te, face, mode);
       if(tex != null) {
+        ccr.getCustomRenderBlocks().setRenderBoundsFromBlock(par1Block);
         ccr.getCustomRenderBlocks().doDefaultRenderFace(face, par1Block, x, y, z, tex);
       }
 

@@ -31,7 +31,7 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
     @Override
     public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
         boolean translateToXyz) {
-
+      
       ccr.getCustomRenderBlocks().doDefaultRenderFace(face, par1Block, x, y, z, texture);
       super.renderFace(rb, face, par1Block, x, y, z, texture, refVertices, translateToXyz);
     }
