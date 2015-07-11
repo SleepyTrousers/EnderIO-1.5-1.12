@@ -71,7 +71,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
       return null;
     }
 
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    IMachineRecipe nextRecipe = getNextRecipe();
     if(mode == Mode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
       nextRecipe = null;
     }
