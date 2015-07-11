@@ -18,6 +18,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
+  protected IMachineRecipe cachedNextRecipe;
 
   protected final Random random = new Random();
 
@@ -205,6 +206,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
         listIndex++;
       }
     }
+
+    cachedNextRecipe = null;
   }
 
   protected void mergeFluidResult(ResultStack result) {
@@ -257,8 +260,15 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return res;
   }
 
+  protected IMachineRecipe getNextRecipe() {
+    if (cachedNextRecipe == null) {
+      cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    }
+    return cachedNextRecipe;
+  }
+
   protected IMachineRecipe canStartNextTask(float chance) {
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    IMachineRecipe nextRecipe = getNextRecipe();
     if(nextRecipe == null) {
       return null; // no template
     }
@@ -364,6 +374,29 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     }
     if(lastCompletedRecipe != null) {
       nbtRoot.setString("lastCompletedRecipe", lastCompletedRecipe.getUid());
+    }
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    cachedNextRecipe = null;
+  }
+
+  @Override
+  public ItemStack decrStackSize(int fromSlot, int amount) {
+    ItemStack res = super.decrStackSize(fromSlot, amount);
+    if(slotDefinition.isInputSlot(fromSlot)) {
+      cachedNextRecipe = null;
+    }
+    return res;
+  }
+
+  @Override
+  public void setInventorySlotContents(int slot, ItemStack contents) {
+    super.setInventorySlotContents(slot, contents);
+    if(slotDefinition.isInputSlot(slot)) {
+      cachedNextRecipe = null;
     }
   }
 
