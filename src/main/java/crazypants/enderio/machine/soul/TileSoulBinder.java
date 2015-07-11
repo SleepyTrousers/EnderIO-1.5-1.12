@@ -44,7 +44,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_THREE);
   
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
-  
+
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));
   }
@@ -87,21 +87,29 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   public boolean needsXP() {
+    return getXPRequired() > 0;
+  }
+
+  /**
+   * Computes the required amount of XP to start the current recipe.
+   * @return 0 if no XP is required, negative when more than required XP is stored.
+   */
+  private int getXPRequired() {
     if(currentTask != null) {
-      return false;
+      return 0;
     }
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    IMachineRecipe nextRecipe = getNextRecipe();
     if(! (nextRecipe instanceof ISoulBinderRecipe)) {
-      return false;
+      return 0;
     }
-    return ((ISoulBinderRecipe)nextRecipe).getExperienceRequired() > getContainer().getExperienceTotal();
+    return ((ISoulBinderRecipe)nextRecipe).getExperienceRequired() - getContainer().getExperienceTotal();
   }
 
   public int getCurrentlyRequiredLevel() {
     if(currentTask != null) {
       return -1;
     }
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    IMachineRecipe nextRecipe = getNextRecipe();
     if(! (nextRecipe instanceof ISoulBinderRecipe)) {
       return -1;
     }
@@ -167,14 +175,31 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   @Override
   protected boolean doPull(ForgeDirection dir) {
     boolean res = super.doPull(dir);
-    FluidUtil.doPull(this, dir, Config.fluidConduitExtractRate);
+    int req = getXPRequired();
+    if(req > 0) {
+      FluidUtil.doPull(this, dir, Math.min(XpUtil.experienceToLiquid(req), Config.fluidConduitExtractRate));
+    }
     return res;
   }
   
   @Override
   protected boolean doPush(ForgeDirection dir) {
     boolean res = super.doPush(dir);
-    FluidUtil.doPush(this, dir, Config.fluidConduitExtractRate);
+    int maxAmount = Config.fluidConduitExtractRate;
+    if (currentTask == null) {
+      IMachineRecipe nextRecipe = getNextRecipe();
+      if (nextRecipe instanceof ISoulBinderRecipe) {
+        int excess = getContainer().getExperienceTotal() - ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();
+        if (excess > 0) {
+          maxAmount = Math.min(XpUtil.experienceToLiquid(excess), Config.fluidConduitExtractRate);
+        } else {
+          maxAmount = 0;
+        }
+      }
+    }
+    if(maxAmount > 0) {
+      FluidUtil.doPush(this, dir, maxAmount);
+    }
     return res;
   }
 
