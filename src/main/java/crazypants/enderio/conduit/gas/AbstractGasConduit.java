@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
+import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -30,11 +31,13 @@ public abstract class AbstractGasConduit extends AbstractConduit implements IGas
   protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   protected boolean redstoneStateDirty = true;
 
+  @Method(modid = GasUtil.API_NAME)
   public IGasHandler getExternalHandler(ForgeDirection direction) {
     IGasHandler con = GasUtil.getExternalGasHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
+  @Method(modid = GasUtil.API_NAME)
   public IGasHandler getTankContainer(BlockCoord bc) {
     return GasUtil.getGasHandler(getBundle().getWorld(), bc);
   }

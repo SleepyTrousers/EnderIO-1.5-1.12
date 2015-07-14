@@ -16,11 +16,13 @@ public final class GasUtil {
 
   private static boolean useCheckPerformed = false;
   private static boolean isGasConduitEnabled = false;
+  
+  public static final String API_NAME = "MekanismAPI|gas";
 
   public static boolean isGasConduitEnabled() {
     if(!useCheckPerformed) {
       if(Config.isGasConduitEnabled) {
-        isGasConduitEnabled = ModAPIManager.INSTANCE.hasAPI("MekanismAPI|gas");
+        isGasConduitEnabled = ModAPIManager.INSTANCE.hasAPI(API_NAME);
       } else {
         isGasConduitEnabled = false;
       }
@@ -29,24 +31,24 @@ public final class GasUtil {
     return isGasConduitEnabled;
   }
 
-  @Method(modid = "MekanismAPI|gas")
+  @Method(modid = API_NAME)
   public static IGasHandler getExternalGasHandler(IBlockAccess world, BlockCoord bc) {
     IGasHandler con = getGasHandler(world, bc);
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
-  @Method(modid = "MekanismAPI|gas")
+  @Method(modid = API_NAME)
   public static IGasHandler getGasHandler(IBlockAccess world, BlockCoord bc) {
     return getGasHandler(world, bc.x, bc.y, bc.z);
   }
 
-  @Method(modid = "MekanismAPI|gas")
+  @Method(modid = API_NAME)
   public static IGasHandler getGasHandler(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     return getGasHandler(te);
   }
 
-  @Method(modid = "MekanismAPI|gas")
+  @Method(modid = API_NAME)
   public static IGasHandler getGasHandler(TileEntity te) {
     if(te instanceof IGasHandler) {
       return (IGasHandler) te;
@@ -54,7 +56,7 @@ public final class GasUtil {
     return null;
   }
 
-  @Method(modid = "MekanismAPI|gas")
+  @Method(modid = API_NAME)
   public static boolean isGasValid(GasStack gas) {
     if(gas != null) {
       String name = gas.getGas().getLocalizedName();

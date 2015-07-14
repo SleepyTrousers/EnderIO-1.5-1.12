@@ -179,6 +179,7 @@ curse {
     changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
     additionalArtifact deobfJar
+    relatedProject 'endercore'
 }
 
 task checkTranslations << {

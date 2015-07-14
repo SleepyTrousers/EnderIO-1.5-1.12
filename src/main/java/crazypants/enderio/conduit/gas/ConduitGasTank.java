@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTank;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.Optional.Method;
 
 public class ConduitGasTank extends GasTank {
 
@@ -55,6 +56,7 @@ public class ConduitGasTank extends GasTank {
   }
 
   @Override
+  @Method(modid = GasUtil.API_NAME)
   public int receive(GasStack resource, boolean doReceive) {
     if(resource == null || resource.getGas().getID() < 0) {
       return 0;
@@ -95,6 +97,7 @@ public class ConduitGasTank extends GasTank {
   }
 
   @Override
+  @Method(modid = GasUtil.API_NAME)
   public GasStack draw(int maxDrain, boolean doDraw) {
     if(stored == null || stored.getGas().getID() < 0) {
       return null;

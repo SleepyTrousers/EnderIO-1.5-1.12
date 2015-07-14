@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -97,6 +98,7 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
 
   public abstract AbstractGasTankConduitNetwork<? extends AbstractGasTankConduit> getTankNetwork();
 
+  @Method(modid = GasUtil.API_NAME)
   public void setGasType(GasStack gasType) {
     if(tank.getGas() != null && tank.getGas().isGasEqual(gasType)) {
       return;
@@ -114,6 +116,7 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
     return tank;
   }
 
+  @Method(modid = GasUtil.API_NAME)
   public GasStack getGasType() {
     GasStack result = null;
     if(getTankNetwork() != null) {

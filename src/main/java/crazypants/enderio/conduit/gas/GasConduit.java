@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -224,11 +225,13 @@ public class GasConduit extends AbstractGasTankConduit {
 
   @Override
   @Deprecated
+  @Method(modid = GasUtil.API_NAME)
   public int receiveGas(ForgeDirection side, GasStack stack) {
     return receiveGas(side, stack, true);
   }
 
   @Override
+  @Method(modid = GasUtil.API_NAME)
   public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer) {
     if(network == null || !getConnectionMode(side).acceptsInput()) {
       return 0;
@@ -238,11 +241,13 @@ public class GasConduit extends AbstractGasTankConduit {
 
   @Override
   @Deprecated
+  @Method(modid = GasUtil.API_NAME)
   public GasStack drawGas(ForgeDirection side, int amount) {
     return drawGas(side, amount, true);
   }
 
   @Override
+  @Method(modid = GasUtil.API_NAME)
   public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer) {
     if(network == null || !getConnectionMode(side).acceptsOutput()) {
       return null;
@@ -251,6 +256,7 @@ public class GasConduit extends AbstractGasTankConduit {
   }
 
   @Override
+  @Method(modid = GasUtil.API_NAME)
   public boolean canReceiveGas(ForgeDirection from, Gas gas) {
     if(network == null) {
       return false;
@@ -259,6 +265,7 @@ public class GasConduit extends AbstractGasTankConduit {
   }
 
   @Override
+  @Method(modid = GasUtil.API_NAME)
   public boolean canDrawGas(ForgeDirection from, Gas gas) {
     if(network == null) {
       return false;
