@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -106,31 +105,6 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
             }
           }
           return true;
-        } else {
-          // There's not really any good way to compare conduits...
-          IConduit existingConduit = bundle.getConduit(getBaseConduitType());
-          ItemStack existingConduitAsItemStack = existingConduit.createItem();
-          if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
-            if (!world.isRemote) {
-              IConduit newConduit = createConduit(stack, player);
-              if (newConduit == null) {
-                System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-                return false;
-              }
-              bundle.removeConduit(existingConduit);
-              bundle.addConduit(newConduit);
-              if (!player.capabilities.isCreativeMode) {
-                stack.stackSize--;
-                for (ItemStack drop : existingConduit.getDrops()) {
-                  EntityItem entityitem = new EntityItem(world, x + hitX, y + hitY, z + hitZ, drop);
-                  entityitem.delayBeforeCanPickup = 10;
-                  world.spawnEntityInWorld(entityitem);
-                }
-              }
-            }
-            return true;
-          }
-
         }
       }
     }
@@ -138,6 +112,42 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     return false;
   }
 
+  @Override
+  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    // Conduit replacement
+    TileEntity te = (TileConduitBundle) world.getTileEntity(x, y, z);
+    if (te == null || !(te instanceof IConduitBundle)) {
+      return false;
+    }
+    IConduitBundle bundle = (IConduitBundle) te;
+    IConduit existingConduit = bundle.getConduit(getBaseConduitType());
+    ItemStack existingConduitAsItemStack = existingConduit.createItem();
+    if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
+      if (!world.isRemote) {
+        IConduit newConduit = createConduit(stack, player);
+        if (newConduit == null) {
+          System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
+          return false;
+        }
+        bundle.removeConduit(existingConduit);
+        bundle.addConduit(newConduit);
+        if (!player.capabilities.isCreativeMode) {
+          stack.stackSize--;
+          for (ItemStack drop : existingConduit.getDrops()) {
+            if (!player.inventory.addItemStackToInventory(drop)) {
+              ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, x, y, z);
+            }
+          }
+          player.inventoryContainer.detectAndSendChanges();
+        }
+        return true;
+      } else {
+        player.swingItem();
+      }
+    }
+    return false;
+  }
+  
   @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
