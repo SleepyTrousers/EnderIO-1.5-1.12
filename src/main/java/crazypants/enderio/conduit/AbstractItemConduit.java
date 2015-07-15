@@ -121,6 +121,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     }
     IConduitBundle bundle = (IConduitBundle) te;
     IConduit existingConduit = bundle.getConduit(getBaseConduitType());
+    if (existingConduit == null) {
+      return false;
+    }
     ItemStack existingConduitAsItemStack = existingConduit.createItem();
     if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
       if (!world.isRemote) {
