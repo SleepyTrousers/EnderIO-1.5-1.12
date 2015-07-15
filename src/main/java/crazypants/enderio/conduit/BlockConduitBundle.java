@@ -390,7 +390,6 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   @SideOnly(Side.CLIENT)
   public boolean canRenderInPass(int pass) {
-    ForgeHooksClient.setRenderPass(pass);
     return pass == 0 || pass == 1;
   }
 
