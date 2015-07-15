@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -111,7 +112,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     //enable the alpha pass based on state so the only work around is to ensure we always render something in this
     //pass. Throwing in a polygon with a 0 area does the job
     //See: https://github.com/MinecraftForge/MinecraftForge/issues/981
-    if(RenderUtil.theRenderPass == 1) {
+    if(ForgeHooksClient.getWorldRenderPass() == 1) {
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
@@ -124,7 +125,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
     boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit && (RenderUtil.theRenderPass == 0 || rb.overrideBlockTexture != null)) {
+    if(renderConduit && (ForgeHooksClient.getWorldRenderPass() == 0 || rb.overrideBlockTexture != null)) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -162,8 +163,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
 
-        if((isFacadeOpaque && RenderUtil.theRenderPass == 0) ||
-            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && RenderUtil.theRenderPass == 1))) {
+        if((isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() == 0) ||
+            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() == 1))) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);
           try {

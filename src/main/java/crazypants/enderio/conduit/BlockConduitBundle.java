@@ -22,6 +22,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -388,7 +390,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   @SideOnly(Side.CLIENT)
   public boolean canRenderInPass(int pass) {
-    RenderUtil.theRenderPass = pass;
+    ForgeHooksClient.setRenderPass(pass);
     return pass == 0 || pass == 1;
   }
 
@@ -652,8 +654,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if(!bundle.hasType(equipped.getBaseConduitType())) {
       if(!world.isRemote) {
         bundle.addConduit(equipped.createConduit(stack, player));
+        ConduitUtil.playBreakSound(soundTypeMetal, world, x, y, z);
         if(!player.capabilities.isCreativeMode) {
-          ConduitUtil.playBreakSound(soundTypeMetal, world, x, y, z);
           player.getCurrentEquippedItem().stackSize--;
         }
       }
@@ -679,7 +681,9 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     bundle.setFacadeId(facadeID);
     bundle.setFacadeMetadata(facadeMeta);
     bundle.setFacadeType(FacadeType.values()[player.getCurrentEquippedItem().getItemDamage()]);
-    ConduitUtil.playBreakSound(facadeID.stepSound, world, x, y, z);
+    if (!world.isRemote) {
+      ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
+    }
     if (!player.capabilities.isCreativeMode) {
       stack.stackSize--;
     }

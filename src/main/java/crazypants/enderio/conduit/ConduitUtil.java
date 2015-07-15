@@ -424,14 +424,14 @@ public class ConduitUtil {
 
   public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
     } else {
       playClientBreakSound(snd);
     }
   }
 
   private static void playClientBreakSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
   public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
