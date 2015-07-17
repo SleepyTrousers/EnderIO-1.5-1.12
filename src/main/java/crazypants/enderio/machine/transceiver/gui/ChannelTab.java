@@ -12,7 +12,6 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.util.PlayerUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
@@ -253,7 +252,7 @@ public class ChannelTab implements ITabPanel {
     }
     Channel c;
     if(privateButton.isSelected()) {
-      c = new Channel(newChannelTF.getText(), PlayerUtil.getPlayerUUID(Minecraft.getMinecraft().thePlayer.getGameProfile().getName()), type);
+      c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId(), type);
     } else {
       c = new Channel(newChannelTF.getText(), null, type);
     }
