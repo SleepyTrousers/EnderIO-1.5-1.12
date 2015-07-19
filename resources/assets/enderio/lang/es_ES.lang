@@ -4,181 +4,164 @@
 enderio.power.rf=RF
 enderio.power.tmb=t/mB
 enderio.power.tick=/t
-enderio.power.maxOutput=Max Output
-enderio.power.generates=Generates
-enderio.power.generation_rate=at
+enderio.power.maxOutput=Salida máx.
+enderio.power.generates=Genera
+enderio.power.generation_rate=a
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
-tile.blockEnderIo.tooltip.detailed.line1=Allow remote access to nearby
-tile.blockEnderIo.tooltip.detailed.line2=blocks
-tile.blockEnderIo.tooltip.detailed.line3=Used with Travel Anchors or
-tile.blockEnderIo.tooltip.detailed.line4=the Staff of Travel
+tile.blockEnderIo.tooltip.detailed.line1=Permite el acceso remoto a bloques cercanos. Se usa junto con el Ancla de Viaje o la Vara de Viaje.
 
 item.enderio.itemEnderface.name=Enderface
 
 //Conduits
-enderio.blockConduitBundle=Conduit Bundle
-enderio.blockConduitFacade=Conduit Facade
-item.enderio.itemConduitFacade.name=Conduit Facade
-item.enderio.itemConduitFacade.hardened.name=Hardened Conduit Facade
-enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
-item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
-item.enderio.itemConduitFacade.tooltip.detailed.line2=R-Click on a conduit to place
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
-item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
-item.enderio.itemConduitFacade.hardened.tooltip=Hardened: Resists breaking and explosions
+enderio.blockConduitBundle=Manojo de Tuberías
+enderio.blockConduitFacade=Fachada para Tuberías
+item.enderio.itemConduitFacade.name=Fachada para Tuberías
+item.enderio.itemConduitFacade.hardened.name=Fachada para Tuberías Endurecida
+enderio.item.itemConduitFacade.tooltip.notpainted=Sin pintar.
+item.enderio.itemConduitFacade.tooltip.detailed.line1=Pintado en la Máquina de Pintar.
+item.enderio.itemConduitFacade.tooltip.detailed.line2=Clic-derecho en una tubería para colocarla.
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Se oculta cuando una llave inglesa o una tubería está equipada.
+item.enderio.itemConduitFacade.hardened.tooltip=Endurecida: resiste roturas y explosiones.
 
-enderio.itemPowerConduit.name=Energy Conduit
-enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
-enderio.itemPowerConduitEnder.name=Ender Energy Conduit
+enderio.itemPowerConduit.name=Tubería de Energía
+enderio.itemPowerConduitEnhanced.name=Tubería de Energía Mejorada
+enderio.itemPowerConduitEnder.name=Tubería de Energía de Ender
 
-enderio.itemRedstoneConduit.name=Redstone Conduit
-enderio.itemRedstoneConduitSwitch.name=Conduit Switch
-enderio.itemRedstoneConduitInsulated.name=Insulated Redstone Conduit
+enderio.itemRedstoneConduit.name=Tubería de Redstone
+enderio.itemRedstoneConduitSwitch.name=Tubería Intercambiadora
+enderio.itemRedstoneConduitInsulated.name=Tubería de Redstone Aislada
 
-enderio.itemLiquidConduit.name=Fluid Conduit
-enderio.itemLiquidConduitAdvanced.name=Pressurized Fluid Conduit
-enderio.itemLiquidConduitEnder.name=Ender Fluid Conduit
-enderio.itemLiquidConduit.lockedType=Fluid type locked to
-enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
-enderio.itemLiquidConduit.lockedWaila=Locked to 
+enderio.itemLiquidConduit.name=Tubería de Fluidos
+enderio.itemLiquidConduitAdvanced.name=Tubería de Fluidos Presurizada
+enderio.itemLiquidConduitEnder.name=Tubería de Fluidos de Ender
+enderio.itemLiquidConduit.lockedType=Tipo de fluido restringido a
+enderio.itemLiquidConduit.unlockedType=Tipo de fluido indefinido
+enderio.itemLiquidConduit.lockedWaila=Restringido a
 
-enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
-enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
-enderio.itemLiquidConduit.tooltip.detailed.line1=Fluid flow respects gravity
-enderio.itemLiquidConduit.tooltip.detailed.line2=Flow rate dependent on fluid
-enderio.itemLiquidConduit.tooltip.detailed.line3=viscosity
+enderio.itemLiquidConduit.tooltip.maxExtract=Extracción máx.:
+enderio.itemLiquidConduit.tooltip.maxIo=IO máx.:
+enderio.itemLiquidConduit.tooltip.detailed.line1=El flujo del fluido respeta la gravedad.
+enderio.itemLiquidConduit.tooltip.detailed.line2=El caudal del fluido depende de su viscosidad.
 
-enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Instant fluid teleportation
-enderio.itemLiquidConduitEnder.tooltip.detailed.line2=allows multiple fluids to be
-enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transported on the same line
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Teletransportación instantánea del fluido
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=Permite la transportación de múltiples fluidos por la misma línea.
 
-enderio.itemItemConduit.name=Item Conduit
+enderio.itemItemConduit.name=Tubería de Objetos
 
-enderio.filterUpgradeBasic.name=Basic Item Filter
-enderio.filterUpgradeAdvanced.name=Advanced Item Filter
-enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+enderio.filterUpgradeBasic.name=Filtrador de Objetos Básico
+enderio.filterUpgradeAdvanced.name=Filtrador de Objetos Avanzado
+enderio.itemConduitFilterUpgrade=Mejora para Tuberías de Objetos
 
-enderio.itemConduitFilterUpgrade.configured=Configured
-enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
+enderio.itemConduitFilterUpgrade.configured=Configurado
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Colócala en una cuadricula de fabricación para desconfigurarla.
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Atención: hacer esto desconfigurará todos los ajustes de filtrado guardados.
 
-item.itemExistingItemFilter.name=Existing Item Filter
-item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
-item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
-item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
-item.itemExistingItemFilter.tooltip.detailed.line3=Right click while sneaking
-item.itemExistingItemFilter.tooltip.detailed.line4=on an inventory to add the
-item.itemExistingItemFilter.tooltip.detailed.line5=content to the snapshot
+item.itemExistingItemFilter.name=Filtrador de Objetos Existentes
+item.itemExistingItemFilter.tooltip.basic.line1=Mejora para filtradores de objetos
+item.itemExistingItemFilter.tooltip.detailed.line1=Solo selecciona objetos existentes en el inventario.
+item.itemExistingItemFilter.tooltip.detailed.line2=Clic-derecho+shift en un inventario para añadir el contenido a la configuración.
 
-enderio.item.itemExistingItemFilter.filterUpdated=New items have been added to the snapshot
-enderio.item.itemExistingItemFilter.filterNotUpdated=The snapshot already covers all items in the inventory
+enderio.item.itemExistingItemFilter.filterUpdated=Se han añadido objetos nuevos a la configuración.
+enderio.item.itemExistingItemFilter.filterNotUpdated=La configuración ya cubre todos los objetos del inventario.
 
-item.itemModItemFilter.name=Mod Item Filter
-item.itemModItemFilter.tooltip.basic.line1=Upgrade for item conduits
-item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
-item.itemModItemFilter.tooltip.detailed.line2=mod/s
+item.itemModItemFilter.name=Filtrador de Objetos por Mod
+item.itemModItemFilter.tooltip.basic.line1=Mejora para filtradores de objetos
+item.itemModItemFilter.tooltip.detailed.line1=Solo selecciona los objetos del mod o mods seleccionados.
 
-item.itemPowerItemFilter.name=Chargeable Item Filter
-item.itemPowerItemFilter.tooltip.basic.line1=Upgrade for item conduits
-item.itemPowerItemFilter.tooltip.detailed.line1=Filters chargeable items based on
-item.itemPowerItemFilter.tooltip.detailed.line2=how much RF they have stored
+item.itemPowerItemFilter.name=Filtrador de Objetos con Cargas
+item.itemPowerItemFilter.tooltip.basic.line1=Mejora para filtradores de objetos
+item.itemPowerItemFilter.tooltip.detailed.line1=Filtra objetos recargables basándose en la cantidad de RF que tienen almacenada.
 
-item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
-item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
-item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
-item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
-item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
+item.itemExtractSpeedUpgrade.name=Mejora de Velocidad para tuberías de objetos
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Mejora para tuberías de objetos
+item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Incrementa la velocidad de extracción a 4 objetos por extracción.
+item.itemExtractSpeedUpgrade.tooltip.detailed.line2=El máximo de mejoras está en 15.
 
-item.itemExtractSpeedDowngrade.name=Item Conduit Speed Downgrade
-item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
-item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
-item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
+item.itemExtractSpeedDowngrade.name=Reductor de Velocidad para tuberías de objetos
+item.itemExtractSpeedDowngrade.tooltip.basic.line1=Reversor para tuberías de objetos
+item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduce la velocidad de extracción a 1 objetos por extracción.
 
-item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
-item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
-item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
-item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
-item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
-item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory independent
-item.itemInventoryPanelUpgrade.tooltip.detailed.line5=of the conduit mode.
-item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(No need to set the conduit to extract)
+item.itemInventoryPanelUpgrade.name=Mejora de Percatación Remota
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Panel de inventario de acceso remoto
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Mejora funcional para tuberías de objetos.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Permite ver y extraer objetos de los paneles de inventario pegados a la red independientemente del modo de la tubería (no hay necesidad de ver la tubería para extraer).
 
-enderio.itemGasConduit.name=Gas Conduit
+enderio.itemGasConduit.name=Tubería de Gas
 
-enderio.itemGasConduit.tooltip.maxExtract=Max Extract:
-enderio.itemGasConduit.tooltip.maxIo=Max IO:
-enderio.itemGasConduit.tooltip.detailed.line1=Transfers Mekanism-compatible gases
+enderio.itemGasConduit.tooltip.maxExtract=Extracción máx.:
+enderio.itemGasConduit.tooltip.maxIo=IO máx.:
+enderio.itemGasConduit.tooltip.detailed.line1=Transfiere gases con mecánica compatible.
 
-enderio.itemMEConduit.name=ME Conduit
-enderio.itemMEConduitDense.name=Dense ME Conduit
-enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
+enderio.itemMEConduit.name=Tubería ME
+enderio.itemMEConduitDense.name=Tubería ME Densa
+enderio.itemMEConduit.channelsUsed={0,number} de {1,number} canales
 
 //Entity
-entity.witherSkeleton.name=Wither Skeleton
+entity.witherSkeleton.name=Esqueleto Wither
 
 //Materials
-enderio.itemMaterial.name=Materials
-enderio.silicon.name=Silicon
-enderio.conduitBinder.name=Conduit Binder
-enderio.binderComposite.name=Binder Composite
-enderio.phasedIronNugget.name=Pulsating Iron Nugget
-tile.blockDarkIronBars.name=Dark Iron Bars
-tile.blockEndermanSkull.name=Enderman Skull
-tile.blockEndermanSkull.base.name=Enderman Head
-tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
-tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
-enderio.blastResistant=Blast Resistant
-enderio.lightEmitter=Emits Light
-enderio.lightBlocker=Blocks Light
-enderio.tooltip.isBeaconBase=Can be used as beacon base
-enderio.dustWheat.name=Flour
+enderio.itemMaterial.name=Materiales
+enderio.silicon.name=Silicona
+enderio.conduitBinder.name=Pegamento de Tubería
+enderio.binderComposite.name=Compuesto de Pegamento
+enderio.phasedIronNugget.name=Pepita de Hierro Pulsante
+tile.blockDarkIronBars.name=Barrotes de Hierro Oscuro
+tile.blockEndermanSkull.name=Calavera de Enderman
+tile.blockEndermanSkull.base.name=Cabeza de Enderman
+tile.blockEndermanSkull.reanimated.name=Cabeza de Enderman Reanimada
+tile.blockEndermanSkull.tormented.name=Cabeza de Enderman Atormentada
+enderio.blastResistant=Resistente a estallidos
+enderio.lightEmitter=Emite luz
+enderio.lightBlocker=Bloquea la luz
+enderio.tooltip.isBeaconBase=Se puede usar como base para el Faro
+enderio.dustWheat.name=Harina
 
 //Fluids
-fluid.nutrient_distillation=Nutrient Distillation
-tile.fluid.nutrient_distillation.name=Nutrient Distillation
-item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
+fluid.nutrient_distillation=Destilado de Nutrientes
+tile.fluid.nutrient_distillation.name=Destilado de Nutrientes
+item.bucketNutrient_distillation.name=Cubo de Destilado de Nutrientes
 
-fluid.hootch=Hootch
-tile.fluid.hootch.name=Hootch
-item.bucketHootch.name=Hootch Bucket
-fluid.fire_water=Fire Water
-tile.fluid.fire_water.name=Fire Water
-item.bucketFire_water.name=Fire Water Bucket
-fluid.rocket_fuel=Rocket Fuel
-tile.fluid.rocket_fuel.name=Rocket Fuel
-item.bucketRocket_fuel.name=Rocket Fuel Bucket
-fluid.eio.xpjuice=Liquid XP
-tile.fluid.eio.xpjuice.name=Liquid XP
-item.bucketXpjuice.name=XP Bucket
+fluid.hootch=Alcohol
+tile.fluid.hootch.name=Alcohol
+item.bucketHootch.name=Cubo de Alcohol
+fluid.fire_water=Agua de Fuego
+tile.fluid.fire_water.name=Agua de Fuego
+item.bucketFire_water.name=Cubo de Agua de Fuego
+fluid.rocket_fuel=Combustible de Cohete
+tile.fluid.rocket_fuel.name=Combustible de Cohete
+item.bucketRocket_fuel.name=Cubo de Combustible de Cohete
+fluid.eio.xpjuice=XP Líquida
+tile.fluid.eio.xpjuice.name=XP Líquida
+item.bucketXpjuice.name=Cubo de XP
 
 enderio.fluid.millibucket.abr=mB
 
-enderio.fuel.tooltip.heading=Fuel Details
-enderio.fuel.tooltip.burnTime=burn time {0,number}
+enderio.fuel.tooltip.heading=Detalles del Combustible
+enderio.fuel.tooltip.burnTime=tiempo de combustión {0,number}
 enderio.fluid.millibucketsTick=mB/t
-enderio.coolant.tooltip.heading=Coolant
-enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
+enderio.coolant.tooltip.heading=Refrigerante
+enderio.coolant.tooltip.degreesPerBucket=Grados por Cubo
 enderio.gas.gasTick=Gas/t
 
 //Materials
-enderio.itemMachinePart.name=Machine Parts
-enderio.machineChassi.name=Machine Chassis
-enderio.basicGear.name=Basic Gear
-enderio.pulsatingCrystal.name=Pulsating Crystal
-enderio.vibrantCrystal.name=Vibrant Crystal
-enderio.enderCrystal.name=Ender Crystal
-enderio.attractorCrystal.name=Enticing Crystal
-enderio.weatherCrystal.name=Weather Crystal
-enderio.darkGrindingBall.name=Dark Steel Ball
-enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
-enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
-enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
-enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
+enderio.itemMachinePart.name=Partes de Máquina
+enderio.machineChassi.name=Chasis de Máquina
+enderio.basicGear.name=Engranaje Básico
+enderio.pulsatingCrystal.name=Cristal Pulsante
+enderio.vibrantCrystal.name=Cristal Vibrante
+enderio.enderCrystal.name=Cristal de Ender
+enderio.attractorCrystal.name=Cristal Tentador
+enderio.weatherCrystal.name=Cristal Meteorológico
+enderio.darkGrindingBall.name=Bola de Acero Oscuro
+enderio.darkGrindingBall.tooltip.detailed.line1=Bola de molido para la Moledora SAG
+enderio.darkGrindingBall.tooltip.detailed.line2=Salida General
+enderio.darkGrindingBall.tooltip.detailed.line3=Salida Extra
+enderio.darkGrindingBall.tooltip.detailed.line4=Reducción de Energía
 
-tile.blockReinforcedObsidian.name=Reinforced Obsidian
-tile.blockReinforcedObsidian.tooltip.common.line1=Wither Proof
+tile.blockReinforcedObsidian.name=Obsidiana Reforzada
+tile.blockReinforcedObsidian.tooltip.common.line1=A prueba de Withers
 
 //Quartz / Glass
 tile.blockFusedQuartz.name=Fused Quartz
