@@ -164,290 +164,243 @@ tile.blockReinforcedObsidian.name=Obsidiana Reforzada
 tile.blockReinforcedObsidian.tooltip.common.line1=A prueba de Withers
 
 //Quartz / Glass
-tile.blockFusedQuartz.name=Fused Quartz
-enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
-enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
-enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
-enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
-enderio.blockFusedQuartz.darkFusedQuartz.name=Dark Fused Quartz
-enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
+tile.blockFusedQuartz.name=Cuarzo Fundido
+enderio.blockFusedQuartz.fusedQuartz.name=Cuarzo Fundido
+enderio.blockFusedQuartz.fusedGlass.name=Cristal Totalmente Transparente
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Cuarzo Fundido Iluminado
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Cristal Transparente Iluminado
+enderio.blockFusedQuartz.darkFusedQuartz.name=Cuarzo Fundido Oscuro
+enderio.blockFusedQuartz.darkFusedGlass.name=Cristal Oscuro Transparente
 
-item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
-enderio.itemPowderIngot=Powders & Ingots
+item.enderio.itemFusedQuartzFrame.name=Marco de Cuarzo Fundido
+enderio.itemPowderIngot=Polvos & Lingotes
 
 //Alloys
-enderio.itemAlloy.name=Alloy
-enderio.electricalSteel.name=Electrical Steel
-enderio.energeticAlloy.name=Energetic Alloy
-enderio.phasedGold.name=Vibrant Alloy
-enderio.redstoneAlloy.name=Redstone Alloy
-enderio.conductiveIron.name=Conductive Iron
-enderio.phasedIron.name=Pulsating Iron
-enderio.vibrantNugget.name=Vibrant Alloy Nugget
-enderio.darkSteel.name=Dark Steel
-enderio.soularium.name=Soularium
+enderio.itemAlloy.name=Aleación
+enderio.electricalSteel.name=Acero Eléctrico
+enderio.energeticAlloy.name=Aleación Energética
+enderio.phasedGold.name=Aleación Vibrante
+enderio.redstoneAlloy.name=Aleación de Redstone
+enderio.conductiveIron.name=Hierro Conductor
+enderio.phasedIron.name=Hierro Pulsante
+enderio.vibrantNugget.name=Pepita de Aleación Vibrante
+enderio.darkSteel.name=Acero Oscuro
+enderio.soularium.name=Animarium
 
-tile.blockIngotStorage.name=Ingot Storage
-tile.enderio.electricalSteel.name=Electrical Steel Block
-tile.enderio.energeticAlloy.name=Energetic Alloy Block
-tile.enderio.phasedGold.name=Vibrant Alloy Block
-tile.enderio.redstoneAlloy.name=Redstone Alloy Block
-tile.enderio.conductiveIron.name=Conductive Iron Block
-tile.enderio.phasedIron.name=Pulsating Iron Block
-tile.enderio.vibrantNugget.name=Vibrant Nugget Block
-tile.enderio.darkSteel.name=Dark Steel Block
-tile.enderio.soularium.name=Soularium Block
+tile.blockIngotStorage.name=Almacenamiento de Lingotes
+tile.enderio.electricalSteel.name=Bloque de Acero Eléctrico
+tile.enderio.energeticAlloy.name=Bloque de Aleación Energética
+tile.enderio.phasedGold.name=Bloque de Aleación Vibrante
+tile.enderio.redstoneAlloy.name=Bloque de Aleación de Redstone
+tile.enderio.conductiveIron.name=Bloque de Hierro Conductor
+tile.enderio.phasedIron.name=Bloque de Hierro Pulsante
+tile.enderio.vibrantNugget.name=Bloque de Pepita de Aleación Vibrante
+tile.enderio.darkSteel.name=Bloque de Acero Oscuro
+tile.enderio.soularium.name=Bloque de Animarium
 
 //Powder / Ingot
-enderio.powderCoal.name=Coal Powder
-enderio.powderIron.name=Iron Powder
-enderio.powderGold.name=Gold Powder
-enderio.powderCopper.name=Copper Powder
-enderio.powderTin.name=Tin Powder
-enderio.powderEnder.name=Ender Pearl Powder
-enderio.powderObsidian.name=Obsidian Powder
-enderio.ingotEnderiumBase.name=Enderium Base
+enderio.powderCoal.name=Polvo de Carbón
+enderio.powderIron.name=Polvo de Hierro
+enderio.powderGold.name=Polvo de Oro
+enderio.powderCopper.name=Polvo de Cobre
+enderio.powderTin.name=Polvo de Estaño
+enderio.powderEnder.name=Polvo de Perla de Ender
+enderio.powderObsidian.name=Polvo de Obsidiana
+enderio.ingotEnderiumBase.name=Base de Enderium
 
 //Capacitors
-enderio.itemBasicCapacitor.name=Capacitor
-enderio.basicCapacitor.name=Basic Capacitor
-enderio.activatedCapacitor.name=Double-Layer Capacitor
-enderio.enderCapacitor.name=Octadic Capacitor
+enderio.itemBasicCapacitor.name=Condensador
+enderio.basicCapacitor.name=Condensador Básico
+enderio.activatedCapacitor.name=Condensador de Doble Capa
+enderio.enderCapacitor.name=Condensador Octadiano 
 
-enderio.machine.tooltip.upgrade=Machine Upgrade
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
-enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
-enderio.machine.tooltip.clearConfig=This will clear all stored info!
+enderio.machine.tooltip.upgrade=Mejora de Máquinas
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Aumenta el almacenamiento de energía y la velocidad o rango de las máquinas.
+enderio.machine.tooltip.clearConfig=Atención: Hacer esto borrará toda la información guardada.
 
 //Machines
-tile.blockStirlingGenerator.name=Stirling Generator
-tile.blockStirlingGenerator.tooltip.detailed.line1=Burns solid fuel to generate power
-tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase output
-tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency with capacitors
+tile.blockStirlingGenerator.name=Generador Stirling
+tile.blockStirlingGenerator.tooltip.detailed.line1=Quema combustible sólido para generar energía.
+tile.blockStirlingGenerator.tooltip.detailed.line2=Puede mejorarse para aumentar la energía de salida y la eficiencia con condensadores.
 
-tile.blockReservoir.name=Reservoir
-tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
-tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
-tile.blockReservoir.tooltip.detailed.line3=an infinite water source
-tile.blockReservoir.tooltip.detailed.line4=Produces one bucket per second
-tile.blockReservoir.tooltip.detailed.line5=R-Click with a wrench to
-tile.blockReservoir.tooltip.detailed.line6=enable auto-output
+tile.blockReservoir.name=Tanque
+tile.blockReservoir.tooltip.detailed.line1=Se crea formando una estructura de 2x2x1.
+tile.blockReservoir.tooltip.detailed.line2=Añade dos cubos de agua para producir una fuente infinita de agua.
+tile.blockReservoir.tooltip.detailed.line3=Produce un cubo por segundo.
+tile.blockReservoir.tooltip.detailed.line4=Haz clic-derecho con una llave inglesa para activar el auto-drenaje.
 
-tile.blockAlloySmelter.name=Alloy Smelter
-tile.blockAlloySmelter.tooltip.detailed.line1=Used to create EnderIO alloys
-tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
-tile.blockAlloySmelter.tooltip.detailed.line3=furnace
-tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase
-tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
+tile.blockAlloySmelter.name=Fundición de Aleaciones
+tile.blockAlloySmelter.tooltip.detailed.line1=Se usa para crear aleaciones EnderIO o como horno eléctrico común.
+tile.blockAlloySmelter.tooltip.detailed.line2=Puedes mejorarlo con condensadores para aumentar la velocidad y el almacenamiento de energía.
 
-tile.blockSolarPanel.name=Photovoltaic Cell
-tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
-tile.blockSolarPanel.tooltip.common.line1=Solar Power!
-tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
-tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
-tile.blockSolarPanel.tooltip.detailed.line3=the sky
-enderio.maxSolorProduction=Max Output
-enderio.tooltip.efficiency=Efficiency
-enderio.tooltip.sunlightBlocked=Sky Blocked!
+tile.blockSolarPanel.name=Célula Fotovoltaica
+tile.blockSolarPanel.advanced.name=Célula Fotovoltaica Avanzada
+tile.blockSolarPanel.tooltip.common.line1=¡Energía Solar!
+tile.blockSolarPanel.tooltip.detailed.line1=Produce energía durante las horas de luz
+tile.blockSolarPanel.tooltip.detailed.line2=Debe colocarse de cara al cielo y sin ningún obstáculo entremedias.
+enderio.maxSolorProduction=Salida máx.
+enderio.tooltip.efficiency=Eficiencia
+enderio.tooltip.sunlightBlocked=¡Imposible ver el cielo!
 
-item.itemElectricLight.name=Powered Light
-item.itemElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
-item.itemElectricLight.tooltip.detailed.line2=power and a redstone signal.
+item.itemElectricLight.name=Lámpara Eléctrica
+item.itemElectricLight.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía y una señal de redstone.
 
-item.itemElectricLightInverted.name=Powered Light (Inverted)
-item.itemElectricLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
-item.itemElectricLightInverted.tooltip.detailed.line2=power.
-item.itemElectricLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
+item.itemElectricLightInverted.name=Lámpara Eléctrica (Invertida)
+item.itemElectricLightInverted.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía.
+item.itemElectricLightInverted.tooltip.detailed.line2=Desactívala con una señal de redstone.
 
-item.itemLight.name=Light
-item.itemLight.tooltip.detailed.line1=Emits light with a
-item.itemLight.tooltip.detailed.line2=redstone signal.
+item.itemLight.name=Lámpara
+item.itemLight.tooltip.detailed.line1=Emite luz con una señal de redstone.
 
-item.itemLightInverted.name=Light (Inverted)
-item.itemLightInverted.tooltip.detailed.line1=Emits light, disable with
-item.itemLightInverted.tooltip.detailed.line2=a redstone signal.
+item.itemLightInverted.name=Lámpara (Invertida)
+item.itemLightInverted.tooltip.detailed.line1=Emite luz. Desactívala con una señal de redstone.
 
-item.itemWirelessLight.name=Wireless Powered Light
-item.itemWirelessLight.tooltip.detailed.line1=Lights a large area when supplied with
-item.itemWirelessLight.tooltip.detailed.line2=power and a redstone signal.
-item.itemWirelessLight.tooltip.detailed.line3=Can receive power from wireless chargers.
+item.itemWirelessLight.name=Lámpara Eléctrica Inalámbrica
+item.itemWirelessLight.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía y una señal de redstone.
+item.itemWirelessLight.tooltip.detailed.line2=Puede recibir energía de los cargadores inalámbricos.
 
-item.itemWirelessLightInverted.name=Wireless Powered Light (Inverted)
-item.itemWirelessLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
-item.itemWirelessLightInverted.tooltip.detailed.line2=power.
-item.itemWirelessLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
-item.itemWirelessLightInverted.tooltip.detailed.line4=Can receive power from wireless chargers.
+item.itemWirelessLightInverted.name=Lámpara Eléctrica Inalámbrica (Invertida)
+item.itemWirelessLightInverted.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía.
+item.itemWirelessLightInverted.tooltip.detailed.line2=Desactívala con una señal de redstone.
+item.itemWirelessLightInverted.tooltip.detailed.line3=Puede recibir energía de los cargadores inalámbricos.
 
-tile.blockCapacitorBank.name=Capacitor Bank (Deprecated)
-tile.blockCapacitorBank.creative.name=Creative Capacitor Bank (Deprecated)
-tile.blockCapacitorBank.tooltip.detailed.line1=Convert to new block by placing
-tile.blockCapacitorBank.tooltip.detailed.line2=in a crafting grid
-tile.blockCapacitorBank.tooltipPrefix=Contains
+tile.blockCapacitorBank.name=Condensador de Almacenaje (Obsoleto)
+tile.blockCapacitorBank.creative.name=Condensador de Almacenaje Creativo (Obsoleto)
+tile.blockCapacitorBank.tooltip.detailed.line1=Conviértelo en nuevo poniéndolo en una cuadrícula de fabricación.
+tile.blockCapacitorBank.tooltipPrefix=Contiene
 
-tile.blockCapBank.creative.name=Creative Capacitor Bank
-tile.blockCapBank.simple.name=Basic Capacitor Bank
-tile.blockCapBank.activated.name=Capacitor Bank
-tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
-tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
-tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
-tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
-tile.blockCapBank.tooltip.detailed.line4=to change information display
-tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
-tile.blockCapBank.tooltipPrefix=Contains
+tile.blockCapBank.creative.name=Condensador de Almacenaje Creativo
+tile.blockCapBank.simple.name=Condensador de Almacenaje Básico
+tile.blockCapBank.activated.name=Condensador de Almacenaje
+tile.blockCapBank.vibrant.name=Condensador de Almacenaje Vibrante
+tile.blockCapBank.tooltip.detailed.line1=Almacén Multi-bloque de Energía
+tile.blockCapBank.tooltip.detailed.line2=Puede cargar objetos con energía RF.
+tile.blockCapBank.tooltip.detailed.line3=Shift+Clic-derecho en una cara con la mano vacía para cambiar el monitor de información.
+tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} en el inventario
+tile.blockCapBank.tooltipPrefix=Contiene
 
-enderio.capbank.maxIO=Max I/O
-enderio.capbank.maxIn=Max Input
-enderio.capbank.maxOut=Max Output
+enderio.capbank.maxIO=I/O máx.
+enderio.capbank.maxIn=Entrada máx.
+enderio.capbank.maxOut=Salida máx.
 enderio.capbank.change=I/O
 enderio.capbank.iodisplay.stable=I/O
-enderio.capbank.iodisplay.gain=In
-enderio.capbank.iodisplay.loss=Out
-enderio.capbank.iodisplay.input=Input
-enderio.capbank.iodisplay.output=Output
+enderio.capbank.iodisplay.gain=Entran
+enderio.capbank.iodisplay.loss=Salen
+enderio.capbank.iodisplay.input=Entrada
+enderio.capbank.iodisplay.output=Salida
 
-tile.blockWirelessCharger.name=Wireless Charger
-tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby
-tile.blockWirelessCharger.tooltip.detailed.line2=players inventories
+tile.blockWirelessCharger.name=Cargador Inalámbrico
+tile.blockWirelessCharger.tooltip.detailed.line1=Carga los objetos recargables de los inventarios de los jugadores cercanos.
 
-tile.blockSagMill.name=SAG Mill
-tile.blockSagMill.tooltip.detailed.line1=Grinds ore and other items
-tile.blockSagMill.tooltip.detailed.line2=Add grinding balls to increase output
-tile.blockSagMill.tooltip.detailed.line3=and efficiency
-tile.blockSagMill.tooltip.detailed.line4=Upgrade with capacitors to increase
-tile.blockSagMill.tooltip.detailed.line5=speed and energy storage
-tile.blockSagMill.tooltipPrefix=Contains
+tile.blockSagMill.name=Moledora SAG
+tile.blockSagMill.tooltip.detailed.line1=Muele menas y otros objetos.
+tile.blockSagMill.tooltip.detailed.line2=Añade bolas de molido para incrementar la producción y eficiencia.
+tile.blockSagMill.tooltip.detailed.line3=Mejórala con condensadores para aumentar la velocidad y el almacenamiento de energía.
+tile.blockSagMill.tooltipPrefix=Contiene
 
 tile.blockHyperCube.name=Dimensional Transceiver (Deprecated)
 tile.blockHyperCube.tooltip.detailed.line1=Convert to new model by placing
 tile.blockHyperCube.tooltip.detailed.line2=in the crafting grid
 
-tile.blockTransceiver.name=Dimensional Transceiver
-tile.blockTransceiver.tooltip.detailed.line1=Transports items, fluids and power
-tile.blockTransceiver.tooltip.detailed.line2=wirelessly across any distance and
-tile.blockTransceiver.tooltip.detailed.line3=between dimensions
+tile.blockTransceiver.name=Transceptor Dimensional
+tile.blockTransceiver.tooltip.detailed.line1=Transfiere objetos, fluidos y energía inalámbricamente desde cualquier distancia y entre dimensiones.
 
-tile.blockEnderRail.name=Ender Rail
-tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed
-tile.blockEnderRail.tooltip.detailed.line2=on a Dimensional Transceiver
-tile.blockEnderRail.tooltip.detailed.line3=Set destinations using the
-tile.blockEnderRail.tooltip.detailed.line4=Transceiver's rail tab
-tile.blockEnderRail.tooltip.detailed.line5=Set direction with a Shift-R-Click
-tile.blockEnderRail.tooltip.detailed.line6=of a wrench
+tile.blockEnderRail.name=Vía Ender
+tile.blockEnderRail.tooltip.detailed.line1=Teletransporta vagonetas cuando se colocan encima de un Transceptor Dimensional.
+tile.blockEnderRail.tooltip.detailed.line2=Establece las destinaciones usando la pestaña de vías del transceptor.
+tile.blockEnderRail.tooltip.detailed.line3=Establece la dirección haciendo shift+clic-derecho con una llave inglesa.
 
-enderio.trans.showChannels=<Shift to show channels>
+enderio.trans.showChannels=<Pulsa Shift para mostrar los canales>
 
-enderio.trans.power=Power
-enderio.trans.item=Item
-enderio.trans.fluid=Fluid
-enderio.trans.rail=Rail
+enderio.trans.power=Energía
+enderio.trans.item=Objetos
+enderio.trans.fluid=Fluidos
+enderio.trans.rail=Vías
 
-enderio.trans.receiving=Receiving
-enderio.trans.sending=Sending
+enderio.trans.receiving=Recibiendo
+enderio.trans.sending=Enviando
 
-tile.blockPowerMonitor.name=Power Monitor
-tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
-tile.blockPowerMonitor.tooltip.detailed.line2=storage
-tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone
-tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
-tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
-tile.blockPowerMonitor.tooltip.detailed.line6=conduit
+tile.blockPowerMonitor.name=Monitor de Energía
+tile.blockPowerMonitor.tooltip.detailed.line1=Muestra detalles del uso de energía y del almacenamiento.
+tile.blockPowerMonitor.tooltip.detailed.line2=Puede usarse para emitir señales de redstone basadas en los niveles de energía almacenados.
+tile.blockPowerMonitor.tooltip.detailed.line3=Debe estar unido a una tubería de EnderIO.
 
-tile.blockVat.name=The Vat
-tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
+tile.blockVat.name=El Tanque
+tile.blockVat.tooltip.detailed.line1=Se usa para fermentar fluidos de EnderIO.
 
-tile.blockEnchanter.name=Enchanter
-tile.blockEnchanter.tooltip.detailed.line1=Uses XP to combine items
-tile.blockEnchanter.tooltip.detailed.line2=and a book and quill to
-tile.blockEnchanter.tooltip.detailed.line3=created enchanted books
+tile.blockEnchanter.name=Encantador
+tile.blockEnchanter.tooltip.detailed.line1=Usa XP para combinar objetos, y un Libro y pluma para crear libros encantados.
 
-tile.blockCombustionGenerator.name=Combustion Generator
-tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to generate power
-tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. water)
-tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
+tile.blockCombustionGenerator.name=Generador de Combustión
+tile.blockCombustionGenerator.tooltip.detailed.line1=Consume combustible líquido para generar energía.
+tile.blockCombustionGenerator.tooltip.detailed.line2=Requiere un refrigerante (ej. agua).
+tile.blockCombustionGenerator.tooltip.detailed.line3=La cantidad de energía de salida depende del combustible utilizado.
 
-tile.blockZombieGenerator.name=Zombie Generator
-tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
-tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
-enderio.zombieGenerator.fuelTank=Nutrient Tank
-enderio.gui.fluid.minReq=%s Required for activation
+tile.blockZombieGenerator.name=Generador Zombi
+tile.blockZombieGenerator.tooltip.detailed.line1=Consume Destilado de Nutrientes para generar energía.
+enderio.zombieGenerator.fuelTank=Tanque de Nutrientes
+enderio.gui.fluid.minReq=%s requeridos para la activación.
 
 tile.blockKillerJoe.name=Killer Joe
-tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
-tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and
-tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
-tile.blockKillerJoe.tooltip.detailed.line4=Experience can be drained as
-tile.blockKillerJoe.tooltip.detailed.line5=Liquid XP using fluid conduits
+tile.blockKillerJoe.tooltip.detailed.line1=Ataca a las criaturas cercanas cuando se le proporciona una espada y Destilado de Nutrientes.
+tile.blockKillerJoe.tooltip.detailed.line2=La experiencia se puede drenar como XP Líquida usando tuberías de fluidos.
 
-enderio.killerJoe.fuelTank=Nutrient Tank
-enderio.killerJoe.giveXp.tooltip=Take XP
-enderio.killerJoe.giveXp10.tooltip=Take 10 Levels of XP
+enderio.killerJoe.fuelTank=Tanque de Nutrientes
+enderio.killerJoe.giveXp.tooltip=Toma XP
+enderio.killerJoe.giveXp10.tooltip=Toma 10 niveles de XP
 
-tile.blockSliceAndSplice.name=Slice'N'Splice
-tile.blockSliceAndSplice.tooltip.detailed.line1=Slices heads and splices in
-tile.blockSliceAndSplice.tooltip.detailed.line2=all sorts of useful things
+tile.blockSliceAndSplice.name=Rebanayempalma
+tile.blockSliceAndSplice.tooltip.detailed.line1=Rebana cabezas y las empalma en todo tipo de cosas útiles.
 
-tile.blockFarmStation.name=Farming Station
-tile.blockFarmStation.tooltip.detailed.line1=Plants and harvests crops
-tile.blockFarmStation.tooltip.detailed.line2=Requires power and
-tile.blockFarmStation.tooltip.detailed.line3=appropriate tools (hoe, axe)
-tile.blockFarmStation.tooltip.detailed.line4=Looting / fortune on tools
-tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
-tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
+tile.blockFarmStation.name=Estación de Cultivo
+tile.blockFarmStation.tooltip.detailed.line1=Planta y cosecha cultivos.
+tile.blockFarmStation.tooltip.detailed.line2=Requiere energía y herramientas apropiadas (azada y hacha).
+tile.blockFarmStation.tooltip.detailed.line3=Saqueo y Fortuna en las herramientas se aplican cuando se cosecha.
+tile.blockFarmStation.tooltip.detailed.line4=Mejórala con condensadores para aumentar el rango. La mejora también aumenta la energía usada.
 tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
-enderio.farm.note.outputFull=Output Full
-enderio.farm.note.noSeeds=No Seeds
-enderio.farm.note.noAxe=No Axe
-enderio.farm.note.noHoe=No Hoe
-enderio.farm.note.noPower=No Power
-enderio.farm.gui.baseUse=Base Use:
+enderio.farm.note.outputFull=Producción llena
+enderio.farm.note.noSeeds=No hay semillas
+enderio.farm.note.noAxe=No hay hacha
+enderio.farm.note.noHoe=No hay azada
+enderio.farm.note.noPower=Sin energía
+enderio.farm.gui.baseUse=Uso base:
 
-tile.blockTank.name=Fluid Tank
-tile.blockTank.advanced.name=Pressurized Fluid Tank
-tile.blockTank.tooltip.detailed.line1=Portable fluid tank
-tile.blockTank.tooltip.detailed.line2=Can be used to empty and
-tile.blockTank.tooltip.detailed.line3=fill fluid containers
-enderio.tank.tank=Tank
-enderio.tooltip.none=None
-enderio.tooltip.fluidStored=Fluid Stored
+tile.blockTank.name=Tanque de Fluidos
+tile.blockTank.advanced.name=Tanque de Fluidos Presurizado
+tile.blockTank.tooltip.detailed.line1=Tanque de fluidos portátil.
+tile.blockTank.tooltip.detailed.line2=Se puede usar para vaciar y llenar contenedores de fluido.
+enderio.tank.tank=Tanque
+enderio.tooltip.none=Ninguno
+enderio.tooltip.fluidStored=Fluido almacenado
 
-tile.blockCrafter.name=Crafter
-tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
-tile.blockCrafter.tooltip.detailed.line2=Consumes power per operation
-tile.blockCrafter.tooltip.detailed.line3=Can be upgraded to increase speed
-tile.blockCrafter.tooltip.detailed.line4=and energy storage with capacitors
+tile.blockCrafter.name=Fabricador
+tile.blockCrafter.tooltip.detailed.line1=Fabricador automático eléctrico.
+tile.blockCrafter.tooltip.detailed.line2=Consume energía por operación.
+tile.blockCrafter.tooltip.detailed.line3=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energía.
 
-tile.blockVacuumChest.name=Vacuum Chest
-tile.blockVacuumChest.tooltip.detailed.line1=Pulls nearby items
-tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
+tile.blockVacuumChest.name=Cofre Aspirador
+tile.blockVacuumChest.tooltip.detailed.line1=Absorbe los objetos cercanos y los almacena en su inventario.
 
-tile.blockPoweredSpawner.name=Powered Spawner
-tile.blockPoweredSpawner.tooltip.empty=Empty
-enderio.tile.blockPoweredSpawner.tooltip.none=None
-tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
-tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
-tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
-tile.blockPoweredSpawner.tooltip.detailed.line2=activate
-tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
-tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
+tile.blockPoweredSpawner.name=Spawner Eléctrico
+tile.blockPoweredSpawner.tooltip.empty=Vacío
+enderio.tile.blockPoweredSpawner.tooltip.none=Ninguno
+tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combínalo con un Spawner Roto en un yunque.
+tile.blockPoweredSpawner.tooltip.detailed.line1=Proporciónale energía para activarlo.
+tile.blockPoweredSpawner.tooltip.detailed.line2=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energía.
 
-item.itemBrokenSpawner.name=Broken Spawner
-item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
-item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
+item.itemBrokenSpawner.name=Spawner Roto
+item.itemBrokenSpawner.tooltip.detailed.line1=Combínalo con un Spawner Eléctrico en un yunque para establecer el tipo de invocaciones.
 
-tile.blockSoulBinder.name=Soul Binder
-tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
-tile.blockSoulBinder.tooltip.detailed.line2=a broken spawner
+tile.blockSoulBinder.name=Atador de Almas
+tile.blockSoulBinder.tooltip.detailed.line1=Se usa para convertir el tipo de Spawner Roto.
 
-tile.blockAttractor.name=Attractor Obelisk
-tile.blockAttractor.tooltip.detailed.line1=Draws mobs towards it
-tile.blockAttractor.tooltip.detailed.line2=Specify the mobs to effect
-tile.blockAttractor.tooltip.detailed.line3=by placing their souls
-tile.blockAttractor.tooltip.detailed.line4=within the device
+tile.blockAttractor.name=Obelisco de Atracción
+tile.blockAttractor.tooltip.detailed.line1=Atrae criaturas hacia él.
+tile.blockAttractor.tooltip.detailed.line2=Especifica la criatura a atraer colocando su alma dentro del aparato.
 
-tile.blockSpawnGuard.name=Aversion Obelisk
-tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
-tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
+tile.blockSpawnGuard.name=Obelisco de Aversión
+tile.blockSpawnGuard.tooltip.detailed.line1=Previene que las criaturas aparezcan dentro de su área de efecto.
 
 tile.blockExperienceObelisk.name=Experience Obelisk
 tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
