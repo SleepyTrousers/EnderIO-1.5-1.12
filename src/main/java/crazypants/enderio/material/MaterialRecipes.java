@@ -72,7 +72,7 @@ public class MaterialRecipes {
     OreDictionary.registerOre("itemSkull", new ItemStack(EnderIO.blockEndermanSkull));
 
     //Glass stuff for compatability
-    addShaped(new ItemStack(Blocks.glass_pane, 16, 0), "   ", "eee", "eee", 'e', pureGlass);
+    addShaped(new ItemStack(Blocks.glass_pane, 16, 0), "eee", "eee", "   ", 'e', pureGlass);
     addShapeless(new ItemStack(Blocks.glass), pureGlass);
     addShaped(new ItemStack(Items.glass_bottle, 3, 0), "   ", "g g", " g ", 'g', pureGlass);
 
