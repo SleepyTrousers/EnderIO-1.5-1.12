@@ -53,7 +53,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
     renderModel(gen.facing);
-    renderSword(gen.facing, gen.getStackInSlot(0), gen.getSwingProgress(tick));
+    renderSword(gen.facing, gen.getStackInSlot(0), swingProg);
     renderFluid(gen);
     GL11.glPopMatrix();
 

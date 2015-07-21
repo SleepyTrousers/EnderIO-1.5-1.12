@@ -125,7 +125,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void notifyNetworkOfUpdate() {
     for (IRedstoneConduit con : conduits) {
-      con.setActive(!getSignals().isEmpty());
+      con.setActive(false);
+      for (Signal s : getSignals()) {
+        if (s.strength > 0) {
+          con.setActive(true);
+          break;
+        }
+      }
     }
     super.notifyNetworkOfUpdate();
   }
