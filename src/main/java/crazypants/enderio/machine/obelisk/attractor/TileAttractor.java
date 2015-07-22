@@ -9,7 +9,6 @@ import java.util.Set;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
@@ -22,11 +21,9 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -58,6 +55,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private int maxMobsAttracted = 20;
 
   private boolean showingRange;
+  private RangeEntity myEntity;
 
   public TileAttractor() {
     super(new SlotDefinition(12, 0));
@@ -76,13 +74,11 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   @SideOnly(Side.CLIENT)
   public void setShowRange(boolean showRange) {
-    if(showingRange == showRange) {
-      return;
+    if (myEntity == null) {
+      myEntity = new RangeEntity(this);
+      worldObj.spawnEntityInWorld(myEntity);
     }
     showingRange = showRange;
-    if(showingRange) {
-      worldObj.spawnEntityInWorld(new RangeEntity(this));
-    }
   }
 
   @Override

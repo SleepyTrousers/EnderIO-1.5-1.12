@@ -11,10 +11,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RangeEntity extends Entity {
 
-  int totalLife = 20;
-  int lifeSpan = totalLife;
+  int animTime = 20;
+  int lifeSpan = animTime;
   float range;  
   private IRanged spawnGuard;
+  private boolean shrink = false;
 
   public RangeEntity(IRanged sg) {
     super(sg.getWorld());
@@ -48,14 +49,20 @@ public class RangeEntity extends Entity {
   @Override
   public void onUpdate() {
     super.onUpdate();
-    lifeSpan--;
+    if (spawnGuard.getRange() + 0.5f != range) {
+      lifeSpan = animTime;
+      range = spawnGuard.getRange() + 0.5f;
+    }
+    if (shrink) {
+      lifeSpan = Math.min(animTime + 1, lifeSpan + 1);
+    } else {
+      lifeSpan = Math.max(0, lifeSpan - 1);
+    }
     BlockCoord bc = spawnGuard.getLocation();
     if(!(worldObj.getTileEntity(bc.x, bc.y, bc.z) instanceof IRanged)) {
-      setDead();
+      lifeSpan = animTime;
     }
-    if(!spawnGuard.isShowingRange()) {
-      setDead();
-    }
+    shrink = !spawnGuard.isShowingRange();
   }
 
   @Override

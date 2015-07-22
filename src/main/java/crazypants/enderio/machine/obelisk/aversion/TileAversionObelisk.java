@@ -29,6 +29,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
   private AxisAlignedBB bounds;
   
   private boolean showingRange;
+  private RangeEntity myEntity;
   
   public TileAversionObelisk() {
     super(new SlotDefinition(12, 0));
@@ -42,13 +43,11 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
   
   @SideOnly(Side.CLIENT)
   public void setShowRange(boolean showRange) {
-    if(showingRange == showRange) {
-      return;
+    if (myEntity == null) {
+      myEntity = new RangeEntity(this);
+      worldObj.spawnEntityInWorld(myEntity);
     }
     showingRange = showRange;
-    if(showingRange) {
-      worldObj.spawnEntityInWorld(new RangeEntity(this));
-    }
   }
   
   @Override

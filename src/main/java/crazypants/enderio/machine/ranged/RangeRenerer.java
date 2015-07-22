@@ -22,6 +22,10 @@ public class RangeRenerer extends RenderEntity {
 
     RangeEntity se = ((RangeEntity) entity);
 
+    if (se.lifeSpan > se.animTime) {
+      return;
+    }
+
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glDisable(GL11.GL_CULL_FACE);
@@ -29,16 +33,15 @@ public class RangeRenerer extends RenderEntity {
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glDepthMask(false);
 
-    float scale = 1 - ( se.lifeSpan / (float)se.totalLife);
+    float scale = 1 - (se.lifeSpan / (float) se.animTime);
     scale = Math.min(scale, 1);
     scale *= se.range;
-
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
-    GL11.glTranslatef(0.5f,0.5f,0.5f);
+    GL11.glTranslatef(0.5f, 0.5f, 0.5f);
     GL11.glScalef(scale, scale, scale);
-    GL11.glTranslatef(-0.5f,-0.5f,-0.5f);
+    GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
 
     GL11.glColor4f(1, 1, 1, 0.4f);
 

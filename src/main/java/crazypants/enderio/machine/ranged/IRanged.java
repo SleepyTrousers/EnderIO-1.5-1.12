@@ -13,5 +13,7 @@ public interface IRanged {
   float getRange();
 
   boolean isShowingRange();
+  
+  void setShowRange(boolean showRange);
 
 }

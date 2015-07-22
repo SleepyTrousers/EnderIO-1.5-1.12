@@ -1,56 +1,17 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import java.awt.Color;
-import java.util.List;
-
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.google.common.collect.Lists;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.ranged.GuiRangedMachine;
 
-public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
-
-  private static final int RANGE_ID = 8738924;
-
-  private final ToggleButton showRangeB;
+public class GuiAttractor extends GuiRangedMachine<TileAttractor> {
   
   public GuiAttractor(InventoryPlayer par1InventoryPlayer, TileAttractor te) {
     super(te, new ContainerAttractor(par1InventoryPlayer, te));
-
-    int x = getXSize() - 5 - BUTTON_SIZE;
-    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
-    showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
-      @Override
-      public List<String> getToolTipText() {
-        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
-      }
-    });
-  }
-
-  @Override
-  public void initGui() {
-    super.initGui();
-    showRangeB.onGuiInit();
-    showRangeB.setSelected(getTileEntity().isShowingRange());
-  }
-
-  @Override
-  protected void actionPerformed(GuiButton b) {
-    super.actionPerformed(b);
-    if(b.id == RANGE_ID) {
-      getTileEntity().setShowRange(showRangeB.isSelected());
-    }
   }
 
   @Override
@@ -63,14 +24,10 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
-    int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
-  }
+ }
 
   @Override
   protected boolean showRecipeButton() {    
     return false;
   }
-
 }
