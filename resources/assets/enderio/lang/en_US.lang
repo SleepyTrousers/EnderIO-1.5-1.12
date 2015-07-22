@@ -757,6 +757,9 @@ item.itemGliderWings.name=Glider Wings
 item.itemGliderWings.tooltip.detailed.line1=Upgrade for Dark Steel
 item.itemGliderWings.tooltip.detailed.line2=chestplate
 
+enderio.darksteel.upgrade.jump.enabled=Jump Enabled
+enderio.darksteel.upgrade.jump.disabled=Jump Disabled
+
 enderio.darksteel.upgrade.jump_one.name=Jump
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
@@ -1074,6 +1077,7 @@ enderio.keybind.gogglesofrevealing=Goggles of Revealing
 enderio.keybind.nightvision=Night Vision
 enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.speed=Speed
+enderio.keybind.jump=Jump
 enderio.keybind.stepassist=Step Assist
 enderio.keybind.yetawrenchmode=Yeta Wrench Mode
 enderio.keybind.magnet=Toggle Electromagnet

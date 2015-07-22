@@ -54,6 +54,8 @@ public class KeyTracker {
   private KeyBinding speedKey;  
   private boolean isSpeedActive = true;
   
+  private KeyBinding jumpKey;
+  private boolean isJumpActive = true;
   
   private KeyBinding gogglesKey;  
   
@@ -77,6 +79,9 @@ public class KeyTracker {
     speedKey = new KeyBinding(EnderIO.lang.localize("keybind.speed"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(speedKey);
     
+    jumpKey = new KeyBinding(EnderIO.lang.localize("keybind.jump"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
+    ClientRegistry.registerKeyBinding(jumpKey);
+    
     yetaWrenchMode = new KeyBinding(EnderIO.lang.localize("keybind.yetawrenchmode"), Keyboard.KEY_Y, EnderIO.lang.localize("category.tools"));
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
 
@@ -93,6 +98,7 @@ public class KeyTracker {
     handleGoggles();
     handleStepAssist();
     handleSpeed();
+    handleJump();
     handleMagnet();
   }
 
@@ -119,6 +125,24 @@ public class KeyTracker {
           }
         }
       }
+    }
+  }
+
+  private void handleJump() {
+    if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+      return;
+    }
+    if(jumpKey.isPressed()) {      
+      isJumpActive = !isJumpActive;
+      String message;
+      if(isJumpActive) {
+        message = EnderIO.lang.localize("darksteel.upgrade.jump.enabled");
+      } else {
+        message = EnderIO.lang.localize("darksteel.upgrade.jump.disabled");
+      }
+      Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
+      DarkSteelController.instance.setJumpActive(Minecraft.getMinecraft().thePlayer, isJumpActive);
+      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(PacketUpgradeState.Type.JUMP, isJumpActive));
     }
   }
 

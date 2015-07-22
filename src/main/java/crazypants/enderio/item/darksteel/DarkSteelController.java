@@ -1,8 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -30,6 +29,7 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -64,7 +64,7 @@ public class DarkSteelController {
   private final AttributeModifier[] sprintModifiers = new AttributeModifier[] {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
+      new AttributeModifier(new UUID  (12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
   };
 
   private final AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier",
@@ -74,9 +74,10 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private final Map<UUID, Boolean> glideActiveMap = new HashMap<UUID, Boolean>();
-  private final Map<UUID, Boolean> speedActiveMap = new HashMap<UUID, Boolean>();
-  private final Map<UUID, Boolean> stepAssistActiveMap = new HashMap<UUID, Boolean>();
+  private final Set<UUID> glideActive = Sets.newHashSet();
+  private final Set<UUID> speedActive = Sets.newHashSet();
+  private final Set<UUID> stepAssistActive = Sets.newHashSet();
+  private final Set<UUID> jumpActive = Sets.newHashSet();
   
   private boolean nightVisionActive = false;
   private boolean removeNightvision = false;
@@ -95,50 +96,58 @@ public class DarkSteelController {
       return isSpeedActive(player);
     case STEP_ASSIST:
       return isStepAssistActive(player);
+    case JUMP:
+      return isJumpActive(player);
     }
     return false;
   }
   
   public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
     if(player.getGameProfile().getId() != null) {
-      glideActiveMap.put(player.getGameProfile().getId(), isGlideActive);
+      addOrRemove(glideActive, player.getGameProfile().getId(), isGlideActive);
     }
   }
 
   public boolean isGlideActive(EntityPlayer player) {
-    Boolean isActive = glideActiveMap.get(player.getGameProfile().getId());
-    if(isActive == null) {
-      return false;
-    }
-    return isActive.booleanValue();
+    return glideActive.contains(player.getGameProfile().getId());
   }
   
   public void setSpeedActive(EntityPlayer player, boolean isSpeedActive) {
     if(player.getGameProfile().getId() != null) {
-      speedActiveMap.put(player.getGameProfile().getId(), isSpeedActive);
-    }    
+      addOrRemove(speedActive, player.getGameProfile().getId(), isSpeedActive);
+    }
   }
   
   public boolean isSpeedActive(EntityPlayer player) {
-    Boolean isActive = speedActiveMap.get(player.getGameProfile().getId());
-    if(isActive == null) {
-      return true;
-    }
-    return isActive.booleanValue();
+    return speedActive.contains(player.getGameProfile().getId());
   }
   
   public void setStepAssistActive(EntityPlayer player, boolean isActive) {
     if(player.getGameProfile().getId() != null) {
-      stepAssistActiveMap.put(player.getGameProfile().getId(), isActive);
+      addOrRemove(stepAssistActive, player.getGameProfile().getId(), isActive);
     }    
   }
   
   public boolean isStepAssistActive(EntityPlayer player) {
-    Boolean isActive = stepAssistActiveMap.get(player.getGameProfile().getId());
-    if(isActive == null) {
-      return true;
+    return stepAssistActive.contains(player.getGameProfile().getId());
+  }
+  
+  public void setJumpActive(EntityPlayer player, boolean isActive) {
+    if(player.getGameProfile().getId() != null) {
+      addOrRemove(jumpActive, player.getGameProfile().getId(), isActive);
+    }    
+  }
+  
+  public boolean isJumpActive(EntityPlayer player) {
+    return jumpActive.contains(player.getGameProfile().getId());
+  }
+  
+  private <E> void addOrRemove(Set<E> set, E obj, boolean add) {
+    if (add) {
+      set.add(obj);
+    } else {
+      set.remove(obj);
     }
-    return isActive.booleanValue();
   }
 
   @SubscribeEvent
@@ -339,7 +348,6 @@ public class DarkSteelController {
     if(cost == 0) {
       return;
     }
-    boolean extracted = false;
     int remaining = cost;
     if(Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
@@ -347,7 +355,6 @@ public class DarkSteelController {
           IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
           int used = cont.extractEnergy(stack, remaining, false);
           remaining -= used;
-          extracted |= used > 0;
           if(remaining <= 0) {    
             return;
           }
@@ -357,8 +364,7 @@ public class DarkSteelController {
     if(armor != null && remaining > 0) {
       ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
       if(stack != null) {
-        int used = armor.extractEnergy(stack, remaining, false);
-        extracted |= used > 0;
+        armor.extractEnergy(stack, remaining, false);
       }
     }
   }
@@ -467,7 +473,10 @@ public class DarkSteelController {
 
   @SideOnly(Side.CLIENT)
   private void doJump(EntityClientPlayerMP player) {
-
+    if (!isJumpActive(player)) {
+      return;
+    }
+    
     ItemStack boots = player.getEquipmentInSlot(1);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
@@ -522,5 +531,4 @@ public class DarkSteelController {
     }
     this.nightVisionActive = isNightVisionActive;    
   }
-
 }

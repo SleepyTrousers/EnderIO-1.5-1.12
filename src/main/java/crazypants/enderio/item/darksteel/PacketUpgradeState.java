@@ -13,7 +13,8 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
   public enum Type {
     GLIDE,
     SPEED,
-    STEP_ASSIST
+    STEP_ASSIST, 
+    JUMP
   }
   
   public PacketUpgradeState() {    
@@ -60,6 +61,8 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
     case STEP_ASSIST:
       DarkSteelController.instance.setStepAssistActive(player, message.isActive);
       break;
+    case JUMP:
+      DarkSteelController.instance.setJumpActive(player, message.isActive);
     default:
       break;
     }
