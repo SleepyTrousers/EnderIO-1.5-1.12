@@ -110,7 +110,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       return;
     }
 
-    boolean isActivated = hasRedstoneSignal() ^ isInvereted;
+    boolean isActivated = init ? isPoweredRedstone() ^ isInvereted : lastActive;
 
     if(requiresPower) {
       if(isActivated) {
@@ -366,10 +366,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   public boolean hasPower() {
     return energyStoredRF >= RF_USE_PER_TICK;
-  }
-
-  private boolean hasRedstoneSignal() {
-    return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
   }
 
   // RF Power
