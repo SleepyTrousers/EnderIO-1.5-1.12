@@ -4,18 +4,22 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerEnchanter extends Container {
+import com.enderio.core.common.ContainerEnder;
 
-  private TileEnchanter enchanter;
+public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
   public ContainerEnchanter(EntityPlayer player, InventoryPlayer playerInv, TileEnchanter te) {
+    super(playerInv, te);
+  }
+  
+  @Override
+  protected void addSlots(InventoryPlayer playerInv) {
 
-    enchanter = te;
-
+    final TileEnchanter te = getInv();
+    
     addSlotToContainer(new Slot(te, 0, 27, 35) {
 
       @Override
@@ -25,7 +29,7 @@ public class ContainerEnchanter extends Container {
 
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return enchanter.isItemValidForSlot(0, itemStack);
+        return te.isItemValidForSlot(0, itemStack);
       }
 
       @Override
@@ -39,7 +43,7 @@ public class ContainerEnchanter extends Container {
 
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return enchanter.isItemValidForSlot(1, itemStack);
+        return te.isItemValidForSlot(1, itemStack);
       }
 
       @Override
@@ -64,30 +68,29 @@ public class ContainerEnchanter extends Container {
       @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
         if(!player.capabilities.isCreativeMode) {
-          player.addExperienceLevel(-enchanter.getCurrentEnchantmentCost());
+          player.addExperienceLevel(-te.getCurrentEnchantmentCost());
         }
-        EnchantmentData enchData = enchanter.getCurrentEnchantmentData();
-        EnchanterRecipe recipe = enchanter.getCurrentEnchantmentRecipe();
-        ItemStack curStack = enchanter.getStackInSlot(1);
+        EnchantmentData enchData = te.getCurrentEnchantmentData();
+        EnchanterRecipe recipe = te.getCurrentEnchantmentRecipe();
+        ItemStack curStack = te.getStackInSlot(1);
         if(recipe == null || enchData == null || curStack == null || enchData.enchantmentLevel >= curStack.stackSize) {
-          enchanter.setInventorySlotContents(1, (ItemStack) null);
+          te.setInventorySlotContents(1, (ItemStack) null);
         } else {
 
           curStack = curStack.copy();
           curStack.stackSize -= recipe.getItemsPerLevel() * enchData.enchantmentLevel;
           if(curStack.stackSize > 0) {
-            enchanter.setInventorySlotContents(1, curStack);
+            te.setInventorySlotContents(1, curStack);
           } else {
-            enchanter.setInventorySlotContents(1, null);
+            te.setInventorySlotContents(1, null);
           }
-          enchanter.markDirty();
+          te.markDirty();
         }
 
-        enchanter.setInventorySlotContents(0, (ItemStack) null);
-        //TODO: Sound
-        //          if (!p_i1800_2_.isRemote) {
-        //              p_i1800_2_.playAuxSFX(1021, p_i1800_3_, p_i1800_4_, p_i1800_5_, 0);
-        //          }
+        te.setInventorySlotContents(0, (ItemStack) null);
+        if (!te.getWorldObj().isRemote) {
+          te.getWorldObj().playAuxSFX(1021, te.xCoord, te.yCoord, te.zCoord, 0);
+        }
       }
 
       @Override
@@ -96,19 +99,6 @@ public class ContainerEnchanter extends Container {
       }
 
     });
-
-    int x = 8;
-    int y = 84;
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x + j * 18, y + i * 18));
-      }
-    }
-
-    for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, x + i * 18, y + 58));
-    }
   }
 
   @Override
@@ -120,17 +110,17 @@ public class ContainerEnchanter extends Container {
     if(player.capabilities.isCreativeMode) {
       return true;
     }
-    return player.experienceLevel >= enchanter.getCurrentEnchantmentCost();
+    return player.experienceLevel >= getInv().getCurrentEnchantmentCost();
   }
 
   private void updateOutput() {
     ItemStack output = null;
-    EnchantmentData enchantment = enchanter.getCurrentEnchantmentData();
+    EnchantmentData enchantment = getInv().getCurrentEnchantmentData();
     if(enchantment != null) {
       output = new ItemStack(Items.enchanted_book);
       Items.enchanted_book.addEnchantment(output, enchantment);
     }
-    enchanter.setOutput(output);
+    getInv().setOutput(output);
   }
 
   @Override
@@ -138,28 +128,28 @@ public class ContainerEnchanter extends Container {
     ItemStack copyStack = null;
     Slot slot = (Slot) inventorySlots.get(par2);
 
-    if(slot != null && slot.getHasStack()) {
+    if (slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
       copyStack = origStack.copy();
 
-      if(par2 < 2) {
-        if(!mergeItemStack(origStack, 2, inventorySlots.size(), true)) {
+      if (par2 <= 2) {
+        if (!mergeItemStack(origStack, 2, inventorySlots.size(), true)) {
           return null;
         }
       } else {
-        if(!enchanter.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 1, false)) {
-          if(!enchanter.isItemValidForSlot(1, origStack) || !mergeItemStack(origStack, 1, 2, false)) {
+        if (!getInv().isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 1, false)) {
+          if (!getInv().isItemValidForSlot(1, origStack) || !mergeItemStack(origStack, 1, 2, false)) {
             return null;
           }
         }
       }
-      if(origStack.stackSize == 0) {
+      if (origStack.stackSize == 0) {
         slot.putStack((ItemStack) null);
       } else {
         slot.onSlotChanged();
       }
+      slot.onPickupFromSlot(par1EntityPlayer, origStack);
     }
     return copyStack;
   }
-
 }
