@@ -133,7 +133,11 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
     Block block = player.worldObj.getBlock(x, y, z);
-    return block == EnderIO.blockConduitBundle && player.capabilities.isCreativeMode;
+    if (block == EnderIO.blockConduitBundle && player.capabilities.isCreativeMode) {
+      block.onBlockClicked(player.worldObj, x, y, z, player);
+      return true;
+    }
+    return false;
   }
 
   @Override
