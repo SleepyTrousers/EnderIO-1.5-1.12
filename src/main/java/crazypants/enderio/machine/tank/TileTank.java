@@ -334,31 +334,43 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
-    nbtRoot.setInteger("tankType",getBlockMetadata());
+    nbtRoot.setInteger("tankType", getBlockMetadata());
+    saveTank(nbtRoot, tank);
+  }
+  
+  public static void saveTank(NBTTagCompound nbtRoot, FluidTank tank) {
     if(tank.getFluidAmount() > 0) {
       NBTTagCompound fluidRoot = new NBTTagCompound();
       tank.getFluid().writeToNBT(fluidRoot);
       nbtRoot.setTag("tankContents", fluidRoot);
+    } else {
+      nbtRoot.removeTag("tankContents");
     }
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
+    tank = loadTank(nbtRoot);
+  }
+  
+  public static SmartTank loadTank(NBTTagCompound nbtRoot) {
     int tankType = nbtRoot.getInteger("tankType");
     tankType = MathHelper.clamp_int(tankType, 0, 1);
+    SmartTank ret;
     if(tankType == 1) {
-      tank = new SmartTank(32000);
+      ret = new SmartTank(32000);
     } else {
-      tank = new SmartTank(16000);
+      ret = new SmartTank(16000);
     }
     
     if(nbtRoot.hasKey("tankContents")) {
       FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) nbtRoot.getTag("tankContents"));
-      tank.setFluid(fl);
+      ret.setFluid(fl);
     } else {
-      tank.setFluid(null);
+      ret.setFluid(null);
     }
+    return ret;
   }
 
   @Override
@@ -375,5 +387,4 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   public void setTanksDirty() {
     tankDirty = true;
   }
-
 }

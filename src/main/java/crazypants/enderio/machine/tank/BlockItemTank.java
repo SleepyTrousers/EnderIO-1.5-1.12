@@ -2,12 +2,18 @@ package crazypants.enderio.machine.tank;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
@@ -15,8 +21,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.tool.SmartTank;
 
-public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedTooltipProvider {
+public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedTooltipProvider, IFluidContainerItem {
 
   public BlockItemTank() {
     super(EnderIO.blockTank,EnderIO.blockTank);
@@ -64,7 +71,44 @@ public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedToo
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     EnderIO.blockTank.addDetailedEntries(itemstack, entityplayer, list, flag);
   }
+  
+  private static final FluidTank dummy = new SmartTank(FluidRegistry.WATER, 16000);
+  
+  private FluidTank loadTank(ItemStack stack) {
+    if (stack.hasTagCompound()) {
+      FluidTank tank = TileTank.loadTank(stack.getTagCompound());
+      return tank != null ? tank : dummy;
+    }
+    return dummy;
+  }
+  
+  private void saveTank(ItemStack stack, FluidTank tank) {
+    TileTank.saveTank(stack.getTagCompound(), tank);
+  }
 
+  @Override
+  public FluidStack getFluid(ItemStack container) {
+    return loadTank(container).getFluid();
+  }
 
+  @Override
+  public int getCapacity(ItemStack container) {
+    return loadTank(container).getCapacity();
+  }
 
+  @Override
+  public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    FluidTank tank = loadTank(container);
+    int ret = tank.fill(resource, doFill);
+    saveTank(container, tank);
+    return ret;
+  }
+
+  @Override
+  public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+    FluidTank tank = loadTank(container);
+    FluidStack ret = tank.drain(maxDrain, doDrain);
+    saveTank(container, tank);
+    return ret;
+  }
 }
