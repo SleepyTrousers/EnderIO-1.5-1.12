@@ -446,83 +446,67 @@ enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Ordenar por cantidad
 enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Empezar por los individuales
 enderio.gui.inventorypanel.tooltip.refill.line1=Rellena la cuadrícula de fabricación
 enderio.gui.inventorypanel.tooltip.refill.line2=Un clic coloca objetos solo para una operación de fabricación, mientras que shift+clic intenta llenar la cuadricula de fabricación
-enderio.gui.inventorypanel.tooltip.setrecipe.line1=Learn the current crafting recipe
-enderio.gui.inventorypanel.tooltip.setrecipe.line2=Allows the refilling for the
-enderio.gui.inventorypanel.tooltip.setrecipe.line3=current recipe from the network.
-enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
-enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
-enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
-enderio.gui.inventorypanel.tooltip.itemsstored=Items Stored: %s
-enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
-enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
-enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
-enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
-enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
-enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
-enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
-enderio.gui.inventorypanel.tooltip.sync=NEI Sync
+enderio.gui.inventorypanel.tooltip.setrecipe.line1=Memoriza la receta de fabricación actual.
+enderio.gui.inventorypanel.tooltip.setrecipe.line2=Permite rellenar la receta actual.
+enderio.gui.inventorypanel.tooltip.clear.line1=Limpiar cuadrícula de fabricación
+enderio.gui.inventorypanel.tooltip.clear.line2=Mueve todos los objetos al área de almacenamiento.
+enderio.gui.inventorypanel.tooltip.fuelTank=Tanque de Nutriente
+enderio.gui.inventorypanel.tooltip.itemsstored=Objetos almacenados: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Guardar la receta de fabricación actual
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=Se pueden guardar hasta un máximo de 6 recetas.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Hacer clic derecho en una receta guardada intentará colocar objetos para una operación de fabricación en la cuadrícula.
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=Shift+Clic-derecho intentará llenar la cuadrícula hasta el máximo.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=Haz clic izquierdo en una receta almacenada para borrarla.
+enderio.gui.inventorypanel.tooltip.sync=Sinc. NEI
 
-enderio.machine.tooltip.configured=(Configured)
+enderio.machine.tooltip.configured=(Configurado)
 
 //Blocks
-tile.blockDarkSteelPressurePlate.name=Dark Pressure Plate
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Only activated by players
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=Clear Glass
-tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=Silent
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=Only activated by players
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=Clear Glass
+tile.blockDarkSteelPressurePlate.name=Placa de Presión Oscura
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Solo se activa con jugadores.
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Se puede pintar en la Maquina de Pintar. Invisible cuando se pinta con Cristal Totalmente Transparente.
+tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=Silenciosa
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=Solo se activa con jugadores.
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Se puede pintar en la Maquina de Pintar. Invisible cuando se pinta con Cristal Totalmente Transparente.
 
-tile.blockDarkSteelAnvil.intact.name=Dark Steel Anvil
-tile.blockDarkSteelAnvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
-tile.blockDarkSteelAnvil.veryDamaged.name=Very Damaged Dark Steel Anvil
-tile.blockDarkSteelAnvil.tooltip.common.line1=Damage Resistant
-tile.blockDarkSteelAnvil.tooltip.detailed.line1=Lasts much longer than
-tile.blockDarkSteelAnvil.tooltip.detailed.line2=the vanilla anvil
+tile.blockDarkSteelAnvil.intact.name=Yunque de Acero Oscuro
+tile.blockDarkSteelAnvil.slightlyDamaged.name=Yunque de Acero Oscuro Ligeramente Dañado
+tile.blockDarkSteelAnvil.veryDamaged.name=Yunque de Acero Oscuro Muy Dañado
+tile.blockDarkSteelAnvil.tooltip.common.line1=Resistente al Daño
+tile.blockDarkSteelAnvil.tooltip.detailed.line1=Dura mucho más que el yunque común.
 
-tile.blockDarkSteelLadder.name=Dark Steel Ladder
-tile.blockDarkSteelLadder.tooltip.common.line1=Faster than regular ladders
+tile.blockDarkSteelLadder.name=Escalera de Mano de Acero Oscuro
+tile.blockDarkSteelLadder.tooltip.common.line1=Más rápida que la Escalera de Mano común.
 
 //Travel
-tile.blockTravelAnchor.name=Travel Anchor
-tile.blockTravelAnchor.tooltip.detailed.line1=Allows teleportation between anchors
-tile.blockTravelAnchor.tooltip.detailed.line2=Stand on one Anchor, look at
-tile.blockTravelAnchor.tooltip.detailed.line3=another and jump to travel
-tile.blockTravelAnchor.tooltip.detailed.line4=Can also be used with the Staff
-tile.blockTravelAnchor.tooltip.detailed.line5=of Travel
-tile.blockTravelAnchor.tooltip.detailed.line6=Can be painted in the Painting Machine
+tile.blockTravelAnchor.name=Ancla de Viaje
+tile.blockTravelAnchor.tooltip.detailed.line1=Permite la teletransportación entre anclas.
+tile.blockTravelAnchor.tooltip.detailed.line2=Colócate en una ancla, mira hacia otra ancla y salta para teletransportarte.
+tile.blockTravelAnchor.tooltip.detailed.line3=También se puede usar con la Vara de Viaje.
+tile.blockTravelAnchor.tooltip.detailed.line4=Se puede pintar en la Máquina de Pintar.
 
-enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
-enderio.blockTravelPlatform.outOfRange=Destination out of range
+enderio.blockTravelPlatform.invalidTarget=Destinación obstruida.
+enderio.blockTravelPlatform.outOfRange=Destinación fuera de rango.
 
-tile.blockTelePad.name=Telepad Block
-tile.blockTelePad.tooltip.detailed.line1=Uses power to teleport entities
-tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
-tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
-enderio.gui.telepad.teleport=Teleport!
+tile.blockTelePad.name=Bloque Telepad
+tile.blockTelePad.tooltip.detailed.line1=Usa energía para teletransportar entidades a un posición y dimensión específica.
+tile.blockTelePad.tooltip.detailed.line2=Debe formar un multibloque de 3x1x3.
+enderio.gui.telepad.teleport=¡Teletransportación!
 
-item.itemTravelStaff.name=Staff of Traveling
-item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
-item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be
-item.itemTravelStaff.tooltip.detailed.line3=activated by R-Click
-item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
-item.itemTravelStaff.tooltip.detailed.line5=player a short distance
-enderio.itemTravelStaff.notEnoughPower=Not enough power
+item.itemTravelStaff.name=Vara de Viaje
+item.itemTravelStaff.tooltip.detailed.line1=Cuando se selecciona, las anclas de viaje y los enderIO se hacen visibles y se pueden activar haciendo clic-derecho.
+item.itemTravelStaff.tooltip.detailed.line2=Shift+Clic-derecho teletransportara al jugador una distancia corta.
+enderio.itemTravelStaff.notEnoughPower=Energía Insuficiente.
 
-item.itemCoordSelector.name=Coordinate Selector
-item.itemCoordSelector.tooltip.detailed.line1=Stores coordinates of a block.
-item.itemCoordSelector.tooltip.detailed.line2=Right click at block to select
-item.itemCoordSelector.tooltip.detailed.line3=the block adjacent on that side.
-item.itemCoordSelector.tooltip.detailed.line4=Shift right click at a block to
-item.itemCoordSelector.tooltip.detailed.line5=select that specific block.
-item.itemCoordSelector.tooltip.detailed.line6=Can select from a distance.
-enderio.itemCoordSelector.chat.newCoords=New Coords: %s
-enderio.itemCoordSelector.chat.setCoords=Set Coords: %s
-enderio.itemCoordSelector.chat.newDimension=New Dimension: %s%s
-enderio.itemCoordSelector.chat.setDimension=Set Dimension: %s%s
+item.itemCoordSelector.name=Selector de Coordinadas
+item.itemCoordSelector.tooltip.detailed.line1=Guarda las coordinadas de un bloque.
+item.itemCoordSelector.tooltip.detailed.line2=Clic derecho al bloque para seleccionar el bloque adyacente a esa cara del bloque.
+item.itemCoordSelector.tooltip.detailed.line3=Shift+Clic-derecho a un bloque para seleccionar ese bloque en concreto.
+item.itemCoordSelector.tooltip.detailed.line4=Se puede seleccionar desde la distancia.
+enderio.itemCoordSelector.chat.newCoords=Nuevas Coordenadas: %s
+enderio.itemCoordSelector.chat.setCoords=Establecer Coordenadas: %s
+enderio.itemCoordSelector.chat.newDimension=Nueva Dimensión: %s%s
+enderio.itemCoordSelector.chat.setDimension=Establecer Dimensión: %s%s
 
 //Painter
 tile.blockPainter.name=Painting Machine
