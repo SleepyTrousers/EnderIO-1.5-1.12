@@ -158,6 +158,6 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   public boolean isActive() {
-    return getEnergyStored() > 0 && worldObj != null && worldObj.getChunkProvider().chunkExists(xCoord >> 4, zCoord >> 4) && !isPoweredRedstone();
+    return getEnergyStored() > 0 && !isPoweredRedstone();
   }
 }
