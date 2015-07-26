@@ -9,6 +9,10 @@ import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -182,30 +186,22 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     TileEntity te = con.getBundle().getEntity();
 
     World worldObj = te.getWorldObj();
+    
+    if (!worldObj.blockExists(te.xCoord, te.yCoord, te.zCoord)) {
+      return;
+    }
+    
     worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
 
     // Need to notify neighbours neighbours for changes to  signals
     if(signal != null /*&& signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord*/) {
-      if(worldObj.getBlock(te.xCoord + 1, te.yCoord, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord,  EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord - 1, te.yCoord, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord + 1, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord - 1, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord + 1).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord - 1).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, EnderIO.blockConduitBundle);
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        BlockCoord bc = new BlockCoord(te).getLocation(dir);
+        if (worldObj.blockExists(bc.x, bc.y, bc.z) && bc.getBlock(worldObj).isNormalCube()) {
+          worldObj.notifyBlocksOfNeighborChange(bc.x, bc.y, bc.z, EnderIO.blockConduitBundle);
+        }
       }
     }
-
   }
 
 }
