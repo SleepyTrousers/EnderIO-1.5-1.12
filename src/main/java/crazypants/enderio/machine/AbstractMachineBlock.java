@@ -103,7 +103,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     iconBuffer = new IIcon[2][12];
     String side = getSideIconKey(false);
     // first the 6 sides in OFF state
-    iconBuffer[0][0] = iIconRegister.registerIcon(side);
+    iconBuffer[0][0] = iIconRegister.registerIcon(getBottomIconKey(false));
     iconBuffer[0][1] = iIconRegister.registerIcon(getTopIconKey(false));
     iconBuffer[0][2] = iIconRegister.registerIcon(getBackIconKey(false));
     iconBuffer[0][3] = iIconRegister.registerIcon(getMachineFrontIconKey(false));
@@ -111,7 +111,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     iconBuffer[0][5] = iIconRegister.registerIcon(side);
 
     side = getSideIconKey(true);
-    iconBuffer[0][6] = iIconRegister.registerIcon(side);
+    iconBuffer[0][6] = iIconRegister.registerIcon(getBottomIconKey(true));
     iconBuffer[0][7] = iIconRegister.registerIcon(getTopIconKey(true));
     iconBuffer[0][8] = iIconRegister.registerIcon(getBackIconKey(true));
     iconBuffer[0][9] = iIconRegister.registerIcon(getMachineFrontIconKey(true));
@@ -276,6 +276,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected String getTopIconKey(boolean active) {
     return "enderio:machineTop";
+  }
+
+  protected String getBottomIconKey(boolean active) {
+    return getSideIconKey(active);
   }
 
   protected String getModelIconKey(boolean active) {

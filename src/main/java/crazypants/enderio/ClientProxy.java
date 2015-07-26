@@ -76,6 +76,11 @@ import crazypants.enderio.machine.TechneMachineRenderer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.render.CapBankRenderer;
+import crazypants.enderio.machine.drain.BlockDrain;
+import crazypants.enderio.machine.drain.DrainFluidRenderer;
+import crazypants.enderio.machine.drain.DrainItemRenderer;
+import crazypants.enderio.machine.drain.DrainBlockRenderer;
+import crazypants.enderio.machine.drain.TileDrain;
 import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -388,8 +393,14 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), eior);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+
     ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTank), new TankItemRenderer());
+
+    BlockDrain.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new DrainBlockRenderer());
+    ClientRegistry.bindTileEntitySpecialRenderer(TileDrain.class, new DrainFluidRenderer());
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockDrain), new DrainItemRenderer());
 
     HyperCubeRenderer hcr = new HyperCubeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);

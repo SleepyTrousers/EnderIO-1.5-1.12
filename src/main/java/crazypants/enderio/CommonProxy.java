@@ -13,6 +13,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.render.ConduitRenderer;
+import crazypants.enderio.machine.drain.InfiniteWaterSourceStopper;
 
 public class CommonProxy {
 
@@ -47,6 +48,7 @@ public class CommonProxy {
   
   public void load() {
     FMLCommonHandler.instance().bus().register(tickTimer);
+    InfiniteWaterSourceStopper.register();
   }
 
   public long getTickCount() {
