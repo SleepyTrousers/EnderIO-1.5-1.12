@@ -20,10 +20,13 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
 
+import cpw.mods.fml.common.FMLLog;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.tank.GuiTank.VoidMode;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.ArrayMappingTool;
 import crazypants.enderio.tool.SmartTank;
 
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
@@ -36,8 +39,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   private boolean tankDirty = false;
   private Fluid lastFluid = null;
 
+  private VoidMode voidMode = VoidMode.NEVER;
+
   public TileTank(int meta) {
-    super(new SlotDefinition(0, 1, 2, 3, -1, -1));
+    super(new SlotDefinition(0, 2, 3, 4, -1, -1));
     if(meta == 1) {
       tank = new SmartTank(32000);
     } else {
@@ -208,6 +213,18 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     return level;
   }
 
+  public boolean canVoidItems() {
+    return tank.getFluid() != null && tank.getFluid().getFluid().getTemperature() > 973;
+  }
+  
+  public VoidMode getVoidMode() {
+    return voidMode;
+  }
+  
+  public void setVoidMode(VoidMode mode) {
+    this.voidMode = mode;
+  }
+  
   @Override
   public String getMachineName() {
     return "tank";
@@ -215,30 +232,40 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack item) {
-    if(i == 0) {
+    if (canVoidItems() && voidMode == VoidMode.ALWAYS && i < getSlotDefinition().getMaxInputSlot()) {
+      return false;
+    }
+    if (i == 0) {
       FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
-      if(fluid != null) {
+      if (fluid != null) {
         return true;
       }
-      if(item.getItem() == Items.water_bucket) {
+      if (item.getItem() == Items.water_bucket) {
         return true;
       }
-      if(item.getItem() == Items.lava_bucket) {
+      if (item.getItem() == Items.lava_bucket) {
         return true;
       }
       if (item.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) item.getItem()).getFluid(item) != null) {
         return true;
       }
       return false;
-    } else if(i == 1) {
+    } else if (i == 1) {
       if (item.getItem() instanceof IFluidContainerItem
-          && (((IFluidContainerItem) item.getItem()).getFluid(item) == null || ((IFluidContainerItem) item.getItem())
-              .getFluid(item).amount < ((IFluidContainerItem) item.getItem()).getCapacity(item))) {
+          && (((IFluidContainerItem) item.getItem()).getFluid(item) == null || ((IFluidContainerItem) item.getItem()).getFluid(item).amount < ((IFluidContainerItem) item
+              .getItem()).getCapacity(item))) {
         return true;
       }
       return FluidContainerRegistry.isEmptyContainer(item) || item.getItem() == Items.bucket;
+    } else if (i == 2 && canVoidItems()) {
+      return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidContainerRegistry.isContainer(item));
     }
     return false;
+  }
+  
+  @Override
+  public void setInventorySlotContents(int slot, ItemStack contents) {
+    super.setInventorySlotContents(slot, contents);
   }
 
   @Override
@@ -256,7 +283,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       return true;
     }
     if(tankDirty && shouldDoWorkThisTick(10)) {
-      PacketHandler.sendToAllAround(new PacketTank(this), this);
+      PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
       worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
       Fluid held = tank.getFluid() == null ? null : tank.getFluid().getFluid();
       if(lastFluid != held) {
@@ -280,27 +307,32 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     if(!shouldDoWorkThisTick(20)) {
       return false;
     }
+    if (canVoidItems()) {
+      inventory[2] = null;
+    }
     return drainFullContainer() || fillEmptyContainer();
   }
 
   private boolean fillEmptyContainer() {
-    FluidAndStackResult fill = FluidUtil.tryFillContainer(inventory[1], getOutputTanks()[0].getFluid());
+    FluidAndStackResult fill = FluidUtil.tryFillContainer(inventory[getSlotDefinition().getMinInputSlot() + 1], getOutputTanks()[0].getFluid());
     if (fill.result.fluidStack == null) {
       return false;
     }
+    
+    int slot = getSlotDefinition().getMaxOutputSlot();
 
-    if (inventory[3] != null) {
-      if (inventory[3].isStackable() && ItemUtil.areStackMergable(inventory[3], fill.result.itemStack)
-          && inventory[3].stackSize < inventory[3].getMaxStackSize()) {
-        fill.result.itemStack.stackSize += inventory[3].stackSize;
+    if (inventory[slot] != null) {
+      if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
+          && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
+        fill.result.itemStack.stackSize += inventory[slot].stackSize;
       } else {
         return false;
       }
     }
 
     getOutputTanks()[0].setFluid(fill.remainder.fluidStack);
-    setInventorySlotContents(1, fill.remainder.itemStack);
-    setInventorySlotContents(3, fill.result.itemStack);
+    setInventorySlotContents(getSlotDefinition().getMinInputSlot() + 1, fill.remainder.itemStack);
+    setInventorySlotContents(slot, fill.result.itemStack);
 
     setTanksDirty();
     markDirty();
@@ -308,23 +340,25 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   private boolean drainFullContainer() {
-    FluidAndStackResult fill = FluidUtil.tryDrainContainer(inventory[0], this);
+    FluidAndStackResult fill = FluidUtil.tryDrainContainer(inventory[getSlotDefinition().getMinInputSlot()], this);
     if (fill.result.fluidStack == null) {
       return false;
     }
+    
+    int slot = getSlotDefinition().getMaxOutputSlot();
 
-    if (inventory[2] != null) {
-      if (inventory[2].isStackable() && ItemUtil.areStackMergable(inventory[2], fill.result.itemStack)
-          && inventory[2].stackSize < inventory[2].getMaxStackSize()) {
-        fill.result.itemStack.stackSize += inventory[2].stackSize;
+    if (inventory[slot] != null) {
+      if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
+          && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
+        fill.result.itemStack.stackSize += inventory[slot].stackSize;
       } else {
         return false;
       }
     }
 
     getInputTank(fill.result.fluidStack).setFluid(fill.remainder.fluidStack);
-    setInventorySlotContents(0, fill.remainder.itemStack);
-    setInventorySlotContents(2, fill.result.itemStack);
+    setInventorySlotContents(getSlotDefinition().getMinInputSlot(), fill.remainder.itemStack);
+    setInventorySlotContents(slot, fill.result.itemStack);
 
     setTanksDirty();
     markDirty();
@@ -334,7 +368,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
+    nbtRoot.setInteger("slotLayoutVersion", 1);
     nbtRoot.setInteger("tankType", getBlockMetadata());
+    nbtRoot.setInteger("voidMode", voidMode.ordinal());
     saveTank(nbtRoot, tank);
   }
   
@@ -352,6 +388,14 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
     tank = loadTank(nbtRoot);
+    if (nbtRoot.hasKey("voidMode")) {
+      voidMode = VoidMode.values()[nbtRoot.getInteger("voidMode")];    
+    }
+    
+    int slotLayoutVersion = nbtRoot.getInteger("slotLayoutVersion");
+    if (slotLayoutVersion == 0) {
+      inventory = new ArrayMappingTool<ItemStack>("IIOO", "IIIOO").map(inventory);
+    }
   }
   
   public static SmartTank loadTank(NBTTagCompound nbtRoot) {

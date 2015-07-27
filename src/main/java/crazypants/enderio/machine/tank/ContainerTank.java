@@ -25,19 +25,24 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
         return getInv().isItemValidForSlot(1, itemStack);
       }
     });
-    addSlotToContainer(new Slot(getInv(), 2, 44, 52) {
+    addSlotToContainer(new Slot(getInv(), 2, 10000, 10000) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return getInv().isItemValidForSlot(2, itemStack);
       }
-    });
-    addSlotToContainer(new Slot(getInv(), 3, 116, 52) {
+    });    
+    addSlotToContainer(new Slot(getInv(), 3, 44, 52) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return getInv().isItemValidForSlot(3, itemStack);
       }
     });
-    
+    addSlotToContainer(new Slot(getInv(), 4, 116, 52) {
+      @Override
+      public boolean isItemValid(ItemStack itemStack) {
+        return getInv().isItemValidForSlot(4, itemStack);
+      }
+    });
   }
 
 }

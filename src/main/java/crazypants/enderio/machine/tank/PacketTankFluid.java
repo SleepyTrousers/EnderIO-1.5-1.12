@@ -12,14 +12,14 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 
-public class PacketTank extends MessageTileEntity<TileTank> implements IMessageHandler<PacketTank, IMessage> {
+public class PacketTankFluid extends MessageTileEntity<TileTank> implements IMessageHandler<PacketTankFluid, IMessage> {
 
   private NBTTagCompound nbtRoot;
 
-  public PacketTank() {
+  public PacketTankFluid() {
   }
 
-  public PacketTank(TileTank tile) {
+  public PacketTankFluid(TileTank tile) {
     super(tile);
     nbtRoot = new NBTTagCompound();
     if(tile.tank.getFluidAmount() > 0) {
@@ -42,7 +42,7 @@ public class PacketTank extends MessageTileEntity<TileTank> implements IMessageH
   }
 
   @Override
-  public IMessage onMessage(PacketTank message, MessageContext ctx) {
+  public IMessage onMessage(PacketTankFluid message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileTank tile = message.getTileEntity(player.worldObj);
     if(tile == null) {

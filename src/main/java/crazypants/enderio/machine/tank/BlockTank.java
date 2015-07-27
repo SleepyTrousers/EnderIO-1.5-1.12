@@ -35,7 +35,8 @@ import crazypants.enderio.network.PacketHandler;
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
-    PacketHandler.INSTANCE.registerMessage(PacketTank.class, PacketTank.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
     BlockTank res = new BlockTank();
     res.init();
     return res;
