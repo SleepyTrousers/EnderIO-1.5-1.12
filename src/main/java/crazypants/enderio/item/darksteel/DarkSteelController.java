@@ -401,7 +401,7 @@ public class DarkSteelController {
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-      if(player == null) {
+      if(player == null || player.capabilities.isFlying) {
         return;
       }
       MovementInput input = player.movementInput;
