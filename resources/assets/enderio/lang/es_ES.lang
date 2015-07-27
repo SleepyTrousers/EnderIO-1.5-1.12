@@ -550,79 +550,69 @@ enderio.item.itemSoulVessel.tooltip.empty=Vacío
 item.itemSoulVessel.tooltip.detailed.line1=Haz clic derecho en una criatura para capturar su alma.
 item.itemSoulVessel.tooltip.detailed.line2=Haz clic derecho de nuevo para liberarla.
 
-item.itemXpTransfer.name=Experience Rod
-item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing
-item.itemXpTransfer.tooltip.detailed.line2=liquid XP to gain levels
-item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
-item.itemXpTransfer.tooltip.detailed.line4=the tank
+item.itemXpTransfer.name=Vara de Experiencia
+item.itemXpTransfer.tooltip.detailed.line1=Haz clic derecho en un tanque de fluido que contenga XP Líquido para ganar niveles.
+item.itemXpTransfer.tooltip.detailed.line2=Shift+Clic-derecho para transferir niveles al tanque.
 
-skullZombieElectrode.name=Zombie Electrode
-skullZombieController.name=Z-Logic Controller
-skullZombieFrankenstien.name=Frank'N'Zombie
-skullEnderResonator.name=Ender Resonator 
-skullSentientEnder.name=Sentient Ender
+skullZombieElectrode.name=Electrodo Zombi
+skullZombieController.name=Controlador Lógico-Z
+skullZombieFrankenstien.name=Frankenzombi
+skullEnderResonator.name=Resonador Ender 
+skullSentientEnder.name=Sensor Ender
 
 item.itemSpawnEggEnderIO.name=Spawn
 
 //Dark Steel
-item.darkSteel_helmet.name=Dark Helm
-item.darkSteel_chestplate.name=Dark Plate
-item.darkSteel_leggings.name=Dark Leggings
-item.darkSteel_boots.name=Dark Boots
-item.darkSteel_sword.name=The Ender
-item.darkSteel_pickaxe.name=Dark Pick
-item.darkSteel_axe.name=Dark Axe
-item.darkSteel_shears.name=Dark Shears
+item.darkSteel_helmet.name=Yelmo Oscuro
+item.darkSteel_chestplate.name=Pechera Oscura
+item.darkSteel_leggings.name=Mallas Oscuras
+item.darkSteel_boots.name=Botas Oscuras
+item.darkSteel_sword.name=La Rematadora
+item.darkSteel_pickaxe.name=Pico Oscuro
+item.darkSteel_axe.name=Hacha Oscura
+item.darkSteel_shears.name=Tijeras Oscuras
 
-enderio.item.darkSteel.tooltip.lvs=lvs
+enderio.item.darkSteel.tooltip.lvs=nvs
 
-enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
-enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
-enderio.item.darkSteel_pickaxe.tooltip.cost=cost
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=Eficiencia cuando está cargada.
+enderio.item.darkSteel_pickaxe.tooltip.effObs=Eficiencia rompiendo obsidiana.
+enderio.item.darkSteel_pickaxe.tooltip.cost=coste
 
-enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.darkSteel_axe.tooltip.multiHarvest=Mantén pulsado shift para recoger múltiples troncos.
 
-enderio.item.darkSteel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
+enderio.item.darkSteel_shears.tooltip.multiHarvest=Recorta múltiples bloques u ovejas cuando está cargada.
 
-enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
-enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
-enderio.item.darkSteel_sword.tooltip.line3=+2 Damage when Powered
+enderio.item.darkSteel_sword.tooltip.line1=Incrementado el saqueo de calaveras y perlas de Ender.
+enderio.item.darkSteel_sword.tooltip.line2=Los Enderman no se pueden teletransportar una vez se les ha golpeado.
+enderio.item.darkSteel_sword.tooltip.line3=+2 de daño cuando está cargada.
 
-enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
-enderio.item.darkSteel_armor.tooltip.line2=when powered
+enderio.item.darkSteel_armor.tooltip.line1=Nivel de protección equivalente al diamante cuando está cargada.
 
-enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
-enderio.item.darkSteel_boots.tooltip.line2=when powered
+enderio.item.darkSteel_boots.tooltip.line1=Daño de caída ignorado cuando están cargadas.
 
-enderio.darksteel.upgrade.empowered_one.name=Empowered
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_one.name=Fortaleza
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
 
-enderio.darksteel.upgrade.empowered_two.name=Empowered II
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_two.name=Fortaleza II
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
 
-enderio.darksteel.upgrade.empowered_three.name=Empowered III
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_three.name=Fortaleza III
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
 
-enderio.darksteel.upgrade.empowered_four.name=Empowered IV
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_four.name=Fortaleza IV
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
 
-enderio.darksteel.upgrade.travel.name=Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
-enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor or Ender IO
+enderio.darksteel.upgrade.travel.name=Viaje
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Mantén pulsado shift y haz clic derecho para viajar o activar una ancla de viaje o Ender IO.
 
-enderio.darksteel.upgrade.spoon.name=Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when 
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=you have a spoon
+enderio.darksteel.upgrade.spoon.name=Cuchara
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=¿Quién necesita una pala cuando tienes una cuchara?
 
-enderio.darksteel.upgrade.glider.name=Glider
+enderio.darksteel.upgrade.glider.name=Planeador
 enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
 enderio.darksteel.upgrade.glider.enabled=Glider Active
 enderio.darksteel.upgrade.glider.disabled=Glider Disabled
