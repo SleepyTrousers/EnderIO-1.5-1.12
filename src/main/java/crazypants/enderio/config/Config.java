@@ -521,6 +521,7 @@ public final class Config {
     if (event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
+      init();
       postInit();
     }
   }
@@ -531,6 +532,7 @@ public final class Config {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();
+      init();
       postInit();
     }
   }
