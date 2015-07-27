@@ -509,57 +509,46 @@ enderio.itemCoordSelector.chat.newDimension=Nueva Dimensión: %s%s
 enderio.itemCoordSelector.chat.setDimension=Establecer Dimensión: %s%s
 
 //Painter
-tile.blockPainter.name=Painting Machine
-enderio.blockPainter.paintedWith=Painted with:
-tile.blockPaintedFence.name=Painted Fence
-tile.blockPaintedFenceGate.name=Painted Gate
-tile.blockPaintedWall.name=Painted Wall
-tile.blockPaintedStair.name=Painted Stairs
-tile.blockPaintedSlab.name=Painted Slab
-tile.blockPaintedDoubleSlab.name=Painted Slab
-tile.blockPaintedGlowstone.name=Painted Glowstone
-tile.blockPaintedCarpet.name=Painted Carpet
-enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
+tile.blockPainter.name=Máquina de Pintar
+enderio.blockPainter.paintedWith=Pintado con:
+tile.blockPaintedFence.name=Valla Pintada
+tile.blockPaintedFenceGate.name=Puerta de Valla Pintada
+tile.blockPaintedWall.name=Muro Pintado
+tile.blockPaintedStair.name=Escaleras Pintadas
+tile.blockPaintedSlab.name=Losa Pintada
+tile.blockPaintedDoubleSlab.name=Losas Pintadas
+tile.blockPaintedGlowstone.name=Piedra Luminosa Pintada
+tile.blockPaintedCarpet.name=Alfombra Pintada
+enderio.painter.tooltip.wasPainted=§o¿Qué pensabas que haría eso?
 
-tile.blockPainter.tooltip.detailed.line1=Used to paint:
-tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
-tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
-tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone, Carpet,
-tile.blockPainter.tooltip.detailed.line5=Dark Steel Pressure Plates,
-tile.blockPainter.tooltip.detailed.line6=Travel Anchors
+tile.blockPainter.tooltip.detailed.line1=Se usa para pintar: 
+tile.blockPainter.tooltip.detailed.line2=Fachadas para tuberías, escaleras, vallas, puertas de valla, losas, muros de roca, marcos de cristal, piedras luminosas, alfombras, placas de presión de acero oscuro y anclas de viaje.
 
 //Items
-item.itemYetaWrench.name=Yeta Wrench
-item.itemYetaWrench.tooltip.detailed.line1=Hides conduit facades when held
-item.itemYetaWrench.tooltip.detailed.line2=Shift-R-Click to break machines
-item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
-item.itemYetaWrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
-item.itemYetaWrench.tooltip.detailed.line5=open conduit settings GUI
-item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
-item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
+item.itemYetaWrench.name=Llave Inglesa Yeta
+item.itemYetaWrench.tooltip.detailed.line1=Oculta fachadas para tuberías cuando se selecciona.
+item.itemYetaWrench.tooltip.detailed.line2=Shift+Clic-derecho para romper máquinas y tuberías instantáneamente.
+item.itemYetaWrench.tooltip.detailed.line3=Shift+Clic-izquierdo en una tubería para abrir la interfaz de opciones de la tubería.
+item.itemYetaWrench.tooltip.detailed.line4=Shift+Rueda del ratón o '%s' para renderizar solo un tipo de tubería.
 
-item.itemMagnet.name=Electromagnet
-item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
-item.itemMagnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
-item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
-item.itemMagnet.tooltip.detailed.line4=hot bar (or a Baubles slot) to function
+item.itemMagnet.name=Electroimán
+item.itemMagnet.tooltip.detailed.line1=Atrae los objetos cercanos hacia ti.
+item.itemMagnet.tooltip.detailed.line2=Shift+clic-derecho para activar/desactivar.
+item.itemMagnet.tooltip.detailed.line3=Debe estar cargado, activado y en la barra de objetos para funcionar.
 
-item.enderio.itemConduitProbe.name=Conduit Probe
-item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit
-item.enderio.itemConduitProbe.tooltip.detailed.line2=to display details about its network
-item.enderio.itemConduitProbe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
-item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles connection settings 
-item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
-item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
+item.enderio.itemConduitProbe.name=Tubería de Sondeo
+item.enderio.itemConduitProbe.tooltip.detailed.line1=En modo Sonda, haz clic derecho en una tubería para mostrar detalles sobre su red.
+item.enderio.itemConduitProbe.tooltip.detailed.line2=En modo Copiar y Pegar, haz shift+clic-derecho para copiar los ajustes de conexión de un manojo de tuberías.
+item.enderio.itemConduitProbe.tooltip.detailed.line3=Clic derecho para pegarlos.
+item.enderio.itemConduitProbe.tooltip.detailed.line4=Usa shift+rueda del ratón o 'Y' para cambiar de modo.
 
-item.itemSoulVessel.name=Soul Vial
-enderio.item.itemSoulVessel.tooltip.health=Health:
-enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
+item.itemSoulVessel.name=Vial de Almas
+enderio.item.itemSoulVessel.tooltip.health=Salud:
+enderio.item.itemSoulVessel.tooltip.fluidname=Nombre del Fluido:
 enderio.item.itemSoulVessel.tooltip.color=Color:
-enderio.item.itemSoulVessel.tooltip.empty=Empty
-item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
-item.itemSoulVessel.tooltip.detailed.line2=capture its soul
-item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
+enderio.item.itemSoulVessel.tooltip.empty=Vacío
+item.itemSoulVessel.tooltip.detailed.line1=Haz clic derecho en una criatura para capturar su alma.
+item.itemSoulVessel.tooltip.detailed.line2=Haz clic derecho de nuevo para liberarla.
 
 item.itemXpTransfer.name=Experience Rod
 item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing
