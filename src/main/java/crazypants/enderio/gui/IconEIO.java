@@ -1,14 +1,10 @@
 package crazypants.enderio.gui;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.client.render.IWidgetMap;
 
-@AllArgsConstructor
-@Getter
 public enum IconEIO implements IWidgetIcon {
 
   TICK(0, 192),
@@ -143,8 +139,41 @@ public enum IconEIO implements IWidgetIcon {
     this(x, y, width, height, null);
   }
 
+  private IconEIO(int x, int y, int width, int height, IconEIO overlay) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.overlay = overlay;
+  }
+
   @Override
   public IWidgetMap getMap() {
     return map;
+  }
+
+  @Override
+  public int getX() {
+    return x;
+  }
+
+  @Override
+  public int getY() {
+    return y;
+  }
+
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
+
+  @Override
+  public IconEIO getOverlay() {
+    return overlay;
   }
 }
