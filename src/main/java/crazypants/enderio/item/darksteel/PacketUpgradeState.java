@@ -51,21 +51,7 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
   @Override
   public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
     EntityPlayer player = (EntityPlayer) (ctx.side.isClient() ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID) : ctx.getServerHandler().playerEntity);
-    switch (message.type) {
-    case GLIDE:
-      DarkSteelController.instance.setGlideActive(player, message.isActive);
-      break;
-    case SPEED:
-      DarkSteelController.instance.setSpeedActive(player, message.isActive);
-      break;
-    case STEP_ASSIST:
-      DarkSteelController.instance.setStepAssistActive(player, message.isActive);
-      break;
-    case JUMP:
-      DarkSteelController.instance.setJumpActive(player, message.isActive);
-    default:
-      break;
-    }
+    DarkSteelController.instance.setActive(player, message.type, message.isActive);
     if (ctx.side.isServer()) {
       message.entityID = player.getEntityId();
       PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.dimensionId);

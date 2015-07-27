@@ -1,7 +1,9 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -29,7 +31,6 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
-import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -74,11 +75,10 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private final Set<UUID> glideActive = Sets.newHashSet();
-  private final Set<UUID> speedActive = Sets.newHashSet();
-  private final Set<UUID> stepAssistActive = Sets.newHashSet();
-  private final Set<UUID> jumpActive = Sets.newHashSet();
-  
+  private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
+
+  private final Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
+
   private boolean nightVisionActive = false;
   private boolean removeNightvision = false;
 
@@ -88,68 +88,48 @@ public class DarkSteelController {
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
-  public boolean isActive(EntityPlayer player, Type type) {
-    switch(type) {
-    case GLIDE:
-      return isGlideActive(player);
-    case SPEED:
-      return isSpeedActive(player);
-    case STEP_ASSIST:
-      return isStepAssistActive(player);
-    case JUMP:
-      return isJumpActive(player);
+  private EnumSet<Type> getActiveSet(EntityPlayer player) {
+    EnumSet<Type> active;
+    UUID id = player.getGameProfile().getId();
+    active = allActive.get(id);
+    if(active == null) {
+      active = DEFAULT_ACTIVE.clone();
+      if(id != null) {
+        allActive.put(id, active);
+      }
     }
-    return false;
+    return active;
   }
-  
-  public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
-    if(player.getGameProfile().getId() != null) {
-      addOrRemove(glideActive, player.getGameProfile().getId(), isGlideActive);
+
+  public boolean isActive(EntityPlayer player, Type type) {
+    return getActiveSet(player).contains(type);
+  }
+
+  public void setActive(EntityPlayer player, Type type, boolean isActive) {
+    EnumSet<Type> set = getActiveSet(player);
+    if(isActive) {
+      set.add(type);
+    } else {
+      set.remove(type);
     }
   }
 
   public boolean isGlideActive(EntityPlayer player) {
-    return glideActive.contains(player.getGameProfile().getId());
-  }
-  
-  public void setSpeedActive(EntityPlayer player, boolean isSpeedActive) {
-    if(player.getGameProfile().getId() != null) {
-      addOrRemove(speedActive, player.getGameProfile().getId(), isSpeedActive);
-    }
+    return isActive(player, Type.GLIDE);
   }
   
   public boolean isSpeedActive(EntityPlayer player) {
-    return speedActive.contains(player.getGameProfile().getId());
-  }
-  
-  public void setStepAssistActive(EntityPlayer player, boolean isActive) {
-    if(player.getGameProfile().getId() != null) {
-      addOrRemove(stepAssistActive, player.getGameProfile().getId(), isActive);
-    }    
+    return isActive(player, Type.SPEED);
   }
   
   public boolean isStepAssistActive(EntityPlayer player) {
-    return stepAssistActive.contains(player.getGameProfile().getId());
-  }
-  
-  public void setJumpActive(EntityPlayer player, boolean isActive) {
-    if(player.getGameProfile().getId() != null) {
-      addOrRemove(jumpActive, player.getGameProfile().getId(), isActive);
-    }    
+    return isActive(player, Type.STEP_ASSIST);
   }
   
   public boolean isJumpActive(EntityPlayer player) {
-    return jumpActive.contains(player.getGameProfile().getId());
+    return isActive(player, Type.JUMP);
   }
   
-  private <E> void addOrRemove(Set<E> set, E obj, boolean add) {
-    if (add) {
-      set.add(obj);
-    } else {
-      set.remove(obj);
-    }
-  }
-
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
@@ -530,5 +510,9 @@ public class DarkSteelController {
       removeNightvision = true;
     }
     this.nightVisionActive = isNightVisionActive;    
+  }
+
+  public boolean isNightVisionActive() {
+    return nightVisionActive;
   }
 }

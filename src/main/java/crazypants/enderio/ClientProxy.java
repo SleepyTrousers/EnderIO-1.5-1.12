@@ -413,8 +413,7 @@ public class ClientProxy extends CommonProxy {
 
     DarkSteelItems.registerItemRenderer();
 
-    //Ensure it is loaded and registered
-    KeyTracker.instance.isGlideActive();
+    FMLCommonHandler.instance().bus().register(KeyTracker.instance);
 
     RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
     RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, new RangeRenerer());
