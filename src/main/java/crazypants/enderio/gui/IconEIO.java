@@ -60,6 +60,12 @@ public enum IconEIO implements IWidgetIcon {
   FILTER_NBT_OFF(224, 224),
   FILTER_ORE_DICT_OFF(240, 224),
 
+  FILTER_FUZZY_DISABLED(240, 176),
+  FILTER_FUZZY_25(224, 176),
+  FILTER_FUZZY_50(208, 176),
+  FILTER_FUZZY_75(192, 176),
+  FILTER_FUZZY_99(176, 176),
+
   @Deprecated
   INPUT_OLD(128, 197 + 32, 30, 14),
   @Deprecated

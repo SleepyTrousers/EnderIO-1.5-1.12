@@ -36,6 +36,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   boolean matchNBT = true;
   boolean useOreDict = false;
   boolean sticky = false;
+  FuzzyMode fuzzyMode = FuzzyMode.DISABLED;
 
   ItemStack[] items;
 
@@ -82,12 +83,19 @@ public class ItemFilter implements IInventory, IItemFilter {
     if(item == null) {
       return false;
     }
+    boolean doFuzzy = false;
+    boolean fuzzyValue = false;
+    if(fuzzyMode != FuzzyMode.DISABLED && item.getItem().isDamageable()) {
+      doFuzzy = true;
+      fuzzyValue = fuzzyMode.compare(item);
+    }
     boolean matched = false;
     int i = 0;
     for (ItemStack it : items) {
       if(it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
         matched = true;
-        if(matchMeta && item.getItemDamage() != it.getItemDamage()) {
+        boolean fuzzyOk = doFuzzy && fuzzyMode.compare(it) == fuzzyValue;
+        if(matchMeta && !fuzzyOk && item.getItemDamage() != it.getItemDamage()) {
           matched = false;
         } else if(matchNBT && !isNBTMatch(item, it)) {
           matched = false;
@@ -203,6 +211,14 @@ public class ItemFilter implements IInventory, IItemFilter {
     this.sticky = sticky;
   }
 
+  public FuzzyMode getFuzzyMode() {
+    return fuzzyMode;
+  }
+
+  public void setFuzzyMode(FuzzyMode fuzzyMode) {
+    this.fuzzyMode = fuzzyMode;
+  }
+
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setBoolean("isBlacklist", isBlacklist);
@@ -211,6 +227,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setBoolean("useOreDict", useOreDict);
     nbtRoot.setBoolean("sticky", sticky);
     nbtRoot.setBoolean("isAdvanced", isAdvanced);
+    nbtRoot.setByte("fuzzyMode", (byte) fuzzyMode.ordinal());
 
     int i = 0;
     for (ItemStack item : items) {
@@ -232,6 +249,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     useOreDict = nbtRoot.getBoolean("useOreDict");
     sticky = nbtRoot.getBoolean("sticky");
     isAdvanced = nbtRoot.getBoolean("isAdvanced");
+    fuzzyMode = FuzzyMode.values()[nbtRoot.getByte("fuzzyMode") & 255];
 
     int numItems = isAdvanced ? 10 : 5;
     items = new ItemStack[numItems];

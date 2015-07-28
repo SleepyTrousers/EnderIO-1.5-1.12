@@ -170,9 +170,7 @@ public class ItemSettings extends BaseSettingsPanel {
     
     x = priLeft + priWidth + 9;    
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
-
-    y += 8;
-    priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y);
+    priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y+8);
 
     gui.getContainer().addFilterListener(new FilterChangeListener() {
       @Override
