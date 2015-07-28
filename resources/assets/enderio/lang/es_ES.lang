@@ -373,6 +373,18 @@ enderio.tank.tank=Tanque
 enderio.tooltip.none=Ninguno
 enderio.tooltip.fluidStored=Fluido almacenado
 
+enderio.gui.tooltip.voidslot=Ranura de Vacío
+enderio.gui.void.mode=Modo Vacío
+
+enderio.gui.void.mode.always=Siempre
+enderio.gui.void.mode.always.desc=La ranura de vacío acepta todos los objetos.
+
+enderio.gui.void.mode.if_not_container=Ignorar Contenedores
+enderio.gui.void.mode.if_not_container.desc=La ranura de vacío acepta todos los objetos que no sean contenedores de fluidos.
+
+enderio.gui.void.mode.never=Nunca
+enderio.gui.void.mode.never.desc=La ranura de vacío no acepta ningún objeto.
+
 tile.blockCrafter.name=Fabricador
 tile.blockCrafter.tooltip.detailed.line1=Fabricador automático eléctrico.
 tile.blockCrafter.tooltip.detailed.line2=Consume energía por operación.
@@ -624,6 +636,8 @@ enderio.darksteel.upgrade.sound.disabled=Localizador de Sonidos Desactivado
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revelador
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Descuento de Vis: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Se está revelando la magia.
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=La magia está oculta a simple vista.
 
 enderio.darksteel.upgrade.naturalistEye.name=Ojo del Naturalista
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Muestra las hojas de árboles polinizados.
@@ -643,6 +657,9 @@ enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protección
 item.itemGliderWing.name=Ala de Planeador
 item.itemGliderWings.name=Alas de Planeador
 item.itemGliderWings.tooltip.detailed.line1=Mejora para la pechera de Acero Oscuro.
+
+enderio.darksteel.upgrade.jump.enabled=Salto Activado
+enderio.darksteel.upgrade.jump.disabled=Salto Desactivado
 
 enderio.darksteel.upgrade.jump_one.name=Salto
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Aumenta la altura de salto y de los pasos.
@@ -960,6 +977,7 @@ enderio.keybind.gogglesofrevealing=Gafas de Revelación
 enderio.keybind.nightvision=Visión Nocturna
 enderio.keybind.soundlocator=Localizador de Sonidos
 enderio.keybind.speed=Velocidad
+enderio.keybind.jump=Salto
 enderio.keybind.stepassist=Assistente de Pasos
 enderio.keybind.yetawrenchmode=Modo de Llave Inglesa Yeta
 enderio.keybind.magnet=Activar/Desactivar Electroimán
