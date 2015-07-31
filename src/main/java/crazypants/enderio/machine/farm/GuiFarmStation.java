@@ -48,7 +48,6 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   @Override
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
-
     if(!isConfigOverlayEnabled()) {
       for(int i=TileFarmStation.minSupSlot ; i<=TileFarmStation.maxSupSlot ; i++) {
         if(getTileEntity().isSlotLocked(i)) {

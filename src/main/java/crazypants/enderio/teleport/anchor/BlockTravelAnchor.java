@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -20,6 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.util.ChatUtil;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -139,10 +139,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
-    if(!player.isSneaking()) {
-      player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " "
-          + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner) + EnumChatFormatting.WHITE + " "
-          + EnderIO.lang.localize("gui.travelAccessable.privateBlock2")));
+    if (!player.isSneaking()) {
+      ChatUtil.sendNoSpam(player,
+          EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner)
+              + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
     }
   }
 

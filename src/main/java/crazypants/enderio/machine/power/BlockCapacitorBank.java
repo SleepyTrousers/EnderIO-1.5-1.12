@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -283,14 +285,14 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
-      if(player instanceof EntityPlayer) {
+      if(player instanceof EntityPlayerMP) {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
           BlockCoord bc = new BlockCoord(x, y, z);
           bc = bc.getLocation(dir);
           te = world.getTileEntity(bc.x, bc.y, bc.z);
           if(te instanceof TileCapacitorBank) {
-            if(((TileCapacitorBank)te).isMaxSize()) {
-              ((EntityPlayer)player).addChatComponentMessage(new ChatComponentText("Capacitor bank is at maximum size"));
+            if (((TileCapacitorBank) te).isMaxSize()) {
+              ChatUtil.sendNoSpam((EntityPlayerMP) player, "Capacitor bank is at maximum size");
             }
           }
         }

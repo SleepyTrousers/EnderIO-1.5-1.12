@@ -9,11 +9,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.ChatUtil;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -67,7 +67,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     }
 
     if(isCopy && performedAction && player.worldObj.isRemote) {
-      player.addChatComponentMessage(new ChatComponentText("Copied conduit settings"));
+      ChatUtil.sendNoSpamClient("Copied conduit settings");
     }
     
     return performedAction;

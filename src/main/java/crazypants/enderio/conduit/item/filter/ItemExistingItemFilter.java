@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.ItemUtil;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -61,14 +62,11 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
 
     if(player.isSneaking()) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof IInventory) {
-        IInventory inv = ItemUtil.getInventory((IInventory)te);
-        ExistingItemFilter filter = (ExistingItemFilter)createFilterFromStack(item);
-        if(filter.mergeSnapshot(inv)) {
-          player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("item.itemExistingItemFilter.filterUpdated")));
-        } else {
-          player.addChatComponentMessage(new ChatComponentText(EnderIO.lang.localize("item.itemExistingItemFilter.filterNotUpdated")));
-        }
+      if (te instanceof IInventory) {
+        IInventory inv = ItemUtil.getInventory((IInventory) te);
+        ExistingItemFilter filter = (ExistingItemFilter) createFilterFromStack(item);
+        String unloc = "item.itemExistingItemFilter." + (filter.mergeSnapshot(inv) ? "filterUpdated" : "filterNotUpdated");
+        ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, unloc);
         FilterRegister.writeFilterToStack(filter, item);
         return true;
       }

@@ -6,12 +6,12 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
 
 import org.lwjgl.input.Keyboard;
 
+import com.enderio.core.common.util.ChatUtil;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
@@ -94,8 +94,8 @@ public class KeyTracker {
   }
 
   private void sendEnabledChatMessage(String messageBase, boolean isActive) {
-    String message = EnderIO.lang.localize(messageBase.concat(isActive ? ".enabled" : ".disabled"));
-    Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
+    String message = messageBase.concat(isActive ? ".enabled" : ".disabled");
+    ChatUtil.sendNoSpamClientUnloc(EnderIO.lang, message);
   }
 
   private void toggleDarkSteelController(Type type, String messageBase) {
@@ -168,7 +168,6 @@ public class KeyTracker {
       sendEnabledChatMessage("darksteel.upgrade.goggles", isActive);
       DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
     }
-    
   }
 
   private void handleYetaWrench() {
@@ -195,9 +194,7 @@ public class KeyTracker {
       PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());   
       player.swingItem();
       
-    }
-    
-        
+    }    
   }
 
   private void handleSoundDetector() {
@@ -210,7 +207,6 @@ public class KeyTracker {
       sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
       SoundDetector.instance.setEnabled(isActive);
     }
-    
   }
 
   private void handleGlide() {
