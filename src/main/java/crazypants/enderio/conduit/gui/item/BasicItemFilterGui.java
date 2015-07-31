@@ -5,12 +5,14 @@ import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.item.filter.FuzzyMode;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
 
@@ -21,6 +23,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private static final int ID_META = GuiExternalConnection.nextButtonId();
   private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
   private static final int ID_STICKY = GuiExternalConnection.nextButtonId();    
+  private static final int ID_FUZZY = GuiExternalConnection.nextButtonId();
   
   private final GuiContainerBase gui;
   
@@ -29,6 +32,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private final IconButton whiteListB;
   private final ToggleButton useOreDictB;
   private final ToggleButton stickyB;
+  private final CycleButton<FuzzyMode> fuzzyB;
     
   final boolean isAdvanced;
   final boolean isStickyModeAvailable;
@@ -71,13 +75,17 @@ public class BasicItemFilterGui implements IItemFilterGui {
 
     x += 20;
     stickyB = new ToggleButton(gui, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
-    stickyB.setSelectedToolTip(lines);
+    stickyB.setSelectedToolTip(EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled"));
     stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
     x = butLeft;
+
+    useOreDictB = new ToggleButton(gui, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
+    useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
+    useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
+    useOreDictB.setPaintSelectedBorder(false);
 
     x += 20;
     useNbtB = new ToggleButton(gui, ID_NBT + buttonIdOffset, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
@@ -85,11 +93,8 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useNbtB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
-    x = butLeft;
-    useOreDictB = new ToggleButton(gui, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
-    useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
-    useOreDictB.setPaintSelectedBorder(false);
+    x += 20;
+    fuzzyB = new CycleButton(gui, ID_FUZZY + buttonIdOffset, x, y, FuzzyMode.class);
   }
 
   public void createFilterSlots() {
@@ -100,7 +105,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
       }
     });
   }
-  
+
   @Override
   public void mouseClicked(int x, int y, int par3) {      
   }
@@ -120,6 +125,9 @@ public class BasicItemFilterGui implements IItemFilterGui {
         stickyB.onGuiInit();
         stickyB.setSelected(activeFilter.isSticky());
       }
+
+      fuzzyB.onGuiInit();
+      fuzzyB.setMode(activeFilter.getFuzzyMode());
     }
 
     useMetaB.onGuiInit();
@@ -151,6 +159,9 @@ public class BasicItemFilterGui implements IItemFilterGui {
     } else if(guiButton.id == ID_ORE_DICT + buttonIdOffset) {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
+    } else if(guiButton.id == ID_FUZZY + buttonIdOffset) {
+      filter.setFuzzyMode(fuzzyB.getMode());
+      sendFilterChange();
     } else if(guiButton.id == ID_WHITELIST + buttonIdOffset) {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
@@ -169,6 +180,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useOreDictB.detach();
     whiteListB.detach();
     stickyB.detach();
+    fuzzyB.detach();
   }
   
   @Override

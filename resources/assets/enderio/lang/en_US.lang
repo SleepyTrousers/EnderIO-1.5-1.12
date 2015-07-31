@@ -748,6 +748,8 @@ enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
 
 enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
@@ -1008,6 +1010,12 @@ enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
 enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
 enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
 enderio.gui.conduit.item.priority=Priority
+
+enderio.gui.conduit.item.fuzzy.disabled=Fuzzy Mode disabled
+enderio.gui.conduit.item.fuzzy.fuzzy_25=Fuzzy match for 25% damage
+enderio.gui.conduit.item.fuzzy.fuzzy_50=Fuzzy match for 50% damage
+enderio.gui.conduit.item.fuzzy.fuzzy_75=Fuzzy match for 75% damage
+enderio.gui.conduit.item.fuzzy.fuzzy_99=Fuzzy match for any damage
 
 enderio.gui.conduit.item.filterupgrade=Insert Item Filter
 enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
