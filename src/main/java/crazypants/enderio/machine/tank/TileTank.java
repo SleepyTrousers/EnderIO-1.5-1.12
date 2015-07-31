@@ -20,7 +20,6 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
 
-import cpw.mods.fml.common.FMLLog;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -345,7 +344,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       return false;
     }
     
-    int slot = getSlotDefinition().getMaxOutputSlot();
+    int slot = getSlotDefinition().getMinOutputSlot();
 
     if (inventory[slot] != null) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
