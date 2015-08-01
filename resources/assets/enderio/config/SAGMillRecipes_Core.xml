@@ -284,7 +284,6 @@
       <output>
         <itemStack modID="minecraft" itemName="sand" number="2" />
         <itemStack modID="minecraft" itemName="sand" number="2" chance="0.4" />
-        <itemStack oreDictionary="dustSaltpeter" number="1" chance ="0.15" />
       </output>
     </recipe>
     <recipe name="Glass" energyCost="1200" >
