@@ -279,8 +279,8 @@ public class ConduitUtil {
     return equipped.getItem() == EnderIO.itemConduitProbe;
   }
 
-  public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
-    if(world == null) {
+  public static <T extends IConduit> T getConduit(World world, int x, int y, int z, Class<T> type) {
+    if(world == null || !world.blockExists(x, y, z)) {
       return null;
     }
     TileEntity te = world.getTileEntity(x, y, z);
@@ -291,11 +291,11 @@ public class ConduitUtil {
     return null;
   }
 
-  public static <T extends IConduit> T getConduit(IBlockAccess world, TileEntity te, ForgeDirection dir, Class<T> type) {
+  public static <T extends IConduit> T getConduit(World world, TileEntity te, ForgeDirection dir, Class<T> type) {
     return ConduitUtil.getConduit(world, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, type);
   }
 
-  public static <T extends IConduit> Collection<T> getConnectedConduits(IBlockAccess world, int x, int y, int z, Class<T> type) {
+  public static <T extends IConduit> Collection<T> getConnectedConduits(World world, int x, int y, int z, Class<T> type) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return Collections.emptyList();

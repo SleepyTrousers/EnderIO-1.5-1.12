@@ -432,12 +432,14 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   protected void updateNetwork(World world) {
-    if(getNetwork() == null) {
+    BlockCoord pos = getLocation();
+    if(getNetwork() == null && world.blockExists(pos.x, pos.y, pos.z)) {
       ConduitUtil.ensureValidNetwork(this);
-      if(getNetwork() != null && !world.isRemote && bundle != null) {
-        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord,
-            bundle.getEntity().getBlockType());
-      }
+      // TODO figure out if removing this causes anything horrible to happen. Initial testing shows no difference.
+//      if(getNetwork() != null && !world.isRemote && bundle != null) {
+//        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord,
+//            bundle.getEntity().getBlockType());
+//      }
     }
   }
 
