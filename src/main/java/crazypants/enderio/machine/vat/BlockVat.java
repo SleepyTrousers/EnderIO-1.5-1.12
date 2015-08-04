@@ -131,10 +131,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:vatFrontOn";
-    }
-    return "enderio:vatFront";
+    return getBackIconKey(active);
   }
 
   @Override
