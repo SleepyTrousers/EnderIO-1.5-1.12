@@ -120,9 +120,8 @@ public class VatRecipe implements IRecipe {
     int found = 0;
     for (MachineRecipeInput in : inputs) {
       if(in.isFluid()) {
-        FluidStack needFluid = getRequiredFluidInput(inputs);
-        boolean validFluid = needFluid.isFluidEqual(in.fluid);
-        if(validFluid && needFluid.amount <= in.fluid.amount) {
+        boolean validFluid = this.inputFluidStack.isFluidEqual(in.fluid);
+        if(validFluid && inputFluidStack.amount <= in.fluid.amount) {
           found++;
         }
 
@@ -152,7 +151,6 @@ public class VatRecipe implements IRecipe {
 
   public FluidStack getRequiredFluidInput(MachineRecipeInput[] inputs) {
     float inputFluidMul = 1;
-    float outputFluidMul = 1;
     FluidStack inputFluidStack = null;
     for (MachineRecipeInput ri : inputs) {
       if(!ri.isFluid()) {
