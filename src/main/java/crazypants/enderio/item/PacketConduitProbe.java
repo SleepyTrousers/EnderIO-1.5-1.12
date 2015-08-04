@@ -4,15 +4,15 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-import com.enderio.core.common.util.ChatUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.ChatUtil;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -237,7 +237,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       }
     }
     String[] lines = sb.toString().split("\n");
-    ChatUtil.sendNoSpamClient(lines);
+    ChatUtil.sendNoSpam(player, lines);
   }
 
   public static void sendInfoMessage(EntityPlayer player, NetworkPowerManager pm) {
@@ -278,7 +278,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageRfTickRecieved()));
     
     String[] lines = sb.toString().split("\n");
-    ChatUtil.sendNoSpamClient(lines);
+    ChatUtil.sendNoSpam(player, lines);
   }
 
   public static void sendPowerConduitInfo(EntityPlayer player, IPowerConduit con, PowerTracker tracker) {
@@ -303,7 +303,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageRfTickRecieved()));
     
     String[] lines = sb.toString().split("\n");
-    ChatUtil.sendNoSpamClient(lines);
+    ChatUtil.sendNoSpam(player, lines);
   }
 
   private void sendPowerReciptorInfo(EntityPlayer player, Block block, int stored, int maxStored, int minRec, int maxRec, int request) {
@@ -336,7 +336,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     sb.append(PowerDisplayUtil.abrevation());
 
     String[] lines = sb.toString().split("\n");
-    ChatUtil.sendNoSpamClient(lines);   
+    ChatUtil.sendNoSpam(player, lines);   
   }
 
 }
