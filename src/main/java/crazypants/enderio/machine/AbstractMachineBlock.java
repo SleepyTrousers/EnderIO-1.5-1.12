@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.network.PacketProgress;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,7 +27,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
@@ -57,7 +55,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketItemBuffer.class, PacketItemBuffer.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketProgress.class,PacketProgress.class,PacketHandler.nextID(),Side.CLIENT);
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
