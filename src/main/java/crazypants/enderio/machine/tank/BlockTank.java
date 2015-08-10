@@ -130,9 +130,9 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    TileTank tank = (TileTank) world.getTileEntity(x, y, z);
-    if(tank != null) {
-      FluidStack stack = tank.tank.getFluid();
+    TileEntity tank = world.getTileEntity(x, y, z);
+    if(tank instanceof TileTank) {
+      FluidStack stack = ((TileTank) tank).tank.getFluid();
       return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
     }
     return super.getLightValue(world, x, y, z);
