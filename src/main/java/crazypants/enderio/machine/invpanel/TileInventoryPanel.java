@@ -63,7 +63,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
-    this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, 2000);
+    this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, Config.inventoryPanelFree ? 0 : 2000);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 
@@ -137,7 +137,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   @Override
   public boolean isActive() {
-    return active;
+    return Config.inventoryPanelFree || active;
   }
 
   @Override
@@ -196,14 +196,14 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   public float getAvailablePower() {
-    return fuelTank.getFluidAmount() * Config.inventoryPanelPowerPerMB;
+    return getPower() * Config.inventoryPanelPowerPerMB;
   }
 
   public void refuelPower(InventoryDatabaseServer db) {
     float missingPower = Config.inventoryPanelPowerPerMB * 0.5f - db.getPower();
     if(missingPower > 0) {
       int amount = (int) Math.ceil(missingPower / Config.inventoryPanelPowerPerMB);
-      amount = Math.min(amount, fuelTank.getFluidAmount());
+      amount = Math.min(amount, getPower());
       if(amount > 0) {
         useNutrient(amount);
         dbServer.addPower(amount * Config.inventoryPanelPowerPerMB);
@@ -214,6 +214,10 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public void useNutrient(int amount) {
     fuelTank.drain(amount, true);
     tanksDirty = true;
+  }
+  
+  private int getPower() {
+    return Config.inventoryPanelFree ? 100 : fuelTank.getFluidAmount();
   }
 
   @Override

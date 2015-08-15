@@ -167,12 +167,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName(itemStack);
   }
-
-  public void setupFontRenderer() {
-    fr = new SpecialFont(Minecraft.getMinecraft().fontRenderer);
-    RenderUtil.registerReloadListener(fr);
-  }
-
+  
   @Override
   public FontRenderer getFontRenderer(ItemStack stack) {
     if (fr == null) {

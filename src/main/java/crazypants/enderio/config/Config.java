@@ -481,11 +481,13 @@ public final class Config {
   public static int telepadPowerCoefficient = 100000;
   public static int telepadPowerInterdimensional = 100000;
 
+  public static boolean inventoryPanelFree = false;;
   public static float inventoryPanelPowerPerMB = 800.0f;
   public static float inventoryPanelScanCostPerSlot = 0.1f;
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
+  
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -1284,10 +1286,7 @@ public final class Config {
             "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
 
     enableWaterFromBottles = config
-        .get(
-            sectionMisc.name,
-            "enableWaterFromBottles",
-            enableWaterFromBottles,
+        .get(sectionMisc.name, "enableWaterFromBottles", enableWaterFromBottles,
             "Enables emptying vanilla water bottles without breaking the bottle. In combination with a water source block this allows duping of water without cost.")
         .getBoolean();
 
@@ -1300,14 +1299,15 @@ public final class Config {
     telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
         "The amount of RF required for an interdimensional teleport.").getInt();
 
+    inventoryPanelFree = config.getBoolean("inventoryPanelFree", sectionInventoryPanel.name, inventoryPanelFree, "If true, the inv panel will not accept fluids and will be active permanently.");
     inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
-            "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
+        "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
     inventoryPanelScanCostPerSlot = config.getFloat("scanCostPerSlot", sectionInventoryPanel.name, inventoryPanelScanCostPerSlot, 0.0f, 10.0f,
-            "Internal power used for scanning a slot");
+        "Internal power used for scanning a slot");
     inventoryPanelExtractCostPerItem = config.getFloat("extractCostPerItem", sectionInventoryPanel.name, inventoryPanelExtractCostPerItem, 0.0f, 10.0f,
-            "Internal power used per item extracted (not a stack of items)");
-    inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f, 10000.0f,
-            "Internal power used per extract operation (independent of stack size)");
+        "Internal power used per item extracted (not a stack of items)");
+    inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
+        10000.0f, "Internal power used per extract operation (independent of stack size)");
   }
 
   public static void init() {

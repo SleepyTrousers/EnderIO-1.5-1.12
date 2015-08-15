@@ -36,6 +36,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
@@ -203,14 +204,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
-    addToolTip(new GuiToolTip(new Rectangle(24+12, 132, 15, 47), "") {
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add(EnderIO.lang.localize("gui.inventorypanel.tooltip.fuelTank"));
-        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
-      }
-    });
+    if (!Config.inventoryPanelFree) {
+      addToolTip(new GuiToolTip(new Rectangle(36, 133, 16, 47), "") {
+        @Override
+        protected void updateText() {
+          text.clear();
+          text.add(EnderIO.lang.localize("gui.inventorypanel.tooltip.fuelTank"));
+          text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
+        }
+      });
+    }
 
     list.clear();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.addrecipe.line");
@@ -282,7 +285,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int sx = guiLeft;
     int sy = guiTop;
 
-    drawTexturedModalRect(sx+24, sy, 0, 0, 256, ySize);
+    drawTexturedModalRect(sx + 24, sy, 0, 0, 232, ySize);
+    drawTexturedModalRect(sx + 24 + 232, sy, 232, 0, 24, 68);
 
     if(craftingHelper != null) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
@@ -321,6 +325,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       btnAddStoredRecipe.height = 0;
     }
 
+    SmartTank fuelTank = te.fuelTank;
+    if (!Config.inventoryPanelFree) {
+      drawTexturedModalRect(sx + 35, sy + 132, 232, 163, 18, 49);
+      if (fuelTank.getFluidAmount() > 0) {
+        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 132, zLevel, 16, 47);
+      }
+    }
+    
     int headerColor = 0x404040;
     int focusedColor = 0x648494;
     FontRenderer fr = getFontRenderer();
@@ -328,11 +340,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 24 + 7, sy + 72,
             btnReturnArea.contains(mouseX - sx, mouseY - sy) ? focusedColor : headerColor);
     fr.drawString(headerInventory, sx + 24 + 38, sy + 120, headerColor);
-
-    SmartTank fuelTank = te.fuelTank;
-    if(fuelTank.getFluidAmount() > 0) {
-      RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 132, zLevel, 16, 47);
-    }
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
@@ -394,7 +401,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       GL11.glDisable(GL11.GL_BLEND);
       GL11.glPushMatrix();
       GL11.glTranslatef(x + 16, y + 16, 0);
-      GL11.glScalef(0.8f, 0.8f, 1.0f);
       font.drawStringWithShadow(str, 1 - font.getStringWidth(str), -8, 0xFFFFFF);
       GL11.glPopMatrix();
       GL11.glEnable(GL11.GL_LIGHTING);
