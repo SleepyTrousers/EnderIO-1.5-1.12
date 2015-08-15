@@ -7,8 +7,10 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,6 +29,8 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
@@ -203,6 +207,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       if(paintSource == null) {
         return false;
       }
+      if (paintSource.getItem() == ItemConduitFacade.this) {
+        return true;
+      }
       Block block = Util.getBlockFromItemId(paintSource);
       if(block == null || block instanceof IPaintedBlock) {
         return false;
@@ -225,6 +232,17 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     @Override
     public boolean isValidTarget(ItemStack target) {
       return target != null && target.getItem() == ItemConduitFacade.this;
+    }
+
+    @Override
+    public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+      ResultStack[] res = super.getCompletedResult(chance, inputs);
+      if (res != null && res.length > 0) {
+        if (res[0].item != null && res[0].item.getItem() == ItemConduitFacade.this) {
+          res[0] = new ResultStack(new ItemStack(ItemConduitFacade.this));
+        }
+      }
+      return res;
     }
   }
 
