@@ -135,6 +135,13 @@ enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
 enderio.dustWheat.name=Flour
 
+enderio.itemEnderios.name="Enderios"
+enderio.itemEnderios.tooltip.common.line1=Part of a balanced breakfast!
+enderio.itemEnderios.tooltip.detailed.line1=Not actually healthy. Contains 253g of sugar, 53g of fat,
+enderio.itemEnderios.tooltip.detailed.line2=and 394g of ender dust.
+enderio.itemEnderios.tooltip.detailed.line3=Side effects of ender dust include: nausea, dizziness, confusion, 
+enderio.itemEnderios.tooltip.detailed.line4=and random teleporting.
+
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
 tile.fluid.nutrient_distillation.name=Nutrient Distillation

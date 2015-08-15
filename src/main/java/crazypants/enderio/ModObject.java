@@ -107,7 +107,9 @@ public enum ModObject {
   itemSoulVessel, 
   itemFrankenSkull, 
   
-  blockEnderRail;
+  blockEnderRail,
+  
+  itemEnderFood;
 
   public final String unlocalisedName;
 

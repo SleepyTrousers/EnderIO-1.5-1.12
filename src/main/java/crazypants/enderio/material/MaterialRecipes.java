@@ -13,8 +13,8 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.ItemEnderFood.EnderFood;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-
 import static com.enderio.core.common.util.OreDictionaryHelper.*;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.*;
@@ -198,6 +198,9 @@ public class MaterialRecipes {
     ItemStack bread = new ItemStack(Items.bread, 1, 0);
 
     GameRegistry.addSmelting(flour, bread, 0.35f);
+    
+    ItemStack enderios = EnderFood.ENDERIOS.getStack();
+    addShapeless(enderios, Items.bowl, Items.milk_bucket, Items.wheat, "dustEnderPearl");
 
     if (hasCopper()) {
       ItemStack dustCopper = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal());

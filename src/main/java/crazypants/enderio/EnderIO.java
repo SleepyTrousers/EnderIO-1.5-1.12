@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -72,6 +73,7 @@ import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemConduitProbe;
+import crazypants.enderio.item.ItemEnderFood;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
@@ -189,6 +191,7 @@ public class EnderIO {
   public static ItemMaterial itemMaterial;
   public static BlockIngotStorage blockIngotStorage;
   public static BlockDarkIronBars blockDarkIronBars;
+  public static ItemEnderFood itemEnderFood;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -426,6 +429,8 @@ public class EnderIO {
     blockIngotStorage = BlockIngotStorage.create();
 
     blockDarkIronBars = BlockDarkIronBars.create();
+    
+    itemEnderFood = ItemEnderFood.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
 
