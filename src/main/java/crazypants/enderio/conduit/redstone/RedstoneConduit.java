@@ -110,10 +110,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   @Override
   public void onChunkUnload(World worldObj) {
     RedstoneConduitNetwork network = (RedstoneConduitNetwork) getNetwork();
-    Set<Signal> oldSignals = Sets.newHashSet(network.getSignals());
-    List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
-    super.onChunkUnload(worldObj);
-    network.afterChunkUnload(conduits, oldSignals);
+    if (network != null) {
+      Set<Signal> oldSignals = Sets.newHashSet(network.getSignals());
+      List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
+      super.onChunkUnload(worldObj);
+      network.afterChunkUnload(conduits, oldSignals);
+    }
   }
 
   protected boolean acceptSignalsForDir(ForgeDirection dir) {
