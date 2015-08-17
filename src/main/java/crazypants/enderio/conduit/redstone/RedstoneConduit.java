@@ -21,6 +21,8 @@ import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
@@ -64,6 +66,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   protected boolean neighbourDirty = true;
 
+  @SuppressWarnings("unused")
   public RedstoneConduit() {
     for (ForgeDirection ignored : ForgeDirection.VALID_DIRECTIONS) {
       externalSignals.add(new HashSet<Signal>());
@@ -102,6 +105,15 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(world != null) {
       updateNetwork(world);
     }
+  }
+  
+  @Override
+  public void onChunkUnload(World worldObj) {
+    RedstoneConduitNetwork network = (RedstoneConduitNetwork) getNetwork();
+    Set<Signal> oldSignals = Sets.newHashSet(network.getSignals());
+    List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
+    super.onChunkUnload(worldObj);
+    network.afterChunkUnload(conduits, oldSignals);
   }
 
   protected boolean acceptSignalsForDir(ForgeDirection dir) {

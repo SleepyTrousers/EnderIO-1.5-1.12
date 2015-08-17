@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Sets;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -71,7 +72,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   public Set<Signal> getSignals() {
-    if(networkEnabled) {
+    if (networkEnabled) {
       return signals;
     } else {
       return Collections.emptySet();
@@ -179,29 +180,64 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   private void notifyConduitNeighbours(IRedstoneConduit con, Signal signal) {
-    if(con.getBundle() == null) {
+    if (con.getBundle() == null) {
       System.out.println("RedstoneConduitNetwork.notifyNeigborsOfSignalUpdate: NULL BUNDLE!!!!");
       return;
     }
     TileEntity te = con.getBundle().getEntity();
 
     World worldObj = te.getWorldObj();
-    
+
+    BlockCoord bc = new BlockCoord(te);
+
     if (!worldObj.blockExists(te.xCoord, te.yCoord, te.zCoord)) {
       return;
     }
-    
-    worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
 
-    // Need to notify neighbours neighbours for changes to  signals
-    if(signal != null /*&& signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord*/) {
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        BlockCoord bc = new BlockCoord(te).getLocation(dir);
-        if (worldObj.blockExists(bc.x, bc.y, bc.z) && bc.getBlock(worldObj).isNormalCube()) {
-          worldObj.notifyBlocksOfNeighborChange(bc.x, bc.y, bc.z, EnderIO.blockConduitBundle);
+    // Done manually to avoid orphaning chunks
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      bc = bc.getLocation(dir);
+      if (worldObj.blockExists(bc.x, bc.y, bc.z)) {
+        worldObj.notifyBlockOfNeighborChange(bc.x, bc.y, bc.z, EnderIO.blockConduitBundle);
+        if (signal != null) {
+          for (ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
+            bc = bc.getLocation(dir2);
+            if (worldObj.blockExists(bc.x, bc.y, bc.z) && bc.getBlock(worldObj).isNormalCube()) {
+              worldObj.notifyBlockOfNeighborChange(bc.x, bc.y, bc.z, EnderIO.blockConduitBundle);
+            }
+          }
         }
       }
     }
+  }
+
+  /**
+   * This is a bit of a hack...avoids the network searching for inputs from
+   * unloaded chunks by only filtering out the invalid signals from the unloaded
+   * chunk.
+   * 
+   * @param conduits
+   * @param oldSignals
+   */
+  public void afterChunkUnload(List<IRedstoneConduit> conduits, Set<Signal> oldSignals) {
+    World world = null;
+    for (IRedstoneConduit c : conduits) {
+      if (world == null) {
+        world = c.getBundle().getWorld();
+      }
+      BlockCoord loc = c.getLocation();
+      if (world.blockExists(loc.x, loc.y, loc.z)) {
+        this.conduits.add(c);
+        c.setNetwork(this);
+      }
+    }
+    Set<Signal> valid = Sets.newHashSet();
+    for (Signal s : oldSignals) {
+      if (world.blockExists(s.x, s.y, s.z)) {
+        valid.add(s);
+      }
+    }
+    this.addSignals(valid);
   }
 
 }
