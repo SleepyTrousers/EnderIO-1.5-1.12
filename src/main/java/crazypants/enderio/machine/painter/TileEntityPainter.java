@@ -14,7 +14,7 @@ import crazypants.enderio.machine.SlotDefinition;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
 
-  private static final short MAX_POWER_USE_PER_TICK = 6;
+//  private static final short MAX_POWER_USE_PER_TICK = 6;
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot
@@ -88,18 +88,17 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
 
   @Override
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if(result == null || !result.isItemEqual(inventory[2]) || !result.hasTagCompound() || !inventory[2].hasTagCompound()) {
+    if (result == null || !result.isItemEqual(inventory[2])) {
       // next result is a different item type
       return 0;
+    } else if (result.hasTagCompound() && inventory[2].hasTagCompound()) {
+      int cookedId = result.getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
+      int invId = inventory[2].getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
+      if (cookedId != invId) {
+        // next result has a different source item than the current one
+        return 0;
+      }
     }
-
-    int cookedId = result.getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-    int invId = inventory[2].getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-    if(cookedId != invId) {
-      // next result has a different source item than the current one
-      return 0;
-    }
-
     return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
 
