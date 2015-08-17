@@ -17,7 +17,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.client.render.RenderUtil;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -118,6 +117,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
   @SideOnly(Side.CLIENT)
   private IIcon[] icons;
   
+  @SideOnly(Side.CLIENT)
   private SpecialFont fr;
   
   public ItemEnderFood() {
@@ -169,6 +169,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
   }
   
   @Override
+  @SideOnly(Side.CLIENT)
   public FontRenderer getFontRenderer(ItemStack stack) {
     if (fr == null) {
       fr = new SpecialFont(Minecraft.getMinecraft().fontRenderer);
