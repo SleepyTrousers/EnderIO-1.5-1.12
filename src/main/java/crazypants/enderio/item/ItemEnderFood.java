@@ -28,6 +28,7 @@ import crazypants.enderio.ModObject;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider {
 
+  @SideOnly(Side.CLIENT)
   public class SpecialFont extends FontRenderer {
 
     private FontRenderer wrapped;
