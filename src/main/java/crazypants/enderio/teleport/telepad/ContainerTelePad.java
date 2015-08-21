@@ -1,28 +1,24 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.awt.Point;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.IInventory;
 
-public class ContainerTelePad extends Container {
+import com.enderio.core.common.ContainerEnder;
+
+public class ContainerTelePad extends ContainerEnder<IInventory> {
   
-  InventoryPlayer playerInv;
-
   public ContainerTelePad(InventoryPlayer playerInv) {
-    
-    this.playerInv = playerInv;
-    
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 118 + i * 18));
-      }
-    }
-
-    for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 176));
-    }
+    super(playerInv, null);
+  }
+  
+  @Override
+  public Point getPlayerInventoryOffset() {
+    Point p = super.getPlayerInventoryOffset();
+    p.translate(0, 34);
+    return p;
   }
   
   @Override
