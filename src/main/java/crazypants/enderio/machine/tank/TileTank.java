@@ -181,7 +181,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return canFill(from) && fluid != null && (tank.getFluidAmount() > 0 && tank.getFluid().fluidID == fluid.getID() || tank.getFluidAmount() == 0);
+    return canFill(from) && fluid != null
+        && (tank.getFluidAmount() > 0 && tank.getFluid().getFluidID() == fluid.getID() || tank.getFluidAmount() == 0);
   }
 
   private boolean canFill(ForgeDirection from) {
