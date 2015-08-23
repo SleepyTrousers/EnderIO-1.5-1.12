@@ -93,6 +93,27 @@ public class KeyTracker {
     handleMagnet();
   }
 
+  private static int __KEYS = 0;
+  private static final int KEY_GLIDE = __KEYS++;
+  private static final int KEY_MAGNET = __KEYS++;
+  private static final int KEY_JUMP = __KEYS++;
+  private static final int KEY_SPEED = __KEYS++;
+  private static final int KEY_STEP = __KEYS++;
+  private static final int KEY_GOOGLES = __KEYS++;
+  private static final int KEY_YETA = __KEYS++;
+  private static final int KEY_SOUND = __KEYS++;
+  private static final int KEY_NIGHT = __KEYS++;
+  private static final long[] lastseen = new long[__KEYS];
+
+  private static boolean debounce(int key) {
+    long now = EnderIO.proxy.getTickCount();
+    if (lastseen[key] < now) {
+      lastseen[key] = now + 3;
+      return false;
+    }
+    return true;
+  }
+
   private void sendEnabledChatMessage(String messageBase, boolean isActive) {
     String message = messageBase.concat(isActive ? ".enabled" : ".disabled");
     ChatUtil.sendNoSpamClientUnloc(EnderIO.lang, message);
@@ -106,7 +127,7 @@ public class KeyTracker {
   }
 
   private void handleMagnet() {
-    if(magnetKey.isPressed()) {
+    if (magnetKey.isPressed() && !debounce(KEY_MAGNET)) {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
       ItemStack[] inv = player.inventory.mainInventory;
       for (int i = 0; i < 9; i++) {
@@ -132,38 +153,26 @@ public class KeyTracker {
   }
 
   private void handleJump() {
-    if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(jumpKey.isPressed()) {
+    if (jumpKey.isPressed() && !debounce(KEY_JUMP) && JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
       toggleDarkSteelController(Type.JUMP, "darksteel.upgrade.jump");
     }
   }
 
   private void handleSpeed() {
-    if(!SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(speedKey.isPressed()) {
+    if (speedKey.isPressed() && !debounce(KEY_SPEED) && SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
       toggleDarkSteelController(Type.SPEED, "darksteel.upgrade.speed");
     }
   }
 
   private void handleStepAssist() {
-    if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(stepAssistKey.isPressed()) {
+    if (stepAssistKey.isPressed() && !debounce(KEY_STEP) && JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
       toggleDarkSteelController(Type.STEP_ASSIST, "darksteel.upgrade.stepAssist");
     }
   }
 
   private void handleGoggles() {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
-      return;
-    }
-    if(gogglesKey.isPressed()) {
+    if (gogglesKey.isPressed() && !debounce(KEY_GOOGLES)
+        && GogglesOfRevealingUpgrade.isUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
       boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
       sendEnabledChatMessage("darksteel.upgrade.goggles", isActive);
       DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
@@ -171,7 +180,7 @@ public class KeyTracker {
   }
 
   private void handleYetaWrench() {
-    if(!yetaWrenchMode.isPressed()) {
+    if (!yetaWrenchMode.isPressed() || debounce(KEY_YETA)) {
       return;
     }
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
@@ -198,32 +207,28 @@ public class KeyTracker {
   }
 
   private void handleSoundDetector() {
-    if(!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-      SoundDetector.instance.setEnabled(false);
-      return;
-    }
-    if(soundDetectorKey.isPressed()) {
+    if (soundDetectorKey.isPressed() && !debounce(KEY_SOUND) && isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
       boolean isActive = !SoundDetector.instance.isEnabled();
       sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
       SoundDetector.instance.setEnabled(isActive);
+    } else {
+      SoundDetector.instance.setEnabled(false);
     }
   }
 
   private void handleGlide() {
-    if(!DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(glideKey.isPressed()) {
+    if (glideKey.isPressed() && !debounce(KEY_GLIDE)
+        && DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
       toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
     }
   }
   
   private void handleNightVision() {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)){
-      return;
-    }
-    if(nightVisionKey.isPressed()) {
+    if (nightVisionKey.isPressed() && !debounce(KEY_NIGHT)) {
+      EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      if (!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)) {
+        return;
+      }
       boolean isActive = !DarkSteelController.instance.isNightVisionActive();
       if(isActive) {
         player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.nightvision.on", 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
