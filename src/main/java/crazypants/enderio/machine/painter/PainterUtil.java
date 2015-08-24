@@ -69,11 +69,14 @@ public final class PainterUtil {
 
   public static void setSourceBlock(ItemStack item, Block source, int meta) {
     NBTTagCompound tag = item.getTagCompound();
-    if(tag == null) {
+    if (tag == null) {
       tag = new NBTTagCompound();
       item.setTagCompound(tag);
     }
     setSourceBlock(item.getTagCompound(), source, meta);
+    if (item.getTagCompound().hasNoTags()) {
+      item.setTagCompound(null);
+    }
   }
   
   public static void setSourceBlock(NBTTagCompound tag, Block source, int meta) {

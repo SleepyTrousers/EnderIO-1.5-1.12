@@ -237,11 +237,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     @Override
     public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ResultStack[] res = super.getCompletedResult(chance, inputs);
-      if (res != null && res.length > 0) {
-        if (res[0].item != null && res[0].item.getItem() == ItemConduitFacade.this) {
-          res[0] = new ResultStack(new ItemStack(ItemConduitFacade.this));
-        }
-      }
       return res;
     }
   }
