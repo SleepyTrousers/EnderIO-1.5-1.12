@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,6 @@ import org.apache.commons.io.FileUtils;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.PlayerUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -95,9 +94,9 @@ public class ServerChannelRegister extends ChannelRegister {
     saveExecutor.execute(new SaveRunnable(copyChannels()));
   }
 
-  private static void doStore(Multimap<ChannelType, Channel> chans) {
+  private static void doStore(EnumMap<ChannelType, List<Channel>> channels) {
     File dataFile = getDataFile();
-    if(!createFolderAndWriteFile(chans, dataFile)) {
+    if(!createFolderAndWriteFile(channels, dataFile)) {
       dataFile = getFallbackDataFile();
       Log.error("ServerChannelRegister: Attempting to write Dimensional Transceiver data to fallback location: " + dataFile.getAbsolutePath());
       try {
@@ -111,11 +110,11 @@ public class ServerChannelRegister extends ChannelRegister {
     Log.info("ServerChannelRegister: Dimensional Transceiver data saved to " + dataFile.getAbsolutePath());
   }
 
-  private static boolean createFolderAndWriteFile(Multimap<ChannelType, Channel> chans, File dataFile) {
+  private static boolean createFolderAndWriteFile(EnumMap<ChannelType, List<Channel>> data, File dataFile) {
     try {
       File parentFolder = dataFile.getParentFile();
       FileUtils.forceMkdir(parentFolder);
-      writeFile(chans, dataFile);
+      writeFile(data, dataFile);
       return true;
     } catch (Exception e) {
       Log.error("ServerChannelRegister: Could not write Dimensional Transceiver channels to " + dataFile.getAbsolutePath() + " : " + e);
@@ -123,32 +122,34 @@ public class ServerChannelRegister extends ChannelRegister {
     }
   }
 
-  protected static void writeFile(Multimap<ChannelType, Channel> multimap, File dataFile) throws IOException {
+  protected static void writeFile(EnumMap<ChannelType, List<Channel>> chans, File dataFile) throws IOException {
     if(dataFile.exists()) {
       File tmpFile = new File(dataFile.getAbsolutePath() + ".tmp");
-      doWriteFile(multimap, tmpFile);
+      doWriteFile(chans, tmpFile);
       if(FileUtils.deleteQuietly(dataFile)) {
         tmpFile.renameTo(dataFile);
       }
 
     } else {
-      doWriteFile(multimap, dataFile);
+      doWriteFile(chans, dataFile);
     }
 
   }
 
-  protected static void doWriteFile(Multimap<ChannelType, Channel> multimap, File dataFile) throws IOException {
+  protected static void doWriteFile(EnumMap<ChannelType, List<Channel>> chans, File dataFile) throws IOException {
     JsonWriter writer = new JsonWriter(new FileWriter(dataFile, false));
     writer.setIndent("  ");
     writer.beginArray();
-    for (Channel chan : multimap.values()) {
-      writer.beginObject();
-      writer.name("name").value(chan.getName());
-      if (chan.getUser() != null) {
-        writer.name("user").value(chan.getUser().toString());
+    for (List<Channel> chanList : chans.values()) {
+      for (Channel chan : chanList) {
+        writer.beginObject();
+        writer.name("name").value(chan.getName());
+        if(chan.getUser() != null) {
+          writer.name("user").value(chan.getUser().toString());
+        }
+        writer.name("type").value(chan.getType().ordinal());
+        writer.endObject();
       }
-      writer.name("type").value(chan.getType().ordinal());
-      writer.endObject();
     }
     writer.endArray();
     writer.close();
@@ -162,11 +163,11 @@ public class ServerChannelRegister extends ChannelRegister {
     return new File(DimensionManager.getCurrentSaveRootDirectory(), "dimensionalTransceiver.json");
   }
 
-  private static Multimap<ChannelType, Channel> copyChannels() {
+  private static EnumMap<ChannelType, List<Channel>> copyChannels() {
     //NB: deep copy not needed as all types are immuatble
-    Multimap<ChannelType, Channel> copy = MultimapBuilder.enumKeys(ChannelType.class).arrayListValues().build();
-    for (Entry<ChannelType, Channel> entry : instance.channels.entries()) {
-      copy.put(entry.getKey(), entry.getValue());
+    EnumMap<ChannelType, List<Channel>> copy = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
+    for (Entry<ChannelType, List<Channel>> entry : instance.channels.entrySet()) {
+      copy.put(entry.getKey(), new ArrayList<Channel>(entry.getValue()));
     }
     return copy;
   }
@@ -364,10 +365,10 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private static class SaveRunnable implements Runnable {
 
-    private Multimap<ChannelType, Channel> chans;
+    private EnumMap<ChannelType, List<Channel>> chans;
 
-    public SaveRunnable(Multimap<ChannelType, Channel> multimap) {
-      this.chans = multimap;
+    public SaveRunnable(EnumMap<ChannelType, List<Channel>> chans) {
+      this.chans = chans;
     }
 
     @Override

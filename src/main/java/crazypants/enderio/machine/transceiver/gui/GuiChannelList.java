@@ -2,7 +2,6 @@ package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import net.minecraft.client.renderer.Tessellator;
 
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.Channel;
@@ -29,11 +27,11 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
     this.parent = parent;
   }
 
-  void setChannels(Collection<Channel> collection) {
-    if(collection == null) {
+  void setChannels(List<Channel> val) {
+    if(val == null) {
       channels = Collections.emptyList();
     }
-    channels = Lists.newArrayList(collection);
+    channels = val;
   }
 
   @Override
