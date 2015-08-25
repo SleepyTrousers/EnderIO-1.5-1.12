@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.transceiver;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -18,6 +20,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.SetMultimap;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -40,8 +45,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   //Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
 
-  private final EnumMap<ChannelType, List<Channel>> sendChannels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
-  private final EnumMap<ChannelType, List<Channel>> recieveChannels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
+  private final SetMultimap<ChannelType, Channel> sendChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
+  private final SetMultimap<ChannelType, Channel> recieveChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
 
   private ICapacitor capacitor = new BasicCapacitor(Config.transceiverMaxIoRF * 2, 500000, Config.transceiverMaxIoRF);
   private boolean sendChannelsDirty = false;
@@ -64,10 +69,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   public TileTransceiver() {
     super(new SlotDefinition(8, 8, 0));
-    for (ChannelType type : ChannelType.values()) {
-      sendChannels.put(type, new ArrayList<Channel>());
-      recieveChannels.put(type, new ArrayList<Channel>());
-    }
+
     currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
     railController = new EnderRailController(this);
 
@@ -137,17 +139,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
-  private void removeUnregsiteredChannels(EnumMap<ChannelType, List<Channel>> channels) {
+  private void removeUnregsiteredChannels(SetMultimap<ChannelType, Channel> chans) {
     List<Channel> toRemove = new ArrayList<Channel>();
-    for (List<Channel> chans : channels.values()) {
-      for (Channel chan : chans) {
-        if(!ServerChannelRegister.instance.getChannelsForType(chan.getType()).contains(chan)) {
-          toRemove.add(chan);
-        }
+    for (Channel chan : chans.values()) {
+      if (!ServerChannelRegister.instance.getChannelsForType(chan.getType()).contains(chan)) {
+        toRemove.add(chan);
       }
     }
     for (Channel chan : toRemove) {
-      removeChannel(chan, channels);
+      removeChannel(chan, chans);
     }
   }
 
@@ -171,11 +171,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return Config.transceiverUpkeepCostRF;
   }
 
-  public List<Channel> getSendChannels(ChannelType type) {
+  public Set<Channel> getSendChannels(ChannelType type) {
     return sendChannels.get(type);
   }
 
-  public List<Channel> getRecieveChannels(ChannelType type) {
+  public Set<Channel> getRecieveChannels(ChannelType type) {
     return recieveChannels.get(type);
   }
 
@@ -195,30 +195,27 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     removeChannel(channel, recieveChannels);
   }
 
-  private void addChannel(Channel channel, EnumMap<ChannelType, List<Channel>> channels) {
-    if(channel == null) {
+  private void addChannel(Channel channel, SetMultimap<ChannelType, Channel> channels) {
+    if (channel == null) {
       return;
     }
-    List<Channel> chans = channels.get(channel.getType());
-    if(!chans.contains(channel)) {
-      chans.add(channel);
-      if(channels == sendChannels) {
+    Collection<Channel> chans = channels.get(channel.getType());
+    if (chans.add(channel)) {
+      if (channels == sendChannels) {
         sendChannelsDirty = true;
       } else {
         recieveChannelsDirty = true;
       }
     }
-
   }
 
-  private void removeChannel(Channel channel, EnumMap<ChannelType, List<Channel>> channels) {
+  private void removeChannel(Channel channel, SetMultimap<ChannelType, Channel> channnels) {
     if(channel == null) {
       return;
     }
-    List<Channel> chans = channels.get(channel.getType());
-    if(chans.contains(channel)) {
-      chans.remove(channel);
-      if(channels == sendChannels) {
+    Set<Channel> chans = channnels.get(channel.getType());
+    if (chans.remove(channel)) {
+      if (channnels == sendChannels) {
         sendChannelsDirty = true;
       } else {
         recieveChannelsDirty = true;
@@ -261,12 +258,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
-  static void readChannels(NBTTagCompound nbtRoot, EnumMap<ChannelType, List<Channel>> readInto, String key) {
-
-    for (ChannelType type : ChannelType.values()) {
-      readInto.get(type).clear();
-    }
-
+  static void readChannels(NBTTagCompound nbtRoot, SetMultimap<ChannelType, Channel> channels, String key) {
+    channels.clear();
+    
     if(!nbtRoot.hasKey(key)) {
       return;
     }
@@ -275,10 +269,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       NBTTagCompound chanelTag = tags.getCompoundTagAt(i);
       Channel channel = Channel.readFromNBT(chanelTag);
       if(channel != null) {
-        readInto.get(channel.getType()).add(channel);
+        channels.put(channel.getType(), channel);
       }
     }
-
   }
 
   @Override
@@ -305,37 +298,31 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     nbtRoot.setBoolean("bufferStacks", bufferStacks);
   }
 
-  static NBTTagList createTagList(EnumMap<ChannelType, List<Channel>> chans) {
+  static NBTTagList createTagList(SetMultimap<ChannelType, Channel> channels) {
     NBTTagList res = new NBTTagList();
-    for (List<Channel> chanList : chans.values()) {
-      for (Channel channel : chanList) {
-        NBTTagCompound chanTag = new NBTTagCompound();
-        channel.writeToNBT(chanTag);
-        res.appendTag(chanTag);
-      }
+    for (Channel channel : channels.values()) {
+      NBTTagCompound chanTag = new NBTTagCompound();
+      channel.writeToNBT(chanTag);
+      res.appendTag(chanTag);
     }
     return res;
   }
 
-  void setSendChannels(EnumMap<ChannelType, List<Channel>> channels) {
-    for (ChannelType type : ChannelType.values()) {
-      sendChannels.get(type).clear();
-      sendChannels.get(type).addAll(channels.get(type));
-    }
+  void setSendChannels(Multimap<? extends ChannelType, ? extends Channel> channels) {
+    sendChannels.clear();
+    sendChannels.putAll(channels);
   }
 
-  void setRecieveChannels(EnumMap<ChannelType, List<Channel>> channels) {
-    for (ChannelType type : ChannelType.values()) {
-      recieveChannels.get(type).clear();
-      recieveChannels.get(type).addAll(channels.get(type));
-    }
+  void setRecieveChannels(Multimap<? extends ChannelType, ? extends Channel> channels) {
+    recieveChannels.clear();
+    recieveChannels.putAll(channels);
   }
 
-  EnumMap<ChannelType, List<Channel>> getSendChannels() {
+  SetMultimap<ChannelType, Channel> getSendChannels() {
     return sendChannels;
   }
 
-  EnumMap<ChannelType, List<Channel>> getReceiveChannels() {
+  SetMultimap<ChannelType, Channel> getReceiveChannels() {
     return recieveChannels;
   }
 
@@ -347,11 +334,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   private void processPower() {
-    List<Channel> sendTo = getSendChannels(ChannelType.POWER);
+    Set<Channel> sendTo = getSendChannels(ChannelType.POWER);
     int canSend = getMaxSendableEnergy();
     if(canSend > 0 && !sendTo.isEmpty()) {
-      for (int i = 0; i < sendTo.size() && canSend > 0; i++) {
-        ServerChannelRegister.instance.sendPower(this, canSend, sendTo.get(i));
+      Iterator<Channel> iter = sendTo.iterator();
+      while (canSend > 0) {
+        ServerChannelRegister.instance.sendPower(this, canSend, iter.next());
         canSend = getMaxSendableEnergy();
       }
     }
@@ -382,7 +370,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     neighbourFluidHandlers = null;
   }
 
-  private boolean hasRecieveChannel(List<Channel> channels, ChannelType type) {
+  private boolean hasRecieveChannel(Set<Channel> channels, ChannelType type) {
     boolean hasChannel = false;
     for (Channel chan : channels) {
       if(getRecieveChannels(type).contains(chan)) {
@@ -411,7 +399,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
-  public boolean canReceive(List<Channel> channels, Fluid fluid) {
+  public boolean canReceive(Set<Channel> channels, Fluid fluid) {
     if(inFluidFill) {
       return false;
     }
@@ -444,7 +432,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
-  public int recieveFluid(List<Channel> channels, FluidStack resource, boolean doFill) {
+  public int recieveFluid(Set<Channel> channels, FluidStack resource, boolean doFill) {
     if(inFluidFill) {
       return 0;
     }
@@ -477,7 +465,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
-  public void getRecieveTankInfo(List<FluidTankInfo> infos, List<Channel> channels) {
+  public void getRecieveTankInfo(List<FluidTankInfo> infos, Set<Channel> channels) {
     if(inGetTankInfo) {
       return;
     }
@@ -541,7 +529,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   private void processItems() {
-    List<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);
+    Set<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);
     if(!sendItemChannels.isEmpty()) {
       for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
         ItemStack toSend = getStackInSlot(i);
@@ -598,7 +586,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     //only allow 1 stack per type
     if(slotDefinition.isInputSlot(slot)) {
 
-      List<Channel> chans = getSendChannels().get(ChannelType.ITEM);
+      Set<Channel> chans = getSendChannels().get(ChannelType.ITEM);
       if(chans == null || chans.size() == 0) {
         return false;
       }

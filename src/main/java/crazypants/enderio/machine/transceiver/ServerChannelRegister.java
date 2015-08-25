@@ -5,11 +5,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -27,6 +27,8 @@ import org.apache.commons.io.FileUtils;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.PlayerUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -94,7 +96,7 @@ public class ServerChannelRegister extends ChannelRegister {
     saveExecutor.execute(new SaveRunnable(copyChannels()));
   }
 
-  private static void doStore(EnumMap<ChannelType, List<Channel>> channels) {
+  private static void doStore(ListMultimap<ChannelType, Channel> channels) {
     File dataFile = getDataFile();
     if(!createFolderAndWriteFile(channels, dataFile)) {
       dataFile = getFallbackDataFile();
@@ -110,11 +112,11 @@ public class ServerChannelRegister extends ChannelRegister {
     Log.info("ServerChannelRegister: Dimensional Transceiver data saved to " + dataFile.getAbsolutePath());
   }
 
-  private static boolean createFolderAndWriteFile(EnumMap<ChannelType, List<Channel>> data, File dataFile) {
+  private static boolean createFolderAndWriteFile(ListMultimap<ChannelType, Channel> channels, File dataFile) {
     try {
       File parentFolder = dataFile.getParentFile();
       FileUtils.forceMkdir(parentFolder);
-      writeFile(data, dataFile);
+      writeFile(channels, dataFile);
       return true;
     } catch (Exception e) {
       Log.error("ServerChannelRegister: Could not write Dimensional Transceiver channels to " + dataFile.getAbsolutePath() + " : " + e);
@@ -122,34 +124,32 @@ public class ServerChannelRegister extends ChannelRegister {
     }
   }
 
-  protected static void writeFile(EnumMap<ChannelType, List<Channel>> chans, File dataFile) throws IOException {
+  protected static void writeFile(ListMultimap<ChannelType, Channel> channels, File dataFile) throws IOException {
     if(dataFile.exists()) {
       File tmpFile = new File(dataFile.getAbsolutePath() + ".tmp");
-      doWriteFile(chans, tmpFile);
+      doWriteFile(channels, tmpFile);
       if(FileUtils.deleteQuietly(dataFile)) {
         tmpFile.renameTo(dataFile);
       }
 
     } else {
-      doWriteFile(chans, dataFile);
+      doWriteFile(channels, dataFile);
     }
 
   }
 
-  protected static void doWriteFile(EnumMap<ChannelType, List<Channel>> chans, File dataFile) throws IOException {
+  protected static void doWriteFile(ListMultimap<ChannelType, Channel> channels, File dataFile) throws IOException {
     JsonWriter writer = new JsonWriter(new FileWriter(dataFile, false));
     writer.setIndent("  ");
     writer.beginArray();
-    for (List<Channel> chanList : chans.values()) {
-      for (Channel chan : chanList) {
-        writer.beginObject();
-        writer.name("name").value(chan.getName());
-        if(chan.getUser() != null) {
-          writer.name("user").value(chan.getUser().toString());
-        }
-        writer.name("type").value(chan.getType().ordinal());
-        writer.endObject();
+    for (Channel chan : channels.values()) {
+      writer.beginObject();
+      writer.name("name").value(chan.getName());
+      if (chan.getUser() != null) {
+        writer.name("user").value(chan.getUser().toString());
       }
+      writer.name("type").value(chan.getType().ordinal());
+      writer.endObject();
     }
     writer.endArray();
     writer.close();
@@ -163,11 +163,11 @@ public class ServerChannelRegister extends ChannelRegister {
     return new File(DimensionManager.getCurrentSaveRootDirectory(), "dimensionalTransceiver.json");
   }
 
-  private static EnumMap<ChannelType, List<Channel>> copyChannels() {
+  private static ListMultimap<ChannelType, Channel> copyChannels() {
     //NB: deep copy not needed as all types are immuatble
-    EnumMap<ChannelType, List<Channel>> copy = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
-    for (Entry<ChannelType, List<Channel>> entry : instance.channels.entrySet()) {
-      copy.put(entry.getKey(), new ArrayList<Channel>(entry.getValue()));
+    ListMultimap<ChannelType, Channel> copy = MultimapBuilder.enumKeys(ChannelType.class).arrayListValues().build();
+    for (Entry<ChannelType, Channel> entry : instance.channels.entries()) {
+      copy.put(entry.getKey(), entry.getValue());
     }
     return copy;
   }
@@ -240,7 +240,7 @@ public class ServerChannelRegister extends ChannelRegister {
 
   //Fluid
 
-  public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, List<Channel> channels) {
+  public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channels) {
     List<FluidTankInfo> infos = new ArrayList<FluidTankInfo>();
     for (TileTransceiver tran : transceivers) {
       if(tran != tileTransceiver) {
@@ -250,10 +250,10 @@ public class ServerChannelRegister extends ChannelRegister {
     return infos.toArray(new FluidTankInfo[infos.size()]);
   }
 
-  public boolean canFill(TileTransceiver tileTransceiver, List<Channel> channels, Fluid fluid) {
+  public boolean canFill(TileTransceiver tileTransceiver, Set<Channel> set, Fluid fluid) {
     for (TileTransceiver tran : transceivers) {
       if(tran != tileTransceiver) {
-        if(tran.canReceive(channels, fluid)) {
+        if(tran.canReceive(set, fluid)) {
           return true;
         }
       }
@@ -261,7 +261,7 @@ public class ServerChannelRegister extends ChannelRegister {
     return false;
   }
 
-  public int fill(TileTransceiver from, List<Channel> list, FluidStack resource, boolean doFill) {
+  public int fill(TileTransceiver from, Set<Channel> list, FluidStack resource, boolean doFill) {
     if(resource == null || !from.hasPower()) {
       return 0;
     }
@@ -285,7 +285,7 @@ public class ServerChannelRegister extends ChannelRegister {
 
   //Item 
 
-  public void sendItem(TileTransceiver from, List<Channel> channels, int slot, ItemStack contents) {
+  public void sendItem(TileTransceiver from, Set<Channel> channels, int slot, ItemStack contents) {
     if(!from.hasPower()) {
       return;
     }
@@ -365,9 +365,9 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private static class SaveRunnable implements Runnable {
 
-    private EnumMap<ChannelType, List<Channel>> chans;
+    private ListMultimap<ChannelType, Channel> chans;
 
-    public SaveRunnable(EnumMap<ChannelType, List<Channel>> chans) {
+    public SaveRunnable(ListMultimap<ChannelType, Channel> chans) {
       this.chans = chans;
     }
 

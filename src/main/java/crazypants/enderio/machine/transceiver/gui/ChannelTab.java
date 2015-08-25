@@ -12,6 +12,9 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.PlayerUtil;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
@@ -70,18 +73,24 @@ public class ChannelTab implements ITabPanel {
     int x = 7;
     int y = 48;
     channelList = new GuiChannelList(parent, w, h, x, y);
-    channelList.setChannels(ClientChannelRegister.instance.getChannelsForType(type));
+    channelList.setChannels(ClientChannelRegister.instance.getChannelsForType(type), Predicates.<Channel>alwaysTrue());
     channelList.setShowSelectionBox(true);
     channelList.setScrollButtonIds(100, 101);    
     
     deleteChannelB = new IconButton(parent, DELETE_CHANNEL_BUTTON_ID, x + w - 20, y + h + 4, IconEIO.MINUS);
     deleteChannelB.setToolTip(EnderIO.lang.localize("gui.trans.deleteChannel"));
     
+    Predicate<Channel> predicate = new Predicate<Channel>() {
+      @Override
+      public boolean apply(Channel input) {
+        return input.isPublic() || input.getUser().equals(PlayerUtil.getPlayerUUID(EnderIO.proxy.getClientPlayer().getGameProfile().getName()));
+      }
+    };
     
     x += w + 32;
     h = 35;
     sendChannels = new GuiChannelList(parent, w, h, x, y);
-    sendChannels.setChannels(transceiver.getSendChannels(type));
+    sendChannels.setChannels(transceiver.getSendChannels(type), predicate);
     sendChannels.setShowSelectionBox(true);
     sendChannels.setScrollButtonIds(200, 201);
     
@@ -89,7 +98,7 @@ public class ChannelTab implements ITabPanel {
     
     y += h + 20;
     recieveChannels = new GuiChannelList(parent, w, h, x, y);
-    recieveChannels.setChannels(transceiver.getRecieveChannels(type));
+    recieveChannels.setChannels(transceiver.getRecieveChannels(type), predicate);
     recieveChannels.setShowSelectionBox(true);
     recieveChannels.setScrollButtonIds(300, 301);
         

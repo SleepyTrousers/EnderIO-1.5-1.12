@@ -1,22 +1,23 @@
 package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Sets;
 
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.Channel;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
-
-  private List<Channel> channels = new ArrayList<Channel>();
+  
+  private FluentIterable<Channel> channels;
 
 //  private Channel activeChannel;
 
@@ -27,11 +28,11 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
     this.parent = parent;
   }
 
-  void setChannels(List<Channel> val) {
+  void setChannels(Set<Channel> val, Predicate<Channel> filter) {
     if(val == null) {
-      channels = Collections.emptyList();
+      channels = FluentIterable.from(Sets.<Channel>newHashSet());
     }
-    channels = val;
+    channels = FluentIterable.from(val).filter(filter);
   }
 
   @Override
@@ -71,5 +72,4 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
       IconEIO.map.render(IconEIO.LOCK_LOCKED, xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
     }
   }
-
 }

@@ -2,6 +2,7 @@ package crazypants.enderio.rail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
@@ -214,7 +215,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(!sender.hasPower()) {
       return;
     }
-    List<Channel> sendChannels = sender.getSendChannels(ChannelType.RAIL);
+    Set<Channel> sendChannels = sender.getSendChannels(ChannelType.RAIL);
     for (Channel channel : sendChannels) {
       RoundRobinIterator<TileTransceiver> iter = ServerChannelRegister.instance.getIterator(channel);
       for (TileTransceiver reciever : iter) {

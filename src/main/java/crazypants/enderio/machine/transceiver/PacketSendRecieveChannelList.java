@@ -1,17 +1,14 @@
 package crazypants.enderio.machine.transceiver;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -21,7 +18,7 @@ import crazypants.enderio.EnderIO;
 public class PacketSendRecieveChannelList extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketSendRecieveChannelList, IMessage> {
 
   private boolean isSend;
-  private EnumMap<ChannelType, List<Channel>> channels;
+  private SetMultimap<ChannelType, Channel> channels;
 
   public PacketSendRecieveChannelList() {
   }
@@ -52,10 +49,7 @@ public class PacketSendRecieveChannelList extends MessageTileEntity<TileTranscei
     super.fromBytes(buf);
     isSend = buf.readBoolean();
     NBTTagCompound root = NetworkUtil.readNBTTagCompound(buf);
-    channels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
-    for(ChannelType type : ChannelType.values()) {
-      channels.put(type, new ArrayList<Channel>());
-    }
+    channels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
     TileTransceiver.readChannels(root, channels, "chans");
   }
 

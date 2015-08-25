@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -129,8 +131,8 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
       TileTransceiver trans = (TileTransceiver) te;
       for (ChannelType type : ChannelType.VALUES) {
 
-        List<Channel> recieving = trans.getRecieveChannels(type);
-        List<Channel> sending = trans.getSendChannels(type);
+        Set<Channel> recieving = trans.getRecieveChannels(type);
+        Set<Channel> sending = trans.getSendChannels(type);
         String recieve = "[" + buildString(recieving) + "]";
         String send = "[" + buildString(sending) + "]";
 
@@ -156,11 +158,13 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     return "[]".equals(str);
   }
 
-  private String buildString(List<Channel> channels) {
+  private String buildString(Set<Channel> recieving) {
     StringBuilder sb = new StringBuilder();
-    for (Channel c : channels) {
+    Iterator<Channel> iter = recieving.iterator();
+    while (iter.hasNext()) {
+      Channel c = iter.next();
       sb.append(c.getName());
-      if (channels.indexOf(c) != channels.size() - 1) {
+      if (iter.hasNext()) {
         sb.append(", ");
       }
     }
