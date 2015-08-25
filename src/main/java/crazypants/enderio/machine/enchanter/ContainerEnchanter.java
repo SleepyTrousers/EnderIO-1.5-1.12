@@ -101,11 +101,6 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
     });
   }
 
-  @Override
-  public boolean canInteractWith(EntityPlayer p_75145_1_) {
-    return true;
-  }
-
   public boolean playerHasEnoughLevels(EntityPlayer player) {
     if(player.capabilities.isCreativeMode) {
       return true;

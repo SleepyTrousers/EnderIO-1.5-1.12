@@ -54,12 +54,6 @@ public class ContainerTravelAccessable extends ContainerEnder<PasswordInventory>
   }
 
   @Override
-  public boolean canInteractWith(EntityPlayer entityplayer) {
-    //return entityplayer != null && entityplayer.getUniqueID() != null && entityplayer.getUniqueID().toString().equals(ta.getPlacedBy());
-    return true;
-  }
-
-  @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
     return null;
   }

@@ -47,11 +47,6 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     }
   }
 
-  @Override
-  public boolean canInteractWith(EntityPlayer entityplayer) {
-    return getInv().isUseableByPlayer(entityplayer);
-  }
-
   public Point getPlayerInventoryOffset() {
     return new Point(8,84);
   }

@@ -20,9 +20,4 @@ public class ContainerTelePad extends ContainerEnder<IInventory> {
     p.translate(0, 34);
     return p;
   }
-  
-  @Override
-  public boolean canInteractWith(EntityPlayer p_75145_1_) {
-    return true;
-  }
 }

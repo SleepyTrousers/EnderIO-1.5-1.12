@@ -98,11 +98,6 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   }
 
   @Override
-  public boolean canInteractWith(EntityPlayer player) {
-    return getInv().isUseableByPlayer(player);
-  }
-
-  @Override
   public Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
     p.translate(21, 0);
