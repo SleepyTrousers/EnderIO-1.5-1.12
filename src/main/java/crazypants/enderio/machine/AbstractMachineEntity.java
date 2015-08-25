@@ -61,7 +61,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   private final ResourceLocation soundRes;
 
   public static ResourceLocation getSoundFor(String sound) {
-    return sound == null ? null : new ResourceLocation(EnderIO.MODID + ":" + sound);
+    return sound == null ? null : new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
   }
 
   public AbstractMachineEntity(SlotDefinition slotDefinition) {

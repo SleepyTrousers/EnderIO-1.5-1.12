@@ -24,7 +24,7 @@ public class TelePadRenderer extends TechneModelRenderer {
   private final Collection<GroupObject> strippedModel = Lists.newArrayList();
 
   public TelePadRenderer() {
-    super(TechneUtil.getModel(EnderIO.MODID, "models/telePad"), BlockTelePad.renderId);
+    super(TechneUtil.getModel(EnderIO.DOMAIN, "models/telePad"), BlockTelePad.renderId);
     for (String s : this.model.keySet()) {
       if(!s.equals("glass") && !s.contains("blade")) {
         strippedModel.add(this.model.get(s));

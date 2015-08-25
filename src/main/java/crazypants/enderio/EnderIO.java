@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -166,6 +166,7 @@ import static crazypants.enderio.EnderIO.*;
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
+  public static final String DOMAIN = MODID.toLowerCase(Locale.US);
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";
 

@@ -27,7 +27,7 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     super();
     
     setBlockName(ModObject.blockDarkSteelLadder.unlocalisedName);
-    setBlockTextureName(EnderIO.MODID + ":" + ModObject.blockDarkSteelLadder.unlocalisedName);
+    setBlockTextureName(EnderIO.DOMAIN + ":" + ModObject.blockDarkSteelLadder.unlocalisedName);
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);

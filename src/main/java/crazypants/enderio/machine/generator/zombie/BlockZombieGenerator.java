@@ -103,7 +103,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
         if(Config.machineSoundsEnabled) {
           float volume = (Config.machineSoundVolume * 0.045f);
-          world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.MODID + ":generator.zombie.bubble", volume, world.rand.nextFloat() * 0.75f, false);
+          world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.DOMAIN + ":generator.zombie.bubble", volume, world.rand.nextFloat() * 0.75f, false);
         }
       }
     }

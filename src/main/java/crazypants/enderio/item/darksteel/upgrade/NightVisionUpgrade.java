@@ -34,7 +34,6 @@ public class NightVisionUpgrade extends AbstractUpgrade {
     return pot;
   }
   
-  
   public NightVisionUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);    
   }

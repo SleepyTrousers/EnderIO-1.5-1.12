@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.transceiver;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.Collection;
+
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 
 public class ChannelRegister {
 
-  protected EnumMap<ChannelType, List<Channel>> channels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
+  protected Multimap<ChannelType, Channel> channels = MultimapBuilder.enumKeys(ChannelType.class).arrayListValues().build();
 
-  public List<Channel> getChannelsForType(ChannelType type) {
+  public Collection<Channel> getChannelsForType(ChannelType type) {
     return channels.get(type);
   }
 
@@ -16,7 +17,7 @@ public class ChannelRegister {
     if(channel == null) {
       return;
     }
-    List<Channel> chans = getChannelsForType(channel.getType());
+    Collection<Channel> chans = getChannelsForType(channel.getType());
     if(!chans.contains(channel)) {
       chans.add(channel);
     }
@@ -31,9 +32,5 @@ public class ChannelRegister {
 
   public void reset() {
     channels.clear();
-    for (ChannelType type : ChannelType.values()) {
-      channels.put(type, new ArrayList<Channel>());
-    }
   }
-
 }

@@ -226,9 +226,9 @@ public class KeyTracker {
     if(nightVisionKey.isPressed()) {
       boolean isActive = !DarkSteelController.instance.isNightVisionActive();
       if(isActive) {
-        player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.nightvision.on", 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
+        player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.DOMAIN + ":ds.nightvision.on", 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
       } else {
-        player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.nightvision.off", 0.1f, 1.0f, false);
+        player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.DOMAIN + ":ds.nightvision.off", 0.1f, 1.0f, false);
       }
       DarkSteelController.instance.setNightVisionActive(isActive);
     }

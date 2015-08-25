@@ -27,10 +27,10 @@ public class EnderIOTab extends CreativeTabs {
     return MODID;
   }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public Item getTabIconItem() {
-        return EnderIO.itemEnderface;
-    }
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Item getTabIconItem() {
+    return EnderIO.itemEnderface;
+  }
 
 }

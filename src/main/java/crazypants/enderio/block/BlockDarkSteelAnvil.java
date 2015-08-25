@@ -88,12 +88,12 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register)
   {
-    this.blockIcon = register.registerIcon(EnderIO.MODID + ":anvil_base");
+    this.blockIcon = register.registerIcon(EnderIO.DOMAIN + ":anvil_base");
     this.anvilIcons = new IIcon[anvilIconNames.length];
 
     for (int i = 0; i < this.anvilIcons.length; ++i)
     {
-      this.anvilIcons[i] = register.registerIcon(EnderIO.MODID + ":" + anvilIconNames[i]);
+      this.anvilIcons[i] = register.registerIcon(EnderIO.DOMAIN + ":" + anvilIconNames[i]);
     }
   }
 

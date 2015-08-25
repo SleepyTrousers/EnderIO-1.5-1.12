@@ -492,7 +492,7 @@ public final class Config {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
     FMLCommonHandler.instance().bus().register(new Config());
-    configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.MODID.toLowerCase());
+    configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.DOMAIN);
     if(!configDirectory.exists()) {
       configDirectory.mkdir();
     }

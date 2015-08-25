@@ -22,11 +22,11 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
   private OverlayRenderer overlay = new OverlayRenderer();
 
   public TechneMachineRenderer(AbstractMachineBlock<T> block, String modelPath) {
-    super(EnderIO.MODID, modelPath, block.getRenderType(), new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
+    super(EnderIO.DOMAIN, modelPath, block.getRenderType(), new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
   }
 
   public TechneMachineRenderer(int renderId, String modelPath) {
-    super(TechneUtil.getModel(EnderIO.MODID, modelPath), renderId, new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
+    super(TechneUtil.getModel(EnderIO.DOMAIN, modelPath), renderId, new VertexTransformComposite(new VertexRotationFacing(ForgeDirection.NORTH)));
   }
 
   public TechneMachineRenderer<T> addTransform(VertexTransform vt) {

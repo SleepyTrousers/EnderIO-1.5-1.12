@@ -34,7 +34,7 @@ public class ItemBucketEio extends ItemBucket {
     setContainerItem(Items.bucket);
     String str = "bucket" + StringUtils.capitalize(fluidName);
     setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setTextureName("enderio:" + str);
   }
 
   protected void init() {
