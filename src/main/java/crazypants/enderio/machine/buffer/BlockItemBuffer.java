@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,7 +39,7 @@ public class BlockItemBuffer extends ItemBlockWithMetadata {
     }
 
     public String getUnlocalizedName() {
-      return "tile." + ModObject.blockBuffer.unlocalisedName + "." + name().toLowerCase();
+      return "tile." + ModObject.blockBuffer.unlocalisedName + "." + name().toLowerCase(Locale.US);
     }
 
 	public static ItemStack getStack(Type type) {

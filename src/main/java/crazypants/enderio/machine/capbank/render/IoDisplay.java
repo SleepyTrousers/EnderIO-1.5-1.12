@@ -230,7 +230,7 @@ public class IoDisplay implements IInfoRenderer {
     final int color;
 
     private HeadingText(int color) {
-      this.text = EnderIO.lang.localize("capbank.iodisplay.".concat(name().toLowerCase(Locale.ENGLISH)));
+      this.text = EnderIO.lang.localize("capbank.iodisplay.".concat(name().toLowerCase(Locale.US)));
       this.color = color;
     }
   }

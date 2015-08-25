@@ -45,7 +45,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   }
 
   private void addButton(IconButton button, WeatherTask task) {
-    String tt1 = EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.weather.task." + task.name().toLowerCase(Locale.ENGLISH));
+    String tt1 = EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.weather.task." + task.name().toLowerCase(Locale.US));
     String tt2 = EnumChatFormatting.AQUA + String.format(EnderIO.lang.localize("gui.weather.requireditem"), EnumChatFormatting.WHITE + task.requiredItem().getDisplayName());
     String tt3 = String.format("%s%s %s%s", EnumChatFormatting.GREEN, fmt.format(task.power), EnumChatFormatting.WHITE, EnderIO.lang.localize("power.rf"));
     button.setToolTip(tt1, tt2, tt3);

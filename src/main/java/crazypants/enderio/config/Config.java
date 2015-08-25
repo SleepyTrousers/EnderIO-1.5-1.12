@@ -3,6 +3,7 @@ package crazypants.enderio.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,7 @@ public final class Config {
     }
 
     public String lc() {
-      return name.toLowerCase();
+      return name.toLowerCase(Locale.US);
     }
   }
 

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.transceiver;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -137,7 +138,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
           continue;
         }
 
-        tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase()));
+        tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
 
         if(!isEmpty(recieve)) {
           tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT

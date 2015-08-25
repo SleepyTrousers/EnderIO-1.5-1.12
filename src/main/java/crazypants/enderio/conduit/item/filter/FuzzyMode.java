@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.item.filter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.item.ItemStack;
 
@@ -62,7 +63,7 @@ public enum FuzzyMode implements CycleButton.ICycleEnum {
 
   @Override
   public List<String> getTooltipLines() {
-    return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.fuzzy.".concat(name().toLowerCase())));
+    return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.fuzzy.".concat(name().toLowerCase(Locale.US))));
   }
 
 }

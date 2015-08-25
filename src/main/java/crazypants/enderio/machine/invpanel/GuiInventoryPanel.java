@@ -473,7 +473,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     SortOrder order = view.getSortOrder();
     ArrayList<String> list = new ArrayList<String>();
     SpecialTooltipHandler.addTooltipFromResources(list,
-        "enderio.gui.inventorypanel.tooltip.sort." + order.name().toLowerCase(Locale.ENGLISH) + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
+        "enderio.gui.inventorypanel.tooltip.sort." + order.name().toLowerCase(Locale.US) + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
     btnSort.setIcon(getSortOrderIcon());
     btnSort.setToolTip(list.toArray(new String[list.size()]));
   }

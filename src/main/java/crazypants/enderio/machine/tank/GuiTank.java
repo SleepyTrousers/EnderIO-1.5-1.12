@@ -36,7 +36,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     private VoidMode(IWidgetIcon icon) {
       this.icon = icon;
       String prefix = "gui.void.mode";
-      String mode = prefix + "." + name().toLowerCase(Locale.ENGLISH);
+      String mode = prefix + "." + name().toLowerCase(Locale.US);
       this.unlocTooltips = Lists.newArrayList(prefix, mode, mode + ".desc");
     }
 

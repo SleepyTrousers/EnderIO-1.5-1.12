@@ -2,6 +2,7 @@ package crazypants.enderio.waila;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Locale;
 
 import mcp.mobius.waila.api.ITaggedList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -182,7 +183,7 @@ public class WailaCompat implements IWailaDataProvider {
       ForgeDirection side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
       currenttip.add(EnumChatFormatting.YELLOW
-          + EnderIO.lang.localize("gui.machine.side", EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase())));
+          + EnderIO.lang.localize("gui.machine.side", EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase(Locale.US))));
       if(!(te instanceof TileInventoryPanel)) {
         currenttip.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", mode.colorLocalisedName()));
       }

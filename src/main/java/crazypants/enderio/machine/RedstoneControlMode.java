@@ -1,12 +1,14 @@
 package crazypants.enderio.machine;
 
 import java.util.List;
+import java.util.Locale;
+
+import net.minecraft.tileentity.TileEntity;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.google.common.collect.Lists;
 
-import net.minecraft.tileentity.TileEntity;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 
@@ -25,7 +27,7 @@ public enum RedstoneControlMode implements ICycleEnum {
   }
 
   public String getTooltip() {
-    return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
+    return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US));
   }
   
   @Override

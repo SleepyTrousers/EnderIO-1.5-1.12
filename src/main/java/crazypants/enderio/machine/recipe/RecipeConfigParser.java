@@ -434,7 +434,7 @@ public class RecipeConfigParser extends DefaultHandler {
     if(val == null) {
       return def;
     }
-    val = val.toLowerCase().trim();
+    val = val.toLowerCase(Locale.US).trim();
     return val.equals("false") ? false : val.equals("true") ? true : def;
   }
 
@@ -477,7 +477,7 @@ public class RecipeConfigParser extends DefaultHandler {
     if(val.length() <= 0) {
       return def;
     }
-    val = val.toUpperCase(Locale.ENGLISH);
+    val = val.toUpperCase(Locale.US);
     try {
       return Enum.valueOf(clazz, val);
     } catch(IllegalArgumentException ex) {
