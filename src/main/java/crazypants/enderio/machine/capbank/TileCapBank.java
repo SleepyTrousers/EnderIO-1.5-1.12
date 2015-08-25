@@ -482,7 +482,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public long getMaxEnergyStoredL() {
-    if(network == null) {
+    if (network == null) {
       return getMaxEnergyStored();
     }
     return network.getMaxEnergyStoredL();
@@ -751,12 +751,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   public int getInventoryStackLimit() {
     return 1;
   }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-    return true;
-  }
-
+  
   @Override
   public void openInventory() {
   }

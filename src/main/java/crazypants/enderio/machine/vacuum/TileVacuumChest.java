@@ -74,12 +74,12 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
       return entity.motionY < 0.01;
     }
     if(entity instanceof EntityItem) {
-      ItemStack stack = ((EntityItem) entity).getEntityItem();
       return true;
     }
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   private void doHoover() {
 
     int rangeSqr = range*range;
@@ -203,11 +203,6 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   @Override
   public boolean hasCustomInventoryName() {
     return false;
-  }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer var1) {
-    return true;
   }
 
   @Override

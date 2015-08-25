@@ -2,7 +2,6 @@ package crazypants.enderio.machine.enchanter;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -121,11 +120,6 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   @Override
   public int getInventoryStackLimit() {
     return 64;
-  }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-    return true;
   }
 
   @Override
