@@ -178,7 +178,7 @@ public class GuiExternalConnection extends GuiContainerBase {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
         IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, sy + tabYOffset + (i * 24));
         IWidgetIcon icon = tabs.get(i).getIcon();
-        icon.getMap().render(icon, tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 6, 11, 11, 0, false);
+        icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (i * TAB_HEIGHT) + 4);
       }
     }
 
