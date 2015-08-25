@@ -76,7 +76,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     setCreativeTab(EnderIOTab.tabEnderIO);
     String str = "darkSteel_axe";
     setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setTextureName(EnderIO.DOMAIN + ":" + str);
   }
 
   @Override

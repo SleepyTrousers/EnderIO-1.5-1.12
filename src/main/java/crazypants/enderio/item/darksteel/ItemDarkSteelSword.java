@@ -83,7 +83,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
     String str = "darkSteel_sword";
     setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setTextureName(EnderIO.DOMAIN + ":" + str);
   }
 
   @Override

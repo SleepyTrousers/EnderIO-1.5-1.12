@@ -112,7 +112,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
     String str = "darkSteel_" + NAMES[armorType];
     setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setTextureName(EnderIO.DOMAIN+ ":" + str);
 
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }

@@ -71,7 +71,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     setCreativeTab(EnderIOTab.tabEnderIO);
     String str = "darkSteel_pickaxe";
     setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setTextureName(EnderIO.DOMAIN + ":" + str);
   }
 
   @Override
