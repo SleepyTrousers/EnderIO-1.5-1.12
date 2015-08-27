@@ -12,6 +12,8 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.CustomWidgetIcon;
+import com.enderio.core.client.render.EnderWidget;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -122,6 +124,9 @@ public class BaseSettingsPanel implements ITabPanel {
   protected void connectionModeChanged(ConnectionMode conectionMode) {
   }
 
+  IWidgetIcon bgLeft  = new CustomWidgetIcon(0, 48, 16, 16, EnderWidget.map);
+  IWidgetIcon bgRight = new CustomWidgetIcon(190, 48, 3, 16, EnderWidget.map);
+
   @Override
   public void render(float par1, int par2, int par3) {
     FontRenderer fr = gui.getFontRenderer();
@@ -139,10 +144,13 @@ public class BaseSettingsPanel implements ITabPanel {
     String modeString = con.getConnectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
+    int bgy = y - (fr.FONT_HEIGHT / 2) - 1;
     GL11.glColor3f(1, 1, 1);
-    // TODO figure out what this should be
-//    IconEIO icon = new IconEIO(10, 48, 64, 16);
-//    icon.getMap().render(icon, x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
+    IWidgetIcon bg = new CustomWidgetIcon(3, 48, gap * 2 + getLongestModeStringWidth(), 16, EnderWidget.map);
+    bg.getMap().render(bg, x - gap, bgy, true);
+    
+    bgLeft.getMap().render(bgLeft, x + 54 + gap - 4, bgy, true);
+//    bgRight.getMap().render(bgRight, x + 59 + gap - 4, bgy, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;
     x += move;

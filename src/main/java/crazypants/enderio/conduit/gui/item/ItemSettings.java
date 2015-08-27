@@ -15,6 +15,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.CustomWidgetIcon;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
@@ -397,7 +398,8 @@ public class ItemSettings extends BaseSettingsPanel {
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
       GL11.glColor3f(1, 1, 1);
-      IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
+      EnderWidget.map.render(new CustomWidgetIcon(0, 48, priWidth - 2, 16, EnderWidget.map), left + priLeft, top - 5, true);
+      EnderWidget.map.render(new CustomWidgetIcon(190, 48, 2, 16, EnderWidget.map), left + priLeft + priWidth - 3, top - 5, true);
       String str = itemConduit.getOutputPriority(gui.getDir()) + "";
       int sw = fr.getStringWidth(str);
       fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
