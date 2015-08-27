@@ -24,7 +24,7 @@ public class TeleportRecipes {
     if(Config.travelAnchorEnabled) {
       ItemStack travelBlock = new ItemStack(EnderIO.blockTravelPlatform);
       ItemStack pulsCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
-      GameRegistry.addShapedRecipe(travelBlock, "ibi", "bcb", "ibi", 'i', Items.iron_ingot, 'b', conduitBinder, 'c', pulsCry);
+      GameRegistry.addRecipe(new ShapedOreRecipe(travelBlock, "ibi", "bcb", "ibi", 'i', "ingotIron", 'b', conduitBinder, 'c', pulsCry));
     }
 
     if(Config.travelStaffEnabled) {
