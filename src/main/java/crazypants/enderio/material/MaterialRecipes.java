@@ -60,18 +60,6 @@ public class MaterialRecipes {
     OreDictionary.registerOre("sand", new ItemStack(Blocks.sand, 1, OreDictionary.WILDCARD_VALUE));
     OreDictionary.registerOre("ingotIron", Items.iron_ingot);
     OreDictionary.registerOre("ingotGold", Items.gold_ingot);
-	OreDictionary.registerOre("blockIron", Blocks.iron_block);
-	OreDictionary.registerOre("blockGold", Blocks.gold_block);
-	OreDictionary.registerOre("blockRedstone", Blocks.redstone_block);
-	OreDictionary.registerOre("glowstone", Blocks.glowstone);
-	OreDictionary.registerOre("gemDiamond", Items.diamond);
-	OreDictionary.registerOre("gemEmerald", Items.emerald);
-	OreDictionary.registerOre("gemQuartz", Items.quartz);
-	OreDictionary.registerOre("dustGlowstone", Items.glowstone_dust);
-	OreDictionary.registerOre("paneGlass", Blocks.glass_pane);
-	OreDictionary.registerOre("chestWood", Blocks.chest);
-	OreDictionary.registerOre("craftingTableWood", Blocks.crafting_table);
-	OreDictionary.registerOre("cropWheat", Items.wheat);
 
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
