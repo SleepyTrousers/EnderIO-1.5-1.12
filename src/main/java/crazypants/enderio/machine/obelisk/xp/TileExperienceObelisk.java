@@ -22,11 +22,11 @@ import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
 
-public class TileExperienceOblisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess {
+public class TileExperienceObelisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess {
 
   private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
 
-  public TileExperienceOblisk() {
+  public TileExperienceObelisk() {
     super(new SlotDefinition(0, 0, 0));
   }
 

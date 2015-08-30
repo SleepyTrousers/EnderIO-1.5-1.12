@@ -49,7 +49,7 @@ public class GuiTravelAuth extends GuiContainerBase {
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
-    if(ta.authoriseUser(player, poo.enteredPassword)) {
+    if(ta.authoriseUser(player, poo.getInv().getInventory())) {
       TileEntity te = ((TileEntity) ta);
       PacketHandler.INSTANCE.sendToServer(new MessageTileNBT(te));
 

@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -18,6 +19,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 
@@ -33,7 +35,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
 
   private static final int MARGIN = 7;
 
-  private static final int WIDTH = 203;
+  private static final int WIDTH = 210;
   private static final int HEIGHT = 146;
 
   private static final int POWER_X = 185;
@@ -66,8 +68,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
   private String monHeading4;
   private String monHeading5;
 
-  public GuiPowerMonitor(final TilePowerMonitor te) {
-    super(new ContainerPowerMonitor());
+  public GuiPowerMonitor(InventoryPlayer playerInv, final TilePowerMonitor te) {
+    super(new ContainerNoInv(te));
     this.te = te;
     xSize = WIDTH;
     ySize = HEIGHT;    

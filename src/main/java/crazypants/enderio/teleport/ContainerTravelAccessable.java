@@ -4,17 +4,16 @@ import java.awt.Point;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.enderio.core.client.gui.widget.TemplateSlot;
 import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.ArrayInventory;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAccessable.PasswordInventory;
-import crazypants.util.ArrayInventory;
 
 public class ContainerTravelAccessable extends ContainerEnder<PasswordInventory> {
 

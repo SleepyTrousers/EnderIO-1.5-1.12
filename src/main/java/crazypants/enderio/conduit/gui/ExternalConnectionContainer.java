@@ -6,13 +6,13 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
@@ -22,7 +22,7 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 
-public class ExternalConnectionContainer extends Container {
+public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
 
   private final IItemConduit itemConduit;
 
@@ -43,47 +43,30 @@ public class ExternalConnectionContainer extends Container {
   final List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
 
   public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
+    super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir));
+    this.itemConduit = bundle.getConduit(IItemConduit.class);
+    slotLocations.addAll(playerSlotLocations.values());
+
     int x;
     int y;
 
-    int topY = 113;
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        x = 23 + j * 18;
-        y = topY + i * 18;
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x, y));
-        slotLocations.add(new Point(x, y));
-      }
-    }
-
-    y = 171;
-    for (int i = 0; i < 9; ++i) {
-      x = 23 + i * 18;
-      addSlotToContainer(new Slot(playerInv, i, x, y));
-      slotLocations.add(new Point(x, y));
-    }
-
-    itemConduit = bundle.getConduit(IItemConduit.class);
-    if(itemConduit != null) {
-      final InventoryUpgrades ui = new InventoryUpgrades(itemConduit, dir);
-
+    if (itemConduit != null) {
       x = 10;
       y = 47;
-      slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(ui, 3, x, y));
+      slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
       slotLocations.add(new Point(x, y));
 
       x = 10;
       y = 47;
-      slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(ui, 2, x, y));
+      slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
       slotLocations.add(new Point(x, y));
 
       x = 28;
-      y = 47;      
-      slotSpeedUpgrades = addSlotToContainer(new Slot(ui, 0, x, y) {
+      y = 47;
+      slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
         @Override
         public boolean isItemValid(ItemStack par1ItemStack) {
-          return ui.isItemValidForSlot(0, par1ItemStack);
+          return getInv().isItemValidForSlot(0, par1ItemStack);
         }
 
         @Override
@@ -95,10 +78,10 @@ public class ExternalConnectionContainer extends Container {
 
       x = 10;
       y = 65;
-      slotFunctionUpgrades = addSlotToContainer(new Slot(ui, 1, x, y) {
+      slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
         @Override
         public boolean isItemValid(ItemStack par1ItemStack) {
-          return ui.isItemValidForSlot(1, par1ItemStack);
+          return getInv().isItemValidForSlot(1, par1ItemStack);
         }
 
         @Override
@@ -108,6 +91,11 @@ public class ExternalConnectionContainer extends Container {
       });
       slotLocations.add(new Point(x, y));
     }
+  }
+
+  @Override
+  public Point getPlayerInventoryOffset() {
+    return new Point(23, 113);
   }
   
   public void addFilterListener(FilterChangeListener list) {
@@ -162,11 +150,6 @@ public class ExternalConnectionContainer extends Container {
         s.yDisplayPosition = -3000;
       }
     }
-  }
-
-  @Override
-  public boolean canInteractWith(EntityPlayer entityplayer) {
-    return true;
   }
 
   @Override

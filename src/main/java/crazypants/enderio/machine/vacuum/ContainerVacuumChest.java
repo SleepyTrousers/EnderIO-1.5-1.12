@@ -2,43 +2,33 @@ package crazypants.enderio.machine.vacuum;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerVacuumChest extends Container {
+import com.enderio.core.common.ContainerEnder;
 
-  final Slot filterSlot;
-  Runnable filterChangedCB;
+public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
+
+  private Slot filterSlot;
+  private Runnable filterChangedCB;
 
   public ContainerVacuumChest(EntityPlayer player, InventoryPlayer inventory, final TileVacuumChest te) {
+    super(inventory, te);
+  }
+  
+  @Override
+  protected void addSlots(InventoryPlayer playerInv) {
     int x = 8;
     int y = 18;
     int index = -1;
     for (int i = 0; i < TileVacuumChest.ITEM_ROWS; ++i) {
       for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(te, ++index, x + j * 18, y + i * 18));
+        addSlotToContainer(new Slot(getInv(), ++index, x + j * 18, y + i * 18));
       }
     }
 
-    y = 124;
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(inventory, j + i * 9 + 9, x + j * 18, y + i * 18));
-      }
-    }
-    for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(inventory, i, x + i * 18, y + 58));
-    }
-
-    filterSlot = new FilterSlot(new InventoryFilterUpgrade(te));
+    filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
     addSlotToContainer(filterSlot);
-  }
-
-  @Override
-  public boolean canInteractWith(EntityPlayer var1) {
-    return true;
   }
 
   @Override

@@ -2,8 +2,12 @@ package crazypants.enderio.machine.obelisk.xp;
 
 import java.util.Random;
 
+import com.enderio.core.common.ContainerEnder;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -13,9 +17,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.ContainerNoInv;
+import crazypants.enderio.machine.monitor.GuiPowerMonitor;
+import crazypants.enderio.machine.monitor.TilePowerMonitor;
 import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 
-public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceOblisk> {
+public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceObelisk> {
 
   public static BlockExperienceObelisk create() {
     BlockExperienceObelisk res = new BlockExperienceObelisk();
@@ -24,7 +31,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   }
 
   private BlockExperienceObelisk() {
-    super(ModObject.blockExperienceObelisk, TileExperienceOblisk.class);
+    super(ModObject.blockExperienceObelisk, TileExperienceObelisk.class);
   }
 
   @Override
@@ -49,13 +56,22 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerExperienceObelisk();
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileExperienceObelisk) {
+      return new ContainerNoInv((IInventory) te);
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiExperienceObelisk(player.inventory, (TileExperienceOblisk) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileExperienceObelisk) {
+      return new GuiExperienceObelisk(player.inventory, (TileExperienceObelisk) te);
+    }
+    return null;
   }
+
 
   @Override
   protected int getGuiId() {

@@ -12,13 +12,14 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 
-public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceOblisk> {
+public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> {
   
   private IconButton p;
   private IconButton pp;
@@ -28,8 +29,8 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceOblisk> {
   private IconButton mm;
   private IconButton mmm;
 
-  public GuiExperienceObelisk(InventoryPlayer par1InventoryPlayer, TileExperienceOblisk te) {
-    super(te, new ContainerExperienceObelisk());
+  public GuiExperienceObelisk(InventoryPlayer playerInv, TileExperienceObelisk te) {
+    super(te, new ContainerNoInv(te));
     ySize = 115;
 
     int spacing = 5;

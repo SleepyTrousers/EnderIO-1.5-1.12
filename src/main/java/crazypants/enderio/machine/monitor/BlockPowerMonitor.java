@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.network.PacketHandler;
 
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
@@ -32,14 +33,18 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerPowerMonitor();    
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TilePowerMonitor) {
+      return new ContainerNoInv((TilePowerMonitor) te);
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePowerMonitor) {
-      return new GuiPowerMonitor((TilePowerMonitor) te);
+      return new GuiPowerMonitor(player.inventory, (TilePowerMonitor) te);
     }
     return null;
 

@@ -99,7 +99,7 @@ import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
-import crazypants.enderio.machine.obelisk.xp.TileExperienceOblisk;
+import crazypants.enderio.machine.obelisk.xp.TileExperienceObelisk;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
@@ -271,9 +271,9 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileAversionObelisk.class, sgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
 
-    ObeliskSpecialRenderer<TileExperienceOblisk> eor = new ObeliskSpecialRenderer<TileExperienceOblisk>(new ItemStack(EnderIO.itemXpTransfer),
+    ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(EnderIO.itemXpTransfer),
         defaultObeliskRenderer);
-    ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
+    ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceObelisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
     ObeliskSpecialRenderer<TileWeatherObelisk> twr = new ObeliskSpecialRenderer<TileWeatherObelisk>(new ItemStack(EnderIO.itemMaterial, 1,
