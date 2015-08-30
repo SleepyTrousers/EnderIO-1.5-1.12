@@ -81,7 +81,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void dirty() {
     conduitsDirty = true;
     collidablesDirty = true;
-  }  
+  }
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
@@ -115,6 +115,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     short nbtVersion = nbtRoot.getShort("nbtVersion");
 
     conduits.clear();
+    cachedCollidables.clear();
     NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
     if(conduitTags != null) {
       for (int i = 0; i < conduitTags.tagCount(); i++) {
