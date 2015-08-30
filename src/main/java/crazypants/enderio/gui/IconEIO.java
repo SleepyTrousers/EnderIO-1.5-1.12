@@ -1,5 +1,7 @@
 package crazypants.enderio.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.util.ResourceLocation;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
@@ -131,7 +133,12 @@ public enum IconEIO implements IWidgetIcon {
 
   public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgetsv2.png");
 
-  public static final IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE);
+  public static final IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
+    public void render(IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw, boolean flipY) {
+      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+      super.render(widget, x, y, width, height, zLevel, doDraw, flipY);
+    }
+  };
 
   IconEIO(int x, int y) {
     this(x, y, null);

@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -19,10 +21,10 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-
 import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
 
 public class GuiPowerMonitor extends GuiContainerBase {
@@ -132,7 +134,9 @@ public class GuiPowerMonitor extends GuiContainerBase {
     super.initGui();
 
     buttonList.clear();
-    //enabledB.onGuiInit();
+    if (isRedstoneMode) {
+      enabledB.onGuiInit();
+    }
   }
 
   @Override
@@ -152,12 +156,12 @@ public class GuiPowerMonitor extends GuiContainerBase {
     x = (x - guiLeft);
     y = (y - guiTop);
     if(x > 200 && x < 220) {
-      if(y > 9 && y < 27) {
+      if(y >= SPACING && y < 30) {
         isRedstoneMode = false;
         enabledB.detach();
         startTF.setVisible(false);
         endTF.setVisible(false);
-      } else if(y > 34 && y < 53) {
+      } else if(y >= 30 + SPACING && y < 60) {
         isRedstoneMode = true;
         enabledB.onGuiInit();
         startTF.setVisible(true);
@@ -180,11 +184,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
     int i1 = te.getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 245, 0, POWER_WIDTH, i1);
 
-    if(isRedstoneMode) {
-      renderRedstoneTab(sx, sy);
-    } else {
-      renderInfoTab(sx, sy);
-    }
+    renderRedstoneTab(sx, sy);
+    renderInfoTab(sx, sy);
 
     checkForModifications();
     super.drawGuiContainerBackgroundLayer(ptick, mouseX, mouseY);
@@ -226,158 +227,173 @@ public class GuiPowerMonitor extends GuiContainerBase {
   }
 
   private void renderRedstoneTab(int sx, int sy) {
-    drawTexturedModalRect(sx + 200, sy + SPACING, 225, 0, 20, 48);
-    int left = guiLeft + MARGIN;
-    int rgb;
-    int x = left;
-    int y = guiTop + MARGIN + SPACING;
-    if(!enabledB.isSelected()) {
-      rgb = ColorUtil.getRGB(Color.darkGray);
-    } else {
-      rgb = ColorUtil.getRGB(Color.black);
-    }
-    FontRenderer fontRenderer = getFontRenderer();
-    fontRenderer.drawString(titleStr, x, y, rgb, false);
+    if (isRedstoneMode) {
+      IconEIO.map.render(IconEIO.ACTIVE_TAB, sx + 200, sy + 30 + SPACING, true);
+      itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
+      
+      GL11.glDisable(GL11.GL_LIGHTING);
+      
+      int left = guiLeft + MARGIN;
+      int rgb;
+      int x = left;
+      int y = guiTop + MARGIN + SPACING;
+      if (!enabledB.isSelected()) {
+        rgb = ColorUtil.getRGB(Color.darkGray);
+      } else {
+        rgb = ColorUtil.getRGB(Color.black);
+      }
+      FontRenderer fontRenderer = getFontRenderer();
+      fontRenderer.drawString(titleStr, x, y, rgb, false);
 
-    x = left + fontRenderer.getStringWidth(titleStr) + SPACING + ICON_SIZE + SPACING;
-    y = guiTop + 14;
-    if(!enabledB.isSelected()) {
-      rgb = ColorUtil.getRGB(Color.darkGray);
+      x = left + fontRenderer.getStringWidth(titleStr) + SPACING + ICON_SIZE + SPACING;
+      y = guiTop + 14;
+      if (!enabledB.isSelected()) {
+        rgb = ColorUtil.getRGB(Color.darkGray);
+        enabledB.drawButton(mc, guiLeft, guiTop);
+      } else {
+        //      rgb = ColorUtil.getRGB(Color.blue);
+        //      rgb = ColorUtil.getRGB(0, 18, 127);
+        rgb = ColorUtil.getRGB(Color.black);
+      }
+
       enabledB.drawButton(mc, guiLeft, guiTop);
+
+      y += SPACING + ICON_SIZE;
+      x = left;
+
+      String txt = engineTxt1;
+      fontRenderer.drawString(txt, x, y, rgb, false);
+
+      y += SPACING + fontRenderer.FONT_HEIGHT;
+
+      x = left;
+      txt = engineTxt2;
+      fontRenderer.drawString(txt, x, y, rgb, false);
+
+      x = left + fontRenderer.getStringWidth(txt) + SPACING + startTF.getWidth() + 12;
+      txt = engineTxt3;
+      fontRenderer.drawString(txt, x, y, rgb, false);
+
+      x = left;
+      y += ICON_SIZE + fontRenderer.FONT_HEIGHT + SPACING;
+      txt = engineTxt4;
+      fontRenderer.drawString(txt, x, y, rgb, false);
+
+      x = left;
+      y += SPACING + fontRenderer.FONT_HEIGHT;
+      txt = engineTxt5;
+      fontRenderer.drawString(txt, x, y, rgb, false);
+      x += fontRenderer.getStringWidth(txt);
+
+      txt = engineTxt3;
+      x += MARGIN + endTF.getWidth() + 10;
+      fontRenderer.drawString(txt, x, y, rgb, false);
     } else {
-      //      rgb = ColorUtil.getRGB(Color.blue);
-      //      rgb = ColorUtil.getRGB(0, 18, 127);
-      rgb = ColorUtil.getRGB(Color.black);
+      IconEIO.map.render(IconEIO.INACTIVE_TAB, sx + 200, sy + 30 + SPACING, true);
+      itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
     }
-
-    enabledB.drawButton(mc, guiLeft, guiTop);
-
-    y += SPACING + ICON_SIZE;
-    x = left;
-
-    String txt = engineTxt1;
-    fontRenderer.drawString(txt, x, y, rgb, false);
-
-    y += SPACING + fontRenderer.FONT_HEIGHT;
-
-    x = left;
-    txt = engineTxt2;
-    fontRenderer.drawString(txt, x, y, rgb, false);
-
-    x = left + fontRenderer.getStringWidth(txt) + SPACING + startTF.getWidth() + 12;
-    txt = engineTxt3;
-    fontRenderer.drawString(txt, x, y, rgb, false);
-
-    x = left;
-    y += ICON_SIZE + fontRenderer.FONT_HEIGHT + SPACING;
-    txt = engineTxt4;
-    fontRenderer.drawString(txt, x, y, rgb, false);
-
-    x = left;
-    y += SPACING + fontRenderer.FONT_HEIGHT;
-    txt = engineTxt5;
-    fontRenderer.drawString(txt, x, y, rgb, false);
-    x += fontRenderer.getStringWidth(txt);
-
-    txt = engineTxt3;
-    x += MARGIN + endTF.getWidth() + 10;
-    fontRenderer.drawString(txt, x, y, rgb, false);
   }
 
   private void renderInfoTab(int sx, int sy) {
-    drawTexturedModalRect(sx + 200, sy + SPACING, 225, 53, 20, 48);
+    if (!isRedstoneMode) {
+      GL11.glDisable(GL11.GL_LIGHTING);
 
-    int headingCol = ColorUtil.getRGB(Color.white);
-    int valuesCol = ColorUtil.getRGB(Color.black);
-    int rgb;
-    int x = guiLeft + MARGIN;
-    int y = guiTop + MARGIN;
+      IconEIO.map.render(IconEIO.ACTIVE_TAB, sx + 200, sy + SPACING, true);
 
-    int sectionGap = SPACING;
+      int headingCol = ColorUtil.getRGB(Color.white);
+      int valuesCol = ColorUtil.getRGB(Color.black);
+      int rgb;
+      int x = guiLeft + MARGIN;
+      int y = guiTop + MARGIN;
 
-    FontRenderer fontRenderer = getFontRenderer();
-    rgb = headingCol;
-    StringBuilder sb = new StringBuilder();
-    sb.append(monHeading1);
-    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
+      int sectionGap = SPACING;
 
-    rgb = valuesCol;
-    y += fontRenderer.FONT_HEIGHT + 2;
-    sb = new StringBuilder();
-    sb.append(formatPower(te.powerInConduits));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.ofStr());
-    sb.append(" ");
-    sb.append(formatPower(te.maxPowerInConduits));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+      FontRenderer fontRenderer = getFontRenderer();
+      rgb = headingCol;
+      StringBuilder sb = new StringBuilder();
+      sb.append(monHeading1);
+      fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
-    rgb = headingCol;
-    y += fontRenderer.FONT_HEIGHT + sectionGap;
-    sb = new StringBuilder();
-    sb.append(monHeading2);
-    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
+      rgb = valuesCol;
+      y += fontRenderer.FONT_HEIGHT + 2;
+      sb = new StringBuilder();
+      sb.append(formatPower(te.powerInConduits));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.ofStr());
+      sb.append(" ");
+      sb.append(formatPower(te.maxPowerInConduits));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.abrevation());
+      fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
-    rgb = valuesCol;
-    y += fontRenderer.FONT_HEIGHT + 2;
-    sb = new StringBuilder();
-    sb.append(formatPower(te.powerInCapBanks));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.ofStr());
-    sb.append(" ");
-    sb.append(formatPower(te.maxPowerInCapBanks));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+      rgb = headingCol;
+      y += fontRenderer.FONT_HEIGHT + sectionGap;
+      sb = new StringBuilder();
+      sb.append(monHeading2);
+      fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
-    rgb = headingCol;
-    y += fontRenderer.FONT_HEIGHT + sectionGap;
-    sb = new StringBuilder();
-    sb.append(monHeading3);
-    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
+      rgb = valuesCol;
+      y += fontRenderer.FONT_HEIGHT + 2;
+      sb = new StringBuilder();
+      sb.append(formatPower(te.powerInCapBanks));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.ofStr());
+      sb.append(" ");
+      sb.append(formatPower(te.maxPowerInCapBanks));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.abrevation());
+      fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
-    rgb = valuesCol;
-    y += fontRenderer.FONT_HEIGHT + 2;
-    sb = new StringBuilder();
-    sb.append(formatPower(te.powerInMachines));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.ofStr());
-    sb.append(" ");
-    sb.append(formatPower(te.maxPowerInMachines));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+      rgb = headingCol;
+      y += fontRenderer.FONT_HEIGHT + sectionGap;
+      sb = new StringBuilder();
+      sb.append(monHeading3);
+      fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
-    rgb = headingCol;
-    y += fontRenderer.FONT_HEIGHT + sectionGap;
-    sb = new StringBuilder();
-    sb.append(monHeading4);
-    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
+      rgb = valuesCol;
+      y += fontRenderer.FONT_HEIGHT + 2;
+      sb = new StringBuilder();
+      sb.append(formatPower(te.powerInMachines));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.ofStr());
+      sb.append(" ");
+      sb.append(formatPower(te.maxPowerInMachines));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.abrevation());
+      fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
-    rgb = valuesCol;
-    y += fontRenderer.FONT_HEIGHT + 2;
-    sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveRfSent));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.perTickStr());
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+      rgb = headingCol;
+      y += fontRenderer.FONT_HEIGHT + sectionGap;
+      sb = new StringBuilder();
+      sb.append(monHeading4);
+      fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
-    rgb = headingCol;
-    y += fontRenderer.FONT_HEIGHT + sectionGap;
-    sb = new StringBuilder();
-    sb.append(monHeading5);
-    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
+      rgb = valuesCol;
+      y += fontRenderer.FONT_HEIGHT + 2;
+      sb = new StringBuilder();
+      sb.append(formatPowerFloat(te.aveRfSent));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.abrevation());
+      sb.append(PowerDisplayUtil.perTickStr());
+      fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
-    rgb = valuesCol;
-    y += fontRenderer.FONT_HEIGHT + 2;
-    sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveRfReceived));
-    sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.perTickStr());
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+      rgb = headingCol;
+      y += fontRenderer.FONT_HEIGHT + sectionGap;
+      sb = new StringBuilder();
+      sb.append(monHeading5);
+      fontRenderer.drawString(sb.toString(), x, y, rgb, true);
+
+      rgb = valuesCol;
+      y += fontRenderer.FONT_HEIGHT + 2;
+      sb = new StringBuilder();
+      sb.append(formatPowerFloat(te.aveRfReceived));
+      sb.append(" ");
+      sb.append(PowerDisplayUtil.abrevation());
+      sb.append(PowerDisplayUtil.perTickStr());
+      fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+    } else {
+      IconEIO.map.render(IconEIO.INACTIVE_TAB, sx + 200, sy + SPACING, true);
+    }
   }
 
 }
