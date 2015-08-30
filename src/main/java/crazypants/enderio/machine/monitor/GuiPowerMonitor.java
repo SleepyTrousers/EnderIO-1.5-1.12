@@ -297,7 +297,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
   private void renderInfoTab(int sx, int sy) {
     if (!isRedstoneMode) {
       GL11.glDisable(GL11.GL_LIGHTING);
-
+      GL11.glEnable(GL11.GL_BLEND);
       IconEIO.map.render(IconEIO.ACTIVE_TAB, sx + 200, sy + SPACING, true);
 
       int headingCol = ColorUtil.getRGB(Color.white);

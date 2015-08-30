@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport;
 
+import java.awt.Point;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -98,6 +100,13 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
       addSlotToContainer(new TemplateSlot(getInv(), i, x, y));
       x += 18;
     }
+  }
+  
+  @Override
+  public Point getPlayerInventoryOffset() {
+    Point p = super.getPlayerInventoryOffset();
+    p.translate(0, -1);
+    return p;
   }
 
   @Override
