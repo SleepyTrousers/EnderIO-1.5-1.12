@@ -663,7 +663,74 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Thermal Expansion" >
+  <recipeGroup name="Thermal Expansion/Foundation" >
+    <!-- Alloys and Ingots -->
+    <recipe name="EnderiumIngot" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="ingotEnderium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustEnderium" />
+      </output>
+    </recipe>
+    <recipe name="SignalumIngot" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="ingotSignalum" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSignalum" />
+      </output>
+    </recipe>
+    <recipe name="LumiumIngot" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="ingotLumium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustLumium" />
+      </output>
+    </recipe>
+    <recipe name="InvarIngot" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="ingotInvar" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustInvar" />
+      </output>
+    </recipe>
+    <!-- Blocks -->
+    <recipe name="EnderiumBlock" energyCost="3600" >
+      <input>
+        <itemStack oreDictionary="blockEnderium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustEnderium" number="9" />
+      </output>
+    </recipe>
+    <recipe name="SignalumBlock" energyCost="3600" >
+      <input>
+        <itemStack oreDictionary="blockSignalum" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSignalum" number="9" />
+      </output>
+    </recipe>
+    <recipe name="LumiumBlock" energyCost="3600" >
+      <input>
+        <itemStack oreDictionary="blockLumium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustLumium" number="9" />
+      </output>
+    </recipe>
+    <recipe name="InvarBlock" energyCost="3600" >
+      <input>
+        <itemStack oreDictionary="blockInvar" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustInvar" number="9" />
+      </output>
+    </recipe>
+    <!-- Other -->
     <recipe name="Obsidian" energyCost="4000" >
       <input>
         <itemStack modID="minecraft" itemName="obsidian" />
@@ -1198,6 +1265,7 @@
       </input>
       <output>
         <itemStack oreDictionary="dustNickel" number="4" />
+        <itemStack oreDictionary="dustPlatinum" chance="0.1" />
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
@@ -1234,6 +1302,69 @@
       </input>
       <output>
         <itemStack oreDictionary="dustSaltpeter" number="10" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherSalt" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherSalt" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSalt" number="12" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherSteel" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherSteel" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSteel" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherOsmium" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherOsmium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustOsmium" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherTitanium" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherTitanium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustTitanium" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherMagnesium" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherMagnesium" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustMagnesium" number="8" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherTungsten" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherTungsten" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustTungsten" number="4" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="NetherRutile" energyCost="3200" >
+      <input>
+        <itemStack oreDictionary="oreNetherRutile" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustRutile" number="4" />
         <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>

@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +37,7 @@ public class TooltipHandlerFluid implements ITooltipCallback {
       if (fuel != null) {
         list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
         list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
-        list.add(EnumChatFormatting.ITALIC + " " + fuel.getTotalBurningTime() + " " + EnderIO.lang.localize("fuel.tooltip.burnTime"));
+        list.add(EnumChatFormatting.ITALIC + " " + MessageFormat.format(EnderIO.lang.localize("fuel.tooltip.burnTime"), fuel.getTotalBurningTime()));
       } else {
         IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
         if (coolant != null) {

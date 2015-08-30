@@ -56,8 +56,8 @@ public class MachineRecipes {
     String silicon = SILICON.oreDict;
 
     if (Config.addPeacefulRecipes) {
-      addShaped(frankenZombie, "gdg", "dzd", "gdg", 'g', Items.gold_ingot, 'd', Items.diamond, 'z', zombieController);
-      addShaped(sentientEnder, "ddd", "ded", "dgd", 'g', Blocks.gold_block, 'd', Items.diamond, 'e', enderRes);
+      addShaped(frankenZombie, "gdg", "dzd", "gdg", 'g', "ingotGold", 'd', "gemDiamond", 'z', zombieController);
+      addShaped(sentientEnder, "ddd", "ded", "dgd", 'g', "blockGold", 'd', "gemDiamond", 'e', enderRes);
     }
 
     //stirling gen
@@ -84,7 +84,7 @@ public class MachineRecipes {
 
     //Crafter
     ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
-    addShaped(crafter, "iti", "imi", "izi", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'z', zombieController);
+    addShaped(crafter, "iti", "imi", "izi", 'i', "ingotIron", 't', "craftingTableWood", 'm', machineChassi, 'z', zombieController);
 
     //Powered Spawner
     ItemStack poweredSpawner = new ItemStack(EnderIO.blockPoweredSpawner);
@@ -110,7 +110,7 @@ public class MachineRecipes {
 
     //Tanks
     ItemStack basicTank = new ItemStack(EnderIO.blockTank, 1, 0);
-    addShaped(basicTank, "ibi", "bgb", "ibi", 'g', "glass", 'i', Items.iron_ingot, 'b', Blocks.iron_bars);
+    addShaped(basicTank, "ibi", "bgb", "ibi", 'g', "glass", 'i', "ingotIron", 'b', Blocks.iron_bars);
 
     ItemStack advTank = new ItemStack(EnderIO.blockTank, 1, 1);
     addShaped(advTank, "ibi", "bgb", "ibi", 'g', "blockGlassHardened", 'i', darkSteel, 'b', EnderIO.blockDarkIronBars);
@@ -118,17 +118,17 @@ public class MachineRecipes {
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);
     if (Config.useHardRecipes) {
-      addShaped(crusher, "ooo", "fmf", "pip", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'p', Blocks.piston, 'o', Blocks.obsidian);
+      addShaped(crusher, "ooo", "fmf", "pip", 'f', Items.flint, 'm', machineChassi, 'i', "ingotIron", 'p', Blocks.piston, 'o', Blocks.obsidian);
     } else {
-      addShaped(crusher, "fff", "imi", "ipi", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'p', Blocks.piston);
+      addShaped(crusher, "fff", "imi", "ipi", 'f', Items.flint, 'm', machineChassi, 'i', "ingotIron", 'p', Blocks.piston);
     }
 
     //alloy smelter
     ItemStack alloySmelter = new ItemStack(EnderIO.blockAlloySmelter, 1, 0);
     if (Config.useHardRecipes) {
-      addShaped(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', Blocks.iron_block, 'f', Blocks.furnace);
+      addShaped(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', "blockIron", 'f', Blocks.furnace);
     } else {
-      addShaped(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', Items.iron_ingot, 'f', Blocks.furnace);
+      addShaped(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', "ingotIron", 'f', Blocks.furnace);
 
     }
 
@@ -139,9 +139,9 @@ public class MachineRecipes {
     //capacitor bank
 
     ItemStack capBank1 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
-    addShaped(capBank1, "bcb", "cmc", "bcb", 'b', Items.iron_ingot, 'c', capacitor, 'm', Blocks.redstone_block);
+    addShaped(capBank1, "bcb", "cmc", "bcb", 'b', "ingotIron", 'c', capacitor, 'm', "blockRedstone");
     ItemStack capBank2 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
-    addShaped(capBank2, "bcb", "cmc", "bcb", 'b', electricalSteel, 'c', capacitor2, 'm', Blocks.redstone_block);
+    addShaped(capBank2, "bcb", "cmc", "bcb", 'b', electricalSteel, 'c', capacitor2, 'm', "blockRedstone");
     ItemStack capBank3 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
     addShaped(capBank3, "bcb", "cmc", "bcb", 'b', electricalSteel, 'c', capacitor3, 'm', vibCry);
 
@@ -154,9 +154,9 @@ public class MachineRecipes {
     //painter
     ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
     if (Config.useHardRecipes) {
-      addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond, 'd', Items.diamond);
+      addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
     } else {
-      addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond, 'd', Items.diamond);
+      addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
     }
 
     //Farm
@@ -205,11 +205,11 @@ public class MachineRecipes {
 
     //Enchanter
     ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
-    addShaped(enchanter, "dbd", "sss", " s ", 'd', Items.diamond, 'b', Items.book, 's', darkSteel);
+    addShaped(enchanter, "dbd", "sss", " s ", 'd', "gemDiamond", 'b', Items.book, 's', darkSteel);
 
     //Vacuum Chest
     ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
-    addShaped(vacuumChest, "iii", "ici", "ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
+    addShaped(vacuumChest, "iii", "ici", "ipi", 'i', "ingotIron", 'c', "chestWood", 'p', pulCry);
 
     //Soul Binder
     Object enderBit;
@@ -268,11 +268,10 @@ public class MachineRecipes {
     ItemStack machineChassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
 
     //powered light
-    ItemStack glowstone = new ItemStack(Items.glowstone_dust);
     if (Config.useHardRecipes) {
-      addShaped(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', "itemSilicon", 'c', capacitor);
+      addShaped(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', "dustGlowstone", 's', "itemSilicon", 'c', capacitor);
     } else {
-      addShaped(poweredLamp, "ggg", "sds", "scs", 'g', "glass", 'd', glowstone, 's', "itemSilicon", 'c', capacitor);
+      addShaped(poweredLamp, "ggg", "sds", "scs", 'g', "glass", 'd', "dustGlowstone", 's', "itemSilicon", 'c', capacitor);
     }
     ItemStack invPoweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 1);
     addShapeless(invPoweredLamp, poweredLamp, Blocks.redstone_torch);
@@ -280,14 +279,14 @@ public class MachineRecipes {
 
     //light
     ItemStack lamp = new ItemStack(EnderIO.blockElectricLight, 1, 2);
-    addShaped(lamp, "   ", "ggg", "isi", 'g', "glass", 's', Blocks.glowstone, 'i', Items.iron_ingot);
+    addShaped(lamp, "   ", "ggg", "isi", 'g', "glass", 's', "glowstone", 'i', "ingotIron");
     ItemStack invLamp = new ItemStack(EnderIO.blockElectricLight, 1, 3);
     addShapeless(invLamp, lamp, Blocks.redstone_torch);
     addShapeless(lamp, invLamp, Blocks.redstone_torch);
 
     //MJ Reader
 
-    addShaped(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g', Blocks.glass_pane, 's', "itemSilicon", 'e',
+    addShaped(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g', "paneGlass", 's', "itemSilicon", 'e',
         electricalSteel);
 
     //Slice'N'Splice
@@ -298,7 +297,7 @@ public class MachineRecipes {
     ItemStack itemBuffer = Type.getStack(Type.ITEM);
     ItemStack powerBuffer = Type.getStack(Type.POWER);
     ItemStack omniBuffer = Type.getStack(Type.OMNI);
-    addShaped(itemBuffer, "isi", "scs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'c', Blocks.chest);
+    addShaped(itemBuffer, "isi", "scs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'c', "chestWood");
     addShaped(powerBuffer, "isi", "sfs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'f', machineChassis);
     addShapeless(omniBuffer, itemBuffer, powerBuffer);
   }
