@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import mekanism.api.gas.IGasHandler;
+import mods.immibis.microblocks.api.IMicroblockSupporterTile;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -27,9 +28,10 @@ import crazypants.enderio.power.IInternalPowerHandler;
 
 @InterfaceList({
     @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
-    @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas")
+    @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas"),
+    @Interface(iface = "mods.immibis.microblocks.api.IMicroblockSupporterTile", modid = "ImmibisMicroblocks")
 })
-public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
+public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost, IMicroblockSupporterTile {
 
   TileEntity getEntity();
 

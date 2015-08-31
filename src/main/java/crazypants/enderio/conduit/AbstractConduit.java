@@ -9,6 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import mods.immibis.microblocks.api.EnumPartClass;
+import mods.immibis.microblocks.api.EnumPosition;
+import mods.immibis.microblocks.api.IMicroblockCoverSystem;
+import mods.immibis.microblocks.api.Part;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -233,11 +237,30 @@ public abstract class AbstractConduit implements IConduit {
     if(conduit == null) {
       return false;
     }
+    if (MicroblocksUtil.supportMicroblocks() && isBlockedByMicroblocks(direction, conduit)) {
+      return false;
+    }
     return getConnectionMode(direction) != ConnectionMode.DISABLED && conduit.getConnectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
   }
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
+    return false;
+  }
+
+  protected boolean isBlockedByMicroblocks(ForgeDirection direction, IConduit conduit) {
+    IMicroblockCoverSystem covers = getBundle().getCoverSystem();
+    for (Part part : covers.getAllParts()) {
+      if (part.type.getPartClass() == EnumPartClass.Panel) {
+        return part.pos == EnumPosition.getFacePosition(direction.ordinal());
+      }
+    }
+    covers = conduit.getBundle().getCoverSystem();
+    for (Part part : covers.getAllParts()) {
+      if (part.type.getPartClass() == EnumPartClass.Panel) {
+        return part.pos == EnumPosition.getFacePosition(direction.getOpposite().ordinal());
+      }
+    }
     return false;
   }
 
