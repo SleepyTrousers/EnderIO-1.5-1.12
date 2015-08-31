@@ -34,7 +34,6 @@ import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
@@ -87,7 +86,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
   
   private boolean supportsMicroblocks;
-  private Object covers;
+  
+  Object covers;
   
   public TileConduitBundle() {
     this.blockType = EnderIO.blockConduitBundle;
@@ -935,11 +935,26 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Method(modid = "ImmibisMicroblocks")
   public boolean isPlacementBlocked(PartType<?> part, EnumPosition pos) {
     EnumPartClass type = part.getPartClass();
+    // Let's do some cheaper checks first
     if (type == EnumPartClass.Strip) {
-      // No slab strips or pillars
-      return part.getSize() > 0.3 || pos == EnumPosition.PostX || pos == EnumPosition.PostY || pos == EnumPosition.PostZ;
-    } else if (type == EnumPartClass.Panel || type == EnumPartClass.HollowPanel) {
-      return part.getSize() > 0.3;
+      // No pillars
+      if (pos == EnumPosition.PostX || pos == EnumPosition.PostY || pos == EnumPosition.PostZ) {
+        return true;
+      }
+    } else if (part.getSize() < 0.25) {
+      // Anything this small can never intersect conduits
+      return false;
+    }
+    // Finally just check core BB intersections
+    // Ignore anything that is not a core to allow blocking of connections
+    else if (type == EnumPartClass.Panel) {
+      List<CollidableComponent> boxes = getCollidableComponents();
+      BoundingBox bb = new BoundingBox(Part.getBoundingBoxFromPool(pos, part.getSize()));
+      for (CollidableComponent c : boxes) {
+        if (c.dir == ForgeDirection.UNKNOWN && c.bound.intersects(bb)) {
+          return true;
+        }
+      }
     }
     return false;
   }
@@ -987,6 +1002,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public void onMicroblocksChanged() {
     Set<ForgeDirection> needUpdates = EnumSet.allOf(ForgeDirection.class);
+    needUpdates.remove(ForgeDirection.UNKNOWN);
     for (Part p : getCoverSystem().getAllParts()) {
       if (p.type.getPartClass() == EnumPartClass.Panel) {
         ForgeDirection dir = MicroblocksUtil.posToDir(p.pos);
@@ -1019,7 +1035,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         if (remove) {
           removeConnection(dir, c);
         } else if (neighborBundle != null) {
-          addConnection(dir, neighborBundle.getConduit(c.getBaseConduitType()), c);
+          addConnection(dir, c, getConduit(c.getBaseConduitType()));
         }
         c.connectionsChanged();
       }
@@ -1033,8 +1049,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   private void addConnection(ForgeDirection dir, IConduit c, IConduit connectingTo) {
-    if (!c.getConduitConnections().contains(dir) && connectingTo.canConnectToConduit(dir, c)) {
-      c.conduitConnectionAdded(dir);
+    if (connectingTo != null) {
+      if (!c.getConduitConnections().contains(dir) && connectingTo.canConnectToConduit(dir, c)) {
+        c.conduitConnectionAdded(dir);
+      }
     }
   }
 }
