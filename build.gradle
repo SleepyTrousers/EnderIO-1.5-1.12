@@ -182,7 +182,7 @@ curse {
 
     if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
     projectId = project.curse_projectId
-    changelog = System.getenv("CHANGELOG").equals("none") ? release ? getChangelogText() : getChangelog() : System.getenv("CHANGELOG")
+    changelog = System.getenv("CHANGELOG").equals("none") ? release ? getChangelogText() : project.changelog : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
     additionalArtifact deobfJar
     relatedProject 'endercore'
