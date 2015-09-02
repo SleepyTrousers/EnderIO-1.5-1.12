@@ -704,6 +704,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   //------------------- Inventory
 
   @Override
+  public boolean isUseableByPlayer(EntityPlayer player) {
+    return canPlayerAccess(player);
+  }
+  
+  @Override
   public ItemStack getStackInSlot(int slot) {
     if(network == null) {
       return null;

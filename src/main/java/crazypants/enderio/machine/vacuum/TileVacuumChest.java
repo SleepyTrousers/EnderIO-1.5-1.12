@@ -136,6 +136,11 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   }
 
   @Override
+  public boolean isUseableByPlayer(EntityPlayer player) {
+    return canPlayerAccess(player);
+  }
+  
+  @Override
   public int getSizeInventory() {
     return inv.length;
   }

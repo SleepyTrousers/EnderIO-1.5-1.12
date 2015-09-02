@@ -550,13 +550,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
-    if(worldObj == null) {
-      return true;
-    }
-    if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
-      return false;
-    }
-    return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+    return canPlayerAccess(player);
   }
 
   @Override
