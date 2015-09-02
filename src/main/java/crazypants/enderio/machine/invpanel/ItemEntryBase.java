@@ -34,7 +34,7 @@ public class ItemEntryBase {
   }
 
   boolean equals(int itemID, int meta, NBTTagCompound nbt) {
-    return this.itemID == itemID && this.meta == meta && (this.nbt == nbt) || (this.nbt != null && this.nbt.equals(nbt));
+    return this.itemID == itemID && this.meta == meta && ((this.nbt == nbt) || (this.nbt != null && this.nbt.equals(nbt)));
   }
 
   public Item getItem() {
