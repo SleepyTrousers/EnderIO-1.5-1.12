@@ -20,9 +20,12 @@ else
 group = "com.enderio"
 archivesBaseName = "EnderIO"
 version = "${minecraft_version}-${mod_version}.${buildnumber}"
+boolean release = true
 
-if (project.hasProperty('mod_appendix'))
+if (project.hasProperty('mod_appendix')) {
     version += "_${project.mod_appendix}"
+    release = false
+}
 
 minecraft {
     version = "${minecraft_version}-${forge_version}"
@@ -179,7 +182,7 @@ curse {
 
     if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
     projectId = project.curse_projectId
-    changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
+    changelog = System.getenv("CHANGELOG").equals("none") ? release ? getChangelogText() : getChangelog() : System.getenv("CHANGELOG")
     releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
     additionalArtifact deobfJar
     relatedProject 'endercore'
