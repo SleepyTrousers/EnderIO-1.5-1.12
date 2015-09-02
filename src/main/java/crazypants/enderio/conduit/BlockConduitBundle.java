@@ -1083,6 +1083,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return IMultipartSystem.instance.hook_isSideSolid(world, x, y, z, side);
   }
 
+  @SideOnly(Side.CLIENT)
   private boolean IM__addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
     return IMultipartSystem.instance.hook_addDestroyEffects(world, x, y, z, meta, effectRenderer);
   }
