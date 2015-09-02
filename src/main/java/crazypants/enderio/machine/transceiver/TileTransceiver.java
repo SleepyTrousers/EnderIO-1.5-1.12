@@ -338,7 +338,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     int canSend = getMaxSendableEnergy();
     if(canSend > 0 && !sendTo.isEmpty()) {
       Iterator<Channel> iter = sendTo.iterator();
-      while (canSend > 0) {
+      while (canSend > 0 && iter.hasNext()) {
         ServerChannelRegister.instance.sendPower(this, canSend, iter.next());
         canSend = getMaxSendableEnergy();
       }
