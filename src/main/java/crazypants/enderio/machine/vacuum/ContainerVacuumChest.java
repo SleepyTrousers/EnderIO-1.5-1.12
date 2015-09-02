@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.awt.Point;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -29,6 +31,13 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
 
     filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
     addSlotToContainer(filterSlot);
+  }
+  
+  @Override
+  public Point getPlayerInventoryOffset() {
+    Point p = super.getPlayerInventoryOffset();
+    p.translate(0, 40);
+    return p;
   }
 
   @Override
