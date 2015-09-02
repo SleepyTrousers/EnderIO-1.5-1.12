@@ -35,7 +35,6 @@ import appeng.api.util.AECableType;
 
 import com.enderio.core.client.render.BoundingBox;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -84,9 +83,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   private FacadeRenderState facadeRenderAs;
 
   private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
-  
-  private boolean supportsMicroblocks;
-  
+    
   Object covers;
   
   public TileConduitBundle() {
@@ -126,7 +123,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     nbtRoot.setInteger("facadeMeta", facadeMeta);
     nbtRoot.setShort("nbtVersion", NBT_VERSION);
     
-    if (supportsMicroblocks) {
+    if (MicroblocksUtil.supportMicroblocks()) {
       writeMicroblocksToNBT(nbtRoot);
     }
   }
@@ -164,7 +161,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       clientUpdated = true;
     }
 
-    if (supportsMicroblocks) {
+    if (MicroblocksUtil.supportMicroblocks()) {
       readMicroblocksFromNBT(nbtRoot);
     }
   }
@@ -918,12 +915,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   // Immibis Microblocks
 
   private void initMicroblocks() {
-    this.supportsMicroblocks = Loader.isModLoaded("ImmibisMicroblocks");
-    if (this.supportsMicroblocks) {
+    if (MicroblocksUtil.supportMicroblocks()) {
       createCovers();
     }
   }
 
+  @Method(modid = "ImmibisMicroblocks")
   private void createCovers() {
     IMicroblockSystem ims = MicroblockAPIUtils.getMicroblockSystem();
     if (ims != null) {
@@ -965,12 +962,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return (IMicroblockCoverSystem) covers;
   }
 
+  @Method(modid = "ImmibisMicroblocks")
   private void writeMicroblocksToNBT(NBTTagCompound tag) {
     if (covers != null) {
       ((IMicroblockCoverSystem) covers).writeToNBT(tag);
     }
   }
 
+  @Method(modid = "ImmibisMicroblocks")
   private void readMicroblocksFromNBT(NBTTagCompound tag) {
     if (covers != null) {
       ((IMicroblockCoverSystem) covers).readFromNBT(tag);
@@ -1000,6 +999,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
+  @Method(modid = "ImmibisMicroblocks")
   public void onMicroblocksChanged() {
     Set<ForgeDirection> needUpdates = EnumSet.allOf(ForgeDirection.class);
     needUpdates.remove(ForgeDirection.UNKNOWN);
@@ -1018,6 +1018,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     updateBlock();
   }
   
+  @Method(modid = "ImmibisMicroblocks")
   private void updateConnections(ForgeDirection dir, boolean remove) {
     TileEntity neighbor = getLocation().getLocation(dir).getTileEntity(worldObj);
     IConduitBundle neighborBundle = (IConduitBundle) (neighbor instanceof IConduitBundle ? neighbor : null);
@@ -1042,12 +1043,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
   }
 
+  @Method(modid = "ImmibisMicroblocks")
   private void removeConnection(ForgeDirection dir, IConduit c) {
     if (c.getConduitConnections().contains(dir)) {
       c.conduitConnectionRemoved(dir);
     }
   }
 
+  @Method(modid = "ImmibisMicroblocks")
   private void addConnection(ForgeDirection dir, IConduit c, IConduit connectingTo) {
     if (connectingTo != null) {
       if (!c.getConduitConnections().contains(dir) && connectingTo.canConnectToConduit(dir, c)) {
