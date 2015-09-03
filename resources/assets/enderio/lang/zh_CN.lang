@@ -96,6 +96,15 @@ item.itemExtractSpeedDowngrade.tooltip.basic.line1=给物品导管使用的降�
 item.itemExtractSpeedDowngrade.tooltip.detailed.line1=将每次提取的速度
 item.itemExtractSpeedDowngrade.tooltip.detailed.line2=减至1
 
+item.itemInventoryPanelUpgrade.name=远程接入升级
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=存储控制面板远程接入升级
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=给物品导管使用的功能升级
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=允许存储控制面板接入该网
+item.itemInventoryPanelUpgrade.tooltip.detailed.line3=络, 使其能够显示存储容器
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=中的物品并进行抽取, 无视
+item.itemInventoryPanelUpgrade.tooltip.detailed.line5=物品管道的模式.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(无需将管道设为抽取)
+
 enderio.itemGasConduit.name=气体导管
 
 enderio.itemGasConduit.tooltip.maxExtract=最大提取:
@@ -104,6 +113,7 @@ enderio.itemGasConduit.tooltip.detailed.line1=传送和通用机械兼容的气�
 
 enderio.itemMEConduit.name=ME导管
 enderio.itemMEConduitDense.name=密集ME导管
+enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
 
 //Entity
 entity.witherSkeleton.name=凋零骷髅
@@ -121,7 +131,16 @@ tile.blockEndermanSkull.reanimated.name=复苏末影人头
 tile.blockEndermanSkull.tormented.name=禁锢末影人头
 enderio.blastResistant=防爆
 enderio.lightEmitter=发光
+enderio.lightBlocker=挡光
 enderio.tooltip.isBeaconBase=可用于当作信标底座
+enderio.dustWheat.name=面粉
+
+enderio.itemEnderios.name="末影麦片"
+enderio.itemEnderios.tooltip.common.line1=健康早餐的一部分!
+enderio.itemEnderios.tooltip.detailed.line1=其实并不健康. 含有253g糖, 53g脂肪
+enderio.itemEnderios.tooltip.detailed.line2=还有394g末影粉.
+enderio.itemEnderios.tooltip.detailed.line3=末影粉的副作用包括:恶心,头晕,混乱
+enderio.itemEnderios.tooltip.detailed.line4=以及随机传送.
 
 //Fluids
 fluid.nutrient_distillation=营养精华液
@@ -146,8 +165,8 @@ enderio.fluid.millibucket.abr=mB
 enderio.fuel.tooltip.heading=燃料详情
 enderio.fuel.tooltip.burnTime=燃烧时间 {0,number}
 enderio.fluid.millibucketsTick=mB/t
-coolant.tooltip.heading=冷却剂
-enderio.fuel.tooltip.degreesPerBucket=deg per bucket
+enderio.coolant.tooltip.heading=冷却剂
+enderio.coolant.tooltip.degreesPerBucket=度每桶
 enderio.gas.gasTick=Gas/t
 
 //Materials
@@ -158,6 +177,7 @@ enderio.pulsatingCrystal.name=脉冲晶体
 enderio.vibrantCrystal.name=充能晶体
 enderio.enderCrystal.name=末影晶体
 enderio.attractorCrystal.name=诱引晶体
+enderio.weatherCrystal.name=凋零晶体
 enderio.darkGrindingBall.name=玄铁钢珠
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG磨粉机研磨球
 enderio.darkGrindingBall.tooltip.detailed.line2=最大输出
@@ -165,7 +185,7 @@ enderio.darkGrindingBall.tooltip.detailed.line3=额外输出
 enderio.darkGrindingBall.tooltip.detailed.line4=功率降低
 
 tile.blockReinforcedObsidian.name=强化黑曜石
-+tile.blockReinforcedObsidian.tooltip.common.line1=能抵挡凋零
+tile.blockReinforcedObsidian.tooltip.common.line1=能抵挡凋零
 
 //Quartz / Glass
 tile.blockFusedQuartz.name=石英玻璃
@@ -173,6 +193,8 @@ enderio.blockFusedQuartz.fusedQuartz.name=石英玻璃
 enderio.blockFusedQuartz.fusedGlass.name=纯净玻璃
 enderio.blockFusedQuartz.enlightenedFusedQuartz.name=萤光石英玻璃
 enderio.blockFusedQuartz.enlightenedFusedGlass.name=萤光纯净玻璃
+enderio.blockFusedQuartz.darkFusedQuartz.name=黑暗石英玻璃
+enderio.blockFusedQuartz.darkFusedGlass.name=黑暗纯净玻璃
 
 item.enderio.itemFusedQuartzFrame.name=石英玻璃框
 enderio.itemPowderIngot=粉和粒
@@ -208,7 +230,7 @@ enderio.powderCopper.name=铜粉
 enderio.powderTin.name=锡粉
 enderio.powderEnder.name=末影珍珠粉
 enderio.powderObsidian.name=黑曜石粉
-enderio.ingotEnderiumBase.name=Enderium Base
+enderio.ingotEnderiumBase.name=末影锭粗胚
 
 //Capacitors
 enderio.itemBasicCapacitor.name=电容
@@ -244,11 +266,13 @@ tile.blockAlloySmelter.tooltip.detailed.line5=增加速度与能量存储
 
 tile.blockSolarPanel.name=光伏板
 tile.blockSolarPanel.advanced.name=高级光伏板
+tile.blockSolarPanel.tooltip.common.line1=太阳能!
 tile.blockSolarPanel.tooltip.detailed.line1=白天产生能量
 tile.blockSolarPanel.tooltip.detailed.line2=顶部必须
 tile.blockSolarPanel.tooltip.detailed.line3=直面天空
 enderio.maxSolorProduction=最大输出
 enderio.tooltip.efficiency=效率
+enderio.tooltip.sunlightBlocked=天空被挡住了!
 
 item.itemElectricLight.name=电灯
 item.itemElectricLight.tooltip.detailed.line1=当提供能量与红石信
@@ -292,6 +316,7 @@ tile.blockCapBank.tooltip.detailed.line1=多方块能量存储.
 tile.blockCapBank.tooltip.detailed.line2=可以给使用RF能量的物品充能.
 tile.blockCapBank.tooltip.detailed.line3=空手shift右击一面
 tile.blockCapBank.tooltip.detailed.line4=来改变显示的信息
+tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
 tile.blockCapBank.tooltipPrefix=包含
 
 enderio.capbank.maxIO=最大输入/输出
@@ -301,6 +326,8 @@ enderio.capbank.change=I/O
 enderio.capbank.iodisplay.stable=I/O
 enderio.capbank.iodisplay.gain=In
 enderio.capbank.iodisplay.loss=Out
+enderio.capbank.iodisplay.input=输入
+enderio.capbank.iodisplay.output=输出
 
 tile.blockWirelessCharger.name=无线充能器
 tile.blockWirelessCharger.tooltip.detailed.line1=给附近玩家物品 
@@ -366,6 +393,7 @@ tile.blockZombieGenerator.name=僵尸发电机
 tile.blockZombieGenerator.tooltip.detailed.line1=消耗营养精华液
 tile.blockZombieGenerator.tooltip.detailed.line2=来产生能量
 enderio.zombieGenerator.fuelTank=营养液水槽
+enderio.gui.fluid.minReq=激活需要 %s 
 
 tile.blockKillerJoe.name=杀手乔
 tile.blockKillerJoe.tooltip.detailed.line1=当你提供一把剑和营养精华
@@ -396,6 +424,7 @@ enderio.farm.note.noSeeds=无种子
 enderio.farm.note.noAxe=无斧子
 enderio.farm.note.noHoe=无锄头
 enderio.farm.note.noPower=能量不足
+enderio.farm.gui.baseUse=基础消耗:
 
 tile.blockTank.name=流体箱
 tile.blockTank.advanced.name=高压流体箱
@@ -405,6 +434,18 @@ tile.blockTank.tooltip.detailed.line3=注满液体容器
 enderio.tank.tank=流体箱
 enderio.tooltip.none=空
 enderio.tooltip.fluidStored=存有流体
+
+enderio.gui.tooltip.voidslot=空白物品栏
+enderio.gui.void.mode=空白模式
+
+enderio.gui.void.mode.always=持续
+enderio.gui.void.mode.always.desc=空白物品栏接受所有物品
+
+enderio.gui.void.mode.if_not_container=非容器
+enderio.gui.void.mode.if_not_container.desc=空白物品栏接受所有物品除了液体容器
+
+enderio.gui.void.mode.never=从不
+enderio.gui.void.mode.never.desc=空白物品栏不接受任何物品
 
 tile.blockCrafter.name=合成器
 tile.blockCrafter.tooltip.detailed.line1=靠能量工作的自动合成器
@@ -449,10 +490,70 @@ tile.blockExperienceObelisk.tooltip.detailed.line1=用于储存经验
 tile.blockExperienceObelisk.tooltip.detailed.line2=可将液态XP输出
 tile.blockExperienceObelisk.tooltip.detailed.line3=至相邻的储罐中
 
+tile.blockWeatherObelisk.name=气象方尖碑
+tile.blockWeatherObelisk.tooltip.detailed.line1=改变当前天气
+tile.blockWeatherObelisk.tooltip.detailed.line2=需要大量能量
+tile.blockWeatherObelisk.tooltip.detailed.line3=和催化物品
+
 tile.blockBuffer.item.name=物品缓存器
 tile.blockBuffer.power.name=能量缓存器
 tile.blockBuffer.omni.name=多功能缓存器
 tile.blockBuffer.creative.name=创造缓存器
+
+tile.blockInventoryPanel.name=存储控制面板
+tile.blockInventoryPanel.tooltip.basic.line1=远程访问与合成
+tile.blockInventoryPanel.tooltip.detailed.line1=通过在物品管道安装远程接入升级
+tile.blockInventoryPanel.tooltip.detailed.line2=允许面板远程接入并访问存储容器
+tile.blockInventoryPanel.tooltip.detailed.line3=使用营养精华液作为能源.
+tile.blockInventoryPanel.tooltip.detailed.line4=提供一个.
+enderio.gui.inventorypanel.header.crafting=合成栏
+enderio.gui.inventorypanel.header.return=返还区
+enderio.gui.inventorypanel.header.storage=存储区
+enderio.gui.inventorypanel.info.filter=<按名称搜索>
+enderio.gui.inventorypanel.info.offline=<离线>
+enderio.gui.inventorypanel.tooltip.return.line1=物品返还区
+enderio.gui.inventorypanel.tooltip.return.line2=放置在这里的物品能够被
+enderio.gui.inventorypanel.tooltip.return.line3=物品管道抽取, 但不会被
+enderio.gui.inventorypanel.tooltip.return.line4=用于合成
+enderio.gui.inventorypanel.tooltip.return.line5=点击将其切换为存储区
+enderio.gui.inventorypanel.tooltip.storage.line1=物品存储区
+enderio.gui.inventorypanel.tooltip.storage.line2=一个小型的物品暂存区
+enderio.gui.inventorypanel.tooltip.storage.line3=点击将其切换为返还区
+enderio.gui.inventorypanel.tooltip.filterslot.line1=物品过滤器插槽
+enderio.gui.inventorypanel.tooltip.filterslot.line2=将配置好的物品过滤器放置在
+enderio.gui.inventorypanel.tooltip.filterslot.line3=这里来选择想要显示的物品
+enderio.gui.inventorypanel.tooltip.sort.name_down.line1=按物品名称排序
+enderio.gui.inventorypanel.tooltip.sort.name_up.line1=按物品名称排序
+enderio.gui.inventorypanel.tooltip.sort.name_up.line2=倒序
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=按模组ID排序
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=同模组物品按名称排序
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=按模组ID排序
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=同模组物品按名称排序
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=倒序
+enderio.gui.inventorypanel.tooltip.sort.count_down.line1=按物品耐久排序
+enderio.gui.inventorypanel.tooltip.sort.count_down.line2=耐久从高到低排序
+enderio.gui.inventorypanel.tooltip.sort.count_up.line1=按物品耐久排序
+enderio.gui.inventorypanel.tooltip.sort.count_up.line2=耐久从低到高排序
+enderio.gui.inventorypanel.tooltip.refill.line1=重新填充物品栏
+enderio.gui.inventorypanel.tooltip.refill.line2=普通点击放置一次
+enderio.gui.inventorypanel.tooltip.refill.line3=合成所需要的物品
+enderio.gui.inventorypanel.tooltip.refill.line4=而Shift点击会尝试
+enderio.gui.inventorypanel.tooltip.refill.line5=将合成栏填充满.
+enderio.gui.inventorypanel.tooltip.setrecipe.line1=记忆当前合成表
+enderio.gui.inventorypanel.tooltip.setrecipe.line2=允许从网络中抽取物品
+enderio.gui.inventorypanel.tooltip.setrecipe.line3=并重新填充该合成表
+enderio.gui.inventorypanel.tooltip.clear.line1=清除合成栏
+enderio.gui.inventorypanel.tooltip.clear.line2=将所有物品移至返还区
+enderio.gui.inventorypanel.tooltip.fuelTank=营养液槽
+enderio.gui.inventorypanel.tooltip.itemsstored=存储物品: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=存储当前合成表
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=最多可存储6张合成表.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=左键一张存储合成表会将一
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=次合成所需物品放入合成栏
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift+左键会尝试将合成栏
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=填充满.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=右键一个合成表将其删除
+enderio.gui.inventorypanel.tooltip.sync=NEI同步
 
 enderio.machine.tooltip.configured=(已配置)
 
@@ -490,6 +591,12 @@ tile.blockTravelAnchor.tooltip.detailed.line6=可在喷涂机内喷涂
 enderio.blockTravelPlatform.invalidTarget=目标受阻
 enderio.blockTravelPlatform.outOfRange=目标太远
 
+tile.blockTelePad.name=传送台
+tile.blockTelePad.tooltip.detailed.line1=使用能量传送生物
+tile.blockTelePad.tooltip.detailed.line2=到指定世界的特定位置.
+tile.blockTelePad.tooltip.detailed.line3=必须摆成 3x1x3 多方块结构.
+enderio.gui.telepad.teleport=传送!
+
 item.itemTravelStaff.name=旅行权杖
 item.itemTravelStaff.tooltip.detailed.line1=手持旅行锚与末影接口时
 item.itemTravelStaff.tooltip.detailed.line2=可以透视锚点,并通过
@@ -497,6 +604,18 @@ item.itemTravelStaff.tooltip.detailed.line3=<右击>直接传送
 item.itemTravelStaff.tooltip.detailed.line4=<shift><右击>
 item.itemTravelStaff.tooltip.detailed.line5=可短距离传送玩家
 enderio.itemTravelStaff.notEnoughPower=能量不足
+
+item.itemCoordSelector.name=坐标记录仪
+item.itemCoordSelector.tooltip.detailed.line1=记录一个方块的坐标.
+item.itemCoordSelector.tooltip.detailed.line2=右键方块选取
+item.itemCoordSelector.tooltip.detailed.line3=侧面邻近的方块.
+item.itemCoordSelector.tooltip.detailed.line4=Shift右键方块来
+item.itemCoordSelector.tooltip.detailed.line5=选取特定方块.
+item.itemCoordSelector.tooltip.detailed.line6=可以在远处选取.
+enderio.itemCoordSelector.chat.newCoords=新坐标: %s
+enderio.itemCoordSelector.chat.setCoords=设置坐标: %s
+enderio.itemCoordSelector.chat.newDimension=新世界: %s%s
+enderio.itemCoordSelector.chat.setDimension=设置世界: %s%s
 
 //Painter
 tile.blockPainter.name=喷涂机
@@ -561,6 +680,7 @@ skullZombieElectrode.name=僵尸电极
 skullZombieController.name=Z-逻辑控制器
 skullZombieFrankenstien.name=人造僵尸
 skullEnderResonator.name=末影谐振器
+skullSentientEnder.name=意识末影谐振器
 
 item.itemSpawnEggEnderIO.name=生成
 
@@ -572,14 +692,17 @@ item.darkSteel_boots.name=玄钢靴子
 item.darkSteel_sword.name=终结之剑
 item.darkSteel_pickaxe.name=玄钢铲
 item.darkSteel_axe.name=玄钢斧
+item.darkSteel_shears.name=玄钢剪
 
-enderio.item.tooltip.showDetails=<按住Shift>
-enderio.item.darkSteel.tooltip.durability=耐久:
+enderio.item.darkSteel.tooltip.lvs=等级
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=充能后的效率
 enderio.item.darkSteel_pickaxe.tooltip.effObs=采集黑曜石的效率
+enderio.item.darkSteel_pickaxe.tooltip.cost=消耗
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=潜行时一次采集多个原木
+
+enderio.item.darkSteel_shears.tooltip.multiHarvest=授权时修剪多个方块/羊
 
 enderio.item.darkSteel_sword.tooltip.line1=增加头颅与末影珍珠的掉落
 enderio.item.darkSteel_sword.tooltip.line2=一旦被打,末影人无法传送
@@ -632,6 +755,8 @@ enderio.darksteel.upgrade.sound.disabled=声波定位禁用
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=揭示
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=要素减免: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=魔法已经显现出来
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=魔法隐藏在了普通视野当中
 
 enderio.darksteel.upgrade.naturalistEye.name=自然之眼
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=显示已授粉的树叶
@@ -652,6 +777,9 @@ item.itemGliderWing.name=滑翔翼
 item.itemGliderWings.name=滑翔翼
 item.itemGliderWings.tooltip.detailed.line1=用于升级
 item.itemGliderWings.tooltip.detailed.line2=玄铁钢护胸
+
+enderio.darksteel.upgrade.jump.enabled=跳跃启用
+enderio.darksteel.upgrade.jump.disabled=跳跃禁用
 
 enderio.darksteel.upgrade.jump_one.name=跳跃
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=增加步行与跳跃高度
@@ -722,6 +850,8 @@ enderio.gui.machine.button.retrievelevels=取出10级
 enderio.gui.machine.tooltip.retrievelevels=玩家XP级数
 enderio.gui.machine.button.retrieveall=取出全部
 enderio.gui.machine.ioMode.overlay.tooltip=配置IO
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift点击会重置各面
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=至默认设置
 enderio.gui.machine.ioMode.none=无
 enderio.gui.machine.ioMode.pull=拉
 enderio.gui.machine.ioMode.push=推
@@ -809,6 +939,12 @@ enderio.gui.alloy.mode.all=全部烧炼
 enderio.gui.alloy.mode.alloy=仅限合金
 enderio.gui.alloy.mode.furnace=仅限熔炉
 
+//Vacuum chest
+enderio.gui.vacuum.range=吸取力度
+enderio.gui.vacuum.header.chest=真空箱子
+enderio.gui.vacuum.header.filter=物品过滤器
+enderio.gui.vacuum.header.range=范围
+
 //Vat
 enderio.vat.outputTank=输出槽
 enderio.vat.inputTank=输入槽
@@ -825,6 +961,7 @@ enderio.stirlingGenerator.output=产能速率:
 enderio.stirlingGenerator.burnRate=燃烧速率:
 enderio.stirlingGenerator.upgradeslot=升级栏
 enderio.stirlingGenerator.upgrades={0} 提供 {2}{1,number,#.#}x{3} 的效率
+enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=只有
@@ -835,9 +972,17 @@ enderio.gui.travelAccessable.protected=被保护
 enderio.gui.travelAccessable.unauthorised=你没有访问该方块的权限.
 enderio.gui.travelAccessable.enterCode=需要访问密码
 enderio.gui.travelAccessable.ok=已授权
+enderio.gui.travelAccessable.skipLocked=跳过锁定锚, 使用定向传送.
+enderio.gui.travelAccessable.skipObstructed=跳过不通畅锚.
+enderio.gui.travelAccessable.skipPrivate=跳过私有锚.
+
+enderio.gui.telepad.configure.travel=旅行设置
+enderio.gui.telepad.configure.telepad=传送台设置
+enderio.gui.telepad.blocked=传送锁定!
 
 //Spawn Gurad
 enderio.gui.spawnGurad.showRange=显示范围
+enderio.gui.spawnGurad.hideRange=隐藏范围
 enderio.gui.spawnGurad.range=范围:
 
 //conduits
@@ -873,6 +1018,17 @@ enderio.gui.conduit.item.roundRobinEnabled=循环启用
 enderio.gui.conduit.item.roundRobinDisabled=循环禁用
 enderio.gui.conduit.item.priority=优先级
 
+enderio.gui.conduit.item.fuzzy.disabled=模糊模式禁用
+enderio.gui.conduit.item.fuzzy.fuzzy_25=对 25% 损伤进行模糊比对
+enderio.gui.conduit.item.fuzzy.fuzzy_50=对 50% 损伤进行模糊比对
+enderio.gui.conduit.item.fuzzy.fuzzy_75=对 75% 损伤进行模糊比对
+enderio.gui.conduit.item.fuzzy.fuzzy_99=对任何损伤均进行模糊比对
+
+enderio.gui.conduit.item.filterupgrade=插入物品过滤器
+enderio.gui.conduit.item.speedupgrade=插入物品管道速度提升/降低升级
+enderio.gui.conduit.item.speedupgrade2=最高提升为15; 最高降速为1
+enderio.gui.conduit.item.functionupgrade.line1=可用功能升级:
+
 enderio.gui.conduit.redstone.signalColor=信号颜色
 enderio.gui.conduit.redstone.color=颜色
 enderio.gui.conduit.redstone.signalStrengh=强信号
@@ -884,6 +1040,12 @@ enderio.gui.conduit.fluid.whitelist=白名单
 enderio.gui.conduit.fluid.blacklist=黑名单
 
 enderio.gui.conduit.gas.autoExtract=自动提取
+
+//Weather
+enderio.gui.weather.task.clear=清除天气
+enderio.gui.weather.task.rain=雨天
+enderio.gui.weather.task.storm=雷暴天气
+enderio.gui.weather.requireditem=需要物品: %s
 
 //Enchants
 enchantment.enderio.soulBound=灵魂绑定
@@ -942,11 +1104,14 @@ enderio.keybind.gogglesofrevealing=揭示护目镜
 enderio.keybind.nightvision=夜视
 enderio.keybind.soundlocator=声波定位
 enderio.keybind.speed=速度
-enderio.keybind.stepassist=Step Assist
+enderio.keybind.jump=跳跃
+enderio.keybind.stepassist=步行辅助
 enderio.keybind.yetawrenchmode=以太扳手模式
+enderio.keybind.magnet=电磁铁
 enderio.nei.alloysmelter=合金炉
 enderio.nei.enchanter=附魔器
 enderio.nei.sagmill=SAG磨粉机
+enderio.nei.sagmill.outputchance=概率: {0,choice,0#'<1'|0<{0,number}}%
 enderio.nei.slicensplice=头颅装配机
 enderio.nei.soulbinder=灵魂绑定器
 enderio.nei.vat=酿液锅
