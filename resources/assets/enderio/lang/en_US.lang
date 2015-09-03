@@ -978,7 +978,7 @@ enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
 
 enderio.gui.telepad.configure.travel=Travel Settings
 enderio.gui.telepad.configure.telepad=Telepad Settings
-enderio.gui.telepad.blocked=Telport Blocked!
+enderio.gui.telepad.blocked=Teleport Blocked!
 
 //Spawn Gurad [sic]
 enderio.gui.spawnGurad.showRange=Show Range
