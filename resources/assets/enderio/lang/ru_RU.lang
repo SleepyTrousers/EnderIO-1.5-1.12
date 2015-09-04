@@ -96,6 +96,15 @@ item.itemExtractSpeedDowngrade.tooltip.basic.line1=Снижает скорост
 item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Снижает скорость на 1
 item.itemExtractSpeedDowngrade.tooltip.detailed.line2=предмет за извлечение
 
+item.itemInventoryPanelUpgrade.name=Улучшение дистанционной осведомлённости
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Дист. осведомлённость для инвентарных панелей
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Функциональное улучшение для предметных труб
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Позволяет инвентарным панелям, присоединённым к
+item.itemInventoryPanelUpgrade.tooltip.detailed.line3=к сети, находить и извлекать
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=предметы из инвентаря независимо
+item.itemInventoryPanelUpgrade.tooltip.detailed.line5=от режима трубы.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(Не нужно менять режим труб на извлечение)
+
 enderio.itemGasConduit.name=Газовая труба
 
 enderio.itemGasConduit.tooltip.maxExtract=Макс. извлечение:
@@ -122,8 +131,16 @@ tile.blockEndermanSkull.reanimated.name=Реанимированная голо�
 tile.blockEndermanSkull.tormented.name=Измученная голова странника Края
 enderio.blastResistant=Взрывоустойчиво
 enderio.lightEmitter=Излучает свет
+enderio.lightBlocker=Блокирует свет
 enderio.tooltip.isBeaconBase=Может быть использовано, как основа для маяка
 enderio.dustWheat.name=Мука
+
+enderio.itemEnderios.name="Enderios"
+enderio.itemEnderios.tooltip.common.line1=Часть сбалансированного завтрака!
+enderio.itemEnderios.tooltip.detailed.line1=Не совсем нездоровая пища. Содержит 253г сахара, 53г жиров
+enderio.itemEnderios.tooltip.detailed.line2=и 394г пыли Края.
+enderio.itemEnderios.tooltip.detailed.line3=Побочные эффекты пыли Края: тошнота, головокружение, смятение 
+enderio.itemEnderios.tooltip.detailed.line4=и случайная телепортация.
 
 //Fluids
 fluid.nutrient_distillation=Питательный дистиллят
@@ -176,6 +193,8 @@ enderio.blockFusedQuartz.fusedQuartz.name=Расплавленный кварц
 enderio.blockFusedQuartz.fusedGlass.name=Почти прозрачное стекло
 enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Освещённый расплавленный кварц
 enderio.blockFusedQuartz.enlightenedFusedGlass.name=Освещённое прозрачное стекло
+enderio.blockFusedQuartz.darkFusedQuartz.name=Тёмный расплавленный кварц
+enderio.blockFusedQuartz.darkFusedGlass.name=Тёмное прозрачное стекло
 
 item.enderio.itemFusedQuartzFrame.name=Рамка из расплавленного кварца
 enderio.itemPowderIngot=Порошки и слитки
@@ -416,6 +435,18 @@ enderio.tank.tank=Резервуар
 enderio.tooltip.none=Нет
 enderio.tooltip.fluidStored=Содержится жидкость
 
+enderio.gui.tooltip.voidslot=Слот удаления
+enderio.gui.void.mode=Режим удаления
+
+enderio.gui.void.mode.always=Всегда
+enderio.gui.void.mode.always.desc=Слот удаления принимает все предметы
+
+enderio.gui.void.mode.if_not_container=Если не контейнер
+enderio.gui.void.mode.if_not_container.desc=Слот удаления принимает все предметы, не являющиеся жидкостными контейнерами
+
+enderio.gui.void.mode.never=Никогда
+enderio.gui.void.mode.never.desc=Слот удаления не принимает предметы
+
 tile.blockCrafter.name=Создатель
 tile.blockCrafter.tooltip.detailed.line1=Электрический авто-создатель
 tile.blockCrafter.tooltip.detailed.line2=Потребляет энергию за операцию
@@ -469,6 +500,61 @@ tile.blockBuffer.power.name=Энергобуфер
 tile.blockBuffer.omni.name=Универсальный буфер
 tile.blockBuffer.creative.name=Творческий буфер
 
+tile.blockInventoryPanel.name=Инвентарная панель
+tile.blockInventoryPanel.tooltip.basic.line1=Удалённый доступ и создание
+tile.blockInventoryPanel.tooltip.detailed.line1=Даёт удалённый доступ к инвентарям через
+tile.blockInventoryPanel.tooltip.detailed.line2=улучшения дист. осведомлённости в предметных трубах.
+tile.blockInventoryPanel.tooltip.detailed.line3=Использует питательный дистиллят в качестве энергии.
+tile.blockInventoryPanel.tooltip.detailed.line4=Предоставляет постоянную сетку создания.
+enderio.gui.inventorypanel.header.crafting=Сетка создания
+enderio.gui.inventorypanel.header.return=Return area
+enderio.gui.inventorypanel.header.storage=Storage area
+enderio.gui.inventorypanel.info.filter=<поиск по имени>
+enderio.gui.inventorypanel.info.offline=<НЕ В СЕТИ>
+enderio.gui.inventorypanel.tooltip.return.line1=Item return area
+enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
+enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit, but will not be
+enderio.gui.inventorypanel.tooltip.return.line4=used for crafting.
+enderio.gui.inventorypanel.tooltip.return.line5=Click to change into storage area.
+enderio.gui.inventorypanel.tooltip.storage.line1=Item storage area
+enderio.gui.inventorypanel.tooltip.storage.line2=Small temporary item storage area.
+enderio.gui.inventorypanel.tooltip.storage.line3=Click to change into return area
+enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
+enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
+enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
+enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Sort items by name
+enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Sort items by name
+enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Starting at the end of the alphabet
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=Starting at the end of the alphabet
+enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sort items by their quantity
+enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Starting with the highest quantity
+enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Sort items by their quantity
+enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Starting with the lonely ones
+enderio.gui.inventorypanel.tooltip.refill.line1=Refills the crafting grid
+enderio.gui.inventorypanel.tooltip.refill.line2=A normal click puts items
+enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting opperations,
+enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
+enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
+enderio.gui.inventorypanel.tooltip.setrecipe.line1=Learn the current crafting recipe
+enderio.gui.inventorypanel.tooltip.setrecipe.line2=Allows the refilling for the
+enderio.gui.inventorypanel.tooltip.setrecipe.line3=current recipe from the network.
+enderio.gui.inventorypanel.tooltip.clear.line1=Очистить сетку создания
+enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
+enderio.gui.inventorypanel.tooltip.fuelTank=Питательный резервуар
+enderio.gui.inventorypanel.tooltip.itemsstored=Предметов накоплено: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
+enderio.gui.inventorypanel.tooltip.sync=Синхронизация с NEI
+
 enderio.machine.tooltip.configured=(Настроен)
 
 //Blocks
@@ -506,6 +592,9 @@ enderio.blockTravelPlatform.invalidTarget=Место назначения заб
 enderio.blockTravelPlatform.outOfRange=Место назначения за пределами радиуса действия
 
 tile.blockTelePad.name=Блок телепорта
+tile.blockTelePad.tooltip.detailed.line1=Использует энергию для телепортации
+tile.blockTelePad.tooltip.detailed.line2=сущностей в указанную позицию и измерение.
+tile.blockTelePad.tooltip.detailed.line3=Должен быть размещён в виде мультиблока 3x1x3.
 enderio.gui.telepad.teleport=Телепортироваться!
 
 item.itemTravelStaff.name=Посох путешествия
@@ -564,7 +653,7 @@ item.itemMagnet.tooltip.detailed.line2=Shift-ПКМ, чтобы включить
 item.itemMagnet.tooltip.detailed.line3=Должен быть запитан, активен и в
 item.itemMagnet.tooltip.detailed.line4=панели быстрого доступа(или в слоте Baubles) для функционирования
 
-item.enderio.itemConduitProbe.name=Зонд трубы
+item.enderio.itemConduitProbe.name=Зонд для труб
 item.enderio.itemConduitProbe.tooltip.detailed.line1=ПКМ по трубе, чтобы отобразить
 item.enderio.itemConduitProbe.tooltip.detailed.line2=детали о её сети
 item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift-ПКМ по трубе, чтобы
@@ -591,6 +680,7 @@ skullZombieElectrode.name=Зомби-электрод
 skullZombieController.name=Зомби-контроллер
 skullZombieFrankenstien.name=Зомби Фрэнк
 skullEnderResonator.name=Резонатор Края
+skullSentientEnder.name=Разумный Край
 
 item.itemSpawnEggEnderIO.name=Призвать существо - 
 
@@ -665,6 +755,8 @@ enderio.darksteel.upgrade.sound.disabled=Звуколокатор отключе
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Откровение
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Снижение затрат Вис: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Магия раскрывается
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Магия скрыта от обычного взгляда
 
 enderio.darksteel.upgrade.naturalistEye.name=Глаз натуралиста
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Показывает опылённую листву
@@ -685,6 +777,9 @@ item.itemGliderWing.name=Крыло планёра
 item.itemGliderWings.name=Крылья планёра
 item.itemGliderWings.tooltip.detailed.line1=Улучшается кирасой
 item.itemGliderWings.tooltip.detailed.line2=из чёрной стали
+
+enderio.darksteel.upgrade.jump.enabled=Прыжок включен
+enderio.darksteel.upgrade.jump.disabled=Прыжок выключен
 
 enderio.darksteel.upgrade.jump_one.name=Прыжок
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Увеличивает шаг и высоту прыжка
@@ -877,9 +972,13 @@ enderio.gui.travelAccessable.protected=Защищённый
 enderio.gui.travelAccessable.unauthorised=Вам запрещён доступ к этому блоку.
 enderio.gui.travelAccessable.enterCode=Требуется код доступа
 enderio.gui.travelAccessable.ok=Авторизироваться
+enderio.gui.travelAccessable.skipLocked=Закрытый якорь пропущен, используйте целевую телепортацию.
+enderio.gui.travelAccessable.skipObstructed=Заблокированный якорь пропущен.
+enderio.gui.travelAccessable.skipPrivate=Личный якорь пропущен.
 
 enderio.gui.telepad.configure.travel=Настройки путешествий
 enderio.gui.telepad.configure.telepad=Настройки телепорта
+enderio.gui.telepad.blocked=Телепорт заблокирован!
 
 //Spawn Gurad [sic]
 enderio.gui.spawnGurad.showRange=Показать дальность
@@ -919,9 +1018,16 @@ enderio.gui.conduit.item.roundRobinEnabled=Цикл включён
 enderio.gui.conduit.item.roundRobinDisabled=Цикл отключен
 enderio.gui.conduit.item.priority=Приоритет
 
+enderio.gui.conduit.item.fuzzy.disabled=Нечёткий режим отключен
+enderio.gui.conduit.item.fuzzy.fuzzy_25=Нечёткое совпадение на 25% урона
+enderio.gui.conduit.item.fuzzy.fuzzy_50=Нечёткое совпадение на 50% урона
+enderio.gui.conduit.item.fuzzy.fuzzy_75=Нечёткое совпадение на 75% урона
+enderio.gui.conduit.item.fuzzy.fuzzy_99=Нечёткое совпадение при любом уроне
+
 enderio.gui.conduit.item.filterupgrade=Вставить предметный фильтр
 enderio.gui.conduit.item.speedupgrade=Вставить улучшения скорости/понижение скорости
 enderio.gui.conduit.item.speedupgrade2=Макс. кол-во улучшений 15; Макс. кол-во понижений 1
+enderio.gui.conduit.item.functionupgrade.line1=Возможные функциональные улучшения:
 
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
@@ -998,12 +1104,14 @@ enderio.keybind.gogglesofrevealing=Очки откровения
 enderio.keybind.nightvision=Ночное зрение
 enderio.keybind.soundlocator=Звуколокатор
 enderio.keybind.speed=Скорость
+enderio.keybind.jump=Прыжок
 enderio.keybind.stepassist=Шаг вверх
 enderio.keybind.yetawrenchmode=Режим ключа Yeta
 enderio.keybind.magnet=Переключить электромагнит
 enderio.nei.alloysmelter=Завод сплавов
 enderio.nei.enchanter=Зачарователь
 enderio.nei.sagmill=Дробитель
+enderio.nei.sagmill.outputchance=Шанс: {0,choice,0#'<1'|0<{0,number}}%
 enderio.nei.slicensplice=«Отрубатель и сращиватель»
 enderio.nei.soulbinder=Связыватель душ
 enderio.nei.vat=Чан
