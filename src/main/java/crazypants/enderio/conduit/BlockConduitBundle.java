@@ -259,21 +259,24 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-    if(target != null && target.hitInfo instanceof CollidableComponent) {
+  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+    ItemStack ret = null;
+    if (MicroblocksUtil.supportMicroblocks()) {
+      ret = getMicroblockPickBlock(target, world, x, y, z, player);
+    }
+    if(ret == null && target != null && target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       TileConduitBundle bundle = (TileConduitBundle) world.getTileEntity(x, y, z);
       IConduit conduit = bundle.getConduit(cc.conduitType);
       if(conduit != null) {
-        return conduit.createItem();
+        ret = conduit.createItem();
       } else if(cc.conduitType == null && bundle.getFacadeId() != null) {
         // use the facde
-        ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
-        PainterUtil.setSourceBlock(fac, bundle.getFacadeId(), bundle.getFacadeMetadata());
-        return fac;
+        ret = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
+        PainterUtil.setSourceBlock(ret, bundle.getFacadeId(), bundle.getFacadeMetadata());
       }
     }
-    return null;
+    return ret;
   }
 
   @Override
@@ -1068,13 +1071,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return bundle.getConduit(IRedstoneConduit.class);
   }
   
-  @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-    ItemStack coverPick = IMultipartSystem.instance.hook_getPickBlock(target, world, x, y, z, player);
-    if(coverPick != null)
-      return coverPick;
-
-    return super.getPickBlock(target, world, x, y, z, player);
+  public ItemStack getMicroblockPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+    return IMultipartSystem.instance.hook_getPickBlock(target, world, x, y, z, player);
   }
 
   // IM Hooks
