@@ -188,7 +188,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
     World worldObj = te.getWorldObj();
 
-    BlockCoord bc = new BlockCoord(te);
+    BlockCoord bc1 = new BlockCoord(te);
 
     if (!worldObj.blockExists(te.xCoord, te.yCoord, te.zCoord)) {
       return;
@@ -196,14 +196,14 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
     // Done manually to avoid orphaning chunks
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      bc = bc.getLocation(dir);
-      if (worldObj.blockExists(bc.x, bc.y, bc.z)) {
-        worldObj.notifyBlockOfNeighborChange(bc.x, bc.y, bc.z, EnderIO.blockConduitBundle);
-        if (signal != null) {
+      BlockCoord bc2 = bc1.getLocation(dir);
+      if (worldObj.blockExists(bc2.x, bc2.y, bc2.z)) {
+        worldObj.notifyBlockOfNeighborChange(bc2.x, bc2.y, bc2.z, EnderIO.blockConduitBundle);
+        if (signal != null && bc2.getBlock(worldObj).isNormalCube()) {
           for (ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
-            bc = bc.getLocation(dir2);
-            if (worldObj.blockExists(bc.x, bc.y, bc.z) && bc.getBlock(worldObj).isNormalCube()) {
-              worldObj.notifyBlockOfNeighborChange(bc.x, bc.y, bc.z, EnderIO.blockConduitBundle);
+            BlockCoord bc3 = bc2.getLocation(dir2);
+            if (!bc3.equals(bc1) && worldObj.blockExists(bc3.x, bc3.y, bc3.z)) {
+              worldObj.notifyBlockOfNeighborChange(bc3.x, bc3.y, bc3.z, EnderIO.blockConduitBundle);
             }
           }
         }
