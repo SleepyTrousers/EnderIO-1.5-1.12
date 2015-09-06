@@ -300,8 +300,8 @@
         <itemStack oreDictionary="gravel" />
       </input>
       <output>
-        <itemStack oreDictionary="flint" />
-        <itemStack oreDictionary="flint" chance="0.1" />
+        <itemStack oreDictionary="itemFlint" />
+        <itemStack oreDictionary="itemFlint" chance="0.1" />
         <itemStack oreDictionary="sand" chance="0.1" />
       </output>
     </recipe>
