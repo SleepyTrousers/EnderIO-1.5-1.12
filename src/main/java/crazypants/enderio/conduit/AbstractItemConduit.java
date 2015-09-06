@@ -138,6 +138,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   @Override
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
     // Conduit replacement
+    if (player.isSneaking()) {
+      return false;
+    }
     TileEntity te = world.getTileEntity(x, y, z);
     if (te == null || !(te instanceof IConduitBundle)) {
       return false;
