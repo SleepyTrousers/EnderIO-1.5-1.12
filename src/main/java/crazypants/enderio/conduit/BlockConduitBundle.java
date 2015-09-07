@@ -563,8 +563,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
 
     ItemStack stack = player.getCurrentEquippedItem();
-    if(stack != null && stack.getItem() == EnderIO.itemConduitFacade && !bundle.hasFacade()) {
-      //add facade
+    if(stack != null && stack.getItem() == EnderIO.itemConduitFacade) {
+      // add or replace facade
       return handleFacadeClick(world, x, y, z, player, side, bundle, stack);
 
     } else if(ConduitUtil.isConduitEquipped(player)) {
@@ -702,10 +702,22 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
     int facadeMeta = PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem());
     facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
+    int facadeType = player.getCurrentEquippedItem().getItemDamage();
 
+    if (bundle.hasFacade()) {
+      if (!ConduitUtil.isSolidFacadeRendered(bundle, player) || facadeEquals(bundle, facadeID, facadeMeta, facadeType)) {
+        return false;
+      }
+      if (!world.isRemote && !player.capabilities.isCreativeMode) {
+        ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, bundle.getFacadeType().ordinal());
+        PainterUtil.setSourceBlock(fac, bundle.getFacadeId(), bundle.getFacadeMetadata());
+        Util.dropItems(world, fac, x, y, z, false);
+      }
+    }
+    
     bundle.setFacadeId(facadeID);
     bundle.setFacadeMetadata(facadeMeta);
-    bundle.setFacadeType(FacadeType.values()[player.getCurrentEquippedItem().getItemDamage()]);
+    bundle.setFacadeType(FacadeType.values()[facadeType]);
     if (!world.isRemote) {
       ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
     }
@@ -715,6 +727,11 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     world.markBlockForUpdate(x, y, z);
     bundle.getEntity().markDirty();
     return true;
+  }
+
+  private boolean facadeEquals(IConduitBundle bundle, Block facadeID, int facadeMeta, int facadeType) {
+    return bundle.getFacadeId().equals(facadeID) && bundle.getFacadeMetadata() == facadeMeta
+        && bundle.getFacadeType().ordinal() == facadeType;
   }
 
   @Override
