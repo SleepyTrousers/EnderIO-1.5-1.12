@@ -31,6 +31,7 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
+import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -90,8 +91,9 @@ public class DarkSteelController {
 
   private EnumSet<Type> getActiveSet(EntityPlayer player) {
     EnumSet<Type> active;
-    UUID id = player.getGameProfile().getId();
-    active = allActive.get(id);
+    GameProfile gameProfile = player.getGameProfile();
+    UUID id = gameProfile == null ? null : gameProfile.getId();
+    active = id == null ? null : allActive.get(id);
     if(active == null) {
       active = DEFAULT_ACTIVE.clone();
       if(id != null) {
