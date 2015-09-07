@@ -14,8 +14,13 @@ apply plugin: 'curseforge'
 ext.buildnumber = 0
 if (System.getenv('BUILD_NUMBER') != null)
     project.buildnumber = System.getenv('BUILD_NUMBER')
-else
-    logger.lifecycle "No build number detected, setting to 0"
+else {
+    try {
+        ext.buildnumber += "_" + "git rev-parse --abbrev-ref HEAD".execute().text.trim();
+        ext.buildnumber += "_" + "git rev-parse HEAD".execute().text.trim();
+    } catch (all) {}
+    logger.lifecycle "No build number detected, setting to ${ext.buildnumber}"
+}
 
 group = "com.enderio"
 archivesBaseName = "EnderIO"
