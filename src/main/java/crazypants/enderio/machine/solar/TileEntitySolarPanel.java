@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import cpw.mods.fml.common.Optional;
+import mekanism.api.ISalinationSolar;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.biome.BiomeGenDesert;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,7 +27,8 @@ import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
 
-public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
+@Optional.Interface(iface = "mekanism.api.ISalinationSolar", modid = "MekanismAPI|core")
+public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider, ISalinationSolar {
   
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
@@ -288,5 +292,15 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     if (network.isValid()) {
       network.getMaster().writeToNBT(tag);
     }
+  }
+  
+  @Override
+  @Optional.Method(modid = "MekanismAPI|core")
+  public boolean seesSun() {
+    return worldObj.isDaytime()
+      && ((!worldObj.isRaining() && !worldObj.isThundering())
+        || (worldObj.provider.getBiomeGenForCoords(xCoord >> 4, zCoord >> 4) instanceof BiomeGenDesert))
+      && !worldObj.provider.hasNoSky
+      && worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
   }
 }
