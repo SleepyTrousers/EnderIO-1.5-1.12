@@ -979,14 +979,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "ImmibisMicroblocks")
   public Packet getDescriptionPacket() {
-    if (covers == null)
-      return null;
+    if (covers == null) {
+      return super.getDescriptionPacket();
+    }
 
-    S35PacketUpdateTileEntity p = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
-
-    NBTTagCompound tag = p.func_148857_g();
+    NBTTagCompound tag = new NBTTagCompound();
     tag.setByteArray("C", ((IMicroblockCoverSystem) covers).writeDescriptionBytes());
-    return p;
+    writeCustomNBT(tag);
+    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
   }
 
   @Override
