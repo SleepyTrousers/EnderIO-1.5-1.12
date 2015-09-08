@@ -46,7 +46,6 @@ public class EnderIOCrashCallable implements ICrashCallable {
     if (register) {
       FMLCommonHandler.instance().registerCrashCallable(new EnderIOCrashCallable());
     }
-    throw new RuntimeException("foo");
   }
 
   @Override
