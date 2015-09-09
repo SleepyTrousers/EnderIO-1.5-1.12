@@ -356,10 +356,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return new PoweredTask(nextRecipe, chance, getRecipeInputs());
   }
 
+  protected IPoweredTask createTask(NBTTagCompound taskTagCompound) {
+    return PoweredTask.readFromNBT(taskTagCompound);
+  }
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
+    currentTask = createTask(nbtRoot.getCompoundTag("currentTask"));
     String uid = nbtRoot.getString("lastCompletedRecipe");
     lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
   }
