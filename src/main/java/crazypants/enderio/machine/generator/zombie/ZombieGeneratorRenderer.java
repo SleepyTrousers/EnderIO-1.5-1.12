@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -45,9 +46,9 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    if(gen.pass == 0) {
+    if(MinecraftForgeClient.getRenderPass() == 0) {
       renderModel(gen.facing);
-    } else if(gen.pass == 1) {
+    } else if(MinecraftForgeClient.getRenderPass() == 1) {
       renderFluid(gen);
     }
     GL11.glPopMatrix();
