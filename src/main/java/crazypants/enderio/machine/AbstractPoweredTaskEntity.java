@@ -134,7 +134,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     if(currentTask == null || !hasPower()) {
       return false;
     }
-    if(redstoneChecksPassed) {
+    if (redstoneChecksPassed && !currentTask.isComplete()) {
       usePower();
     }
     // then check if we are done
