@@ -43,7 +43,8 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String ELEMENT_OUTPUT = "output";
   public static final String ELEMENT_ITEM_STACK = "itemStack";
   public static final String ELEMENT_FLUID_STACK = "fluidStack";
-  public static final String ELEMENT_DUMP_REGISTERY = "dumpRegistery";
+  public static final String ELEMENT_DUMP_REGISTERY = "dumpRegistery"; // compat
+  public static final String ELEMENT_DUMP_REGISTRY = "dumpRegistry";
 
   public static final String AT_NAME = "name";
   public static final String AT_ENABLED = "enabled";
@@ -219,7 +220,7 @@ public class RecipeConfigParser extends DefaultHandler {
       root = new RecipeConfig();
     }
 
-    if(ELEMENT_DUMP_REGISTERY.equals(localName)) {
+    if (ELEMENT_DUMP_REGISTERY.equals(localName) || ELEMENT_DUMP_REGISTRY.equals(localName)) {
       root.setDumpOreDictionary(getBooleanValue(AT_ORE_DICT, attributes, false));
       root.setDumpItemRegistery(getBooleanValue(AT_DUMP_ITEMS, attributes, false));
       return;
