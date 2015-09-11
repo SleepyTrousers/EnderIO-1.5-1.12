@@ -1,13 +1,10 @@
 package crazypants.enderio.teleport.anchor;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -122,63 +119,59 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
   }
 
+  private EntityItem ei;
+
   private void renderLabel(TileEntity tileentity, double x, double y, double z, ITravelAccessable ta, double sf) {
     float globalScale = (float) sf;
     ItemStack itemLabel = ta.getItemLabel();
-    if(itemLabel != null && itemLabel.getItem() != null) {
+    if (itemLabel != null && itemLabel.getItem() != null) {
 
-      boolean isBlock = false;
-      Block block = Block.getBlockFromItem(itemLabel.getItem());
-      if(block != null && block != Blocks.air) {
-        isBlock = true;
-      }
+      boolean isBlock = itemLabel.getItem() instanceof ItemBlock;
 
       float alpha = 0.5f;
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
       float col = 0.5f;
       GL14.glBlendColor(col, col, col, col);
       GL11.glColor4f(1, 1, 1, 1);
-
-      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
       {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
-        if(!isBlock) {
-          GL11.glRotatef(-player.rotationYaw, 0.0F, 1.0F, 0.0F);
-          GL11.glRotatef(player.rotationPitch, 1.0F, 0.0F, 0.0F);
+        if (!isBlock && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+          RenderUtil.rotateToPlayer();
         }
+
+        GL11.glPushMatrix();
+        GL11.glScalef(globalScale, globalScale, globalScale);
 
         {
           GL11.glPushMatrix();
-          GL11.glScalef(globalScale, globalScale, globalScale);
+          if (isBlock) {
+            GL11.glTranslatef(0f, -0.25f, 0);
+          } else {
+            GL11.glTranslatef(0f, -0.5f, 0);
 
-          {
-            GL11.glPushMatrix();
-            if(isBlock) {
-              GL11.glTranslatef(0f, -0.25f, 0);
-            } else {
-              GL11.glTranslatef(0f, -0.5f, 0);
-            }
             GL11.glScalef(2, 2, 2);
-            EntityItem ei = new EntityItem(tileentity.getWorldObj(), x, y, z, itemLabel);
-            ei.age = 0;
-            ei.hoverStart = 0;
-            RenderManager.instance.getEntityRenderObject(ei).doRender(ei, 0, 0, 0, 0, 0);
+
+            if (ei == null) {
+              ei = new EntityItem(tileentity.getWorldObj(), x, y, z, itemLabel);
+            } else {
+              ei.setEntityItemStack(itemLabel);
+            }
+            RenderUtil.render3DItem(ei, false);
             GL11.glPopMatrix();
           }
 
           GL11.glPopMatrix();
+          GL11.glPopMatrix();
         }
-        GL11.glPopMatrix();
       }
-
     }
 
     String toRender = ta.getLabel();
-    if(toRender != null && toRender.trim().length() > 0) {
+    if (toRender != null && toRender.trim().length() > 0) {
       GL11.glColor4f(1, 1, 1, 1);
       Vector4f bgCol = RenderUtil.DEFAULT_TEXT_BG_COL;
-      if(TravelController.instance.isBlockSelected(new BlockCoord(tileentity))) {
+      if (TravelController.instance.isBlockSelected(new BlockCoord(tileentity))) {
         bgCol = new Vector4f(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
       }
 
@@ -196,7 +189,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
       }
     }
-
   }
 
   protected void renderBlock(double sf) {
