@@ -36,6 +36,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
@@ -204,24 +205,15 @@ public class GuiEnderface extends GuiScreen {
   private void doSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
-    List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
-    for (ViewableBlocks ug : blocks) {
-      if(!ug.bc.equals(new BlockCoord(ioX, ioY, ioZ))) {
-        MovingObjectPosition res = player.worldObj.rayTraceBlocks(Vec3.createVectorHelper(start.x, start.y, start.z),
-            Vec3.createVectorHelper(end.x, end.y, end.z), false);
+    MovingObjectPosition hit = player.worldObj.rayTraceBlocks(Vec3.createVectorHelper(start.x, start.y, start.z), Vec3.createVectorHelper(end.x, end.y, end.z),
+        false);
 
-        if(res != null) {
-          hits.add(res);
-        }
-      }
-    }
-    MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
-    if(hit != null) {
+    if (hit != null) {
       Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
+      if (block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
         block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
       } else {
-        openInterface(hit.blockX, hit.blockY, hit.blockZ);
+        openInterface(hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
       }
     }
 
@@ -271,6 +263,7 @@ public class GuiEnderface extends GuiScreen {
 
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         RenderHelper.disableStandardItemLighting();
         mc.entityRenderer.enableLightmap(0);
@@ -555,8 +548,9 @@ public class GuiEnderface extends GuiScreen {
 
   }
 
-  void openInterface(int x, int y, int z) {
-    PacketOpenRemoteUi p = new PacketOpenRemoteUi(x, y, z);
+  void openInterface(int x, int y, int z, int side, Vec3 hitVec) {
+    Vec3 relativeHit = Vec3.createVectorHelper(hitVec.xCoord - x, hitVec.yCoord - y, hitVec.zCoord - z);
+    PacketOpenServerGUI p = new PacketOpenServerGUI(x, y, z, side, relativeHit);
     PacketHandler.INSTANCE.sendToServer(p);
   }
 
@@ -571,5 +565,4 @@ public class GuiEnderface extends GuiScreen {
     }
 
   }
-
 }

@@ -11,16 +11,13 @@ import net.minecraft.world.World;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.enderface.te.MeProxy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
@@ -28,34 +25,19 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
   public static BlockEnderIO create() {
 
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ME_ACCESS_TERMINAL, new IGuiHandler() {
-
-      @Override
-      public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        try {
-          return MeProxy.createMeTerminalContainer(player, x, y, z, false);
-        } catch (Exception e) {
-          Log.warn("BlockEnderIO: Error occured creating the server gui element for an ME Terminal " + e);
-        }
-        return null;
-      }
-
-      @Override
-      public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return MeProxy.instance.createTerminalGui(player, x, y, z);
-      }
-
-    });
-
-    PacketHandler.INSTANCE.registerMessage(PacketOpenRemoteUi.class, PacketOpenRemoteUi.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketOpenServerGUI.class, PacketOpenServerGUI.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketLockClientContainer.Handler.class, PacketLockClientContainer.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockEnderIO result = new BlockEnderIO();
     result.init();
     return result;
   }
 
+  @SideOnly(Side.CLIENT)
   IIcon frameIcon;
+  @SideOnly(Side.CLIENT) 
   IIcon selectedOverlayIcon;
+  @SideOnly(Side.CLIENT)
   IIcon highlightOverlayIcon;
 
   static int pass;

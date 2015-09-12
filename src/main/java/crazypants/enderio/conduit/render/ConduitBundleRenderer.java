@@ -18,6 +18,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -112,7 +113,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     //enable the alpha pass based on state so the only work around is to ensure we always render something in this
     //pass. Throwing in a polygon with a 0 area does the job
     //See: https://github.com/MinecraftForge/MinecraftForge/issues/981
-    if(ForgeHooksClient.getWorldRenderPass() == 1) {
+    int pass = MinecraftForgeClient.getRenderPass();
+    pass = pass >= 0 ? pass : ForgeHooksClient.getWorldRenderPass();
+    if(pass == 1) {
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
       Tessellator.instance.addVertexWithUV(x, y, z, 0, 0);
@@ -122,10 +125,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-    boolean renderedFacade = renderFacade(x, y, z, rb, bundle, player);
+    boolean renderedFacade = renderFacade(x, y, z, pass, rb, bundle, player);
     boolean renderConduit = !renderedFacade || ConduitUtil.isFacadeHidden(bundle, player);
 
-    if(renderConduit && (ForgeHooksClient.getWorldRenderPass() == 0 || rb.overrideBlockTexture != null)) {
+    if(renderConduit && (pass == 0 || rb.overrideBlockTexture != null)) {
       BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -140,7 +143,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     return renderedFacade || (bundle.hasFacade() && !bundle.getFacadeId().isOpaqueCube());
   }
 
-  private boolean renderFacade(int x, int y, int z, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
+  private boolean renderFacade(int x, int y, int z, int pass, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
     boolean res = false;
     if(bundle.hasFacade()) {
       res = true;
@@ -159,12 +162,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         }
         facb.setBlockOverride(null);
         bundle.setFacadeId(facadeId, false);
-      } else if(facadeId != null) {
+      } else if (facadeId != null) {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         boolean isFacadeOpaque = facadeId.isOpaqueCube();
 
-        if((isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() == 0) ||
-            (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && ForgeHooksClient.getWorldRenderPass() == 1))) {
+        if ((isFacadeOpaque && pass == 0) || (rb.hasOverrideBlockTexture() || (!isFacadeOpaque && pass == 1))) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);
           try {
