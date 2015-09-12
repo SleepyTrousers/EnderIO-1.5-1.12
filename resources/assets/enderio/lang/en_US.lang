@@ -115,6 +115,8 @@ enderio.itemMEConduit.name=ME Conduit
 enderio.itemMEConduitDense.name=Dense ME Conduit
 enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
 
+enderio.itemOCConduit.name=Network Conduit (OC)
+
 //Entity
 entity.witherSkeleton.name=Wither Skeleton
 

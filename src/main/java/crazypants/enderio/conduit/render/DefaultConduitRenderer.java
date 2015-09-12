@@ -79,7 +79,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
-      drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
+      drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false, conduit.shouldMirrorTexture());
 
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
@@ -119,6 +119,11 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   }
 
   protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir, boolean isTransmission) {
+    drawSection(bound, minU, maxU, minV, maxV, dir, isTransmission, true);
+  }
+
+  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir,
+      boolean isTransmission, boolean mirrorTexture) {
 
     Tessellator tessellator = Tessellator.instance;
 
@@ -128,10 +133,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       setupVertices(bound);
     }
 
-    if(dir == NORTH || dir == UP || dir == EAST) { // maintain consistent
-                                                   // texture
-      // dir relative to the cneter
-      // of the conduit
+    if (mirrorTexture && (dir == NORTH || dir == UP || dir == EAST)) {
+      // maintain consistent texture dir relative to the center of the conduit
       float tmp = minU;
       minU = maxU;
       maxU = tmp;

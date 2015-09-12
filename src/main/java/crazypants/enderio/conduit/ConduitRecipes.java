@@ -14,12 +14,12 @@ import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
 import crazypants.enderio.conduit.me.MEUtil;
+import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
-
 import static crazypants.enderio.ModObject.blockPainter;
 import static crazypants.enderio.material.Alloy.*;
 import static crazypants.enderio.material.Material.*;
@@ -104,6 +104,18 @@ public class ConduitRecipes {
     if (MEUtil.isMEEnabled()) {
       addAeRecipes();
     }
+    if (OCUtil.isOCEnabled()) {
+      addOCRecipes();
+    }
+  }
+
+  private static void addOCRecipes() {
+    int numConduits = Config.numConduitsPerRecipe;
+    String redstoneAlloy = REDSTONE_ALLOY.getOreIngot();
+    String binder = CONDUIT_BINDER.oreDict;
+
+    addShaped(new ItemStack(EnderIO.itemOCConduit, numConduits, 0), "bbb", "rir", "bbb", 'b', binder, 'r', redstoneAlloy, 'i',
+        "ingotIron");
   }
 
   @Method(modid = "appliedenergistics2")

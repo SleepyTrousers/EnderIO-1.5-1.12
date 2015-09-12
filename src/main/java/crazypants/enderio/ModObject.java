@@ -13,6 +13,7 @@ public enum ModObject {
   itemItemConduit,
   itemGasConduit,
   itemMEConduit,
+ itemOCConduit,
   itemBasicFilterUpgrade,
   itemExistingItemFilter,
   itemModItemFilter,

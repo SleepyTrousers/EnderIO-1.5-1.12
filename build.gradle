@@ -52,6 +52,7 @@ repositories {
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
     maven { url = "http://maven.tterrag.com" }
     maven { url = "http://maven.ic2.player.to" }
+    maven { url = "http://maven.cil.li/" }
 }
 
 dependencies {
@@ -70,7 +71,9 @@ dependencies {
     
     // WAILA ships really old CCC/CCL versions, so we force the new versions
     compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
-    compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"    
+    compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"
+    
+    compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
 }
 
 sourceSets {

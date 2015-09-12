@@ -58,6 +58,7 @@ import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
+import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -226,6 +227,7 @@ public class EnderIO {
   public static ItemItemConduit itemItemConduit;
   public static ItemGasConduit itemGasConduit;
   public static ItemMEConduit itemMEConduit;
+  public static ItemOCConduit itemOCConduit;
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
   public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemModItemFilter itemModItemFilter;
@@ -403,6 +405,7 @@ public class EnderIO {
     itemItemConduit = ItemItemConduit.create();
     itemGasConduit = ItemGasConduit.create();
     itemMEConduit = ItemMEConduit.create();
+    itemOCConduit = ItemOCConduit.create();
 
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
