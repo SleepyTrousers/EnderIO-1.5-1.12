@@ -147,10 +147,6 @@ public class PoweredTask implements IPoweredTask {
   }
 
   public static IPoweredTask readFromNBT(NBTTagCompound nbtRoot) {
-    if(nbtRoot == null) {
-      return null;
-    }
-
     IMachineRecipe recipe;
 
     float usedEnergy = nbtRoot.getFloat(KEY_USED_ENERGY);
