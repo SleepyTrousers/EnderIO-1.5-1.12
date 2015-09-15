@@ -17,7 +17,7 @@ if (System.getenv('BUILD_NUMBER') != null)
 else {
     try {
         ext.buildnumber += "_" + "git rev-parse --abbrev-ref HEAD".execute().text.trim();
-        ext.buildnumber += "_" + "git rev-parse HEAD".execute().text.trim();
+        ext.buildnumber += "_" + "git rev-parse --short HEAD".execute().text.trim();
     } catch (all) {}
     logger.lifecycle "No build number detected, setting to ${ext.buildnumber}"
 }
