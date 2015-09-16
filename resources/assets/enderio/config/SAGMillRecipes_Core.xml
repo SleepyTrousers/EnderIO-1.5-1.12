@@ -781,6 +781,15 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.8" />
       </output>
     </recipe>
+    <recipe name="ApatiteOre" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="oreApatite" />
+      </input>
+      <output>
+        <itemStack oreDictionary="gemApatite" number="12" />
+        <itemStack oreDictionary="dustSulfur" chance="0.10" />
+      </output>
+    </recipe>
     <recipe name="SlabWood" energyCost="1200" >
       <input>
         <itemStack oreDictionary="slabWood" />
@@ -860,6 +869,14 @@
       <output>
         <itemStack oreDictionary="dustSulfur" number="6" />
       </output>
+    </recipe>
+    <recipe name="Saltpeter" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="oreSaltpeter" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSaltpeter" number="4" />
+        </output>
     </recipe>
     <recipe name="CrushedObsidian" energyCost="2400" >
       <input>
@@ -2226,7 +2243,16 @@
       </output>
     </recipe>
   </recipeGroup>
-
+<recipeGroup name="Bluepower" >
+    <recipe name="AmethystOre" energyCost="2400" >
+      <input>
+        <itemStack oreDictionary="oreAmethyst" />
+      </input>
+      <output>
+        <itemStack oreDictionary="gemAmethyst" number="2" />
+      </output>
+    </recipe>
+  </recipeGroup>
   <recipeGroup name="Big Reactors" >
     <!-- Metals -->
     <recipe name="YelloriteOre" energyCost="3600" >
