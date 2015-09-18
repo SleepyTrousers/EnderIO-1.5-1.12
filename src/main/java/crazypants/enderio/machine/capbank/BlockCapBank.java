@@ -154,8 +154,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCapBank)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return false;
     }
 
@@ -218,8 +218,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new ContainerCapBank(player.inventory, (TileCapBank) te);
     }
     return null;
@@ -227,8 +227,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new GuiCapBank(player, player.inventory, (TileCapBank) te);
     }
     return null;
@@ -350,8 +350,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(world.isRemote) {
       return;
     }
-    TileEntity tile = world.getTileEntity(x, y, z);
-    if(tile instanceof TileCapBank) {
+    TileEntity tile = getTileEntityEio(world, x, y, z);
+    if (tile != null) {
       TileCapBank te = (TileCapBank) tile;
       te.onNeighborBlockChange(blockId);
     }
@@ -366,7 +366,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
 
-    TileCapBank cb = getTileEntity(world, x, y, z);
+    TileCapBank cb = (TileCapBank) getTileEntityEio(world, x, y, z);
     if(cb == null) {
       return;
     }
@@ -381,8 +381,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
     } else {
       boolean modifiedDisplayType;
-      modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, x, y - 1, z));
-      modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, x, y + 1, z));
+      modifiedDisplayType = setDisplayToVerticalFillBar(cb, (TileCapBank) getTileEntityEio(world, x, y - 1, z));
+      modifiedDisplayType |= setDisplayToVerticalFillBar(cb, (TileCapBank) getTileEntityEio(world, x, y + 1, z));
       if(modifiedDisplayType) {
         cb.validateDisplayTypes();
       }
@@ -407,14 +407,6 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     return modifiedDisplayType;
   }
 
-  private TileCapBank getTileEntity(World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapBank) {
-      return (TileCapBank) te;
-    }
-    return null;
-  }
-
   protected ForgeDirection getDirForHeading(int heading) {
     switch (heading) {
     case 0:
@@ -432,8 +424,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileCapBank) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         TileCapBank cb = (TileCapBank) te;
         cb.moveInventoryToNetwork();
       }
@@ -452,12 +444,11 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(!(te instanceof TileCapBank)) {
-        return;
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
+        TileCapBank cb = (TileCapBank) te;
+        cb.onBreakBlock();
       }
-      TileCapBank cb = (TileCapBank) te;
-      cb.onBreakBlock();
     }
     super.breakBlock(world, x, y, z, par5, par6);
   }
@@ -465,8 +456,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCapBank)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
     TileCapBank tr = (TileCapBank) te;
@@ -496,8 +487,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
-    TileEntity te = w.getTileEntity(x, y, z);
-    if(te instanceof TileCapBank) {
+    TileEntity te = getTileEntityEio(w, x, y, z);
+    if (te != null) {
       return ((TileCapBank) te).getComparatorOutput();
     }
     return 0;
@@ -505,8 +496,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileCapBank cap = (TileCapBank) te;
       if(cap.getNetwork() != null) {
         if(world.isRemote && shouldDoWorkThisTick(world, x, y, z, 20)) {

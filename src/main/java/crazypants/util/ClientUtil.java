@@ -56,11 +56,12 @@ public class ClientUtil {
   }
 
   public static void setTankNBT(PacketCombustionTank message, int x, int y, int z) {
-    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
-    if(tile == null) {
+    TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    if (!(te instanceof TileCombustionGenerator)) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
     }
+    TileCombustionGenerator tile = (TileCombustionGenerator) te;
 
     if(message.nbtRoot.hasKey("coolantTank")) {
       NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("coolantTank");
@@ -78,11 +79,12 @@ public class ClientUtil {
 
   public static void setStirlingBurnTime(PacketBurnTime message, int x, int y, int z) {
 
-    TileEntityStirlingGenerator tile = (TileEntityStirlingGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
-    if(tile == null) {
+    TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    if (!(te instanceof TileEntityStirlingGenerator)) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
     }
+    TileEntityStirlingGenerator tile = (TileEntityStirlingGenerator) te;
 
     tile.burnTime = message.burnTime;
     tile.totalBurnTime = message.totalBurnTime;

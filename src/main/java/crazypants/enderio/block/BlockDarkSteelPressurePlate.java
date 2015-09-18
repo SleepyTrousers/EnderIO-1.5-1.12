@@ -102,12 +102,16 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
   @Override
   public final ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) world.getTileEntity(x, y, z);
-    ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
-    if(tepb.getSourceBlock() != null) {
-      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntityDarkSteelPressurePlate) {
+      TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) te;
+      ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
+      if (tepb.getSourceBlock() != null) {
+        PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+      }
+      return Lists.newArrayList(stack);
     }
-    return Lists.newArrayList(stack);
+    return super.getDrops(world, x, y, z, metadata, fortune);
   }
 
   @Override

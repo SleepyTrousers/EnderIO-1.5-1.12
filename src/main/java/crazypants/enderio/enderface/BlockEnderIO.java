@@ -54,8 +54,8 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack item) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnderIO) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileEnderIO eio = (TileEnderIO) te;
       eio.initUiPitch = -player.rotationPitch;
       eio.initUiYaw = -player.rotationYaw + 180;
@@ -70,7 +70,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
   @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = getTileEntityEio(world, x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.canUiBeAccessed(entityPlayer)) {

@@ -114,8 +114,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
     if(entity instanceof EntityPlayer) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileBuffer) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         TileBuffer ta = (TileBuffer) te;
         if(stack.stackTagCompound != null) {
           ta.readCommon(stack.stackTagCompound);
@@ -133,7 +133,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   // TODO refactor machines so all have this functionality
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-    return createDrop((TileBuffer) world.getTileEntity(x, y, z));
+    TileBuffer te = (TileBuffer) getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      return createDrop(te);
+    } else {
+      return null;
+    }
   }
 
   private ItemStack createDrop(TileBuffer te) {

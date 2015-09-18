@@ -139,25 +139,27 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     // Spit some "steam" out the spout
     if (isActive(world, x, y, z)) {
-      TileVat te = (TileVat) world.getTileEntity(x, y, z);
-      float pX = x + 0.5f;
-      float pY = y + 0.7f;
-      float pZ = z + 0.5f;
+      TileVat te = (TileVat) getTileEntityEio(world, x, y, z);
+      if (te != null) {
+        float pX = x + 0.5f;
+        float pY = y + 0.7f;
+        float pZ = z + 0.5f;
 
-      ForgeDirection dir = te.getFacingDir();
-      pX += 0.6f * dir.offsetX;
-      pZ += 0.6f * dir.offsetZ;
+        ForgeDirection dir = te.getFacingDir();
+        pX += 0.6f * dir.offsetX;
+        pZ += 0.6f * dir.offsetZ;
 
-      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.offsetX;
-      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.offsetZ;
+        double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.offsetX;
+        double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.offsetZ;
 
-      int num = rand.nextInt(4) + 2;
-      for (int k = 0; k < num; k++) {
-        EffectRenderer er = Minecraft.getMinecraft().effectRenderer;
-        EntitySmokeFX fx = new EntitySmokeFX(world, pX, pY, pZ, 1, 1, 1);
-        fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
-        fx.setVelocity(velX, -0.06, velZ);
-        er.addEffect(fx);
+        int num = rand.nextInt(4) + 2;
+        for (int k = 0; k < num; k++) {
+          EffectRenderer er = Minecraft.getMinecraft().effectRenderer;
+          EntitySmokeFX fx = new EntitySmokeFX(world, pX, pY, pZ, 1, 1, 1);
+          fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
+          fx.setVelocity(velX, -0.06, velZ);
+          er.addEffect(fx);
+        }
       }
     }
   }

@@ -187,8 +187,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
-    TileEntity te = w.getTileEntity(x, y, z);
-    if (te instanceof TileTank) {
+    TileEntity te = getTileEntityEio(w, x, y, z);
+    if (te != null) {
       return ((TileTank) te).getComparatorOutput();
     }
     return 0;
@@ -223,8 +223,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileTank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileTank tank = (TileTank) te;
       FluidStack stored = tank.tank.getFluid();
       String fluid = stored == null ? EnderIO.lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);

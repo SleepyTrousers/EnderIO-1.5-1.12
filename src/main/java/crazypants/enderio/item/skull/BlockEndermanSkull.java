@@ -113,13 +113,15 @@ public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser 
 
     int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
     float facingYaw = -22.5f * inc;
-    TileEndermanSkull te = (TileEndermanSkull) world.getTileEntity(x, y, z);
-    te.setYaw(facingYaw);
-    if(world.isRemote) {
-      return;
+    TileEndermanSkull te = (TileEndermanSkull) getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      te.setYaw(facingYaw);
+      if (world.isRemote) {
+        return;
+      }
+      world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 2);
+      world.markBlockForUpdate(x, y, z);
     }
-    world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 2);
-    world.markBlockForUpdate(x, y, z);
   }
 
   @Override

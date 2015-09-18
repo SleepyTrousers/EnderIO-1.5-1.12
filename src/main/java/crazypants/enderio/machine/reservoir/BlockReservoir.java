@@ -63,7 +63,7 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
     TileEntity te;
 
     if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
-        && (te = world.getTileEntity(x, y, z)) instanceof TileReservoir) {
+        && (te = getTileEntityEio(world, x, y, z)) != null) {
       TileReservoir tank = ((TileReservoir) te).getController();
       if (ToolUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
         tank.setAutoEject(!tank.isAutoEject());
@@ -87,8 +87,8 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileReservoir)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
     TileReservoir tr = (TileReservoir) te;
@@ -126,22 +126,12 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
   }
 
   @Override
-  public void onBlockAdded(World world, int x, int y, int z) {
-    if(world.isRemote) {
-      return;
-    }
-    TileReservoir tr = (TileReservoir) world.getTileEntity(x, y, z);
-    boolean res = tr.onBlockAdded();
-
-  }
-
-  @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileReservoir) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       ((TileReservoir) te).onNeighborBlockChange(block);
     }
   }

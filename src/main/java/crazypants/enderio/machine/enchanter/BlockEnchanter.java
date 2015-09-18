@@ -45,7 +45,10 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    TileEnchanter te = (TileEnchanter) world.getTileEntity(x, y, z);
+    TileEnchanter te = (TileEnchanter) getTileEntityEio(world, x, y, z);
+    if (te == null) {
+      return;
+    }
     switch (heading) {
     case 0:
       te.setFacing((short) 2);
@@ -78,8 +81,8 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnchanter) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       dropItems(world, x, y, z, (TileEnchanter) te);
     }
     super.breakBlock(world, x, y, z, block, meta);
@@ -120,8 +123,8 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnchanter) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new ContainerEnchanter(player, player.inventory, (TileEnchanter) te);
     }
     return null;
@@ -129,8 +132,8 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnchanter) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new GuiEnchanter(player, player.inventory, (TileEnchanter) te);
     }
     return null;

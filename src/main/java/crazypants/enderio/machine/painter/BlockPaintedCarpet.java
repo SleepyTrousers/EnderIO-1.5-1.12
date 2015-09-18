@@ -89,11 +89,13 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
       EffectRenderer effectRenderer) {
     IIcon tex = null;
 
-    TileEntityPaintedBlock cb = (TileEntityPaintedBlock)
-        world.getTileEntity(target.blockX, target.blockY, target.blockZ);
-    Block b = cb.getSourceBlock();
-    if(b != null) {
-      tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
+    TileEntity te = world.getTileEntity(target.blockX, target.blockY, target.blockZ);
+    if (te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock cb = (TileEntityPaintedBlock) te;
+      Block b = cb.getSourceBlock();
+      if (b != null) {
+        tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
+      }
     }
     if(tex == null) {
       tex = blockIcon;

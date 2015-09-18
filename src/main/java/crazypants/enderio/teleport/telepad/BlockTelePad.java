@@ -66,7 +66,7 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
+    TileTelePad te = (TileTelePad) getTileEntityEio(world, x, y, z);
     if(te != null && te.inNetwork()) {
       return model;
     }
@@ -86,8 +86,8 @@ public class BlockTelePad extends BlockTravelAnchor {
   @Override
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
     AxisAlignedBB bb = super.getSelectedBoundingBoxFromPool(world, x, y, z);
-    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
-    if(!te.inNetwork()) {
+    TileTelePad te = (TileTelePad) getTileEntityEio(world, x, y, z);
+    if (te == null || !te.inNetwork()) {
       return bb;
     }
     return te.getBoundingBox();
@@ -96,19 +96,25 @@ public class BlockTelePad extends BlockTravelAnchor {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block changedTo) {
     super.onNeighborBlockChange(world, x, y, z, changedTo);
-    ((TileTelePad) world.getTileEntity(x, y, z)).updateRedstoneState();
+    TileTelePad te = (TileTelePad) getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      te.updateRedstoneState();
+    }
   }
 
   @Override
   public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
     super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
-    ((TileTelePad) world.getTileEntity(x, y, z)).updateConnectedState(true);
+    TileTelePad te = (TileTelePad) getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      te.updateConnectedState(true);
+    }
   }
 
   @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTelePad) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileTelePad tp = (TileTelePad) te;
       if(tp.inNetwork()) {
         if(!tp.isMaster()) {
@@ -132,13 +138,16 @@ public class BlockTelePad extends BlockTravelAnchor {
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
     super.onBlockPlacedBy(world, x, y, z, entity, par6ItemStack);
-    ((TileTelePad) world.getTileEntity(x, y, z)).updateConnectedState(true);
+    TileTelePad te = (TileTelePad) getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      te.updateConnectedState(true);
+    }
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTelePad) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       switch (ID) {
       case GuiHandler.GUI_ID_TELEPAD:
         return new ContainerTelePad(player.inventory);
@@ -153,8 +162,8 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTelePad) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       switch (ID) {
       case GuiHandler.GUI_ID_TELEPAD:
         return new GuiTelePad(player.inventory, (TileTelePad) te, world);

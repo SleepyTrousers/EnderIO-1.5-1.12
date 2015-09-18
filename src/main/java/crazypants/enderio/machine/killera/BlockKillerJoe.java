@@ -3,6 +3,7 @@ package crazypants.enderio.machine.killera;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -52,12 +53,20 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileKillerJoe) {
+      return new ContainerKillerJoe(player.inventory, (TileKillerJoe) te);
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileKillerJoe) {
+      return new GuiKillerJoe(player.inventory, (TileKillerJoe) te);
+    }
+    return null;
   }
 
   @Override

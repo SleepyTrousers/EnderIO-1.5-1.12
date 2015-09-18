@@ -179,7 +179,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   public IIcon getModelIcon(IBlockAccess world, int x, int y, int z) {
-    return getModelIcon(((AbstractMachineEntity) world.getTileEntity(x, y, z)).isActive());
+    AbstractMachineEntity te = (AbstractMachineEntity) getTileEntityEio(world, x, y, z);
+    return getModelIcon(te != null ? te.isActive() : false);
   }
 
   public IIcon getModelIcon() {
@@ -206,7 +207,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(x, y, z);
+    AbstractMachineEntity te = (AbstractMachineEntity) getTileEntityEio(world, x, y, z);
+    if (te == null) {
+      return;
+    }
     te.setFacing(getFacingForHeading(heading));
     te.readFromItemStack(stack);
     if(world.isRemote) {
@@ -237,8 +241,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
-    TileEntity ent = world.getTileEntity(x, y, z);
-    if(ent instanceof AbstractMachineEntity) {
+    TileEntity ent = getTileEntityEio(world, x, y, z);
+    if (ent != null) {
       AbstractMachineEntity te = (AbstractMachineEntity) ent;
       te.onNeighborBlockChange(blockId);
     }

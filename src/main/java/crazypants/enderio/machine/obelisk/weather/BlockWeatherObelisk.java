@@ -3,6 +3,7 @@ package crazypants.enderio.machine.obelisk.weather;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,12 +29,20 @@ public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileWeatherObelisk) {
+      return new ContainerWeatherObelisk(player.inventory, (TileWeatherObelisk) te);
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileWeatherObelisk) {
+      return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) te);
+    }
+    return null;
   }
 
   @Override

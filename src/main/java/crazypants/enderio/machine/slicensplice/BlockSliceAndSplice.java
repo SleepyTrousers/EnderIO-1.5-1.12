@@ -81,8 +81,8 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    TileSliceAndSplice te = (TileSliceAndSplice) world.getTileEntity(x, y, z);
-    if(isActive(world, x, y, z) && te != null) {
+    TileSliceAndSplice te = (TileSliceAndSplice) getTileEntityEio(world, x, y, z);
+    if (te != null && isActive(world, x, y, z)) {
       
       ForgeDirection front = ForgeDirection.values()[te.facing];
 

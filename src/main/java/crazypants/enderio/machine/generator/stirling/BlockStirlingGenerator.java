@@ -3,6 +3,7 @@ package crazypants.enderio.machine.generator.stirling;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -29,12 +30,20 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new StirlingGeneratorContainer(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntityStirlingGenerator) {
+      return new StirlingGeneratorContainer(player.inventory, (TileEntityStirlingGenerator) te);
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiStirlingGenerator(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntityStirlingGenerator) {
+      return new GuiStirlingGenerator(player.inventory, (TileEntityStirlingGenerator) te);
+    }
+    return null;
   }
 
   @Override
@@ -53,7 +62,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    TileEntityStirlingGenerator te = (TileEntityStirlingGenerator) world.getTileEntity(x, y, z);
+    TileEntityStirlingGenerator te = (TileEntityStirlingGenerator) getTileEntityEio(world, x, y, z);
     if(te != null && te.isActive()) {
       ForgeDirection front = ForgeDirection.values()[te.facing];
 
