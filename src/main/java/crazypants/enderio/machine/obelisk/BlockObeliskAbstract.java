@@ -44,6 +44,11 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
   }
 
   @Override
+  protected String getBottomIconKey(boolean active) {
+    return "enderio:blockSoulMachineBlank";
+  }
+
+  @Override
   public boolean renderAsNormalBlock() {
     return false;
   }
