@@ -69,6 +69,11 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   }
 
   @Override
+  protected String getBottomIconKey(boolean active) {
+    return "enderio:blockSoulMachineBlank";
+  }
+
+  @Override
   protected String getBackIconKey(boolean active) {
     return "enderio:blockSoulMachineBack";
   }
