@@ -9,7 +9,7 @@ public enum PowderIngot {
   POWDER_GOLD("powderGold", null),
   POWDER_COPPER("powderCopper", INGOT_COPPER),
   POWDER_TIN("powderTin", INGOT_TIN),
-  POWDER_ENDER("powderEnder", DUST_ENDERPEARL),
+ POWDER_ENDER("powderEnder", DUST_ENDERPEARL, true),
   INGOT_ENDERIUM_BASE("ingotEnderiumBase", INGOT_ENDERIUM),
   POWDER_OBSIDIAN("powderObsidian", null),
   FLOUR("dustWheat", null);
@@ -26,18 +26,25 @@ public enum PowderIngot {
   public final String unlocalisedName;
   public final String iconKey;
   public final String oreDictDependancy;
+  public final boolean reverseDependency;
+  public boolean ignoreRuntimeDependencyCheck = false;
 
-  private PowderIngot(String unlocalisedName, String oreDictDependancy) {
+  private PowderIngot(String unlocalisedName, String oreDictDependancy, boolean reverseDependency) {
     this.unlocalisedName = "enderio." + unlocalisedName;
     iconKey = "enderio:" + unlocalisedName;
     this.oreDictDependancy = oreDictDependancy;
+    this.reverseDependency = reverseDependency;
+  }
+
+  private PowderIngot(String unlocalisedName, String oreDictDependancy) {
+    this(unlocalisedName, oreDictDependancy, false);
   }
 
   public boolean isDependancyMet() {
-    if (oreDictDependancy == null) {
+    if (oreDictDependancy == null || ignoreRuntimeDependencyCheck) {
       return true;
     }
-    return isRegistered(oreDictDependancy);
+    return isRegistered(oreDictDependancy) == !reverseDependency;
   }
 
 }

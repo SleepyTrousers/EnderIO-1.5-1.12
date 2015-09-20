@@ -30,8 +30,10 @@ public class MaterialRecipes {
     if (hasTin()) {
       OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
     }
-    if (hasEnderPearlDust()) {
+    if (PowderIngot.POWDER_ENDER.isDependancyMet()) {
       OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
+      PowderIngot.POWDER_ENDER.ignoreRuntimeDependencyCheck = true;
+      // because the line above would trigger it
     }
     //Enderium Base
     if (OreDictionaryHelper.hasEnderium()) {
