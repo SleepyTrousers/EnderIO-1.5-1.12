@@ -37,26 +37,9 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   
   protected BlockSoulBinder() {
     super(ModObject.blockSoulBinder, TileSoulBinder.class);
+    setGuiClasses(ContainerSoulBinder.class, GuiSoulBinder.class);
   }  
   
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSoulBinder) {
-      return new ContainerSoulBinder(player.inventory, (TileSoulBinder) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSoulBinder) {
-      return new GuiSoulBinder(player.inventory, (TileSoulBinder) te);
-    }
-    return null;
-  }
-
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_SOUL_BINDER;

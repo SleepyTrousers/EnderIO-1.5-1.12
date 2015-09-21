@@ -35,7 +35,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   protected BlockKillerJoe() {
     super(ModObject.blockKillerJoe, TileKillerJoe.class);
-    setStepSound(Block.soundTypeGlass);    
+    setStepSound(Block.soundTypeGlass);
+    setGuiClasses(ContainerKillerJoe.class, GuiKillerJoe.class);
   }
   
   @Override
@@ -50,16 +51,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     }
   }
   
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(x, y, z));
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(x, y, z));
-  }
-
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_KILLER_JOE;
@@ -85,6 +76,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return false;
   }
   
+  @Override
   protected short getFacingForHeading(int heading) {
     switch (heading) {
     case 0:

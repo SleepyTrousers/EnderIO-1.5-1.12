@@ -6,7 +6,7 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerCombustionEngine extends AbstractMachineContainer {
 
-  public ContainerCombustionEngine(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerCombustionEngine(InventoryPlayer playerInv, TileCombustionGenerator te) {
     super(playerInv, te);
   }
 

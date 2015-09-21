@@ -21,24 +21,7 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
 
   protected BlockAversionObelisk() {
     super(ModObject.blockSpawnGuard, TileAversionObelisk.class);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAversionObelisk) {
-      return new ContainerAversionObelisk(player.inventory, (TileAversionObelisk) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAversionObelisk) {
-      return new GuiAversionObelisk(player.inventory, (TileAversionObelisk) te);
-    }
-    return null;
+    setGuiClasses(ContainerAversionObelisk.class, GuiAversionObelisk.class);
   }
 
   @Override

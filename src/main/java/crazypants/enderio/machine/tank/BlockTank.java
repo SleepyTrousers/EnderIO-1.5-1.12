@@ -46,6 +46,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     super(ModObject.blockTank, TileTank.class);
     setStepSound(Block.soundTypeGlass);
     setLightOpacity(0);
+    setGuiClasses(ContainerTank.class, GuiTank.class);
   }
 
   @Override
@@ -71,24 +72,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @Override
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileTank(metadata);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileTank)) {
-      return null;
-    }
-    return new ContainerTank(player.inventory, (TileTank) te);
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileTank)) {
-      return null;
-    }
-    return new GuiTank(player.inventory, (TileTank) te);
   }
 
   @Override

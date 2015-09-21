@@ -35,24 +35,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   protected BlockFarmStation() {
     super(ModObject.blockFarmStation, TileFarmStation.class);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileFarmStation) {
-      return new FarmStationContainer(player.inventory, (TileFarmStation)te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileFarmStation) {
-      return new GuiFarmStation(player.inventory, (TileFarmStation) te);
-    }
-    return null;
+    setGuiClasses(FarmStationContainer.class, GuiFarmStation.class);
   }
 
   @Override

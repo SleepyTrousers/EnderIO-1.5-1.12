@@ -29,6 +29,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
+    setGuiClasses(ContainerAlloySmelter.class, GuiAlloySmelter.class);
   }
 
   @Override
@@ -38,23 +39,6 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     vanillaSmeltingOn = iIconRegister.registerIcon("enderio:furnaceSmeltingOn");
     vanillaSmeltingOff = iIconRegister.registerIcon("enderio:furnaceSmeltingOff");
     vanillaSmeltingOnly = iIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAlloySmelter) {
-      return new ContainerAlloySmelter(player.inventory, (TileAlloySmelter) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);
   }
 
   @Override

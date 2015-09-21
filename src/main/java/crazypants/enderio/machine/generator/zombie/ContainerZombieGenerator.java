@@ -6,7 +6,7 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerZombieGenerator extends AbstractMachineContainer {
 
-  public ContainerZombieGenerator(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerZombieGenerator(InventoryPlayer playerInv, TileZombieGenerator te) {
     super(playerInv, te);
   }
 

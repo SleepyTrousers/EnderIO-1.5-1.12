@@ -20,24 +20,7 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
   
   protected BlockCrafter() {
     super(ModObject.blockCrafter, TileCrafter.class);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCrafter) {
-      return new ContainerCrafter(player.inventory, (TileCrafter) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCrafter) {
-      return new GuiCrafter(player.inventory, (TileCrafter) te);
-    }
-    return null;
+    setGuiClasses(ContainerCrafter.class, GuiCrafter.class);
   }
 
   @Override

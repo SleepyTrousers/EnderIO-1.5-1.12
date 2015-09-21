@@ -25,24 +25,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
 
   protected BlockSliceAndSplice() {
     super(ModObject.blockSliceAndSplice, TileSliceAndSplice.class);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSliceAndSplice) {
-      return new ContainerSliceAndSplice(player.inventory, (TileSliceAndSplice) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSliceAndSplice) {
-      return new GuiSliceAndSplice(player.inventory, (TileSliceAndSplice) te);
-    }
-    return null;
+    setGuiClasses(ContainerSliceAndSplice.class, GuiSliceAndSplice.class);
   }
 
   @Override

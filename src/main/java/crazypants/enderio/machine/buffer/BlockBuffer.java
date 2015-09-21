@@ -41,6 +41,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
 
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class);
+    setGuiClasses(ContainerBuffer.class, GuiBuffer.class);
   }
 
   @Override
@@ -49,24 +50,6 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileBuffer) {
-      return new ContainerBuffer(player.inventory, (TileBuffer) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileBuffer) {
-      return new GuiBuffer(player.inventory, (TileBuffer) te);
-    }
-    return null;
   }
 
   @Override

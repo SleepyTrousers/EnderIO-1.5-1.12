@@ -24,16 +24,7 @@ public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk
 
   private BlockWeatherObelisk() {
     super(ModObject.blockWeatherObelisk, TileWeatherObelisk.class);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
+    setGuiClasses(ContainerWeatherObelisk.class, GuiWeatherObelisk.class);
   }
 
   @Override
