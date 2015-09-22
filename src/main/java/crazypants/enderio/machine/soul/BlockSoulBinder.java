@@ -105,7 +105,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 
   @Override
   protected String getBottomIconKey(boolean active) {
-    return "enderio:blockSoulMachineBlank";
+    return "enderio:blockSoulMachineBottom";
   }
 
   @Override

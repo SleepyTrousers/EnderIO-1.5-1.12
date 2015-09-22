@@ -35,18 +35,14 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    return getIcon(blockSide, 0);
+  protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
+    return true; // always render as active
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int side, int meta) {
-    if(ForgeDirection.getOrientation(side) == ForgeDirection.UP) {
-      return EnderIO.blockAttractor.getIcon(side, 0);
-    }
-    return EnderIO.blockAttractor.getOnIcon();
+  public IIcon getIcon(int blockSide, int blockMeta) {
+    return super.getIcon(blockSide + 6, blockMeta); // always render as active
   }
 
   @Override

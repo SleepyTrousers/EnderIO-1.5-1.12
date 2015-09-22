@@ -278,7 +278,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   protected String getBottomIconKey(boolean active) {
-    return "enderio:machineTemplate";
+    return "enderio:machineBottom";
   }
 
   protected String getModelIconKey(boolean active) {

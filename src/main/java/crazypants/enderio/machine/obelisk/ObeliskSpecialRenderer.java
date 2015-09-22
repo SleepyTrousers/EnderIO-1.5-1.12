@@ -2,6 +2,7 @@ package crazypants.enderio.machine.obelisk;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -23,7 +24,6 @@ import com.enderio.core.client.render.RenderUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-
 import static org.lwjgl.opengl.GL11.*;
 
 @SideOnly(Side.CLIENT)
@@ -76,9 +76,9 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
       break;
     }
 
-    blockRen.renderInventoryBlock(EnderIO.blockAttractor, item.getItemDamage(), 0, (RenderBlocks) data[0]);
+    blockRen.renderInventoryBlock(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 0, (RenderBlocks) data[0]);
     Timer t = RenderUtil.getTimer();
-    renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t.renderPartialTicks);
+    renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t == null ? 0 : t.renderPartialTicks);
     GL11.glPopMatrix();
   }
 
