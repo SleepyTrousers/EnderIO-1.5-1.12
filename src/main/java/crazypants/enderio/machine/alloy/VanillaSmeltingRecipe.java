@@ -176,7 +176,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     Map<ItemStack, ItemStack> metaList = FurnaceRecipes.smelting().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
       ItemStack output = entry.getValue();
-      output = OreDictionaryPreferences.instance.getPreferred(output);
+      output = OreDictionaryPreferences.instance.getPreferred(output).copy();
       result.add(new Recipe(new RecipeInput(entry.getKey()), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
     }
     return result;
