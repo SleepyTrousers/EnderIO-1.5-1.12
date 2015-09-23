@@ -229,14 +229,14 @@ public class ItemSettings extends BaseSettingsPanel {
       gui.getContainer().setInventorySlotsVisible(true);
       gui.getContainer().setInoutSlotsVisible(true, false);
       if(activeFilter != null) {
-        filterGui = getFilterGui(activeFilter, true);
+        filterGui = activeFilter.getGui(gui,itemConduit,true);
       }
     } else if(showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
       gui.getContainer().setInoutSlotsVisible(false, true);
       gui.getContainer().setInventorySlotsVisible(true);
       if(activeFilter != null) {
-        filterGui = getFilterGui(activeFilter, false);
+        filterGui = activeFilter.getGui(gui,itemConduit,false);
       }
     }
   }
@@ -248,23 +248,6 @@ public class ItemSettings extends BaseSettingsPanel {
     if(filterGui != null) {
       filterGui.updateButtons();
     }
-  }
-
-  private IItemFilterGui getFilterGui(IItemFilter filter, boolean isInput) {
-    //TODO: move to a factory
-    if(filter instanceof ItemFilter) {
-      ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-      BasicItemFilterGui basicItemFilterGui = new BasicItemFilterGui(gui, cont, !isInput);
-      basicItemFilterGui.createFilterSlots();
-      return basicItemFilterGui;
-    } else if(filter instanceof ExistingItemFilter) {
-      return new ExistingItemFilterGui(gui, itemConduit, isInput);
-    } else if(filter instanceof ModItemFilter) {
-      return new ModItemFilterGui(gui, itemConduit, isInput);
-    } else if(filter instanceof PowerItemFilter) {
-      return new PowerItemFilterGui(gui, itemConduit, isInput);
-    }
-    return null;
   }
 
   private void updateButtons() {

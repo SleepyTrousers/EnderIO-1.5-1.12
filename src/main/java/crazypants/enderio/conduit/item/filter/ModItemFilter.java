@@ -1,5 +1,9 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.gui.item.ModItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
@@ -98,6 +102,11 @@ public class ModItemFilter implements IItemFilter {
   @Override
   public int getSlotCount() {
     return 0;
+  }
+
+  @Override
+  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+    return new ModItemFilterGui(gui, itemConduit, isInput);
   }
 
   @Override
