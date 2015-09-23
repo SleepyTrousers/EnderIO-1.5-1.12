@@ -1,5 +1,9 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.ExistingItemFilterGui;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -171,7 +175,12 @@ public class ExistingItemFilter implements IItemFilter {
   public void setSticky(boolean sticky) {
     this.sticky = sticky;
   }
-  
+
+  @Override
+  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+    return new ExistingItemFilterGui(gui, itemConduit, isInput);
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);

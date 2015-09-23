@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
@@ -12,6 +15,8 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public interface IItemFilter {
+
+  IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput);
 
   void readFromNBT(NBTTagCompound nbtRoot);
 
