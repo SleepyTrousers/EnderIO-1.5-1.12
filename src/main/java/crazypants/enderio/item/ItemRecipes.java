@@ -17,12 +17,12 @@ public class ItemRecipes {
 
   public static void addRecipes() {
     ItemStack basicGear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
-    String electricalSteel = ELECTRICAL_STEEL.oreIngot;
-    String conductiveIron = CONDUCTIVE_IRON.oreIngot;
+    String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
+    String conductiveIron = CONDUCTIVE_IRON.getOreIngot();
     String vibCry = VIBRANT_CYSTAL.oreDict;
-    String enAlloy = ENERGETIC_ALLOY.oreIngot;
-    String darkSteel = DARK_STEEL.oreIngot;
-    String soularium = SOULARIUM.oreIngot;
+    String enAlloy = ENERGETIC_ALLOY.getOreIngot();
+    String darkSteel = DARK_STEEL.getOreIngot();
+    String soularium = SOULARIUM.getOreIngot();
 
     // Wrench
     ItemStack wrench = new ItemStack(EnderIO.itemYetaWench, 1, 0);

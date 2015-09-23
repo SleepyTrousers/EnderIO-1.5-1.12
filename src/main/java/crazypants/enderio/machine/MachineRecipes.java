@@ -42,12 +42,12 @@ public class MachineRecipes {
     ItemStack sentientEnder = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SENTIENT_ENDER.ordinal());
     ItemStack obsidian = new ItemStack(Blocks.obsidian);
 
-    String electricalSteel = ELECTRICAL_STEEL.oreIngot;
-    String darkSteel = DARK_STEEL.oreIngot;
-    String energeticAlloy = ENERGETIC_ALLOY.oreIngot;
-    String phasedGold = PHASED_GOLD.oreIngot;
-    String phasedIron = PHASED_IRON.oreIngot;
-    String soularium = SOULARIUM.oreIngot;
+    String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
+    String darkSteel = DARK_STEEL.getOreIngot();
+    String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
+    String phasedGold = PHASED_GOLD.getOreIngot();
+    String phasedIron = PHASED_IRON.getOreIngot();
+    String soularium = SOULARIUM.getOreIngot();
 
     String vibCry = VIBRANT_CYSTAL.oreDict;
     String pulCry = PULSATING_CYSTAL.oreDict;
