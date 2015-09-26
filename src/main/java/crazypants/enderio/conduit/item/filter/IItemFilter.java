@@ -12,10 +12,13 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public interface IItemFilter {
 
+  @SideOnly(Side.CLIENT)
   IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput);
 
   void readFromNBT(NBTTagCompound nbtRoot);
