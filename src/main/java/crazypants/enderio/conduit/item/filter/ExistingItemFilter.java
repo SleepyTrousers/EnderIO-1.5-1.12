@@ -19,6 +19,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ExistingItemFilter implements IItemFilter {
@@ -177,6 +179,7 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
     return new ExistingItemFilterGui(gui, itemConduit, isInput);
   }

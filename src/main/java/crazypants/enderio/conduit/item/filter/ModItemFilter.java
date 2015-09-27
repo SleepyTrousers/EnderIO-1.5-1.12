@@ -16,6 +16,8 @@ import com.enderio.core.common.network.NetworkUtil;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ModItemFilter implements IItemFilter {
@@ -105,6 +107,7 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
     return new ModItemFilterGui(gui, itemConduit, isInput);
   }
