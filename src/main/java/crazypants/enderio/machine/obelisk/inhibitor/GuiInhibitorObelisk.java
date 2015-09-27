@@ -14,7 +14,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
 public class GuiInhibitorObelisk extends GuiPoweredMachineBase<TileInhibitorObelisk> {
 
-  public GuiInhibitorObelisk(TileInhibitorObelisk machine, Container container) {
+  public GuiInhibitorObelisk(TileInhibitorObelisk machine, ContainerInhibitorObelisk container) {
     super(machine, container);
   }
 

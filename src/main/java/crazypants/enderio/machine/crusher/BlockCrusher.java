@@ -25,26 +25,7 @@ public class BlockCrusher extends AbstractMachineBlock {
 
   private BlockCrusher() {
     super(ModObject.blockSagMill, TileCrusher.class);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCrusher) {
-      return new ContainerCrusher(player.inventory, (TileCrusher) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCrusher) {
-      return new GuiCrusher(player.inventory, (TileCrusher) te);
-    }
-    return null;
+    setGuiClasses(ContainerCrusher.class, GuiCrusher.class);
   }
 
   @Override

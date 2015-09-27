@@ -3,12 +3,15 @@ package crazypants.enderio.machine;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -18,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.TileEntityEnder;
 
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -28,6 +33,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.gui.GuiClassMaker;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
@@ -50,6 +56,36 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected final Random random;
 
   protected final ModObject modObject;
+
+  protected GuiClassMaker containerClassMaker = null;
+  protected GuiClassMaker guiClassMaker = null;
+  
+  protected void setGuiClasses(Class<? extends Container> containerClass, Class<? extends GuiContainerBase> guiClass) {
+    containerClassMaker = GuiClassMaker.getClassMaker(containerClass, teClass, null, "ContainerClass");
+    guiClassMaker = GuiClassMaker.getClassMaker(guiClass, teClass, containerClass, "GuiClass");
+  }
+
+  @Override
+  public final Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    if (containerClassMaker != null) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null && player != null) {
+        return containerClassMaker.makeClass(player, te, null);
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public final Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    if (guiClassMaker != null) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null && player != null) {
+        return guiClassMaker.makeClass(player, te, containerClassMaker);
+      }
+    }
+    return null;
+  }
 
   static {
     PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -196,7 +232,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack stack) {
+  protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEnder te, ItemStack stack) {
     if(te != null) {
       ((AbstractMachineEntity) te).writeToItemStack(stack);
     }

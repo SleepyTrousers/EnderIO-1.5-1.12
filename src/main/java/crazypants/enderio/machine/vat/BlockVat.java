@@ -41,8 +41,10 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
+    setGuiClasses(ContainerVat.class, GuiVat.class);
   }
 
+  @Override
   protected String getModelIconKey(boolean active) {
     return "enderio:vatModel";
   }
@@ -96,26 +98,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   @Override
   public boolean isOpaqueCube() {
     return false;
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileVat) {
-      return new ContainerVat(player.inventory, (TileVat) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileVat) {
-      return new GuiVat(player.inventory, (TileVat) te);
-    }
-    return null;
   }
 
   @Override

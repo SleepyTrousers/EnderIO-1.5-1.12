@@ -32,6 +32,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   private BlockExperienceObelisk() {
     super(ModObject.blockExperienceObelisk, TileExperienceObelisk.class);
+    setGuiClasses(ContainerNoInv.class, GuiExperienceObelisk.class);
   }
 
   @Override
@@ -53,25 +54,6 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileExperienceObelisk) {
-      return new ContainerNoInv((IInventory) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileExperienceObelisk) {
-      return new GuiExperienceObelisk(player.inventory, (TileExperienceObelisk) te);
-    }
-    return null;
-  }
-
 
   @Override
   protected int getGuiId() {

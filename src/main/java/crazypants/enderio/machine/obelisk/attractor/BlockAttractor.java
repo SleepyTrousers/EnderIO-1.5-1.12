@@ -22,29 +22,12 @@ public class BlockAttractor extends BlockObeliskAbstract<TileAttractor> {
   
   protected BlockAttractor() {
     super(ModObject.blockAttractor, TileAttractor.class);
+    setGuiClasses(ContainerAttractor.class, GuiAttractor.class);
   }
 
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAttractor) {
-      return new ContainerAttractor(player.inventory, (TileAttractor)te);
-    }
-    return null;
-  }
-  
   @SideOnly(Side.CLIENT)
   public IIcon getOnIcon() {
     return iconBuffer[0][6];
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileAttractor) {
-      return new GuiAttractor(player.inventory, (TileAttractor)te);
-    }
-    return null;
   }
 
   @Override

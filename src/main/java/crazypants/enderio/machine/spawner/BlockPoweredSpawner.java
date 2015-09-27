@@ -101,6 +101,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   protected BlockPoweredSpawner() {
     super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);
+    setGuiClasses(ContainerPoweredSpawner.class, GuiPoweredSpawner.class);
 
     String[] blackListNames = Config.brokenSpawnerToolBlacklist;
     for (String name : blackListNames) {
@@ -254,24 +255,6 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TilePoweredSpawner) {
-      return new ContainerPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TilePoweredSpawner) {
-      return new GuiPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
-    }
-    return null;
-  }
-
-  @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_POWERED_SPAWNER;
   }
@@ -340,24 +323,4 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     return stack;
   }
 
-  private static class DropInfo {
-
-    BlockEvent.BreakEvent evt;
-    ItemStack drop;
-
-    DropInfo(BreakEvent evt, ItemStack stack) {
-      super();
-      this.evt = evt;
-      drop = stack;
-    }
-
-    void doDrop() {
-      if(evt.isCanceled()) {
-        return;
-      }
-
-      Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);
-    }
-
-  }
 }

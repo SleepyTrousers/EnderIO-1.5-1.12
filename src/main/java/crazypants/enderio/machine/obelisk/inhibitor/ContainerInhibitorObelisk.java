@@ -6,7 +6,7 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerInhibitorObelisk extends AbstractMachineContainer {
 
-  public ContainerInhibitorObelisk(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerInhibitorObelisk(InventoryPlayer playerInv, TileInhibitorObelisk te) {
     super(playerInv, te);
   }
 

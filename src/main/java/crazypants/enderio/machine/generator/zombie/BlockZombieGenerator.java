@@ -29,6 +29,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   protected BlockZombieGenerator() {
     super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
+    setGuiClasses(ContainerZombieGenerator.class, GuiZombieGenerator.class);
   }
 
   @Override
@@ -39,16 +40,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   @Override
   public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
     return false;
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(x, y, z));
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(x, y, z));
   }
 
   @Override

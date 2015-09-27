@@ -43,6 +43,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public BlockInventoryPanel() {
     super(ModObject.blockInventoryPanel, TileInventoryPanel.class);
+    setGuiClasses(InventoryPanelContainer.class, GuiInventoryPanel.class);
   }
 
   @Override
@@ -172,20 +173,4 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     return iconBuffer[0][blockSide + 6];
   }
 
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileInventoryPanel) {
-      return new InventoryPanelContainer(player.inventory, (TileInventoryPanel) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = (TileInventoryPanel) world.getTileEntity(x, y, z);
-    return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
-  }
 }

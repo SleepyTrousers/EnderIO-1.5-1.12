@@ -52,6 +52,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     if(!Config.transceiverEnabled) {
       setCreativeTab(null);
     }
+    setGuiClasses(ContainerTransceiver.class, GuiTransceiver.class);
   }
 
   @Override
@@ -63,21 +64,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
       }
     }
     return super.removedByPlayer(world, player, x, y, z, doHarvest);
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileTransceiver) {
-      return new ContainerTransceiver(player.inventory, (TileTransceiver) te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    return new GuiTransceiver(player.inventory, (TileTransceiver) te);
   }
 
   @Override
