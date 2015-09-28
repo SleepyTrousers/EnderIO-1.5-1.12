@@ -17,6 +17,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
   private static String hasUnknownAE2 = null;
   private static String hasOldAE2 = null;
   private static String hasOldRF = null;
+  private static String hasBadBrand = null;
 
   public static void create() {
 
@@ -43,6 +44,17 @@ public class EnderIOCrashCallable implements ICrashCallable {
       }
     }
 
+    for (String brand : FMLCommonHandler.instance().getModName().split(",")) {
+      if (brand != null && !brand.equals("fml") && !brand.equals("forge")) {
+        if (hasBadBrand == null) {
+          hasBadBrand = brand;
+        } else {
+          hasBadBrand += ", " + brand;
+        }
+        register = true;
+      }
+    }
+
     if (register) {
       FMLCommonHandler.instance().registerCrashCallable(new EnderIOCrashCallable());
     }
@@ -51,6 +63,9 @@ public class EnderIOCrashCallable implements ICrashCallable {
   @Override
   public String call() throws Exception {
     String msg = "Found the following problem(s) with your installation: ";
+    if (hasBadBrand != null) {
+      msg += "\"An unsupported base software is installed: '" + hasBadBrand + "'. This is NOT supported.\" ";
+    }
     if (hasOptifine) {
       msg += "\"Optifine is installed. This is NOT supported.\" ";
     }
