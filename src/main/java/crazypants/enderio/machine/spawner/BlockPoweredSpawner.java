@@ -84,6 +84,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.unlocalisedName, new DummyRecipe());
 
     PacketHandler.INSTANCE.registerMessage(PacketMode.class, PacketMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(),
+        Side.CLIENT);
 
     //Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();

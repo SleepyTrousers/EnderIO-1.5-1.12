@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.spawner;
 
+import static crazypants.enderio.machine.spawner.TilePoweredSpawner.SpawnResult.AREA_FULL;
+import static crazypants.enderio.machine.spawner.TilePoweredSpawner.SpawnResult.BAD_ENTITY;
+import static crazypants.enderio.machine.spawner.TilePoweredSpawner.SpawnResult.NO_LOCATION;
+import static crazypants.enderio.machine.spawner.TilePoweredSpawner.SpawnResult.OK;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -7,6 +11,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -15,6 +20,7 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -61,15 +67,52 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     this.isSpawnMode = isSpawnMode;
   }
 
+  private SpawnResult reason = OK;
+  private SpawnResult oldReason = OK;
+
+  public void setReason(SpawnResult reason) {
+    this.reason = reason;
+  }
+
+  private int testAreaSeldom = 0;
+
+  public SpawnResult getReason() {
+    return reason;
+  }
+
   @Override
   protected void taskComplete() {
     super.taskComplete();
     if(isSpawnMode) {
       remainingSpawnTries = Config.poweredSpawnerSpawnCount + Config.poweredSpawnerMaxSpawnTries;
-      for (int i = 0; i < Config.poweredSpawnerSpawnCount && remainingSpawnTries > 0; ++i) {
-        if(!trySpawnEntity()) {
-          break;
+      TRIES: for (int i = 0; i < Config.poweredSpawnerSpawnCount && remainingSpawnTries > 0; ++i) {
+        SpawnResult spawnResult = trySpawnEntity();
+        SWITCH: switch (spawnResult) {
+        case AREA_FULL:
+        case BAD_ENTITY:
+          reason = spawnResult;
+          break TRIES;
+        case NO_LOCATION:
+          if (reason != spawnResult) {
+            if (--testAreaSeldom < 0) {
+              testAreaSeldom = 3;
+              SpawnResult test = anyLocationInRange();
+              if (test == NO_LOCATION) {
+                reason = NO_LOCATION;
+              } else {
+                reason = OK;
+              }
+            }
+          }
+          break TRIES;
+        case OK:
+          reason = spawnResult;
+          break SWITCH;
         }
+      }
+      if (reason != oldReason) {
+        PacketHandler.INSTANCE.sendToAll(new PacketUpdateNotification(this, reason));
+        oldReason = reason;
       }
     } else {
       if(getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntityName()) {
@@ -241,23 +284,27 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     return ent;
   }
 
-  protected boolean trySpawnEntity() {
+  protected static enum SpawnResult {
+    OK, BAD_ENTITY, AREA_FULL, NO_LOCATION
+  }
+
+  protected SpawnResult trySpawnEntity() {
     Entity entity = createEntity(true);
     if(!(entity instanceof EntityLiving)) {
-      return false;
+      return BAD_ENTITY;
     }
     EntityLiving entityliving = (EntityLiving) entity;
     int spawnRange = Config.poweredSpawnerSpawnRange;
 
     if(Config.poweredSpawnerMaxNearbyEntities > 0) {
       int nearbyEntities = worldObj.getEntitiesWithinAABB(
-          entity.getClass(),
+          entityliving.getClass(),
           AxisAlignedBB.getBoundingBox(
                   xCoord - spawnRange*2, yCoord - 4, zCoord - spawnRange*2,
                   xCoord + spawnRange*2, yCoord + 4, zCoord + spawnRange*2)).size();
 
       if(nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
-        return false;
+        return AREA_FULL;
       }
     }
 
@@ -265,18 +312,49 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       double x = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
       double y = yCoord + worldObj.rand.nextInt(3) - 1;
       double z = zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
-      entity.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+      entityliving.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
       if(canSpawnEntity(entityliving)) {
         entityliving.onSpawnWithEgg(null);
         worldObj.spawnEntityInWorld(entityliving);
         worldObj.playAuxSFX(2004, xCoord, yCoord, zCoord, 0);
         entityliving.spawnExplosionParticle();
-        return true;
+        return OK;
       }
     }
 
-    return false;
+    return NO_LOCATION;
+  }
+
+  protected SpawnResult anyLocationInRange() {
+    Entity entity = createEntity(true);
+    if (!(entity instanceof EntityLiving)) {
+      return BAD_ENTITY;
+    }
+    EntityLiving entityliving = (EntityLiving) entity;
+    int spawnRange = Config.poweredSpawnerSpawnRange;
+
+    int minxi = MathHelper.floor_double(xCoord + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
+    int maxxi = MathHelper.floor_double(xCoord + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
+
+    int minyi = yCoord + 0 - 1;
+    int maxyi = yCoord + 2 - 1;
+
+    int minzi = MathHelper.floor_double(zCoord + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
+    int maxzi = MathHelper.floor_double(zCoord + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
+
+    for (int x = minxi; x <= maxxi; x++) {
+      for (int y = minyi; y <= maxyi; y++) {
+        for (int z = minzi; z <= maxzi; z++) {
+          entityliving.setLocationAndAngles(x, y, z, 0.0F, 0.0F);
+          if (canSpawnEntity(entityliving)) {
+            return OK;
+          }
+        }
+      }
+    }
+
+    return NO_LOCATION;
   }
 
   public String getEntityName() {
