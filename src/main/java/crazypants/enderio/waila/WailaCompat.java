@@ -130,8 +130,6 @@ public class WailaCompat implements IWailaDataProvider {
     ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", EnderIO.lang.localize("waila.config.hiddenfacades"));
   }
 
-  // IGNORE deprecation, the new method requires forge 1234 which is too new for cauldron!
-  @SuppressWarnings("deprecation")
   @Override
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
     MovingObjectPosition pos = accessor.getPosition();
@@ -143,14 +141,14 @@ public class WailaCompat implements IWailaDataProvider {
         }
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
-        if(facade != null) {
-          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ);
+        if(facade != accessor.getBlock()) {
+          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ, accessor.getPlayer());
           return ret;
         }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
       return accessor.getBlock().getPickBlock(accessor.getPosition(), accessor.getWorld(), accessor.getPosition().blockX, accessor.getPosition().blockY,
-          accessor.getPosition().blockZ);
+          accessor.getPosition().blockZ, accessor.getPlayer());
 
     }
     return null;

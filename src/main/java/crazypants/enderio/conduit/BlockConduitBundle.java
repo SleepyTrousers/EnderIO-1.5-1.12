@@ -259,6 +259,11 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
+  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    return getPickBlock(target, world, x, y, z, null);
+  }
+  
+  @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
     ItemStack ret = null;
     if (MicroblocksUtil.supportMicroblocks()) {
@@ -689,7 +694,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return false;
   }
 
-  private boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, int side, IConduitBundle bundle, ItemStack stack) {
+  public boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, int side, IConduitBundle bundle, ItemStack stack) {
     // Add facade
     if(player.isSneaking()) {
       return false;
