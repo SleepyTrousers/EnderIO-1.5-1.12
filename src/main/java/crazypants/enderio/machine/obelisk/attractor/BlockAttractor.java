@@ -33,11 +33,6 @@ public class BlockAttractor extends BlockObeliskAbstract<TileAttractor> {
     return null;
   }
   
-  @SideOnly(Side.CLIENT)
-  public IIcon getOnIcon() {
-    return iconBuffer[0][6];
-  }
-
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
