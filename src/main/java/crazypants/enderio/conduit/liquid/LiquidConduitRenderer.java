@@ -1,12 +1,19 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -18,22 +25,32 @@ import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-
 import static com.enderio.core.client.render.CubeRenderer.*;
 
-public class LiquidConduitRenderer extends DefaultConduitRenderer {
+public class LiquidConduitRenderer extends DefaultConduitRenderer implements IResourceManagerReloadListener {
 
   private float downRatio;
 
   private float flatRatio;
 
   private float upRatio;
+
+  private LiquidConduitRenderer() {
+    super();
+  }
+
+  public static LiquidConduitRenderer create() {
+    LiquidConduitRenderer result = new LiquidConduitRenderer();
+    RenderUtil.registerReloadListener(result);
+    return result;
+  }
 
   @Override
   public boolean isRendererForConduit(IConduit conduit) {
@@ -70,7 +87,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
       tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
       List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-      Tessellator tessellator = Tessellator.instance;
       for (Vertex c : corners) {
         addVecWithUV(c.xyz, c.uv.x, c.uv.y);
       }
@@ -87,12 +103,32 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid, double scaleFactor, float outlineWidth) {
-    //TODO: Should cache these vertices as relatively heavy weight to calc each frame
-    IIcon texture = fluid.getFluid().getStillIcon();
+    for (CachableRenderStatement elem : computeFluidOutlineToCache(component, fluid.getFluid(), scaleFactor, outlineWidth)) {
+      elem.execute();
+    }
+  }
+
+  private static Map<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>> cache = new WeakHashMap<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>>();
+
+  public static List<CachableRenderStatement> computeFluidOutlineToCache(CollidableComponent component, Fluid fluid, double scaleFactor, float outlineWidth) {
+
+    Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
+    if (cache0 == null) {
+      cache0 = new HashMap<Fluid, List<CachableRenderStatement>>();
+      cache.put(component, cache0);
+    }
+    List<CachableRenderStatement> data = cache0.get(fluid);
+    if (data != null) {
+      return data;
+    }
+    data = new ArrayList<CachableRenderStatement>();
+    cache0.put(fluid, data);
+
+    IIcon texture = fluid.getStillIcon();
     if (texture == null) {
-      texture = fluid.getFluid().getIcon();
+      texture = fluid.getIcon();
       if (texture == null) {
-        return;
+        return data;
       }
     }
 
@@ -109,8 +145,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       if (face != component.dir && face != component.dir.getOpposite()) {
 
-        Tessellator tes = Tessellator.instance;
-        tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
+        data.add(new CachableRenderStatement.SetNormal(face.offsetX, face.offsetY, face.offsetZ));
         Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, -0.005);
 
         Vector2f uv = new Vector2f();
@@ -136,11 +171,48 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
               RenderUtil.getUvForCorner(uv, corner, 0, 0, 0, face, texture);
 
-              tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
+              data.add(new CachableRenderStatement.AddVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y));
             }
           }
 
         }
+      }
+    }
+    return data;
+  }
+
+  private interface CachableRenderStatement {
+    void execute();
+
+    static class SetNormal implements CachableRenderStatement {
+      private final float x, y, z;
+
+      private SetNormal(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+      }
+
+      @Override
+      public void execute() {
+        Tessellator.instance.setNormal(x, y, z);
+      }
+    }
+
+    static class AddVertexWithUV implements CachableRenderStatement {
+      private final double x, y, z, u, v;
+
+      private AddVertexWithUV(double x, double y, double z, double u, double v) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.u = u;
+        this.v = v;
+      }
+
+      @Override
+      public void execute() {
+        Tessellator.instance.addVertexWithUV(x, y, z, u, v);
       }
     }
   }
@@ -172,7 +244,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     IIcon tex;
     for (CollidableComponent component : components) {
       if (renderComponent(component)) {
-        float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
         if (isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
 
           tessellator.setColorOpaque_F(1, 1, 1);
@@ -249,6 +320,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
       return downRatio;
     }
     return flatRatio;
+  }
+
+  @Override
+  public void onResourceManagerReload(IResourceManager p_110549_1_) {
+    cache.clear();
   }
 
 }

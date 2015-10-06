@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -45,7 +46,7 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
 
   @Override
   protected String getBottomIconKey(boolean active) {
-    return "enderio:blockSoulMachineBlank";
+    return "enderio:obeliskBottom";
   }
 
   @Override

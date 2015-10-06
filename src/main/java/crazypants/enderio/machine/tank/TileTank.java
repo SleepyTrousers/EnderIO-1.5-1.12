@@ -347,7 +347,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     
     int slot = getSlotDefinition().getMinOutputSlot();
 
-    if (inventory[slot] != null) {
+    if (inventory[slot] != null && fill.result.itemStack != null) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
           && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
         fill.result.itemStack.stackSize += inventory[slot].stackSize;
@@ -358,7 +358,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
     getInputTank(fill.result.fluidStack).setFluid(fill.remainder.fluidStack);
     setInventorySlotContents(getSlotDefinition().getMinInputSlot(), fill.remainder.itemStack);
-    setInventorySlotContents(slot, fill.result.itemStack);
+    if (fill.result.itemStack != null) {
+      setInventorySlotContents(slot, fill.result.itemStack);
+    }
 
     setTanksDirty();
     markDirty();
