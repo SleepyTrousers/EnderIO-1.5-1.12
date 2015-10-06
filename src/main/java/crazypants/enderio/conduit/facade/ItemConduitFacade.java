@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
@@ -120,9 +121,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     int placeY = y + dir.offsetY;
     int placeZ = z + dir.offsetZ;
 
-    if(player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && world.isAirBlock(placeX, placeY, placeZ)
-        && PainterUtil.getSourceBlock(itemStack) != null) {
-
+    if(player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && PainterUtil.getSourceBlock(itemStack) != null) {
+      if (world.isAirBlock(placeX, placeY, placeZ)) {
       world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
       IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
       Block facadeID = PainterUtil.getSourceBlock(itemStack);
@@ -131,11 +131,18 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       bundle.setFacadeId(facadeID);
       bundle.setFacadeMetadata(facadeMeta);
       bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
-      ConduitUtil.playBreakSound(facadeID.stepSound, world, x, y, z);
+      ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
       if (!player.capabilities.isCreativeMode) {
-        itemStack.stackSize--;
+          itemStack.stackSize--;
+        }
+        return true;
+      } else {
+        Block block = world.getBlock(placeX, placeY, placeZ);
+        if (block == EnderIO.blockConduitBundle) {
+          ((BlockConduitBundle) block).handleFacadeClick(world, placeX, placeY, placeZ, player, dir.getOpposite().ordinal(),
+              (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ), itemStack);
+        }
       }
-      return true;
     }
 
     return false;
