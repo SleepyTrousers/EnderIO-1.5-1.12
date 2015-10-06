@@ -374,7 +374,7 @@ public class ClientProxy extends CommonProxy {
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
-    conduitRenderers.add(new LiquidConduitRenderer());
+    conduitRenderers.add(LiquidConduitRenderer.create());
     conduitRenderers.add(new PowerConduitRenderer());
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
     conduitRenderers.add(new EnderLiquidConduitRenderer());
