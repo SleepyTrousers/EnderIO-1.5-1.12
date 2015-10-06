@@ -62,7 +62,7 @@ public final class OreDictionaryPreferences {
     }
 
     if(result == null) {
-      result = stack;
+      result = stack.copy();
     }
     stackCache.put(key, result);
     return stack;
