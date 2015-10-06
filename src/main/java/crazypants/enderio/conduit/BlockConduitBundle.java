@@ -695,6 +695,10 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   public boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, int side, IConduitBundle bundle, ItemStack stack) {
+    if (MicroblocksUtil.supportMicroblocks() && hasMicroblocks(bundle)) {
+      return false;
+    }
+    
     // Add facade
     if(player.isSneaking()) {
       return false;
@@ -1124,5 +1128,9 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   private ArrayList<ItemStack> IM__getDrops(List<ItemStack> cur, World world, int x, int y, int z, int metadata, int fortune) {
     return IMultipartSystem.instance.hook_getDrops(cur, world, x, y, z, metadata, fortune);
+  }
+
+  private boolean hasMicroblocks(IConduitBundle bundle) {
+    return !bundle.getCoverSystem().getAllParts().isEmpty();
   }
 }

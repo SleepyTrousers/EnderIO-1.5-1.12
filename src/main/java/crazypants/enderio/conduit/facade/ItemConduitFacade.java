@@ -121,18 +121,18 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     int placeY = y + dir.offsetY;
     int placeZ = z + dir.offsetZ;
 
-    if(player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && PainterUtil.getSourceBlock(itemStack) != null) {
+    if (player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && PainterUtil.getSourceBlock(itemStack) != null) {
       if (world.isAirBlock(placeX, placeY, placeZ)) {
-      world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
-      IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
-      Block facadeID = PainterUtil.getSourceBlock(itemStack);
-      int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
-      facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
-      bundle.setFacadeId(facadeID);
-      bundle.setFacadeMetadata(facadeMeta);
-      bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
-      ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
-      if (!player.capabilities.isCreativeMode) {
+        world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
+        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
+        Block facadeID = PainterUtil.getSourceBlock(itemStack);
+        int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
+        facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
+        bundle.setFacadeId(facadeID);
+        bundle.setFacadeMetadata(facadeMeta);
+        bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
+        ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
+        if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
         return true;
