@@ -51,10 +51,12 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
   @Override
   public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
     EntityPlayer player = (EntityPlayer) (ctx.side.isClient() ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID) : ctx.getServerHandler().playerEntity);
-    DarkSteelController.instance.setActive(player, message.type, message.isActive);
-    if (ctx.side.isServer()) {
-      message.entityID = player.getEntityId();
-      PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.dimensionId);
+    if (player != null) {
+      DarkSteelController.instance.setActive(player, message.type, message.isActive);
+      if (ctx.side.isServer()) {
+        message.entityID = player.getEntityId();
+        PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.dimensionId);
+      }
     }
     return null;
   }

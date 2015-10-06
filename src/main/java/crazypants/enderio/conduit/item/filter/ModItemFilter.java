@@ -1,5 +1,9 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.gui.item.ModItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
@@ -12,6 +16,8 @@ import com.enderio.core.common.network.NetworkUtil;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ModItemFilter implements IItemFilter {
@@ -98,6 +104,12 @@ public class ModItemFilter implements IItemFilter {
   @Override
   public int getSlotCount() {
     return 0;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+    return new ModItemFilterGui(gui, itemConduit, isInput);
   }
 
   @Override

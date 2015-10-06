@@ -1,5 +1,9 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.gui.item.PowerItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
@@ -11,6 +15,8 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 /**
@@ -102,6 +108,12 @@ public class PowerItemFilter implements IItemFilter {
 
   public void setLevel(int level) {
     this.level = level;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+    return new PowerItemFilterGui(gui, itemConduit, isInput);
   }
 
   @Override

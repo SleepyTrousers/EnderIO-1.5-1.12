@@ -144,7 +144,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(resource != null && !resource.isFluidEqual(tank.getFluid())) {
+    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
     return drain(from, resource.amount, doDrain);
@@ -155,7 +155,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     if(tank.getFluid() == null) {
       return true;
     }
-    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+    if (fluid != null && fluid.getID() == tank.getFluid().getFluidID()) {
       return true;
     }
     return false;

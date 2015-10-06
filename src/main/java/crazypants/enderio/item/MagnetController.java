@@ -21,8 +21,8 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BaublesUtil;
-
 import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
 
 public class MagnetController implements IEntitySelector {
 
@@ -112,13 +112,19 @@ public class MagnetController implements IEntitySelector {
 
   @Override
   public boolean isEntityApplicable(Entity var1) {
-    if (!blacklist.isEmpty() && var1 instanceof EntityItem) {
-      Item item = ((EntityItem) var1).getEntityItem().getItem();
-      for (Item blacklisted : blacklist) {
-        if (blacklisted == item) {
-          return false;
+    if (var1.isDead) {
+      return false;
+    }
+    if (var1 instanceof EntityItem) {
+      if (!blacklist.isEmpty()) {
+        Item item = ((EntityItem) var1).getEntityItem().getItem();
+        for (Item blacklisted : blacklist) {
+          if (blacklisted == item) {
+            return false;
+          }
         }
       }
+      return !hasSolegnoliaAround(var1);
     }
     return true;
   }

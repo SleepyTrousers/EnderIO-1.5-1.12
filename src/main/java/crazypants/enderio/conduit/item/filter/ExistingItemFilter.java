@@ -1,5 +1,9 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.ExistingItemFilterGui;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -15,6 +19,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ExistingItemFilter implements IItemFilter {
@@ -171,7 +177,13 @@ public class ExistingItemFilter implements IItemFilter {
   public void setSticky(boolean sticky) {
     this.sticky = sticky;
   }
-  
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+    return new ExistingItemFilterGui(gui, itemConduit, isInput);
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);

@@ -1,5 +1,10 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
+import crazypants.enderio.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
@@ -17,6 +22,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ItemFilter implements IInventory, IItemFilter {
@@ -239,6 +246,15 @@ public class ItemFilter implements IInventory, IItemFilter {
       i++;
     }
 
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+    ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
+    BasicItemFilterGui basicItemFilterGui = new BasicItemFilterGui(gui, cont, !isInput);
+    basicItemFilterGui.createFilterSlots();
+    return basicItemFilterGui;
   }
 
   @Override
