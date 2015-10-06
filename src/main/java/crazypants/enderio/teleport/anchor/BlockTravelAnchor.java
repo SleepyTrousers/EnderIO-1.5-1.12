@@ -97,7 +97,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     TileEntity te = world.getTileEntity(x, y, z);
     if (te instanceof TileTravelAnchor) {
       TileTravelAnchor tef = (TileTravelAnchor) te;
-      if (tef.getSourceBlock() != null) {
+      if (tef.getSourceBlock() != this) {
         return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
@@ -182,7 +182,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
     ItemStack itemStack = new ItemStack(this);
     Block srcBlk = anchor.getSourceBlock();
-    if (srcBlk != null) {
+    if (srcBlk != this) {
       itemStack = createItemStackForSourceBlock(anchor.getSourceBlock(), anchor.getSourceBlockMetadata());
       drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
     }
@@ -199,7 +199,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     TileEntity te = world.getTileEntity(x, y, z);
     if (te instanceof TileTravelAnchor) {
       TileTravelAnchor tef = (TileTravelAnchor) te;
-      if (tef.getSourceBlock() != null) {
+      if (tef.getSourceBlock() != this) {
         return tef.getSourceBlock().colorMultiplier(world, x, y, z);
       }
     }
