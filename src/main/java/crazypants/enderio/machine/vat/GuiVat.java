@@ -128,26 +128,27 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     x = guiLeft + 132;
     RenderUtil.renderGuiTank(vat.outputTank, x, y, zLevel, 15, 47);
 
-    if(vat.currentTaskOutputFluid != null || vat.outputTank.getFluidAmount() > 0) {
+    Fluid outputFluid;
+    if (vat.outputTank.getFluidAmount() > 0) {
+      outputFluid = vat.outputTank.getFluid().getFluid();
+    } else {
+      outputFluid = vat.currentTaskOutputFluid;
+    }
 
-      Fluid outputFluid;
-      if(vat.outputTank.getFluidAmount() > 0) {
-        outputFluid = vat.outputTank.getFluid().getFluid();
-      } else {
-        outputFluid = vat.currentTaskOutputFluid;
-      }
-
-      float mult;
-      ItemStack inStack = vat.getStackInSlot(0);
-      if(inStack != null) {
-        mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+    float mult;
+    ItemStack inStack = vat.getStackInSlot(0);
+    if (inStack != null) {
+      mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+      if (mult > 0) {
         String str = "x" + mult;
         x = guiLeft + 63 - fontRendererObj.getStringWidth(str) / 2;
         fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
       }
-      inStack = vat.getStackInSlot(1);
-      if(inStack != null) {
-        mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+    }
+    inStack = vat.getStackInSlot(1);
+    if (inStack != null) {
+      mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+      if (mult > 0) {
         String str = "x" + mult;
         x = guiLeft + 113 - fontRendererObj.getStringWidth(str) / 2;
         fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
