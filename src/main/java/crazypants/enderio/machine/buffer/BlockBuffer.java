@@ -22,6 +22,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.IFacade;
@@ -179,8 +180,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @Override
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileBuffer) {
-      return ((TileBuffer) te).getSourceBlock();
+    if (te instanceof IPaintableTileEntity) {
+      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock;
+      }
     }
     return this;
   }

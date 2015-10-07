@@ -288,9 +288,11 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   @Override
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileEntityPaintedBlock) {
-      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      return tef.getSourceBlock();
+    if (te instanceof IPaintableTileEntity) {
+      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock;
+      }
     }
     return this;
   }
