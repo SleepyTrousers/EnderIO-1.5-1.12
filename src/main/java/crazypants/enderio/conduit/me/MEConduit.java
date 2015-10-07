@@ -213,6 +213,11 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
+  public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
+    return getNextConnectionMode(dir);
+  }
+
+  @Override
   public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
     if(!super.canConnectToConduit(direction, conduit)) {
       return false;
