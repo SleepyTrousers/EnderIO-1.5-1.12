@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -183,6 +184,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
   
   @Override
+  @Nullable
   public Block getSourceBlock() {
     return sourceBlock;
   }

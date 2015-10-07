@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 
 public interface IPaintableTileEntity {
@@ -10,6 +12,7 @@ public interface IPaintableTileEntity {
 
   void setSourceBlock(Block sourceBlock);
 
+  @Nullable
   Block getSourceBlock();
 
 }

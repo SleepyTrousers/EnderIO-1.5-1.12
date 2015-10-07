@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -198,6 +200,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
+  @Nullable
   public Block getSourceBlock() {
     return sourceBlock;
   }

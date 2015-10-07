@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -39,6 +41,7 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
   }
 
   @Override
+  @Nullable
   public Block getSourceBlock() {
     return sourceBlock;
   }

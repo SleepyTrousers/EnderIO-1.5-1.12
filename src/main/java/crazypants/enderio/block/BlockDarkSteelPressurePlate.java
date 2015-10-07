@@ -79,8 +79,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+      final Block sourceBlock = tef.getSourceBlock();
+      if(sourceBlock != null) {
+        return sourceBlock.getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
     return super.getIcon(world, x, y, z, blockSide);
@@ -135,8 +136,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      final Block sourceBlock = tef.getSourceBlock();
+      if(sourceBlock != null) {
+        return sourceBlock.colorMultiplier(world, x, y, z);
       }
     }
     return super.colorMultiplier(world, x, y, z);

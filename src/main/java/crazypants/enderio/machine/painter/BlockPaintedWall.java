@@ -146,8 +146,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity(world, x, y, z));
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        return Math.min(super.getLightOpacity(world, x, y, z), sourceBlock.getLightOpacity());
       }
     }
     return super.getLightOpacity(world, x, y, z);
@@ -177,8 +178,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock.getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
     return Blocks.anvil.getIcon(world, x, y, z, blockSide);
@@ -245,8 +247,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      final Block sourceBlock = tef.getSourceBlock();
+      if(sourceBlock != null) {
+        return sourceBlock.colorMultiplier(world, x, y, z);
       }
     }
     return super.colorMultiplier(world, x, y, z);

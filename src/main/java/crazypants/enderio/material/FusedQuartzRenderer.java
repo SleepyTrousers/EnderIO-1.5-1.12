@@ -91,13 +91,14 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
   }
 
   private void renderFrame(IBlockAccess blockAccess, int x, int y, int z, TileEntityPaintedBlock tecb, boolean forceAllEdges, int meta) {
+    final Block sourceBlock = tecb != null ? tecb.getSourceBlock() : null;
 
     if(blockAccess == null) {
       //No lighting
       IIcon texture = EnderIO.blockFusedQuartz.getItemIcon(meta);
       for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-        if(tecb != null && tecb.getSourceBlock() != null) {
-          texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
+        if (tecb != null && sourceBlock != null) {
+          texture = sourceBlock.getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
         }
         RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockFusedQuartz, x, y, z, face, texture, forceAllEdges);
       }
@@ -106,8 +107,8 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
     CustomCubeRenderer.instance.setOverrideTexture(EnderIO.blockFusedQuartz.getIcon(0, meta));
 
-    if(tecb != null && tecb.getSourceBlock() != null) {
-      connectedTextureRenderer.setEdgeTexureCallback(new DefaultTextureCallback(tecb.getSourceBlock(), tecb.getSourceBlockMetadata()));
+    if(tecb != null && sourceBlock != null) {
+      connectedTextureRenderer.setEdgeTexureCallback(new DefaultTextureCallback(sourceBlock, tecb.getSourceBlockMetadata()));
       CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z,
           connectedTextureRenderer);
     } else {
