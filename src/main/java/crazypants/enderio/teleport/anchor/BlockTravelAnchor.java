@@ -34,6 +34,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
@@ -95,10 +96,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileTravelAnchor) {
-      TileTravelAnchor tef = (TileTravelAnchor) te;
-      if (tef.getSourceBlock() != this) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+    if (te instanceof IPaintableTileEntity) {
+      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock.getIcon(blockSide, ((IPaintableTileEntity) te).getSourceBlockMetadata());
       }
     }
     return super.getIcon(world, x, y, z, blockSide);
@@ -182,7 +183,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
     ItemStack itemStack = new ItemStack(this);
     Block srcBlk = anchor.getSourceBlock();
-    if (srcBlk != this) {
+    if (srcBlk != null) {
       itemStack = createItemStackForSourceBlock(anchor.getSourceBlock(), anchor.getSourceBlockMetadata());
       drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
     }
@@ -197,10 +198,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @SideOnly(Side.CLIENT)
   public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileTravelAnchor) {
-      TileTravelAnchor tef = (TileTravelAnchor) te;
-      if (tef.getSourceBlock() != this) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+    if (te instanceof IPaintableTileEntity) {
+      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock.colorMultiplier(world, x, y, z);
       }
     }
     return super.colorMultiplier(world, x, y, z);
@@ -258,8 +259,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileTravelAnchor) {
-      return ((TileTravelAnchor) te).getSourceBlock();
+    if (te instanceof IPaintableTileEntity) {
+      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock;
+      }
     }
     return this;
   }

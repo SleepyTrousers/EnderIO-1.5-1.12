@@ -174,7 +174,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   
   @Override
   public Block getSourceBlock() {
-    return sourceBlock == null ? getBlockType() : sourceBlock;
+    return sourceBlock;
   }
 
   @Override
