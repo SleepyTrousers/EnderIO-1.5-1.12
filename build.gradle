@@ -64,8 +64,10 @@ dependencies {
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}_${minecraft_version}:dev"
     compile "net.sengir.forestry:${forestry_version}:api"
-    compile "com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev"
-
+    compile ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
+        transitive = false
+    }
+    
     // WAILA ships really old CCC/CCL versions, so we force the new versions
     compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
     compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"    
