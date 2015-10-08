@@ -2,6 +2,8 @@ package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Color;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -82,7 +84,7 @@ public class ChannelTab implements ITabPanel {
     
     Predicate<Channel> predicate = new Predicate<Channel>() {
       @Override
-      public boolean apply(Channel input) {
+      public boolean apply(@Nullable Channel input) {
         return input != null
             && (input.isPublic() || input.getUser().equals(PlayerUtil.getPlayerUUID(EnderIO.proxy.getClientPlayer().getGameProfile().getName())));
       }

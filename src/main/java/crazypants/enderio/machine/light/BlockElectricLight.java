@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.light;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -182,7 +184,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEnder te, ItemStack drop) {
     TileElectricLight light = (TileElectricLight) te;
     if(light == null) {
       return;
