@@ -108,6 +108,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     return fakePlayer;
   }
 
+  @Override
   protected MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() - 2];
     int fromSlot = slotDefinition.minInputSlot;

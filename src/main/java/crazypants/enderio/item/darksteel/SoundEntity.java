@@ -24,6 +24,7 @@ public class SoundEntity extends Entity {
   protected void entityInit() {
   }
 
+  @Override
   protected boolean canTriggerWalking() {
     return false;
   }

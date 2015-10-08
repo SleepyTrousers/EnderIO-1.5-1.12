@@ -29,6 +29,7 @@ public class RedstoneModeButton extends CycleButton<RedstoneControlMode> {
     setMode(model.getRedstoneControlMode());
   }
 
+  @Override
   public void setMode(RedstoneControlMode newMode) {
     if (model == null) {
       return;

@@ -18,6 +18,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     return recipe == null ? 0 : recipe.getEnergyRequired();
   }
 
+  @Override
   public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
     if(inputs == null || inputs.length <= 0) {
       return RecipeBonusType.NONE;

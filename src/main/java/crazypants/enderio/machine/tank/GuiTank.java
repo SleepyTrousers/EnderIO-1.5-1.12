@@ -72,6 +72,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     });
     
     addToolTip(new GuiToolTip(new Rectangle(14, 35, 18, 18), EnderIO.lang.localize("gui.tooltip.voidslot")) {
+      @Override
       public boolean shouldDraw() {
         return super.shouldDraw() && getTileEntity().canVoidItems();
       }

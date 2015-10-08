@@ -171,6 +171,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     return getTileEntity().hasInventory() && getTileEntity().hasPower();
   }
 
+  @Override
   public void renderSlotHighlights(IoMode mode) {
     if (!getTileEntity().hasInventory()) {
       return;

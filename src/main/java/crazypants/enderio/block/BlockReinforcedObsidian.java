@@ -36,6 +36,7 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
     }
   }
   
+  @Override
   public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
     return false;
   }
@@ -50,6 +51,7 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
     return false;
   }
   
+  @Override
   public MapColor getMapColor(int p_149728_1_) {
     return MapColor.obsidianColor;
   }

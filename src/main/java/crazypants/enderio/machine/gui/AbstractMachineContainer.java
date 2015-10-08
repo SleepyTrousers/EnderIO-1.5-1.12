@@ -47,10 +47,12 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     }
   }
 
+  @Override
   public Point getPlayerInventoryOffset() {
     return new Point(8,84);
   }
   
+  @Override
   public Point getUpgradeOffset() {
     return new Point(12,60);
   }
