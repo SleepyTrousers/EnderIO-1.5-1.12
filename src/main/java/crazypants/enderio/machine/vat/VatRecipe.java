@@ -11,6 +11,7 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.util.EE3Util;
 
 public class VatRecipe implements IRecipe {
 
@@ -53,6 +54,7 @@ public class VatRecipe implements IRecipe {
       }
     }
 
+    EE3Util.registerVatRecipe(outputFluidStack, inputs);
   }
 
   @Override
@@ -91,7 +93,7 @@ public class VatRecipe implements IRecipe {
       return false;
     }
     for (RecipeInput ri : inputs) {
-      if(item != null && ri.getSlotNumber() == slot && ri.isInput(item)) {
+      if (ri.getSlotNumber() == slot && ri.isInput(item)) {
         return true;
       }
     }

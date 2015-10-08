@@ -160,6 +160,7 @@ import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
+import crazypants.util.EE3Util;
 import static crazypants.enderio.EnderIO.*;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -580,6 +581,7 @@ public class EnderIO {
     MachineRecipes.addRecipes();
     ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();
+    EE3Util.registerMiscRecipes();
     
     proxy.load();
   }

@@ -8,13 +8,12 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.util.EE3Util;
 
 public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   private final int energyRequired;
   private final ItemStack output;
-
-  private final float expPerItem;
 
   private final RecipeBonusType bonusType;
 
@@ -23,9 +22,9 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   public BasicManyToOneRecipe(Recipe recipe) {
     this.recipe = recipe;
     this.output = recipe.getOutputs()[0].getOutput().copy();
-    expPerItem = recipe.getOutputs()[0].getExperiance();
     energyRequired = recipe.getEnergyRequired();
     bonusType = recipe.getBonusType();
+    EE3Util.registerBasicToManyRecipe(recipe);
   }
 
   @Override
