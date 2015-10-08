@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.item.filter;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -11,6 +13,7 @@ import net.minecraftforge.oredict.RecipeSorter.Category;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.machine.AbstractMachineBlock;
 
 public class ClearFilterRecipe implements IRecipe{
 
@@ -22,27 +25,21 @@ public class ClearFilterRecipe implements IRecipe{
   
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
-    int count = 0;
-    ItemStack input = null;
-    
+    output = null;
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack != null && checkStack.getItem() instanceof IItemFilterUpgrade) {
-        count++;
+      if (checkStack != null) {
+        if (checkStack.getItem() instanceof IItemFilterUpgrade) {
+          output = checkStack.copy();
+          output.stackTagCompound = null;
+          output.stackSize = 1;
+        } else {
+          output = null;
+          return false;
+        }
       }
-      input = (count == 1 && checkStack != null) ? checkStack : input;
     }
-    
-    if (count == 1 && FilterRegister.isFilterSet(input)) {
-      ItemStack out = input.copy();
-      out.stackSize = 1;
-      out.stackTagCompound = null;
-      this.output = out;
-    } else {
-      this.output = null;
-    }
-    
-    return count == 1 && output != null;
+    return output != null;
   }
 
   @Override
