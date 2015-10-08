@@ -152,7 +152,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int consumed = 0;
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput ri : inputs) {
-      if(isValidInput(new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3 && ri != null && ri.item != null) {
+      if (consumed < 3 && ri != null && ri.item != null && isValidInput(new MachineRecipeInput(ri.slotNumber, ri.item))) {
         int available = ri.item.stackSize;
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);
