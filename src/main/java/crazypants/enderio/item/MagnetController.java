@@ -139,54 +139,46 @@ public class MagnetController implements IEntitySelector {
     }        
   }
 
-  public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean isActive) {
+  public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean targetState) {
     ItemStack stack = null;
-    IInventory baubles = null;
-    int dropOff = -1;
     switch (type) {
     case INVENTORY:
       stack = player.inventory.getStackInSlot(slot);
-      break;
+      if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == targetState) {
+        return;
+      }
+      ItemMagnet.setActive(stack, targetState);
+      player.inventory.setInventorySlotContents(slot, stack);
+      player.inventory.markDirty();
+      return;
     case ARMOR:
       return;
     case BAUBLES:
-      baubles = BaublesUtil.instance().getBaubles(player);
-      if (baubles != null) {
-        stack = baubles.getStackInSlot(slot);
+      IInventory baubles = BaublesUtil.instance().getBaubles(player);
+      if (baubles == null) {
+        return;
       }
-      break;
-    }
-    if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
-      return;
-    }
-    if (!Config.magnetAllowDeactivatedInBaublesSlot && type == SlotType.BAUBLES && !isActive) {
-      ItemStack[] inv = player.inventory.mainInventory;
-      for (int i = 0; i < inv.length && dropOff < 0; i++) {
-        if (inv[i] == null) {
-          dropOff = i;
+      stack = baubles.getStackInSlot(slot);
+      if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == targetState) {
+        return;
+      }
+      if (!Config.magnetAllowDeactivatedInBaublesSlot && !targetState) {
+        ItemStack[] inv = player.inventory.mainInventory;
+        for (int i = 0; i < inv.length; i++) {
+          if (inv[i] == null) {
+            ItemMagnet.setActive(stack, targetState);
+            baubles.setInventorySlotContents(slot, null);
+            player.inventory.setInventorySlotContents(i, stack);
+            player.inventory.markDirty();
+            return;
+          }
         }
-      }
-      if (dropOff < 0) {
+      } else {
+        ItemMagnet.setActive(stack, targetState);
+        baubles.setInventorySlotContents(slot, stack);
         return;
       }
     }
-    ItemMagnet.setActive(stack, isActive);
-    switch (type) {
-    case INVENTORY:
-      player.inventory.setInventorySlotContents(slot, stack);
-      player.inventory.markDirty();
-      break;
-    case ARMOR:
-      return;
-    case BAUBLES:
-      if (dropOff < 0) {
-        baubles.setInventorySlotContents(slot, stack);
-      } else {
-        baubles.setInventorySlotContents(slot, null);
-        player.inventory.setInventorySlotContents(dropOff, stack);
-      }
-      player.inventory.markDirty();
-      break;
-    }
   }
+
 }
