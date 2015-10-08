@@ -83,7 +83,8 @@ public class ChannelTab implements ITabPanel {
     Predicate<Channel> predicate = new Predicate<Channel>() {
       @Override
       public boolean apply(Channel input) {
-        return input.isPublic() || input.getUser().equals(PlayerUtil.getPlayerUUID(EnderIO.proxy.getClientPlayer().getGameProfile().getName()));
+        return input != null
+            && (input.isPublic() || input.getUser().equals(PlayerUtil.getPlayerUUID(EnderIO.proxy.getClientPlayer().getGameProfile().getName())));
       }
     };
     

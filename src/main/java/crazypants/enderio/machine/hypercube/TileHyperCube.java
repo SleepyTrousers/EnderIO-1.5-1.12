@@ -195,7 +195,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
         return false;
       }
     }
-    return cons != null && cons.size() > 1 && getEnergyStored() > 0;
+    return cons.size() > 1 && getEnergyStored() > 0;
   }
 
   private void sendEnergyToOtherNodes() {

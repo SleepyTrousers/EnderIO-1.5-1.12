@@ -161,7 +161,9 @@ public class VatRecipe implements IRecipe {
         inputFluidStack = ri.fluid.copy();
       }
     }
-    inputFluidStack.amount = Math.round(inputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
+    if (inputFluidStack != null) {
+      inputFluidStack.amount = Math.round(inputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
+    }
     return inputFluidStack;
   }
 
