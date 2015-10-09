@@ -1,52 +1,56 @@
 package crazypants.enderio.teleport;
 
 import java.awt.Point;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.enderio.core.client.gui.widget.TemplateSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.ArrayInventory;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.teleport.ContainerTravelAccessable.PasswordInventory;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.packet.PacketPassword;
 
-public class ContainerTravelAccessable extends ContainerEnder<PasswordInventory> {
+public class ContainerTravelAccessable extends ContainerEnder<IInventory> {
 
   ITravelAccessable ta;
   TileEntity te;
   World world;
 
   public ContainerTravelAccessable(InventoryPlayer playerInv, final ITravelAccessable travelAccessable, World world) {
-    super(playerInv, new PasswordInventory(travelAccessable, world, true));
+    super(playerInv, playerInv);
     ta = travelAccessable;
     this.world = world;
     if (ta instanceof TileEntity) {
       te = ((TileEntity) ta);
     }
-
-    getInv().te = te;
   }
 
   @Override
   protected void addSlots(InventoryPlayer playerInv) {
+  }
+
+  public void addGhostSlots(List<GhostSlot> ghostSlots) {
     int x = 44;
     int y = 73;
     for (int i = 0; i < 5; i++) {
-      addSlotToContainer(new TemplateSlot(getInv(), i, x, y));
+      ghostSlots.add(new CtaGhostSlot(ta, i, x, y, true));
       x += 18;
     }
 
-    ArrayInventory arrInv = new PasswordInventory(getInv().ta, getInv().world, false);
     x = 125;
     y = 10;
-    addSlotToContainer(new TemplateSlot(arrInv, 0, x, y));
+    ghostSlots.add(new CtaGhostSlot(ta, 0, x, y, false));
   }
-  
+
   @Override
   public Point getPlayerInventoryOffset() {
     return new Point(8, 103);
@@ -57,82 +61,42 @@ public class ContainerTravelAccessable extends ContainerEnder<PasswordInventory>
     return null;
   }
 
-  static class PasswordInventory extends ArrayInventory {
+  private static class CtaGhostSlot extends GhostSlot {
 
+    private ITravelAccessable ta;
     boolean isAuth;
-    World world;
-    TileEntity te;
-    ITravelAccessable ta;
 
-    public PasswordInventory(ITravelAccessable ta, World world, boolean isAuth) {
-      super(isAuth ? ta.getPassword() : new ItemStack[] { ta.getItemLabel() });
-      this.isAuth = isAuth;
-      this.world = world;
-      if (ta instanceof TileEntity) {
-        te = (TileEntity) ta;
-      }
+    public CtaGhostSlot(ITravelAccessable ta, int slotIndex, int x, int y, boolean isAuth) {
+      this.slot = slotIndex;
+      this.x = x;
+      this.y = y;
+      this.displayStdOverlay = false;
+      this.grayOut = true;
+      this.stackSizeLimit = 1;
       this.ta = ta;
+      this.isAuth = isAuth;
     }
 
     @Override
-    public void markDirty() {
-      super.markDirty();
-      if (!world.isRemote && te != null) {
-        if (isAuth) {
-          ((ITravelAccessable) te).clearAuthorisedUsers();
-        }
-        world.markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
-      }
-    }
-
-    @Override
-    public int getSizeInventory() {
-      return items.length;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int i) {
-      if (i < 0 || i >= items.length) {
-        return null;
-      }
-      return items[i];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int fromSlot, int amount) {
-      ItemStack item = items[fromSlot];
-      items[fromSlot] = null;
-      if (item == null) {
-        return null;
-      }
-      item.stackSize = 0;
-      return item;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int i) {
-      return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack) {
-      if (itemstack != null) {
-        items[i] = itemstack.copy();
-        items[i].stackSize = 0;
+    public ItemStack getStack() {
+      if (isAuth) {
+        return ta.getPassword()[slot];
       } else {
-        items[i] = null;
+        return ta.getItemLabel();
       }
-      ((ITravelAccessable) te).setItemLabel(items[i]);
     }
 
     @Override
-    public String getInventoryName() {
-      return "Password";
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-      return 0;
+    public void putStack(ItemStack stack) {
+      if (isAuth) {
+        if (ta instanceof TileEntityEnder) {
+          PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityEnder) ta, slot, stack));
+        }
+      } else {
+        if (ta instanceof TileEntityEnder) {
+          PacketHandler.INSTANCE.sendToServer(PacketPassword.setLabel((TileEntityEnder) ta, stack));
+        }
+      }
     }
 
   }

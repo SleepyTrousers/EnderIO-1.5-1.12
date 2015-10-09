@@ -120,6 +120,8 @@ public class GuiTravelAccessable extends GuiContainerBase {
       tf.setText(txt);
     }
 
+    ((ContainerTravelAccessable) inventorySlots).addGhostSlots(getGhostSlots());
+
   }
   
   @Override
