@@ -207,17 +207,17 @@ public class GuiVacuumChest extends GuiContainerBase {
 
     @Override
     public boolean isVisible() {
-      return te.hasItemFilter();
+      return GuiVacuumChest.this.te.hasItemFilter();
     }
 
     @Override
     public void putStack(ItemStack stack) {
-      PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(te, slot, stack));
+      PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(GuiVacuumChest.this.te, slot, stack));
     }
 
     @Override
     public ItemStack getStack() {
-      ItemFilter itemFilter = te.getItemFilter();
+      ItemFilter itemFilter = GuiVacuumChest.this.te.getItemFilter();
       if(itemFilter != null) {
         return itemFilter.getStackInSlot(slot);
       }
