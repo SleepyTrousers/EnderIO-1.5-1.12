@@ -1,6 +1,7 @@
 package crazypants.enderio.item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.command.IEntitySelector;
@@ -13,6 +14,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,7 +28,7 @@ import crazypants.util.BaublesUtil;
 import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
 import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
 
-public class MagnetController implements IEntitySelector {
+public class MagnetController {
 
   public MagnetController() {
     PacketHandler.INSTANCE.registerMessage(PacketMagnetState.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
@@ -58,6 +62,10 @@ public class MagnetController implements IEntitySelector {
     return null;
   }
   
+  private static final double collisionDistanceSq = 1.25 * 1.25;
+  private static final double speed = 0.035;
+  private static final double speed4 = speed * 4;
+
   public void doHoover(EntityPlayer player) {
     
     if (blacklist == null) {
@@ -68,30 +76,28 @@ public class MagnetController implements IEntitySelector {
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
         
-    List<Entity> interestingItems = player.worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);        
-    List<Entity> xp = player.worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, this);
-    if(!xp.isEmpty()) {
-      interestingItems.addAll(xp);
-    }
+    List<Entity> interestingItems = selectEntitiesWithinAABB(player.worldObj, aabb);
 
-    for (Entity entity : interestingItems) {
-      double x = player.posX + 0.5D - entity.posX;
-      double y = player.posY + 1D - entity.posY;
-      double z = player.posZ + 0.5D - entity.posZ;
+    if (interestingItems != null) {
+      for (Entity entity : interestingItems) {
+        double x = player.posX + 0.5D - entity.posX;
+        double y = player.posY + 1D - entity.posY;
+        double z = player.posZ + 0.5D - entity.posZ;
 
-      double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance < 1.25) {
-        entity.onCollideWithPlayer(player);
-      } else {
-        double speed = 0.035;
-        entity.motionX += x / distance * speed;
-        entity.motionY += y * speed;
-        if(y > 0) {
-          entity.motionY = 0.12;
+        double distance = x * x + y * y + z * z;
+        if (distance < collisionDistanceSq) {
+          entity.onCollideWithPlayer(player);
+        } else {
+          double distancespeed = speed4 / distance;
+          entity.motionX += x * distancespeed;
+          if (y > 0) {
+            entity.motionY = 0.12;
+          } else {
+            entity.motionY += y * speed;
+          }
+          entity.motionZ += z * distancespeed;
         }
-        entity.motionZ += z / distance * speed;
       }
-
     }
   }
 
@@ -110,25 +116,62 @@ public class MagnetController implements IEntitySelector {
     }
   }
 
-  @Override
-  public boolean isEntityApplicable(Entity var1) {
-    if (var1.isDead) {
-      return false;
+  private List<Entity> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
+    List<Entity> arraylist = null;
+
+    int itemsRemaining = Config.magnetMaxItems;
+    if (itemsRemaining <= 0) {
+      itemsRemaining = Integer.MAX_VALUE;
     }
-    if (var1 instanceof EntityItem) {
-      if (!blacklist.isEmpty()) {
-        Item item = ((EntityItem) var1).getEntityItem().getItem();
-        for (Item blacklisted : blacklist) {
-          if (blacklisted == item) {
-            return false;
+
+    final int minChunkX = MathHelper.floor_double((bb.minX) / 16.0D);
+    final int maxChunkX = MathHelper.floor_double((bb.maxX) / 16.0D);
+    final int minChunkZ = MathHelper.floor_double((bb.minZ) / 16.0D);
+    final int maxChunkZ = MathHelper.floor_double((bb.maxZ) / 16.0D);
+    final int minChunkY = MathHelper.floor_double((bb.minY) / 16.0D);
+    final int maxChunkY = MathHelper.floor_double((bb.maxY) / 16.0D);
+
+    for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
+      for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
+        Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, chunk.entityLists.length - 1);
+        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, chunk.entityLists.length - 1);
+        for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
+          for (Entity entity : (List<Entity>) chunk.entityLists[chunkY]) {
+            if (!entity.isDead) {
+              boolean gotOne = false;
+              if (entity instanceof EntityItem && entity.boundingBox.intersectsWith(bb)) {
+                gotOne = !hasSolegnoliaAround(entity);
+                if (gotOne && !blacklist.isEmpty()) {
+                  final Item item = ((EntityItem) entity).getEntityItem().getItem();
+                  for (Item blacklisted : blacklist) {
+                    if (blacklisted == item) {
+                      gotOne = false;
+                      break;
+                    }
+                  }
+                }
+              } else if (entity instanceof EntityXPOrb && entity.boundingBox.intersectsWith(bb)) {
+                gotOne = true;
+              }
+              if (gotOne) {
+                if (arraylist == null) {
+                  arraylist = new ArrayList<Entity>(Config.magnetMaxItems > 0 ? Config.magnetMaxItems : 20);
+                }
+                arraylist.add(entity);
+                if (itemsRemaining-- <= 0) {
+                  return arraylist;
+                }
+              }
+            }
           }
         }
       }
-      return !hasSolegnoliaAround(var1);
     }
-    return true;
+
+    return arraylist;
   }
-  
+
   private static class ActiveMagnet {
     ItemStack item;
     int slot;
