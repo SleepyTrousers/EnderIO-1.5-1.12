@@ -317,6 +317,7 @@ public final class Config {
   public static int magnetRange = 5;
   public static String[] magnetBlacklist = new String[] { "appliedenergistics2:item.ItemCrystalSeed", "Botania:livingrock",
       "Botania:manaTablet" };
+  public static int magnetMaxItems = 20;
 
   public static boolean magnetAllowInMainInventory = false;
   public static boolean magnetAllowInBaublesSlot = true;
@@ -1071,6 +1072,8 @@ public final class Config {
         "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);
     magnetRange = config.get(sectionMagnet.name, "magnetRange", magnetRange,
         "Range of the magnet in blocks.").getInt(magnetRange);
+    magnetMaxItems = config.get(sectionMagnet.name, "magnetMaxItems", magnetMaxItems,
+        "Maximum number of items the magnet can effect at a time. (-1 for unlimited)").getInt(magnetMaxItems);
 
     magnetBlacklist = config.getStringList("magnetBlacklist", sectionMagnet.name, magnetBlacklist,
         "These items will not be picked up by the magnet.");
