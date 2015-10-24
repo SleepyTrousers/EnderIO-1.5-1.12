@@ -159,7 +159,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
     // used to render the block in the world
     TileEntity te = world.getTileEntity(x, y, z);
-    int facing = 0;
+    int facing = 3;
     if(te instanceof AbstractMachineEntity) {
       AbstractMachineEntity me = (AbstractMachineEntity) te;
       facing = me.facing;
