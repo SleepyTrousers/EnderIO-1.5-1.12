@@ -106,11 +106,22 @@ public class NetworkPowerManager {
     return result;
   }
 
+  private int errorSupressionA = 0;
+  private int errorSupressionB = 0;
+
   public void applyRecievedPower() {
     try {
       doApplyRecievedPower();
     } catch (Exception e) {
-      Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
+      if (errorSupressionA-- <= 0) {
+        Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
+        e.printStackTrace();
+        errorSupressionA = 200;
+        errorSupressionB = 20;
+      } else if (errorSupressionB-- <= 0) {
+        Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
+        errorSupressionB = 20;
+      }
     }
   }
 
