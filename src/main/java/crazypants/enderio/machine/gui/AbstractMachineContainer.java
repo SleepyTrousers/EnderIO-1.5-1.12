@@ -59,6 +59,10 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     return upgradeSlot;
   }
 
+  /**
+   * ATTN: Do not access any non-static field from this method. Your object has
+   * not yet been constructed when it is called!
+   */
   protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
   @Override

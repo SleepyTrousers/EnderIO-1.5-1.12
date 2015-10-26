@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import scala.actors.threadpool.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -18,6 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class TreeFarmer implements IFarmerJoe {
@@ -35,8 +37,12 @@ public class TreeFarmer implements IFarmerJoe {
     this.sapling = sapling;
     if(sapling != null) {
       saplingItem = new ItemStack(sapling);
+      FarmStationContainer.slotItemsSeeds.add(saplingItem);
     }
     woods = wood;
+    for (Block awood : woods) {
+      FarmStationContainer.slotItemsProduce.add(new ItemStack(awood));
+    }
   }
 
   public TreeFarmer(boolean ignoreMeta, Block sapling, Block... wood) {

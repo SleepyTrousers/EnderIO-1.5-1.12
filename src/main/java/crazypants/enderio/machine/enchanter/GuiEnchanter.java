@@ -13,6 +13,7 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.obelisk.attractor.ContainerAttractor;
 
 public class GuiEnchanter extends GuiContainerBase {
 
@@ -35,6 +36,7 @@ public class GuiEnchanter extends GuiContainerBase {
     super.initGui();
     recipeButton.onGuiInit();
     recipeButton.visible = EnderIO.proxy.isNeiInstalled();
+    ((ContainerEnchanter) inventorySlots).createGhostSlots(getGhostSlots());
   }
   
   @Override

@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import com.enderio.core.common.util.BlockCoord;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
 
@@ -26,6 +27,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
     item = GameRegistry.findItem("IC2", "itemHarz");
     if(item != null) {
       stickyResin = new ItemStack(item);  
+      FarmStationContainer.slotItemsProduce.add(stickyResin);
     }    
   }
   

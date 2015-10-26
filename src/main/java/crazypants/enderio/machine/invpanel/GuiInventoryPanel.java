@@ -39,6 +39,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
@@ -262,6 +263,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnClear.onGuiInit();
     btnSync.onGuiInit();
     addScrollbar(scrollbar);
+    ((InventoryPanelContainer) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

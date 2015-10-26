@@ -1,8 +1,15 @@
 package crazypants.enderio.machine.soul;
 
+import java.util.List;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> {
@@ -37,6 +44,11 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
         return false;
       }
     });
+  }
+
+  public void createGhostSlots(List<GhostSlot> slots) {
+    slots.add(new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, 38, 34));
+    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBrokenSpawner, 59, 34));
   }
 
 }

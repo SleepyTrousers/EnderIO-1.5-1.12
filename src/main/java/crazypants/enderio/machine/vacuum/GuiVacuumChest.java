@@ -25,6 +25,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
+import crazypants.enderio.machine.killera.ContainerKillerJoe;
 import crazypants.enderio.network.PacketHandler;
 
 public class GuiVacuumChest extends GuiContainerBase {
@@ -116,6 +117,7 @@ public class GuiVacuumChest extends GuiContainerBase {
     addToolTip(rangeTooltip);
 
     filterChanged();
+    ((ContainerVacuumChest) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override
@@ -180,8 +182,6 @@ public class GuiVacuumChest extends GuiContainerBase {
 
     if(te.getItemFilter() != null) {
       drawTexturedModalRect(sx + FILTER_LEFT, sy + FILTER_TOP, 0, 238, TileVacuumChest.FILTER_SLOTS*18, 18);
-
-      drawGhostSlots(mouseX, mouseY);
     }
 
     int headerColor = 0x404040;
@@ -195,6 +195,8 @@ public class GuiVacuumChest extends GuiContainerBase {
     String str = Integer.toString(te.getRange());
     int sw = fr.getStringWidth(str);
     fr.drawString(str, sx + RANGE_LEFT + RANGE_WIDTH - sw - 5, sy + RANGE_TOP + 5, ColorUtil.getRGB(Color.black));
+
+    super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
   }
 
   class FilterGhostSlot extends GhostSlot {
