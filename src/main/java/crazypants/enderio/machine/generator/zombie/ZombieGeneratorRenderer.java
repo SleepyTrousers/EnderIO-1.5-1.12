@@ -23,6 +23,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.util.RenderPassHelper;
 
 @SideOnly(Side.CLIENT)
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -46,9 +47,9 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    if(MinecraftForgeClient.getRenderPass() == 0) {
+    if (RenderPassHelper.getEntityRenderPass() == 0) {
       renderModel(gen.facing);
-    } else if(MinecraftForgeClient.getRenderPass() == 1) {
+    } else if (RenderPassHelper.getEntityRenderPass() == 1) {
       renderFluid(gen);
     }
     GL11.glPopMatrix();
