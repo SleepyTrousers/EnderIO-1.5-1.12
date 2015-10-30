@@ -23,6 +23,7 @@ import crazypants.enderio.conduit.item.NetworkedInventory;
 public class ModItemFilter implements IItemFilter {
 
   private final String[] mods = new String[3];
+  private boolean blacklist = false;
 
   public String setMod(int index, ItemStack itemStack) {
     if(index < 0 || index >= mods.length) {
@@ -61,6 +62,14 @@ public class ModItemFilter implements IItemFilter {
     return mods[index];
   }
 
+  public void setBlacklist(boolean value) {
+    blacklist = value;
+  }
+
+  public boolean isBlacklist() {
+    return blacklist;
+  }
+
   @Override
   public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
     if(item == null || item.getItem() == null) {
@@ -71,15 +80,14 @@ public class ModItemFilter implements IItemFilter {
       return false;
     }
     String targetMod = ui.modId;
-    if(targetMod == null) {
-      return false;
-    }
-    for (String mod : mods) {
-      if(targetMod.equals(mod)) {
-        return true;
+    if (targetMod != null) {
+      for (String mod : mods) {
+        if (targetMod.equals(mod)) {
+          return !blacklist;
+        }
       }
     }
-    return false;
+    return blacklist;
   }
 
   @Override
@@ -121,6 +129,11 @@ public class ModItemFilter implements IItemFilter {
       } else {
         mods[i] = mod;
       }
+      if (nbtRoot.hasKey("blacklist")) {
+        blacklist = nbtRoot.getBoolean("blacklist");
+      } else {
+        blacklist = false;
+      }
     }
   }
 
@@ -134,6 +147,7 @@ public class ModItemFilter implements IItemFilter {
         nbtRoot.setString("mod" + i, mod);
       }
     }
+    nbtRoot.setBoolean("blacklist", blacklist);
   }
 
   @Override

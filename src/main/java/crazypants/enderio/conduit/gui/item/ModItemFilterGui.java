@@ -14,6 +14,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
@@ -34,7 +35,9 @@ public class ModItemFilterGui implements IItemFilterGui {
   private final Rectangle[] inputBounds;
   
   private final IconButton[] deleteButs;
-  
+
+  private final IconButton whiteListB;
+
   private final int inputOffsetX;
   private final int tfWidth;
   private final int tfTextureX;
@@ -74,6 +77,8 @@ public class ModItemFilterGui implements IItemFilterGui {
       deleteButs[i] = but;
     }
     
+    whiteListB = new IconButton(gui, -1, inputOffsetX - 19, 89, IconEIO.FILTER_WHITELIST);
+    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
   }
 
   @Override
@@ -81,12 +86,22 @@ public class ModItemFilterGui implements IItemFilterGui {
     for(IconButton but : deleteButs) {
       but.detach();
     }
+    whiteListB.detach();
   }
 
   @Override
   public void updateButtons() {
     for(IconButton but : deleteButs) {
       but.onGuiInit();
+    }
+
+    whiteListB.onGuiInit();
+    if (filter.isBlacklist()) {
+      whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
+      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+    } else {
+      whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
+      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
     }
   }
 
@@ -98,6 +113,9 @@ public class ModItemFilterGui implements IItemFilterGui {
         setMod(i, null);
         return;
       }
+    }
+    if (guiButton == whiteListB) {
+      toggleBlacklist();
     }
   }
 
@@ -142,6 +160,12 @@ public class ModItemFilterGui implements IItemFilterGui {
     String mod = filter.setMod(i, st);    
     PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(),isInput,i, mod));
     
+  }
+
+  private void toggleBlacklist() {
+    filter.setBlacklist(!filter.isBlacklist());
+    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, -1, filter.isBlacklist() ? "1"
+        : "0"));
   }
 
 }
