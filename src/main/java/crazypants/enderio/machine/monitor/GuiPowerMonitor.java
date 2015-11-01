@@ -70,6 +70,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
   private String monHeading4;
   private String monHeading5;
 
+  private String noNetworkError;
+
   public GuiPowerMonitor(InventoryPlayer playerInv, final TilePowerMonitor te) {
     super(new ContainerNoInv(te));
     this.te = te;
@@ -89,6 +91,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
     monHeading3 = EnderIO.lang.localize("gui.powerMonitor.monHeading3");
     monHeading4 = EnderIO.lang.localize("gui.powerMonitor.monHeading4");
     monHeading5 = EnderIO.lang.localize("gui.powerMonitor.monHeading5");
+
+    noNetworkError = EnderIO.lang.localize("gui.powerMonitor.noNetworkError");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
@@ -309,6 +313,10 @@ public class GuiPowerMonitor extends GuiContainerBase {
       int sectionGap = SPACING;
 
       FontRenderer fontRenderer = getFontRenderer();
+      if (te.maxPowerInConduits == 0) {
+        fontRenderer.drawSplitString(noNetworkError, x, y, 170, ColorUtil.getRGB(Color.red));
+      } else {
+
       rgb = headingCol;
       StringBuilder sb = new StringBuilder();
       sb.append(monHeading1);
@@ -391,6 +399,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
       sb.append(PowerDisplayUtil.abrevation());
       sb.append(PowerDisplayUtil.perTickStr());
       fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+      }
     } else {
       IconEIO.map.render(IconEIO.INACTIVE_TAB, sx + 200, sy + SPACING, true);
     }

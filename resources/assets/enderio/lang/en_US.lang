@@ -892,6 +892,7 @@ enderio.gui.powerMonitor.monHeading2=Capacitor Bank Storage
 enderio.gui.powerMonitor.monHeading3=Machine Buffers
 enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
 enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
+enderio.gui.powerMonitor.noNetworkError=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 
 //MJ Reader
 enderio.gui.mjReader.networkHeading=Power Network
