@@ -24,29 +24,23 @@ import static crazypants.util.RecipeUtil.*;
 public class MaterialRecipes {
 
   public static void registerDependantOresInDictionary() {
-    if (hasCopper()) {
-      OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
-    }
-    if (hasTin()) {
-      OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
-    }
-    if (PowderIngot.POWDER_ENDER.isDependancyMet()) {
-      OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
-      PowderIngot.POWDER_ENDER.ignoreRuntimeDependencyCheck = true;
-      // because the line above would trigger it
-    }
-    //Enderium Base
-    if (OreDictionaryHelper.hasEnderium()) {
-      OreDictionary.registerOre("ingotEnderiumBase", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.INGOT_ENDERIUM_BASE.ordinal()));
+    // late registration for powders that only exist if the ingot from another
+    // mod exists
+    for (PowderIngot powder : PowderIngot.values()) {
+      if (powder.hasDependancy() && powder.isDependancyMet()) {
+        OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
+        powder.setRegistered();
+      }
     }
   }
 
   public static void registerOresInDictionary() {
     //Ore Dictionary Registration
-    OreDictionary.registerOre("dustCoal", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COAL.ordinal()));
-    OreDictionary.registerOre("dustIron", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()));
-    OreDictionary.registerOre("dustGold", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()));
-    OreDictionary.registerOre("dustObsidian", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_OBSIDIAN.ordinal()));
+    for (PowderIngot powder : PowderIngot.values()) {
+      if (!powder.hasDependancy()) {
+        OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
+      }
+    }
     
     for (Alloy alloy : Alloy.values()) {
       boolean isPrimaryName = true;
