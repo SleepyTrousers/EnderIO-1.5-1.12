@@ -22,11 +22,11 @@ public class RecipeUtil {
   }
 
   public static void addShapeless(Item res, Object... recipe) {
-    addShaped(new ItemStack(res), recipe);
+    addShapeless(new ItemStack(res), recipe);
   }
 
   public static void addShapeless(Block res, Object... recipe) {
-    addShaped(new ItemStack(res), recipe);
+    addShapeless(new ItemStack(res), recipe);
   }
 
   public static void addShapeless(ItemStack res, Object... recipe) {
