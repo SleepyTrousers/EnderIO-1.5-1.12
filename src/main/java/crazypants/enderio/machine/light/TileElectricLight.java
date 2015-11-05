@@ -375,6 +375,9 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     if(!requiresPower) {
       return 0;
     }
+    if (energyStoredRF == 0) {
+      init = true;
+    }
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
