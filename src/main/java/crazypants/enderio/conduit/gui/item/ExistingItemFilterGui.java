@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -46,6 +47,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private ToggleButton useOreDictB;
   private ToggleButton stickyB;
   
+  private final IconButton whiteListB;
+
   private GuiButton snapshotB;
   private GuiButton clearB;
   private GuiButton showB;
@@ -103,6 +106,10 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, EnderIO.lang.localize("gui.conduit.button.clear"));
     showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.show"));
 
+    x -= 20;
+    whiteListB = new IconButton(gui, -1, x, y, IconEIO.FILTER_WHITELIST);
+    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+
     snapshotOverlay = new SnapshotOverlay();
     gui.addOverlay(snapshotOverlay);
     
@@ -131,6 +138,15 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     useMetaB.onGuiInit();
     useMetaB.setSelected(activeFilter.isMatchMeta());
+
+    whiteListB.onGuiInit();
+    if (filter.isBlacklist()) {
+      whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
+      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+    } else {
+      whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
+      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    }
 
     int x0 = gui.getGuiLeft() + 80;
     int y0 = gui.getGuiTop() + 65;
@@ -181,6 +197,10 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
     } else if(guiButton.id == ID_SHOW) {
       showSnapshotOverlay();  
+    } else if (guiButton == whiteListB) {
+      filter.setBlacklist(!filter.isBlacklist());
+      sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK
+          : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
     }
   }
 
@@ -197,17 +217,20 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));    
   }
 
+  @Override
   public void deactivate() {
     useNbtB.detach();
     useMetaB.detach();
     useOreDictB.detach();    
     stickyB.detach();
+    whiteListB.detach();
     gui.removeButton(snapshotB);
     gui.removeButton(clearB);
     gui.removeButton(showB);
     gui.removeButton(mergeB);
   }
 
+  @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
 //    GL11.glColor3f(1, 1, 1);
 //    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");

@@ -30,6 +30,7 @@ public class ExistingItemFilter implements IItemFilter {
   boolean convertOreDict = false;
   boolean matchNBT = false;
   boolean sticky = false;
+  private boolean blacklist = false;
 
   List<ItemStack> snapshot = null;
 
@@ -39,14 +40,19 @@ public class ExistingItemFilter implements IItemFilter {
       return false;
     }
     if(snapshot != null) {
-      return isStackInSnapshot(item);
+      return isStackInSnapshot(item) == !blacklist;
     } else if(ni != null) {
-      int[] slots = ni.getInventory().getAccessibleSlotsFromSide(ni.getInventorySide());
-      for (int i = 0; i < slots.length; i++) {
-        ItemStack stack = ni.getInventory().getStackInSlot(i);
-        if(stackEqual(item, stack)) {
-          return true;
-        }
+      return isStackInInventory(ni, item) == !blacklist;
+    }
+    return false;
+  }
+
+  private boolean isStackInInventory(NetworkedInventory ni, ItemStack item) {
+    int[] slots = ni.getInventory().getAccessibleSlotsFromSide(ni.getInventorySide());
+    for (int i = 0; i < slots.length; i++) {
+      ItemStack stack = ni.getInventory().getStackInSlot(i);
+      if (stackEqual(item, stack)) {
+        return true;
       }
     }
     return false;
@@ -178,6 +184,14 @@ public class ExistingItemFilter implements IItemFilter {
     this.sticky = sticky;
   }
 
+  public void setBlacklist(boolean value) {
+    blacklist = value;
+  }
+
+  public boolean isBlacklist() {
+    return blacklist;
+  }
+
   @Override
   @SideOnly(Side.CLIENT)
   public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
@@ -209,6 +223,7 @@ public class ExistingItemFilter implements IItemFilter {
     matchNBT = nbtRoot.getBoolean("matchNBT");
     useOreDict = nbtRoot.getBoolean("useOreDict");
     sticky = nbtRoot.getBoolean("sticky");
+    blacklist = nbtRoot.getBoolean("blacklist");
   }
 
   @Override
@@ -218,14 +233,12 @@ public class ExistingItemFilter implements IItemFilter {
     if(snapshot != null) {
       
       NBTTagList itemList = new NBTTagList();
-      int i = 0;
-      for (ItemStack item : snapshot) {                
+      for (ItemStack item : snapshot) {
         if(item != null) {
           NBTTagCompound itemTag = new NBTTagCompound();
           item.writeToNBT(itemTag);
           itemList.appendTag(itemTag);
         }
-        i++;
       }
       nbtRoot.setTag("snapshot", itemList);
       
@@ -237,6 +250,7 @@ public class ExistingItemFilter implements IItemFilter {
     nbtRoot.setBoolean("matchNBT", matchNBT);
     nbtRoot.setBoolean("useOreDict", useOreDict);
     nbtRoot.setBoolean("sticky", sticky);
+    nbtRoot.setBoolean("blacklist", blacklist);
   }
 
   @Override
