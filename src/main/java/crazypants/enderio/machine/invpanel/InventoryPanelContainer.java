@@ -102,6 +102,16 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           }
         }
       }
+
+      @Override
+      public ItemStack decrStackSize(int p_75209_1_) {
+        if (this.getHasStack()) {
+          // on a right click we are asked to craft half a result. Ignore that.
+          return super.decrStackSize(this.getStack().stackSize);
+        }
+        return super.decrStackSize(p_75209_1_);
+      }
+
     });
 
     firstSlotCraftingGrid = inventorySlots.size();
