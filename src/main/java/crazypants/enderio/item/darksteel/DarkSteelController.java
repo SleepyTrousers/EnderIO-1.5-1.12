@@ -383,7 +383,11 @@ public class DarkSteelController {
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-      if(player == null || player.capabilities.isFlying) {
+      if (player == null) {
+        return;
+      }
+      updateNightvision(player);
+      if (player.capabilities.isFlying) {
         return;
       }
       MovementInput input = player.movementInput;
@@ -398,8 +402,6 @@ public class DarkSteelController {
         jumpCount = 0;
       }
       ticksSinceLastJump++;
-
-      updateNightvision(player);
     }
   }
 
