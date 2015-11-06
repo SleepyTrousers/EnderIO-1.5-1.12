@@ -1,6 +1,7 @@
 package crazypants.util;
 
-import codechicken.lib.inventory.InventoryUtils;
+import com.enderio.core.common.util.Util;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -29,12 +30,14 @@ public class ShadowInventory implements IInventory {
 
   @Override
   public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-    return InventoryUtils.decrStackSize(this, p_70298_1_, p_70298_2_);
+    return Util.decrStackSize(this, p_70298_1_, p_70298_2_);
   }
 
   @Override
   public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-    return InventoryUtils.getStackInSlotOnClosing(this, p_70304_1_);
+    ItemStack stack = getStackInSlot(p_70304_1_);
+    setInventorySlotContents(p_70304_1_, null);
+    return stack;
   }
 
   @Override
