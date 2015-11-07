@@ -49,6 +49,7 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
+import crazypants.util.RenderPassHelper;
 
 public class IoConfigRenderer {
 
@@ -372,12 +373,11 @@ public class IoConfigRenderer {
         doTileEntityRenderPass(neighbours, pass);
       }
     }
-    ForgeHooksClient.setRenderPass(-1);
     setGlStateForPass(0, false);
   }
 
   private void doTileEntityRenderPass(List<BlockCoord> blocks, int pass) {
-    ForgeHooksClient.setRenderPass(pass);
+    RenderPassHelper.setEntityRenderPass(pass);
     for (BlockCoord bc : blocks) {
       TileEntity tile = world.getTileEntity(bc.x, bc.y, bc.z);
       if(tile != null) {
@@ -385,13 +385,16 @@ public class IoConfigRenderer {
         at.x += bc.x - origin.x;
         at.y += bc.y - origin.y;
         at.z += bc.z - origin.z;
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+        GL11.glPopAttrib();
       }
     }
+    RenderPassHelper.clearEntityRenderPass();
   }
 
   private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, int pass) {
-    ForgeHooksClient.setRenderPass(pass);
+    RenderPassHelper.setBlockRenderPass(pass);
 
     Tessellator.instance.startDrawingQuads();
     Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
@@ -416,6 +419,7 @@ public class IoConfigRenderer {
 
     Tessellator.instance.draw();
     Tessellator.instance.setTranslation(0, 0, 0);
+    RenderPassHelper.clearBlockRenderPass();
   }
 
   private void setGlStateForPass(int pass, boolean isNeighbour) {

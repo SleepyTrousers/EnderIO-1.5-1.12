@@ -40,6 +40,7 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
+import crazypants.util.RenderPassHelper;
 
 public class GuiEnderface extends GuiScreen {
 
@@ -272,7 +273,7 @@ public class GuiEnderface extends GuiScreen {
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
         for (int pass = 0; pass < 2; pass++) {
 
-          ForgeHooksClient.setRenderPass(pass);
+          RenderPassHelper.setBlockRenderPass(pass);
           setGlStateForPass(pass);
 
           Tessellator.instance.startDrawingQuads();
@@ -286,6 +287,7 @@ public class GuiEnderface extends GuiScreen {
           }
           Tessellator.instance.draw();
           Tessellator.instance.setTranslation(0, 0, 0);
+          RenderPassHelper.clearBlockRenderPass();
         }
 
         RenderHelper.enableStandardItemLighting();
@@ -300,7 +302,7 @@ public class GuiEnderface extends GuiScreen {
 
         for (int pass = 0; pass < 2; pass++) {
 
-          ForgeHooksClient.setRenderPass(pass);
+          RenderPassHelper.setEntityRenderPass(pass);
           setGlStateForPass(pass);
 
           for (ViewableBlocks ug : blocks) {
@@ -310,11 +312,13 @@ public class GuiEnderface extends GuiScreen {
               at.x += ug.bc.x - ioX;
               at.y += ug.bc.y - ioY;
               at.z += ug.bc.z - ioZ;
+              GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
               TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+              GL11.glPopAttrib();
             }
           }
+          RenderPassHelper.clearEntityRenderPass();
         }
-        ForgeHooksClient.setRenderPass(-1);
         setGlStateForPass(0);
         TravelController.instance.setSelectionEnabled(true);
 
