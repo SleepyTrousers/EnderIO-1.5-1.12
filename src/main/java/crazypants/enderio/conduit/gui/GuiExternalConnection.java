@@ -113,6 +113,7 @@ public class GuiExternalConnection extends GuiContainerBase {
   public void initGui() {
     super.initGui();
     buttonList.clear();
+    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlots());
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
@@ -120,7 +121,6 @@ public class GuiExternalConnection extends GuiContainerBase {
         tabs.get(i).deactivate();
       }
     }
-
   }
 
   @Override
@@ -229,6 +229,11 @@ public class GuiExternalConnection extends GuiContainerBase {
   protected void drawFakeItemStack(int x, int y, ItemStack stack) {
     super.drawFakeItemStack(x, y, stack);
     itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.renderEngine, stack, x, y, "");
+  }
+
+  public void clearGhostSlots() {
+    getGhostSlots().clear();
+    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
 }

@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.enchanter;
 
+import java.util.List;
+
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,7 +9,11 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
+
+import crazypants.enderio.EnderIO;
 
 public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
@@ -99,6 +105,10 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
       }
 
     });
+  }
+
+  public void createGhostSlots(List<GhostSlot> slots) {
+    slots.add(new GhostBackgroundItemSlot(Items.writable_book, 27, 35));
   }
 
   public boolean playerHasEnoughLevels(EntityPlayer player) {

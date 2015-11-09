@@ -21,6 +21,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.killera.ContainerKillerJoe;
 import crazypants.enderio.network.PacketHandler;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
@@ -85,6 +86,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     super.initGui();
     voidBut.onGuiInit();
     voidBut.setMode(getTileEntity().getVoidMode());
+    ((ContainerTank) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

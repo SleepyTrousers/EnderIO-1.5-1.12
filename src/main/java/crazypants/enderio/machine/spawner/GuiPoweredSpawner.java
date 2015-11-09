@@ -16,6 +16,7 @@ import com.enderio.core.common.Lang;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.killera.ContainerKillerJoe;
 import crazypants.enderio.network.PacketHandler;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
@@ -41,6 +42,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   public void initGui() {
     super.initGui();
     modeB.onGuiInit();
+    ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

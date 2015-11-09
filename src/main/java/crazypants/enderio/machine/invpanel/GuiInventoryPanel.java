@@ -39,6 +39,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
@@ -262,6 +263,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnClear.onGuiInit();
     btnSync.onGuiInit();
     addScrollbar(scrollbar);
+    ((InventoryPanelContainer) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override
@@ -567,7 +569,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           InventoryDatabaseClient db = getDatabase();
           if(invSlot.stack != null && invSlot.entry != null && db != null) {
             ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
-            if(itemStack == null || ItemUtil.areStackMergable(itemStack, hoverGhostSlot.stack)) {
+            if (itemStack == null || ItemUtil.areStackMergable(itemStack, invSlot.stack)) {
               PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
             }
           }
@@ -625,10 +627,18 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   class InvSlot extends GhostSlot {
     ItemEntry entry;
+    ItemStack stack;
 
     InvSlot(int x, int y) {
       this.x = x;
       this.y = y;
+      this.grayOut = false;
+      this.stackSizeLimit = Integer.MAX_VALUE;
+    }
+
+    @Override
+    public ItemStack getStack() {
+      return stack;
     }
   }
 

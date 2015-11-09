@@ -11,6 +11,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.SoundUtil;
 
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
@@ -36,6 +37,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   public void initGui() {    
     super.initGui();
     usePlayerXP.onGuiInit();
+    ((ContainerSoulBinder) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

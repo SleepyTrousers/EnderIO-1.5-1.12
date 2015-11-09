@@ -15,6 +15,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
@@ -43,6 +44,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     super.initGui();
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
+    ((ContainerAttractor) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

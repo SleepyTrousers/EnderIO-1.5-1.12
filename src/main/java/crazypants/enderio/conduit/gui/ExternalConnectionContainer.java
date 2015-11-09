@@ -12,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ItemUtil;
 
@@ -41,6 +43,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   private final List<Point> slotLocations = new ArrayList<Point>();
 
   final List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
+  final List<GhostBackgroundItemSlot> bgSlots = new ArrayList<GhostBackgroundItemSlot>();
 
   public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir));
@@ -55,11 +58,13 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       y = 47;
       slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
       slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotOutputFilterUpgrades));
 
       x = 10;
       y = 47;
       slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
       slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotInputFilterUpgrades));
 
       x = 28;
       y = 47;
@@ -75,6 +80,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
       });
       slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemExtractSpeedUpgrade, slotSpeedUpgrades));
 
       x = 10;
       y = 65;
@@ -90,7 +96,12 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
       });
       slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemFunctionUpgrade, slotFunctionUpgrades));
     }
+  }
+
+  public void createGhostSlots(List<GhostSlot> slots) {
+    slots.addAll(bgSlots);
   }
 
   @Override

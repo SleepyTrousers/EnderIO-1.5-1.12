@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.killera.ContainerKillerJoe;
 
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 
@@ -14,6 +15,12 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
     super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te));
 
     addProgressTooltip(103, 49, 24, 16);
+  }
+
+  @Override
+  public void initGui() {
+    super.initGui();
+    ((ContainerSliceAndSplice) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   /**
