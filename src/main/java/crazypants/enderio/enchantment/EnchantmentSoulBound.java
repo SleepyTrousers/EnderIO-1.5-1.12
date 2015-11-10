@@ -58,9 +58,17 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     return 1;
   }
 
+  /*
+   * This is called the moment the player dies and drops is stuff.
+   * 
+   * We go early, so we can get our items before other mods put them into some
+   * grave. Also remove them from the list so they won't get duped. If the
+   * inventory overflows, e.g. because everything there and the armor is
+   * soulbound, let the remainder be dropped/graved.
+   */
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void onPlayerDeath(PlayerDropsEvent evt) {
-    if(evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
+    if (evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
     if(evt.entityPlayer.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
@@ -72,8 +80,9 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
       EntityItem ei = iter.next();
       ItemStack item = ei.getEntityItem();
       if(isSoulBound(item)) {
-        addToPlayerInventory(evt.entityPlayer, item);
-        iter.remove();
+        if (addToPlayerInventory(evt.entityPlayer, item)) {
+          iter.remove();
+        }
       }
     }
 
@@ -86,17 +95,28 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack item = baubles.getStackInSlot(i);
         if(isSoulBound(item)) {
-          addToPlayerInventory(evt.entityPlayer, item);
-          baubles.setInventorySlotContents(i, null);
+          if (addToPlayerInventory(evt.entityPlayer, item)) {
+            baubles.setInventorySlotContents(i, null);
+          }
         }
       }
     }
     
   }
 
+  /*
+   * This is called when the user presses the "respawn" button. The original
+   * inventory would be empty, but onPlayerDeath() above placed items in it.
+   * 
+   * Note: Without other death-modifying mods, the content of the old inventory
+   * would always fit into the new one (both being empty but for soulbound items
+   * in the old one) and the old one would be discarded just after this method.
+   * But better play it safe and assume that an overflow is possible and that
+   * another mod may move stuff out of the old inventory, too.
+   */
   @SubscribeEvent
   public void onPlayerClone(PlayerEvent.Clone evt) {
-    if(!evt.wasDeath) {
+    if (!evt.wasDeath || evt.isCanceled()) {
       return;
     }
     if(evt.original == null || evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
@@ -108,42 +128,35 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     for (int i = 0; i < evt.original.inventory.mainInventory.length; i++) {
       ItemStack item = evt.original.inventory.mainInventory[i];
       if(isSoulBound(item)) {
-        addToPlayerInventory(evt.entityPlayer, item);
+        if (addToPlayerInventory(evt.entityPlayer, item)) {
+          evt.original.inventory.mainInventory[i] = null;
+        }
       }
     }
     for (int i = 0; i < evt.original.inventory.armorInventory.length; i++) {
       ItemStack item = evt.original.inventory.armorInventory[i];
       if(isSoulBound(item)) {
-        addToPlayerInventory(evt.entityPlayer, item);
+        if (addToPlayerInventory(evt.entityPlayer, item)) {
+          evt.original.inventory.armorInventory[i] = null;
+        }
       }
     }
   }
 
   private boolean isSoulBound(ItemStack item) {
-    if(item == null) {
-      return false;
-    }
-    Map<Integer, Integer> enchants = EnchantmentHelper.getEnchantments(item);
-    if(enchants != null) {
-      for (int enchId : enchants.keySet()) {
-        if(id == enchId) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return EnchantmentHelper.getEnchantmentLevel(id, item) > 0;
   }
 
-  private void addToPlayerInventory(EntityPlayer entityPlayer, ItemStack item) {
+  private boolean addToPlayerInventory(EntityPlayer entityPlayer, ItemStack item) {
     if(item == null || entityPlayer == null) {
-      return;
+      return false;
     }
     if(item.getItem() instanceof ItemArmor) {
       ItemArmor arm = (ItemArmor) item.getItem();
       int index = 3 - arm.armorType;
       if(entityPlayer.inventory.armorItemInSlot(index) == null) {
         entityPlayer.inventory.armorInventory[index] = item;
-        return;
+        return true;
       }
     }
 
@@ -151,10 +164,11 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     for (int i = 0; i < inv.mainInventory.length; i++) {
       if(inv.mainInventory[i] == null) {
         inv.mainInventory[i] = item.copy();
-        return;
+        return true;
       }
     }
 
+    return false;
   }
 
   @Override
