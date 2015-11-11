@@ -99,9 +99,9 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
       recipeButton.visible = true;
     }
 
-    renderSlotHighlights();
-
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+
+    renderSlotHighlights();
   }
 
   public void renderSlotHighlights() {
@@ -116,20 +116,24 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
 
   public void renderSlotHighlights(IoMode mode) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
-    if(slotDef.getNumInputSlots() > 0 && (mode == IoMode.PULL || mode == IoMode.PUSH_PULL)) {
-      for (int slot = slotDef.getMinInputSlot(); slot <= slotDef.getMaxInputSlot(); slot++) {
-        renderSlotHighlight(slot, PULL_COLOR);
-      }
-    }
-    if(slotDef.getNumOutputSlots() > 0 && (mode == IoMode.PUSH || mode == IoMode.PUSH_PULL)) {
-      for (int slot = slotDef.getMinOutputSlot(); slot <= slotDef.getMaxOutputSlot(); slot++) {
-        renderSlotHighlight(slot, PUSH_COLOR);
+
+    for (Slot invSlot : (List<Slot>) inventorySlots.inventorySlots) {
+      if (invSlot.inventory == tileEntity) {
+        if ((mode == IoMode.PULL || mode == IoMode.PUSH_PULL) && slotDef.isInputSlot(invSlot.getSlotIndex())) {
+          renderSlotHighlight(invSlot, PULL_COLOR);
+        } else if ((mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) && slotDef.isOutputSlot(invSlot.getSlotIndex())) {
+          renderSlotHighlight(invSlot, PUSH_COLOR);
+        }
       }
     }
   }
 
   protected void renderSlotHighlight(int slot, Vector4f col) {
     Slot invSlot = (Slot) inventorySlots.inventorySlots.get(slot);
+    renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
+  }
+
+  protected void renderSlotHighlight(Slot invSlot, Vector4f col) {
     renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
   }
 
