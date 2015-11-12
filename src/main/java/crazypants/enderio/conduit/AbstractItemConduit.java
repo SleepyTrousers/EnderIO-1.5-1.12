@@ -32,22 +32,30 @@ import crazypants.enderio.ModObject;
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   protected ModObject modObj;
+  
+  protected String unlocalisedName;
 
   protected ItemConduitSubtype[] subtypes;
 
   protected IIcon[] icons;
 
+  protected AbstractItemConduit(String unlocalisedName, ItemConduitSubtype... subtypes) {
+	  this.unlocalisedName = unlocalisedName;
+	  this.subtypes = subtypes;
+	  setCreativeTab(EnderIOTab.tabEnderIO);
+	  setUnlocalizedName(this.unlocalisedName);
+	  setMaxStackSize(64);
+	  setHasSubtypes(true);
+  }
+  
+  
   protected AbstractItemConduit(ModObject modObj, ItemConduitSubtype... subtypes) {
+    this(modObj.unlocalisedName,subtypes);
     this.modObj = modObj;
-    this.subtypes = subtypes;
-    setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(modObj.unlocalisedName);
-    setMaxStackSize(64);
-    setHasSubtypes(true);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, modObj.unlocalisedName);
+    GameRegistry.registerItem(this, unlocalisedName);
   }
 
   @Override

@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -60,23 +62,51 @@ public class ConduitUtil {
   public static final Random RANDOM = new Random();
 
   public static AbstractConduitNetwork<?, ?> createNetworkForType(Class<? extends IConduit> type) {
-    if(IRedstoneConduit.class.isAssignableFrom(type)) {
-      return new RedstoneConduitNetwork();
-    } else if(IPowerConduit.class.isAssignableFrom(type)) {
-      return new PowerConduitNetwork();
-    } else if(EnderLiquidConduit.class.isAssignableFrom(type)) {
-      return new EnderLiquidConduitNetwork();
-    } else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
-      return new AdvancedLiquidConduitNetwork();
-    } else if(ILiquidConduit.class.isAssignableFrom(type)) {
-      return new LiquidConduitNetwork();
-    } else if(IItemConduit.class.isAssignableFrom(type)) {
-      return new ItemConduitNetwork();
-    } else if(IGasConduit.class.isAssignableFrom(type)) {
-      return new GasConduitNetwork();
-    } else if(IMEConduit.class.isAssignableFrom(type)) {
-      return new MEConduitNetwork();
-    }
+ 
+	
+	Method m = null;
+	try {
+		m = type.getDeclaredMethod("getNetworkClass", (Class<?>[])null);
+	} catch (NoSuchMethodException e) {
+	} catch (SecurityException e) {
+	}
+	Object network = null; 
+	if (m != null)
+	{
+		try {
+			network = m.invoke(null, (Object[])null);
+		} catch (IllegalAccessException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (InvocationTargetException e) {
+		}
+	}
+	if (network != null)
+	{
+		try {
+			return (AbstractConduitNetwork<?, ?>) ((Class) network).newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	else if(IRedstoneConduit.class.isAssignableFrom(type)) {
+	  return new RedstoneConduitNetwork();
+	} else if(IPowerConduit.class.isAssignableFrom(type)) {
+	  return new PowerConduitNetwork();
+	} else if(EnderLiquidConduit.class.isAssignableFrom(type)) {
+	  return new EnderLiquidConduitNetwork();
+	} else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
+	  return new AdvancedLiquidConduitNetwork();
+	} else if(ILiquidConduit.class.isAssignableFrom(type)) {
+	  return new LiquidConduitNetwork();
+	} else if(IItemConduit.class.isAssignableFrom(type)) {
+	  return new ItemConduitNetwork();
+	} else if(IGasConduit.class.isAssignableFrom(type)) {
+	  return new GasConduitNetwork();
+	} else if(IMEConduit.class.isAssignableFrom(type)) {
+	  return new MEConduitNetwork();
+	}
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
     return null;
   }
