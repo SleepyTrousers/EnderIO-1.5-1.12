@@ -59,28 +59,6 @@ public class ConduitUtil {
 
   public static final Random RANDOM = new Random();
 
-  public static AbstractConduitNetwork<?, ?> createNetworkForType(Class<? extends IConduit> type) {
-    if(IRedstoneConduit.class.isAssignableFrom(type)) {
-      return new RedstoneConduitNetwork();
-    } else if(IPowerConduit.class.isAssignableFrom(type)) {
-      return new PowerConduitNetwork();
-    } else if(EnderLiquidConduit.class.isAssignableFrom(type)) {
-      return new EnderLiquidConduitNetwork();
-    } else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
-      return new AdvancedLiquidConduitNetwork();
-    } else if(ILiquidConduit.class.isAssignableFrom(type)) {
-      return new LiquidConduitNetwork();
-    } else if(IItemConduit.class.isAssignableFrom(type)) {
-      return new ItemConduitNetwork();
-    } else if(IGasConduit.class.isAssignableFrom(type)) {
-      return new GasConduitNetwork();
-    } else if(IMEConduit.class.isAssignableFrom(type)) {
-      return new MEConduitNetwork();
-    }
-    FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
-    return null;
-  }
-
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IConduit conduit) {
     TileEntity te = conduit.getBundle().getEntity();
@@ -91,7 +69,7 @@ public class ConduitUtil {
       return;
     }
 
-    AbstractConduitNetwork res = createNetworkForType(conduit.getClass());
+    AbstractConduitNetwork res = conduitcreateNetworkForType();
     res.init(conduit.getBundle(), connections, world);
     return;
   }
