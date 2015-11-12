@@ -134,5 +134,7 @@ public interface IConduit {
   boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt);
 
   boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt);
+  
+  public AbstractConduitNetwork<?, ?> createNetworkForType();
 
 }
