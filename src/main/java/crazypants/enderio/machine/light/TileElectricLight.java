@@ -146,7 +146,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     
     if (chargedLocation != null) {
       if (energyStoredRF < getMaxEnergyStored()) {
+        boolean needInit = energyStoredRF == 0;
         energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+        if (needInit && energyStoredRF > 0) {
+          init = true;
+        }
       }
     }
   }
