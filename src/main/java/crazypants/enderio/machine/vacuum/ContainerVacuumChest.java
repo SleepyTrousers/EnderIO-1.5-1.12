@@ -25,6 +25,9 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
   
   @Override
   protected void addSlots(InventoryPlayer playerInv) {
+    filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
+    addSlotToContainer(filterSlot);
+
     int x = 8;
     int y = 18;
     int index = -1;
@@ -33,9 +36,6 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
         addSlotToContainer(new Slot(getInv(), ++index, x + j * 18, y + i * 18));
       }
     }
-
-    filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
-    addSlotToContainer(filterSlot);
   }
   
   public void createGhostSlots(List<GhostSlot> slots) {
@@ -47,32 +47,6 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
     Point p = super.getPlayerInventoryOffset();
     p.translate(0, 40);
     return p;
-  }
-
-  @Override
-  public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
-    ItemStack itemstack = null;
-    Slot slot = (Slot) this.inventorySlots.get(par2);
-
-    if(slot != null && slot.getHasStack()) {
-      ItemStack itemstack1 = slot.getStack();
-      itemstack = itemstack1.copy();
-
-      if(par2 < TileVacuumChest.ITEM_SLOTS) {
-        if(!this.mergeItemStack(itemstack1, TileVacuumChest.ITEM_SLOTS, this.inventorySlots.size()-1, true)) {
-          return null;
-        }
-      } else if(!this.mergeItemStack(itemstack1, 0, TileVacuumChest.ITEM_SLOTS, false)) {
-        return null;
-      }
-
-      if(itemstack1.stackSize == 0) {
-        slot.putStack((ItemStack) null);
-      } else {
-        slot.onSlotChanged();
-      }
-    }
-    return itemstack;
   }
 
   void setFilterChangedCB(Runnable filterChangedCB) {
