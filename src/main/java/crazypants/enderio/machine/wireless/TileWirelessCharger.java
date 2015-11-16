@@ -157,6 +157,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     return true;
   }
 
+  @Override
   public boolean isActive() {
     return getEnergyStored() > 0 && !isPoweredRedstone();
   }

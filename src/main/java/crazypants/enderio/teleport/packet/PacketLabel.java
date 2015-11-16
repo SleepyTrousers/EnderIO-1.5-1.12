@@ -53,6 +53,7 @@ public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMess
     }
   }
 
+  @Override
   public IMessage onMessage(PacketLabel message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);

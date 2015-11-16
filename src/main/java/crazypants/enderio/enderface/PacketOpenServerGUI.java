@@ -48,6 +48,7 @@ public class PacketOpenServerGUI implements IMessage, IMessageHandler<PacketOpen
     hitVec = Vec3.createVectorHelper(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
   }
 
+  @Override
   public IMessage onMessage(PacketOpenServerGUI message, MessageContext ctx) {
     EntityPlayerMP player = (EntityPlayerMP) ctx.getServerHandler().playerEntity;
     Container c = player.openContainer;

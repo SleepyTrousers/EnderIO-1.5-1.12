@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +72,7 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEnder te, ItemStack drop) {
     drop.stackTagCompound = new NBTTagCompound();
     if(te != null) {
       ((TileVacuumChest) te).writeContentsToNBT(drop.stackTagCompound);

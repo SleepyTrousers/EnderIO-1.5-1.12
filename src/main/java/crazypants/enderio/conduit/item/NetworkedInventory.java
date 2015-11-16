@@ -364,7 +364,8 @@ public class NetworkedInventory {
       if(target != null && target.inv != null && target.inv.con != null) {
         targetConLoc = target.inv.con.getLocation();
       }
-      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
+      // HL: is it on purpose that below may happen in another pass of the loop than above? If yes, is it on purpose that the order of elements in the list does make a difference?
+      if (targetConLoc != null && target != null && target.inv != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
         return target;
       }
     }

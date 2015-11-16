@@ -124,10 +124,12 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     this.password = password;
   }
 
+  @Override
   public ItemStack getItemLabel() {
     return itemLabel;
   }
 
+  @Override
   public void setItemLabel(ItemStack lableIcon) {
     this.itemLabel = lableIcon;
   }

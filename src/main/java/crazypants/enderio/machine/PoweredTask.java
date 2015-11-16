@@ -173,6 +173,7 @@ public class PoweredTask implements IPoweredTask {
 
   }
 
+  @Override
   public IMachineRecipe getRecipe() {
     return recipe;
   }

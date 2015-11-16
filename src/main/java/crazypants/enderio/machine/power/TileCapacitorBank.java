@@ -810,15 +810,15 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
         TileCapacitorBank cb = getCapBank(bc);
         if(cb != null) {
           totalStored += cb.doGetEnergyStored();
-        }
-        ItemStack[] inv = cb.inventory;
-        for (int i = 0; i < inv.length; i++) {
-          if(inv[i] != null) {
-            invItems.add(inv[i]);
-            inv[i] = null;
+          ItemStack[] inv = cb.inventory;
+          for (int i = 0; i < inv.length; i++) {
+            if (inv[i] != null) {
+              invItems.add(inv[i]);
+              inv[i] = null;
+            }
           }
+          cb.multiblockDirty = false;
         }
-        cb.multiblockDirty = false;
       }
       maxStoredEnergy = totalCap;
       doSetEnergyStored(totalStored);

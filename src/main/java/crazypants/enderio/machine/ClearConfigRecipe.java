@@ -23,28 +23,23 @@ public class ClearConfigRecipe implements IRecipe {
   
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
-    int count = 0;
-    ItemStack input = null;
-    
+    output = null;
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack != null && Block.getBlockFromItem(checkStack.getItem()) instanceof AbstractMachineBlock) {
-        count++;
+      if (checkStack != null) {
+        if (Block.getBlockFromItem(checkStack.getItem()) instanceof AbstractMachineBlock && checkStack.stackTagCompound != null
+            && checkStack.stackTagCompound.getBoolean("eio.abstractMachine")) {
+          output = checkStack.copy();
+          output.stackTagCompound = new NBTTagCompound();
+          output.stackTagCompound.setBoolean("clearedConfig", true);
+          output.stackSize = 1;
+        } else {
+          output = null;
+          return false;
+        }
       }
-      input = count == 1 && checkStack != null ? checkStack : input;
     }
-    
-    if (count == 1 && input.stackTagCompound != null && input.stackTagCompound.getBoolean("eio.abstractMachine")) {
-      ItemStack out = input.copy();
-      out.stackTagCompound = new NBTTagCompound();
-      out.stackTagCompound.setBoolean("clearedConfig", true);
-      out.stackSize = 1;
-      output = out;
-    } else {
-      output = null;
-    }
-    
-    return count == 1 && output != null;
+    return output != null;
   }
 
   @Override

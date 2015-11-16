@@ -233,7 +233,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
     Set<Signal> valid = Sets.newHashSet();
     for (Signal s : oldSignals) {
-      if (world.blockExists(s.x, s.y, s.z)) {
+      if (world != null && world.blockExists(s.x, s.y, s.z)) {
         valid.add(s);
       }
     }

@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Timer;
 import net.minecraftforge.client.event.RenderLivingEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -11,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.RenderUtil;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
 import static org.lwjgl.opengl.GL11.*;
 
 public class TeleportEntityRenderHandler {
@@ -40,7 +40,8 @@ public class TeleportEntityRenderHandler {
       bb = bb.expand(0.5, 0, 0.5);
       float speed = e.getEntityData().getFloat(TileTelePad.PROGRESS_KEY) * 1.2f;
       float rot = (e.getEntityData().getFloat("teleportrotation")) + speed;
-      glRotatef(rot + RenderUtil.getTimer().renderPartialTicks + e.ticksExisted, 0, 1, 0);
+      Timer timer = RenderUtil.getTimer();
+      glRotatef(rot + (timer != null ? timer.renderPartialTicks : 0f) + e.ticksExisted, 0, 1, 0);
 
       double yMax = bb.maxY + 1;
 

@@ -104,6 +104,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
+  @Override
   public void doUpdate() {
     super.doUpdate();
     if(worldObj.isRemote) {

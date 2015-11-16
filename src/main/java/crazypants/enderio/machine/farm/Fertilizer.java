@@ -33,6 +33,7 @@ public enum Fertilizer {
 
   BONEMEAL(new ItemStack(Items.dye, 1, 15)) {
 
+    @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
       return stack.getItem().onItemUse(stack, player, world, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
     }
@@ -48,6 +49,7 @@ public enum Fertilizer {
 
   BOTANIA_FLORAL_FERTILIZER(GameRegistry.findItem("Botania", "fertilizer")) {
 
+    @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
       BlockCoord below = bc.getLocation(ForgeDirection.DOWN);
       Block belowBlock = below.getBlock(world);
@@ -57,10 +59,12 @@ public enum Fertilizer {
       return false;
     }
 
+    @Override
     public boolean applyOnAir() {
       return true;
     }
 
+    @Override
     public boolean applyOnPlant() {
       return false;
     }

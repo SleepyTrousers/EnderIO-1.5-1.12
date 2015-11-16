@@ -159,7 +159,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       riddenByEntity = riddenByEntity.riddenByEntity;
     }
 
-    if(player == null || !player.capabilities.isCreativeMode) {
+    if (!player.capabilities.isCreativeMode) {
       if(itemstack.stackSize > 1) {
         itemstack.stackSize--;
         player.inventory.addItemStackToInventory(new ItemStack(this));
@@ -175,10 +175,10 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   @Override
   public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity) {
 
-    if(entity.worldObj.isRemote) {
+    if (entity.worldObj.isRemote || player == null) {
       return false;
     }
-    boolean isCreative = player != null && player.capabilities.isCreativeMode;
+    boolean isCreative = player.capabilities.isCreativeMode;
     if(containsSoul(item) && !isCreative) {
       return false;
     }

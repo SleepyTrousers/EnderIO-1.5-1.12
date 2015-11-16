@@ -445,7 +445,7 @@ public class DarkSteelController {
               GL11.glColor4f(1F, 1F, 1F, 1F);
               IRenderUpgrade render = upg.getRender();
               if (render != null) {
-                upg.getRender().render(event, stack, head);
+                render.render(event, stack, head);
               }
               GL11.glPopMatrix();
             }

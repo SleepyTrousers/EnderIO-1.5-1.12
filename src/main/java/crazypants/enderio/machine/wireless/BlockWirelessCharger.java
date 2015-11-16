@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.wireless;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -124,7 +126,7 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEnder te, ItemStack drop) {
     drop.stackTagCompound = new NBTTagCompound();
     if(te instanceof TileWirelessCharger) {
       ((TileWirelessCharger) te).writeCustomNBT(drop.stackTagCompound);

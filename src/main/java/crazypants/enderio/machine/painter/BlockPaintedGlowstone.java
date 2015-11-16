@@ -3,6 +3,8 @@ package crazypants.enderio.machine.painter;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -217,7 +219,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEnder te, ItemStack drop) {
     TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
     if(tef != null) {
       ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
