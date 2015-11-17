@@ -315,7 +315,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
       FontRenderer fontRenderer = getFontRenderer();
       if (te.maxPowerInConduits == 0) {
         fontRenderer.drawSplitString(noNetworkError, x, y, 170, ColorUtil.getRGB(Color.red));
-      } else {
+        return;
+      }
 
       rgb = headingCol;
       StringBuilder sb = new StringBuilder();
@@ -399,7 +400,6 @@ public class GuiPowerMonitor extends GuiContainerBase {
       sb.append(PowerDisplayUtil.abrevation());
       sb.append(PowerDisplayUtil.perTickStr());
       fontRenderer.drawString(sb.toString(), x, y, rgb, false);
-      }
     } else {
       IconEIO.map.render(IconEIO.INACTIVE_TAB, sx + 200, sy + SPACING, true);
     }
