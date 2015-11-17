@@ -51,6 +51,19 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   private boolean isAdvanced; 
 
+  public void copyFrom(ItemFilter o) {
+    isBlacklist = o.isBlacklist;
+    matchMeta = o.matchMeta;
+    matchNBT = o.matchNBT;
+    useOreDict = o.useOreDict;
+    sticky = o.sticky;
+    fuzzyMode = o.fuzzyMode;
+    items = o.items;
+    oreIds.clear();
+    oreIds.addAll(o.oreIds);
+    isAdvanced = o.isAdvanced;
+  }
+
   public ItemFilter() {
     this(5, false);
   }

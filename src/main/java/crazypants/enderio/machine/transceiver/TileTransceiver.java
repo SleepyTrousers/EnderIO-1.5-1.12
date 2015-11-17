@@ -244,11 +244,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
     if(nbtRoot.hasKey("sendItemFilter")) {
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("sendItemFilter");
-      sendItemFilter = (ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot);
+      sendItemFilter.copyFrom((ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot));
     }
     if(nbtRoot.hasKey("recieveItemFilter")) {
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("recieveItemFilter");
-      recieveItemFilter = (ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot);
+      recieveItemFilter.copyFrom((ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot));
     }
 
     if(nbtRoot.hasKey("bufferStacks")) {
