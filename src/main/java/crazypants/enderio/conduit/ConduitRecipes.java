@@ -35,12 +35,12 @@ public class ConduitRecipes {
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
 
-    String electricalSteel = ELECTRICAL_STEEL.oreIngot;
-    String phasedGold = PHASED_GOLD.oreIngot;
-    String conductiveIron = CONDUCTIVE_IRON.oreIngot;
-    String energeticGold = ENERGETIC_ALLOY.oreIngot;
+    String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
+    String phasedGold = PHASED_GOLD.getOreIngot();
+    String conductiveIron = CONDUCTIVE_IRON.getOreIngot();
+    String energeticGold = ENERGETIC_ALLOY.getOreIngot();
     String phasedIronNugget = PHASED_IRON_NUGGET.oreDict;
-    String redstoneAlloy = REDSTONE_ALLOY.oreIngot;
+    String redstoneAlloy = REDSTONE_ALLOY.getOreIngot();
 
     String binder = CONDUIT_BINDER.oreDict;
 
