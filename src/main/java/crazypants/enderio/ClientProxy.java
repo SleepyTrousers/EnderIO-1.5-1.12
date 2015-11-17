@@ -43,6 +43,9 @@ import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.me.MEConduit;
 import crazypants.enderio.conduit.me.MEUtil;
+import crazypants.enderio.conduit.oc.OCConduit;
+import crazypants.enderio.conduit.oc.OCConduitRenderer;
+import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -213,6 +216,9 @@ public class ClientProxy extends CommonProxy {
     if(MEUtil.isMEEnabled()) {
       MEConduit.initIcons();
     }
+    if (OCUtil.isOCEnabled()) {
+      OCConduit.initIcons();
+    }
   }
 
   @Override
@@ -330,6 +336,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemGasConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMEConduit, itemConRenderer);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemOCConduit, itemConRenderer);
 
     BlockPaintedFenceGateRenderer bcfgr = new BlockPaintedFenceGateRenderer();
     BlockPaintedFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
@@ -381,6 +388,9 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
     if(GasUtil.isGasConduitEnabled()) {
       conduitRenderers.add(new GasConduitRenderer());
+    }
+    if (OCUtil.isOCEnabled()) {
+      conduitRenderers.add(new OCConduitRenderer());
     }
 
     EnderIoRenderer eior = new EnderIoRenderer();

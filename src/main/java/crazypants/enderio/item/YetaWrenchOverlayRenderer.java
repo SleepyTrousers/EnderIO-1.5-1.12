@@ -19,6 +19,7 @@ import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.me.MEUtil;
+import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.gui.IconEIO;
 
 public class YetaWrenchOverlayRenderer {
@@ -89,37 +90,43 @@ public class YetaWrenchOverlayRenderer {
     }
     boolean meEnabled = MEUtil.isMEEnabled();
     boolean gasEnabled = GasUtil.isGasConduitEnabled();
+    boolean ocEnabled = OCUtil.isOCEnabled();
 
     onIcons = new IconEIO[numIcons];
     offIcons = new IconEIO[numIcons];
     iconOffsets = new Point[numIcons];
+    int index = 0;
 
-    indices.put(ConduitDisplayMode.POWER, 0);
-    onIcons[0] = IconEIO.WRENCH_OVERLAY_POWER;
-    offIcons[0] = IconEIO.WRENCH_OVERLAY_POWER_OFF;
+    indices.put(ConduitDisplayMode.POWER, index);
+    onIcons[index] = IconEIO.WRENCH_OVERLAY_POWER;
+    offIcons[index++] = IconEIO.WRENCH_OVERLAY_POWER_OFF;
 
-    indices.put(ConduitDisplayMode.REDSTONE, 1);
-    onIcons[1] = IconEIO.WRENCH_OVERLAY_REDSTONE;
-    offIcons[1] = IconEIO.WRENCH_OVERLAY_REDSTONE_OFF;
+    indices.put(ConduitDisplayMode.REDSTONE, index);
+    onIcons[index] = IconEIO.WRENCH_OVERLAY_REDSTONE;
+    offIcons[index++] = IconEIO.WRENCH_OVERLAY_REDSTONE_OFF;
 
-    indices.put(ConduitDisplayMode.FLUID, 2);
-    onIcons[2] = IconEIO.WRENCH_OVERLAY_FLUID;
-    offIcons[2] = IconEIO.WRENCH_OVERLAY_FLUID_OFF;
+    indices.put(ConduitDisplayMode.FLUID, index);
+    onIcons[index] = IconEIO.WRENCH_OVERLAY_FLUID;
+    offIcons[index++] = IconEIO.WRENCH_OVERLAY_FLUID_OFF;
 
-    indices.put(ConduitDisplayMode.ITEM, 3);
-    onIcons[3] = IconEIO.WRENCH_OVERLAY_ITEM;
-    offIcons[3] = IconEIO.WRENCH_OVERLAY_ITEM_OFF;
+    indices.put(ConduitDisplayMode.ITEM, index);
+    onIcons[index] = IconEIO.WRENCH_OVERLAY_ITEM;
+    offIcons[index++] = IconEIO.WRENCH_OVERLAY_ITEM_OFF;
 
     if(meEnabled) {
-      indices.put(ConduitDisplayMode.ME, 4);
-      onIcons[4] = IconEIO.WRENCH_OVERLAY_ME;
-      offIcons[4] = IconEIO.WRENCH_OVERLAY_ME_OFF;
+      indices.put(ConduitDisplayMode.ME, index);
+      onIcons[index] = IconEIO.WRENCH_OVERLAY_ME;
+      offIcons[index++] = IconEIO.WRENCH_OVERLAY_ME_OFF;
     }
     if(gasEnabled) {
-      int index = meEnabled ? 5 : 4;
       indices.put(ConduitDisplayMode.GAS, index);
       onIcons[index] = IconEIO.WRENCH_OVERLAY_GAS;
-      offIcons[index] = IconEIO.WRENCH_OVERLAY_GAS_OFF;
+      offIcons[index++] = IconEIO.WRENCH_OVERLAY_GAS_OFF;
+    }
+    if (ocEnabled) {
+      indices.put(ConduitDisplayMode.OC, index);
+      onIcons[index] = IconEIO.WRENCH_OVERLAY_OC;
+      offIcons[index++] = IconEIO.WRENCH_OVERLAY_OC_OFF;
     }
 
     int xOffset = numIcons == 5 ? 8 : 0;
@@ -139,7 +146,8 @@ public class YetaWrenchOverlayRenderer {
   private int getNumConduitsEnabled() {
     boolean meEnabled = MEUtil.isMEEnabled();
     boolean gasEnabled = GasUtil.isGasConduitEnabled();
-    return 4 + (meEnabled ? 1 : 0) + (gasEnabled ? 1 : 0);
+    boolean ocEnabled = OCUtil.isOCEnabled();
+    return 4 + (meEnabled ? 1 : 0) + (gasEnabled ? 1 : 0) + (ocEnabled ? 1 : 0);
   }
 
 }

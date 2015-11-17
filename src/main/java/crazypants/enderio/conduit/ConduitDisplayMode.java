@@ -6,6 +6,7 @@ import net.minecraft.util.MathHelper;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.me.MEUtil;
+import crazypants.enderio.conduit.oc.OCUtil;
 
 public enum ConduitDisplayMode {
   ALL,
@@ -13,20 +14,24 @@ public enum ConduitDisplayMode {
   REDSTONE,
   FLUID,
   ITEM,
-  GAS, 
+  GAS,
   ME,
+  OC,
   NONE;
 
   public static ConduitDisplayMode next(ConduitDisplayMode mode) {
     int index = mode.ordinal() + 1;
-    if(index >= values().length) {
+    if (index >= values().length) {
       index = 0;
     }
     ConduitDisplayMode res = values()[index];
-    if(res == GAS && !GasUtil.isGasConduitEnabled()) {
+    if (res == OC && !OCUtil.isOCEnabled()) {
       return next(res);
     }
-    if(res == ME && !MEUtil.isMEEnabled()) {
+    if (res == GAS && !GasUtil.isGasConduitEnabled()) {
+      return next(res);
+    }
+    if (res == ME && !MEUtil.isMEEnabled()) {
       return next(res);
     }
     return res;
@@ -34,14 +39,17 @@ public enum ConduitDisplayMode {
 
   public static ConduitDisplayMode previous(ConduitDisplayMode mode) {
     int index = mode.ordinal() - 1;
-    if(index < 0) {
+    if (index < 0) {
       index = values().length - 1;
     }
     ConduitDisplayMode res = values()[index];
-    if(res == GAS && !GasUtil.isGasConduitEnabled()) {
+    if (res == GAS && !GasUtil.isGasConduitEnabled()) {
       return previous(res);
     }
-    if(res == ME && !MEUtil.isMEEnabled()) {
+    if (res == ME && !MEUtil.isMEEnabled()) {
+      return previous(res);
+    }
+    if (res == OC && !OCUtil.isOCEnabled()) {
       return previous(res);
     }
     return res;
@@ -50,7 +58,7 @@ public enum ConduitDisplayMode {
   private static final String NBT_KEY = "enderio.displaymode";
 
   public static ConduitDisplayMode getDisplayMode(ItemStack equipped) {
-    if(equipped == null || !(equipped.getItem() instanceof IConduitControl)) {
+    if (equipped == null || !(equipped.getItem() instanceof IConduitControl)) {
       return ALL;
     }
     initDisplayModeTag(equipped);
@@ -60,7 +68,7 @@ public enum ConduitDisplayMode {
   }
 
   public static void setDisplayMode(ItemStack equipped, ConduitDisplayMode mode) {
-    if(mode == null || equipped == null || !(equipped.getItem() instanceof IConduitControl)) {
+    if (mode == null || equipped == null || !(equipped.getItem() instanceof IConduitControl)) {
       return;
     }
     initDisplayModeTag(equipped);
