@@ -137,4 +137,10 @@ public interface IConduit {
   
   public AbstractConduitNetwork<?, ?> createNetworkForType();
 
+  /**
+   * Should the texture of the conduit connectors be mirrored around the conduit
+   * node?
+   */
+  boolean shouldMirrorTexture();
+
 }

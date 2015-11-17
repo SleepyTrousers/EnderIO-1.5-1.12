@@ -390,6 +390,8 @@ public final class Config {
 
   public static boolean isGasConduitEnabled = true;
   public static boolean enableMEConduits = true;
+  public static boolean enableOCConduits = true;
+  public static boolean enableOCConduitsAnimatedTexture = true;
 
   public static String[] soulVesselBlackList = new String[0];
   public static boolean soulVesselCapturesBosses = false;
@@ -1157,6 +1159,10 @@ public final class Config {
     isGasConduitEnabled = config.getBoolean("gasConduitEnabled", sectionItems.name, isGasConduitEnabled,
         "If true, gas conduits will be enabled if the Mekanism Gas API is found. False to forcibly disable.");
     enableMEConduits = config.getBoolean("enableMEConduits", sectionItems.name, enableMEConduits, "Allows ME conduits. Only has an effect with AE2 installed.");
+    enableOCConduits = config.getBoolean("enableOCConduits", sectionItems.name, enableOCConduits,
+        "Allows OC conduits. Only has an effect with OpenComputers installed.");
+    enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
+        enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
     
     soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");

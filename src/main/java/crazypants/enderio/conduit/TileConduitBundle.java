@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import li.cil.oc.api.network.Message;
+import li.cil.oc.api.network.Node;
+import li.cil.oc.api.network.*;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mods.immibis.microblocks.api.EnumPartClass;
@@ -51,6 +54,7 @@ import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
@@ -512,7 +516,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
     cachedConnectors.clear();
 
-    //TODO: What an unholly mess!
+    // TODO: What an unholly mess! (and it doesn't even work correctly...)
     List<CollidableComponent> coreBounds = new ArrayList<CollidableComponent>();
     for (IConduit con : conduits) {
       addConduitCores(coreBounds, con);
@@ -885,6 +889,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return (IGridNode) node;
   }
   
+  @SuppressWarnings("cast")
   @Override
   @Method(modid = "appliedenergistics2")
   public void setGridNode(Object node) {
@@ -1058,4 +1063,77 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       }
     }
   }
+
+  // OpenComputers
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public Node node() {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      return cond.node();
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public void onConnect(Node node) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.onConnect(node);
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public void onDisconnect(Node node) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.onDisconnect(node);
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public void onMessage(Message message) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.onMessage(message);
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public Node sidedNode(ForgeDirection side) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      return cond.sidedNode(side);
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  @SideOnly(Side.CLIENT)
+  public boolean canConnect(ForgeDirection side) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      return cond.canConnect(side);
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.invalidate();
+    }
+  }
+
 }

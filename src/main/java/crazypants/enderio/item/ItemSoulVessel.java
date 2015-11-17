@@ -159,7 +159,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       riddenByEntity = riddenByEntity.riddenByEntity;
     }
 
-    if(player == null || !player.capabilities.isCreativeMode) {
+    if (!player.capabilities.isCreativeMode) {
       if(itemstack.stackSize > 1) {
         itemstack.stackSize--;
         player.inventory.addItemStackToInventory(new ItemStack(this));
