@@ -140,15 +140,17 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
           RenderUtil.rotateToPlayer();
         }
 
-        GL11.glPushMatrix();
-        GL11.glScalef(globalScale, globalScale, globalScale);
-
         {
           GL11.glPushMatrix();
-          if (isBlock) {
-            GL11.glTranslatef(0f, -0.25f, 0);
-          } else {
-            GL11.glTranslatef(0f, -0.5f, 0);
+          GL11.glScalef(globalScale, globalScale, globalScale);
+
+          {
+            GL11.glPushMatrix();
+            if (isBlock) {
+              GL11.glTranslatef(0f, -0.25f, 0);
+            } else {
+              GL11.glTranslatef(0f, -0.5f, 0);
+            }
 
             GL11.glScalef(2, 2, 2);
 
@@ -160,10 +162,9 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
             RenderUtil.render3DItem(ei, false);
             GL11.glPopMatrix();
           }
-
-          GL11.glPopMatrix();
           GL11.glPopMatrix();
         }
+        GL11.glPopMatrix();
       }
     }
 
