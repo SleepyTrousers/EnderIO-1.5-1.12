@@ -332,7 +332,7 @@ public class ConduitUtil {
       TileEntity te = bundle.getEntity();
       signalStrength = Math.max(signalStrength, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
     }
-    return mode.isConditionMet(mode, signalStrength);
+    return RedstoneControlMode.isConditionMet(mode, signalStrength);
   }
 
   public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {

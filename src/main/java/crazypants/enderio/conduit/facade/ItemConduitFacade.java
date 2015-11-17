@@ -224,7 +224,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       if(PaintSourceValidator.instance.isWhitelisted(paintSource)) {
         return true;
       }
-      if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
+      if (!Config.allowTileEntitiesAsPaintSource && block.hasTileEntity(paintSource.getItemDamage())) {
         return false;
       }
       if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {
