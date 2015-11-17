@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -24,7 +23,6 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -32,25 +30,15 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.conduit.gas.GasConduitNetwork;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.me.IMEConduit;
-import crazypants.enderio.conduit.me.MEConduitNetwork;
 import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
@@ -69,7 +57,7 @@ public class ConduitUtil {
       return;
     }
 
-    AbstractConduitNetwork res = conduitcreateNetworkForType();
+    AbstractConduitNetwork res = conduit.createNetworkForType();
     res.init(conduit.getBundle(), connections, world);
     return;
   }

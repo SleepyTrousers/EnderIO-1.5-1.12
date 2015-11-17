@@ -25,10 +25,26 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.gas.GasConduitNetwork;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
+import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.me.MEConduitNetwork;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.power.PowerConduitNetwork;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 
 public abstract class AbstractConduit implements IConduit {
 
