@@ -102,6 +102,9 @@ public enum Fertilizer {
 
   private Fertilizer(ItemStack stack) {
     this.stack = stack == null || stack.getItem() == null ? null : stack;
+    if (this.stack != null) {
+      FarmStationContainer.slotItemsFertilizer.add(this.stack);
+    }
   }
 
   private static final List<Fertilizer> validFertilizers = Lists.newArrayList();

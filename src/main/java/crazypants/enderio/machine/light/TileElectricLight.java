@@ -146,7 +146,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     
     if (chargedLocation != null) {
       if (energyStoredRF < getMaxEnergyStored()) {
+        boolean needInit = energyStoredRF == 0;
         energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+        if (needInit && energyStoredRF > 0) {
+          init = true;
+        }
       }
     }
   }
@@ -374,6 +378,9 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     if(!requiresPower) {
       return 0;
+    }
+    if (energyStoredRF == 0) {
+      init = true;
     }
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }

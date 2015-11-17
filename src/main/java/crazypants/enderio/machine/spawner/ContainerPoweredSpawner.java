@@ -1,8 +1,15 @@
 package crazypants.enderio.machine.spawner;
 
+import java.util.List;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePoweredSpawner> {
@@ -28,6 +35,12 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
         return false;
       }
     });
+  }
+
+  public void createGhostSlots(List<GhostSlot> slots) {
+    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, slotInput);
+    ghostBackgroundItemSlot.y = 42;
+    slots.add(ghostBackgroundItemSlot);
   }
 
   public void setSlotVisibility(boolean visible) {

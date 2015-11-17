@@ -17,6 +17,7 @@ import net.minecraft.world.WorldServer;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.Log;
 
 public class FakeFarmPlayer extends EntityPlayerMP {
 
@@ -88,4 +89,12 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack) {
     return true;
   }
+
+  @Override
+  public void setWorld(World p_70029_1_) {
+    Log.warn("Ender IO Farming station fake player is being transfered to world '" + p_70029_1_
+        + "'. Trying to reject transfer. Call stack follows:");
+    Thread.dumpStack();
+  }
+
 }

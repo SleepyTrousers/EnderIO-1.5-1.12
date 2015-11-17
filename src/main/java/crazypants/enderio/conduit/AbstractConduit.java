@@ -603,5 +603,28 @@ public abstract class AbstractConduit implements IConduit {
     }
     return null;
   }
-
+  @Override
+  public AbstractConduitNetwork<?, ?> createNetworkForType()
+  {
+	  Class<? extends IConduit> type = this.getClass();
+	  if(IRedstoneConduit.class.isAssignableFrom(type)) {
+		  return new RedstoneConduitNetwork();
+	  } else if(IPowerConduit.class.isAssignableFrom(type)) {
+		  return new PowerConduitNetwork();
+	  } else if(EnderLiquidConduit.class.isAssignableFrom(type)) {
+		  return new EnderLiquidConduitNetwork();
+	  } else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
+		  return new AdvancedLiquidConduitNetwork();
+	  } else if(ILiquidConduit.class.isAssignableFrom(type)) {
+		  return new LiquidConduitNetwork();
+	  } else if(IItemConduit.class.isAssignableFrom(type)) {
+		  return new ItemConduitNetwork();
+	  } else if(IGasConduit.class.isAssignableFrom(type)) {
+		  return new GasConduitNetwork();
+	  } else if(IMEConduit.class.isAssignableFrom(type)) {
+		  return new MEConduitNetwork();	
+	  } else {
+		  return null;
+	  }	  
+  }
 }

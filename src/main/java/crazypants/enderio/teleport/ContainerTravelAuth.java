@@ -1,16 +1,21 @@
 package crazypants.enderio.teleport;
 
 import java.awt.Point;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.client.gui.widget.TemplateSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.ArrayInventory;
 
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAuth.AuthInventory;
+import crazypants.enderio.teleport.packet.PacketPassword;
 
 public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
 
@@ -94,14 +99,17 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
 
   @Override
   protected void addSlots(InventoryPlayer playerInv) {
+  }
+
+  public void addGhostSlots(List<GhostSlot> ghostSlots) {
     int x = 44;
     int y = 28;
     for (int i = 0; i < 5; i++) {
-      addSlotToContainer(new TemplateSlot(getInv(), i, x, y));
+      ghostSlots.add(new AuthGhostSlot(getInv(), i, x, y));
       x += 18;
     }
   }
-  
+
   @Override
   public Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
@@ -112,6 +120,33 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
   @Override
   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
     return null;
+  }
+
+  private static class AuthGhostSlot extends GhostSlot {
+
+    private AuthInventory inv;
+
+    public AuthGhostSlot(AuthInventory ta, int slotIndex, int x, int y) {
+      this.slot = slotIndex;
+      this.x = x;
+      this.y = y;
+      this.displayStdOverlay = false;
+      this.grayOut = true;
+      this.stackSizeLimit = 1;
+      this.inv = ta;
+    }
+
+    @Override
+    public ItemStack getStack() {
+      ItemStack stack = inv.getStackInSlot(slot);
+      return stack;
+    }
+
+    @Override
+    public void putStack(ItemStack stack) {
+      inv.setInventorySlotContents(slot, stack);
+    }
+
   }
 
 }

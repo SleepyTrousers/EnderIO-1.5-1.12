@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class CustomSeedFarmer implements IFarmerJoe {
@@ -39,6 +40,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     this.plantedBlockMeta = plantedBlockMeta;
     this.grownBlockMeta = grownBlockMeta;
     this.seeds = seeds;
+    FarmStationContainer.slotItemsSeeds.add(seeds);
     addTilledBlock(Blocks.farmland);   
   }
   

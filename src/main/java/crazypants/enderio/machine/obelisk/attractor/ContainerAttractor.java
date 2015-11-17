@@ -1,8 +1,15 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> {
@@ -28,6 +35,18 @@ public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> 
         x += 18;
       }
       y+= 18;
+    }
+  }
+
+  public void createGhostSlots(List<GhostSlot> slots) {
+    int y = 10;
+    for (int row = 0; row < 3; row++) {
+      int x = 62;
+      for (int col = 0; col < 4; col++) {
+        slots.add(new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, x, y));
+        x += 18;
+      }
+      y += 18;
     }
   }
 

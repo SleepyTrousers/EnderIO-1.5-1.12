@@ -17,6 +17,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
@@ -60,6 +61,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     super.initGui();
     xpB.onGuiInit();
     xp10B.onGuiInit();
+    ((ContainerKillerJoe) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

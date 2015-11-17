@@ -24,33 +24,46 @@ import static crazypants.util.RecipeUtil.*;
 public class MaterialRecipes {
 
   public static void registerDependantOresInDictionary() {
-    if (hasCopper()) {
-      OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
-    }
-    if (hasTin()) {
-      OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
-    }
-    if (PowderIngot.POWDER_ENDER.isDependancyMet()) {
-      OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
-      PowderIngot.POWDER_ENDER.ignoreRuntimeDependencyCheck = true;
-      // because the line above would trigger it
-    }
-    //Enderium Base
-    if (OreDictionaryHelper.hasEnderium()) {
-      OreDictionary.registerOre("ingotEnderiumBase", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.INGOT_ENDERIUM_BASE.ordinal()));
+    // late registration for powders that only exist if the ingot from another
+    // mod exists
+    for (PowderIngot powder : PowderIngot.values()) {
+      if (powder.hasDependancy() && powder.isDependancyMet()) {
+        OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
+        powder.setRegistered();
+      }
     }
   }
 
   public static void registerOresInDictionary() {
     //Ore Dictionary Registration
-    OreDictionary.registerOre("dustCoal", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COAL.ordinal()));
-    OreDictionary.registerOre("dustIron", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()));
-    OreDictionary.registerOre("dustGold", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()));
-    OreDictionary.registerOre("dustObsidian", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_OBSIDIAN.ordinal()));
+    for (PowderIngot powder : PowderIngot.values()) {
+      if (!powder.hasDependancy()) {
+        OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
+      }
+    }
     
     for (Alloy alloy : Alloy.values()) {
-      OreDictionary.registerOre(alloy.oreIngot, new ItemStack(EnderIO.itemAlloy, 1, alloy.ordinal()));
-      OreDictionary.registerOre(alloy.oreBlock, new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));
+      boolean isPrimaryName = true;
+      for (String oreDictName : alloy.getOreIngots()) {
+        OreDictionary.registerOre(oreDictName, alloy.getStackIngot());
+        if (isPrimaryName) {
+          isPrimaryName = false;
+        } else {
+          // Allow free conversion of additional/legacy oreDict name items into
+          // our item because we only register recipes for the primary oreDict
+          // name. Use a 2-to-2 recipe because the 1-to-n is already in use.
+          addShapeless(alloy.getStackIngot(2), oreDictName, oreDictName);
+        }
+      }
+      isPrimaryName = true;
+      for (String oreDictName : alloy.getOreBlocks()) {
+        OreDictionary.registerOre(oreDictName, alloy.getStackBlock());
+        if (isPrimaryName) {
+          isPrimaryName = false;
+        } else {
+          addShapeless(alloy.getStackBlock(2), oreDictName, oreDictName);
+        }
+      }
     }
 
     OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
@@ -89,10 +102,10 @@ public class MaterialRecipes {
 
     ItemStack fusedQuartzFrame = new ItemStack(EnderIO.itemFusedQuartzFrame, 1, 0);
 
-    String energeticAlloy = ENERGETIC_ALLOY.oreIngot;
-    String phasedGold = PHASED_GOLD.oreIngot;
-    String phasedIron = PHASED_IRON.oreIngot;
-    String darkSteel = DARK_STEEL.oreIngot;
+    String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
+    String phasedGold = PHASED_GOLD.getOreIngot();
+    String phasedIron = PHASED_IRON.getOreIngot();
+    String darkSteel = DARK_STEEL.getOreIngot();
 
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
 
@@ -181,18 +194,18 @@ public class MaterialRecipes {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);
       String corners = darkSteel;
       if (Config.reinforcedObsidianUseDarkSteelBlocks) {
-        corners = Alloy.DARK_STEEL.oreBlock;
+        corners = Alloy.DARK_STEEL.getOreBlock();
       }
       addShaped(reinfObs, "dbd", "bob", "dbd", 'd', corners, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
     }
 
-    addShaped(EnderIO.blockDarkSteelAnvil, "bbb", " i ", "iii", 'b', DARK_STEEL.oreBlock, 'i', darkSteel);
+    addShaped(EnderIO.blockDarkSteelAnvil, "bbb", " i ", "iii", 'b', DARK_STEEL.getOreBlock(), 'i', darkSteel);
 
     addShaped(new ItemStack(EnderIO.blockDarkSteelLadder, 12), "b", "b", "b", 'b', EnderIO.blockDarkIronBars);
 
     for (Alloy alloy : Alloy.values()) {
-      addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.oreIngot);
-      addShapeless(alloy.getStackIngot(9), alloy.oreBlock);
+      addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot());
+      addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
     }
 
     //Food

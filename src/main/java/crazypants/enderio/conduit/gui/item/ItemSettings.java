@@ -428,7 +428,7 @@ public class ItemSettings extends BaseSettingsPanel {
       filterGui.deactivate();
       filterGui = null;
     }
-    gui.getGhostSlots().clear();
+    gui.clearGhostSlots();
   }
 
 }

@@ -307,7 +307,11 @@ public final class Config {
       "BiomesOPlenty:hoeAmethyst", "BiomesOPlenty:hoeMud",
       "Eln:Eln.Copper Hoe",
       "Thaumcraft:ItemHoeThaumium", "Thaumcraft:ItemHoeElemental", "Thaumcraft:ItemHoeVoid",
-      "ThermalFoundation:tool.hoeInvar"
+      "ThermalFoundation:tool.hoeInvar", "ThermalFoundation:tool.hoeCopper", "ThermalFoundation:tool.hoeBronze", "ThermalFoundation:tool.hoeSilver",
+      "ThermalFoundation:tool.hoeElectrum", "ThermalFoundation:tool.hoeTin", "ThermalFoundation:tool.hoeLead", "ThermalFoundation:tool.hoeNickel",
+      "ThermalFoundation:tool.hoePlatinum",
+      "TwilightForest:item.steeleafHoe", "TwilightForest:item.ironwoodHoe",
+      "IC2:itemToolBronzeHoe"
   };
   public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
   public static int farmSaplingReserveAmount = 8;

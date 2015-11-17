@@ -17,6 +17,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.killera.ContainerKillerJoe;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
@@ -39,6 +40,8 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 1, x + 52, y));
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 2, x, y + 20));
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
+
+    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlots());
   }
   
   private IconButton createLockButton(int slot, int x, int y) {

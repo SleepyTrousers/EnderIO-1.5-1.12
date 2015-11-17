@@ -44,6 +44,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     GuiButton okB = new GuiButton(0, width / 2 - (strLen / 2) - 5, sy + 50, strLen + 10, 20, str);
     buttonList.clear();
     buttonList.add(okB);
+    ((ContainerTravelAuth) inventorySlots).addGhostSlots(getGhostSlots());
   }
 
   @Override
@@ -93,6 +94,7 @@ public class GuiTravelAuth extends GuiContainerBase {
       drawRect(sx + 43, sy + 27, sx + 43 + 90, sy + 27 + 18, ColorUtil.getARGB(new Color(1f, 0f, 0f, 0.5f)));
     }
 
+    super.drawGuiContainerBackgroundLayer(f, mx, my);
   }
 
 }

@@ -1,13 +1,18 @@
 package crazypants.enderio.machine.vacuum;
 
 import java.awt.Point;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
+
+import crazypants.enderio.EnderIO;
 
 public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
 
@@ -20,6 +25,9 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
   
   @Override
   protected void addSlots(InventoryPlayer playerInv) {
+    filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
+    addSlotToContainer(filterSlot);
+
     int x = 8;
     int y = 18;
     int index = -1;
@@ -28,42 +36,17 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
         addSlotToContainer(new Slot(getInv(), ++index, x + j * 18, y + i * 18));
       }
     }
-
-    filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
-    addSlotToContainer(filterSlot);
   }
   
+  public void createGhostSlots(List<GhostSlot> slots) {
+    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, filterSlot));
+  }
+
   @Override
   public Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
     p.translate(0, 40);
     return p;
-  }
-
-  @Override
-  public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
-    ItemStack itemstack = null;
-    Slot slot = (Slot) this.inventorySlots.get(par2);
-
-    if(slot != null && slot.getHasStack()) {
-      ItemStack itemstack1 = slot.getStack();
-      itemstack = itemstack1.copy();
-
-      if(par2 < TileVacuumChest.ITEM_SLOTS) {
-        if(!this.mergeItemStack(itemstack1, TileVacuumChest.ITEM_SLOTS, this.inventorySlots.size()-1, true)) {
-          return null;
-        }
-      } else if(!this.mergeItemStack(itemstack1, 0, TileVacuumChest.ITEM_SLOTS, false)) {
-        return null;
-      }
-
-      if(itemstack1.stackSize == 0) {
-        slot.putStack((ItemStack) null);
-      } else {
-        slot.onSlotChanged();
-      }
-    }
-    return itemstack;
   }
 
   void setFilterChangedCB(Runnable filterChangedCB) {

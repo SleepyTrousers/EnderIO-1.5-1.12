@@ -47,10 +47,12 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     }
   }
 
+  @Override
   public Point getPlayerInventoryOffset() {
     return new Point(8,84);
   }
   
+  @Override
   public Point getUpgradeOffset() {
     return new Point(12,60);
   }
@@ -59,20 +61,24 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     return upgradeSlot;
   }
 
+  /**
+   * ATTN: Do not access any non-static field from this method. Your object has
+   * not yet been constructed when it is called!
+   */
   protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
   @Override
-  public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
+  public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotNumber) {
     SlotDefinition slotDef = getInv().getSlotDefinition();
 
     ItemStack copystack = null;
-    Slot slot = (Slot) inventorySlots.get(slotIndex);
+    Slot slot = (Slot) inventorySlots.get(slotNumber);
     if(slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
 
       boolean merged = false;
-      for(SlotRange range : getTargetSlotsForTransfer(slotIndex, slot)) {
+      for(SlotRange range : getTargetSlotsForTransfer(slotNumber, slot)) {
         if(mergeItemStack(origStack, range.start, range.end, range.reverse)) {
           merged = true;
           break;
@@ -83,7 +89,7 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
         return null;
       }
 
-      if(slotDef.isOutputSlot(slotIndex)) {
+      if (slotDef.isOutputSlot(slot.getSlotIndex())) {
         slot.onSlotChange(origStack, copystack);
       }
 
@@ -149,20 +155,20 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     }
   }
 
-  protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
+  protected List<SlotRange> getTargetSlotsForTransfer(int slotNumber, Slot slot) {
     if (slot.inventory == getInv()) {
       SlotDefinition slotDef = getInv().getSlotDefinition();
-      if (slotDef.isInputSlot(slot.slotNumber) || slotDef.isUpgradeSlot(slot.slotNumber)) {
+      if (slotDef.isInputSlot(slot.getSlotIndex()) || slotDef.isUpgradeSlot(slot.getSlotIndex())) {
         return Collections.singletonList(getPlayerInventorySlotRange(false));
       }
-      if (slotDef.isOutputSlot(slot.slotNumber)) {
+      if (slotDef.isOutputSlot(slot.getSlotIndex())) {
         return Collections.singletonList(getPlayerInventorySlotRange(true));
       }
-    } else if (slotIndex >= startPlayerSlot) {
+    } else if (slotNumber >= startPlayerSlot) {
       List<SlotRange> res = new ArrayList<SlotRange>();
       addInputSlotRanges(res);
       addUpgradeSlotRanges(res);
-      addPlayerSlotRanges(res, slotIndex);
+      addPlayerSlotRanges(res, slotNumber);
       return res;
     }
     return Collections.emptyList();

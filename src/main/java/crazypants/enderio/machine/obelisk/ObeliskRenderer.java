@@ -85,6 +85,7 @@ public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
     if (icons == null) {
       CubeRenderer.render(bb, icon, xform2, true);
     } else {
+      icons[1] = IconUtil.blankTexture;
       CubeRenderer.render(bb, icons, xform2, true);
     }
 

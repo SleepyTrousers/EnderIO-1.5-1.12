@@ -23,9 +23,12 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
@@ -102,6 +105,16 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           }
         }
       }
+
+      @Override
+      public ItemStack decrStackSize(int p_75209_1_) {
+        if (this.getHasStack()) {
+          // on a right click we are asked to craft half a result. Ignore that.
+          return super.decrStackSize(this.getStack().stackSize);
+        }
+        return super.decrStackSize(p_75209_1_);
+      }
+
     });
 
     firstSlotCraftingGrid = inventorySlots.size();
@@ -126,6 +139,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       }
     }
     endSlotReturn = inventorySlots.size();
+  }
+
+  public void createGhostSlots(List<GhostSlot> slots) {
+    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, FILTER_SLOT_X, FILTER_SLOT_Y));
   }
 
   @Override

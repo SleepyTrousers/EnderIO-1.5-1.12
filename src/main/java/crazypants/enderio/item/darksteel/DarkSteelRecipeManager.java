@@ -79,7 +79,7 @@ public class DarkSteelRecipeManager {
       return;
     }
 
-    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.oreIngot)) {
+    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
       handleRepair(evt);
     } else {    
       handleUpgrade(evt);
