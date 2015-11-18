@@ -58,10 +58,7 @@ public class YetaWrenchOverlayRenderer {
     
     int x = offsetX + (offSize / 3);
     int y = offsetY - (padding * 2);
-    int height = (modeCount * (offSize + padding)) + (padding * 3);
-    if (mode != ConduitDisplayMode.ALL && mode != ConduitDisplayMode.NONE) {
-      height += 8;
-    }
+    int height = (modeCount * (offSize + padding)) + (padding * 3) + 8;
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     tess.startDrawingQuads();
     Vector4f color = RenderUtil.DEFAULT_TEXT_BG_COL;
@@ -71,7 +68,11 @@ public class YetaWrenchOverlayRenderer {
     tess.addVertex(x + offSize, y + height, -5);
     tess.addVertex(x + offSize, y, -5);
     tess.draw();
-    
+
+    if (mode == ConduitDisplayMode.ALL || mode == ConduitDisplayMode.NONE) {
+      y += 4;
+    }
+
     y += padding * 2;
     x -= offSize / 3;
 
