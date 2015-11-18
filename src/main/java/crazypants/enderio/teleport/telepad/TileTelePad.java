@@ -644,7 +644,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean canSeeBlock(EntityPlayer playerName) {
-    return isMaster() && inNetwork && getEnergyStored() > 0;
+    return isMaster() && inNetwork;
   }
 
   /* IInternalPowerReceiver */
