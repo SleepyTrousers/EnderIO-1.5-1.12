@@ -184,7 +184,7 @@ public class KeyTracker {
       if(curMode == null) {
         curMode = ConduitDisplayMode.ALL;
       }
-      ConduitDisplayMode newMode = curMode.next();
+      ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
       ConduitDisplayMode.setDisplayMode(equipped, newMode);
       PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
     } else if(equipped.getItem() == EnderIO.itemConduitProbe) {

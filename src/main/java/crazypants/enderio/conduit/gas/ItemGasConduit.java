@@ -13,9 +13,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.IconEIO;
 
 public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
@@ -27,6 +29,7 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
     ItemGasConduit result = new ItemGasConduit();
     if (GasUtil.isGasConduitEnabled()) {
       result.init();
+      ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(IGasConduit.class, IconEIO.WRENCH_OVERLAY_GAS, IconEIO.WRENCH_OVERLAY_GAS_OFF));
     }
     return result;
   }
