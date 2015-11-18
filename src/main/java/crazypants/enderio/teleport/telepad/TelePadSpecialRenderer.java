@@ -25,7 +25,7 @@ import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
 
   private final Map<String, GroupObject> fullModel;
-  
+
   private final GroupObject blade1;
   private final GroupObject blade2;
   private final GroupObject blade3;
