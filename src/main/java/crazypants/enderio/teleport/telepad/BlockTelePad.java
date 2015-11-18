@@ -29,7 +29,7 @@ public class BlockTelePad extends BlockTravelAnchor {
   @SideOnly(Side.CLIENT)
   private IIcon model;
   @SideOnly(Side.CLIENT)
-  IIcon animationIcon;
+  private IIcon highlightIcon;
   
   public static int renderId;
 
@@ -56,15 +56,18 @@ public class BlockTelePad extends BlockTravelAnchor {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     icons = new IIcon[3];
     icons[0] = iIconRegister.registerIcon("enderio:telePadBottom");
     icons[1] = iIconRegister.registerIcon("enderio:telePadTop");
     icons[2] = iIconRegister.registerIcon("enderio:telePadSide");
     model = iIconRegister.registerIcon("enderio:telePadModel");
+    highlightIcon = iIconRegister.registerIcon("enderio:telePadHighlight");
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
     if(te != null && te.inNetwork()) {
@@ -74,8 +77,14 @@ public class BlockTelePad extends BlockTravelAnchor {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int meta) {
     return icons[Math.min(side, 2)];
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IIcon getHighlightIcon() {
+    return highlightIcon;
   }
 
   @Override

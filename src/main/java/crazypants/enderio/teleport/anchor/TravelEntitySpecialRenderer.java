@@ -8,6 +8,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -95,7 +96,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     GL11.glTranslated(x, y, z);
 
     Tessellator.instance.startDrawingQuads();
-    renderBlock(sf);
+    renderBlock(tileentity.getWorldObj(), sf);
     Tessellator.instance.draw();
 
     Tessellator.instance.startDrawingQuads();
@@ -192,7 +193,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     }
   }
 
-  protected void renderBlock(double sf) {
+  protected void renderBlock(IBlockAccess world, double sf) {
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.75f);
     CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), EnderIO.blockTravelPlatform.getIcon(0, 0));
   }

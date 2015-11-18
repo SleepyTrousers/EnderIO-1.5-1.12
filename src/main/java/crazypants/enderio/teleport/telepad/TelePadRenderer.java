@@ -18,6 +18,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.TravelController;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
