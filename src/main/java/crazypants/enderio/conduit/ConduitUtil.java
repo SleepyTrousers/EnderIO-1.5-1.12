@@ -31,15 +31,8 @@ import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasUtil;
-import crazypants.enderio.conduit.gas.IGasConduit;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.me.MEUtil;
-import crazypants.enderio.conduit.oc.IOCConduit;
-import crazypants.enderio.conduit.oc.OCConduitNetwork;
 import crazypants.enderio.conduit.oc.OCUtil;
-import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
@@ -191,27 +184,7 @@ public class ConduitUtil {
       return true;
     }
     ConduitDisplayMode mode = getDisplayMode(player);
-    switch (mode) {
-    case ALL:
-      return true;
-    case POWER:
-      return conduitType == IPowerConduit.class;
-    case REDSTONE:
-      return conduitType == IRedstoneConduit.class || conduitType == IInsulatedRedstoneConduit.class;
-    case FLUID:
-      return conduitType == ILiquidConduit.class;
-    case ITEM:
-      return conduitType == IItemConduit.class;
-    case GAS:
-      return conduitType == IGasConduit.class;
-    case ME:
-      return conduitType == IMEConduit.class;
-    case OC:
-      return conduitType == IOCConduit.class;
-    default:
-      break;
-    }
-    return true;
+    return mode.renderConduit(conduitType);
   }
 
   public static boolean shouldHeldItemHideFacades(EntityPlayer player) {

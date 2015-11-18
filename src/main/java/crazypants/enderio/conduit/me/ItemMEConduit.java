@@ -5,8 +5,10 @@ import net.minecraft.item.ItemStack;
 import appeng.api.AEApi;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
+import crazypants.enderio.gui.IconEIO;
 
 public class ItemMEConduit extends AbstractItemConduit {
 
@@ -19,6 +21,7 @@ public class ItemMEConduit extends AbstractItemConduit {
     ItemMEConduit result = new ItemMEConduit();
     if (MEUtil.isMEEnabled()) {
       result.init();
+      ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(IMEConduit.class, IconEIO.WRENCH_OVERLAY_ME, IconEIO.WRENCH_OVERLAY_ME_OFF));
     }
     return result;
   }

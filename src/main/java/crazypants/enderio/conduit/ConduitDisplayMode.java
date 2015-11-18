@@ -1,58 +1,156 @@
 package crazypants.enderio.conduit;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
+
 import crazypants.enderio.api.tool.IConduitControl;
-import crazypants.enderio.conduit.gas.GasUtil;
-import crazypants.enderio.conduit.me.MEUtil;
-import crazypants.enderio.conduit.oc.OCUtil;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import static crazypants.enderio.gui.IconEIO.*;
 
-public enum ConduitDisplayMode {
-  ALL,
-  POWER,
-  REDSTONE,
-  FLUID,
-  ITEM,
-  GAS,
-  ME,
-  OC,
-  NONE;
+public class ConduitDisplayMode {
 
+  public static final ConduitDisplayMode ALL = new ConduitDisplayMode("all", TICK, TICK);
+  public static final ConduitDisplayMode NONE = new ConduitDisplayMode("none", CROSS, CROSS);
+  
+  private static final List<ConduitDisplayMode> registrar;
+
+  // @formatter:off
+  static {
+    registrar = Lists.newArrayList(
+        NONE, 
+        ALL, 
+        new ConduitDisplayMode(IItemConduit.class, WRENCH_OVERLAY_ITEM, WRENCH_OVERLAY_ITEM_OFF), 
+        new ConduitDisplayMode(ILiquidConduit.class, WRENCH_OVERLAY_FLUID, WRENCH_OVERLAY_FLUID_OFF), 
+        new ConduitDisplayMode(IPowerConduit.class, WRENCH_OVERLAY_POWER, WRENCH_OVERLAY_POWER_OFF), 
+        new ConduitDisplayMode(IRedstoneConduit.class, WRENCH_OVERLAY_REDSTONE, WRENCH_OVERLAY_REDSTONE_OFF)
+     );
+  }
+  // @formatter:on
+
+  public static void registerDisplayMode(ConduitDisplayMode mode) {
+    if (!registrar.contains(mode)) {
+      registrar.add(mode);
+    }
+  }
+
+  private final Class<? extends IConduit> conduitType;
+  private final IWidgetIcon widgetSelected, widgetUnselected;
+
+  private String overrideName = null;
+
+  /**
+   * Use this constructor if you have custom display logic, it will use
+   * {@code IConduit.class} as the conduitType, and the passed name as the
+   * override name.
+   * 
+   * @see #ConduitDisplayMode(Class, IWidgetIcon, IWidgetIcon)
+   * 
+   * @param name
+   *          The override name.
+   * @param widgetSelected
+   *          The widget to render when this type is selected.
+   * @param widgetUnselected
+   *          The widget to render when this type is unselected.
+   */
+  public ConduitDisplayMode(String name, IWidgetIcon widgetSelected, IWidgetIcon widgetUnselected) {
+    this(IConduit.class, widgetSelected, widgetUnselected);
+    setName(name);
+  }
+
+  /**
+   * Creates a new display mode for any {@link IConduitControl} wrench. Contains
+   * data about which conduit type this is for, and the icons to render while
+   * holding the wrench. wrench.
+   * 
+   * @param conduitType
+   *          The base class for your conduit type, typically an interface (e.g.
+   *          {@code IPowerConduit}).
+   * @param widgetSelected
+   *          The widget to render when this type is selected.
+   * @param widgetUnselected
+   *          The widget to render when this type is unselected.
+   */
+  public ConduitDisplayMode(@Nonnull Class<? extends IConduit> conduitType, IWidgetIcon widgetSelected, IWidgetIcon widgetUnselected) {
+    this.conduitType = conduitType;
+    this.widgetSelected = widgetSelected;
+    this.widgetUnselected = widgetUnselected;
+  }
+
+  @Nullable
+  public Class<? extends IConduit> getConduitType() {
+    return conduitType;
+  }
+
+  public boolean renderConduit(Class<? extends IConduit> conduitType) {
+    if (this == ALL) {
+      return true;
+    } else if (this == NONE) {
+      return false;
+    } else {
+      return this.conduitType == conduitType;
+    }
+  }
+
+  @Nonnull
+  public String getName() {
+    return overrideName == null ? conduitType.getSimpleName() : overrideName;
+  }
+
+  /**
+   * The name is null by default, and will use the simple class name of the
+   * conduit type.
+   * 
+   * @param name
+   *          The override name to set.
+   */
+  public void setName(@Nullable String name) {
+    this.overrideName = name;
+  }
+
+  public IWidgetIcon getWidgetSelected() {
+    return widgetSelected;
+  }
+
+  public IWidgetIcon getWidgetUnselected() {
+    return widgetUnselected;
+  }
+  
   public static ConduitDisplayMode next(ConduitDisplayMode mode) {
-    int index = mode.ordinal() + 1;
-    if (index >= values().length) {
+    int index = registrar.indexOf(mode) + 1;
+    if (index >= registrar.size()) {
       index = 0;
     }
-    ConduitDisplayMode res = values()[index];
-    if (res == OC && !OCUtil.isOCEnabled()) {
-      return next(res);
-    }
-    if (res == GAS && !GasUtil.isGasConduitEnabled()) {
-      return next(res);
-    }
-    if (res == ME && !MEUtil.isMEEnabled()) {
-      return next(res);
-    }
-    return res;
+    return registrar.get(index);
   }
 
   public static ConduitDisplayMode previous(ConduitDisplayMode mode) {
-    int index = mode.ordinal() - 1;
+    int index = registrar.indexOf(mode) - 1;
     if (index < 0) {
-      index = values().length - 1;
+      index = registrar.size() - 1;
     }
-    ConduitDisplayMode res = values()[index];
-    if (res == GAS && !GasUtil.isGasConduitEnabled()) {
-      return previous(res);
+    return registrar.get(index);
+  }
+
+  public static ConduitDisplayMode fromName(String name) {
+    for (ConduitDisplayMode mode : registrar) {
+      if (mode.getName().equals(name)) {
+        return mode;
+      }
     }
-    if (res == ME && !MEUtil.isMEEnabled()) {
-      return previous(res);
-    }
-    if (res == OC && !OCUtil.isOCEnabled()) {
-      return previous(res);
-    }
-    return res;
+    return null;
   }
 
   private static final String NBT_KEY = "enderio.displaymode";
@@ -62,9 +160,13 @@ public enum ConduitDisplayMode {
       return ALL;
     }
     initDisplayModeTag(equipped);
-    int index = equipped.stackTagCompound.getInteger(NBT_KEY);
-    index = MathHelper.clamp_int(index, 0, ConduitDisplayMode.values().length - 1);
-    return ConduitDisplayMode.values()[index];
+    String name = equipped.stackTagCompound.getString(NBT_KEY);
+    ConduitDisplayMode mode = fromName(name);
+    if (mode == null) { // backwards compat
+      setDisplayMode(equipped, ALL);
+      return ALL;
+    }
+    return mode;
   }
 
   public static void setDisplayMode(ItemStack equipped, ConduitDisplayMode mode) {
@@ -72,13 +174,13 @@ public enum ConduitDisplayMode {
       return;
     }
     initDisplayModeTag(equipped);
-    equipped.stackTagCompound.setInteger(NBT_KEY, mode.ordinal());
+    equipped.stackTagCompound.setString(NBT_KEY, mode.getName());
   }
 
   private static void initDisplayModeTag(ItemStack stack) {
     if (stack.stackTagCompound == null) {
       stack.stackTagCompound = new NBTTagCompound();
-      stack.stackTagCompound.setInteger(NBT_KEY, ConduitDisplayMode.ALL.ordinal());
+      stack.stackTagCompound.setString(NBT_KEY, ConduitDisplayMode.ALL.getName());
     }
   }
 
@@ -90,4 +192,52 @@ public enum ConduitDisplayMode {
     return previous(this);
   }
 
+  public static int registrySize() {
+    return registrar.size() - 2;
+  }
+
+  public static Iterable<ConduitDisplayMode> getRenderableModes() {
+    return FluentIterable.from(registrar).filter(new Predicate<ConduitDisplayMode>() {
+      @Override
+      public boolean apply(ConduitDisplayMode input) {
+        return input != ALL && input != NONE;
+      }
+    });
+  }
+
+  @Override
+  public String toString() {
+    return getName();
+  }
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((conduitType == null) ? 0 : conduitType.hashCode());
+    result = prime * result + ((overrideName == null) ? 0 : overrideName.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    ConduitDisplayMode other = (ConduitDisplayMode) obj;
+    if (conduitType == null) {
+      if (other.conduitType != null)
+        return false;
+    } else if (!conduitType.equals(other.conduitType))
+      return false;
+    if (overrideName == null) {
+      if (other.overrideName != null)
+        return false;
+    } else if (!overrideName.equals(other.overrideName))
+      return false;
+    return true;
+  }
 }
