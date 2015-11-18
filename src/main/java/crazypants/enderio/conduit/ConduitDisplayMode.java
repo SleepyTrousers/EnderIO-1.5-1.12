@@ -100,7 +100,7 @@ public class ConduitDisplayMode {
     } else if (this == NONE) {
       return false;
     } else {
-      return this.conduitType == conduitType;
+      return this.conduitType.isAssignableFrom(conduitType);
     }
   }
 
