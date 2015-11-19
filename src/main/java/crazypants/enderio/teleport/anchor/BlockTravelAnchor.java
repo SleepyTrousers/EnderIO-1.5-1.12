@@ -143,9 +143,13 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
     if (!player.isSneaking()) {
+      if (owner != null) {
       ChatUtil.sendNoSpam(player,
           EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner)
               + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
+      } else {
+        ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.unownedBlock"));
+      }
     }
   }
 

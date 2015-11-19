@@ -969,6 +969,7 @@ enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
 enderio.gui.travelAccessable.privateBlock2=may change this blocks settings.
+enderio.gui.travelAccessable.unownedBlock=This block is not owned by anyone. It needs to be broken and replaced.
 enderio.gui.travelAccessable.public=Public
 enderio.gui.travelAccessable.private=Private
 enderio.gui.travelAccessable.protected=Protected
