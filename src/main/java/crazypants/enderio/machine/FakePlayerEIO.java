@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.FakePlayer;
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.machine.farm.FakeNetHandlerPlayServer;
+
 public class FakePlayerEIO extends FakePlayer {
 
   ItemStack prevWeapon;
@@ -19,6 +21,8 @@ public class FakePlayerEIO extends FakePlayer {
     posX = pos.x + 0.5;
     posY = pos.y + 0.5;
     posZ = pos.z + 0.5;
+    // ItemInWorldManager will access this field directly and can crash
+    playerNetServerHandler = new FakeNetHandlerPlayServer(this);
   }
 
   // These do things with packets...which crash since the net handler is null. Potion effects are not needed anyways.
@@ -34,7 +38,4 @@ public class FakePlayerEIO extends FakePlayer {
   protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
   }
 
-  @Override
-  public void addChatMessage(IChatComponent p_145747_1_) {
-  }
 }

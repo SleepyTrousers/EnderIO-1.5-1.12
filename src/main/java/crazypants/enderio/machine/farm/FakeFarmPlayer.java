@@ -19,6 +19,10 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.Log;
 
+/**
+ * This is not in the FakePlayer hierarchy for reasons.
+ *
+ */
 public class FakeFarmPlayer extends EntityPlayerMP {
 
   private static final UUID uuid = UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d");
@@ -27,6 +31,8 @@ public class FakeFarmPlayer extends EntityPlayerMP {
 
   public FakeFarmPlayer(WorldServer world) {
     super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new ItemInWorldManager(world));
+    // ItemInWorldManager will access this field directly and can crash
+    playerNetServerHandler = new FakeNetHandlerPlayServer(this);
   }
 
   @Override
@@ -37,14 +43,6 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   @Override
   public ChunkCoordinates getPlayerCoordinates() {
     return new ChunkCoordinates(0, 0, 0);
-  }
-
-  @Override
-  public void addChatComponentMessage(IChatComponent chatmessagecomponent) {
-  }
-
-  @Override
-  public void addChatMessage(IChatComponent p_145747_1_) {
   }
 
   @Override
