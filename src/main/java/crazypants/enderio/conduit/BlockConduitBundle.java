@@ -731,7 +731,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     bundle.setFacadeMetadata(facadeMeta);
     bundle.setFacadeType(FacadeType.values()[facadeType]);
     if (!world.isRemote) {
-      ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
+      ConduitUtil.playPlaceSound(facadeID.stepSound, world, x, y, z);
     }
     if (!player.capabilities.isCreativeMode) {
       stack.stackSize--;

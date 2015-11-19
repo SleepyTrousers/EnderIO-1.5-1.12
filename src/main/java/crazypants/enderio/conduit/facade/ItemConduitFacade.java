@@ -3,7 +3,6 @@ package crazypants.enderio.conduit.facade;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -131,7 +130,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
         bundle.setFacadeId(facadeID);
         bundle.setFacadeMetadata(facadeMeta);
         bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
-        ConduitUtil.playStepSound(facadeID.stepSound, world, x, y, z);
+        ConduitUtil.playPlaceSound(facadeID.stepSound, world, x, y, z);
         if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }

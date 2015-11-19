@@ -402,4 +402,16 @@ public class ConduitUtil {
   private static void playClientStepSound(SoundType snd) {
     FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
   }
+  
+  public static void playPlaceSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientPlaceSound(snd);
+    }
+  }
+
+  private static void playClientPlaceSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.func_150496_b(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+  }
 }
