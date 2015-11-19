@@ -1,6 +1,6 @@
 package crazypants.enderio.teleport.anchor;
 
-import java.util.UUID;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -48,6 +48,7 @@ import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.IFacade;
+import crazypants.util.UserIdent;
 
 public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
 
@@ -135,17 +136,16 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       if (ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        sendPrivateChatMessage(entityPlayer, ta.getPlacedBy());
+        sendPrivateChatMessage(entityPlayer, ta.getOwner());
       }
     }
     return true;
   }
 
-  public static void sendPrivateChatMessage(EntityPlayer player, UUID owner) {
+  public static void sendPrivateChatMessage(EntityPlayer player, UserIdent owner) {
     if (!player.isSneaking()) {
-      ChatUtil.sendNoSpam(player,
-          EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED + UsernameCache.getLastKnownUsername(owner)
-              + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
+      ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED
+          + owner.getPlayerName() + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
     }
   }
 
@@ -176,7 +176,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+  protected void processDrop(World world, int x, int y, int z, @Nullable TileEntityEnder te, ItemStack drop) {
     TileTravelAnchor anchor = (TileTravelAnchor) te;
 
     if (anchor == null) {

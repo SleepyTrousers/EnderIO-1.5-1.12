@@ -1,8 +1,7 @@
 package crazypants.enderio.machine.transceiver;
 
-import com.enderio.core.common.util.PlayerUtil;
-
 import crazypants.enderio.EnderIO;
+import crazypants.util.UserIdent;
 
 
 public class ClientChannelRegister extends ChannelRegister {
@@ -18,7 +17,7 @@ public class ClientChannelRegister extends ChannelRegister {
     if (channel == null) {
       return;
     }
-    if (channel.getUser() != null && !channel.getUser().equals(PlayerUtil.getPlayerUUID(EnderIO.proxy.getClientPlayer().getGameProfile().getName()))) {
+    if (!channel.isPublic() && !channel.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile())) {
       return;
     }
     super.addChannel(channel);

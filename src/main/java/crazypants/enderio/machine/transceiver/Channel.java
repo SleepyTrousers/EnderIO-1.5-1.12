@@ -5,6 +5,9 @@ import java.util.UUID;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.enderio.core.common.util.PlayerUtil;
+import com.mojang.authlib.GameProfile;
+
+import crazypants.util.UserIdent;
 
 
 public class Channel {
@@ -14,26 +17,41 @@ public class Channel {
       return null;
     }
     String name = root.getString("name");
-    UUID user = null;
+    UserIdent user;
     if(root.hasKey("user")) {
-      user = PlayerUtil.getPlayerUIDUnstable(root.getString("user"));
+      String legacyUser = root.getString("user");
+      user = UserIdent.create(legacyUser);
+    } else {
+      user = UserIdent.readfromNbt(root, "user");
     }
     ChannelType type = ChannelType.values()[root.getShort("type")];
     return new Channel(name, user, type);
   }
   
   private final String name;
-  final UUID user;
+  private final UserIdent user;
   final ChannelType type;
 
-  public Channel(String name, UUID user, ChannelType type) {
+  public Channel(String name, GameProfile profile, ChannelType type) {
+    this.name = trim(name);
+    this.user = UserIdent.create(profile);
+    this.type = type;
+  }
+
+  public Channel(String name, UserIdent user, ChannelType type) {
     this.name = trim(name);
     this.user = user;
     this.type = type;
   }
 
+  public Channel(String name, ChannelType type) {
+    this.name = trim(name);
+    this.user = UserIdent.nobody;
+    this.type = type;
+  }
+
   public boolean isPublic() {
-    return user == null;
+    return user == UserIdent.nobody;
   }
 
   public void writeToNBT(NBTTagCompound root) {
@@ -41,10 +59,8 @@ public class Channel {
       return;
     } 
     root.setString("name", name);
+    user.saveToNbt(root, "user");
     root.setShort("type", (short)type.ordinal());
-    if(user != null ) {
-      root.setString("user", user.toString());
-    }        
   }
   
   private String trim(String str) {
@@ -100,7 +116,7 @@ public class Channel {
     return type;
   }
 
-  public UUID getUser() {
+  public UserIdent getUser() {
     return user;
   }
 

@@ -132,7 +132,7 @@ public class BlockTelePad extends BlockTravelAnchor {
       if(tp.canBlockBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, x, y, z);
       } else {
-        sendPrivateChatMessage(entityPlayer, tp.getPlacedBy());
+        sendPrivateChatMessage(entityPlayer, tp.getOwner());
       }
     }
     return true;
