@@ -1,24 +1,26 @@
 package crazypants.enderio.item;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.api.client.render.IWidgetIcon;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector4f;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
+
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.handlers.ClientHandler;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 
 public class YetaWrenchOverlayRenderer {
+  
+  private ConduitDisplayMode cachedMode = ConduitDisplayMode.ALL;
+  private int displayTickCount;
+  private long lastTick;
 
   public YetaWrenchOverlayRenderer() {
     MinecraftForge.EVENT_BUS.register(this);
@@ -41,39 +43,85 @@ public class YetaWrenchOverlayRenderer {
     return null;
   }
 
-  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedWrench) {
+  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedWrench) {    
     ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(equippedWrench);
+    
+    if (mode != cachedMode) {
+      cachedMode = mode;
+      displayTickCount = 20;
+      lastTick = ClientHandler.getTicksElapsed();
+    }
+    
     ScaledResolution res = event.resolution;
 
-    int modeCount = ConduitDisplayMode.registrySize();
-    Iterable<ConduitDisplayMode> renderable = ConduitDisplayMode.getRenderableModes();
+    if (displayTickCount > 0) {
+      
+      if (lastTick < ClientHandler.getTicksElapsed()) {
+        lastTick++;
+        displayTickCount--;
+      }
+      
+      int x = res.getScaledWidth() / 2 - 8;
+      int y = res.getScaledHeight() / 2 - 24;
 
-    int offSize = 16, onSize = 24;
+      // TODO when I've not been up for 16 hrs, clean this up
+      IWidgetIcon widget = mode.getWidgetSelected();
+      RenderUtil.bindTexture(widget.getMap().getTexture());
+      widget.getMap().render(widget, x, y, true);
+      int size = 12;
+      widget = mode.previous().getWidgetSelected();
+      RenderUtil.bindTexture(widget.getMap().getTexture());
+      widget.getMap().render(widget, x - 18 + (16 - size), y + (16 - size), size, size, 0, true);
+      widget = mode.next().getWidgetSelected();
+      RenderUtil.bindTexture(widget.getMap().getTexture());
+      widget.getMap().render(widget, x + 18, y + (16 - size), size, size, 0, true);
+    } else {
+      
+      int x = res.getScaledWidth() - 20;
+      int y = res.getScaledHeight() - 20;
+      
+      IWidgetIcon widget = mode.getWidgetSelected();
+      RenderUtil.bindTexture(widget.getMap().getTexture());
+      widget.getMap().render(widget, x, y, true);
+    }
+    
+    // Old testing code, TODO implement this in some way as a config
+    /*
+    int size = 16;
     int padding = 2;
     
-    int offsetX = res.getScaledWidth() - onSize;
-    int offsetY = res.getScaledHeight() / 2 - (modeCount * ((offSize / 2) + padding) - padding);
+    int inset = (int) (size / 1.5);
+    int offsetX = res.getScaledWidth() - inset - 1;
+    int offsetY = res.getScaledHeight() - modeCount * (size + padding) - padding;
+    
+    inset = size - inset;
     
     Tessellator tess = Tessellator.instance;
     
-    int x = offsetX + (offSize / 3);
+    int x = offsetX + 2;
     int y = offsetY - (padding * 2);
-    int height = (modeCount * (offSize + padding)) + (padding * 3);
-    if (mode != ConduitDisplayMode.ALL && mode != ConduitDisplayMode.NONE) {
-      height += 8;
-    }
+    int height = (modeCount * (size + padding)) + (padding * 3);
+
     GL11.glDisable(GL11.GL_TEXTURE_2D);
+    GL11.glShadeModel(GL11.GL_SMOOTH);
     tess.startDrawingQuads();
-    Vector4f color = RenderUtil.DEFAULT_TEXT_BG_COL;
-    tess.setColorRGBA_F(color.x, color.y, color.z, color.w);
+    tess.setColorRGBA_F(0, 0, 0, 0.2f);
     tess.addVertex(x, y, -5);
     tess.addVertex(x, y + height, -5);
-    tess.addVertex(x + offSize, y + height, -5);
-    tess.addVertex(x + offSize, y, -5);
+    Vector4f color = new Vector4f(0, 0, 0, 1);
+    tess.setColorRGBA_F(color.x, color.y, color.z, color.w);
+    tess.addVertex(x + size, y + height, -5);
+    tess.addVertex(x + size, y, -5);
     tess.draw();
+    tess.setColorOpaque_I(0xFFFFFF);
+    GL11.glShadeModel(GL11.GL_FLAT);
     
     y += padding * 2;
-    x -= offSize / 3;
+    x -= 2;
+    
+    if (mode == ConduitDisplayMode.ALL) {
+      x -= inset;
+    }
 
     GL11.glEnable(GL11.GL_TEXTURE_2D);
     tess.startDrawingQuads();
@@ -82,13 +130,13 @@ public class YetaWrenchOverlayRenderer {
       RenderUtil.bindTexture(widget.getMap().getTexture());
       if (toRender == mode) {
         widget = toRender.getWidgetSelected();
-        widget.getMap().render(widget, x - (onSize - offSize), y, onSize, onSize, 0, false);
-        y += onSize + padding;
+        widget.getMap().render(widget, x - inset, y);
       } else {
         widget.getMap().render(widget, x, y);
-        y += offSize + padding;
       }
+      y += size + padding;
     }
     tess.draw();
+    */
   }
 }
