@@ -115,7 +115,8 @@ public final class Config {
 
   public static boolean useSneakMouseWheelYetaWrench = true;
   public static boolean useSneakRightClickYetaWrench = false;
-
+  public static int     yetaWrenchOverlayMode = 0;
+  
   public static boolean itemConduitUsePhyscialDistance = false;
 
   public static int enderFluidConduitExtractRate = 200;
@@ -700,12 +701,17 @@ public final class Config {
         .getBoolean(useSneakMouseWheelYetaWrench);
 
     useSneakRightClickYetaWrench = config.get(sectionPersonal.name, "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
-        "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
-        .getBoolean(useSneakRightClickYetaWrench);
+        "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.").getBoolean(
+        useSneakRightClickYetaWrench);
 
-    machineSoundsEnabled = config.get(sectionPersonal.name, "useMachineSounds", machineSoundsEnabled,
-        "If true, machines will make sounds.")
-        .getBoolean(machineSoundsEnabled);
+    yetaWrenchOverlayMode = config.getInt("yetaWrenchOverlayMode",sectionPersonal.name, yetaWrenchOverlayMode, 0, 2,
+            "What kind of overlay to use when holding the yeta wrench\n\n"
+            + "0 - Sideways scrolling in ceter of screen\n"
+            + "1 - Vertical icon bar in bottom right\n"
+            + "2 - Old-style group of icons in bottom right");
+
+    machineSoundsEnabled = config.get(sectionPersonal.name, "useMachineSounds", machineSoundsEnabled, "If true, machines will make sounds.").getBoolean(
+        machineSoundsEnabled);
 
     machineSoundVolume = (float) config.get(sectionPersonal.name, "machineSoundVolume", machineSoundVolume, "Volume of machine sounds.").getDouble(
         machineSoundVolume);
