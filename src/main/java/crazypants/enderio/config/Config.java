@@ -108,6 +108,7 @@ public final class Config {
   public static boolean useHardRecipes = false;
   public static boolean addPeacefulRecipes = false;
   public static boolean allowExternalTickSpeedup = true;
+  public static boolean crateSyntheticRecipes = true;
 
   public static boolean useSteelInChassi = false;
 
@@ -611,6 +612,13 @@ public final class Config {
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
     transceiverUseEasyRecipe= config.get(sectionRecipe.name, "transceiverUseEasyRecipe", transceiverUseEasyRecipe, "When enabled the dim trans. will use a cheaper recipe")
         .getBoolean(useHardRecipes);
+    crateSyntheticRecipes = config
+        .get(
+            sectionRecipe.name,
+            "crateSyntheticRecipes",
+            crateSyntheticRecipes,
+            "Automatically create alloy smelter recipes with double and tripple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
+        .getBoolean(crateSyntheticRecipes);
 
     allowExternalTickSpeedup = config.get(sectionMisc.name, "allowExternalTickSpeedup", allowExternalTickSpeedup,
         "Allows machines to run faster if another mod speeds up the tickrate. Running at higher tickrates is "

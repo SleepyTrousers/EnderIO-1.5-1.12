@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -217,7 +218,7 @@ public class RecipeConfig {
 
     private final String name;
 
-    private Map<String, RecipeElement> recipes = new HashMap<String, RecipeElement>();
+    private Map<String, RecipeElement> recipes = new LinkedHashMap<String, RecipeElement>();
 
     private boolean enabled = true;
 

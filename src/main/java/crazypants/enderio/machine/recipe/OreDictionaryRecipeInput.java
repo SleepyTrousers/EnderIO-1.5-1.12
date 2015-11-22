@@ -64,7 +64,8 @@ public class OreDictionaryRecipeInput extends RecipeInput {
 
   @Override
   public String toString() {
-    return "OreDictionaryRecipeInput [oreId=" + oreId + " name=" + OreDictionary.getOreName(oreId) + "]";
+    return "OreDictionaryRecipeInput [oreId=" + oreId + " name=" + OreDictionary.getOreName(oreId) + " amount="
+        + getInput().stackSize + "]";
   }
 
 }

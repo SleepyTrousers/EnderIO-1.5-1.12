@@ -77,7 +77,45 @@ public class ManyToOneRecipeManager {
     List<Recipe> newRecipes = config.getRecipes(false);
     Log.info("Found " + newRecipes.size() + " valid " + managerName + " recipes in config.");
     for (Recipe rec : newRecipes) {
-      addRecipe(new BasicManyToOneRecipe(rec));
+      if (Config.crateSyntheticRecipes //
+          && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
+          && rec.getInputs()[0].getInput().stackSize <= 21
+          && rec.getOutputs().length == 1 && !rec.getOutputs()[0].isFluid() //
+          && rec.getOutputs()[0].getOutput().stackSize <= 21) {
+
+        IRecipe dupe = getRecipeForInputs(rec.getInputStacks());
+        if (dupe != null) {
+          // do it here because we will add "dupes" and the check need to be
+          // done on the supplied recipe---which is added last
+          Log.warn("The supplied recipe " + rec + " for " + managerName + " may be a duplicate to: " + dupe);
+        }
+
+        int er = rec.getEnergyRequired();
+        RecipeBonusType bns = rec.getBonusType();
+        RecipeOutput out = rec.getOutputs()[0];
+        RecipeInput in = rec.getInputs()[0];
+
+        RecipeInput in2 = in.copy();
+        in2.getInput().stackSize *= 2;
+        RecipeOutput out2 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
+        out2.getOutput().stackSize *= 2;
+
+        RecipeInput in3 = in.copy();
+        in3.getInput().stackSize *= 3;
+        RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
+        out3.getOutput().stackSize *= 3;
+
+        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in.copy(), in.copy(), in.copy() })));
+        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in.copy(), in2.copy() })));
+        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in2.copy(), in.copy() })));
+        recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new RecipeInput[] { in.copy(), in.copy() })));
+        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in3.copy() })));
+        recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new RecipeInput[] { in2.copy() })));
+        recipes.add(new BasicManyToOneRecipe(rec));
+        Log.info("Created 6 synthetic recipes for " + in.getInput() + " => " + out.getOutput());
+      } else {
+        addRecipe(new BasicManyToOneRecipe(rec));
+      }
     }    
     Log.info("Finished processing " + managerName + " recipes. " + recipes.size() + " recipes avaliable.");
   }
@@ -89,8 +127,7 @@ public class ManyToOneRecipeManager {
     }
     IRecipe rec = getRecipeForInputs(recipe.getInputStacks());
     if(rec != null) {
-      Log.warn("Not adding supplied recipe to " + managerName + " as a recipe already exists for the inputs: " + recipe);
-      return;
+      Log.warn("The supplied recipe " + recipe + " for " + managerName + " may be a duplicate to: " + rec);
     }
     recipes.add(recipe);
   }
