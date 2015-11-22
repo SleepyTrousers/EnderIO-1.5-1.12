@@ -289,6 +289,8 @@ public class RecipeConfig {
 
     private String name;
 
+    private boolean invalidated = false;
+
     private RecipeElement(String name) {
       this.name = name;
     }
@@ -323,7 +325,7 @@ public class RecipeConfig {
     }
 
     public boolean isValid() {
-      return !inputs.isEmpty() && !outputs.isEmpty();
+      return !invalidated && !inputs.isEmpty() && !outputs.isEmpty();
     }
 
     public float getEnergyRequired() {
@@ -342,9 +344,14 @@ public class RecipeConfig {
       this.bonusType = bonusType;
     }
 
+    public void invalidate() {
+      invalidated = true;
+    }
+
     @Override
     public String toString() {
-      return "Recipe [input=" + inputs + ", outputs=" + outputs + ", energyRequired=" + energyRequired + ", bonusType=" + bonusType + "]";
+      return "Recipe [" + (invalidated ? "INVALID " : "") + "input=" + inputs + ", outputs=" + outputs + ", energyRequired="
+          + energyRequired + ", bonusType=" + bonusType + "]";
     }
 
   }

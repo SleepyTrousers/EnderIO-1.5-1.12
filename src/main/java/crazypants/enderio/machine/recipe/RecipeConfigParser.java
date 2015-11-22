@@ -342,6 +342,7 @@ public class RecipeConfigParser extends DefaultHandler {
   private void addInputStack(Attributes attributes) {
     RecipeInput stack = getItemStack(attributes);
     if(stack == null) {
+      recipe.invalidate();
       return;
     }
     recipe.addInput(stack);
