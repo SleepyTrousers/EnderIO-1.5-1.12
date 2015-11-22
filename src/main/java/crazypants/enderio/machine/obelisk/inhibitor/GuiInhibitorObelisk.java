@@ -15,13 +15,13 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 public class GuiInhibitorObelisk extends GuiPoweredMachineBase<TileInhibitorObelisk> {
 
   public GuiInhibitorObelisk(TileInhibitorObelisk machine, Container container) {
-    super(machine, container);
+    super(machine, container, "inhibitor");
   }
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/inhibitor.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

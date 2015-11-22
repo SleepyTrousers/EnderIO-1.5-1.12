@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
 
 import cpw.mods.fml.common.Optional;
@@ -31,9 +30,10 @@ import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 
-public class GuiExternalConnection extends GuiContainerBase {
+public class GuiExternalConnection extends GuiContainerBaseEIO {
 
   private static final int TAB_HEIGHT = 24;
 
@@ -67,7 +67,7 @@ public class GuiExternalConnection extends GuiContainerBase {
   private final ExternalConnectionContainer container;
 
   public GuiExternalConnection(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
-    super(new ExternalConnectionContainer(playerInv, bundle, dir));
+    super(new ExternalConnectionContainer(playerInv, bundle, dir), "externalConduitConnection", "itemFilter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;
@@ -186,7 +186,7 @@ public class GuiExternalConnection extends GuiContainerBase {
 
     tes.draw();
 
-    RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
+    bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
     RenderUtil.bindTexture(IconEIO.TEXTURE);

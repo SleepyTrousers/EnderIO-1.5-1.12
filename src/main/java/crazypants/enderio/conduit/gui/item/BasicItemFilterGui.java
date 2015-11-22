@@ -8,12 +8,12 @@ import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.filter.FuzzyMode;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 
 public class BasicItemFilterGui implements IItemFilterGui {
@@ -25,7 +25,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private static final int ID_STICKY = GuiExternalConnection.nextButtonId();    
   private static final int ID_FUZZY = GuiExternalConnection.nextButtonId();
   
-  private final GuiContainerBase gui;
+  private final GuiContainerBaseEIO gui;
   
   private final ToggleButton useMetaB;
   private final ToggleButton useNbtB;
@@ -44,11 +44,12 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private int xOffset;
   private int yOffset;
 
-  public BasicItemFilterGui(GuiContainerBase gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
+  public BasicItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
     this(gui, filterContainer, isStickyModeAvailable, 32, 68, 0);
   }
 
-  public BasicItemFilterGui(GuiContainerBase gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset, int yOffset,
+  public BasicItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable,
+      int xOffset, int yOffset,
       int buttonIdOffset) {
     this.gui = gui;
     this.isStickyModeAvailable = isStickyModeAvailable;
@@ -186,7 +187,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
     GL11.glColor3f(1, 1, 1);
-    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    gui.bindGuiTexture(1);
     gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
     if(filter.isAdvanced()) {      
       gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);

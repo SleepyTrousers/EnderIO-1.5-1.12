@@ -25,7 +25,7 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
   private static final int RANGE_ID = 8738924;
 
   public GuiAversionObelisk(InventoryPlayer par1InventoryPlayer, TileAversionObelisk te) {
-    super(te, new ContainerAversionObelisk(par1InventoryPlayer, te));
+    super(te, new ContainerAversionObelisk(par1InventoryPlayer, te), "attractor");
 
     int x = getXSize() - 5 - BUTTON_SIZE;
     showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
@@ -48,7 +48,7 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/attractor.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

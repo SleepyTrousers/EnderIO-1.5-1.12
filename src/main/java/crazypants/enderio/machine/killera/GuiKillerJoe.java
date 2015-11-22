@@ -31,7 +31,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   private IconButton xp10B;
 
   public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
-    super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
+    super(tileEntity, new ContainerKillerJoe(inventory, tileEntity), "killerJoe");
 
     addToolTip(new GuiToolTip(new Rectangle(18, 11, 15, 47), "") {
 
@@ -98,7 +98,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/killerJoe.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);

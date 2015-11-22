@@ -24,7 +24,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   private static final int LOCK_ID = 1234;
 
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
-    super(machine, new FarmStationContainer(par1InventoryPlayer, machine));
+    super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farmStation");
     setYSize(ySize + 3);
   }
   
@@ -65,7 +65,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/farmStation.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
@@ -80,7 +80,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     fr.drawString("NE", sx + 73, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);        
     GL11.glDisable(GL11.GL_BLEND);
     
-    RenderUtil.bindTexture("enderio:textures/gui/farmStation.png");
+    bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
   

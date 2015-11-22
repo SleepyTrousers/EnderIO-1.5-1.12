@@ -368,7 +368,7 @@ public class ItemSettings extends BaseSettingsPanel {
       return;
     }
 
-    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    gui.bindGuiTexture(1);
     gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
 
     FontRenderer fr = gui.getFontRenderer();
@@ -387,13 +387,13 @@ public class ItemSettings extends BaseSettingsPanel {
     } else {
       //draw speed upgrade slot
       GL11.glColor3f(1, 1, 1);
-      RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+      gui.bindGuiTexture(1);
       gui.drawTexturedModalRect(gui.getGuiLeft() + 9 + 18, gui.getGuiTop() + 46, 94, 238, 18, 18);      
     }
     
     //filter upgrade slot
     GL11.glColor3f(1, 1, 1);
-    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    gui.bindGuiTexture(1);
     gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46, 94, 220, 18, 18);
 
     //function upgrade slot

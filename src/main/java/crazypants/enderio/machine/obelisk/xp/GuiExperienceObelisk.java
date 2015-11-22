@@ -30,7 +30,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
   private IconButton mmm;
 
   public GuiExperienceObelisk(InventoryPlayer playerInv, TileExperienceObelisk te) {
-    super(te, new ContainerNoInv(te));
+    super(te, new ContainerNoInv(te), "experianceObelisk");
     ySize = 115;
 
     int spacing = 5;
@@ -130,7 +130,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/experianceObelisk.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

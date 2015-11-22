@@ -21,7 +21,7 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustionGenerator> {
 
   public GuiCombustionGenerator(InventoryPlayer par1InventoryPlayer, TileCombustionGenerator te) {
-    super(te, new ContainerCombustionEngine(par1InventoryPlayer, te));
+    super(te, new ContainerCombustionEngine(par1InventoryPlayer, te), "combustionGen");
 
     addToolTip(new GuiToolTip(new Rectangle(114, 21, 15, 47), "") {
 
@@ -79,7 +79,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
@@ -113,7 +113,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
       //center coolant chamber
       RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 1000, Math.min(gen.getCoolantTank().getFluidAmount(), 1000), x, y + 14, zLevel, 33, 33);
       //draw some gui over the top again to make the center shape
-      RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");
+      bindGuiTexture();
       drawTexturedModalRect(x, y + 14, 0, 223, 33, 33);
       y += 7;
     }
@@ -135,7 +135,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
           .renderGuiTank(gen.getFuelTank().getFluid(), 1000, Math.min(gen.getFuelTank().getFluidAmount(), 1000), guiLeft + 81, guiTop + 38, zLevel, 14, 14);
     }
 
-    RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");
+    bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 

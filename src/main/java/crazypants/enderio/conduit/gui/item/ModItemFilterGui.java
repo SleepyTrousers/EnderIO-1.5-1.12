@@ -104,7 +104,7 @@ public class ModItemFilterGui implements IItemFilterGui {
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {    
     GL11.glColor3f(1, 1, 1);
-    RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
+    gui.bindGuiTexture();
     for(Rectangle r : inputBounds) {
       //slot
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 214, 18, 18);

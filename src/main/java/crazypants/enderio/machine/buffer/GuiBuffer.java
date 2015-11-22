@@ -18,8 +18,8 @@ import crazypants.enderio.network.PacketHandler;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
-  private static final String TEXTURE_SIMPLE = "enderio:textures/gui/buffer.png";
-  private static final String TEXTURE_FULL = "enderio:textures/gui/buffer_full.png";
+  private static final String TEXTURE_SIMPLE = "buffer";
+  private static final String TEXTURE_FULL = "buffer_full";
 
   private TextFieldEnder maxInput;
   private TextFieldEnder maxOutput;
@@ -27,12 +27,10 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   private int lastInput, lastOutput;
 
   public GuiBuffer(InventoryPlayer par1InventoryPlayer, TileBuffer te) {
-    super(te, new ContainerBuffer(par1InventoryPlayer, te));
+    super(te, new ContainerBuffer(par1InventoryPlayer, te), TEXTURE_SIMPLE, TEXTURE_FULL);
     redstoneButton.setPosition(isFull() ? 153 : 120, 24);
     configB.setPosition(isFull() ? 153 : 120, 42);
 
-    FontRenderer fnt = Minecraft.getMinecraft().fontRenderer;
-    
     if(te.hasPower()) {
       int x = (isFull() ? 20 : 58);
       int y = guiTop + 27;
@@ -137,13 +135,13 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-    RenderUtil.bindTexture(isFull() ? TEXTURE_FULL : TEXTURE_SIMPLE);
+    bindGuiTexture(isFull() ? 1 : 0);
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
-    RenderUtil.bindTexture(TEXTURE_SIMPLE);
+    bindGuiTexture();
 
     if(getTileEntity().hasPower()) {
       drawPowerBg(sx, sy);
@@ -171,6 +169,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     return getTileEntity().hasInventory() && getTileEntity().hasPower();
   }
 
+  @Override
   public void renderSlotHighlights(IoMode mode) {
     if (!getTileEntity().hasInventory()) {
       return;

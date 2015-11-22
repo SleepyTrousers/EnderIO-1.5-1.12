@@ -26,7 +26,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
   private final ToggleButton showRangeB;
   
   public GuiAttractor(InventoryPlayer par1InventoryPlayer, TileAttractor te) {
-    super(te, new ContainerAttractor(par1InventoryPlayer, te));
+    super(te, new ContainerAttractor(par1InventoryPlayer, te), "attractor");
 
     int x = getXSize() - 5 - BUTTON_SIZE;
     showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
@@ -58,7 +58,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/attractor.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

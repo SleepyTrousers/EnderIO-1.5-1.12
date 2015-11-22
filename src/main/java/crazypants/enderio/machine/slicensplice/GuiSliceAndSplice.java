@@ -12,7 +12,7 @@ import crazypants.enderio.machine.killera.ContainerKillerJoe;
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 
   public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, TileSliceAndSplice te) {
-    super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te));
+    super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te), "sliceAndSplice");
 
     addProgressTooltip(103, 49, 24, 16);
   }
@@ -30,7 +30,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/sliceAndSplice.png");
+    bindGuiTexture();
     int k = guiLeft;
     int l = guiTop;
 

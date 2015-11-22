@@ -21,6 +21,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
@@ -30,7 +31,7 @@ import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiCapacitorBank extends GuiContainerBase {
+public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
   protected static final int INPUT_BUTTON_ID = 18;
   protected static final int OUTPUT_BUTTON_ID = 37;
@@ -63,7 +64,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private IconButton configB;
 
   public GuiCapacitorBank(Entity player, InventoryPlayer playerInv, TileCapacitorBank te) {
-    super(new ContainerCapacitorBank(player, playerInv, te));
+    super(new ContainerCapacitorBank(player, playerInv, te), "capacitorBank");
     this.capBank = te;
 
     xSize = 176 + 42;
@@ -259,7 +260,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/capacitorBank.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

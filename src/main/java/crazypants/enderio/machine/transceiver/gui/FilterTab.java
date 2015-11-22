@@ -86,7 +86,7 @@ public class FilterTab implements ITabPanel {
     GL11.glColor3f(1, 1, 1);
 
     //Inventory
-    RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
+    parent.bindGuiTexture();
     Point invRoot = container.getPlayerInventoryOffset();
     parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 162, 76);
 

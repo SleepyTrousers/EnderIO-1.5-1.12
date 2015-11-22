@@ -10,16 +10,16 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.network.MessageTileNBT;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiTravelAuth extends GuiContainerBase {
+public class GuiTravelAuth extends GuiContainerBaseEIO {
 
   private final String title;
   private final ITravelAccessable ta;
@@ -28,7 +28,7 @@ public class GuiTravelAuth extends GuiContainerBase {
   private final EntityPlayer player;
 
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
-    super(new ContainerTravelAuth(player.inventory));
+    super(new ContainerTravelAuth(player.inventory), "travelAuth");
     this.ta = te;
     title = EnderIO.lang.localize("gui.travelAccessable.enterCode");  
     this.player = player;
@@ -76,7 +76,7 @@ public class GuiTravelAuth extends GuiContainerBase {
   @Override
   public void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/travelAuth.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);

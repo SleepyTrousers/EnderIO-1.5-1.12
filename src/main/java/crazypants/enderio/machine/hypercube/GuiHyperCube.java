@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ListSelectionListener;
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;
@@ -24,6 +23,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.PlayerUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
@@ -31,7 +31,7 @@ import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiHyperCube extends GuiContainerBase {
+public class GuiHyperCube extends GuiContainerBaseEIO {
 
   protected static final int POWER_INPUT_BUTTON_ID = 1;
   protected static final int POWER_OUTPUT_BUTTON_ID = 2;
@@ -78,7 +78,7 @@ public class GuiHyperCube extends GuiContainerBase {
   private RedstoneModeButton rsB;
 
   public GuiHyperCube(TileHyperCube te) {
-    super(new ContainerHyperCube());
+    super(new ContainerHyperCube(), "hyperCube");
     this.cube = te;
 
     xSize = 245;
@@ -338,7 +338,7 @@ public class GuiHyperCube extends GuiContainerBase {
     super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
     
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/hyperCube.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

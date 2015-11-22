@@ -90,7 +90,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final Rectangle btnAddStoredRecipe = new Rectangle();
 
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
-    super(te, container);
+    super(te, container, "inventorypanel");
     redstoneButton.visible = false;
     configB.visible = false;
 
@@ -283,7 +283,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/inventorypanel.png");
+    bindGuiTexture();
     int sx = guiLeft;
     int sy = guiTop;
 

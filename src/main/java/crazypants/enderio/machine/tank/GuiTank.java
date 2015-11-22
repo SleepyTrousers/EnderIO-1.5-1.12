@@ -55,7 +55,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   private CycleButton<VoidMode> voidBut;
   
   public GuiTank(InventoryPlayer par1InventoryPlayer, TileTank te) {
-    super(te, new ContainerTank(par1InventoryPlayer, te));
+    super(te, new ContainerTank(par1InventoryPlayer, te), "tank");
     
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 16, 47), "") {
 
@@ -120,7 +120,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/tank.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

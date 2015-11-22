@@ -26,7 +26,7 @@ import crazypants.enderio.power.Capacitors;
 public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirlingGenerator> {
 
   public GuiStirlingGenerator(InventoryPlayer par1InventoryPlayer, TileEntityStirlingGenerator te) {
-    super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te));
+    super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te), "stirlingGenerator");
 
     final StirlingGeneratorContainer c = (StirlingGeneratorContainer)inventorySlots;
     Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));
@@ -85,7 +85,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/stirlingGenerator.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
