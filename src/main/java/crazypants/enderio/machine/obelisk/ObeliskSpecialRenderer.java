@@ -110,6 +110,9 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
 
     glPushMatrix();
     glPushAttrib(GL_ALL_ATTRIB_BITS);
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    GL11.glEnable(GL11.GL_ALPHA_TEST);
     RenderHelper.enableStandardItemLighting();
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
     glScalef(1.1f, 1.1f, 1.1f);
