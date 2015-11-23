@@ -27,7 +27,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   private String header;
 
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
-    super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te));
+    super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "poweredSpawner");
 
     modeB = MultiIconButton.createRightArrowButton(this, 8888, 115, 10);
     modeB.setSize(10, 16);
@@ -77,7 +77,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/poweredSpawner.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
@@ -97,7 +97,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     int y = sy + fr.FONT_HEIGHT + 6;
     fr.drawStringWithShadow(header, x, y, ColorUtil.getRGB(Color.WHITE));
 
-    RenderUtil.bindTexture("enderio:textures/gui/poweredSpawner.png");
+    bindGuiTexture();
 
     if(spawnMode) {
       drawTexturedModalRect(sx + 80, sy + 34, 207, 0, 17, 15);

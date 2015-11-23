@@ -82,7 +82,7 @@ public class GeneralTab implements ITabPanel {
     GL11.glColor3f(1, 1, 1);
     
     //Inventory
-    RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
+    parent.bindGuiTexture();
     Point invRoot = container.getPlayerInventoryOffset();
     parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 162, 76);  
     
@@ -103,7 +103,7 @@ public class GeneralTab implements ITabPanel {
     parent.renderSlotHighlights();    
     
     //Power    
-    RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
+    parent.bindGuiTexture();
     GL11.glColor3f(1, 1, 1);
     
     x = left + parent.getPowerX() - 1;

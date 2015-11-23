@@ -25,7 +25,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   private final IconButton usePlayerXP;
 
   public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, TileSoulBinder te) {
-    super(te, new ContainerSoulBinder(par1InventoryPlayer, te));
+    super(te, new ContainerSoulBinder(par1InventoryPlayer, te), "soulFuser");
     usePlayerXP = new IconButton(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
     usePlayerXP.setToolTip("Use Player XP");    
@@ -59,7 +59,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/soulFuser.png");
+    bindGuiTexture();
     int k = guiLeft;
     int l = guiTop;
 
@@ -77,7 +77,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
     ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, binder.getContainer(), binder.getCurrentlyRequiredLevel());
     
-    RenderUtil.bindTexture("enderio:textures/gui/soulFuser.png");
+    bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
   }

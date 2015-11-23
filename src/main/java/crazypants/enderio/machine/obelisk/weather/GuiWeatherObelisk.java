@@ -22,11 +22,10 @@ import crazypants.enderio.network.PacketHandler;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
-  private static final ResourceLocation texture = new ResourceLocation("enderio:textures/gui/weatherObelisk.png");
   private static final NumberFormat fmt = NumberFormat.getNumberInstance();
   
   public GuiWeatherObelisk(InventoryPlayer inventory, TileWeatherObelisk tileEntity) {
-    super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity));
+    super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity), "weatherObelisk");
     
     addProgressTooltip(79, 29, 18, 31);
   }
@@ -82,7 +81,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    this.mc.renderEngine.bindTexture(texture);
+    bindGuiTexture();
 
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
 

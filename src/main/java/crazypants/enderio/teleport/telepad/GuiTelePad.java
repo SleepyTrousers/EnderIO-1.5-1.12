@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
@@ -24,11 +23,12 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
+public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   private static final int ID_SWITCH_BUTTON = 95;
   private static final int ID_TELEPORT_BUTTON = 96;
@@ -52,7 +52,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
   public GuiTelePad(InventoryPlayer playerInv, TileTelePad te, World world) {
-    super(new ContainerTelePad(playerInv));
+    super(new ContainerTelePad(playerInv), "telePad");
     this.world = world;
     this.te = te;
     ySize += 34;
@@ -161,7 +161,7 @@ public class GuiTelePad extends GuiContainerBase implements IToggleableGui {
   @Override
   protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/telePad.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

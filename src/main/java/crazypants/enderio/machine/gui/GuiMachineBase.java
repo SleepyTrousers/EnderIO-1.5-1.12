@@ -12,7 +12,6 @@ import net.minecraft.inventory.Slot;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
@@ -21,6 +20,7 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -28,7 +28,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 
-public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBase {
+public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBaseEIO {
 
   public static final Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
   public static final Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);
@@ -50,8 +50,8 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   protected List<GuiToolTip> progressTooltips;
   protected int lastProgressTooltipValue = -1;
 
-  protected GuiMachineBase(T machine, Container par1Container) {
-    super(par1Container);
+  protected GuiMachineBase(T machine, Container par1Container, String... guiTexture) {
+    super(par1Container, guiTexture);
     tileEntity = machine;
     
     xSize = getXSize();

@@ -32,7 +32,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   GeneralTab generalTab;
 
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
-    super(te, new ContainerTransceiver(par1InventoryPlayer, te));
+    super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver", "itemFilter");
 
     generalTab = new GeneralTab(this); 
     tabs.add(generalTab);
@@ -211,7 +211,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
     tes.draw();
 
-    RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
+    bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 

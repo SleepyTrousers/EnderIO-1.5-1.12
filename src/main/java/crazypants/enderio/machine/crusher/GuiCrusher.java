@@ -14,7 +14,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
 
   public GuiCrusher(InventoryPlayer par1InventoryPlayer, TileCrusher inventory) {
-    super(inventory, new ContainerCrusher(par1InventoryPlayer, inventory));
+    super(inventory, new ContainerCrusher(par1InventoryPlayer, inventory), "crusher");
     addToolTip(new GuiToolTip(new Rectangle(142, 23, 5, 17), "") {
 
       @Override
@@ -34,7 +34,7 @@ public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/crusher.png");
+    bindGuiTexture();
 
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 

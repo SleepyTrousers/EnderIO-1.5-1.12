@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -23,12 +22,12 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.machine.killera.ContainerKillerJoe;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiVacuumChest extends GuiContainerBase {
+public class GuiVacuumChest extends GuiContainerBaseEIO {
 
   private static final int RANGE_LEFT  = 145;
   private static final int RANGE_TOP   = 86;
@@ -57,7 +56,7 @@ public class GuiVacuumChest extends GuiContainerBase {
   private final String headerInventory;
 
   public GuiVacuumChest(EntityPlayer player, InventoryPlayer inventory, TileVacuumChest te) {
-    super(new ContainerVacuumChest(player, inventory, te));
+    super(new ContainerVacuumChest(player, inventory, te), "vacumChest");
     this.te = te;
 
     ySize = 206;
@@ -175,7 +174,7 @@ public class GuiVacuumChest extends GuiContainerBase {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/vacumChest.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);

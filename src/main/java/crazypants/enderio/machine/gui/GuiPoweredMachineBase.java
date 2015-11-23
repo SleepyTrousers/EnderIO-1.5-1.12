@@ -21,8 +21,8 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   protected static final int POWER_HEIGHT = 42;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  public GuiPoweredMachineBase(T machine, Container container) {
-    super(machine, container);
+  public GuiPoweredMachineBase(T machine, Container container, String... guiTexture) {
+    super(machine, container, guiTexture);
     if(renderPowerBar()) {
       addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
 

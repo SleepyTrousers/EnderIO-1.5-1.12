@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
@@ -20,11 +19,12 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
 
-public class GuiTravelAccessable extends GuiContainerBase {
+public class GuiTravelAccessable extends GuiContainerBaseEIO {
 
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
@@ -52,7 +52,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
   }
 
   public GuiTravelAccessable(ContainerTravelAccessable container) {
-    super(container);
+    super(container, "travelAccessable");
     this.te = container.ta;
     this.world = container.world;
 
@@ -137,7 +137,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
   @Override
   public void drawGuiContainerBackgroundLayer(float f, int i, int j) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
@@ -196,7 +196,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
     super.drawForegroundImpl(mouseX, mouseY);
 
     if(te.getAccessMode() != AccessMode.PROTECTED) {
-      RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
+      bindGuiTexture();
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

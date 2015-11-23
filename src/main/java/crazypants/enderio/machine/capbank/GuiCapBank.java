@@ -13,7 +13,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
@@ -21,6 +20,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
@@ -34,7 +34,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiCapBank extends GuiContainerBase {
+public class GuiCapBank extends GuiContainerBaseEIO {
 
   private static final CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 
@@ -76,7 +76,7 @@ public class GuiCapBank extends GuiContainerBase {
   private final ContainerCapBank container;
 
   public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te) {
-    super(new ContainerCapBank(playerInv, te));
+    super(new ContainerCapBank(playerInv, te), "capacitorBank");
     capBank = te;
     container = (ContainerCapBank) inventorySlots;
 
@@ -240,7 +240,7 @@ public class GuiCapBank extends GuiContainerBase {
     requestStateUpdate();
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/capacitorBank.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

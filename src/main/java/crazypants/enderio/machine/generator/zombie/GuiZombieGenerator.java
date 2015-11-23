@@ -21,7 +21,7 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
   public GuiZombieGenerator(InventoryPlayer inventory, final TileZombieGenerator tileEntity) {
-    super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity));
+    super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombieGenerator");
     
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
 
@@ -61,7 +61,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/zombieGenerator.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
@@ -90,7 +90,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       }
     }
 
-    RenderUtil.bindTexture("enderio:textures/gui/zombieGenerator.png");
+    bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 

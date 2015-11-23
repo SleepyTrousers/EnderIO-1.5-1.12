@@ -271,7 +271,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       }
 
       GL11.glColor3f(1, 1, 1);
-      RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+      gui.bindGuiTexture(1);
       gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
 
       FontRenderer fr = gui.getFontRenderer();
@@ -283,7 +283,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       x = gui.getGuiLeft() + filterX;
       y = gui.getGuiTop() + filterY;
       GL11.glColor3f(1, 1, 1);
-      RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
+      gui.bindGuiTexture();
       gui.drawTexturedModalRect(x, y, 24, 238, 90, 18);
 
       FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);

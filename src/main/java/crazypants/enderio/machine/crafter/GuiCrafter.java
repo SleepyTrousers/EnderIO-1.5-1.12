@@ -26,7 +26,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   private final ToggleButton bufferSizeB;
 
   public GuiCrafter(InventoryPlayer par1InventoryPlayer, TileCrafter te) {
-    super(te, new ContainerCrafter(par1InventoryPlayer, te));
+    super(te, new ContainerCrafter(par1InventoryPlayer, te), "crafter");
     xSize = getXSize();
 
     int x = getXSize() - 5 - 16;
@@ -98,7 +98,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/crafter.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

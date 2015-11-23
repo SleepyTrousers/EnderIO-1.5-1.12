@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.monitor;
 
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.text.NumberFormat;
@@ -13,7 +16,6 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
@@ -21,13 +23,13 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
 
-public class GuiPowerMonitor extends GuiContainerBase {
+public class GuiPowerMonitor extends GuiContainerBaseEIO {
 
   private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
 
@@ -73,7 +75,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
   private String noNetworkError;
 
   public GuiPowerMonitor(InventoryPlayer playerInv, final TilePowerMonitor te) {
-    super(new ContainerNoInv(te));
+    super(new ContainerNoInv(te), "powerMonitor");
     this.te = te;
     xSize = WIDTH;
     ySize = HEIGHT;    
@@ -179,7 +181,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
   protected void drawGuiContainerBackgroundLayer(float ptick, int mouseX, int mouseY) {
   
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/powerMonitor.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

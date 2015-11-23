@@ -25,12 +25,12 @@ import crazypants.enderio.network.PacketHandler;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
-  private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
+  private static final String GUI_TEXTURE = "vat";
 
   private final IconButton dump1, dump2;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
-    super(te, new ContainerVat(inventory, te));
+    super(te, new ContainerVat(inventory, te), GUI_TEXTURE);
 
     addToolTip(new GuiToolTip(new Rectangle(30, 12, 15, 47), "") {
 
@@ -99,7 +99,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture(GUI_TEXTURE);
+    bindGuiTexture();
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     TileVat vat = getTileEntity();
     
@@ -154,7 +154,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       }
     }
 
-    RenderUtil.bindTexture(GUI_TEXTURE);
+    bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
@@ -174,7 +174,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     GL11.glDisable(GL11.GL_BLEND);
 
     GL11.glColor4f(1, 1, 1, 1);
-    RenderUtil.bindTexture(GUI_TEXTURE);
+    bindGuiTexture();
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }
 
