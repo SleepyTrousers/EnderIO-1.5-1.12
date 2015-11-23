@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -18,81 +19,69 @@ import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.AbstractMachineBlock;
 
 public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
 
-  private VertXForm2 xform2 = new VertXForm2();
-  private VertXForm3 xform3 = new VertXForm3();
+  private static final VertXForm2 xform2 = new VertXForm2();
+  private static final VertXForm3 xform3 = new VertXForm3();
 
-  private static float WIDE_PINCH = 0.9f;
-  private static float WIDTH = 18f / 32f * WIDE_PINCH;
+  private static final float WIDE_PINCH = 0.9f;
+  private static final float WIDTH = 18f / 32f * WIDE_PINCH;
+  private static final float HEIGHT = 0.475f;
+
+  private static final BoundingBox bb1 = BoundingBox.UNIT_CUBE.scale(WIDTH, HEIGHT, 1).translate(0, -0.5f + HEIGHT / 2, 0);
+  private static final BoundingBox bb2 = BoundingBox.UNIT_CUBE.scale(1, HEIGHT, WIDTH).translate(0, -0.5f + HEIGHT / 2, 0);
+
+  private static final int BOTTOM = ForgeDirection.DOWN.ordinal();
+  private static final int TOP = ForgeDirection.UP.ordinal();
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-
     GL11.glDisable(GL11.GL_LIGHTING);
+    GL11.glEnable(GL11.GL_ALPHA_TEST);
     Tessellator.instance.startDrawingQuads();
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     Tessellator.instance.draw();
+    GL11.glDisable(GL11.GL_ALPHA_TEST);
     GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-    Tessellator.instance.addTranslation(x, y, z);
-
-    IIcon icon;
     IIcon[] icons;
-    IIcon[] bottomIcon = null;
     if (world != null) { // block
       RenderUtil.setTesselatorBrightness(world, x, y, z);
-      icon = block.getIcon(world, x, y, z, 0);
-      icons = RenderUtil.getBlockTextures(world, x, y, z);
+      if (renderer.hasOverrideBlockTexture()) { // "block breaking" overlay
+        icons = new IIcon[6];
+        for (int i = 0; i < icons.length; i++) {
+          icons[i] = renderer.overrideBlockTexture;
+        }
+      } else {
+        icons = RenderUtil.getBlockTextures(world, x, y, z);
+      }
     } else { // item
-      icon = block.getIcon(1, 0);
       icons = RenderUtil.getBlockTextures(block, 0);
     }
 
-    if (icons != null) {
-      bottomIcon = new IIcon[6];
-      for (int i = 0; i < bottomIcon.length; i++) {
-        bottomIcon[i] = IconUtil.blankTexture;
-      }
-      bottomIcon[0] = icons[0];
-      icons[0] = IconUtil.blankTexture;
+    // bottom texture goes into its own BB
+    IIcon[] bottomIcons = new IIcon[6];
+    for (int i = 1; i < bottomIcons.length; i++) {
+      bottomIcons[i] = IconUtil.blankTexture;
     }
+    bottomIcons[BOTTOM] = icons[BOTTOM];
+    icons[BOTTOM] = IconUtil.blankTexture;
 
-    if(renderer.hasOverrideBlockTexture()) {
-      icon = renderer.overrideBlockTexture;
-      icons = null;
-    }
+    Tessellator.instance.addTranslation(x, y, z);
 
-    float height = 0.475f;
-    float width = WIDTH;
-    BoundingBox bb = BoundingBox.UNIT_CUBE.scale(width, height, 1).translate(0, -0.5f + height / 2, 0);
     xform2.isX = false;
-    if (icons == null) {
-      CubeRenderer.render(bb, icon, xform2, true);
-    } else {
-      CubeRenderer.render(bb, icons, xform2, true);
-    }
+    CubeRenderer.render(bb1, icons, xform2, true);
 
-    bb = BoundingBox.UNIT_CUBE.scale(1, height, width).translate(0, -0.5f + height / 2, 0);
     xform2.isX = true;
-    if (icons == null) {
-      CubeRenderer.render(bb, icon, xform2, true);
-    } else {
-      icons[1] = IconUtil.blankTexture;
-      CubeRenderer.render(bb, icons, xform2, true);
-    }
+    icons[TOP] = IconUtil.blankTexture;
+    CubeRenderer.render(bb2, icons, xform2, true);
 
-    if (bottomIcon != null) {
-      bb = BoundingBox.UNIT_CUBE;
-      CubeRenderer.render(bb, bottomIcon, xform3, true);
-    }
+    CubeRenderer.render(BoundingBox.UNIT_CUBE, bottomIcons, xform3, true);
 
     Tessellator.instance.addTranslation(-x, -y, -z);
 
@@ -157,10 +146,10 @@ public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
     @Override
     public void apply(Vector3d vec) {
       vec.x -= 0.5;
-      vec.x *= (double) WIDE_PINCH;
+      vec.x *= WIDE_PINCH;
       vec.x += 0.5;
       vec.z -= 0.5;
-      vec.z *= (double) WIDE_PINCH;
+      vec.z *= WIDE_PINCH;
       vec.z += 0.5;
     }
 
