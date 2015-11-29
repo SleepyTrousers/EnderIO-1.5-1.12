@@ -21,7 +21,9 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
   public static enum Opcode {
     CLEAR,
     SET,
-    MERGE
+    MERGE,
+    SET_BLACK,
+    UNSET_BLACK
   }
 
   private ForgeDirection dir;
@@ -87,6 +89,13 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
         filter.mergeSnapshot(inv);
         break;
       }
+
+    case SET_BLACK:
+      filter.setBlacklist(true);
+      break;
+    case UNSET_BLACK:
+      filter.setBlacklist(false);
+      break;
 
       default:
         throw new AssertionError();
