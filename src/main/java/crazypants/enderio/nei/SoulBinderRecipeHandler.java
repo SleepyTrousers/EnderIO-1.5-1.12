@@ -20,6 +20,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -36,7 +37,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/soulFuser.png";
+    return GuiContainerBaseEIO.getGuiTexture("soulFuser").toString();
   }
 
   @Override
