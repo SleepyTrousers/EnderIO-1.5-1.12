@@ -235,7 +235,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.fence_gate, Blocks.nether_brick_fence, BlockPaintedFenceGate.this);
+      super(Blocks.fence_gate, BlockPaintedFenceGate.this);
     }
 
     @Override
