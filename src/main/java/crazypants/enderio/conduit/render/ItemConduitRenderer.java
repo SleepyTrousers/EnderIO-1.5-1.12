@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
 
 public class ItemConduitRenderer implements IItemRenderer {
 
@@ -60,6 +61,7 @@ public class ItemConduitRenderer implements IItemRenderer {
   }
 
   private void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
+    RenderUtil.bindItemTexture();
     Tessellator.instance.startDrawingQuads();
     CubeRenderer.render(bb, item.getItem().getIconFromDamage(item.getItemDamage()));
     Tessellator.instance.draw();
