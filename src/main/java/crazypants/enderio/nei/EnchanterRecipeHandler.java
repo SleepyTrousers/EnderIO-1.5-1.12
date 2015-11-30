@@ -19,6 +19,7 @@ import net.minecraft.util.StatCollector;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
@@ -35,7 +36,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/enchanter.png";
+    return GuiContainerBaseEIO.getGuiTexture("enchanter").toString();
   }
 
   @Override

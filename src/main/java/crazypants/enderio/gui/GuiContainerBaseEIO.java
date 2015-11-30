@@ -21,7 +21,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
   public GuiContainerBaseEIO(Container par1Container, String... guiTexture) {
     super(par1Container);
     for (String string : guiTexture) {
-      guiTextures.add(new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + string + TEXTURE_EXT));
+      guiTextures.add(getGuiTexture(string));
     }
   }
 
@@ -35,6 +35,10 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
 
   protected ResourceLocation getGuiTexture(int id) {
     return guiTextures.size() > id ? guiTextures.get(id) : null;
+  }
+
+  public static ResourceLocation getGuiTexture(String name) {
+    return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
 }

@@ -24,6 +24,7 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.FluidUtil;
 
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -46,7 +47,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/vat.png";
+    return GuiContainerBaseEIO.getGuiTexture("vat").toString();
   }
 
   public PositionedStack getResult() {
@@ -299,10 +300,10 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
       inputs = new ArrayList<PositionedStack>();
 
-      if(inputsOne != null) {
+      if (!inputsOne.isEmpty()) {
         inputs.add(new PositionedStack(inputsOne, 51, 1));
       }
-      if(inputsTwo != null) {
+      if (!inputsTwo.isEmpty()) {
         inputs.add(new PositionedStack(inputsTwo, 100, 1));
       }
 

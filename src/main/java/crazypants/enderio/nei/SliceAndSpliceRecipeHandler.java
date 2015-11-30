@@ -17,6 +17,7 @@ import com.enderio.core.client.render.EnderWidget;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -34,7 +35,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/sliceAndSplice.png";
+    return GuiContainerBaseEIO.getGuiTexture("sliceAndSplice").toString();
   }
 
   @Override
@@ -104,7 +105,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void drawExtras(int recipeIndex) {
-    drawProgressBar(90, 35, 177, 14, 23, 17, 120, 0);
+    drawProgressBar(91, 38, 177, 14, 23, 17, 120, 0);
 
     SliceAndSpliceRecipe recipe = (SliceAndSpliceRecipe) arecipes.get(recipeIndex);
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
@@ -148,7 +149,6 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     }
 
     public SliceAndSpliceRecipe(IRecipe recipe) {
-      int recipeSize = recipe.getInputs().length;
       input = new ArrayList<PositionedStack>();
       int yOff = 11;
       int xOff = 13;
