@@ -124,6 +124,10 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       return 0;
     }
     float result = FurnaceRecipes.smelting().func_151398_b(output);
+    if (result > 1.0f) {
+      // see net.minecraft.inventory.SlotFurnace.onCrafting(ItemStack)
+      result = 1.0f;
+    }
     return result * output.stackSize;
   }
 
