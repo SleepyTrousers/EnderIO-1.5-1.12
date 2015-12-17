@@ -386,6 +386,8 @@ public final class Config {
   public static double killerJoeHooverXpLength = 10;
   public static int killerJoeMaxXpLevel = Integer.MAX_VALUE;
   public static boolean killerJoeMustSee = false;
+  public static boolean killerPvPoffDisablesSwing = false;
+  public static boolean killerPvPoffIsIgnored = false;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -1159,6 +1161,14 @@ public final class Config {
     killerJoeMaxXpLevel = config.get(sectionMisc.name, "killerJoeMaxXpLevel", killerJoeMaxXpLevel, "Maximum level of XP the killer joe can contain.").getInt();
 
     killerJoeMustSee = config.get(sectionKiller.name, "killerJoeMustSee", killerJoeMustSee, "Set whether the Killer Joe can attack through blocks.").getBoolean();
+    killerPvPoffDisablesSwing = config
+        .get(sectionKiller.name, "killerPvPoffDisablesSwing", killerPvPoffDisablesSwing,
+            "Set whether the Killer Joe swings even if PvP is off (that swing will do nothing unless killerPvPoffIsIgnored is enabled).")
+        .getBoolean();
+    killerPvPoffIsIgnored = config
+        .get(sectionKiller.name, "killerPvPoffIsIgnored", killerPvPoffIsIgnored,
+            "Set whether the Killer Joe ignores PvP settings and always hits players (killerPvPoffDisablesSwing must be off for this to work).")
+        .getBoolean();
 
     // Add deprecated comment
     config.getString("isGasConduitEnabled", sectionItems.name, "auto", "Deprecated option. Use boolean \"gasConduitsEnabled\" below.");
