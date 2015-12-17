@@ -26,12 +26,13 @@ import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.client.C15PacketClientSettings;
 import net.minecraft.network.play.client.C16PacketClientStatus;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
 
 public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
 
   public FakeNetHandlerPlayServer(EntityPlayerMP p_i1530_3_) {
-    super(null, new net.minecraft.network.NetworkManager(false), p_i1530_3_);
+    super(MinecraftServer.getServer(), new net.minecraft.network.NetworkManager(false), p_i1530_3_);
   }
 
   @Override
