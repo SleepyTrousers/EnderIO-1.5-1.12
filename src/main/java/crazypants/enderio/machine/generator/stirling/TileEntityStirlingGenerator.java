@@ -21,8 +21,6 @@ import crazypants.enderio.power.PowerDistributor;
 
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
 
-  public static final int ENERGY_PER_TICK = Config.stirlingGeneratorBaseRfPerTick;
-
   // public for alloy smelter
   public static final String SOUND_NAME = "generator.stirling";
 
@@ -118,11 +116,11 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   public int getPowerUsePerTick() {
-    return Math.round(ENERGY_PER_TICK * getEnergyMultiplier());
+    return Math.round(Config.stirlingGeneratorBaseRfPerTick * getEnergyMultiplier());
   }
 
   public int getBurnTime(ItemStack item) {
-    return Math.round(TileEntityFurnace.getItemBurnTime(item) / getBurnTimeMultiplier());
+    return Math.round(TileEntityFurnace.getItemBurnTime(item) * getBurnTimeMultiplier());
   }
 
   @Override
@@ -187,11 +185,11 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   public static float getEnergyMultiplier(Capacitors capacitorType) {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return 2;
+      return Config.stirlingGeneratorEnergyMultiplierT2;
     } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return 4;
+      return Config.stirlingGeneratorEnergyMultiplierT3;
     }
-    return 1;
+    return Config.stirlingGeneratorEnergyMultiplierT1;
   }
 
   private float getEnergyMultiplier() {
@@ -200,11 +198,11 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   public static float getBurnTimeMultiplier(Capacitors capacitorType) {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return 1.5f;
+      return Config.stirlingGeneratorBurnTimeMultiplierT2;
     } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return 1.5f;
+      return Config.stirlingGeneratorBurnTimeMultiplierT3;
     }
-    return 2;
+    return Config.stirlingGeneratorBurnTimeMultiplierT1;
   }
 
   public float getBurnTimeMultiplier() {
