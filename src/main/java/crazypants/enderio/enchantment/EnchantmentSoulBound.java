@@ -8,6 +8,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArmor;
@@ -25,6 +26,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
+import crazypants.util.GalacticraftUtil;
 
 @Interface(iface = "tterrag.core.api.common.enchant.IAdvancedEnchant", modid = "ttCore")
 public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
@@ -59,7 +61,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   /*
-   * This is called the moment the player dies and drops is stuff.
+   * This is called the moment the player dies and drops his stuff.
    * 
    * We go early, so we can get our items before other mods put them into some
    * grave. Also remove them from the list so they won't get duped. If the
@@ -101,7 +103,23 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
         }
       }
     }
-    
+
+    // Galacticraft. Again we are too early for those items. We just dump the
+    // stuff into the normal inventory to not have to keep a separate list.
+    if (evt.entityPlayer instanceof EntityPlayerMP) {
+      IInventory galacticraft = GalacticraftUtil.getGCInventoryForPlayer((EntityPlayerMP) evt.entityPlayer);
+      if (galacticraft != null) {
+        for (int i = 0; i < galacticraft.getSizeInventory(); i++) {
+          ItemStack item = galacticraft.getStackInSlot(i);
+          if (isSoulBound(item)) {
+            if (addToPlayerInventory(evt.entityPlayer, item)) {
+              galacticraft.setInventorySlotContents(i, null);
+            }
+          }
+        }
+      }
+    }
+
   }
 
   /*
