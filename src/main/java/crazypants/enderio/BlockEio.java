@@ -33,7 +33,7 @@ public abstract class BlockEio extends BlockEnder {
     TileEntity te = world.getTileEntity(x, y, z);
 
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && !entityPlayer.isSneaking()) {
+    if(tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
       if(te instanceof AbstractMachineEntity) {
         ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
         world.markBlockForUpdate(x, y, z);
