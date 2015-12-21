@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -289,7 +290,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
       if(filter != null && !filter.isEmpty()) {
         for (int i = 0; i < filter.size(); i++) {
-          Fluid f = filter.getFluidAt(i);
+          FluidStack f = filter.getFluidStackAt(i);
           if(f != null) {
             renderFluid(f, x + (i * 18), y);
           }
@@ -299,11 +300,14 @@ public class LiquidSettings extends BaseSettingsPanel {
     }
   }
 
-  private void renderFluid(Fluid f, int x, int y) {
-    IIcon icon = f.getIcon();
+  private void renderFluid(FluidStack f, int x, int y) {
+    IIcon icon = f.getFluid().getIcon();
     if(icon != null) {
       RenderUtil.bindBlockTexture();
+      int color = f.getFluid().getColor(f);
+      GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
       gui.drawTexturedModelRectFromIcon(x + 1, y + 1, icon, 16, 16);
+      GL11.glColor3f(1, 1, 1);
     }
 
   }
@@ -339,10 +343,10 @@ public class LiquidSettings extends BaseSettingsPanel {
       if(filter == null) {
         return null;
       }
-      if(filter.getFluidAt(index) == null) {
+      if (filter.getFluidStackAt(index) == null) {
         return null;
       }
-      return Collections.singletonList(filter.getFluidAt(index).getLocalizedName());
+      return Collections.singletonList(filter.getFluidStackAt(index).getLocalizedName());
     }
 
   }
