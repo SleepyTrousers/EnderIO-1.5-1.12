@@ -241,6 +241,11 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   }
 
   @Override
+  public int getItemEnchantability() {
+    return ItemDarkSteelSword.MATERIAL.getEnchantability();
+  }
+
+  @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
@@ -279,10 +284,10 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     public int compare(BlockCoord arg0, BlockCoord arg1) {
       int d1 = refPoint.getDistSq(arg0);
       int d2 = refPoint.getDistSq(arg1);
-      return compare(d1, d1);
+      return compare(d1, d2);
     }
 
-    //NB: Copy of Integer.compare, which i sonly in Java 1.7+
+    // NB: Copy of Integer.compare, which is only in Java 1.7+
     public static int compare(int x, int y) {
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
