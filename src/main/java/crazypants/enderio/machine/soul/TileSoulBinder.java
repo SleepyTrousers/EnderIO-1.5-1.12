@@ -185,22 +185,27 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   @Override
   protected boolean doPush(ForgeDirection dir) {
     boolean res = super.doPush(dir);
-    int maxAmount = Config.fluidConduitExtractRate;
-    if (currentTask == null) {
-      IMachineRecipe nextRecipe = getNextRecipe();
-      if (nextRecipe instanceof ISoulBinderRecipe) {
-        int excess = getContainer().getExperienceTotal() - ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();
-        if (excess > 0) {
-          maxAmount = Math.min(XpUtil.experienceToLiquid(excess), Config.fluidConduitExtractRate);
-        } else {
-          maxAmount = 0;
-        }
-      }
-    }
-    if(maxAmount > 0) {
+    int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), Config.fluidConduitExtractRate);
+    if (maxAmount > 0) {
       FluidUtil.doPush(this, dir, maxAmount);
     }
     return res;
+  }
+
+  /**
+   * Determines how much stored XP can/should be removed because it is not
+   * needed for the next recipe.
+   * 
+   * @return A number between 0 and the amount of stored XP
+   */
+  private int getExcessXP() {
+    if (currentTask == null) {
+      IMachineRecipe nextRecipe = getNextRecipe();
+      if (nextRecipe instanceof ISoulBinderRecipe) {
+        return Math.max(0, getContainer().getExperienceTotal() - ((ISoulBinderRecipe) nextRecipe).getExperienceRequired());
+      }
+    }
+    return getContainer().getExperienceTotal();
   }
 
   @Override
@@ -209,18 +214,34 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
   
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {   
-    return xpCont.fill(from, resource,doFill);
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    int max = XpUtil.experienceToLiquid(getXPRequired());
+    if (resource == null || max <= 0) {
+      return 0;
+    } else if (max < resource.amount) {
+      FluidStack copy = resource.copy();
+      copy.amount = max;
+      return xpCont.fill(from, copy, doFill);
+    } else {
+      return xpCont.fill(from, resource, doFill);
+    }
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {    
-    return xpCont.drain(from, resource, doDrain);
+  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    int max = XpUtil.experienceToLiquid(getExcessXP());
+    if (resource != null && max < resource.amount) {
+      FluidStack copy = resource.copy();
+      copy.amount = max;
+      return xpCont.drain(from, copy, doDrain);
+    } else {
+      return xpCont.drain(from, resource, doDrain);
+    }
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {    
-    return xpCont.drain(from, maxDrain, doDrain);
+    return xpCont.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
   }
 
   @Override
