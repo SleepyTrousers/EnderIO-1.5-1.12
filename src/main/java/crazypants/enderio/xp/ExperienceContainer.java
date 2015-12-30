@@ -147,14 +147,19 @@ public class ExperienceContainer extends FluidTank {
     }
     int available = getFluidAmount();
     int canDrain = Math.min(available, maxDrain);
+    final int xpAskedToExtract = XpUtil.liquidToExperience(canDrain);
+    // only return multiples of 1 XP (20mB) to avoid duping XP when being asked
+    // for low values (like 10mB/t)
+    final int fluidToExtract = XpUtil.experienceToLiquid(xpAskedToExtract);
+    final int xpToExtract = XpUtil.liquidToExperience(fluidToExtract);
     if(doDrain) {      
-      int newXp = experienceTotal - XpUtil.liquidToExperience(canDrain);
+      int newXp = experienceTotal - xpToExtract;
       experience = 0;
       experienceLevel = 0;
       experienceTotal = 0;
-      addExperience(newXp);      
-    }        
-    return new FluidStack(EnderIO.fluidXpJuice, canDrain);
+      addExperience(newXp);
+    }
+    return new FluidStack(EnderIO.fluidXpJuice, fluidToExtract);
   }
 
   public boolean canFill(ForgeDirection from, Fluid fluid) {
@@ -210,6 +215,7 @@ public class ExperienceContainer extends FluidTank {
    return XpUtil.experienceToLiquid(experienceTotal);
   }
   
+  @Override
   public FluidTank readFromNBT(NBTTagCompound nbtRoot) {
     experienceLevel = nbtRoot.getInteger("experienceLevel");
     experienceTotal = nbtRoot.getInteger("experienceTotal");
@@ -218,6 +224,7 @@ public class ExperienceContainer extends FluidTank {
   }
   
   
+  @Override
   public NBTTagCompound writeToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setInteger("experienceLevel", experienceLevel);
     nbtRoot.setInteger("experienceTotal", experienceTotal);
