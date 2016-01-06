@@ -72,6 +72,6 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public void gridChanged() {
-    ;
+    conduit.onNeighborBlockChange(null);
   }
 }
