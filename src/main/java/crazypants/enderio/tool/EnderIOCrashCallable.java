@@ -34,7 +34,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
         } else if (!"rv2".equals(modContainer.getVersion())) {
           result.add(" * An unknown AE2 API is installed (" + modContainer.getVersion() + " from "
               + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO was build against API version rv2 and my not work with newer version.");
+          result.add("   Ender IO was build against API version rv2 and may or may not work with a newer version.");
         }
       } else if ("CoFHAPI|energy".equals(modContainer.getModId())) {
         if ("1.7.10R1.0.0".equals(modContainer.getVersion()) || "1.7.10R1.0.1".equals(modContainer.getVersion())) {
