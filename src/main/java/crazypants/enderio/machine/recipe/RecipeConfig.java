@@ -224,9 +224,9 @@ public class RecipeConfig {
     public RecipeGroup(String name) {
       if(name != null) {
         name = name.trim();
-      }
-      if(name.length() <= 0) {
-        name = null;
+        if (name.length() <= 0) {
+          name = null;
+        }
       }
       this.name = name;
     }
