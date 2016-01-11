@@ -115,8 +115,8 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
     if (entity instanceof EntityPlayer) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileTravelAnchor) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
         Block b = PainterUtil.getSourceBlock(par6ItemStack);
@@ -129,7 +129,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   @Override
   public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = getTileEntityEio(world, x, y, z);
     if (!world.isRemote && te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if (ta.canUiBeAccessed(entityPlayer)) {
@@ -151,7 +151,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = getTileEntityEio(world, x, y, z);
     if (te instanceof ITravelAccessable) {
       if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
         return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
@@ -164,7 +164,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = getTileEntityEio(world, x, y, z);
     if (te instanceof ITravelAccessable) {
       if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
         return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);

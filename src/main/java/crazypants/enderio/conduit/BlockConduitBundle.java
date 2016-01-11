@@ -147,7 +147,10 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     
     IIcon tex = null;
 
-    TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.blockX, target.blockY, target.blockZ);
+    TileConduitBundle cb = (TileConduitBundle) getTileEntityEio(world, target.blockX, target.blockY, target.blockZ);
+    if (cb == null) {
+      return false;
+    }
     if(ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
       if(cb.getFacadeId() != null) {
         tex = cb.getFacadeId().getIcon(target.sideHit, cb.getFacadeMetadata());
@@ -274,14 +277,16 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
     if(ret == null && target != null && target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
-      TileConduitBundle bundle = (TileConduitBundle) world.getTileEntity(x, y, z);
-      IConduit conduit = bundle.getConduit(cc.conduitType);
-      if(conduit != null) {
-        ret = conduit.createItem();
-      } else if(cc.conduitType == null && bundle.getFacadeId() != null) {
-        // use the facde
-        ret = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
-        PainterUtil.setSourceBlock(ret, bundle.getFacadeId(), bundle.getFacadeMetadata());
+      TileConduitBundle bundle = (TileConduitBundle) getTileEntityEio(world, x, y, z);
+      if (bundle != null) {
+        IConduit conduit = bundle.getConduit(cc.conduitType);
+        if (conduit != null) {
+          ret = conduit.createItem();
+        } else if (cc.conduitType == null && bundle.getFacadeId() != null) {
+          // use the facde
+          ret = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
+          PainterUtil.setSourceBlock(ret, bundle.getFacadeId(), bundle.getFacadeMetadata());
+        }
       }
     }
     return ret;
@@ -289,8 +294,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public int getDamageValue(World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return 0;
     }
     IConduitBundle bun = (IConduitBundle) te;
@@ -378,14 +383,14 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public float getBlockHardness(World world, int x, int y, int z) {
-    IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
+    IConduitBundle te = (IConduitBundle) getTileEntityEio(world, x, y, z);
     return te != null && te.getFacadeType() == FacadeType.HARDENED ? blockHardness * 10 : blockHardness;
   }
 
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     float resist = getExplosionResistance(par1Entity);
-    IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
+    IConduitBundle te = (IConduitBundle) getTileEntityEio(world, x, y, z);
     return te != null && te.getFacadeType() == FacadeType.HARDENED ? resist * 10 : resist;
   }
 
@@ -396,7 +401,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       if(held == null || held.getItem().getHarvestLevel(held, "pickaxe") == -1) {
         event.newSpeed += 2;
       }
-      IConduitBundle te = (IConduitBundle) event.entity.worldObj.getTileEntity(event.x, event.y, event.z);
+      IConduitBundle te = (IConduitBundle) getTileEntityEio(event.entity.worldObj, event.x, event.y, event.z);
       if(te != null && te.getFacadeType() == FacadeType.HARDENED) {
         if(!ConduitUtil.isSolidFacadeRendered(te, event.entityPlayer)) {
           event.newSpeed *= 6;
@@ -445,7 +450,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-    IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
+    IConduitBundle te = (IConduitBundle) getTileEntityEio(world, x, y, z);
     if(te == null) {
       return true;
     }
@@ -544,8 +549,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 
-    TileEntity tile = world.getTileEntity(x, y, z);
-    if(!(tile instanceof IConduitBundle)) {
+    TileEntity tile = getTileEntityEio(world, x, y, z);
+    if (tile == null) {
       return;
     }
     IConduitBundle te = (IConduitBundle) tile;
@@ -565,7 +570,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
 
-    IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
+    IConduitBundle bundle = (IConduitBundle) getTileEntityEio(world, x, y, z);
     if(bundle == null) {
       return false;
     }
@@ -748,7 +753,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public boolean tryRotateFacade(World world, int x, int y, int z, ForgeDirection axis) {
-    IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
+    IConduitBundle bundle = (IConduitBundle) getTileEntityEio(world, x, y, z);
     if(bundle == null) {
       return false;
     }
@@ -772,8 +777,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof IConduitBundle) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, ForgeDirection.values()[id - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
     }
     return null;
@@ -781,8 +786,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof IConduitBundle) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       if(id == GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR) {
         return new GuiExternalConnectionSelector((IConduitBundle) te);
       }
@@ -802,8 +807,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
-    TileEntity tile = world.getTileEntity(x, y, z);
-    if((tile instanceof IConduitBundle)) {
+    TileEntity tile = getTileEntityEio(world, x, y, z);
+    if (tile != null) {
       ((IConduitBundle) tile).onNeighborBlockChange(blockId);
     }
   }
@@ -824,8 +829,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       IM__addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
     }
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return;
     }
     IConduitBundle con = (IConduitBundle) te;
@@ -854,12 +859,12 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!(te instanceof IConduitBundle)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return null;
     }
     IConduitBundle con = (IConduitBundle) te;
+    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
     BoundingBox minBB = new BoundingBox(1, 1, 1, 0, 0, 0);
 
@@ -962,8 +967,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   protected List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z, Vec3 origin, Vec3 direction, EntityPlayer player) {
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return null;
     }
     IConduitBundle bundle = (IConduitBundle) te;

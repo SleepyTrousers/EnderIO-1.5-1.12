@@ -44,9 +44,9 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
-    TileEntity ent = world.getTileEntity(x, y, z);
-    if(ent instanceof TileVacuumChest) {
-      ((TileVacuumChest) ent).onNeighborBlockChange(blockId);
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      ((TileVacuumChest) te).onNeighborBlockChange(blockId);
     }
   }
 
@@ -80,8 +80,8 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placedBy, ItemStack stack) {
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(stack != null && stack.stackTagCompound != null && te instanceof TileVacuumChest) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (stack != null && stack.stackTagCompound != null && te != null) {
         ((TileVacuumChest) te).readContentsFromNBT(stack.stackTagCompound);
         world.markBlockForUpdate(x, y, z);
       }
@@ -100,8 +100,8 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileVacuumChest) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }
     return null;
@@ -109,8 +109,8 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileVacuumChest) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }
     return null;

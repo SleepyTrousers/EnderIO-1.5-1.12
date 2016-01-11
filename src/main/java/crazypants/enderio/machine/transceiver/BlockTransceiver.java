@@ -57,8 +57,8 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileTransceiver) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
       }
     }
@@ -77,7 +77,10 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    return new GuiTransceiver(player.inventory, (TileTransceiver) te);
+    if (te instanceof TileTransceiver) {
+      return new GuiTransceiver(player.inventory, (TileTransceiver) te);
+    }
+    return null;
   }
 
   @Override
@@ -126,29 +129,31 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileTransceiver && player.isSneaking()) {
-      TileTransceiver trans = (TileTransceiver) te;
-      for (ChannelType type : ChannelType.VALUES) {
+    if (player.isSneaking()) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
+        TileTransceiver trans = (TileTransceiver) te;
+        for (ChannelType type : ChannelType.VALUES) {
 
-        Set<Channel> recieving = trans.getRecieveChannels(type);
-        Set<Channel> sending = trans.getSendChannels(type);
-        String recieve = "[" + buildString(recieving) + "]";
-        String send = "[" + buildString(sending) + "]";
+          Set<Channel> recieving = trans.getRecieveChannels(type);
+          Set<Channel> sending = trans.getSendChannels(type);
+          String recieve = "[" + buildString(recieving) + "]";
+          String send = "[" + buildString(sending) + "]";
 
-        if(isEmpty(recieve) && isEmpty(send)) {
-          continue;
-        }
+          if (isEmpty(recieve) && isEmpty(send)) {
+            continue;
+          }
 
-        tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
+          tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
 
-        if(!isEmpty(recieve)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
-              + EnumChatFormatting.WHITE, recieve));
-        }
-        if(!isEmpty(send)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
-              + EnumChatFormatting.WHITE, send));
+          if (!isEmpty(recieve)) {
+            tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB
+                + Util.ALIGNRIGHT + EnumChatFormatting.WHITE, recieve));
+          }
+          if (!isEmpty(send)) {
+            tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB
+                + Util.ALIGNRIGHT + EnumChatFormatting.WHITE, send));
+          }
         }
       }
     }

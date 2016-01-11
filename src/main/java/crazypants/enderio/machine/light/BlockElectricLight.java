@@ -167,16 +167,16 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block blockID) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       ((TileElectricLight) te).onBlockRemoved();
     }
   }
@@ -203,9 +203,9 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
 
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = getTileEntityEio(world, x, y, z);
     ItemStack stack = new ItemStack(this);
-    if(te instanceof TileElectricLight) {
+    if (te != null) {
       processDrop(world, x, y, z, (TileEntityEio) te, stack);
     }
     return stack;

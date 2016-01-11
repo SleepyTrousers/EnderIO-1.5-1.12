@@ -116,8 +116,8 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
     super.onBlockPlacedBy(world, x, y, z, player, stack);
 
     if(stack.stackTagCompound != null) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileWirelessCharger) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         ((TileWirelessCharger) te).readCustomNBT(stack.stackTagCompound);
       }
     }

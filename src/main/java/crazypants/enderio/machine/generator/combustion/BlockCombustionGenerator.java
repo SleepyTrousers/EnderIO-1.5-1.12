@@ -111,9 +111,9 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     // If active, randomly throw some smoke around
     if(isActive(world, x, y, z)) {
 
-      TileEntity te = world.getTileEntity(x, y, z);
+      TileEntity te = getTileEntityEio(world, x, y, z);
       int facing = 3;
-      if(te instanceof AbstractMachineEntity) {
+      if (te != null) {
         AbstractMachineEntity me = (AbstractMachineEntity) te;
         facing = me.facing;
       }

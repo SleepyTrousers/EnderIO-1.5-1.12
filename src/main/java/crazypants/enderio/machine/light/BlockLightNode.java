@@ -55,7 +55,7 @@ public class BlockLightNode extends BlockEio {
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
+    TileLightNode te = (TileLightNode) getTileEntityEio(world, x, y, z);
     if(te != null) {
       te.onBlockRemoved();
     }
@@ -68,7 +68,7 @@ public class BlockLightNode extends BlockEio {
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
-    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
+    TileLightNode te = (TileLightNode) getTileEntityEio(world, x, y, z);
     if(te != null) {
       te.onNeighbourChanged();
     }
@@ -76,7 +76,7 @@ public class BlockLightNode extends BlockEio {
 
   @Override
   public void updateTick(World world, int x, int y, int z, Random r) {
-    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
+    TileLightNode te = (TileLightNode) getTileEntityEio(world, x, y, z);
     if(te != null) {
       te.checkParent();
     }

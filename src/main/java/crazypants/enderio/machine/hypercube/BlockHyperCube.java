@@ -110,8 +110,10 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     if(world.isRemote) {
       return;
     }
-    TileHyperCube tr = (TileHyperCube) world.getTileEntity(x, y, z);
-    tr.onBlockAdded();
+    TileHyperCube tr = (TileHyperCube) getTileEntityEio(world, x, y, z);
+    if (tr != null) {
+      tr.onBlockAdded();
+    }
   }
 
   @Override
@@ -119,9 +121,10 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     if(world.isRemote) {
       return;
     }
-    TileHyperCube te = (TileHyperCube) world.getTileEntity(x, y, z);
-    te.onNeighborBlockChange();
-
+    TileHyperCube te = (TileHyperCube) getTileEntityEio(world, x, y, z);
+    if (te != null) {
+      te.onNeighborBlockChange();
+    }
   }
 
   private void setChannelOnItem(TileHyperCube hc, ItemStack itemStack) {
@@ -185,8 +188,8 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileHyperCube) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
@@ -214,8 +217,8 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileHyperCube) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.setEnergyStored(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
@@ -247,8 +250,8 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileHyperCube) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileHyperCube hc = (TileHyperCube) te;
       return new GuiHyperCube(hc);
     }

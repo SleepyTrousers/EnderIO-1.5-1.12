@@ -96,8 +96,8 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntitySolarPanel) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       ((TileEntitySolarPanel) te).onNeighborBlockChange();
     }
   }
@@ -137,8 +137,8 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntitySolarPanel) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
       if(!solar.canSeeSun()) {

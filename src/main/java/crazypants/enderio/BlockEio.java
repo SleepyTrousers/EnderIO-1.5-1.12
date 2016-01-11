@@ -30,15 +30,12 @@ public abstract class BlockEio extends BlockEnder {
     if(shouldWrench(world, x, y, z, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
       return true;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
 
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && !entityPlayer.isSneaking()) {
-      if(te instanceof AbstractMachineEntity) {
-        ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
-        world.markBlockForUpdate(x, y, z);
-        return true;
-      }
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null && !entityPlayer.isSneaking() && ToolUtil.getEquippedTool(entityPlayer) != null) {
+      ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
+      world.markBlockForUpdate(x, y, z);
+      return true;
     }
     
     return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);

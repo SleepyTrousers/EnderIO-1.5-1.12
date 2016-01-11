@@ -35,13 +35,19 @@ public class BlockInhibitorObelisk extends BlockObeliskAbstract<TileInhibitorObe
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return ID == getGuiId() ? new ContainerInhibitorObelisk(player.inventory, (AbstractMachineEntity) world.getTileEntity(x, y, z)) : null;
+    if (ID == getGuiId()) {
+      TileInhibitorObelisk te = (TileInhibitorObelisk) getTileEntityEio(world, x, y, z);
+      if (te != null) {
+        return new ContainerInhibitorObelisk(player.inventory, te);
+      }
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     if(ID == getGuiId()) {
-      TileInhibitorObelisk te = (TileInhibitorObelisk) world.getTileEntity(x, y, z);
+      TileInhibitorObelisk te = (TileInhibitorObelisk) getTileEntityEio(world, x, y, z);
       if(te != null) {
         return new GuiInhibitorObelisk(te, new ContainerInhibitorObelisk(player.inventory, te));
       }

@@ -110,8 +110,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCapacitorBank)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return false;
     }
 
@@ -143,8 +143,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapacitorBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new ContainerCapacitorBank(player, player.inventory, ((TileCapacitorBank) te).getController());
     }
     return null;
@@ -152,8 +152,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapacitorBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       return new GuiCapacitorBank(player, player.inventory, ((TileCapacitorBank) te).getController());
     }
     return null;
@@ -223,8 +223,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapacitorBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileCapacitorBank tr = (TileCapacitorBank) te;
       int meta = world.getBlockMetadata(x, y, z);
       if(meta == 1) {
@@ -239,8 +239,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(world.isRemote) {
       return;
     }
-    TileEntity tile = world.getTileEntity(x, y, z);
-    if(tile instanceof TileCapacitorBank) {
+    TileEntity tile = getTileEntityEio(world, x, y, z);
+    if (tile != null) {
       TileCapacitorBank te = (TileCapacitorBank) tile;
       te.onNeighborBlockChange(blockId);
     }
@@ -249,8 +249,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileCapacitorBank) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
 
@@ -281,8 +281,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileCapacitorBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
@@ -311,8 +311,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(!(te instanceof TileCapacitorBank)) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te == null) {
         super.breakBlock(world, x, y, z, par5, par6);
         return;
       }
@@ -324,8 +324,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCapacitorBank)) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te == null) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
     TileCapacitorBank tr = (TileCapacitorBank) te;
@@ -353,8 +353,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
-    TileEntity te = w.getTileEntity(x, y, z);
-    if (te instanceof TileCapacitorBank) {
+    TileEntity te = getTileEntityEio(w, x, y, z);
+    if (te != null) {
       return ((TileCapacitorBank) te).getComparatorOutput();
     }
     return 0;
@@ -362,8 +362,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileCapacitorBank) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
 

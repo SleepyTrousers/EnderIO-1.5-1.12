@@ -43,14 +43,21 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileZombieGenerator) {
+      return new ContainerZombieGenerator(player.inventory, (TileZombieGenerator) te);
+    }
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileZombieGenerator) {
+      return new GuiZombieGenerator(player.inventory, (TileZombieGenerator) te);
+    }
+    return null;
   }
-
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_ZOMBIE_GEN;
@@ -89,8 +96,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
     if(rand.nextInt(3) == 0) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
+      TileEntity te = getTileEntityEio(world, x, y, z);
+      if (te != null && ((TileZombieGenerator) te).isActive()) {
         for (int i = 0; i < 2; i++) {
           float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
           float yOffset = 0.1f;
@@ -111,8 +118,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te != null && te instanceof TileZombieGenerator) {
+    TileEntity te = getTileEntityEio(world, x, y, z);
+    if (te != null) {
       tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " " + EnderIO.lang.localize("fluid.millibucket.abr"));
     }
   }
