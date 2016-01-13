@@ -402,7 +402,7 @@ public class TravelController {
       return false;
     }
 
-    if(!isInRangeTarget(player, coord, source.maxDistanceTravelledSq)) {
+    if(!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
       if(source != TravelSource.STAFF_BLINK) {
         player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
       }
@@ -430,7 +430,7 @@ public class TravelController {
     }
     int requiredPower;
     ItemStack staff = player.getCurrentEquippedItem();
-    requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
+    requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(staff);
     if(requiredPower > canUsePower) {
       player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
@@ -665,7 +665,7 @@ public class TravelController {
       scale *= Config.travelAnchorZoomScale;
 
       //only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp_float((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
+      float nf = 1 - MathHelper.clamp_float((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.getMaxDistanceTravelledSq(), 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
@@ -691,9 +691,9 @@ public class TravelController {
   @SideOnly(Side.CLIENT)
   private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
     if(isTravelItemActive(player)) {
-      return TravelSource.STAFF.maxDistanceTravelledSq;
+      return TravelSource.STAFF.getMaxDistanceTravelledSq();
     }
-    return TravelSource.BLOCK.maxDistanceTravelledSq;
+    return TravelSource.BLOCK.getMaxDistanceTravelledSq();
   }
 
   public boolean doClientTeleport(Entity entity, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
