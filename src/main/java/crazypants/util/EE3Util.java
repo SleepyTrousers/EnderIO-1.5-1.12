@@ -170,29 +170,6 @@ public class EE3Util {
 
   }
 
-  public static void registerVatRecipe(FluidStack outputFluidStack, RecipeInput[] inputs) {
-    if (IS_EE3_LOADED) {
-      for (RecipeInput r0 : inputs) {
-        if (!r0.isFluid() && r0.getSlotNumber() == 0) {
-          for (RecipeInput r1 : inputs) {
-            if (!r1.isFluid() && r1.getSlotNumber() == 1) {
-              for (RecipeInput r2 : inputs) {
-                if (r2.isFluid()) {
-                  float im = r0.getMulitplier() * r1.getMulitplier();
-                  FluidStack in = r2.getFluidInput().copy();
-                  in.amount = Math.round(FluidContainerRegistry.BUCKET_VOLUME * im);
-                  FluidStack out = outputFluidStack.copy();
-                  out.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
-                  registerRecipe(out, r0.getInput().copy(), r1.getInput().copy(), in);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   public static void registerBasicToManyRecipe(Recipe recipe) {
     if (IS_EE3_LOADED) {
       List<ItemStack> in = new ArrayList<ItemStack>();

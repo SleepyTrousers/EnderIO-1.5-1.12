@@ -126,17 +126,31 @@ public class VatRecipeManager {
   }
   
   public float getMultiplierForInput(ItemStack input, Fluid output) {
-    for (IRecipe recipe : recipes) {
-      RecipeOutput out = recipe.getOutputs()[0];
-      if(out.getFluidOutput().getFluid().getID() == output.getID()) {
-        for(RecipeInput ri : recipe.getInputs()) {
-          if(ri.isInput(input)) {
-            return ri.getMulitplier();
+    if (output != null) {
+      for (IRecipe recipe : recipes) {
+        RecipeOutput out = recipe.getOutputs()[0];
+        if (out.getFluidOutput().getFluid().getID() == output.getID()) {
+          for (RecipeInput ri : recipe.getInputs()) {
+            if (ri.isInput(input)) {
+              return ri.getMulitplier();
+            }
           }
         }
       }
     }
-    return 0;
+    // no fluid or not an input for this fluid: best guess
+    // (after all, the item IS in the input slot)
+    float found = -1f;
+    for (IRecipe recipe : recipes) {
+      for (RecipeInput ri : recipe.getInputs()) {
+        if (ri.isInput(input)) {
+          if (found < 0f || found > ri.getMulitplier()) {
+            found = ri.getMulitplier();
+          }
+        }
+      }
+    }
+    return found > 0 ? found : 0;
   }
 
 }
