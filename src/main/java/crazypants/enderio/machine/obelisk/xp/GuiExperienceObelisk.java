@@ -76,7 +76,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     mmm = new IconButton(this, 805, x, y, IconEIO.TRIPLE_MINUS);
     mmm.setSize(bw, bw);
     mmm.setIconMargin(2, 2);
-    mmm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrieveall"));
+    mmm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrieveall"), EnderIO.lang.localize("gui.machine.tooltip.retrieveall"));
   }
 
   @Override
