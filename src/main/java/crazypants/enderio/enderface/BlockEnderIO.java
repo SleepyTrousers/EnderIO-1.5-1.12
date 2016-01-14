@@ -76,7 +76,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
       if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        BlockTravelAnchor.sendPrivateChatMessage(entityPlayer, ta.getPlacedBy());
+        BlockTravelAnchor.sendPrivateChatMessage(entityPlayer, ta.getOwner());
       }
       return true;
     }

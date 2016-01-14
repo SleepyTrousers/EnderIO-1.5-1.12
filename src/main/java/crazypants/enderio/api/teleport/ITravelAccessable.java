@@ -2,9 +2,14 @@ package crazypants.enderio.api.teleport;
 
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.util.UserIdent;
 
 public interface ITravelAccessable {
 
@@ -40,7 +45,11 @@ public interface ITravelAccessable {
   
   void setLabel(String label);
 
+  @Deprecated
   UUID getPlacedBy();
+
+  @Nonnull
+  UserIdent getOwner();
 
   void setPlacedBy(EntityPlayer player);
 

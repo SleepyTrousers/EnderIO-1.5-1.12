@@ -123,7 +123,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
           return false;
         }
       } else {
-        BlockTravelAnchor.sendPrivateChatMessage(player, tp.getPlacedBy());
+        BlockTravelAnchor.sendPrivateChatMessage(player, tp.getOwner());
       }
     }
     

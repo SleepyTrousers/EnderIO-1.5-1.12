@@ -35,6 +35,7 @@ import com.google.gson.stream.JsonWriter;
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.UserIdent;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -58,21 +59,41 @@ public class ServerChannelRegister extends ChannelRegister {
       JsonReader reader = new JsonReader(new FileReader(getDataFile()));
       reader.beginArray();
       while (reader.hasNext()) {
+        String name = null;
+        int ordinal = -1;
+        UserIdent ident = UserIdent.nobody;
+        String uuid = null;
+        String playername = null;
+        String legacyUser = null;
         reader.beginObject();
-        reader.nextName();
-        String name = reader.nextString();
-        String key = reader.nextName();
-        String user = null;
-        if("user".equals(key)) {
-          user = reader.nextString();
-          reader.nextName();
+        while (reader.hasNext()) {
+          String key = reader.nextName();
+          if ("name".equals(key)) {
+            name = reader.nextString();
+          } else if ("user".equals(key)) {
+            legacyUser = reader.nextString();
+          } else if ("uuid".equals(key)) {
+            uuid = reader.nextString();
+          } else if ("playername".equals(key)) {
+            playername = reader.nextString();
+          } else if ("type".equals(key)) {
+            ordinal = reader.nextInt();
+          } else {
+            Log.warn("ServerChannelRegister: Unknown key '" + key + "' in dimensionalTransceiver.json");
+          }
         }
-        int oridinal = reader.nextInt();
-
-        Channel chan = new Channel(name, PlayerUtil.getPlayerUIDUnstable(user), ChannelType.values()[oridinal]);
-        instance.addChannel(chan);
-
         reader.endObject();
+        if (name == null || ordinal == -1) {
+          Log.warn("ServerChannelRegister: Incomplete channel in dimensionalTransceiver.json");
+        } else {
+          if (uuid != null || playername != null) {
+            ident = UserIdent.create(uuid, playername);
+          } else if (legacyUser != null) {
+            ident = UserIdent.create(legacyUser);
+          }
+          Channel chan = new Channel(name, ident, ChannelType.values()[ordinal]);
+          instance.addChannel(chan);
+        }
       }
       reader.endArray();
       reader.close();
@@ -145,8 +166,9 @@ public class ServerChannelRegister extends ChannelRegister {
     for (Channel chan : channels.values()) {
       writer.beginObject();
       writer.name("name").value(chan.getName());
-      if (chan.getUser() != null) {
-        writer.name("user").value(chan.getUser().toString());
+      if (chan.getUser() != null && chan.getUser() != UserIdent.nobody) {
+        writer.name("uuid").value(chan.getUser().getUUIDString());
+        writer.name("playername").value(chan.getUser().getPlayerName());
       }
       writer.name("type").value(chan.getType().ordinal());
       writer.endObject();

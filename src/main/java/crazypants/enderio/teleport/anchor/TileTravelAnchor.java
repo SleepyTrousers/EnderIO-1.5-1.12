@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
+import crazypants.util.UserIdent;
 
 public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
 
@@ -37,9 +40,9 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   
   private String label;
 
-  private UUID placedBy;
+  private @Nonnull UserIdent owner = UserIdent.nobody;
 
-  private List<UUID> authorisedUsers = new ArrayList<UUID>();
+  private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
   @Override
   public boolean canBlockBeAccessed(EntityPlayer playerName) {
@@ -47,8 +50,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       return true;
     }
     // Covers protected and private access modes
-    return (placedBy != null && placedBy.equals(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName())))
-        || authorisedUsers.contains(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+    return owner.equals(playerName.getGameProfile()) || authorisedUsers.contains(playerName.getGameProfile());
 
   }
 
@@ -85,7 +87,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   public boolean authoriseUser(EntityPlayer username, ItemStack[] password) {
     if(checkPassword(password)) {
-      authorisedUsers.add(PlayerUtil.getPlayerUUID(username.getGameProfile().getName()));
+      authorisedUsers.add(UserIdent.create(username.getGameProfile()));
       return true;
     }
     return false;
@@ -93,7 +95,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
   @Override
   public boolean canUiBeAccessed(EntityPlayer playerName) {
-    return placedBy != null && placedBy.equals(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+    return owner.equals(playerName.getGameProfile());
   }
 
   @Override
@@ -101,7 +103,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(accessMode != AccessMode.PRIVATE) {
       return true;
     }
-    return placedBy != null && placedBy.equals(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+    return owner.equals(playerName.getGameProfile());
   }
 
   @Override
@@ -124,10 +126,12 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     this.password = password;
   }
 
+  @Override
   public ItemStack getItemLabel() {
     return itemLabel;
   }
 
+  @Override
   public void setItemLabel(ItemStack lableIcon) {
     this.itemLabel = lableIcon;
   }
@@ -143,16 +147,22 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
+  @Deprecated
   public UUID getPlacedBy() {
-    return placedBy;
+    return owner.getUUID();
+  }
+
+  @Override
+  public @Nonnull UserIdent getOwner() {
+    return owner;
   }
 
   @Override
   public void setPlacedBy(EntityPlayer player) {
-    if(player == null || player.getGameProfile() == null) {
-      this.placedBy = null;
+    if (player != null) {
+      this.owner = UserIdent.create(player.getGameProfile());
     } else {
-      placedBy = PlayerUtil.getPlayerUUID(player.getGameProfile().getName());
+      this.owner = UserIdent.nobody;
     }
   }
 
@@ -200,7 +210,11 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       //keep behavior the same for blocks placed prior to this update
       accessMode = AccessMode.PUBLIC;
     }
-    placedBy = PlayerUtil.getPlayerUIDUnstable(root.getString("placedBy"));
+    if (root.hasKey("placedBy")) {
+      owner = UserIdent.create(root.getString("placedBy"));
+    } else {
+      owner = UserIdent.readfromNbt(root, "owner");
+    }
     for (int i = 0; i < password.length; i++) {
       if(root.hasKey("password" + i)) {
         NBTTagCompound stackRoot = (NBTTagCompound) root.getTag("password" + i);
@@ -210,6 +224,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       }
     }
     authorisedUsers.clear();
+    if (root.hasKey("authorisedUsers")) {
     String userStr = root.getString("authorisedUsers");
     if(userStr != null && userStr.length() > 0) {
       String[] users = userStr.split(",");
@@ -217,9 +232,16 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
         if(user != null) {
           user = user.trim();
           if(user.length() > 0) {
-            authorisedUsers.add(PlayerUtil.getPlayerUIDUnstable(user));
+              authorisedUsers.add(UserIdent.create(user));
           }
         }
+      }
+    }
+    } else {
+      int userIdx = 0;
+      while (UserIdent.existsInNbt(root, "authorisedUser" + userIdx)) {
+        UserIdent.readfromNbt(root, "authorisedUser" + userIdx);
+        userIdx++;
       }
     }
     if(root.hasKey("itemLabel")) {
@@ -242,9 +264,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   protected void writeCustomNBT(NBTTagCompound root) {
     root.setShort("accessMode", (short) accessMode.ordinal());
-    if(placedBy != null ) {
-      root.setString("placedBy", placedBy.toString());
-    }
+    owner.saveToNbt(root, "owner");
     for (int i = 0; i < password.length; i++) {
       ItemStack stack = password[i];
       if(stack != null) {
@@ -253,15 +273,12 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
         root.setTag("password" + i, stackRoot);
       }
     }
-    StringBuffer userStr = new StringBuffer();
-    for (UUID user : authorisedUsers) {
+    int userIdx = 0;
+    for (UserIdent user : authorisedUsers) {
       if(user != null) {
-        userStr.append(user.toString());
-        userStr.append(",");
+        user.saveToNbt(root, "authorisedUser" + userIdx);
+        userIdx++;
       }
-    }
-    if(authorisedUsers.size() > 0) {
-      root.setString("authorisedUsers", userStr.toString());
     }
     if(itemLabel != null) {
       NBTTagCompound labelRoot = new NBTTagCompound();

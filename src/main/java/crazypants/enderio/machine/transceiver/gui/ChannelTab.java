@@ -2,6 +2,8 @@ package crazypants.enderio.machine.transceiver.gui;
 
 import java.awt.Color;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -12,7 +14,6 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.util.PlayerUtil;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
@@ -25,6 +26,7 @@ import crazypants.enderio.machine.transceiver.PacketAddRemoveChannel;
 import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.UserIdent;
 
 public class ChannelTab implements ITabPanel {
 
@@ -82,8 +84,9 @@ public class ChannelTab implements ITabPanel {
     
     Predicate<Channel> predicate = new Predicate<Channel>() {
       @Override
-      public boolean apply(Channel input) {
-        return input.isPublic() || input.getUser().equals(PlayerUtil.getPlayerUUID(EnderIO.proxy.getClientPlayer().getGameProfile().getName()));
+      public boolean apply(@Nullable Channel input) {
+        return input != null
+            && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile()) || input.getUser() == UserIdent.nobody);
       }
     };
     
@@ -261,9 +264,9 @@ public class ChannelTab implements ITabPanel {
     }
     Channel c;
     if(privateButton.isSelected()) {
-      c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId(), type);
+      c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile(), type);
     } else {
-      c = new Channel(newChannelTF.getText(), null, type);
+      c = new Channel(newChannelTF.getText(), type);
     }
     ClientChannelRegister.instance.addChannel(c);
     PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, true));           
