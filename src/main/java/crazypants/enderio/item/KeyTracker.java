@@ -122,7 +122,7 @@ public class KeyTracker {
         for (int i = 0; i < baubles.getSizeInventory(); i++) {
           ItemStack stack = baubles.getStackInSlot(i);
           if(stack != null && stack.getItem() != null && stack.getItem() == itemMagnet) {
-            boolean isActive = !ItemMagnet.isActive(inv[i]);
+            boolean isActive = !ItemMagnet.isActive(stack);
             PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.BAUBLES, i, isActive));
             return;
           }
