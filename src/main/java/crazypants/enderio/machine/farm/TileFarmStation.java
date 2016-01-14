@@ -133,8 +133,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private final BitSet lockedSlots = new BitSet();
 
-  private final int upgradeBonusSize = 2;
-
   public String notification = "";
   public boolean sendNotification = false;
 
@@ -195,7 +193,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(inventory[upg] == null) {
       return 0;
     } else {
-      return upgradeBonusSize * inventory[upg].getItemDamage();
+      return Config.farmBonusSize * inventory[upg].getItemDamage();
     }
   }
 
@@ -772,6 +770,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     nbtRoot.setInteger("slotLayoutVersion", 3);
   }
 
+  @Override
   public int getInventoryStackLimit(int slot) {
     if (slot >= minSupSlot && slot <= maxSupSlot) {
       switch (getCapacitorType()) {

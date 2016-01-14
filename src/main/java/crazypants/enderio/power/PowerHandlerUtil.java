@@ -7,13 +7,16 @@ import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class PowerHandlerUtil {
 
   public static final String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
 
   public static IPowerInterface create(Object o) {
-    if(o instanceof IEnergyHandler) {
+    if (o instanceof TileCapBank) {
+      return new CapBankPI((TileCapBank) o);
+    } else if (o instanceof IEnergyHandler) {
       return new EnergyHandlerPI((IEnergyHandler) o);
     } else if (o instanceof IEnergyProvider) {
       return new EnergyProviderPI((IEnergyProvider) o);

@@ -287,6 +287,7 @@ public final class Config {
   public static int farmBonemealTryEnergyUseRF = 80;
 
   public static int farmDefaultSize = 3;
+  public static int farmBonusSize = 2;
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
   public static boolean disableFarmNotification = false;
@@ -1048,6 +1049,8 @@ public final class Config {
 
     farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
+    farmBonusSize = config.get(sectionFarm.name, "farmBonusSize", farmBonusSize,
+        "The extra number of blocks a farm will extend from its center per upgrade").getInt(farmBonusSize);
 
     farmAxeDamageOnLeafBreak = config.get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak,
         "Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
