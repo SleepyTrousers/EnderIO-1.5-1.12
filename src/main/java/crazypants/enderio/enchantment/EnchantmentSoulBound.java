@@ -1,7 +1,6 @@
 package crazypants.enderio.enchantment;
 
 import java.util.ListIterator;
-import java.util.Map;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -19,14 +18,12 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
-import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
 
-@Interface(iface = "tterrag.core.api.common.enchant.IAdvancedEnchant", modid = "ttCore")
 public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
 
   public static EnchantmentSoulBound create(int id) {
