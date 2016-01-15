@@ -68,7 +68,7 @@ item.itemExistingItemFilter.name=Существующий предметный �
 item.itemExistingItemFilter.tooltip.basic.line1=Улучшение для предметных труб
 item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает предметы только
 item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
-item.itemExistingItemFilter.tooltip.detailed.line3=Shift+ПКМ
+item.itemExistingItemFilter.tooltip.detailed.line3=ПКМ, сидя,
 item.itemExistingItemFilter.tooltip.detailed.line4=по инвентарю, чтобы добавить
 item.itemExistingItemFilter.tooltip.detailed.line5=содержимое в фильтр
 
