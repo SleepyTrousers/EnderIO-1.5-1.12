@@ -9,7 +9,7 @@ enderio.power.generates=Генерирует
 enderio.power.generation_rate=на скорости
 
 //Ender IO / Enderface
-tile.blockEnderIo.name=Вход/выход Края
+tile.blockEnderIo.name=Интерфейс Края
 tile.blockEnderIo.tooltip.detailed.line1=Даёт удалённый доступ к ближайшим
 tile.blockEnderIo.tooltip.detailed.line2=блокам
 tile.blockEnderIo.tooltip.detailed.line3=Используется с якорями путешествия или
@@ -21,13 +21,13 @@ item.enderio.itemEnderface.name=Лицо Края
 enderio.blockConduitBundle=Связка труб
 enderio.blockConduitFacade=Фасад для труб
 item.enderio.itemConduitFacade.name=Фасад для труб
-item.enderio.itemConduitFacade.hardened.name=Закалённый фасад для труб
+item.enderio.itemConduitFacade.hardened.name=Прочный фасад для труб
 enderio.item.itemConduitFacade.tooltip.notpainted=Не покрашен
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Окрашивается в покрасочном механизме
 item.enderio.itemConduitFacade.tooltip.detailed.line2=ПКМ по трубе, чтобы поставить
 item.enderio.itemConduitFacade.tooltip.detailed.line3=Скрыт, когда гаечный ключ или труба
 item.enderio.itemConduitFacade.tooltip.detailed.line4=экипированы
-item.enderio.itemConduitFacade.hardened.tooltip=Закалён: Выдерживает удары и взрывы
+item.enderio.itemConduitFacade.hardened.tooltip=Упрочнён: Выдерживает удары и взрывы
 
 enderio.itemPowerConduit.name=Энергетическая труба
 enderio.itemPowerConduitEnhanced.name=Улучшенная энергетическая труба
@@ -68,7 +68,7 @@ item.itemExistingItemFilter.name=Существующий предметный �
 item.itemExistingItemFilter.tooltip.basic.line1=Улучшение для предметных труб
 item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает предметы только
 item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
-item.itemExistingItemFilter.tooltip.detailed.line3=ПКМ, сидя,
+item.itemExistingItemFilter.tooltip.detailed.line3=Shift+ПКМ
 item.itemExistingItemFilter.tooltip.detailed.line4=по инвентарю, чтобы добавить
 item.itemExistingItemFilter.tooltip.detailed.line5=содержимое в фильтр
 
@@ -114,6 +114,8 @@ enderio.itemGasConduit.tooltip.detailed.line1=Передаёт газы совм
 enderio.itemMEConduit.name=МЭ труба
 enderio.itemMEConduitDense.name=Плотная МЭ труба
 enderio.itemMEConduit.channelsUsed=Каналы: {0,number} из {1,number}
+
+enderio.itemOCConduit.name=Системная труба (OC)
 
 //Entity
 entity.witherSkeleton.name=Скелет-иссушитель
@@ -171,7 +173,7 @@ enderio.gas.gasTick=Газ/тик
 
 //Materials
 enderio.itemMachinePart.name=Детали механизма
-enderio.machineChassi.name=Шасси механизма
+enderio.machineChassi.name=Корпус механизма
 enderio.basicGear.name=Основная шестерня
 enderio.pulsatingCrystal.name=Пульсирующий кристалл
 enderio.vibrantCrystal.name=Вибрирующий кристалл
@@ -848,7 +850,8 @@ enderio.gui.machine.button.retrievelevel=Забрать 1
 enderio.gui.machine.tooltip.retrievelevel=уровень опыта игрока
 enderio.gui.machine.button.retrievelevels=Забрать 10
 enderio.gui.machine.tooltip.retrievelevels=уровней опыта игрока
-enderio.gui.machine.button.retrieveall=Забрать весь опыт
+enderio.gui.machine.button.retrieveall=Забрать все
+enderio.gui.machine.tooltip.retrieveall=уровни опыта игрока
 enderio.gui.machine.ioMode.overlay.tooltip=Настроить вход/выход
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift-клик, чтобы сбросить все стороны
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=на настройки по-умолчанию
@@ -892,6 +895,7 @@ enderio.gui.powerMonitor.monHeading2=Энергия в блоке конденс
 enderio.gui.powerMonitor.monHeading3=Энергия в механизме
 enderio.gui.powerMonitor.monHeading4=Средний выход за 5 секунд
 enderio.gui.powerMonitor.monHeading5=Средний вход за 5 секунд
+enderio.gui.powerMonitor.noNetworkError=Нет соединения с сетью. Индикатор мощности должен быть подключён к сети для считывания информации.
 
 //MJ Reader
 enderio.gui.mjReader.networkHeading=Силовая сеть
