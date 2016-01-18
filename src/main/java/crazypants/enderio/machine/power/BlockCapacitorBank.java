@@ -7,14 +7,12 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -23,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.Util;
@@ -245,35 +244,15 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       te.onNeighborBlockChange(blockId);
     }
   }
+  
+  @Override
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+    return false;
+  }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileCapacitorBank) {
-        TileCapacitorBank cb = (TileCapacitorBank) te;
-        cb.onBreakBlock();
-
-        // If we are not in Creative or blockCapBankAllwaysDrop is set to true, allow the item drop.
-        // This option allows creative players to pick up broken capacitor banks
-
-        if(!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
-          ItemStack itemStack =
-              BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-          if(cb.isCreative()) {
-            itemStack.setItemDamage(1);
-          }
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
-        }
-      }
-    }
-    return super.removedByPlayer(world, player, x, y, z);
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+    PowerHandlerUtil.setStoredEnergyForItem(drop, ((TileCapacitorBank)te).doGetEnergyStored());
   }
 
   @Override
@@ -296,9 +275,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
             }
           }
         }
-
       }
-
     }
     world.markBlockForUpdate(x, y, z);
   }
