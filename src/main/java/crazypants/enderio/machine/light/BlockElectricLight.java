@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 
 public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
@@ -199,16 +197,6 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   @Override
   public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
-  }
-
-  @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    ItemStack stack = new ItemStack(this);
-    if(te instanceof TileElectricLight) {
-      processDrop(world, x, y, z, (TileEntityEio) te, stack);
-    }
-    return stack;
   }
 
   /* IRedstoneConnectable */

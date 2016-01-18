@@ -130,19 +130,6 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return meta;
   }
 
-  // TODO refactor machines so all have this functionality
-  @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-    return createDrop((TileBuffer) world.getTileEntity(x, y, z));
-  }
-
-  private ItemStack createDrop(TileBuffer te) {
-    ItemStack stack = new ItemStack(this, 1, BlockItemBuffer.Type.get(te).ordinal());
-    stack.stackTagCompound = new NBTTagCompound();
-    te.writeCommon(stack.stackTagCompound);
-    return stack;
-  }
-
   public ItemStack createItemStackForSourceBlock(ItemStack machine, Block block, int sourceMeta) {
     PainterUtil.setSourceBlock(machine, block, sourceMeta);
     return machine;

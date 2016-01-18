@@ -42,9 +42,9 @@ public class BlockItemBuffer extends ItemBlockWithMetadata {
       return "tile." + ModObject.blockBuffer.unlocalisedName + "." + name().toLowerCase(Locale.US);
     }
 
-	public static ItemStack getStack(Type type) {
-		return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
-	}
+    public static ItemStack getStack(Type type) {
+      return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
+    }
   }
 
   public BlockItemBuffer(Block block) {

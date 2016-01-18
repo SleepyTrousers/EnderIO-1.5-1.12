@@ -78,6 +78,12 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
       dist.neighboursChanged();
     }
   }
+  
+  @Override
+  public void writeToItemStack(ItemStack stack) {
+      super.writeToItemStack(stack);
+      stack.setItemDamage(BlockItemBuffer.Type.get(this).ordinal());
+  }
 
   @Override
   public boolean canInsertItem(int slot, ItemStack var2, int side) {
