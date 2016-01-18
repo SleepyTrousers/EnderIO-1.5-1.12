@@ -418,7 +418,19 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean isMaster() {
-    return connections.size() == 4;
+    if (connections.size() == 4) {
+      BlockCoord pos = new BlockCoord(this);
+      for (ForgeDirection f : connections) {
+        TileEntity te = pos.getLocation(f).getTileEntity(worldObj);
+        if (!(te instanceof TileTelePad)) {
+          return true;
+        }
+        if (((TileTelePad)te).connections.size() < 4) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override
