@@ -18,6 +18,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.Teleporter;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
@@ -25,6 +27,7 @@ import cofh.api.energy.EnergyStorage;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
@@ -626,15 +629,38 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private boolean serverTeleport(Entity entity) {
     dequeueTeleport(entity, true);
-    if(entity.worldObj.provider.dimensionId != targetDim) {
+    int from = entity.dimension;
+    if(from != targetDim) {
       MinecraftServer server = MinecraftServer.getServer();
-      int currentDim = entity.worldObj.provider.dimensionId;
-      if(entity instanceof EntityPlayer) {
+      WorldServer fromDim = server.worldServerForDimension(from);
+      WorldServer toDim = server.worldServerForDimension(targetDim);
+      Teleporter teleporter = new TeleporterEIO(toDim);
+      server.worldServerForDimension(entity.dimension).playSoundEffect(entity.posX, entity.posY, entity.posZ, TravelSource.TELEPAD.sound, 1.0F, 1.0F);
+      if (entity instanceof EntityPlayer) {
         EntityPlayerMP player = (EntityPlayerMP) entity;
-        server.getConfigurationManager().transferPlayerToDimension(player, targetDim, new TeleporterEIO(server.worldServerForDimension(targetDim)));
+        server.getConfigurationManager().transferPlayerToDimension(player, targetDim, teleporter);
+        if (from == 1 && entity.isEntityAlive()) { // get around vanilla End hacks
+            toDim.spawnEntityInWorld(entity);
+            toDim.updateEntityWithOptionalForce(entity, false);
+        }
       } else {
-        WorldServer toDim = server.worldServerForDimension(targetDim);
-        server.getConfigurationManager().transferEntityToWorld(entity, 0, server.worldServerForDimension(currentDim), toDim, new TeleporterEIO(toDim));
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        float rotationYaw = entity.rotationYaw;
+        float rotationPitch = entity.rotationPitch;
+        entity.writeToNBT(tagCompound);
+        Class<? extends Entity> entityClass = entity.getClass();
+        fromDim.removeEntity(entity);
+
+        try {
+          Entity newEntity = entityClass.getConstructor(World.class).newInstance(toDim);
+          newEntity.readFromNBT(tagCompound);
+          newEntity.setLocationAndAngles(target.x, target.y, target.z, rotationYaw, rotationPitch);
+          newEntity.forceSpawn = true;
+          toDim.spawnEntityInWorld(newEntity);
+          newEntity.forceSpawn = false; // necessary?
+        } catch (Exception e) {
+          Throwables.propagate(e);
+        }
       }
     }
     return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD);
