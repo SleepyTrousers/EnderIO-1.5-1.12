@@ -1,6 +1,9 @@
 package crazypants.util;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.server.MinecraftServer;
@@ -8,7 +11,9 @@ import net.minecraft.world.World;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.Log;
 
 public class BaublesUtil {
 
@@ -66,6 +71,20 @@ public class BaublesUtil {
 
   private IInventory getBaublesInvUnsafe(EntityPlayer player) {
     return BaublesApi.getBaubles(player);
+  }
+
+  private static boolean failedDirectAccess = false;
+  public void disableCallbacks(IInventory baubles, boolean b) {
+    if (!failedDirectAccess) {
+      try {
+        Class<?> inventoryBaubles = Class.forName("baubles.common.container.InventoryBaubles");
+        Field blockEvents = inventoryBaubles.getDeclaredField("blockEvents");
+        blockEvents.set(baubles, b);
+      } catch (Throwable t) {
+        Log.info("Failed to access Baubles internals: " + t);
+        failedDirectAccess = true;
+      }
+    }
   }
 
 }
