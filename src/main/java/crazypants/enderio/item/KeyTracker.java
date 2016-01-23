@@ -17,6 +17,7 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
@@ -29,7 +30,6 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.BaublesUtil;
-
 import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
 
 public class KeyTracker {
@@ -172,6 +172,9 @@ public class KeyTracker {
 
   private void handleYetaWrench() {
     if(!yetaWrenchMode.isPressed()) {
+      if (yetaWrenchMode.getKeyCode() == 0) {
+        Config.checkYetaAccess();
+      }
       return;
     }
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
