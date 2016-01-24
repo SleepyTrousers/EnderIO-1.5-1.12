@@ -68,7 +68,11 @@ public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> imp
       filter = (ModItemFilter)conduit.getOutputFilter(message.dir);
     }
     
-    filter.setMod(message.index, message.name);
+    if (message.index == -1) {
+      filter.setBlacklist("1".equals(message.name));
+    } else {
+      filter.setMod(message.index, message.name);
+    }
     
     if(message.isInput) {
       conduit.setInputFilter(message.dir, filter);  
