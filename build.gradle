@@ -53,6 +53,7 @@ repositories {
     maven { url = "http://maven.tterrag.com" }
     maven { url = "http://maven.ic2.player.to" }
     maven { url = "http://maven.cil.li/" }
+    mavenLocal()
 }
 
 dependencies {
@@ -141,6 +142,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
+install.dependsOn build
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -159,6 +161,12 @@ publishing {
             maven { url mavendir }
         }
     }
+}
+
+artifacts {
+    archives sourceJar
+    archives apiJar
+    archives deobfJar
 }
 
 String getChangelogText() {
