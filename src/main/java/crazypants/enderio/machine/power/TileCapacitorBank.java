@@ -269,7 +269,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
   }
   
   public int getComparatorOutput() {
-    return (int) (((double) getEnergyStored() / (double) getMaxEnergyStored()) * 15);
+    double stored = getEnergyStored();
+    return stored == 0 ? 0 : (int) (1 + stored / getMaxEnergyStored() * 14);
   }
 
   public List<GaugeBounds> getGaugeBounds() {
