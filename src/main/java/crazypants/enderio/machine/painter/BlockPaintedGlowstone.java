@@ -217,6 +217,11 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
+  public int damageDropped(int meta) {
+    return meta;
+  }
+
+  @Override
   protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
     if(tef != null) {
