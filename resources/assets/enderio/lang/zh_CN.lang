@@ -113,7 +113,9 @@ enderio.itemGasConduit.tooltip.detailed.line1=传送和通用机械兼容的气�
 
 enderio.itemMEConduit.name=ME导管
 enderio.itemMEConduitDense.name=密集ME导管
-enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
+enderio.itemMEConduit.channelsUsed=第{0,number}频道, 共{1,number}频道
+
+enderio.itemOCConduit.name=网络管道(OC)
 
 //Entity
 entity.witherSkeleton.name=凋零骷髅
@@ -167,7 +169,7 @@ enderio.fuel.tooltip.burnTime=燃烧时间 {0,number}
 enderio.fluid.millibucketsTick=mB/t
 enderio.coolant.tooltip.heading=冷却剂
 enderio.coolant.tooltip.degreesPerBucket=度每桶
-enderio.gas.gasTick=Gas/t
+enderio.gas.gasTick=气体每t
 
 //Materials
 enderio.itemMachinePart.name=机器零件
@@ -177,7 +179,7 @@ enderio.pulsatingCrystal.name=脉冲晶体
 enderio.vibrantCrystal.name=充能晶体
 enderio.enderCrystal.name=末影晶体
 enderio.attractorCrystal.name=诱引晶体
-enderio.weatherCrystal.name=凋零晶体
+enderio.weatherCrystal.name=天气晶体
 enderio.darkGrindingBall.name=玄铁钢珠
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG磨粉机研磨球
 enderio.darkGrindingBall.tooltip.detailed.line2=最大输出
@@ -316,7 +318,7 @@ tile.blockCapBank.tooltip.detailed.line1=多方块能量存储.
 tile.blockCapBank.tooltip.detailed.line2=可以给使用RF能量的物品充能.
 tile.blockCapBank.tooltip.detailed.line3=空手shift右击一面
 tile.blockCapBank.tooltip.detailed.line4=来改变显示的信息
-tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
+tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} 在物品栏中
 tile.blockCapBank.tooltipPrefix=包含
 
 enderio.capbank.maxIO=最大输入/输出
@@ -324,8 +326,8 @@ enderio.capbank.maxIn=最大输入
 enderio.capbank.maxOut=最大输出
 enderio.capbank.change=I/O
 enderio.capbank.iodisplay.stable=I/O
-enderio.capbank.iodisplay.gain=In
-enderio.capbank.iodisplay.loss=Out
+enderio.capbank.iodisplay.gain=内
+enderio.capbank.iodisplay.loss=外
 enderio.capbank.iodisplay.input=输入
 enderio.capbank.iodisplay.output=输出
 
@@ -475,17 +477,17 @@ tile.blockSoulBinder.name=灵魂绑定器
 tile.blockSoulBinder.tooltip.detailed.line1=用于转变破损的
 tile.blockSoulBinder.tooltip.detailed.line2=刷怪笼刷怪类型
 
-tile.blockAttractor.name=生物诱引装置
+tile.blockAttractor.name=生物诱引方尖碑
 tile.blockAttractor.tooltip.detailed.line1=将怪物引向它
 tile.blockAttractor.tooltip.detailed.line2=将生物的灵魂
 tile.blockAttractor.tooltip.detailed.line3=装瓶放入设备
 tile.blockAttractor.tooltip.detailed.line4=来指定吸引类型
 
-tile.blockSpawnGuard.name=生物排除装置
+tile.blockSpawnGuard.name=生物排除方尖碑
 tile.blockSpawnGuard.tooltip.detailed.line1=在它的工作范围
 tile.blockSpawnGuard.tooltip.detailed.line2=阻止生物的刷出
 
-tile.blockExperienceObelisk.name=经验交换装置
+tile.blockExperienceObelisk.name=经验交换方尖碑
 tile.blockExperienceObelisk.tooltip.detailed.line1=用于储存经验
 tile.blockExperienceObelisk.tooltip.detailed.line2=可将液态XP输出
 tile.blockExperienceObelisk.tooltip.detailed.line3=至相邻的储罐中
@@ -714,7 +716,7 @@ enderio.item.darkSteel_armor.tooltip.line2=钻石级别保护
 enderio.item.darkSteel_boots.tooltip.line1=充能后
 enderio.item.darkSteel_boots.tooltip.line2=掉落伤害免疫
 
-enderio.darksteel.upgrade.empowered_one.name=授权
+enderio.darksteel.upgrade.empowered_one.name=注能
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=能量: $P
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=能量吸收抵消一半的
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=耐久损伤
@@ -961,7 +963,7 @@ enderio.stirlingGenerator.output=产能速率:
 enderio.stirlingGenerator.burnRate=燃烧速率:
 enderio.stirlingGenerator.upgradeslot=升级栏
 enderio.stirlingGenerator.upgrades={0} 提供 {2}{1,number,#.#}x{3} 的效率
-enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.stirlingGenerator.remaining=残余 {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=只有
@@ -1070,7 +1072,7 @@ enderio.config.personal=个人设置
 enderio.config.personal.tooltip=我绝不会告诉任何人, 我发誓.
 
 enderio.config.anchor=锚设置
-enderio.config.anchor.tooltip=Anchors away!
+enderio.config.anchor.tooltip=船锚一边去!
 
 enderio.config.staff=权杖设置
 enderio.config.staff.tooltip=小心点,传送时别撞到脸.
