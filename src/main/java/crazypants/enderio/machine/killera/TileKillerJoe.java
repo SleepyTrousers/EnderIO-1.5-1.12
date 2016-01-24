@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
@@ -200,6 +201,14 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           if(ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
             continue; //Ignore players in creative, can't damage them;
           }
+          boolean togglePvp = false;
+          if (ent instanceof EntityPlayer && !MinecraftServer.getServer().isPVPEnabled()) {
+            if (Config.killerPvPoffDisablesSwing) {
+              continue;
+            } else if (Config.killerPvPoffIsIgnored) {
+              togglePvp = true;
+            }
+          }
           if(Config.killerJoeMustSee && !canJoeSee(ent)) {
             continue;
           }
@@ -209,7 +218,16 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           }
           FakePlayer fakee = getAttackera();
           fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
-          fakee.attackTargetEntityWithCurrentItem(ent);
+          try {
+            if (togglePvp) {
+              MinecraftServer.getServer().setAllowPvp(true);
+            }
+            fakee.attackTargetEntityWithCurrentItem(ent);
+          } finally {
+            if (togglePvp) {
+              MinecraftServer.getServer().setAllowPvp(false);
+            }
+          }
           useNutrient();
           swingWeapon();
           if(getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
