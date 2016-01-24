@@ -723,11 +723,6 @@ public final class Config {
 
     vacuumChestRange = config.get(sectionEfficiency.name, "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getInt(vacuumChestRange);
 
-    if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
-      Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
-      useSneakMouseWheelYetaWrench = true;
-    }
-
     reinforcedObsidianEnabled = config.get(sectionItems.name, "reinforcedObsidianEnabled", reinforcedObsidianEnabled,
         "When set to false reinforced obsidian is not craftable.").getBoolean(reinforcedObsidianEnabled);
     reinforcedObsidianUseDarkSteelBlocks = config.get(sectionRecipe.name, "reinforcedObsidianUseDarkSteelBlocks", reinforcedObsidianUseDarkSteelBlocks,
@@ -1328,6 +1323,13 @@ public final class Config {
         "Internal power used per item extracted (not a stack of items)");
     inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
         10000.0f, "Internal power used per extract operation (independent of stack size)");
+  }
+
+  public static void checkYetaAccess() {
+    if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
+      Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling right click.");
+      useSneakRightClickYetaWrench = true;
+    }
   }
 
   public static void init() {
