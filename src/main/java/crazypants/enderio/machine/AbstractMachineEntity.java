@@ -3,6 +3,7 @@ package crazypants.enderio.machine;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -59,6 +60,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   private MachineSound sound;
 
   private final ResourceLocation soundRes;
+
+  public boolean isDirty = false;
 
   public static ResourceLocation getSoundFor(String sound) {
     return sound == null ? null : new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
@@ -291,6 +294,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
 
     if(forceClientUpdate) {
+      if (worldObj.rand.nextInt(1024) <= (isDirty ? 256 : 0)) {
+        isDirty = !isDirty;
+      }
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       forceClientUpdate = false;
     }

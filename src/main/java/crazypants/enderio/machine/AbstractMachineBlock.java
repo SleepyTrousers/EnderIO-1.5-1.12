@@ -41,6 +41,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public IIcon overlayIconPushPull;
   public IIcon overlayIconDisabled;
   public IIcon overlayIconNone;
+  public IIcon overlayIconDirty;
 
   public IIcon selectedFaceIcon;
 
@@ -132,6 +133,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     overlayIconDisabled = iIconRegister.registerIcon("enderio:overlays/disabled");
     overlayIconNone = iIconRegister.registerIcon("enderio:overlays/none");
     selectedFaceIcon = iIconRegister.registerIcon("enderio:overlays/selectedFace");
+    overlayIconDirty = iIconRegister.registerIcon("enderio:overlays/dirt");
   }
 
   @SideOnly(Side.CLIENT)
@@ -149,7 +151,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     case PUSH_PULL:
       return overlayIconPushPull;
     default:
-      return null;
+      return tile.isDirty ? overlayIconDirty : null;
     }
   }
 
