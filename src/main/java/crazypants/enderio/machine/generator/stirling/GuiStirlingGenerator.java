@@ -18,6 +18,7 @@ import com.enderio.core.client.render.RenderUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.Capacitors;
@@ -45,7 +46,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   }
 
   private static float getFactor(Capacitors upgrade) {
-    return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) /
+    return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) *
             TileEntityStirlingGenerator.getBurnTimeMultiplier(upgrade);
   }
 
@@ -111,7 +112,8 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt = EnderIO.lang.localize("stirlingGenerator.burnRate") + " " + (getTileEntity().getBurnTimeMultiplier()) + "x";
+    txt = EnderIO.lang.localize("stirlingGenerator.burnRate") + " "
+        + (getTileEntity().getBurnTimeMultiplier() / Config.stirlingGeneratorBurnTimeMultiplierT1) + "x";
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

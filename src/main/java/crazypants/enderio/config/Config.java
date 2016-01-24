@@ -271,6 +271,12 @@ public final class Config {
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
 
   public static int stirlingGeneratorBaseRfPerTick = 20;
+  public static float stirlingGeneratorEnergyMultiplierT1 = 1f;
+  public static float stirlingGeneratorEnergyMultiplierT2 = 2f;
+  public static float stirlingGeneratorEnergyMultiplierT3 = 4f;
+  public static float stirlingGeneratorBurnTimeMultiplierT1 = 1f / 2f;
+  public static float stirlingGeneratorBurnTimeMultiplierT2 = 1f / 1.5f;
+  public static float stirlingGeneratorBurnTimeMultiplierT3 = 1f / 1.5f;
 
   public static boolean combustionGeneratorUseOpaqueModel = true;
 
@@ -1018,6 +1024,20 @@ public final class Config {
 
     stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
+
+    stirlingGeneratorEnergyMultiplierT1 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT1",
+        stirlingGeneratorEnergyMultiplierT1, "Energy multiplier for the Stirling Generator, Tier 1 machine").getDouble();
+    stirlingGeneratorEnergyMultiplierT2 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT2",
+        stirlingGeneratorEnergyMultiplierT2, "Energy multiplier for the Stirling Generator, Tier 2 machine").getDouble();
+    stirlingGeneratorEnergyMultiplierT3 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT3",
+        stirlingGeneratorEnergyMultiplierT3, "Energy multiplier for the Stirling Generator, Tier 3 machine").getDouble();
+
+    stirlingGeneratorBurnTimeMultiplierT1 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT1",
+        stirlingGeneratorBurnTimeMultiplierT1, "Burn time multiplier for the Stirling Generator, Tier 1 machine").getDouble();
+    stirlingGeneratorBurnTimeMultiplierT2 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT2",
+        stirlingGeneratorBurnTimeMultiplierT2, "Burn time multiplier for the Stirling Generator, Tier 2 machine").getDouble();
+    stirlingGeneratorBurnTimeMultiplierT3 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT3",
+        stirlingGeneratorBurnTimeMultiplierT3, "Burn time multiplier for the Stirling Generator, Tier 3 machine").getDouble();
 
     addFuelTooltipsToAllFluidContainers = config.get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the RF/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
