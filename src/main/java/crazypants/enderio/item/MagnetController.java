@@ -68,8 +68,8 @@ public class MagnetController implements IEntitySelector {
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
         
-    List<Entity> interestingItems = player.worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);        
-    List<Entity> xp = player.worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, this);
+    List<Entity> interestingItems = player.worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, startSelecting());
+    List<Entity> xp = player.worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, startSelecting());
     if(!xp.isEmpty()) {
       interestingItems.addAll(xp);
     }
@@ -110,9 +110,19 @@ public class MagnetController implements IEntitySelector {
     }
   }
 
+  private MagnetController startSelecting() {
+    itemsRemaining = Config.magnetMaxItems;
+    if (itemsRemaining <= 0) {
+      itemsRemaining = Integer.MAX_VALUE;
+    }
+    return this;
+  }
+
+  private int itemsRemaining = 0;
+
   @Override
   public boolean isEntityApplicable(Entity var1) {
-    if (var1.isDead) {
+    if (var1.isDead || itemsRemaining <= 0) {
       return false;
     }
     if (var1 instanceof EntityItem) {
@@ -124,8 +134,11 @@ public class MagnetController implements IEntitySelector {
           }
         }
       }
-      return !hasSolegnoliaAround(var1);
+      if (hasSolegnoliaAround(var1)) {
+        return false;
+      }
     }
+    itemsRemaining--;
     return true;
   }
   
