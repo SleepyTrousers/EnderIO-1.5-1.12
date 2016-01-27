@@ -327,6 +327,7 @@ public final class Config {
   public static boolean magnetAllowInMainInventory = false;
   public static boolean magnetAllowInBaublesSlot = true;
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
+  public static boolean magnetAllowPowerExtraction = false;
   public static String  magnetBaublesType = "AMULET";
   
   public static boolean useCombustionGenModel = false;
@@ -1098,6 +1099,9 @@ public final class Config {
     magnetAllowDeactivatedInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getBoolean(magnetAllowDeactivatedInBaublesSlot);
     
+    magnetAllowPowerExtraction = config.get(sectionMagnet.name, "magnetAllowPowerExtraction", magnetAllowPowerExtraction,
+        "If true the magnet can be used as a battery.").getBoolean(magnetAllowPowerExtraction);
+
     magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
         "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
     

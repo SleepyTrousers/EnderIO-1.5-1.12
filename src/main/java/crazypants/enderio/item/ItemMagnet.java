@@ -63,7 +63,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   public static void drainPerSecondPower(ItemStack itemStack) {
-    DarkSteelItems.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);
+    DarkSteelItems.itemMagnet.extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF, false);
   }
 
   static MagnetController controller = new MagnetController();
@@ -137,8 +137,16 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+    if (Config.magnetAllowPowerExtraction) {
+      return extractEnergyInternal(container, maxExtract, simulate);
+    } else {
+      return 0;
+    }
+  }
+
+  public int extractEnergyInternal(ItemStack container, int maxExtract, boolean simulate) {
     int res = super.extractEnergy(container, maxExtract, simulate);
-    if(res != 0 && !simulate) {
+    if (res != 0 && !simulate) {
       updateDamage(container);
     }
     return res;
