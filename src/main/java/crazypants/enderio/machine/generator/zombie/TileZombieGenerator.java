@@ -31,9 +31,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   final SmartTank fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
-  int outputPerTick = Config.zombieGeneratorRfPerTick;
-  int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
-
   private boolean tanksDirty;
   private boolean active = false;
   private PowerDistributor powerDis;
@@ -88,7 +85,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public int getPowerUsePerTick() {
-    return outputPerTick;
+    return Math.min(Config.zombieGeneratorRfPerTick, getMaxEnergyStored() / Config.zombieGeneratorResumeTime);
   }
 
   @Override
@@ -146,7 +143,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200))) {
+    if (inPause && getEnergyStored() > (getMaxEnergyStored() - (getPowerUsePerTick() * Config.zombieGeneratorResumeTime))) {
       return false;
     }
     inPause = false;
@@ -159,10 +156,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     ticksRemaingFuel--;    
     if(ticksRemaingFuel <= 0) {
       fuelTank.drain(1, true);
-      ticksRemaingFuel = tickPerBucketOfFuel/1000;    
+      ticksRemaingFuel = Config.zombieGeneratorTicksPerBucketFuel / 1000;
       tanksDirty = true;
     }    
-    setEnergyStored(getEnergyStored() + outputPerTick);     
+    setEnergyStored(getEnergyStored() + getPowerUsePerTick());
     return true;
   }
   
@@ -177,7 +174,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
+    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(getPowerUsePerTick() * 2, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
   }

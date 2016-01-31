@@ -269,6 +269,7 @@ public final class Config {
 
   public static int zombieGeneratorRfPerTick = 80;
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
+  public static int zombieGeneratorResumeTime = 200;
 
   public static int stirlingGeneratorBaseRfPerTick = 20;
 
@@ -1018,6 +1019,15 @@ public final class Config {
         "The amount of power generated per tick.").getInt(zombieGeneratorRfPerTick);
     zombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
+
+    zombieGeneratorResumeTime = config
+        .get(
+        sectionPower.name,
+        "zombieGeneratorPauseTimeWhenFull",
+            zombieGeneratorResumeTime,
+            "When the zombie generator shuts off because it is full, how many ticks worth of runtime must be available in the power buffer before it starts up again?.")
+        .getInt(
+zombieGeneratorResumeTime);
 
     stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
