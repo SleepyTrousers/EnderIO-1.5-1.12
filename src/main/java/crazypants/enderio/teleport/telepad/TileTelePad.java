@@ -110,17 +110,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
       if(active()) {
         if(activeSound == null) {
-          activeSound = new MachineSound(activeRes, xCoord, yCoord, zCoord, 0.01f, 1);
+          activeSound = new MachineSound(activeRes, xCoord, yCoord, zCoord, 0.3f, 1);
           playSound();
         }
-        activeSound.setVolume(MathHelper.clamp_float(spinSpeed, 0.1f, 1));
         updateQueuedEntities();
       } else if(!active() && activeSound != null) {
-        if(activeSound.getVolume() <= 0.1f) {
+        if(activeSound.getPitch() <= 0.5f) {
           activeSound.endPlaying();
           activeSound = null;
-        } else {
-          activeSound.setVolume(MathHelper.clamp_float(spinSpeed, 0.1f, 1));
         }
       }
     } else if(!worldObj.isRemote) {
