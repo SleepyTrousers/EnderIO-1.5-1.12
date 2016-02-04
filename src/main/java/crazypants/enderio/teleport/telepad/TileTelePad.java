@@ -129,7 +129,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
           teleport(toTeleport.poll());
           powerUsed = 0;
         } else {
-          powerUsed += energy.extractEnergy(getUsage(), false);
+          powerUsed += energy.extractEnergy(Math.min(getUsage(), maxPower), false);
         }
         if(shouldDoWorkThisTick(5)) {
           updateQueuedEntities();
