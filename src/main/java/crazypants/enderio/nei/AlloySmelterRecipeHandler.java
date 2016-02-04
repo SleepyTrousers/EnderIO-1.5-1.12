@@ -7,12 +7,15 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.common.util.ItemUtil;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.gui.IconEIO;
@@ -122,11 +125,39 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     result.add(input.getInput());
     ItemStack[] equivs = input.getEquivelentInputs();
     if(equivs != null) {
-      for (ItemStack st : equivs) {
-        result.add(st);
+      for (ItemStack item : equivs) {
+        if (item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+          List<ItemStack> permutations = ItemList.itemMap.get(item.getItem());
+          if (permutations.isEmpty()) {
+            ItemStack base = new ItemStack(item.getItem(), item.stackSize);
+            base.stackTagCompound = item.stackTagCompound;
+            result.add(base);
+          } else {
+            for (ItemStack stack : permutations) {
+              ItemStack perm = stack.copy();
+              perm.stackSize = item.stackSize;
+              result.add(perm);
+            }
+          }
+        } else {
+          result.add(item.copy());
+        }
       }
+      List<ItemStack> result2 = new ArrayList<ItemStack>();
+      for (ItemStack candidate : result) {
+        boolean skip = false;
+        for (ItemStack existing : result2) {
+          skip = skip || ItemUtil.areStacksEqual(candidate, existing);
+        }
+        if (!skip) {
+          System.out.println("Adding " + candidate + " for " + input);
+          result2.add(candidate);
+        }
+      }
+      return result2;
+    } else {
+      return result;
     }
-    return result;
   }
 
   public class AlloySmelterRecipe extends TemplateRecipeHandler.CachedRecipe {

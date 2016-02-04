@@ -3,6 +3,7 @@ package crazypants.enderio.machine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class MachineRecipeRegistry {
   public Map<String, IMachineRecipe> getRecipesForMachine(String machineName) {
     Map<String, IMachineRecipe> res = machineRecipes.get(machineName);
     if(res == null) {
-      res = new HashMap<String, IMachineRecipe>();
+      res = new LinkedHashMap<String, IMachineRecipe>();
       machineRecipes.put(machineName, res);
     }
     return res;
