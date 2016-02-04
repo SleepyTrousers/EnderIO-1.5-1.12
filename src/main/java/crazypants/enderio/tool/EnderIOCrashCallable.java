@@ -1,5 +1,6 @@
 package crazypants.enderio.tool;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +51,13 @@ public class EnderIOCrashCallable implements ICrashCallable {
               if (apiVersion != null) {
                 if (!apiVersion.equals(modContainer.getVersion())) {
                   if ("1.7.10R1.0.0".equals(apiVersion) || "1.7.10R1.0.1".equals(apiVersion)) {
-                    result.add(" * An unsupportted old RF API is installed (" + apiVersion + " from <unknown>).");
+                    result.add(" * An unsupportted old RF API is installed (" + apiVersion + " from "
+                        + whereFrom(cpw.mods.fml.common.API.class) + ").");
                     result.add("   Ender IO needs at least 1.7.10R1.0.2 and will NOT work with older versions.");
                   } else {
-                    result.add(" * The RF API that is being used (" + apiVersion
-                        + " from <unknown>) differes from that that is reported as being loaded (" + modContainer.getVersion()
-                        + " from " + modContainer.getSource().getName() + ").");
+                    result.add(" * The RF API that is being used (" + apiVersion + " from "
+                        + whereFrom(cpw.mods.fml.common.API.class) + ") differs from the one that is reported as being loaded ("
+                        + modContainer.getVersion() + " from " + modContainer.getSource().getName() + ").");
                     result.add("   It is a supported version, but that difference may lead to problems.");
                   }
                 }
@@ -117,4 +119,30 @@ public class EnderIOCrashCallable implements ICrashCallable {
     return EnderIO.MODID;
   }
 
+  // adapted from http://stackoverflow.com/a/19494116/4105897
+  public static String whereFrom(Class<?> c) {
+    if (c == null) {
+      return null;
+    }
+    try {
+      ClassLoader loader = c.getClassLoader();
+      if (loader == null) {
+        // Try the bootstrap classloader - obtained from the ultimate parent of
+        // the System Class Loader.
+        loader = ClassLoader.getSystemClassLoader();
+        while (loader != null && loader.getParent() != null) {
+          loader = loader.getParent();
+        }
+      }
+      if (loader != null) {
+        String name = c.getCanonicalName();
+        URL resource = loader.getResource(name.replace(".", "/") + ".class");
+        if (resource != null) {
+          return resource.toString();
+        }
+      }
+    } catch (Throwable t) {
+    }
+    return "<unknown>";
+  }
 }
