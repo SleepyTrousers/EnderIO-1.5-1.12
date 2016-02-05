@@ -51,8 +51,7 @@ import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
   
   private boolean inNetwork;
-
-  EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
+  private boolean isMaster;
 
   private EnergyStorage energy = new EnergyStorage(100000, 1000, 1000);
 
@@ -89,6 +88,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   @Override
   public void doUpdate() {
     super.doUpdate();
+    
     // my master is gone!
     if(master != null && master.isInvalid()) {
       master.breakNetwork();
@@ -169,17 +169,23 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public void updateConnectedState(boolean fromBlock) {
 
+    EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
+
     for (BlockCoord bc : getSurroundingCoords()) {
       TileEntity te = bc.getTileEntity(worldObj);
-      ForgeDirection con = Util.getDirFromOffset(xCoord - bc.x, 0, zCoord - bc.z);
+      ForgeDirection con = Util.getDirFromOffset(bc.x - xCoord, 0, bc.z - zCoord);
       if(te instanceof TileTelePad) {
         // let's find the master and let him do the work
-        if(((TileTelePad) te).isMaster() && fromBlock) {
+        if (fromBlock) {
+          // Recurse to all adjacent (diagonal and axis-aligned) telepads, but only 1 deep.
           ((TileTelePad) te).updateConnectedState(false);
-          return;
+          // If that telepad turned into a master, we can stop our search, as we were added to its network
+          if (((TileTelePad) te).inNetwork() && !inNetwork) {
+            return;
+          }
         }
         // otherwise we either are the master or this is a secondary call, so update connections
-        if(con != ForgeDirection.UNKNOWN && !((TileTelePad) te).inNetwork) {
+        if (con != ForgeDirection.UNKNOWN && !((TileTelePad) te).inNetwork()) {
           connections.add(con);
         }
       } else {
@@ -188,16 +194,16 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
           breakNetwork();
           updateBlock();
         } else if(con != ForgeDirection.UNKNOWN) {
-          if(inNetwork && master != null && fromBlock) {
+          if(inNetwork() && master != null && fromBlock) {
             master.updateConnectedState(false);
           }
         }
       }
     }
-    if(isMaster() && !inNetwork) {
+    if(connections.size() == 4 && !inNetwork()) {
       inNetwork = formNetwork();
       updateBlock();
-      if(inNetwork) {
+      if(inNetwork()) {
         if(target.equals(new BlockCoord())) {
           target = new BlockCoord(this);
         }
@@ -219,29 +225,30 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private boolean formNetwork() {
     List<TileTelePad> temp = Lists.newArrayList();
-    if(isMaster()) {
-      for (BlockCoord c : getSurroundingCoords()) {
-        TileEntity te = c.getTileEntity(worldObj);
-        if(!(te instanceof TileTelePad)) {
-          return false;
-        }
-        temp.add((TileTelePad) te);
+    
+    for (BlockCoord c : getSurroundingCoords()) {
+      TileEntity te = c.getTileEntity(worldObj);
+      if (!(te instanceof TileTelePad) || ((TileTelePad)te).inNetwork()) {
+        return false;
       }
-      for (TileTelePad te : temp) {
-        te.master = this;
-        te.inNetwork = true;
-        te.updateBlock();
-        te.updateNeighborTEs();
-      }
-      this.master = this;
-      return true;
+      temp.add((TileTelePad) te);
     }
-    return false;
+    
+    for (TileTelePad te : temp) {
+      te.master = this;
+      te.inNetwork = true;
+      te.updateBlock();
+      te.updateNeighborTEs();
+    }
+    this.master = this;
+    this.isMaster = true;
+    return true;
   }
 
   private void breakNetwork() {
     master = null;
     inNetwork = false;
+    isMaster = false;
     for (BlockCoord c : getSurroundingCoords()) {
       TileEntity te = c.getTileEntity(worldObj);
       if(te instanceof TileTelePad) {
@@ -415,19 +422,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean isMaster() {
-    if (connections.size() == 4) {
-      BlockCoord pos = new BlockCoord(this);
-      for (ForgeDirection f : connections) {
-        TileEntity te = pos.getLocation(f).getTileEntity(worldObj);
-        if (!(te instanceof TileTelePad)) {
-          return true;
-        }
-        if (((TileTelePad)te).connections.size() < 4) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return isMaster;
   }
 
   @Override
@@ -679,34 +674,34 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean canSeeBlock(EntityPlayer playerName) {
-    return isMaster() && inNetwork;
+    return isMaster() && inNetwork();
   }
 
   /* IInternalPowerReceiver */
 
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    return inNetwork && master != null ? master == this ? energy.getMaxReceive() : master.getMaxEnergyRecieved(dir) : 0;
+    return inNetwork() && master != null ? master == this ? energy.getMaxReceive() : master.getMaxEnergyRecieved(dir) : 0;
   }
 
   @Override
   public int getMaxEnergyStored() {
-    return inNetwork && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
   }
 
   @Override
   public boolean displayPower() {
-    return inNetwork && master != null;
+    return inNetwork() && master != null;
   }
 
   @Override
   public int getEnergyStored() {
-    return inNetwork && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
   }
 
   @Override
   public void setEnergyStored(int storedEnergy) {
-    if(inNetwork && master != null) {
+    if(inNetwork() && master != null) {
       if(master == this) {
         energy.setEnergyStored(storedEnergy);
       } else {
@@ -717,22 +712,22 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean canConnectEnergy(ForgeDirection from) {
-    return inNetwork && master != null;
+    return inNetwork() && master != null;
   }
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return inNetwork && master != null ? master == this ? energy.receiveEnergy(maxReceive, simulate) : master.receiveEnergy(from, maxReceive, simulate) : 0;
+    return inNetwork() && master != null ? master == this ? energy.receiveEnergy(maxReceive, simulate) : master.receiveEnergy(from, maxReceive, simulate) : 0;
   }
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return inNetwork && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return inNetwork && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
   }
 
   public int getUsage() {
