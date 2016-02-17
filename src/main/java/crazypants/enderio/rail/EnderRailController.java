@@ -9,6 +9,13 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.UUID;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -22,15 +29,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.EntityUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class EnderRailController {
 

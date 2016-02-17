@@ -1,15 +1,15 @@
 package crazypants.enderio.machine.invpanel;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-
-import com.enderio.core.common.network.MessageTileEntity;
-
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketGuiSettings, IMessage> {
 
@@ -47,7 +47,7 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
   @Override
   public IMessage onMessage(PacketGuiSettings message, MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);

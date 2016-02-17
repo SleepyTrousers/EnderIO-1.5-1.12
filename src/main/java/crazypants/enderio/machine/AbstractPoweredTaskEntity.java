@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IProgressTile {
 
@@ -29,10 +29,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
   }
-
+  
+  
   @Override
-  public int[] getAccessibleSlotsFromSide(int var1) {
-    ForgeDirection dir = ForgeDirection.getOrientation(var1);
+  public int[] getSlotsForFace(EnumFacing dir) {
     IoMode mode = getIoMode(dir);
     if(mode == IoMode.DISABLED) {
       return new int[0];
@@ -402,6 +402,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     if(slotDefinition.isInputSlot(slot)) {
       cachedNextRecipe = null;
     }
+  }
+  
+  @Override
+  public BlockCoord getLocation() {   
+    return new BlockCoord(pos);
   }
 
 }

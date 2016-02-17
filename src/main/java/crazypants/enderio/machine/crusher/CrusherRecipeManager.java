@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.Log;
@@ -23,6 +20,8 @@ import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CrusherRecipeManager {
 
@@ -40,53 +39,55 @@ public class CrusherRecipeManager {
   }
 
   private final List<Recipe> recipes = new ArrayList<Recipe>();
-  
+
   private final List<RecipeInput> ballExcludes = new ArrayList<RecipeInput>();
 
   private final List<GrindingBall> balls = new ArrayList<GrindingBall>();
-  
+
   private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
 
-  public CrusherRecipeManager() {   
+  public CrusherRecipeManager() {
   }
 
   public boolean isValidSagBall(ItemStack stack) {
     return getGrindballFromStack(stack) != null;
   }
-  
+
   public boolean isExcludedFromBallBonus(MachineRecipeInput[] inputs) {
-    if(inputs == null || inputs.length < 1) {
+    if (inputs == null || inputs.length < 1) {
       return true;
     }
-    for(MachineRecipeInput input : inputs) {
-      if(input.item != null) {
-        if(isExcludedStack(input.item)){
+    for (MachineRecipeInput input : inputs) {
+      if (input.item != null) {
+        if (isExcludedStack(input.item)) {
           return true;
         }
-        int id = OreDictionary.getOreID(input.item);
-        if(id >= 0) {
-          String name = OreDictionary.getOreName(id);
-          if(name.startsWith("ingot") || name.startsWith("block") || name.startsWith("nugget")) {
-            addExcludedStack(input.item);
-            return true;
+        int[] ids = OreDictionary.getOreIDs(input.item);
+        if (ids != null) {
+          for (int id : ids) {
+            String name = OreDictionary.getOreName(id);
+            if (name.startsWith("ingot") || name.startsWith("block") || name.startsWith("nugget")) {
+              addExcludedStack(input.item);
+              return true;
+            }
           }
         }
       }
     }
-    for(RecipeInput input : ballExcludes) {
-      if(input != null && input.isInput(inputs[0].item)) {
+    for (RecipeInput input : ballExcludes) {
+      if (input != null && input.isInput(inputs[0].item)) {
         addExcludedStack(inputs[0].item);
         return true;
       }
-    }    
-    
+    }
+
     return false;
   }
 
   private void addExcludedStack(ItemStack item) {
     item = item.copy();
     item.stackSize = 1;
-    excludedStacks.add(item);    
+    excludedStacks.add(item);
   }
 
   private boolean isExcludedStack(ItemStack item) {
@@ -96,11 +97,11 @@ public class CrusherRecipeManager {
   }
 
   public IGrindingMultiplier getGrindballFromStack(ItemStack stack) {
-    if(stack == null) {
+    if (stack == null) {
       return null;
     }
-    for(GrindingBall ball : balls) {
-      if(ball.isInput(stack)) {
+    for (GrindingBall ball : balls) {
+      if (ball.isInput(stack)) {
         return ball;
       }
     }
@@ -108,7 +109,7 @@ public class CrusherRecipeManager {
   }
 
   public boolean isValidInput(MachineRecipeInput input) {
-    if(input.slotNumber == 1) {
+    if (input.slotNumber == 1) {
       return isValidSagBall(input.item);
     }
     return getRecipeForInput(input.item) != null;
@@ -121,7 +122,7 @@ public class CrusherRecipeManager {
     ballExcludes.addAll(th.excludes);
     Log.info("Loaded " + balls.size() + " grinding balls from SAG Mill config.");
     Log.info("Excluding " + ballExcludes.size() + " recipes from grinding balls bonus.");
-    if(config != null) {
+    if (config != null) {
       processConfig(config);
     } else {
       Log.error("Could not load recipes for SAG Mill.");
@@ -141,7 +142,7 @@ public class CrusherRecipeManager {
 
     balls.addAll(th.balls.values());
     ballExcludes.addAll(th.excludes);
-    if(config == null) {
+    if (config == null) {
       Log.error("Could not process custom XML");
       return;
     }
@@ -149,11 +150,11 @@ public class CrusherRecipeManager {
   }
 
   public IRecipe getRecipeForInput(ItemStack input) {
-    if(input == null) {
+    if (input == null) {
       return null;
     }
     for (Recipe recipe : recipes) {
-      if(recipe.isInputForRecipe(new MachineRecipeInput(0, input))) {
+      if (recipe.isInputForRecipe(new MachineRecipeInput(0, input))) {
         return recipe;
       }
     }
@@ -161,10 +162,10 @@ public class CrusherRecipeManager {
   }
 
   private void processConfig(RecipeConfig config) {
-    if(config.isDumpItemRegistery()) {
+    if (config.isDumpItemRegistery()) {
       Util.dumpModObjects(new File(Config.configDirectory, "modObjectsRegistery.txt"));
     }
-    if(config.isDumpOreDictionary()) {
+    if (config.isDumpOreDictionary()) {
       Util.dumpOreNames(new File(Config.configDirectory, "oreDictionaryRegistery.txt"));
     }
 
@@ -181,19 +182,19 @@ public class CrusherRecipeManager {
   }
 
   public void addRecipe(ItemStack input, int energyCost, RecipeOutput... output) {
-    if(input == null || output == null) {
+    if (input == null || output == null) {
       return;
     }
     addRecipe(new Recipe(new RecipeInput(input, false), energyCost, RecipeBonusType.MULTIPLY_OUTPUT, output));
   }
 
   public void addRecipe(Recipe recipe) {
-    if(recipe == null || !recipe.isValid()) {
+    if (recipe == null || !recipe.isValid()) {
       Log.debug("Could not add invalid recipe: " + recipe);
       return;
     }
     IRecipe rec = getRecipeForInput(getInput(recipe));
-    if(rec != null) {
+    if (rec != null) {
       Log.warn("Not adding supplied recipe as a recipe already exists for the input: " + getInput(recipe));
       return;
     }
@@ -205,7 +206,7 @@ public class CrusherRecipeManager {
   }
 
   public static ItemStack getInput(IRecipe recipe) {
-    if(recipe == null || recipe.getInputs() == null || recipe.getInputs().length == 0) {
+    if (recipe == null || recipe.getInputs() == null || recipe.getInputs().length == 0) {
       return null;
     }
     return recipe.getInputs()[0].getInput();

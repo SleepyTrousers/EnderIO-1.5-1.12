@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.capbank.network;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 public class InventoryImpl implements IInventory {
 
@@ -110,17 +110,12 @@ public class InventoryImpl implements IInventory {
   //--- constant values
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-    return null;
-  }
-
-  @Override
-  public String getInventoryName() {
+  public String getName() {
     return EnderIO.blockCapBank.getUnlocalizedName() + ".name";
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -143,11 +138,11 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override

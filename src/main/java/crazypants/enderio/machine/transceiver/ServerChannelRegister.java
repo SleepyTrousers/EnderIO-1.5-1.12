@@ -15,17 +15,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
 import org.apache.commons.io.FileUtils;
 
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.PlayerUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
@@ -36,6 +28,11 @@ import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.UserIdent;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -251,7 +248,7 @@ public class ServerChannelRegister extends ChannelRegister {
       if(trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
         double invLoss = 1 - Config.transceiverEnergyLoss;
         int canSendWithLoss = (int) Math.round(canSend * invLoss);
-        int recieved = trans.receiveEnergy(ForgeDirection.UNKNOWN, canSendWithLoss, false);
+        int recieved = trans.receiveEnergy(null, canSendWithLoss, false);
         if(recieved > 0) {
           int recievedPlusLoss = (int) Math.round(recieved / invLoss);
           sender.usePower(recievedPlusLoss);

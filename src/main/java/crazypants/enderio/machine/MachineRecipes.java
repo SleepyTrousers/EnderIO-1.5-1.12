@@ -1,10 +1,20 @@
 package crazypants.enderio.machine;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.registry.GameRegistry;
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+import static crazypants.enderio.material.Alloy.DARK_STEEL;
+import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
+import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.Alloy.PHASED_GOLD;
+import static crazypants.enderio.material.Alloy.PHASED_IRON;
+import static crazypants.enderio.material.Alloy.SOULARIUM;
+import static crazypants.enderio.material.Material.CONDUIT_BINDER;
+import static crazypants.enderio.material.Material.ENDER_CRYSTAL;
+import static crazypants.enderio.material.Material.PULSATING_CYSTAL;
+import static crazypants.enderio.material.Material.SILICON;
+import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
+import static crazypants.util.RecipeUtil.addShaped;
+import static crazypants.util.RecipeUtil.addShapeless;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.config.Config;
@@ -18,11 +28,11 @@ import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
-
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-import static crazypants.enderio.material.Alloy.*;
-import static crazypants.enderio.material.Material.*;
-import static crazypants.util.RecipeUtil.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class MachineRecipes {
 
@@ -59,7 +69,7 @@ public class MachineRecipes {
       addShaped(frankenZombie, "gdg", "dzd", "gdg", 'g', "ingotGold", 'd', "gemDiamond", 'z', zombieController);
       addShaped(sentientEnder, "ddd", "ded", "dgd", 'g', "blockGold", 'd', "gemDiamond", 'e', enderRes);
     }
-
+    
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
     addShaped(stirlingGen, "bbb", "bfb", "gpg", 'b', Blocks.stonebrick, 'f', Blocks.furnace, 'p', Blocks.piston, 'g', basicGear);

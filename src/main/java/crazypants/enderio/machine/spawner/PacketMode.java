@@ -2,9 +2,10 @@ package crazypants.enderio.machine.spawner;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketMode implements IMessage, IMessageHandler<PacketMode, IMessage> {
 
@@ -19,9 +20,10 @@ public class PacketMode implements IMessage, IMessageHandler<PacketMode, IMessag
   }
 
   public PacketMode(TilePoweredSpawner tile) {
-    x = tile.xCoord;
-    y = tile.yCoord;
-    z = tile.zCoord;
+    BlockPos p = tile.getPos();
+    x = p.getX();
+    y = p.getY();
+    z = p.getZ();
     isSpawnMode = tile.isSpawnMode();
   }
 
@@ -44,7 +46,7 @@ public class PacketMode implements IMessage, IMessageHandler<PacketMode, IMessag
 
   @Override
   public IMessage onMessage(PacketMode message, MessageContext ctx) {
-    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TilePoweredSpawner) {
       TilePoweredSpawner me = (TilePoweredSpawner) te;
       me.setSpawnMode(message.isSpawnMode);

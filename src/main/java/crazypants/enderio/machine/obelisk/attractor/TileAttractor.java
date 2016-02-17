@@ -6,10 +6,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.mojang.authlib.GameProfile;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.power.BasicCapacitor;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
@@ -22,29 +35,12 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.util.FakePlayer;
-
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.power.BasicCapacitor;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
@@ -111,7 +107,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
     BoundingBox bb = new BoundingBox(new BlockCoord(this));
     bb = bb.scale(range, range, range);
-    attractorBounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    attractorBounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
     setCapacitor(new BasicCapacitor(powerPerTick * 8, getCapacitor().getMaxEnergyStored(), powerPerTick));
   }
 
@@ -129,7 +125,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if(mob == null) {
       return false;
     }
-    Class<?> cl = (Class<?>) EntityList.stringToClassMapping.get(mob);
+    Class<?> cl = EntityList.stringToClassMapping.get(mob);
     if(cl == null) {
       return false;
     }
@@ -238,7 +234,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if(mob == null) {
       return false;
     }
-    return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= range;
+    return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(getPos())) <= range;
   }
 
   private boolean isMobInFilter(EntityLiving ent) {
@@ -259,7 +255,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   private boolean trackMob(EntityLiving ent) {
     if(useSetTarget(ent)) {
-      ((EntityMob) ent).setTarget(getTarget());
+      ((EntityMob) ent).setAttackTarget(getTarget());
       return true;
     } else if(useSpecialCase(ent)) {
       return applySpecialCase(ent);
@@ -356,7 +352,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {  
       forceMove(ent);
     } else if(ent instanceof EntityEnderman) {
-      ((EntityEnderman) ent).setTarget(getTarget());
+      ((EntityEnderman) ent).setAttackTarget(getTarget());
     }
   }
 
@@ -384,7 +380,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private class Target extends FakePlayerEIO {
 
     public Target() {
-      super(getWorldObj(), getLocation(), new GameProfile(null, ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
+      super(getWorld(), getLocation(), new GameProfile(null, ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
       posY += 1;
     }
   }
@@ -420,7 +416,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     @Override
     public boolean continueExecuting() {
       boolean res = false;
-      TileEntity te = mob.worldObj.getTileEntity(coord.x, coord.y, coord.z);
+      TileEntity te = mob.worldObj.getTileEntity(coord.getBlockPos());
       if(te instanceof TileAttractor) {
         TileAttractor attractor = (TileAttractor) te;
         res = attractor.canAttract(entityId, mob);

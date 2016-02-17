@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.alloy;
 
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -7,10 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
 
@@ -92,7 +91,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
       if(output.getItem() == Items.iron_ingot) {
         thePlayer.addStat(AchievementList.acquireIron, 1);
       }
-      if(output.getItem() == Items.cooked_fished) {
+      if(output.getItem() == Items.cooked_fish) {
         thePlayer.addStat(AchievementList.cookFish, 1);
       }
     }

@@ -1,15 +1,15 @@
 package crazypants.enderio.machine.invpanel;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-
-import com.enderio.core.common.network.MessageTileEntity;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketUpdateExtractionDisabled extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketUpdateExtractionDisabled, IMessage> {
 
@@ -38,7 +38,7 @@ public class PacketUpdateExtractionDisabled extends MessageTileEntity<TileInvent
   @Override
   public IMessage onMessage(PacketUpdateExtractionDisabled message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       teInvPanel.updateExtractionDisabled(message.extractionDisabled);

@@ -4,11 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -20,6 +15,10 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 
@@ -260,12 +259,12 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isOutputEnabled(ForgeDirection direction) {
+  public boolean isOutputEnabled(EnumFacing direction) {
     return isOutputEnabled();
   }
 
   @Override
-  public boolean isInputEnabled(ForgeDirection direction) {
+  public boolean isInputEnabled(EnumFacing direction) {
     return isInputEnabled();
   }
 
@@ -275,7 +274,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isNetworkControlledIo(ForgeDirection direction) {
+  public boolean isNetworkControlledIo(EnumFacing direction) {
     return true;
   }
 
@@ -284,7 +283,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     ioDisplayInfoCache = null;
   }
 
-  public IOInfo getIODisplayInfo(int x, int y, int z, ForgeDirection face) {
+  public IOInfo getIODisplayInfo(int x, int y, int z, EnumFacing face) {
     DisplayInfoKey key = new DisplayInfoKey(x, y, z, face);
     if(ioDisplayInfoCache == null) {
       ioDisplayInfoCache = new HashMap<DisplayInfoKey, IOInfo>();
@@ -297,7 +296,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return value;
   }
 
-  private IOInfo computeIODisplayInfo(int xOrg, int yOrg, int zOrg, ForgeDirection dir) {
+  private IOInfo computeIODisplayInfo(int xOrg, int yOrg, int zOrg, EnumFacing dir) {
     if(dir.offsetY != 0) {
       return IOInfo.SINGLE;
     }
@@ -401,7 +400,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return new IOInfo(width, height);
   }
 
-  private boolean isIOType(int x, int y, int z, ForgeDirection face, CapBankType type) {
+  private boolean isIOType(int x, int y, int z, EnumFacing face, CapBankType type) {
     TileCapBank cb = getCapBankAt(x, y, z);
     return cb != null && type == cb.getType() && cb.getDisplayType(face) == InfoDisplayType.IO;
   }
@@ -414,9 +413,9 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     final int x;
     final int y;
     final int z;
-    final ForgeDirection face;
+    final EnumFacing face;
 
-    public DisplayInfoKey(int x, int y, int z, ForgeDirection face) {
+    public DisplayInfoKey(int x, int y, int z, EnumFacing face) {
       this.x = x;
       this.y = y;
       this.z = z;

@@ -1,19 +1,5 @@
 package crazypants.enderio.machine.tank;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -27,6 +13,19 @@ import crazypants.enderio.machine.tank.GuiTank.VoidMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ArrayMappingTool;
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
 
@@ -54,9 +53,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  protected boolean doPush(ForgeDirection dir) {
+  protected boolean doPush(EnumFacing dir) {
 
-    if(isSideDisabled(dir.ordinal())) {
+    if(isSideDisabled(dir)) {
       return false;
     }
 
@@ -83,9 +82,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
 
-    if(isSideDisabled(dir.ordinal())) {
+    if(isSideDisabled(dir)) {
       return false;
     }
 
@@ -132,7 +131,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(!canFill(from)) {
       return 0;
     }
@@ -148,7 +147,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     if(!canDrain(from)) {
       return null;
     }
@@ -164,7 +163,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     if(!canDrain(from)) {
       return null;
     }
@@ -180,28 +179,28 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     return canFill(from) && fluid != null
-        && (tank.getFluidAmount() > 0 && tank.getFluid().getFluidID() == fluid.getID() || tank.getFluidAmount() == 0);
+        && (tank.getFluidAmount() > 0 && tank.getFluid().getFluid().getID() == fluid.getID() || tank.getFluidAmount() == 0);
   }
 
-  private boolean canFill(ForgeDirection from) {
+  private boolean canFill(EnumFacing from) {
     IoMode mode = getIoMode(from);
     return mode != IoMode.PUSH && mode != IoMode.DISABLED;
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return canDrain(from) && tank.canDrainFluidType(fluid);
   }
 
-  private boolean canDrain(ForgeDirection from) {
+  private boolean canDrain(EnumFacing from) {
     IoMode mode = getIoMode(from);
     return mode != IoMode.PULL && mode != IoMode.DISABLED;
   }
   
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     return new FluidTankInfo[] { new FluidTankInfo(tank) };
   }
 
@@ -284,11 +283,11 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     }
     if(tankDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
-      worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+      worldObj.updateComparatorOutputLevel(pos, getBlockType());
       Fluid held = tank.getFluid() == null ? null : tank.getFluid().getFluid();
       if(lastFluid != held) {
         lastFluid = held;
-        worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+        worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
       }
       tankDirty = false;
     }
@@ -437,4 +436,6 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   public void setTanksDirty() {
     tankDirty = true;
   }
+
+  
 }

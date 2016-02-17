@@ -4,20 +4,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.config.Config;
+import crazypants.util.BaublesUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.config.Config;
-import crazypants.util.BaublesUtil;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class WirelessChargerController {
 
@@ -26,8 +24,7 @@ public class WirelessChargerController {
   public static final int RANGE = Config.wirelessChargerRange;
   public static final int RANGE_SQ = RANGE * RANGE;
 
-  static {
-    FMLCommonHandler.instance().bus().register(WirelessChargerController.instance);
+  static {    
     MinecraftForge.EVENT_BUS.register(WirelessChargerController.instance);
   }
 
@@ -41,7 +38,7 @@ public class WirelessChargerController {
     if(charger == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getWorld());
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getWorldObj());
     chargers.put(charger.getLocation(), charger);
     changeCount++;
   }
@@ -50,7 +47,7 @@ public class WirelessChargerController {
     if(capBank == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorld());
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorldObj());
     chargers.remove(capBank.getLocation());
     changeCount++;
   }
@@ -110,10 +107,10 @@ public class WirelessChargerController {
   }
 
   private Map<BlockCoord, IWirelessCharger> getChargersForWorld(World world) {
-    Map<BlockCoord, IWirelessCharger> res = perWorldChargers.get(world.provider.dimensionId);
+    Map<BlockCoord, IWirelessCharger> res = perWorldChargers.get(world.provider.getDimensionId());
     if(res == null) {
       res = new HashMap<BlockCoord, IWirelessCharger>();
-      perWorldChargers.put(world.provider.dimensionId, res);
+      perWorldChargers.put(world.provider.getDimensionId(), res);
     }
     return res;
   }
@@ -123,6 +120,6 @@ public class WirelessChargerController {
   }
 
   public Map<BlockCoord, IWirelessCharger> getChargerMap(World world) {
-    return perWorldChargers.get(world.provider.dimensionId);
+    return perWorldChargers.get(world.provider.getDimensionId());
   }
 }

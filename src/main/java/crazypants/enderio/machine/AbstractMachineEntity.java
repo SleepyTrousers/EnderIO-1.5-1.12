@@ -723,4 +723,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
     return true;
   }
+  
+  @Override
+  public BlockCoord getLocation() {    
+    return new BlockCoord(pos);
+  }
 }

@@ -1,5 +1,6 @@
 package crazypants.enderio.machine;
 
+import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -8,10 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
 
 public class ClearConfigRecipe implements IRecipe {
   
@@ -34,10 +34,11 @@ public class ClearConfigRecipe implements IRecipe {
       input = count == 1 && checkStack != null ? checkStack : input;
     }
     
-    if (count == 1 && input.stackTagCompound != null && input.stackTagCompound.getBoolean("eio.abstractMachine")) {
+    if (count == 1 && input.getTagCompound() != null && input.getTagCompound().getBoolean("eio.abstractMachine")) {
       ItemStack out = input.copy();
-      out.stackTagCompound = new NBTTagCompound();
-      out.stackTagCompound.setBoolean("clearedConfig", true);
+      NBTTagCompound stackTagCompound = new NBTTagCompound();
+      stackTagCompound.setBoolean("clearedConfig", true);
+      out.setTagCompound(stackTagCompound);
       out.stackSize = 1;
       output = out;
     } else {
@@ -67,5 +68,11 @@ public class ClearConfigRecipe implements IRecipe {
     if (output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
       event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
     }
+  }
+
+  @Override
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+    //TODO: 1.8
+    return null;
   }
 }

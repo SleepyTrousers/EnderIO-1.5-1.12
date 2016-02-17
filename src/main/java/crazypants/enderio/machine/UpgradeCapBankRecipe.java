@@ -1,11 +1,11 @@
 package crazypants.enderio.machine;
 
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import crazypants.enderio.power.PowerHandlerUtil;
 
 public class UpgradeCapBankRecipe extends ShapedOreRecipe {
 
@@ -22,7 +22,7 @@ public class UpgradeCapBankRecipe extends ShapedOreRecipe {
     for(int y=0 ; y<3 ; y++) {
       for(int x=0 ; x<3 ; x++) {
         ItemStack st = inv.getStackInRowAndColumn(x, y);
-        if(st != null && st.stackTagCompound != null && st.stackTagCompound.hasKey("Items")) {
+        if(st != null && st.getTagCompound() != null && st.getTagCompound().hasKey("Items")) {
           return false;
         }
       }

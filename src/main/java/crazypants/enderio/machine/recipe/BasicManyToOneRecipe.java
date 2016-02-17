@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import crazypants.enderio.machine.MachineRecipeInput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.util.EE3Util;
 
 public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
@@ -23,8 +22,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
     this.recipe = recipe;
     this.output = recipe.getOutputs()[0].getOutput().copy();
     energyRequired = recipe.getEnergyRequired();
-    bonusType = recipe.getBonusType();
-    EE3Util.registerBasicToManyRecipe(recipe);
+    bonusType = recipe.getBonusType();    
   }
 
   @Override

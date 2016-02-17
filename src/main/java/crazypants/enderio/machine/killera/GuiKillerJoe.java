@@ -1,9 +1,7 @@
 package crazypants.enderio.machine.killera;
 
 import java.awt.Rectangle;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,10 +15,11 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiMachineBase;
-import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
@@ -65,7 +64,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
     if(b.id == XP_ID) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 1));

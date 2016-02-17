@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.ranged;
 
+import com.enderio.core.common.util.BlockCoord;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RangeEntity extends Entity {
 
@@ -36,12 +35,12 @@ public class RangeEntity extends Entity {
   }
 
   @Override
-  protected boolean canTriggerWalking() {
+  protected boolean canTriggerWalking() {    
     return false;
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox() {
+  public AxisAlignedBB getEntityBoundingBox() {
     return null;
   }
 
@@ -50,7 +49,7 @@ public class RangeEntity extends Entity {
     super.onUpdate();
     lifeSpan--;
     BlockCoord bc = spawnGuard.getLocation();
-    if(!(worldObj.getTileEntity(bc.x, bc.y, bc.z) instanceof IRanged)) {
+    if(!(worldObj.getTileEntity(bc.getBlockPos()) instanceof IRanged)) {
       setDead();
     }
     if(!spawnGuard.isShowingRange()) {

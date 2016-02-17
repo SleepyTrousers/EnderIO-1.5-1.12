@@ -1,7 +1,8 @@
 package crazypants.enderio.fluid;
 
-import net.minecraftforge.fluids.IFluidTank;
 import crazypants.enderio.EnderIO;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.IFluidTank;
 
 public class Fluids {
 
@@ -13,6 +14,14 @@ public class Fluids {
 
   public static final String FIRE_WATER_NAME = "fire_water";
 
+  public static ResourceLocation getStill(String fluidName) {
+    return new ResourceLocation(EnderIO.MODID, fluidName + "_still");
+  }
+  
+  public static ResourceLocation getFlowing(String fluidName) {
+    return new ResourceLocation(EnderIO.MODID, fluidName + "_flow");
+  }
+  
   public static String toCapactityString(IFluidTank tank) {
     if(tank == null) {
       return "0/0 " + MB();

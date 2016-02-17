@@ -42,7 +42,7 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
 
     int itemID = Item.getIdFromItem(stack.getItem());
     int meta = META_EXTRACTOR.getDamage(stack);
-    NBTTagCompound nbt = stack.stackTagCompound;
+    NBTTagCompound nbt = stack.getTagCompound();
 
     if(nbt != null && nbt.hasNoTags()) {
       nbt = null;

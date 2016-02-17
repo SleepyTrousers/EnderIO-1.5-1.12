@@ -1,11 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
@@ -16,6 +10,11 @@ import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintableTileEntity, IInternalPowerHandler {
 
@@ -64,7 +63,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
-  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+  public void setIoMode(EnumFacing faceHit, IoMode mode) {
     super.setIoMode(faceHit, mode);
     if(dist != null) {
       dist.neighboursChanged();
@@ -96,27 +95,23 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
+  public boolean canConnectEnergy(EnumFacing from) {
     return hasPower;
   }
 
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) {
+  public int getMaxEnergyRecieved(EnumFacing dir) {
     return maxIn;
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
     return hasPower() && getIoMode(from).canRecieveInput() ? super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
   }
+ 
 
   @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
     ItemStack[] invCopy = new ItemStack[inventory.length];
     for (int i = 0; i < inventory.length; i++) {
       invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
@@ -132,7 +127,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
-  protected boolean doPush(ForgeDirection dir) {
+  protected boolean doPush(EnumFacing dir) {
 
     if(!shouldDoWorkThisTick(20)) {
       return false;
@@ -144,7 +139,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
     }
 
     BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+    TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
 
     boolean ret = super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
 

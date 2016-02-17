@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.buffer;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,6 +12,8 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
@@ -57,7 +56,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   }
 
   @Override
-  protected void keyTyped(char par1, int par2) {
+  protected void keyTyped(char par1, int par2) throws IOException {
     super.keyTyped(par1, par2);
     if(par1 == 'e') {
       super.keyTyped(par1, 1);
@@ -153,7 +152,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    String invName = EnderIO.lang.localizeExact(getTileEntity().getInventoryName() + ".name");
+    String invName = EnderIO.lang.localizeExact(getTileEntity().getName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if(getTileEntity().hasPower()) {
@@ -181,7 +180,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   }
 
   protected void renderSlotHighlight(int slot, IoMode mode) {
-    Slot invSlot = (Slot) inventorySlots.inventorySlots.get(slot);
+    Slot invSlot = inventorySlots.inventorySlots.get(slot);
     if(mode == IoMode.PULL) {
       renderSlotHighlight(slot, PULL_COLOR);
     } else if(mode == IoMode.PUSH) {

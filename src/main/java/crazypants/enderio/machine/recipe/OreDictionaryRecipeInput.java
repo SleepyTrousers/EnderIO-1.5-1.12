@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.recipe;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -23,6 +23,7 @@ public class OreDictionaryRecipeInput extends RecipeInput {
     oreId = copy.oreId;
   }
 
+  @Override
   public RecipeInput copy() {
     return new OreDictionaryRecipeInput(this);
   }
@@ -49,8 +50,8 @@ public class OreDictionaryRecipeInput extends RecipeInput {
   }
 
   @Override
-  public ItemStack[] getEquivelentInputs() {
-    ArrayList<ItemStack> res = OreDictionary.getOres(oreId);
+  public ItemStack[] getEquivelentInputs() {    
+    List<ItemStack> res = OreDictionary.getOres(OreDictionary.getOreName(oreId));
     if(res == null || res.isEmpty()) {
       return null;
     }

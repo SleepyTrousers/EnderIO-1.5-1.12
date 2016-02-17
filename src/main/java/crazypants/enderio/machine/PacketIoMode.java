@@ -1,15 +1,15 @@
 package crazypants.enderio.machine;
 
+import com.enderio.core.common.util.BlockCoord;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMessage> {
 
@@ -17,7 +17,7 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
   private int y;
   private int z;
   private IoMode mode;
-  private ForgeDirection face;
+  private EnumFacing face;
 
   public PacketIoMode() {
   }
@@ -28,10 +28,10 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
     this.y = location.y;
     this.z = location.z;
     this.mode = IoMode.NONE;
-    this.face = ForgeDirection.UNKNOWN;
+    this.face = null;
   }
 
-  public PacketIoMode(IIoConfigurable cont, ForgeDirection face) {
+  public PacketIoMode(IIoConfigurable cont, EnumFacing face) {
     BlockCoord location = cont.getLocation();
     this.x = location.x;
     this.y = location.y;
@@ -46,7 +46,11 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
     buf.writeInt(y);
     buf.writeInt(z);
     buf.writeShort((short) mode.ordinal());
-    buf.writeShort((short) face.ordinal());
+    if(face != null) {
+      buf.writeShort((short) face.ordinal());
+    } else {
+      buf.writeShort(-1);
+    }
 
   }
 
@@ -56,16 +60,21 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
     y = buf.readInt();
     z = buf.readInt();
     mode = IoMode.values()[buf.readShort()];
-    face = ForgeDirection.values()[buf.readShort()];
+    short ord = buf.readShort();
+    if(ord < 0) {
+      face = null;
+    } else {
+      face = EnumFacing.values()[ord];
+    }
   }
 
   @Override
   public IMessage onMessage(PacketIoMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof IIoConfigurable) {
       IIoConfigurable me = (IIoConfigurable) te;
-      if(message.face == ForgeDirection.UNKNOWN) {
+      if(message.face == null) {
         me.clearAllIoModes();
       } else {
         me.setIoMode(message.face, message.mode);

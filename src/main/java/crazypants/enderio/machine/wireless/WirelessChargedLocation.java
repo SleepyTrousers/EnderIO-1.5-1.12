@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.enderio.core.common.util.BlockCoord;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
-import com.enderio.core.common.util.BlockCoord;
 
 public class WirelessChargedLocation {
 
@@ -31,7 +31,7 @@ public class WirelessChargedLocation {
     chargers.clear();
     lastChangeCount = wcc.getChangeCount();
     final BlockCoord bc = new BlockCoord(te);
-    wcc.getChargers(te.getWorldObj(), bc, chargers);
+    wcc.getChargers(te.getWorld(), bc, chargers);
     Collections.sort(chargers, new Comparator<IWirelessCharger>() {
       @Override
       public int compare(IWirelessCharger o1, IWirelessCharger o2) {

@@ -6,12 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -22,10 +16,15 @@ import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
 
-  private ForgeDirection face = ForgeDirection.DOWN;
+  private EnumFacing face = EnumFacing.DOWN;
 
   public static final int RF_USE_PER_TICK = 1;
 
@@ -64,11 +63,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     }
   }
 
-  public ForgeDirection getFace() {
+  public EnumFacing getFace() {
     return face;
   }
 
-  public void setFace(ForgeDirection face) {
+  public void setFace(EnumFacing face) {
     this.face = face;
   }
 
@@ -198,7 +197,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
       }
 
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing dir : EnumFacing.VALID_DIRECTIONS) {
         if(dir != face && dir != face.getOpposite()) { // don't project behind
           // us
           Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
@@ -210,15 +209,15 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       addNodeInDirection(ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);
 
       Vector3d[] diags = new Vector3d[2];
-      if(face.offsetX != 0) {
-        diags[0] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.UP);
-        diags[1] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.SOUTH);
-      } else if(face.offsetY != 0) {
-        diags[0] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.EAST);
-        diags[1] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.SOUTH);
+      if(face.getFrontOffsetX() != 0) {
+        diags[0] = ForgeDirectionOffsets.forDirCopy(EnumFacing.UP);
+        diags[1] = ForgeDirectionOffsets.forDirCopy(EnumFacing.SOUTH);
+      } else if(face.getFrontOffsetY() != 0) {
+        diags[0] = ForgeDirectionOffsets.forDirCopy(EnumFacing.EAST);
+        diags[1] = ForgeDirectionOffsets.forDirCopy(EnumFacing.SOUTH);
       } else {
-        diags[0] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.UP);
-        diags[1] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.EAST);
+        diags[0] = ForgeDirectionOffsets.forDirCopy(EnumFacing.UP);
+        diags[1] = ForgeDirectionOffsets.forDirCopy(EnumFacing.EAST);
       }
       addDiaganals(diags, new Vector3d(), after);
       addDiaganals(diags, ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);

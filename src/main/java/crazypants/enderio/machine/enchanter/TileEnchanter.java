@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.enchanter;
 
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,22 +11,19 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
+import net.minecraft.util.EnumFacing;
 
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   private ItemStack[] inv = new ItemStack[3];
 
-  private short facing = (short) ForgeDirection.NORTH.ordinal();
+  private EnumFacing facing = EnumFacing.NORTH;
 
-  public void setFacing(short s) {
+  public void setFacing(EnumFacing s) {
     facing = s;
   }
 
-  public short getFacing() {
+  public EnumFacing getFacing() {
     return facing;
   }
 
@@ -39,7 +39,11 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       }
     }
     root.setTag("Items", itemList);
-    root.setShort("facing", facing);
+    if(facing != null) {
+      root.setShort("facing", (short)facing.ordinal());
+    } else {
+      root.setShort("facing", (short)-1);
+    }
   }
 
   @Override
@@ -54,7 +58,12 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
         }
       }
     }
-    facing = root.getShort("facing");
+    int ord = root.getShort("facing");
+    if(ord < 0) {
+      facing = null;
+    } else {
+      facing = EnumFacing.VALUES[ord];
+    }
   }
 
   @Override
@@ -89,16 +98,11 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    if(fromStack.stackTagCompound != null) {
-      result.stackTagCompound = (NBTTagCompound) fromStack.stackTagCompound.copy();
+    if(fromStack.getTagCompound() != null) {
+      result.setTagCompound((NBTTagCompound) fromStack.getTagCompound().copy());
     }
     fromStack.stackSize -= amount;
     return result;
-  }
-
-  @Override
-  public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-    return null;
   }
 
   @Override
@@ -114,12 +118,12 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return ModObject.blockEnchanter.unlocalisedName;
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -129,12 +133,12 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer p) {
 
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer p) {
   }
 
   @Override

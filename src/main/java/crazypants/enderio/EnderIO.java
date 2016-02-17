@@ -454,14 +454,14 @@ public class EnderIO {
   }
 
   private void registerFluids() {
-    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
+    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME, Fluids.getStill(Fluids.NUTRIENT_DISTILLATION_NAME),Fluids.getFlowing(Fluids.NUTRIENT_DISTILLATION_NAME)).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water);
 
     PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
 
-    f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
+    f = new Fluid(Fluids.HOOTCH_NAME, Fluids.getStill(Fluids.HOOTCH_NAME),Fluids.getFlowing(Fluids.HOOTCH_NAME)).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
     blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
@@ -469,7 +469,7 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@"
         + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
 
-    f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
+    f = new Fluid(Fluids.ROCKET_FUEL_NAME, Fluids.getStill(Fluids.ROCKET_FUEL_NAME),Fluids.getFlowing(Fluids.ROCKET_FUEL_NAME)).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
     blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
@@ -477,7 +477,7 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
         + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
 
-    f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
+    f = new Fluid(Fluids.FIRE_WATER_NAME, Fluids.getStill(Fluids.FIRE_WATER_NAME),Fluids.getFlowing(Fluids.FIRE_WATER_NAME)).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
     blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
@@ -487,7 +487,7 @@ public class EnderIO {
 
     if(!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid(Config.xpJuiceName).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+      fluidXpJuice = new Fluid(Config.xpJuiceName,Fluids.getStill(Config.xpJuiceName),Fluids.getFlowing(Config.xpJuiceName)).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
       itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
     } else {

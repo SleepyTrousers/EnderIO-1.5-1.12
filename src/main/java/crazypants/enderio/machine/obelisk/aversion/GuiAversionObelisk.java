@@ -1,22 +1,21 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.List;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelisk> {
 
@@ -62,7 +61,7 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
     if(b.id == RANGE_ID) {
       getTileEntity().setShowRange(showRangeB.isSelected());

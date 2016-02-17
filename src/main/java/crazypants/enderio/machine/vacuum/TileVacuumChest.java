@@ -2,20 +2,9 @@ package crazypants.enderio.machine.vacuum;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ItemUtil;
+import com.google.common.base.Predicate;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -26,11 +15,24 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
-public class TileVacuumChest extends TileEntityEio implements IEntitySelector, IInventory, IRedstoneModeControlable {
+public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable {
 
   public static final int ITEM_ROWS = 3;
-  public static final int ITEM_SLOTS = 9*ITEM_ROWS;
+  public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
   public static final int FILTER_SLOTS = 5;
 
   private final ItemStack[] inv = new ItemStack[ITEM_SLOTS];
@@ -44,10 +46,10 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   @Override
   public void doUpdate() {
-    if(redstoneStateDirty) {
+    if (redstoneStateDirty) {
       updateRedstoneStatus();
     }
-    if(redstoneCheckPassed && !isFull()) {
+    if (redstoneCheckPassed && !isFull()) {
       doHoover();
     }
   }
@@ -56,7 +58,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
     boolean prevRedstoneCheckPassed = redstoneCheckPassed;
     redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
     redstoneStateDirty = false;
-    if(redstoneCheckPassed != prevRedstoneCheckPassed) {
+    if (redstoneCheckPassed != prevRedstoneCheckPassed) {
       updateBlock();
     }
   }
@@ -66,14 +68,14 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   }
 
   @Override
-  public boolean isEntityApplicable(Entity entity) {
-    if(entity.isDead) {
+  public boolean apply(EntityItem entity) {
+    if (entity.isDead) {
       return false;
     }
-    if(entity instanceof IProjectile) {
+    if (entity instanceof IProjectile) {
       return entity.motionY < 0.01;
     }
-    if(entity instanceof EntityItem) {
+    if (entity instanceof EntityItem) {
       return true;
     }
     return false;
@@ -82,20 +84,20 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   @SuppressWarnings("unchecked")
   private void doHoover() {
 
-    int rangeSqr = range*range;
-    BoundingBox bb = new BoundingBox(getLocation());
-    AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    int rangeSqr = range * range;
+    BoundingBox bb = new BoundingBox(getPos());
+    AxisAlignedBB aabb = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
     aabb = aabb.expand(range, range, range);
-    List<EntityItem> interestingItems = worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);
+    List<EntityItem> interestingItems = worldObj.getEntitiesWithinAABB(EntityItem.class, aabb, this);
 
     for (EntityItem entity : interestingItems) {
-      if(filter == null || filter.doesItemPassFilter(entity.getEntityItem())) {
-        double x = (xCoord + 0.5D - entity.posX);
-        double y = (yCoord + 0.5D - entity.posY);
-        double z = (zCoord + 0.5D - entity.posZ);
+      if (filter == null || filter.doesItemPassFilter(entity.getEntityItem())) {
+        double x = (pos.getX() + 0.5D - entity.posX);
+        double y = (pos.getY() + 0.5D - entity.posY);
+        double z = (pos.getZ() + 0.5D - entity.posZ);
 
         double distance = Math.sqrt(x * x + y * y + z * z);
-        if(distance < 1.25) {
+        if (distance < 1.25) {
           hooverEntity(entity);
         } else {
           double speed = 0.06;
@@ -111,15 +113,15 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   }
 
   private void hooverEntity(Entity entity) {
-    if(!worldObj.isRemote) {
-      if(entity instanceof EntityItem && !entity.isDead) {
+    if (!worldObj.isRemote) {
+      if (entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();
 
         int numInserted = ItemUtil.doInsertItem(this, stack, null);
         stack.stackSize -= numInserted;
         item.setEntityItemStack(stack);
-        if(stack.stackSize == 0) {
+        if (stack.stackSize == 0) {
           item.setDead();
         }
       }
@@ -128,7 +130,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   private boolean isFull() {
     for (ItemStack stack : inv) {
-      if(stack == null || stack.stackSize < stack.getMaxStackSize()) {
+      if (stack == null || stack.stackSize < stack.getMaxStackSize()) {
         return false;
       }
     }
@@ -139,7 +141,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
   }
-  
+
   @Override
   public int getSizeInventory() {
     return inv.length;
@@ -152,7 +154,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   @Override
   public ItemStack getStackInSlot(int slot) {
-    if(slot < 0 || slot >= inv.length) {
+    if (slot < 0 || slot >= inv.length) {
       return null;
     }
     return inv[slot];
@@ -161,16 +163,16 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack fromStack = inv[fromSlot];
-    if(fromStack == null) {
+    if (fromStack == null) {
       return null;
     }
-    if(fromStack.stackSize <= amount) {
+    if (fromStack.stackSize <= amount) {
       inv[fromSlot] = null;
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    if(fromStack.stackTagCompound != null) {
-      result.stackTagCompound = (NBTTagCompound) fromStack.stackTagCompound.copy();
+    if (fromStack.getTagCompound() != null) {
+      result.setTagCompound((NBTTagCompound) fromStack.getTagCompound().copy());
     }
     fromStack.stackSize -= amount;
     return result;
@@ -179,43 +181,52 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   @Override
   public void setInventorySlotContents(int slot, ItemStack contents) {
 
-    if(slot < 0 || slot >= inv.length) {
+    if (slot < 0 || slot >= inv.length) {
       System.out.println("TileVacumChest.setInventorySlotContents: " + slot);
       return;
     }
 
-    if(contents == null) {
+    if (contents == null) {
       inv[slot] = contents;
     } else {
       inv[slot] = contents.copy();
     }
 
-    if(contents != null && contents.stackSize > getInventoryStackLimit()) {
+    if (contents != null && contents.stackSize > getInventoryStackLimit()) {
       contents.stackSize = getInventoryStackLimit();
     }
   }
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int var1) {
-    return null;
+  public ItemStack removeStackFromSlot(int index) {
+    ItemStack fromStack = inv[index];
+    inv[index] = null;
+    return fromStack;
   }
 
   @Override
-  public String getInventoryName() {
+  public void clear() {
+    for (int i = 0; i < inv.length; i++) {
+      inv[i] = null;
+    }
+  }
+
+  @Override
+  public String getName() {
     return ModObject.blockVacuumChest.unlocalisedName;
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer player) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer player) {
   }
 
   @Override
@@ -246,22 +257,22 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   public void setFilterItem(ItemStack filterItem) {
     IItemFilter newFilter = FilterRegister.getFilterForUpgrade(filterItem);
-    if(newFilter == null || newFilter instanceof ItemFilter) {
+    if (newFilter == null || newFilter instanceof ItemFilter) {
       this.filterItem = filterItem;
-      this.filter = (ItemFilter)newFilter;
+      this.filter = (ItemFilter) newFilter;
       updateBlock();
     }
   }
 
   public void setFilterBlacklist(boolean isBlacklist) {
-    if(filter != null) {
+    if (filter != null) {
       filter.setBlacklist(isBlacklist);
       updateFilterItem();
     }
   }
 
   public void setFilterMatchMeta(boolean matchMeta) {
-    if(filter != null) {
+    if (filter != null) {
       filter.setMatchMeta(matchMeta);
       updateFilterItem();
     }
@@ -276,7 +287,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   }
 
   public void setItemFilterSlot(int slot, ItemStack stack) {
-    if(slot >= 0 && slot < FILTER_SLOTS && filter != null) {
+    if (slot >= 0 && slot < FILTER_SLOTS && filter != null) {
       filter.setInventorySlotContents(slot, stack);
       updateFilterItem();
     }
@@ -307,26 +318,26 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
 
   public void readContentsFromNBT(NBTTagCompound nbtRoot) {
     NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-    if(itemList != null) {
+    if (itemList != null) {
       for (int i = 0; i < itemList.tagCount(); i++) {
         NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
         byte slot = itemStack.getByte("Slot");
-        if(slot >= 0 && slot < inv.length) {
+        if (slot >= 0 && slot < inv.length) {
           inv[slot] = ItemStack.loadItemStackFromNBT(itemStack);
         }
       }
     }
-    if(nbtRoot.hasKey("range")) {
+    if (nbtRoot.hasKey("range")) {
       range = limitRange(nbtRoot.getInteger("range"));
     } else {
       range = Config.vacuumChestRange;
     }
-    if(nbtRoot.hasKey("filter")) {
+    if (nbtRoot.hasKey("filter")) {
       NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag("filter");
       filterItem = ItemStack.loadItemStackFromNBT(filterTag);
       IItemFilter flt = FilterRegister.getFilterForUpgrade(filterItem);
-      if(flt instanceof ItemFilter) {
-        filter = (ItemFilter)flt;
+      if (flt instanceof ItemFilter) {
+        filter = (ItemFilter) flt;
       } else {
         filterItem = null;
       }
@@ -336,7 +347,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
     }
 
     int rsContr = nbtRoot.getInteger("redstoneControlMode");
-    if(rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
+    if (rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
       rsContr = 0;
     }
     redstoneControlMode = RedstoneControlMode.values()[rsContr];
@@ -351,7 +362,7 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
     NBTTagList itemList = new NBTTagList();
     for (int i = 0; i < inv.length; i++) {
-      if(inv[i] != null) {
+      if (inv[i] != null) {
         NBTTagCompound itemStackNBT = new NBTTagCompound();
         itemStackNBT.setByte("Slot", (byte) i);
         inv[i].writeToNBT(itemStackNBT);
@@ -360,12 +371,31 @@ public class TileVacuumChest extends TileEntityEio implements IEntitySelector, I
     }
     nbtRoot.setTag("Items", itemList);
     nbtRoot.setInteger("range", range);
-    if(filterItem != null) {
+    if (filterItem != null) {
       NBTTagCompound filterNBT = new NBTTagCompound();
       filterItem.writeToNBT(filterNBT);
       nbtRoot.setTag("filter", filterNBT);
     }
     nbtRoot.setInteger("redstoneControlMode", redstoneControlMode.ordinal());
+  }
+
+  @Override
+  public IChatComponent getDisplayName() {
+    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  }
+
+  @Override
+  public int getField(int id) {
+    return 0;
+  }
+
+  @Override
+  public void setField(int id, int value) {
+  }
+
+  @Override
+  public int getFieldCount() {
+    return 0;
   }
 
 }

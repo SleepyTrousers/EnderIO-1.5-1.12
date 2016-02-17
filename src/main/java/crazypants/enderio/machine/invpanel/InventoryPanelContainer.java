@@ -9,6 +9,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.invpanel.server.ChangeLog;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,18 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.util.ItemUtil;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machine.invpanel.server.ChangeLog;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.PacketHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -153,14 +152,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
-    if(!getInv().getWorldObj().isRemote) {
-      ((TileInventoryPanel) getInv()).eventHandler = null;
+    if(!getInv().getWorld().isRemote) {
+      getInv().eventHandler = null;
     }
     removeChangeLog();
   }
 
   public TileInventoryPanel getInventoryPanel() {
-    return (TileInventoryPanel) getInv();
+    return getInv();
   }
 
   public Slot getSlotFilter() {
@@ -238,7 +237,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       tmp.setInventorySlotContents(i, getInv().getStackInSlot(i));
     }
 
-    getInv().setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, getInv().getWorldObj()));
+    getInv().setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, getInv().getWorld()));
 
     checkCraftingRecipes();
   }
@@ -323,7 +322,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @SuppressWarnings("unchecked")
   private void sendReturnAreaSlots() {
     for (int slotIdx = firstSlotReturn; slotIdx < endSlotReturn; slotIdx++) {
-      ItemStack stack = ((Slot) inventorySlots.get(slotIdx)).getStack();
+      ItemStack stack = inventorySlots.get(slotIdx).getStack();
       if(stack != null) {
         stack = stack.copy();
       }
@@ -368,7 +367,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   public int getSlotIndex(IInventory inv, int index) {
     for (int i = 0; i < inventorySlots.size(); i++) {
-      Slot slot = (Slot) inventorySlots.get(i);
+      Slot slot = inventorySlots.get(i);
       if(slot.isSlotInInventory(inv, index)) {
         return i;
       }
@@ -399,7 +398,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       }
 
       ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.meta);
-      tmpStack.stackTagCompound = entry.nbt;
+      tmpStack.setTagCompound(entry.nbt);
       maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
 
       if(targetStack != null && targetStack.stackSize > 0) {
@@ -437,7 +436,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
       return false;
     }
-    if(getInv().getWorldObj().isRemote) {
+    if(getInv().getWorld().isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
     }
     return true;

@@ -3,12 +3,12 @@ package crazypants.enderio.machine.solar;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
+import cofh.api.energy.EnergyStorage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.EnergyStorage;
-
-import com.google.common.collect.Lists;
+import net.minecraft.util.EnumFacing;
 
 public class SolarPanelNetwork {
 
@@ -19,7 +19,7 @@ public class SolarPanelNetwork {
 
   public static final int ENERGY_PER = 10000;
 
-  public static final EnumSet<ForgeDirection> VALID_CONS = EnumSet.of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
+  public static final EnumSet<EnumFacing> VALID_CONS = EnumSet.of(EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST);
 
   public SolarPanelNetwork() {
     panels = Lists.newArrayList();
@@ -64,8 +64,8 @@ public class SolarPanelNetwork {
   void removeFromNetwork(TileEntitySolarPanel panel) {
     // build list of formerly connected neighbors
     List<TileEntitySolarPanel> neighbors = Lists.newArrayList();
-    for (ForgeDirection dir : VALID_CONS) {
-      TileEntity te = panel.getLocation().getLocation(dir).getTileEntity(panel.getWorldObj());
+    for (EnumFacing dir : VALID_CONS) {
+      TileEntity te = panel.getLocation().getLocation(dir).getTileEntity(panel.getWorld());
       if(te != null && te instanceof TileEntitySolarPanel) {
         neighbors.add((TileEntitySolarPanel) te);
       }

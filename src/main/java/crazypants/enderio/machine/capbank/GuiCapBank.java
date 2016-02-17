@@ -1,21 +1,14 @@
 package crazypants.enderio.machine.capbank;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -33,6 +26,12 @@ import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
@@ -167,7 +166,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     y += 20;
     configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, te, configOverlay);
     
-    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
     
     x = inputX - 24;
     y = inputY;
@@ -196,7 +195,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void keyTyped(char par1, int par2) {
+  protected void keyTyped(char par1, int par2) throws IOException {
     super.keyTyped(par1, par2);
     updateInputOutput();
   }
@@ -254,7 +253,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
     for (int i = 0; i < buttonList.size(); ++i) {
-      GuiButton guibutton = (GuiButton) buttonList.get(i);
+      GuiButton guibutton = buttonList.get(i);
       guibutton.drawButton(mc, 0, 0);
     }
 
@@ -316,7 +315,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @Override
   public FontRenderer getFontRenderer() {
-    return Minecraft.getMinecraft().fontRenderer;
+    return Minecraft.getMinecraft().fontRendererObj;
   }
 
   private int getEnergyStoredScaled(int scale) {

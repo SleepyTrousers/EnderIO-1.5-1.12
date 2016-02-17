@@ -2,18 +2,16 @@ package crazypants.enderio.machine.enchanter;
 
 import java.util.List;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
-
-import crazypants.enderio.EnderIO;
 
 public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
@@ -94,8 +92,8 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
         }
 
         te.setInventorySlotContents(0, (ItemStack) null);
-        if (!te.getWorldObj().isRemote) {
-          te.getWorldObj().playAuxSFX(1021, te.xCoord, te.yCoord, te.zCoord, 0);
+        if (!te.getWorld().isRemote) {
+          te.getWorld().playAuxSFX(1021, te.getPos(), 0);
         }
       }
 
@@ -131,7 +129,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   @Override
   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
     ItemStack copyStack = null;
-    Slot slot = (Slot) inventorySlots.get(par2);
+    Slot slot = inventorySlots.get(par2);
 
     if (slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();

@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.enchanter;
 
+import crazypants.enderio.machine.recipe.RecipeInput;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class EnchanterRecipe {
 
@@ -11,13 +11,14 @@ public class EnchanterRecipe {
   private final int costPerLevel;
   private final int stackSizePerLevel;
   
-  public static Enchantment getEnchantmentFromName(String enchantmentName) {    
-    for(Enchantment ench : Enchantment.enchantmentsList) {
-      if(ench != null && ench.getName() != null && ench.getName().equals(enchantmentName)) {        
-        return ench;
-      }
-    }
-    return null;
+  public static Enchantment getEnchantmentFromName(String enchantmentName) {   
+    return Enchantment.getEnchantmentByLocation(enchantmentName);
+//    for(Enchantment ench : Enchantment.enchantmentsList) {
+//      if(ench != null && ench.getName() != null && ench.getName().equals(enchantmentName)) {        
+//        return ench;
+//      }
+//    }
+//    return null;
   }
   
   public EnchanterRecipe(RecipeInput curInput, String enchantmentName, int costPerLevel) {

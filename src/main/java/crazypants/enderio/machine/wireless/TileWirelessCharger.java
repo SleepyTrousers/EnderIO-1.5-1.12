@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.wireless;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import com.enderio.core.common.util.BlockCoord;
+
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger {
 
@@ -98,7 +100,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) {
+  public int getMaxEnergyRecieved(EnumFacing dir) {
     return MAX_ENERGY_IN;
   }
 
@@ -118,7 +120,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
@@ -133,23 +135,23 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection from) {
+  public int getEnergyStored(EnumFacing from) {
     return storedEnergyRF;
   }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
+  public int getMaxEnergyStored(EnumFacing from) {
     return MAX_ENERGY_STORED;
   }
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
+  public boolean canConnectEnergy(EnumFacing from) {
     return true;
   }
 
   @Override
-  public World getWorld() {    
-    return getWorldObj();
+  public World getWorldObj() {    
+    return getWorld();
   }
 
   @Override
@@ -157,7 +159,13 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     return true;
   }
 
+  @Override
   public boolean isActive() {
     return getEnergyStored() > 0 && !isPoweredRedstone();
+  }
+
+  @Override
+  public BlockCoord getLocation() {
+    return new BlockCoord(pos);
   }
 }

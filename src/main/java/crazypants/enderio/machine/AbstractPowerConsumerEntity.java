@@ -1,8 +1,8 @@
 package crazypants.enderio.machine;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.util.EnumFacing;
 
 public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements IInternalPowerReceiver {
 
@@ -11,20 +11,20 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    if(isSideDisabled(from.ordinal())) {
+  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+    if(isSideDisabled(from)) {
       return 0;
     }
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection from) {
+  public int getEnergyStored(EnumFacing from) {
     return getEnergyStored();
   }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
+  public int getMaxEnergyStored(EnumFacing from) {
     return getMaxEnergyStored();
   }
 

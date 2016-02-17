@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.crusher;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -11,6 +9,8 @@ import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TileCrusher extends AbstractPoweredTaskEntity {
 
@@ -26,7 +26,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return ModObject.blockSagMill.unlocalisedName;
   }
 
@@ -141,7 +141,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 

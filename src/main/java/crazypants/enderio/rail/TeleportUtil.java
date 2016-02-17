@@ -3,6 +3,9 @@ package crazypants.enderio.rail;
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
@@ -10,20 +13,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.enderio.network.PacketHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TeleportUtil {
 
   public static List<Entity> createEntitiesForReciever(EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
-    int toDimension = reciever.getWorldObj().provider.dimensionId;
-    int toX = reciever.xCoord;
-    int toY = reciever.yCoord + 1;
-    int toZ = reciever.zCoord;
+    int toDimension = reciever.getWorld().provider.getDimensionId();
+    BlockPos pos = reciever.getPos();
+    int toX = pos.getX();
+    int toY = pos.getY() + 1;
+    int toZ = pos.getZ();
 
     MinecraftServer minecraftserver = MinecraftServer.getServer();
     WorldServer worldserver1 = minecraftserver.worldServerForDimension(toDimension);
@@ -45,7 +47,7 @@ public class TeleportUtil {
     Entity passenger = cart.riddenByEntity;
     if(passenger != null && !(passenger instanceof EntityPlayer)) {
       Entity newPas = EntityList.createEntityByName(EntityList.getEntityString(passenger), worldserver1);
-      newPas.copyDataFrom(passenger, true);
+      newPas.copyDataFromOld(passenger);
       newPas.dimension = toDimension;
       newPas.setLocationAndAngles(toX + 0.5, toY, toZ + 0.5, cart.rotationYaw, cart.rotationPitch);
       newCart.riddenByEntity = newPas;
@@ -65,7 +67,7 @@ public class TeleportUtil {
     }
 
     MinecraftServer minecraftserver = MinecraftServer.getServer();
-    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
+    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
 
     Entity passenger = cart.riddenByEntity;
     if(passenger != null && !(passenger instanceof EntityPlayer)) {
@@ -80,13 +82,13 @@ public class TeleportUtil {
   public static void spawn(World world, Entity entity) {
     if(entity != null) {
       MinecraftServer minecraftserver = MinecraftServer.getServer();
-      WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
+      WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
       worldserver.spawnEntityInWorld(entity);
     }
   }
 
   public static void spawnTeleportEffects(World world, Entity entity) {
-    PacketHandler.INSTANCE.sendToAllAround(new PacketTeleportEffects(entity), new TargetPoint(world.provider.dimensionId, entity.posX, entity.posY,
+    PacketHandler.INSTANCE.sendToAllAround(new PacketTeleportEffects(entity), new TargetPoint(world.provider.getDimensionId(), entity.posX, entity.posY,
         entity.posZ, 64));
     if(Config.machineSoundsEnabled) {
       world.playSoundEffect(entity.posX, entity.posY, entity.posZ, "mob.endermen.portal", 0.5F, 0.25F);

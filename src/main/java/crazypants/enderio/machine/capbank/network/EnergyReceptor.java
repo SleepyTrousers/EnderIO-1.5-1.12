@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.capbank.network;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.IConduitBundle;
@@ -9,17 +7,18 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IPowerInterface;
+import net.minecraft.util.EnumFacing;
 
 public class EnergyReceptor {
 
   private final IPowerInterface receptor;
-  private final ForgeDirection fromDir;
+  private final EnumFacing fromDir;
   private final IoMode mode;
   private final BlockCoord location;
 
   private final IPowerConduit conduit;
 
-  public EnergyReceptor(TileCapBank cb, IPowerInterface receptor, ForgeDirection dir) {
+  public EnergyReceptor(TileCapBank cb, IPowerInterface receptor, EnumFacing dir) {
     this.receptor = receptor;
     fromDir = dir;
     mode = cb.getIoMode(dir);
@@ -39,7 +38,7 @@ public class EnergyReceptor {
     return receptor;
   }
 
-  public ForgeDirection getDir() {
+  public EnumFacing getDir() {
     return fromDir;
   }
 

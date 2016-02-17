@@ -2,23 +2,8 @@ package crazypants.enderio.machine.farm;
 
 import java.util.BitSet;
 
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -33,6 +18,20 @@ import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.tool.ArrayMappingTool;
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
 
@@ -156,7 +155,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   public boolean tillBlock(BlockCoord plantingLocation) {
-    BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
+    BlockCoord dirtLoc = plantingLocation.getLocation(EnumFacing.DOWN);
     Block dirtBlock = getBlock(dirtLoc);
     if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass)) {
       if(!hasHoe()) {
@@ -165,8 +164,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       damageHoe(1, dirtLoc);
       worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
-      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
-          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
+      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepSound(),
+          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getFrequency() * 0.8F);
       actionPerformed(false);
       return true;
     } else if(dirtBlock == Blocks.farmland) {
@@ -421,7 +420,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
     if(farmerJoe == null) {
-      farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
+      farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.getDimensionId()));
     }
 
     if(isOpen(bc)) {
@@ -443,7 +442,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
       if(harvest != null && harvest.getDrops() != null) {
         PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimensionId(), bc.x, bc.y, bc.z, 64));
         for (EntityItem ei : harvest.getDrops()) {
           if(ei != null) {
             insertHarvestDrop(ei, bc);
@@ -468,7 +467,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         farmerJoe.inventory.currentItem = 0;
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
           inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
-          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.getDimensionId(), bc.x, bc.y, bc.z, 64));
           if (inventory[minFirtSlot] != null && inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = null;
           }
@@ -575,6 +574,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   protected int getSupplySlotForCoord(BlockCoord forBlock) {
 
+    int xCoord = getPos().getX();
+    int zCoord = getPos().getZ();
     if(forBlock.x <= xCoord && forBlock.z > zCoord) {
       return minSupSlot;
     } else if(forBlock.x > xCoord && forBlock.z > zCoord - 1) {
@@ -684,12 +685,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return EnderIO.blockFarmStation.getLocalizedName();
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 

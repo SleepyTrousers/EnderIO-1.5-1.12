@@ -2,15 +2,6 @@ package crazypants.enderio.machine.soul;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 
@@ -28,6 +19,14 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess {
 
@@ -124,7 +123,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       return false;
     }
     if(super.startNextTask(nextRecipe, chance)) {
-      xpCont.drain(ForgeDirection.UNKNOWN, XpUtil.experienceToLiquid(xpRequired), true);
+      xpCont.drain(null, XpUtil.experienceToLiquid(xpRequired), true);
       return true;
     }
     return false;
@@ -173,7 +172,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
     boolean res = super.doPull(dir);
     int req = getXPRequired();
     if(req > 0) {
@@ -183,7 +182,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
   
   @Override
-  protected boolean doPush(ForgeDirection dir) {
+  protected boolean doPush(EnumFacing dir) {
     boolean res = super.doPush(dir);
     int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), Config.fluidConduitExtractRate);
     if (maxAmount > 0) {
@@ -209,12 +208,12 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {    
+  public boolean canFill(EnumFacing from, Fluid fluid) {    
     return xpCont.canFill(from, fluid);
   }
   
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     int max = XpUtil.experienceToLiquid(getXPRequired());
     if (resource == null || max <= 0) {
       return 0;
@@ -228,7 +227,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     int max = XpUtil.experienceToLiquid(getExcessXP());
     if (resource != null && max < resource.amount) {
       FluidStack copy = resource.copy();
@@ -240,17 +239,17 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {    
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {    
     return xpCont.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {    
+  public boolean canDrain(EnumFacing from, Fluid fluid) {    
     return xpCont.canDrain(from, fluid);
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {    
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {    
     return xpCont.getTankInfo(from);
   }
 

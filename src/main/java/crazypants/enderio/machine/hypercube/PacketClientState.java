@@ -1,21 +1,19 @@
 package crazypants.enderio.machine.hypercube;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-
 import com.enderio.core.common.util.PlayerUtil;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage> {
 
@@ -29,9 +27,9 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   }
 
   public PacketClientState(TileHyperCube te) {
-    x = te.xCoord;
-    y = te.yCoord;
-    z = te.zCoord;
+    x = te.getPos().getX();
+    y = te.getPos().getY();
+    z = te.getPos().getZ();
     modes = new ArrayList<TileHyperCube.IoMode>(SubChannel.values().length);
     for (SubChannel sc : SubChannel.values()) {
       modes.add(te.getModeForChannel(sc));

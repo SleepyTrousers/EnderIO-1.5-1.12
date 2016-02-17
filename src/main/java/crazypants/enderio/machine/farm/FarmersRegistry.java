@@ -3,13 +3,6 @@ package crazypants.enderio.machine.farm;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
@@ -24,6 +17,13 @@ import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public final class FarmersRegistry {
 
@@ -219,8 +219,7 @@ public final class FarmersRegistry {
         GameRegistry.findBlock("Botany", "flower"), 
         GameRegistry.findBlock("Botania", "flower") ) );
   }
-
-  @SuppressWarnings("unchecked")
+  
   private static void addGrowableOres() {
     String mod = "B0bGrowsOre";
     if (!Loader.isModLoaded(mod)) {
@@ -231,7 +230,7 @@ public final class FarmersRegistry {
     Iterator<Block> blockIter = Block.blockRegistry.iterator();
     while (blockIter.hasNext()) {
       Block block = blockIter.next();
-      String name = Block.blockRegistry.getNameForObject(block);
+      String name = Block.blockRegistry.getNameForObject(block).toString();
       if (name != null && name.startsWith(mod)) {
         for (Pattern blockPattern : growableOres) {
           if (blockPattern.matcher(name).find()) {

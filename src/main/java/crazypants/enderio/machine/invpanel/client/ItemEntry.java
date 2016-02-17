@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import java.util.Locale;
+
+import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemEntry extends ItemEntryBase {
   String name;
@@ -24,7 +25,7 @@ public class ItemEntry extends ItemEntryBase {
 
   public ItemStack makeItemStack() {
     ItemStack stack = new ItemStack(getItem(), count, meta);
-    stack.stackTagCompound = nbt;
+    stack.setTagCompound(nbt);
     return stack;
   }
 

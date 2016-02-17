@@ -3,9 +3,6 @@ package crazypants.enderio.machine.transceiver.gui;
 import java.awt.Color;
 import java.util.Set;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.base.Predicate;
@@ -14,23 +11,25 @@ import com.google.common.collect.Sets;
 
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.Channel;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.WorldRenderer;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
-  
+
   private FluentIterable<Channel> channels;
 
-//  private Channel activeChannel;
+  // private Channel activeChannel;
 
   private final GuiTransceiver parent;
 
   public GuiChannelList(GuiTransceiver parent, int width, int height, int originX, int originY) {
-    super(width, height, originX, originY, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 4);
+    super(width, height, originX, originY, Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT + 4);
     this.parent = parent;
   }
 
   void setChannels(Set<Channel> val, Predicate<Channel> filter) {
-    if(val == null) {
-      channels = FluentIterable.from(Sets.<Channel>newHashSet());
+    if (val == null) {
+      channels = FluentIterable.from(Sets.<Channel> newHashSet());
     }
     channels = FluentIterable.from(val).filter(filter);
   }
@@ -41,8 +40,8 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  public Channel getElementAt(int index) {    
-    if(index < 0 || index >= channels.size()) {
+  public Channel getElementAt(int index) {
+    if (index < 0 || index >= channels.size()) {
       return null;
     }
     return channels.get(index);
@@ -50,7 +49,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
 
   @Override
   protected boolean elementClicked(int i, boolean flag) {
-    if(getElementAt(i) == null) {
+    if (getElementAt(i) == null) {
       return false;
     } else {
       return true;
@@ -58,18 +57,19 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, Tessellator tessellator) {
-    if(index < 0 || index >= channels.size()) {
+  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, WorldRenderer renderer) {
+    if (index < 0 || index >= channels.size()) {
       return;
     }
     Channel c = getElementAt(index);
-    if(c == null) {
+    if (c == null) {
       return;
     }
     int col = ColorUtil.getRGB(Color.white);
     parent.drawString(parent.getFontRenderer(), c.getName(), xPosition + margin, yPosition + margin / 2, col);
-    if(!c.isPublic()) {
+    if (!c.isPublic()) {
       IconEIO.map.render(IconEIO.LOCK_LOCKED, xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
     }
   }
+
 }

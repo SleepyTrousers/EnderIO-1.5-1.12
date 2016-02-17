@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.generator.combustion;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -24,6 +13,16 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
 
@@ -55,7 +54,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
     boolean res = super.doPull(dir);
     BlockCoord loc = getLocation().getLocation(dir);
     IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
@@ -86,7 +85,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
     return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
 
@@ -106,7 +105,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
@@ -128,12 +127,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return null;
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return null;
   }
 
@@ -312,21 +311,21 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(isSideDisabled(from.ordinal()) || fluid == null) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
+    if(isSideDisabled(from) || fluid == null) {
       return false;
     }
     return FluidFuelRegister.instance.getCoolant(fluid) != null || FluidFuelRegister.instance.getFuel(fluid) != null;
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return false;
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-    if(isSideDisabled(from.ordinal())) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
+    if(isSideDisabled(from)) {
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] { getCoolantTank().getInfo(), getFuelTank().getInfo() };

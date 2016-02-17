@@ -1,6 +1,7 @@
 package crazypants.enderio.rail;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 
@@ -16,13 +17,16 @@ public class TeleporterEIO extends Teleporter {
   }
 
   @Override
-  public boolean placeInExistingPortal(Entity p_placeInExistingPortal_1_, double p_placeInExistingPortal_2_, double p_placeInExistingPortal_4_,
-      double p_placeInExistingPortal_6_, float p_placeInExistingPortal_8_) {
+  public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
     return true;
   }
 
   @Override
-  public void placeInPortal(Entity entity, double x, double y, double z, float p_77185_8_) {
+  public void placeInPortal(Entity entity, float rotationYaw) {   
+    int x = MathHelper.floor_double(entity.posX);
+    int y = MathHelper.floor_double(entity.posY) - 1;
+    int z = MathHelper.floor_double(entity.posZ);
+    
     entity.setLocationAndAngles(x, y, z, entity.rotationPitch, entity.rotationYaw);
     entity.motionX = 0;
     entity.motionY = 0;

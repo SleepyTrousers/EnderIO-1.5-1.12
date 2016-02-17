@@ -43,11 +43,6 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int var1) {
-    return null;
-  }
-
-  @Override
   public void setInventorySlotContents(int i, ItemStack itemstack) {
     if(itemstack != null) {
       inv[i] = itemstack.copy();
@@ -61,12 +56,12 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return "CraftingGrid";
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -85,11 +80,11 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override

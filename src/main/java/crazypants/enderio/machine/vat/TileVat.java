@@ -1,15 +1,5 @@
 package crazypants.enderio.machine.vat;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -22,6 +12,15 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess {
 
@@ -41,12 +40,12 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return ModObject.blockVat.unlocalisedName;
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -63,9 +62,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  protected boolean doPush(ForgeDirection dir) {
+  protected boolean doPush(EnumFacing dir) {
 
-    if(isSideDisabled(dir.ordinal())) {
+    if(isSideDisabled(dir)) {
       return false;
     }
 
@@ -92,9 +91,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
 
-    if(isSideDisabled(dir.ordinal())) {
+    if(isSideDisabled(dir)) {
       return false;
     }
 
@@ -141,8 +140,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(isSideDisabled(from.ordinal())) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    if(isSideDisabled(from)) {
       return 0;
     }
 
@@ -157,8 +156,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(isSideDisabled(from.ordinal())) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+    if(isSideDisabled(from)) {
       return null;
     }
     if(outputTank.getFluid() == null || resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
@@ -172,8 +171,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(isSideDisabled(from.ordinal())) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+    if(isSideDisabled(from)) {
       return null;
     }
     FluidStack res = outputTank.drain(maxDrain, doDrain);
@@ -232,8 +231,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(isSideDisabled(from.ordinal())) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
+    if(isSideDisabled(from)) {
       return false;
     }
     if(fluid == null || (inputTank.getFluid() != null && inputTank.getFluid().getFluid().getID() != fluid.getID())) {
@@ -249,16 +248,16 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(isSideDisabled(from.ordinal())) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
+    if(isSideDisabled(from)) {
       return false;
     }
     return outputTank.getFluid() != null && outputTank.getFluid().getFluid().getID() == fluid.getID();
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-    if(isSideDisabled(from.ordinal())) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
+    if(isSideDisabled(from)) {
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] { inputTank.getInfo(), outputTank.getInfo() };

@@ -4,19 +4,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public interface IConduit {
 
@@ -58,15 +56,15 @@ public interface IConduit {
 
   // Conduit Connections
 
-  boolean canConnectToConduit(ForgeDirection direction, IConduit conduit);
+  boolean canConnectToConduit(EnumFacing direction, IConduit conduit);
 
-  Set<ForgeDirection> getConduitConnections();
+  Set<EnumFacing> getConduitConnections();
 
-  boolean containsConduitConnection(ForgeDirection dir);
+  boolean containsConduitConnection(EnumFacing dir);
 
-  void conduitConnectionAdded(ForgeDirection fromDirection);
+  void conduitConnectionAdded(EnumFacing fromDirection);
 
-  void conduitConnectionRemoved(ForgeDirection fromDirection);
+  void conduitConnectionRemoved(EnumFacing fromDirection);
 
   void connectionsChanged();
 
@@ -76,27 +74,27 @@ public interface IConduit {
 
   // External Connections
 
-  boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode);
+  boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionMode);
 
-  Set<ForgeDirection> getExternalConnections();
+  Set<EnumFacing> getExternalConnections();
 
-  boolean containsExternalConnection(ForgeDirection dir);
+  boolean containsExternalConnection(EnumFacing dir);
 
-  void externalConnectionAdded(ForgeDirection fromDirection);
+  void externalConnectionAdded(EnumFacing fromDirection);
 
-  void externalConnectionRemoved(ForgeDirection fromDirection);
+  void externalConnectionRemoved(EnumFacing fromDirection);
 
-  boolean isConnectedTo(ForgeDirection dir);
+  boolean isConnectedTo(EnumFacing dir);
 
-  ConnectionMode getConnectionMode(ForgeDirection dir);
+  ConnectionMode getConnectionMode(EnumFacing dir);
 
-  void setConnectionMode(ForgeDirection dir, ConnectionMode mode);
+  void setConnectionMode(EnumFacing dir, ConnectionMode mode);
 
   boolean hasConnectionMode(ConnectionMode mode);
 
-  ConnectionMode getNextConnectionMode(ForgeDirection dir);
+  ConnectionMode getNextConnectionMode(EnumFacing dir);
 
-  ConnectionMode getPreviousConnectionMode(ForgeDirection dir);
+  ConnectionMode getPreviousConnectionMode(EnumFacing dir);
 
   // rendering, only needed us default rendering is used
 
@@ -131,9 +129,9 @@ public interface IConduit {
   boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
 
   //For Copy/Paste of connection settings
-  boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt);
+  boolean writeConnectionSettingsToNBT(EnumFacing dir, NBTTagCompound nbt);
 
-  boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt);
+  boolean readConduitSettingsFromNBT(EnumFacing dir, NBTTagCompound nbt);
   
   public AbstractConduitNetwork<?, ?> createNetworkForType();
 

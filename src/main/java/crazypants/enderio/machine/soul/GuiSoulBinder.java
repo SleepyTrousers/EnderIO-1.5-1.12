@@ -1,22 +1,21 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.SoundUtil;
 
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.XpUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
@@ -41,7 +40,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {    
+  protected void actionPerformed(GuiButton b) throws IOException {    
     super.actionPerformed(b);
     if(b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().thePlayer);

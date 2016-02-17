@@ -47,7 +47,7 @@ public class GuiButtonIoConfig extends ToggleButton {
       PacketHandler.INSTANCE.sendToServer(new PacketIoMode(config));
     } else {
       boolean vis = !configOverlay.isVisible();
-      configOverlay.setVisible(vis);
+      configOverlay.setIsVisible(vis);
     }
     return true;
   }

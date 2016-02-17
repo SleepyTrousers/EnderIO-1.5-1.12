@@ -1,14 +1,10 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
-import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
@@ -18,6 +14,10 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketGivePlayerXP;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> {
   
@@ -92,7 +92,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
     int levels = 0;
     if(b == p) {
@@ -113,7 +113,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
 
     if(levels < 0) {
 
-      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
       int currLevel = player.experienceLevel;
       int targetLevel = Math.max(0, currLevel + levels);
 

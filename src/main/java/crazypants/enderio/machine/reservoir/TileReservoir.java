@@ -2,27 +2,27 @@ package crazypants.enderio.machine.reservoir;
 
 import java.util.ArrayList;
 
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector3f;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.tool.SmartTank;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector3f;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.tool.SmartTank;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 
@@ -42,15 +42,15 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     }
 
     // These are necessary to get around texture mirroring, don't ask me
-    public boolean isRight(ForgeDirection side) {
-      if (side == ForgeDirection.EAST || side == ForgeDirection.NORTH) {
+    public boolean isRight(EnumFacing side) {
+      if (side == EnumFacing.EAST || side == EnumFacing.NORTH) {
         return !isRight;
       }
       return isRight;
     }
 
-    public boolean isTop(ForgeDirection side) {
-      if (side == ForgeDirection.EAST) {
+    public boolean isTop(EnumFacing side) {
+      if (side == EnumFacing.EAST) {
         return !isTop;
       }
       return isTop;
@@ -62,12 +62,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   BlockCoord[] multiblock = null;
 
   // Orientation of multibock
-  ForgeDirection front = ForgeDirection.UNKNOWN;
-  ForgeDirection up = ForgeDirection.UNKNOWN;
-  ForgeDirection right = ForgeDirection.UNKNOWN;
+  EnumFacing front = null;
+  EnumFacing up = null;
+  EnumFacing right = null;
 
   // Position within multiblock
-  Pos pos = Pos.UNKNOWN;
+  Pos pos = null;
 
   SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
 
@@ -124,13 +124,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       }
     }
     if(tankDirty && shouldDoWorkThisTick(2)) {
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      worldObj.markBlockForUpdate(getPos());
       tankDirty = false;
     }
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(isMultiblock()) {
       return 0;
     }
@@ -138,12 +138,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return getController().doDrain(from, maxDrain, doDrain);
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
@@ -151,18 +151,18 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     if(tank.getFluid() == null) {
       return true;
     }
-    if (fluid != null && fluid.getID() == tank.getFluid().getFluidID()) {
+    if (fluid != null && fluid.getID() == tank.getFluid().getFluid().getID()) {
       return true;
     }
     return false;
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     if(tank.getFluid() == null || fluid == null) {
       return false;
     }
@@ -170,11 +170,11 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     return getController().doGetTankInfo(from);
   }
 
-  private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
+  private FluidTankInfo[] doGetTankInfo(EnumFacing from) {
     return new FluidTankInfo[] { tank.getInfo() };
   }
 
@@ -220,7 +220,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     }
     tankNeighbours.clear();
     for (BlockCoord bc : multiblock) {
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing dir : EnumFacing.VALUES) {
         BlockCoord check = bc.getLocation(dir);
         if(!inMultiblock(check)) {
           IFluidHandler tc = getTankContainer(check);
@@ -245,9 +245,9 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 
-    front = ForgeDirection.getOrientation(nbtRoot.getShort("front"));
-    up = ForgeDirection.getOrientation(nbtRoot.getShort("up"));
-    right = ForgeDirection.getOrientation(nbtRoot.getShort("right"));
+    front = EnumFacing.VALUES[nbtRoot.getShort("front")];
+    up = EnumFacing.VALUES[nbtRoot.getShort("up")];
+    right = EnumFacing.VALUES[nbtRoot.getShort("right")];
     pos = Pos.values()[nbtRoot.getShort("pos")];
 
     autoEject = nbtRoot.getBoolean("autoEject");
@@ -350,12 +350,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   boolean isVertical() {
-    return up == ForgeDirection.UP;
+    return up == EnumFacing.UP;
   }
 
   boolean isMaster() {
     if(multiblock != null) {
-      return multiblock[0].equals(xCoord, yCoord, zCoord);
+      return multiblock[0].equals(new BlockCoord(getPos()));
     }
     return false;
   }
@@ -390,7 +390,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     return result;
   }
 
-  int doFill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  int doFill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(!WATER_BUCKET.isFluidEqual(resource)) {
       return 0;
     }
@@ -408,7 +408,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     return ret;
   }
 
-  protected FluidStack doDrain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  protected FluidStack doDrain(EnumFacing from, int maxDrain, boolean doDrain) {
     FluidStack ret = tank.drain(maxDrain, doDrain);
     tankDirty = doDrain;
     return ret;
@@ -425,12 +425,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       for (BlockCoord bc : multiblock) {
         TileReservoir res = getReservoir(bc);
         if(res != null) {
-          FluidStack drained = res.doDrain(ForgeDirection.UNKNOWN, regenTank.getAvailableSpace(), true);
+          FluidStack drained = res.doDrain(null, regenTank.getAvailableSpace(), true);
           if(drained != null) {
             regenTank.addFluidAmount(drained.amount);
           }
           // incase regen tank is full, add to normal tank
-          drained = res.doDrain(ForgeDirection.UNKNOWN, tank.getAvailableSpace(), true);
+          drained = res.doDrain(null, tank.getAvailableSpace(), true);
           if(drained != null) {
             tank.addFluidAmount(drained.amount);
           }
@@ -450,7 +450,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     liquidRenderBounds = null;
 
     // Forces an update
-    worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isMultiblock() ? 1 : 0, 2);
+    //TODO: 1.8
+    //worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isMultiblock() ? 1 : 0, 2);
   }
 
   TileReservoir getController() {
@@ -463,34 +464,35 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   private void updatePosition() {
     if(multiblock == null) {
-      front = ForgeDirection.UNKNOWN;
-      up = ForgeDirection.UNKNOWN;
-      right = ForgeDirection.UNKNOWN;
+      front = null;
+      up = null;
+      right = null;
       return;
     }
 
+    BlockPos p = getPos();
     boolean isVertical = false;
     for (BlockCoord bc : multiblock) {
-      if(bc.y != yCoord) {
+      if(bc.y != p.getY()) {
         isVertical = true;
         break;
       }
     }
     if(isVertical) {
-      up = ForgeDirection.UP;
+      up = EnumFacing.UP;
       boolean isWestEast = false;
       for (BlockCoord bc : multiblock) {
-        if(bc.x != xCoord) {
+        if(bc.x != p.getX()) {
           isWestEast = true;
           break;
         }
       }
-      front = isWestEast ? ForgeDirection.NORTH : ForgeDirection.EAST;
-      right = isWestEast ? ForgeDirection.WEST : ForgeDirection.NORTH;
+      front = isWestEast ? EnumFacing.NORTH : EnumFacing.EAST;
+      right = isWestEast ? EnumFacing.WEST : EnumFacing.NORTH;
     } else {
-      front = ForgeDirection.UP;
-      right = ForgeDirection.EAST;
-      up = ForgeDirection.NORTH;
+      front = EnumFacing.UP;
+      right = EnumFacing.EAST;
+      up = EnumFacing.NORTH;
     }
 
     boolean isRight = false;
@@ -514,13 +516,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   }
 
-  private boolean isInDir(BlockCoord from, ForgeDirection inDir, BlockCoord to) {
-    if(inDir.offsetX != 0) {
-      return from.x - inDir.offsetX == to.x;
-    } else if(inDir.offsetY != 0) {
-      return from.y - inDir.offsetY == to.y;
-    } else if(inDir.offsetZ != 0) {
-      return from.z - inDir.offsetZ == to.z;
+  private boolean isInDir(BlockCoord from, EnumFacing inDir, BlockCoord to) {
+    if(inDir.getFrontOffsetX() != 0) {
+      return from.x - inDir.getFrontOffsetX() == to.x;
+    } else if(inDir.getFrontOffsetY() != 0) {
+      return from.y - inDir.getFrontOffsetY() == to.y;
+    } else if(inDir.getFrontOffsetZ() != 0) {
+      return from.z - inDir.getFrontOffsetZ() == to.z;
     }
     return false;
   }
@@ -564,17 +566,17 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private boolean formMultiblock() {
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       if(isNonMultiReservoir(dir)) {
-        ForgeDirection[] cans = candidates(dir);
-        for (ForgeDirection neighbor : cans) {
+        EnumFacing[] cans = candidates(dir);
+        for (EnumFacing neighbor : cans) {
           if(isNonMultiReservoir(neighbor)) {
-            if(isNonMultiReservoir(dir.offsetX + neighbor.offsetX, dir.offsetY + neighbor.offsetY, dir.offsetZ + neighbor.offsetZ)) {
+            if(isNonMultiReservoir(dir.getFrontOffsetX() + neighbor.getFrontOffsetX(), dir.getFrontOffsetY() + neighbor.getFrontOffsetY(), dir.getFrontOffsetZ() + neighbor.getFrontOffsetZ())) {
               BlockCoord[] mb = new BlockCoord[4];
               mb[0] = inDirection(dir);
               mb[1] = inDirection(neighbor);
-              mb[2] = inDirection(dir.offsetX + neighbor.offsetX, dir.offsetY + neighbor.offsetY, dir.offsetZ + neighbor.offsetZ);
-              mb[3] = new BlockCoord(xCoord, yCoord, zCoord);
+              mb[2] = inDirection(dir.getFrontOffsetX() + neighbor.getFrontOffsetX(), dir.getFrontOffsetY() + neighbor.getFrontOffsetY(), dir.getFrontOffsetZ() + neighbor.getFrontOffsetZ());
+              mb[3] = new BlockCoord(getPos());
               for (BlockCoord bc : mb) {
                 TileReservoir res = getReservoir(bc);
                 res.setMultiblock(mb);
@@ -589,11 +591,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private BlockCoord inDirection(int offsetX, int offsetY, int offsetZ) {
-    return new BlockCoord(xCoord + offsetX, yCoord + offsetY, zCoord + offsetZ);
+    BlockPos p = getPos();
+    return new BlockCoord(p.getX() + offsetX, p.getY() + offsetY, p.getZ() + offsetZ);
   }
 
-  private BlockCoord inDirection(ForgeDirection dir) {
-    return inDirection(dir.offsetX, dir.offsetY, dir.offsetZ);
+  private BlockCoord inDirection(EnumFacing dir) {
+    return inDirection(dir.getFrontOffsetX(), dir.getFrontOffsetY(), dir.getFrontOffsetZ());
   }
 
   private IFluidHandler getTankContainer(BlockCoord bc) {
@@ -604,7 +607,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     if(worldObj == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(x, y, z);
+    TileEntity te = worldObj.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof IFluidHandler) {
       return (IFluidHandler) te;
     }
@@ -616,7 +619,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private TileReservoir getReservoir(int x, int y, int z) {
-    TileEntity te = worldObj.getTileEntity(x, y, z);
+    TileEntity te = worldObj.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileReservoir) {
       return (TileReservoir) te;
     }
@@ -624,22 +627,23 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private boolean isNonMultiReservoir(int offsetX, int offsetY, int offsetZ) {
-    TileReservoir res = getReservoir(xCoord + offsetX, yCoord + offsetY, zCoord + offsetZ);
+    BlockPos p = getPos();
+    TileReservoir res = getReservoir(p.getX() + offsetX, p.getY() + offsetY, p.getZ() + offsetZ);
     if(res == null) {
       return false;
     }
     return !res.isMultiblock();
   }
 
-  private boolean isNonMultiReservoir(ForgeDirection dir) {
-    return isNonMultiReservoir(dir.offsetX, dir.offsetY, dir.offsetZ);
+  private boolean isNonMultiReservoir(EnumFacing dir) {
+    return isNonMultiReservoir(dir.getFrontOffsetX(), dir.getFrontOffsetY(), dir.getFrontOffsetZ());
   }
 
-  private ForgeDirection[] candidates(ForgeDirection matchDir) {
-    ForgeDirection[] res = new ForgeDirection[4];
-    res[0] = matchDir.getRotation(matchDir.offsetY == 0 ? ForgeDirection.UP : ForgeDirection.NORTH);
+  private EnumFacing[] candidates(EnumFacing matchDir) {
+    EnumFacing[] res = new EnumFacing[4];    
+    res[0] = matchDir.rotateAround(matchDir.getFrontOffsetY() == 0 ? EnumFacing.UP.getAxis() : EnumFacing.NORTH.getAxis());
     res[1] = res[0].getOpposite();
-    res[2] = matchDir.getRotation(matchDir.offsetX == 0 ? ForgeDirection.EAST : ForgeDirection.NORTH);
+    res[2] = matchDir.rotateAround(matchDir.getFrontOffsetX() == 0 ? EnumFacing.EAST.getAxis() : EnumFacing.NORTH.getAxis());
     res[3] = res[2].getOpposite();
     return res;
   }
@@ -649,7 +653,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       return new Vector3f();
     }
     BlockCoord masterBC = multiblock[0];
-    BlockCoord myBC = new BlockCoord(xCoord, yCoord, zCoord);
+    BlockCoord myBC = new BlockCoord(getPos());
     return new Vector3f(masterBC.x - myBC.x, masterBC.y - myBC.y, masterBC.z - myBC.z);
   }
 

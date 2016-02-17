@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
-import cpw.mods.fml.common.Loader;
-import crazypants.enderio.conduit.item.NetworkedInventory;
 import java.util.ArrayList;
+
+import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
+
+import crazypants.enderio.conduit.item.NetworkedInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraftforge.fml.common.Loader;
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public abstract class InventoryFactory {

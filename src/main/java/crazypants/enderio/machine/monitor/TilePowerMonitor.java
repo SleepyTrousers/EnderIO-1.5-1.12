@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.monitor;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
@@ -20,6 +16,9 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IInternalPoweredTile {
 
@@ -45,11 +44,11 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   @Override
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
     return mode == IoMode.NONE;
   }
 
-  public int[] getRednetOutputValues(ForgeDirection side) {
+  public int[] getRednetOutputValues(EnumFacing side) {
     if(currentlyEmmittedSignal == null) {
       return new int[16];
     }
@@ -60,7 +59,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     return res;
   }
 
-  public int getRednetOutputValue(ForgeDirection side, int subnet) {
+  public int getRednetOutputValue(EnumFacing side, int subnet) {
     if(currentlyEmmittedSignal != null) {
       return 15;
     }
@@ -100,7 +99,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return EnderIO.blockPowerMonitor.getUnlocalizedName();
   }
 
@@ -192,7 +191,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   private void broadcastSignal() {
-    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EnderIO.blockPowerMonitor);
+    worldObj.notifyNeighborsOfStateChange(getPos(), EnderIO.blockPowerMonitor);
 
   }
 
@@ -213,7 +212,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   private NetworkPowerManager getPowerManager() {
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
       if(con != null) {
         AbstractConduitNetwork<?, ?> n = con.getNetwork();

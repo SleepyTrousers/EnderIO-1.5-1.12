@@ -6,21 +6,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
@@ -117,7 +116,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
         @Override
         public int getSlotStackLimit() {             
-          return ((TileFarmStation)getInv()).getInventoryStackLimit(slot);
+          return getInv().getInventoryStackLimit(slot);
         }
       });
     }

@@ -1,23 +1,13 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.awt.LayoutManager;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
-import codechicken.nei.LayoutManager;
 
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -29,17 +19,12 @@ import com.enderio.core.client.gui.widget.VScrollbar;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.ItemUtil;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
@@ -48,6 +33,18 @@ import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -113,7 +110,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
     }
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
     btnSync = new ToggleButton(this, ID_SYNC, 24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
     btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync"));
@@ -187,7 +184,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     list.clear();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.refill.line");
     ttRefill = new GuiToolTip(btnRefill, list);
-    ttRefill.setVisible(false);
+    ttRefill.setIsVisible(false);
     addToolTip(ttRefill);
 
     list.clear();
@@ -236,8 +233,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       this.craftingHelper.remove();
     }
     this.craftingHelper = craftingHelper;
-    ttRefill.setVisible(craftingHelper != null);
-    ttSetReceipe.setVisible(craftingHelper == null);
+    ttRefill.setIsVisible(craftingHelper != null);
+    ttSetReceipe.setIsVisible(craftingHelper == null);
     if(craftingHelper != null) {
       craftingHelper.install();
     }
@@ -267,7 +264,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  public void actionPerformed(GuiButton b) {
+  public void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id == ID_CLEAR) {
       if (getContainer().clearCraftingGrid()) {
@@ -513,7 +510,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  protected void mouseClicked(int x, int y, int button) {
+  protected void mouseClicked(int x, int y, int button) throws IOException {
     super.mouseClicked(x, y, button);
 
     x -= guiLeft;

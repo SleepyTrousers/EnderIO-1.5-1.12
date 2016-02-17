@@ -2,6 +2,12 @@ package crazypants.enderio.enchantment;
 
 import java.util.ListIterator;
 
+import com.enderio.core.api.common.enchant.IAdvancedEnchant;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.util.BaublesUtil;
+import crazypants.util.GalacticraftUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -12,19 +18,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-
-import com.enderio.core.api.common.enchant.IAdvancedEnchant;
-
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.util.BaublesUtil;
-import crazypants.util.GalacticraftUtil;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
 
@@ -37,7 +37,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   private final int id;
 
   private EnchantmentSoulBound(int id) {
-    super(id, Config.enchantmentSoulBoundWeight, EnumEnchantmentType.all);
+    super(id, new ResourceLocation("enderio.soulBound"), Config.enchantmentSoulBoundWeight, EnumEnchantmentType.ALL);
     this.id = id;
     setName("enderio.soulBound");
   }
@@ -70,7 +70,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if (evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if(evt.entityPlayer.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+    if(evt.entityPlayer.worldObj.getGameRules().getBoolean("keepInventory")) {
       return;
     }
 
@@ -137,7 +137,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if(evt.original == null || evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
       return;
     }
-    if(evt.entityPlayer.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+    if(evt.entityPlayer.worldObj.getGameRules().getBoolean("keepInventory")) {
       return;
     }
     for (int i = 0; i < evt.original.inventory.mainInventory.length; i++) {

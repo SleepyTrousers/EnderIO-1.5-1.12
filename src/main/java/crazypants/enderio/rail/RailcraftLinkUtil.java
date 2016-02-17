@@ -6,15 +6,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import com.enderio.core.common.vecmath.Vector3d;
+
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.carts.ILinkageManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.vecmath.Vector3d;
 
 public class RailcraftLinkUtil implements ICartLinkUtil {
 
@@ -31,16 +31,16 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
   }
 
   @Override
-  public void setCartDirection(EntityMinecart cart, ForgeDirection dir) {
+  public void setCartDirection(EntityMinecart cart, EnumFacing dir) {
 
     if(!isDirectional(cart)) {
       CartLinkUtil.defaultInstance.setCartDirection(cart, dir);
       return;
     }
 
-    ForgeDirection oldDir = getCurrentDir(cart);
+    EnumFacing oldDir = getCurrentDir(cart);
     CartLinkUtil.defaultInstance.setCartDirection(cart, dir);
-    ForgeDirection newDir = getCurrentDir(cart);
+    EnumFacing newDir = getCurrentDir(cart);
 
     if(oldDir.getOpposite() == newDir) {
       cart.rotationYaw += 180;
@@ -54,7 +54,7 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
     return directionalClass.isAssignableFrom(cart.getClass());
   }
 
-  private ForgeDirection getCurrentDir(EntityMinecart cart) {
+  private EnumFacing getCurrentDir(EntityMinecart cart) {
     boolean isX = true;
     boolean isNeg = cart.motionX < 0;
     if(Math.abs(cart.motionZ) > Math.abs(cart.motionX)) {
@@ -62,9 +62,9 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
       isNeg = cart.motionZ < 0;
     }
     if(isX) {
-      return isNeg ? ForgeDirection.WEST : ForgeDirection.EAST;
+      return isNeg ? EnumFacing.WEST : EnumFacing.EAST;
     }
-    return isNeg ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
+    return isNeg ? EnumFacing.NORTH : EnumFacing.SOUTH;
   }
 
   @Override

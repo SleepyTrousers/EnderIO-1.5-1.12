@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -20,6 +17,8 @@ import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class GuiOverlayIoConfig implements IGuiOverlay {
 
@@ -71,7 +70,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
     RenderUtil.renderQuad2D(bounds.x, bounds.y, 0, bounds.width, bounds.height, ColorUtil.getRGB(Color.black));
     Minecraft mc = Minecraft.getMinecraft();
-    ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+    ScaledResolution scaledresolution = new ScaledResolution(mc);
 
     int vpx = ( (screen.getGuiLeft() + bounds.x - screen.getOverlayOffsetX())* scaledresolution.getScaleFactor());
     int vpy = (screen.getGuiTop() + 4) * scaledresolution.getScaleFactor();
@@ -104,7 +103,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   }
 
   @Override
-  public void setVisible(boolean visible) {
+  public void setIsVisible(boolean visible) {
     this.visible = visible;
     if(configB != null) {
       configB.setSelected(visible);

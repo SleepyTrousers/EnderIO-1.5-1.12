@@ -8,16 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Multimap;
@@ -39,6 +29,15 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler {
 
@@ -53,7 +52,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private boolean recieveChannelsDirty = false;
   private boolean registered = false;
 
-  private Map<ForgeDirection, IFluidHandler> neighbourFluidHandlers = null;
+  private Map<EnumFacing, IFluidHandler> neighbourFluidHandlers = null;
 
   private PowerDistributor powerDistributor;
 
@@ -328,10 +327,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   //---------------- Power Handling
 
-  @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
-  }
 
   private void processPower() {
     Set<Channel> sendTo = getSendChannels(ChannelType.POWER);
@@ -357,10 +352,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return getEnergyStored() - (int) (MIN_POWER_TO_SEND * getMaxEnergyStored());
   }
 
-  private float getEnergyStoredRatio() {
-    return (float) getEnergyStored() / getMaxEnergyStored();
-  }
-
   @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
@@ -384,7 +375,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   //----------------  Fluid Handling
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     if(inFluidFill) {
       return false;
     }
@@ -407,8 +398,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
       return false;
     }
-    Map<ForgeDirection, IFluidHandler> handlers = getNeighbouringFluidHandlers();
-    for (Entry<ForgeDirection, IFluidHandler> entry : handlers.entrySet()) {
+    Map<EnumFacing, IFluidHandler> handlers = getNeighbouringFluidHandlers();
+    for (Entry<EnumFacing, IFluidHandler> entry : handlers.entrySet()) {
       if(entry.getValue().canFill(entry.getKey().getOpposite(), fluid)) {
         return true;
       }
@@ -417,7 +408,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(inFluidFill) {
       return 0;
     }
@@ -439,8 +430,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     if(!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
       return 0;
     }
-    Map<ForgeDirection, IFluidHandler> handlers = getNeighbouringFluidHandlers();
-    for (Entry<ForgeDirection, IFluidHandler> entry : handlers.entrySet()) {
+    Map<EnumFacing, IFluidHandler> handlers = getNeighbouringFluidHandlers();
+    for (Entry<EnumFacing, IFluidHandler> entry : handlers.entrySet()) {
       IoMode mode = getIoMode(entry.getKey());
       if(mode.canOutput()) {
         int res = entry.getValue().fill(entry.getKey().getOpposite(), resource, doFill);
@@ -453,7 +444,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     if(inGetTankInfo) {
       return new FluidTankInfo[0];
     }
@@ -474,8 +465,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
         return;
       }
-      Map<ForgeDirection, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
-      for (Entry<ForgeDirection, IFluidHandler> entry : fluidHandlers.entrySet()) {
+      Map<EnumFacing, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
+      for (Entry<EnumFacing, IFluidHandler> entry : fluidHandlers.entrySet()) {
         FluidTankInfo[] tanks = entry.getValue().getTankInfo(entry.getKey().getOpposite());
         if(tanks != null) {
           for (FluidTankInfo info : tanks) {
@@ -488,7 +479,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
-  Map<ForgeDirection, IFluidHandler> getNeighbouringFluidHandlers() {
+  Map<EnumFacing, IFluidHandler> getNeighbouringFluidHandlers() {
     if(neighbourFluidHandlers == null) {
       neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(worldObj, getLocation());
     }
@@ -497,17 +488,17 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   //Pulling liquids not supported
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return null;
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return null;
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return false;
   }
 
@@ -577,8 +568,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return true;
   }
 
+  
+  
   @Override
-  public boolean canInsertItem(int slot, ItemStack itemstack, int j) {
+  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing j) {
     if(itemstack == null) {
       return false;
     }

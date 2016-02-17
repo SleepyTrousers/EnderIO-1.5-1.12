@@ -1,13 +1,5 @@
 package crazypants.enderio.machine.generator.stirling;
 
-import net.minecraft.block.Block;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
@@ -18,6 +10,13 @@ import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerDistributor;
+import net.minecraft.block.Block;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
 
@@ -40,7 +39,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return "Stirling Generator";
   }
 
@@ -164,7 +163,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  protected boolean doPush(ForgeDirection dir) {
+  protected boolean doPush(EnumFacing dir) {
     if(inventory[0] == null) {
       return false;
     }
@@ -178,7 +177,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     }
 
     BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+    TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
 
     return doPush(dir, te, 0, 0);
   }
@@ -224,7 +223,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
   

@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 
 public class CartLinkUtil implements ICartLinkUtil {
 
@@ -33,10 +33,10 @@ public class CartLinkUtil implements ICartLinkUtil {
   }
 
   @Override
-  public void setCartDirection(EntityMinecart cart, ForgeDirection dir) {
+  public void setCartDirection(EntityMinecart cart, EnumFacing dir) {
     double velocity = Math.max(Math.abs(cart.motionX), Math.abs(cart.motionZ));
-    cart.motionX = dir.offsetX * velocity;
-    cart.motionZ = dir.offsetZ * velocity;
+    cart.motionX = dir.getFrontOffsetX() * velocity;
+    cart.motionZ = dir.getFrontOffsetZ() * velocity;
   }
 
   @Override

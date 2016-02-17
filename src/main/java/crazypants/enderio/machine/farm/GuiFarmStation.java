@@ -1,10 +1,6 @@
 package crazypants.enderio.machine.farm;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +13,11 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.killera.ContainerKillerJoe;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
@@ -71,7 +71,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     
     GL11.glEnable(GL11.GL_BLEND);
     fr.drawString("SW", sx + 55, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);    
@@ -85,7 +85,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   }
   
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     if (b.id >= LOCK_ID+TileFarmStation.minSupSlot && b.id <= LOCK_ID+TileFarmStation.maxSupSlot) {
       getTileEntity().toggleLockedState(b.id - LOCK_ID);
     }

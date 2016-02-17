@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketNetworkStateRequest extends PacketCapBank<PacketNetworkStateRequest, PacketNetworkStateResponse> {
 

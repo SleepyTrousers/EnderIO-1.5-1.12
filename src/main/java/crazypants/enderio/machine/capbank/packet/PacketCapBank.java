@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class PacketCapBank<T extends PacketCapBank, Q extends IMessage> implements IMessage, IMessageHandler<T, Q> {
 
@@ -20,9 +21,9 @@ public abstract class PacketCapBank<T extends PacketCapBank, Q extends IMessage>
   }
 
   public PacketCapBank(TileCapBank capBank) {
-    x = capBank.xCoord;
-    y = capBank.yCoord;
-    z = capBank.zCoord;
+    x = capBank.getPos().getX();
+    y = capBank.getPos().getY();
+    z = capBank.getPos().getZ();
   }
 
   @Override
@@ -81,7 +82,7 @@ public abstract class PacketCapBank<T extends PacketCapBank, Q extends IMessage>
     if(worldObj == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(message.getX(), message.getY(), message.getZ());
+    TileEntity te = worldObj.getTileEntity(new BlockPos(message.getX(), message.getY(), message.getZ()));
     if(te == null) {
       return null;
     }

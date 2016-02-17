@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -24,6 +13,16 @@ import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
@@ -52,12 +51,12 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
 
   @Override
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
     return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
 
   @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
     boolean res = super.doPull(dir);
     BlockCoord loc = getLocation().getLocation(dir);
     IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
@@ -183,7 +182,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     int res = fuelTank.fill(resource, doFill);
     if(res > 0 && doFill) {
       tanksDirty = true;
@@ -192,31 +191,31 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return null;
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return null;
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     return fuelTank.canFill(fluid);
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return false;
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     return new FluidTankInfo[] { fuelTank.getInfo() };
   }
 
-  public int getFluidStored(ForgeDirection from) {
+  public int getFluidStored(EnumFacing from) {
     return fuelTank.getFluidAmount();
   }
   

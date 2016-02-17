@@ -1,14 +1,14 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.IFluidHandler;
 
 class TankNeighbour {
 
   final IFluidHandler container;
-  final ForgeDirection fillFromDir;
+  final EnumFacing fillFromDir;
 
-  TankNeighbour(IFluidHandler container, ForgeDirection fillFromDir) {
+  TankNeighbour(IFluidHandler container, EnumFacing fillFromDir) {
     this.container = container;
     this.fillFromDir = fillFromDir;
   }

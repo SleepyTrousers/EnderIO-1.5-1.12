@@ -1,19 +1,18 @@
 package crazypants.enderio.machine.power;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
@@ -26,9 +25,10 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   }
 
   public PacketPowerStorage(TileCapacitorBank ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
+    BlockPos p = ent.getPos();
+    x = p.getX();
+    y = p.getY();
+    z = p.getZ();
     storedEnergy = ent.storedEnergyRF;
   }
 
@@ -52,7 +52,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   @Override
   public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank me = (TileCapacitorBank) te;
       me.storedEnergyRF = message.storedEnergy;
@@ -60,7 +60,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
       double dif = Math.abs(me.lastRenderStoredRatio - me.getEnergyStoredRatio());
       if(dif > 0.025) { //update rendering at a 2.5% diff
         if(!me.isMultiblock()) {
-          player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
+          player.worldObj.markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
         } else {
           BlockCoord[] mb = me.multiblock;
           for (BlockCoord bc : mb) {
@@ -74,12 +74,12 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   }
 
   private void updateGaugeRender(World worldObj, BlockCoord bc) {
-    TileEntity te = worldObj.getTileEntity(bc.x, bc.y, bc.z);
+    TileEntity te = worldObj.getTileEntity(new BlockPos(bc.x, bc.y, bc.z));
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank me = (TileCapacitorBank) te;
       List<GaugeBounds> gb = me.getGaugeBounds();
       if(gb != null && !gb.isEmpty()) {
-        worldObj.markBlockForUpdate(bc.x, bc.y, bc.z);
+        worldObj.markBlockForUpdate(new BlockPos(bc.x, bc.y, bc.z));
       }
     }
 

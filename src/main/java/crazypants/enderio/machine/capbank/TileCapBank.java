@@ -6,26 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -44,11 +30,24 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
 
-  private Map<ForgeDirection, IoMode> faceModes;
-  private Map<ForgeDirection, InfoDisplayType> faceDisplayTypes;
+  private Map<EnumFacing, IoMode> faceModes;
+  private Map<EnumFacing, InfoDisplayType> faceDisplayTypes;
 
   private CapBankType type;
 
@@ -182,7 +181,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if(redstoneStateDirty) {
-      int sig = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord);
+      int sig = worldObj.getStrongPower(getPos());
       boolean recievingSignal = sig > 0;
       network.updateRedstoneSignal(this, recievingSignal);
       redstoneStateDirty = false;
@@ -197,13 +196,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
     if(displayTypesDirty) {
       displayTypesDirty = false;
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      worldObj.markBlockForUpdate(getPos());
     }
 
     // update any comparators, since they don't check themselves
     int comparatorState = getComparatorOutput();
     if(lastComparatorState != comparatorState) {
-      worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+      worldObj.updateComparatorOutputLevel(getPos(), getBlockType());
       lastComparatorState = comparatorState;
     }
 
@@ -223,7 +222,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   //---------- IO
 
   @Override
-  public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
+  public IoMode toggleIoModeForFace(EnumFacing faceHit) {
     IPowerInterface rec = getReceptorForFace(faceHit);
     IoMode curMode = getIoMode(faceHit);
     if(curMode == IoMode.PULL) {
@@ -245,7 +244,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
     IPowerInterface rec = getReceptorForFace(faceHit);
     if(mode == IoMode.NONE) {
       return rec == null || rec.getDelegate() instanceof IConduitBundle;
@@ -254,11 +253,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+  public void setIoMode(EnumFacing faceHit, IoMode mode) {
     setIoMode(faceHit, mode, true);
   }
 
-  public void setIoMode(ForgeDirection faceHit, IoMode mode, boolean updateReceptors) {
+  public void setIoMode(EnumFacing faceHit, IoMode mode, boolean updateReceptors) {
     if(mode == IoMode.NONE) {
       if(faceModes == null) {
         return;
@@ -269,7 +268,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       }
     } else {
       if(faceModes == null) {
-        faceModes = new EnumMap<ForgeDirection, IoMode>(ForgeDirection.class);
+        faceModes = new EnumMap<EnumFacing, IoMode>(EnumFacing.class);
       }
       faceModes.put(faceHit, mode);
     }
@@ -278,12 +277,12 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       receptorsDirty = true;
     }
     if(worldObj != null) {
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+      worldObj.markBlockForUpdate(getPos());
+      worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
     }
   }
 
-  public void setDefaultIoMode(ForgeDirection faceHit) {
+  public void setDefaultIoMode(EnumFacing faceHit) {
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
     if(er == null || er.getConduit() != null) {
       setIoMode(faceHit, IoMode.NONE);
@@ -308,13 +307,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   private void doClearAllIoModes() {
-    for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for(EnumFacing dir : EnumFacing.VALUES) {
       setDefaultIoMode(dir);
     }
   }
 
   @Override
-  public IoMode getIoMode(ForgeDirection face) {
+  public IoMode getIoMode(EnumFacing face) {
     if(faceModes == null) {
       return IoMode.NONE;
     }
@@ -331,7 +330,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return faceDisplayTypes != null;
   }
 
-  public InfoDisplayType getDisplayType(ForgeDirection face) {
+  public InfoDisplayType getDisplayType(EnumFacing face) {
     if(faceDisplayTypes == null) {
       return InfoDisplayType.NONE;
     }
@@ -339,11 +338,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return res == null ? InfoDisplayType.NONE : res;
   }
 
-  public void setDisplayType(ForgeDirection face, InfoDisplayType type) {
+  public void setDisplayType(EnumFacing face, InfoDisplayType type) {
     setDisplayType(face, type, true);
   }
 
-  public void setDisplayType(ForgeDirection face, InfoDisplayType type, boolean markDirty) {
+  public void setDisplayType(EnumFacing face, InfoDisplayType type, boolean markDirty) {
     if(type == null) {
       type = InfoDisplayType.NONE;
     }
@@ -356,7 +355,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if(faceDisplayTypes == null) {
-      faceDisplayTypes = new EnumMap<ForgeDirection, InfoDisplayType>(ForgeDirection.class);
+      faceDisplayTypes = new EnumMap<EnumFacing, InfoDisplayType>(EnumFacing.class);
     }
 
     if(type == InfoDisplayType.NONE) {
@@ -376,15 +375,15 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     if(faceDisplayTypes == null) {
       return;
     }
-    List<ForgeDirection> reset = new ArrayList<ForgeDirection>();
-    for (Entry<ForgeDirection, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
+    List<EnumFacing> reset = new ArrayList<EnumFacing>();
+    for (Entry<EnumFacing, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
       BlockCoord bc = getLocation().getLocation(entry.getKey());
-      Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
+      Block block = worldObj.getBlockState(bc.getBlockPos()).getBlock();
       if(block != null && (block.isOpaqueCube() || block == EnderIO.blockCapBank)) {
         reset.add(entry.getKey());
       }
     }
-    for (ForgeDirection dir : reset) {
+    for (EnumFacing dir : reset) {
       setDisplayType(dir, InfoDisplayType.NONE);
       setDefaultIoMode(dir);
     }
@@ -413,38 +412,43 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       return super.getRenderBoundingBox();
     }
 
+    int xCoord = getPos().getX();
+    int yCoord = getPos().getY();
+    int zCoord = getPos().getZ();
+    
     int minX = xCoord;
     int minY = yCoord;
     int minZ = zCoord;
-    int maxX = xCoord+1;
-    int maxY = yCoord+1;
-    int maxZ = zCoord+1;
+    int maxX = minX+1;
+    int maxY = minY+1;
+    int maxZ = minZ+1;
 
     if(faceDisplayTypes != null) {
       CapBankClientNetwork cn = (CapBankClientNetwork)network;
-      if(faceDisplayTypes.get(ForgeDirection.NORTH) == InfoDisplayType.IO) {
-        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.NORTH);
+      
+      if(faceDisplayTypes.get(EnumFacing.NORTH) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, EnumFacing.NORTH);
         maxX = Math.max(maxX, xCoord +     info.width);
         minY = Math.min(minY, yCoord + 1 - info.height);
       }
-      if(faceDisplayTypes.get(ForgeDirection.SOUTH) == InfoDisplayType.IO) {
-        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.SOUTH);
+      if(faceDisplayTypes.get(EnumFacing.SOUTH) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, EnumFacing.SOUTH);
         minX = Math.min(minX, xCoord + 1 - info.width);
         minY = Math.min(minY, yCoord + 1 - info.height);
       }
-      if(faceDisplayTypes.get(ForgeDirection.EAST) == InfoDisplayType.IO) {
-        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.EAST);
+      if(faceDisplayTypes.get(EnumFacing.EAST) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, EnumFacing.EAST);
         maxZ = Math.max(maxZ, zCoord +     info.width);
         minY = Math.min(minY, yCoord + 1 - info.height);
       }
-      if(faceDisplayTypes.get(ForgeDirection.WEST) == InfoDisplayType.IO) {
-        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.WEST);
+      if(faceDisplayTypes.get(EnumFacing.WEST) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, EnumFacing.WEST);
         minZ = Math.min(minZ, zCoord + 1 - info.width);
         minY = Math.min(minY, yCoord + 1 - info.height);
       }
     }
 
-    return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
   //----------- Redstone
@@ -489,7 +493,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean isOutputEnabled(ForgeDirection direction) {
+  public boolean isOutputEnabled(EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PUSH || mode == IoMode.NONE && isOutputEnabled();
   }
@@ -502,7 +506,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean isInputEnabled(ForgeDirection direction) {
+  public boolean isInputEnabled(EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
   }
@@ -515,7 +519,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean isNetworkControlledIo(ForgeDirection direction) {
+  public boolean isNetworkControlledIo(EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.NONE || mode == IoMode.PULL;
   }
@@ -540,7 +544,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     network.removeReceptors(receptors);
 
     receptors.clear();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       IPowerInterface pi = getReceptorForFace(dir);
       if(pi != null) {
         EnergyReceptor er = new EnergyReceptor(this, pi, dir);
@@ -556,9 +560,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     receptorsDirty = false;
   }
 
-  private IPowerInterface getReceptorForFace(ForgeDirection faceHit) {
+  private IPowerInterface getReceptorForFace(EnumFacing faceHit) {
     BlockCoord checkLoc = new BlockCoord(this).getLocation(faceHit);
-    TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+    TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
     if(!(te instanceof TileCapBank)) {
       return PowerHandlerUtil.create(te);
     } else {
@@ -570,7 +574,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return null;
   }
 
-  private EnergyReceptor getEnergyReceptorForFace(ForgeDirection dir) {
+  private EnergyReceptor getEnergyReceptorForFace(EnumFacing dir) {
     IPowerInterface pi = getReceptorForFace(dir);
     if(pi == null || pi.getDelegate() instanceof TileCapBank) {
       return null;
@@ -578,7 +582,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return new EnergyReceptor(this, pi, dir);
   }
 
-  private void validateModeForReceptor(ForgeDirection dir) {
+  private void validateModeForReceptor(EnumFacing dir) {
     validateModeForReceptor(getEnergyReceptorForFace(dir));
   }
   
@@ -619,7 +623,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection from) {
+  public int getEnergyStored(EnumFacing from) {
     return getEnergyStored();
   }
 
@@ -629,7 +633,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) {
+  public int getMaxEnergyRecieved(EnumFacing dir) {
     return getMaxInput();
   }
 
@@ -666,7 +670,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
     if(network == null) {
       return 0;
     }
@@ -683,12 +687,12 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 //  }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
+  public int getMaxEnergyStored(EnumFacing from) {
     return getType().getMaxEnergyStored();
   }
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
+  public boolean canConnectEnergy(EnumFacing from) {
     return getIoMode(from) != IoMode.DISABLED;
   }
 
@@ -734,22 +738,17 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-    return null;
-  }
-
-  @Override
   public int getSizeInventory() {
     return 4;
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -759,11 +758,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
   
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override
@@ -787,11 +786,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       return;
     }
     Vector3d dropLocation;
-    EntityPlayer player = worldObj.getClosestPlayer(xCoord, yCoord, zCoord, 32);
+    EntityPlayer player = worldObj.getClosestPlayer(getPos().getX(), getPos().getY(), getPos().getZ(), 32);
     if(player != null) {
       dropLocation = EntityUtil.getEntityPosition(player);
     } else {
-      dropLocation = new Vector3d(xCoord, yCoord, zCoord);
+      dropLocation = new Vector3d(getPos());
     }
     Util.dropItems(worldObj, inventory, (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
     for (int i = 0; i < inventory.length; i++) {
@@ -828,7 +827,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     //face modes
     if(faceModes != null) {
       nbtRoot.setByte("hasFaces", (byte) 1);
-      for (Entry<ForgeDirection, IoMode> e : faceModes.entrySet()) {
+      for (Entry<EnumFacing, IoMode> e : faceModes.entrySet()) {
         nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
       }
     }
@@ -836,7 +835,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     //display type
     if(faceDisplayTypes != null) {
       nbtRoot.setByte("hasDisplayTypes", (byte) 1);
-      for (Entry<ForgeDirection, InfoDisplayType> e : faceDisplayTypes.entrySet()) {
+      for (Entry<EnumFacing, InfoDisplayType> e : faceDisplayTypes.entrySet()) {
         if(e.getValue() != InfoDisplayType.NONE) {
           nbtRoot.setShort("faceDisplay" + e.getKey().ordinal(), (short) e.getValue().ordinal());
         }
@@ -893,7 +892,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if(nbtRoot.hasKey("hasFaces")) {
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing dir : EnumFacing.VALUES) {
         String key = "face" + dir.ordinal();
         if(nbtRoot.hasKey(key)) {
           setIoMode(dir, IoMode.values()[nbtRoot.getShort(key)], false);
@@ -904,7 +903,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if(nbtRoot.hasKey("hasDisplayTypes")) {
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing dir : EnumFacing.VALUES) {
         String key = "faceDisplay" + dir.ordinal();
         if(nbtRoot.hasKey(key)) {
           setDisplayType(dir, InfoDisplayType.values()[nbtRoot.getShort(key)], false);

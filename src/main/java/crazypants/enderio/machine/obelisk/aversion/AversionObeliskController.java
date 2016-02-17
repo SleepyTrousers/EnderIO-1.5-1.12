@@ -3,17 +3,16 @@ package crazypants.enderio.machine.obelisk.aversion;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.config.Config;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.config.Config;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AversionObeliskController {
 
@@ -32,7 +31,7 @@ public class AversionObeliskController {
     if(guard == null) {
       return;
     }    
-    Map<BlockCoord, TileAversionObelisk> chargers = getGuardsForWorld(guard.getWorldObj());
+    Map<BlockCoord, TileAversionObelisk> chargers = getGuardsForWorld(guard.getWorld());
     chargers.put(guard.getLocation(), guard);
   }
 
@@ -40,7 +39,7 @@ public class AversionObeliskController {
     if(guard == null) {
       return;
     }
-    Map<BlockCoord, TileAversionObelisk> chargers = getGuardsForWorld(guard.getWorldObj());
+    Map<BlockCoord, TileAversionObelisk> chargers = getGuardsForWorld(guard.getWorld());
     chargers.remove(guard.getLocation());
   }
   
@@ -67,10 +66,10 @@ public class AversionObeliskController {
   }
   
   private Map<BlockCoord, TileAversionObelisk> getGuardsForWorld(World world) {
-    Map<BlockCoord, TileAversionObelisk> res = perWorldGuards.get(world.provider.dimensionId);
+    Map<BlockCoord, TileAversionObelisk> res = perWorldGuards.get(world.provider.getDimensionId());
     if(res == null) {
       res = new HashMap<BlockCoord, TileAversionObelisk>();
-      perWorldGuards.put(world.provider.dimensionId, res);
+      perWorldGuards.put(world.provider.getDimensionId(), res);
     }
     return res;
   }

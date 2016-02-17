@@ -2,20 +2,19 @@ package crazypants.enderio.machine.farm;
 
 import java.util.List;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Lists;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-
-import com.enderio.core.common.util.BlockCoord;
-import com.google.common.collect.Lists;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum Fertilizer {
 
@@ -33,6 +32,7 @@ public enum Fertilizer {
 
   BONEMEAL(new ItemStack(Items.dye, 1, 15)) {
 
+    @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
       return stack.getItem().onItemUse(stack, player, world, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
     }
@@ -48,8 +48,9 @@ public enum Fertilizer {
 
   BOTANIA_FLORAL_FERTILIZER(GameRegistry.findItem("Botania", "fertilizer")) {
 
+    @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
-      BlockCoord below = bc.getLocation(ForgeDirection.DOWN);
+      BlockCoord below = bc.getLocation(EnumFacing.DOWN);
       Block belowBlock = below.getBlock(world);
       if(belowBlock == Blocks.dirt || belowBlock == Blocks.grass) {
         return stack.getItem().onItemUse(stack, player, world, below.x, below.y, below.z, 1, 0.5f, 0.5f, 0.5f);
@@ -57,10 +58,12 @@ public enum Fertilizer {
       return false;
     }
 
+    @Override
     public boolean applyOnAir() {
       return true;
     }
 
+    @Override
     public boolean applyOnPlant() {
       return false;
     }

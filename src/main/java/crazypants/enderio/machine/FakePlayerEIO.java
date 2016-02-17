@@ -1,23 +1,21 @@
 package crazypants.enderio.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.machine.farm.FakeNetHandlerPlayServer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 public class FakePlayerEIO extends FakePlayer {
 
   ItemStack prevWeapon;
 
   public FakePlayerEIO(World world, BlockCoord pos, GameProfile profile) {
-    super(MinecraftServer.getServer().worldServerForDimension(world.provider.dimensionId), profile);
+    super(MinecraftServer.getServer().worldServerForDimension(world.provider.getDimensionId()), profile);
     posX = pos.x + 0.5;
     posY = pos.y + 0.5;
     posZ = pos.z + 0.5;

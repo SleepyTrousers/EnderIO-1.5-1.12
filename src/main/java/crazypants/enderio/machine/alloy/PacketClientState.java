@@ -2,9 +2,10 @@ package crazypants.enderio.machine.alloy;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage> {
 
@@ -19,9 +20,9 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   }
 
   public PacketClientState(TileAlloySmelter tile) {
-    x = tile.xCoord;
-    y = tile.yCoord;
-    z = tile.zCoord;
+    x = tile.getPos().getX();
+    y = tile.getPos().getY();
+    z = tile.getPos().getZ();
     mode = tile.getMode();
   }
 
@@ -43,12 +44,13 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
 
   }
 
+  @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
-    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setMode(message.mode);
-      ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(message.x, message.y, message.z);
+      ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
     }
     return null;
   }

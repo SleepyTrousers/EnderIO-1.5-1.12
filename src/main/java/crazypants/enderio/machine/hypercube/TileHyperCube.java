@@ -7,19 +7,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.PlayerUtil;
@@ -35,6 +22,18 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileHyperCube extends TileEntityEio implements IInternalPowerHandler, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
 
@@ -314,7 +313,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      worldObj.markBlockForUpdate(getPos());
       // And this will make sure our current tile entity state is saved
       markDirty();
     }
@@ -736,7 +735,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -777,7 +776,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return ModObject.blockHyperCube.unlocalisedName;
   }
 
@@ -869,9 +868,9 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
 
   static class Receptor {
     IPowerInterface receptor;
-    ForgeDirection fromDir;
+    EnumFacing fromDir;
 
-    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, EnumFacing fromDir) {
       receptor = rec;
       this.fromDir = fromDir;
     }
@@ -880,10 +879,10 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   static class NetworkFluidHandler {
     final TileHyperCube node;
     final IFluidHandler handler;
-    final ForgeDirection dir;
-    final ForgeDirection dirOp;
+    final EnumFacing dir;
+    final EnumFacing dirOp;
 
-    private NetworkFluidHandler(TileHyperCube node, IFluidHandler handler, ForgeDirection dir) {
+    private NetworkFluidHandler(TileHyperCube node, IFluidHandler handler, EnumFacing dir) {
       this.node = node;
       this.handler = handler;
       this.dir = dir;

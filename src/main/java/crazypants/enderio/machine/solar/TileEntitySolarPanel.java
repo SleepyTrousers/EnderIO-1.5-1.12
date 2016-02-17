@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.EnergyStorage;
-
 import com.enderio.core.common.util.BlockCoord;
 
+import cofh.api.energy.EnergyStorage;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.IInternalPowerProvider;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
   
@@ -47,27 +46,27 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   // RF Power
 
   @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+  public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
     return 0;
   }
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
-    return from == ForgeDirection.DOWN;
+  public boolean canConnectEnergy(EnumFacing from) {
+    return from == EnumFacing.DOWN;
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection from) {
+  public int getEnergyStored(EnumFacing from) {
     return getEnergyStored();
   }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
+  public int getMaxEnergyStored(EnumFacing from) {
     return getMaxEnergyStored();
   }
   
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) {
+  public int getMaxEnergyRecieved(EnumFacing dir) {
     return 0;
   }
 
@@ -114,7 +113,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   private void findNetwork() {
-    for (ForgeDirection dir : SolarPanelNetwork.VALID_CONS) {
+    for (EnumFacing dir : SolarPanelNetwork.VALID_CONS) {
       TileEntity te = new BlockCoord(this).getLocation(dir).getTileEntity(worldObj);
       if(te != null && te instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) te).canConnect(this)) {
         SolarPanelNetwork network = ((TileEntitySolarPanel) te).network;
@@ -154,15 +153,15 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   float calculateLightRatio() {
-    return calculateLightRatio(worldObj, xCoord, yCoord, zCoord);
+    return calculateLightRatio(worldObj, pos);
   }
   
   boolean canSeeSun() {
-    return worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
+    return worldObj.canBlockSeeSky(pos);
   }
 
-  public static float calculateLightRatio(World world, int x, int y, int z) {
-    int lightValue = world.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - world.skylightSubtracted;
+  public static float calculateLightRatio(World world, BlockPos pos) {    
+    int lightValue = world.getLightFor(EnumSkyBlock.SKY, pos) - world.getSkylightSubtracted();
     float sunAngle = world.getCelestialAngleRadians(1.0F);
 
     if(sunAngle < (float) Math.PI) {
@@ -222,10 +221,10 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
       return;
     }
     receptors.clear();
-    BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
-    ForgeDirection dir = ForgeDirection.DOWN;
+    BlockCoord bc = new BlockCoord(pos);
+    EnumFacing dir = EnumFacing.DOWN;
     BlockCoord checkLoc = bc.getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+    TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
     IPowerInterface pi = PowerHandlerUtil.create(te);
     if(pi != null) {
       receptors.add(new Receptor(pi, dir));
@@ -237,9 +236,9 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   static class Receptor {
     IPowerInterface receptor;
-    ForgeDirection fromDir;
+    EnumFacing fromDir;
 
-    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, EnumFacing fromDir) {
       receptor = rec;
       this.fromDir = fromDir;
     }
@@ -259,17 +258,12 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   @Override
-  public Packet getDescriptionPacket() {
+  public Packet<?> getDescriptionPacket() {
     NBTTagCompound nbt = new NBTTagCompound();
     writeToNBT(nbt);
-    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+    return new S35PacketUpdateTileEntity(pos, 1, nbt);
   }
-
-  @Override
-  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-    readFromNBT(pkt.func_148857_g());
-  }
-  
+ 
   @Override
   public boolean displayPower() {
     return true;
@@ -288,5 +282,10 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     if (network.isValid()) {
       network.getMaster().writeToNBT(tag);
     }
+  }
+
+  @Override
+  public BlockCoord getLocation() {    
+    return new BlockCoord(pos);
   }
 }

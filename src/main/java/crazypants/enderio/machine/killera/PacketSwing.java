@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.killera;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.enderio.core.common.network.MessageTileEntity;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSwing extends MessageTileEntity<TileKillerJoe> implements IMessageHandler<PacketSwing, IMessage> {
 

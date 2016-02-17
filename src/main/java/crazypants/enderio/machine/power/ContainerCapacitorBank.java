@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.power;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,9 +8,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCapacitorBank extends Container {
 
@@ -76,11 +74,20 @@ public class ContainerCapacitorBank extends Container {
           return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, player);
         }
 
+//        @Override
+//        @SideOnly(Side.CLIENT)
+//        public IIcon getBackgroundIconIndex() {
+//          return ItemArmor.func_94602_b(k);
+//        }
+
         @Override
-        @SideOnly(Side.CLIENT)
-        public IIcon getBackgroundIconIndex() {
-          return ItemArmor.func_94602_b(k);
+        public TextureAtlasSprite getBackgroundSprite() {
+          //TODO: 1.8
+          return super.getBackgroundSprite();
         }
+        
+        
+        
       });
     }
 
@@ -100,7 +107,7 @@ public class ContainerCapacitorBank extends Container {
     int endHotBarSlot = startHotBarSlot + 9;
 
     ItemStack copystack = null;
-    Slot slot = (Slot) inventorySlots.get(slotIndex);
+    Slot slot = inventorySlots.get(slotIndex);
     if(slot != null && slot.getHasStack()) {
 
       ItemStack origStack = slot.getStack();

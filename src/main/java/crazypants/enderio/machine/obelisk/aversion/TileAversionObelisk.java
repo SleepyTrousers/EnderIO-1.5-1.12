@@ -1,17 +1,7 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-
 import com.enderio.core.client.render.BoundingBox;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -20,6 +10,14 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileAversionObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
@@ -50,12 +48,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
       worldObj.spawnEntityInWorld(new RangeEntity(this));
     }
   }
-  
-  @Override
-  public World getWorld() {
-    return getWorldObj();
-  }
-
+ 
   @Override
   public void invalidate() {
     super.invalidate();    
@@ -88,7 +81,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     
     BoundingBox bb = new BoundingBox(getLocation());
     bb = bb.scale(range + 0.5f, range + 0.5f, range + 0.5f).translate(0.5f, 0.5f, 0.5f);    
-    bounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    bounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
   }
 
   @Override
@@ -105,7 +98,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     if(mob == null) {
       return false;
     }
-    Class<?> cl = (Class<?>) EntityList.stringToClassMapping.get(mob);
+    Class<?> cl = EntityList.stringToClassMapping.get(mob);
     if(cl == null) {
       return false;
     }
@@ -153,7 +146,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
       return false;
     }    
     //return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= rangeSqu;
-    return bounds.isVecInside(Vec3.createVectorHelper(mob.posX, mob.posY, mob.posZ));
+    return bounds.isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
   }
 
   private boolean isMobInFilter(EntityLivingBase ent) {

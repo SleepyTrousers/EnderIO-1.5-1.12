@@ -3,14 +3,13 @@ package crazypants.enderio.machine;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.tileentity.TileEntity;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.tileentity.TileEntity;
 
 public enum RedstoneControlMode implements ICycleEnum {
 
@@ -57,7 +56,7 @@ public enum RedstoneControlMode implements ICycleEnum {
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
-    return isConditionMet(redstoneControlMode, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+    return isConditionMet(redstoneControlMode, te.getWorld().getStrongPower(te.getPos()));
   }
 
   public RedstoneControlMode next() {

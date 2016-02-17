@@ -1,10 +1,5 @@
 package crazypants.enderio.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
@@ -13,6 +8,10 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
@@ -52,13 +51,13 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   //RF API Power
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
-    return !isSideDisabled(from.ordinal());
+  public boolean canConnectEnergy(EnumFacing from) {
+    return !isSideDisabled(from);
   }
 
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) {
-    if(isSideDisabled(dir.ordinal())) {
+  public int getMaxEnergyRecieved(EnumFacing dir) {
+    if(isSideDisabled(dir)) {
       return 0;
     }
     return getCapacitor().getMaxEnergyReceived();

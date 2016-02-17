@@ -4,12 +4,12 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.item.ItemStack;
-import cofh.api.energy.IEnergyContainerItem;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PowerDisplayUtil {
 

@@ -3,14 +3,13 @@ package crazypants.enderio.machine.power;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector4d;
+
+import net.minecraft.util.EnumFacing;
 
 class GaugeBounds {
 
@@ -31,8 +30,8 @@ class GaugeBounds {
     }
 
     List<GaugeBounds> res = new ArrayList<GaugeBounds>();
-    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      if(face != ForgeDirection.UP && face != ForgeDirection.DOWN) {
+    for (EnumFacing face : EnumFacing.VALUES) {
+      if(face != EnumFacing.UP && face != EnumFacing.DOWN) {
         boolean isRight = isRightFace(me, mb, face);
         if(isRight) {
           res.add(new GaugeBounds(me, mb, face));
@@ -42,7 +41,7 @@ class GaugeBounds {
     return res;
   }
 
-  static boolean isRightFace(BlockCoord me, BlockCoord[] mb, ForgeDirection dir) {
+  static boolean isRightFace(BlockCoord me, BlockCoord[] mb, EnumFacing dir) {
 
     if(me == null || contains(mb, me.getLocation(dir))) {
       return false;
@@ -77,9 +76,9 @@ class GaugeBounds {
 
   final BoundingBox bb;
   final VInfo vInfo;
-  final ForgeDirection face;
+  final EnumFacing face;
 
-  GaugeBounds(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
+  GaugeBounds(BlockCoord me, BlockCoord[] mb, EnumFacing face) {
     this.face = face;
     vInfo = getVPosForFace(me, mb, face);
 
@@ -99,7 +98,7 @@ class GaugeBounds {
     return new Vector2f(minU, maxU);
   }
 
-  private VInfo getVPosForFace(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
+  private VInfo getVPosForFace(BlockCoord me, BlockCoord[] mb, EnumFacing face) {
     int maxY = me.y;
     int minY = me.y;
     int vHeight = 1;

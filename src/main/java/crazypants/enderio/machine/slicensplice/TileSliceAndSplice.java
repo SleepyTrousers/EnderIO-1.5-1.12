@@ -2,12 +2,6 @@ package crazypants.enderio.machine.slicensplice;
 
 import java.util.List;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -18,6 +12,12 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
@@ -103,11 +103,12 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
   private EntityLivingBase getFakePlayer() {
     if(fakePlayer == null) {
-      fakePlayer = FakePlayerFactory.getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
+      fakePlayer = FakePlayerFactory.getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.getDimensionId()));
     }
     return fakePlayer;
   }
 
+  @Override
   protected MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() - 2];
     int fromSlot = slotDefinition.minInputSlot;

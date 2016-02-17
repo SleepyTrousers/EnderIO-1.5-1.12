@@ -5,10 +5,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.common.util.IProgressTile;
@@ -27,6 +23,9 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 
 public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBaseEIO {
 
@@ -91,7 +90,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     for (int i = 0; i < buttonList.size(); ++i) {
-      GuiButton guibutton = (GuiButton) buttonList.get(i);
+      GuiButton guibutton = buttonList.get(i);
       guibutton.drawButton(mc, 0, 0);
     }
 
@@ -117,7 +116,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   public void renderSlotHighlights(IoMode mode) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
 
-    for (Slot invSlot : (List<Slot>) inventorySlots.inventorySlots) {
+    for (Slot invSlot : inventorySlots.inventorySlots) {
       if (invSlot.inventory == tileEntity) {
         if ((mode == IoMode.PULL || mode == IoMode.PUSH_PULL) && slotDef.isInputSlot(invSlot.getSlotIndex())) {
           renderSlotHighlight(invSlot, PULL_COLOR);
@@ -129,7 +128,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   }
 
   protected void renderSlotHighlight(int slot, Vector4f col) {
-    Slot invSlot = (Slot) inventorySlots.inventorySlots.get(slot);
+    Slot invSlot = inventorySlots.inventorySlots.get(slot);
     renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
   }
 
@@ -169,7 +168,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
 
     if(scaledProgress < 0) {
       for(GuiToolTip tt : progressTooltips) {
-        tt.setVisible(false);
+        tt.setIsVisible(false);
       }
       return;
     }
@@ -178,7 +177,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     String[] tooltip = msg.split("\\|");
     for(GuiToolTip tt : progressTooltips) {
       tt.setToolTipText(tooltip);
-      tt.setVisible(true);
+      tt.setIsVisible(true);
     }
   }
 

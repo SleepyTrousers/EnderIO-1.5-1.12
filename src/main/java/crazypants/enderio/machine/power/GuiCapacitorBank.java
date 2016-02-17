@@ -1,23 +1,15 @@
 package crazypants.enderio.machine.power;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -30,6 +22,12 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
@@ -132,8 +130,8 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
     configOverlay = new GuiOverlayIoConfig(coords) {
 
       @Override
-      public void setVisible(boolean visible) {
-        super.setVisible(visible);
+      public void setIsVisible(boolean visible) {
+        super.setIsVisible(visible);
         configB.setIcon(visible ? IconEIO.IO_CONFIG_DOWN : IconEIO.IO_CONFIG_UP);
       }
 
@@ -153,11 +151,11 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
     if(b.id == CONFIG_ID) {
       boolean vis = !configOverlay.isVisible();
-      configOverlay.setVisible(vis);
+      configOverlay.setIsVisible(vis);
     }
   }
 
@@ -177,7 +175,7 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
     x = guiLeft + inputX;
     y = guiTop + inputY;
-    maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
+    maxInputTF = new GuiTextField(666, fontRenderer, x, y, 68, 16);
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setFocused(false);
@@ -185,7 +183,7 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
     x = guiLeft + outputX;
     y = guiTop + outputY;
-    maxOutputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
+    maxOutputTF = new GuiTextField(667, fontRenderer, x, y, 68, 16);
     maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setFocused(true);
@@ -193,7 +191,7 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void keyTyped(char par1, int par2) {
+  protected void keyTyped(char par1, int par2) throws IOException {
     super.keyTyped(par1, par2);
     if(par1 == 'e') {
       super.keyTyped(par1, 1);
@@ -244,7 +242,7 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void mouseClicked(int par1, int par2, int par3) {
+  protected void mouseClicked(int par1, int par2, int par3) throws IOException {
     super.mouseClicked(par1, par2, par3);
     maxInputTF.mouseClicked(par1, par2, par3);
     maxOutputTF.mouseClicked(par1, par2, par3);
@@ -270,7 +268,7 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
     for (int i = 0; i < buttonList.size(); ++i) {
-      GuiButton guibutton = (GuiButton) this.buttonList.get(i);
+      GuiButton guibutton = this.buttonList.get(i);
       guibutton.drawButton(this.mc, 0, 0);
     }
 
@@ -333,7 +331,7 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
   @Override
   public FontRenderer getFontRenderer() {
-    return Minecraft.getMinecraft().fontRenderer;
+    return Minecraft.getMinecraft().fontRendererObj;
   }
 
 }

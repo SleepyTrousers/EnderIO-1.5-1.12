@@ -2,22 +2,19 @@ package crazypants.enderio.machine.spawner;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.Lang;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.killera.ContainerKillerJoe;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
@@ -46,7 +43,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   }
 
   @Override
-  protected void actionPerformed(GuiButton par1GuiButton) {
+  protected void actionPerformed(GuiButton par1GuiButton) throws IOException {
     if(par1GuiButton == modeB) {
       getTileEntity().setSpawnMode(!getTileEntity().isSpawnMode());
       PacketHandler.INSTANCE.sendToServer(new PacketMode(getTileEntity()));

@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.wireless;
 
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStoredEnergy, IMessage> {
 
@@ -19,9 +20,10 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
   }
 
   public PacketStoredEnergy(TileWirelessCharger ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
+    BlockPos p = ent.getPos();
+    x = p.getX();
+    y = p.getY();
+    z = p.getZ();
     storedEnergy = ent.storedEnergyRF;
   }
 
@@ -45,7 +47,7 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
   @Override
   public IMessage onMessage(PacketStoredEnergy message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileWirelessCharger) {
       TileWirelessCharger me = (TileWirelessCharger) te;
       boolean doRender = (me.storedEnergyRF <= 0 && message.storedEnergy > 0) ||

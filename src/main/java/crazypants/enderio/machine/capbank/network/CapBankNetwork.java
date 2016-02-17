@@ -7,15 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -30,6 +25,11 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class CapBankNetwork implements ICapBankNetwork {
 
@@ -204,7 +204,7 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   @Override
   public void onUpdateEntity(TileCapBank tileCapBank) {
-    World world = tileCapBank.getWorldObj();
+    World world = tileCapBank.getWorld();
     if(world == null) {
       return;
     }
@@ -548,8 +548,9 @@ public class CapBankNetwork implements ICapBankNetwork {
     }
 
     @Override
-    public void tickEnd(ServerTickEvent evt) {
+    public void tickEnd(TickEvent.ServerTickEvent evt) {
       doNetworkTick();
+      
     }
 
   }
@@ -560,12 +561,12 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isOutputEnabled(ForgeDirection direction) {
+  public boolean isOutputEnabled(EnumFacing direction) {
     return isOutputEnabled();
   }
 
   @Override
-  public boolean isInputEnabled(ForgeDirection direction) {
+  public boolean isInputEnabled(EnumFacing direction) {
     return isInputEnabled();
   }
 
@@ -575,7 +576,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isNetworkControlledIo(ForgeDirection direction) {
+  public boolean isNetworkControlledIo(EnumFacing direction) {
     //This is handled at the block level based on the IO mode
     return true;
   }

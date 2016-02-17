@@ -1,18 +1,9 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
-
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.text.NumberFormat;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,7 +11,9 @@ import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
+
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
@@ -28,6 +21,12 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class GuiPowerMonitor extends GuiContainerBaseEIO {
 
@@ -107,7 +106,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
 
     });
 
-    int x = MARGIN + Minecraft.getMinecraft().fontRenderer.getStringWidth(titleStr) + SPACING;
+    int x = MARGIN + Minecraft.getMinecraft().fontRendererObj.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBox(this, 21267, x, 8);
     enabledB.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
@@ -156,7 +155,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void mouseClicked(int x, int y, int par3) {
+  protected void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
     
     x = (x - guiLeft);

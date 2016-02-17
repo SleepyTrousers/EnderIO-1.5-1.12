@@ -1,13 +1,6 @@
 package crazypants.enderio.machine.vat;
 
-import static crazypants.util.EE3Util.registerRecipe;
-
 import java.util.List;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -20,7 +13,10 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import crazypants.util.EE3Util;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class VatRecipe implements IRecipe {
 
@@ -72,7 +68,8 @@ public class VatRecipe implements IRecipe {
                     outputFluidStack.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
                     inputFluidStacks.put(r0, r1, inputFluidStack.copy());
                     outputFluidStacks.put(r0, r1, outputFluidStack.copy());
-                    registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), r1.getInput().copy(), inputFluidStack.copy());
+                    //TODO: 1.8 ee3
+                    //registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), r1.getInput().copy(), inputFluidStack.copy());
                   }
                 }
               }
@@ -90,7 +87,8 @@ public class VatRecipe implements IRecipe {
                 outputFluidStack.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
                 inputFluidStacks.put(r0, r0, inputFluidStack.copy());
                 outputFluidStacks.put(r0, r0, outputFluidStack.copy());
-                registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
+                //TODO: 1.8 ee3                
+//                registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
               }
             }
           }

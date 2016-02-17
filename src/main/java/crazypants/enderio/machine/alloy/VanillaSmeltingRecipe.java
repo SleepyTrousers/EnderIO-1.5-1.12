@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -19,6 +15,10 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
@@ -74,12 +74,12 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     for (MachineRecipeInput ri : inputs) {
       if(ri != null && ri.item != null && !isExcluded(ri.item)) {
         if(output == null) {
-          output = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
+          output = FurnaceRecipes.instance().getSmeltingResult(ri.item);
           if(output == null) {
             return false;
           }
         } else {
-          ItemStack newOutput = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
+          ItemStack newOutput = FurnaceRecipes.instance().getSmeltingResult(ri.item);
           if(newOutput == null || !newOutput.isItemEqual(output)) {
             return false;
           }
@@ -104,7 +104,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int inputCount = 0;
     for (MachineRecipeInput ri : inputs) {
       if(ri != null && ri.item != null && output == null) {
-        output = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
+        output = FurnaceRecipes.instance().getSmeltingResult(ri.item);
       }
     }
     if(output == null) {
@@ -123,7 +123,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     if(output == null) {
       return 0;
     }
-    float result = FurnaceRecipes.smelting().func_151398_b(output);
+    float result = FurnaceRecipes.instance().func_151398_b(output);
     if (result > 1.0f) {
       // see net.minecraft.inventory.SlotFurnace.onCrafting(ItemStack)
       result = 1.0f;
@@ -142,7 +142,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     if(isExcluded(input.item)) {
       return false;
     }
-    ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(input.item);
+    ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
     return itemstack != null;
   }
 
@@ -177,7 +177,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       return Collections.emptyList();
     }
     List<IRecipe> result = new ArrayList<IRecipe>();
-    Map<ItemStack, ItemStack> metaList = FurnaceRecipes.smelting().getSmeltingList();
+    Map<ItemStack, ItemStack> metaList = FurnaceRecipes.instance().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
       ItemStack output = entry.getValue();
       output = OreDictionaryPreferences.instance.getPreferred(output).copy();

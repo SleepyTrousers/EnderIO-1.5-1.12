@@ -14,7 +14,7 @@ public class MachineSound extends PositionedSound implements ITickableSound {
     this.yPosF = y;
     this.zPosF = z;
     this.volume = volume;
-    this.field_147663_c = pitch;
+    this.pitch = pitch;
     this.repeat = true;
   }
 
@@ -42,7 +42,7 @@ public class MachineSound extends PositionedSound implements ITickableSound {
   }
 
   public MachineSound setPitch(float pitch) {
-    this.field_147663_c = pitch;
+    this.pitch = pitch;
     return this;
   }
 }

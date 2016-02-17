@@ -1,12 +1,8 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,12 +11,14 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.render.RenderUtil;
 
-import cpw.mods.fml.common.Optional;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
@@ -76,7 +74,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     if(par2 == 1) {
       for (IGuiOverlay overlay : overlays) {
         if(overlay.isVisible()) {
-          overlay.setVisible(false);
+          overlay.setIsVisible(false);
           return;
         }
       }
@@ -161,7 +159,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   }
 
   @Override
-  protected void mouseClicked(int x, int y, int par3) {
+  protected void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
 
     int tabLeftX = xSize;
@@ -185,7 +183,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton guiButton) {
+  protected void actionPerformed(GuiButton guiButton) throws IOException {
     super.actionPerformed(guiButton);
     tabs.get(activeTab).actionPerformed(guiButton);
   }
@@ -238,17 +236,17 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     return (ContainerTransceiver) inventorySlots;
   }
 
-  @Override
-  @Optional.Method(modid = "NotEnoughItems")
-  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
-    if(tabs.size() > 0) {
-      int sx = (width - xSize) / 2;
-      int sy = (height - ySize) / 2;
-      int tabX = sx + xSize - 3;
-      int tabY = sy + tabYOffset;
-
-      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
-    }
-    return false;
-  }
+//  @Override
+//  @Optional.Method(modid = "NotEnoughItems")
+//  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+//    if(tabs.size() > 0) {
+//      int sx = (width - xSize) / 2;
+//      int sy = (height - ySize) / 2;
+//      int tabX = sx + xSize - 3;
+//      int tabY = sy + tabYOffset;
+//
+//      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
+//    }
+//    return false;
+//  }
 }

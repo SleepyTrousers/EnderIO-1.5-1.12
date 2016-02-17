@@ -1,17 +1,17 @@
 package crazypants.enderio.rail;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.Random;
 
+import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketTeleportEffects implements IMessage, IMessageHandler<PacketTeleportEffects, IMessage> {
 
@@ -51,7 +51,7 @@ public class PacketTeleportEffects implements IMessage, IMessageHandler<PacketTe
       double xOff = (rand.nextDouble() - 0.5) * 1.1;
       double yOff = (rand.nextDouble() - 0.5) * 0.2;
       double zOff = (rand.nextDouble() - 0.5) * 1.1;
-      Minecraft.getMinecraft().theWorld.spawnParticle("portal", message.x + xOff, message.y + yOff, message.z + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
+      Minecraft.getMinecraft().theWorld.spawnParticle(EnumParticleTypes.PORTAL, message.x + xOff, message.y + yOff, message.z + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
           (rand.nextDouble() - 0.5) * 1.5);
     }
     return null;

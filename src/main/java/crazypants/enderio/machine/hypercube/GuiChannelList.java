@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 
@@ -20,7 +20,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   private final GuiHyperCube parent;
 
   public GuiChannelList(GuiHyperCube parent, int width, int height, int originX, int originY) {
-    super(width, height, originX, originY, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 4);
+    super(width, height, originX, originY, Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT + 4);
     this.parent = parent;
   }
 

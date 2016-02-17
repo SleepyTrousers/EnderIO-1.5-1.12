@@ -8,23 +8,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.block.Block.SoundType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
@@ -38,6 +24,19 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.Block.SoundType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ConduitUtil {
 
@@ -46,7 +45,7 @@ public class ConduitUtil {
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IConduit conduit) {
     TileEntity te = conduit.getBundle().getEntity();
-    World world = te.getWorldObj();
+    World world = te.getWorld();
     Collection<? extends IConduit> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, conduit.getBaseConduitType());
 
     if(reuseNetwork(conduit, connections, world)) {
@@ -79,10 +78,10 @@ public class ConduitUtil {
     return false;
   }
 
-  public static <T extends IConduit> void disconectConduits(T con, ForgeDirection connDir) {
+  public static <T extends IConduit> void disconectConduits(T con, EnumFacing connDir) {
     con.conduitConnectionRemoved(connDir);
     BlockCoord loc = con.getLocation().getLocation(connDir);
-    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null) {
       neighbour.conduitConnectionRemoved(connDir.getOpposite());
       if(neighbour.getNetwork() != null) {
@@ -98,9 +97,9 @@ public class ConduitUtil {
     }
   }
 
-  public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
+  public static <T extends IConduit> boolean joinConduits(T con, EnumFacing faceHit) {
     BlockCoord loc = con.getLocation().getLocation(faceHit);
-    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
       neighbour.conduitConnectionAdded(faceHit.getOpposite());
@@ -235,7 +234,7 @@ public class ConduitUtil {
     return null;
   }
 
-  public static <T extends IConduit> T getConduit(World world, TileEntity te, ForgeDirection dir, Class<T> type) {
+  public static <T extends IConduit> T getConduit(World world, TileEntity te, EnumFacing dir, Class<T> type) {
     return ConduitUtil.getConduit(world, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, type);
   }
 
@@ -248,7 +247,7 @@ public class ConduitUtil {
     IConduitBundle root = (IConduitBundle) te;
     T con = root.getConduit(type);
     if(con != null) {
-      for (ForgeDirection dir : con.getConduitConnections()) {
+      for (EnumFacing dir : con.getConduitConnections()) {
         T connected = getConduit(world, root.getEntity(), dir, type);
         if(connected != null) {
           result.add(connected);

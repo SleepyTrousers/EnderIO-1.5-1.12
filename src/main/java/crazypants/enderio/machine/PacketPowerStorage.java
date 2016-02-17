@@ -1,16 +1,16 @@
 package crazypants.enderio.machine;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.IPowerContainer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.power.IPowerContainer;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
@@ -50,7 +50,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   @Override
   public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof IPowerContainer) {
       IPowerContainer me = (IPowerContainer) te;
       me.setEnergyStored(message.storedEnergy);

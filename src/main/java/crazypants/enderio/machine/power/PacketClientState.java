@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.power;
 
+import crazypants.enderio.machine.RedstoneControlMode;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.machine.RedstoneControlMode;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage>  {
 
@@ -22,9 +23,10 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   }
 
   public PacketClientState(TileCapacitorBank capBank) {
-    x = capBank.xCoord;
-    y = capBank.yCoord;
-    z = capBank.zCoord;
+    BlockPos p = capBank.getPos();
+    x = p.getX();
+    y = p.getY();
+    z = p.getZ();
 
     inputMode = capBank.getInputControlMode();
     outputMode = capBank.getOutputControlMode();
@@ -62,7 +64,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.setInputControlMode(message.inputMode);

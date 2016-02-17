@@ -3,15 +3,14 @@ package crazypants.enderio.machine.hypercube;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.enderio.core.common.util.InventoryWrapper;
+
+import crazypants.enderio.ModObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.util.InventoryWrapper;
-
-import crazypants.enderio.ModObject;
+import net.minecraft.util.EnumFacing;
 
 public class CompositeInventory implements ISidedInventory {
 
@@ -24,7 +23,7 @@ public class CompositeInventory implements ISidedInventory {
     }
   }
 
-  public void addInventory(IInventory inv, ForgeDirection side) {
+  public void addInventory(IInventory inv, EnumFacing side) {
     if(inv == null) {
       return;
     }
@@ -157,7 +156,7 @@ public class CompositeInventory implements ISidedInventory {
   //---------------- Inventory
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return ModObject.blockHyperCube.unlocalisedName;
   }
 
@@ -172,20 +171,15 @@ public class CompositeInventory implements ISidedInventory {
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer p) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer p) {
   }
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int i) {
-    return null;
-  }
-
-  @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -194,9 +188,9 @@ public class CompositeInventory implements ISidedInventory {
     ISidedInventory inv;
     int startIndex;
     int endIndex;
-    ForgeDirection side;
+    EnumFacing side;
 
-    InvEntry(IInventory inventory, int startIndex, ForgeDirection side) {
+    InvEntry(IInventory inventory, int startIndex, EnumFacing side) {
       this.origInv = inventory;
       inv = InventoryWrapper.asSidedInventory(inventory);
       this.endIndex = startIndex + inv.getSizeInventory() - 1;

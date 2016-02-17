@@ -3,18 +3,16 @@ package crazypants.enderio.rail;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class PlayerTeleportHandler {
 

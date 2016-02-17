@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
 
@@ -35,7 +35,7 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
     buf.writeShort(outputMode.ordinal());
   }
 
-  @Override
+  @Override  
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     maxSend = buf.readInt();

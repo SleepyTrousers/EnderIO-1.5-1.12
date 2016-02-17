@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketNetworkEnergyRequest extends PacketCapBank<PacketNetworkEnergyRequest, PacketNetworkEnergyResponse> {
 

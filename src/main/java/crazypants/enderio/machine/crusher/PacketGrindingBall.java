@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.crusher;
 
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
 
@@ -21,9 +22,9 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   }
 
   public PacketGrindingBall(TileCrusher ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
+    x = ent.getPos().getX();
+    y = ent.getPos().getY();
+    z = ent.getPos().getZ();
     currGbUse = ent.currGbUse;
     maxGbUse = ent.gb == null ? 0 : ent.gb.getDurationMJ();
   }
@@ -49,7 +50,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   @Override
   public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileCrusher) {
       TileCrusher me = (TileCrusher) te;
       me.currGbUse = message.currGbUse;

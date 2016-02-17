@@ -4,10 +4,6 @@ import java.awt.Color;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
@@ -27,6 +23,9 @@ import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.UserIdent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 
 public class ChannelTab implements ITabPanel {
 
@@ -61,7 +60,7 @@ public class ChannelTab implements ITabPanel {
     this.type = type;
     transceiver = guiTransceiver.getTransciever();
 
-    newChannelTF = new GuiTextField(parent.getFontRenderer(), 7, 12, 103, 16);    
+    newChannelTF = new GuiTextField(76543, parent.getFontRenderer(), 7, 12, 103, 16);    
     addButton = new IconButton(parent, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
     addButton.setToolTip(EnderIO.lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
