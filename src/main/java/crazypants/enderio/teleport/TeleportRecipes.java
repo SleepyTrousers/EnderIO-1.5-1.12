@@ -1,10 +1,5 @@
 package crazypants.enderio.teleport;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.Alloy;
@@ -12,6 +7,11 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class TeleportRecipes {
 

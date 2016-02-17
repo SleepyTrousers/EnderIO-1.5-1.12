@@ -1,7 +1,7 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyConnection;
+import net.minecraft.util.EnumFacing;
 
 public class EnergyConnectionPI implements IPowerInterface {
 
@@ -17,7 +17,7 @@ public class EnergyConnectionPI implements IPowerInterface {
   }
 
   @Override
-  public boolean canConduitConnect(ForgeDirection direction) {
+  public boolean canConduitConnect(EnumFacing direction) {
     if(delegate != null && direction != null) {
       return delegate.canConnectEnergy(direction.getOpposite());
     }
@@ -25,27 +25,27 @@ public class EnergyConnectionPI implements IPowerInterface {
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection dir) {
+  public int getEnergyStored(EnumFacing dir) {
     return 0;
   }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection dir) {
+  public int getMaxEnergyStored(EnumFacing dir) {
     return 0;
   }
 
   @Override
-  public int getPowerRequest(ForgeDirection dir) {
+  public int getPowerRequest(EnumFacing dir) {
     return 0;
   }
 
   @Override
-  public int getMinEnergyReceived(ForgeDirection dir) {
+  public int getMinEnergyReceived(EnumFacing dir) {
     return 0;
   }
 
   @Override
-  public int recieveEnergy(ForgeDirection opposite, int canOffer) {
+  public int recieveEnergy(EnumFacing opposite, int canOffer) {
     return 0;
   }
 

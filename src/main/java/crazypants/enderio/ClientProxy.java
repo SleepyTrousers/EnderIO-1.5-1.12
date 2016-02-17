@@ -3,30 +3,9 @@ package crazypants.enderio;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.MinecraftForge;
-
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.IconUtil;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -143,6 +122,24 @@ import crazypants.enderio.teleport.telepad.TelePadRenderer;
 import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -474,7 +471,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
-    ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true));
+    ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true, true));
     Minecraft.getMinecraft().thePlayer.timeInPortal = 1;
   }
 

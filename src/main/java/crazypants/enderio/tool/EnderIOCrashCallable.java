@@ -3,15 +3,15 @@ package crazypants.enderio.tool;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.API;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ICrashCallable;
-import cpw.mods.fml.common.ModAPIManager;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.EnderIOAPIProps;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.API;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ICrashCallable;
+import net.minecraftforge.fml.common.ModAPIManager;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class EnderIOCrashCallable implements ICrashCallable {
 
@@ -44,7 +44,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
         } else {
           Package caep = Package.getPackage("cofh.api.energy");
           if (caep != null) {
-            API api = caep.getAnnotation(cpw.mods.fml.common.API.class);
+            API api = caep.getAnnotation(API.class);
             if (api != null) {
               String apiVersion = api.apiVersion();
               if (apiVersion != null) {

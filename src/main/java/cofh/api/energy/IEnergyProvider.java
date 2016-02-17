@@ -1,6 +1,7 @@
 package cofh.api.energy;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+
 
 /**
  * Implement this interface on Tile Entities which should provide energy, generally storing it in one or more internal {@link IEnergyStorage} objects.
@@ -10,7 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  *
  */
-public interface IEnergyProvider extends IEnergyConnection {
+public interface IEnergyProvider extends IEnergyHandler {
 
 	/**
 	 * Remove energy from an IEnergyProvider, internal distribution is left entirely to the IEnergyProvider.
@@ -23,16 +24,6 @@ public interface IEnergyProvider extends IEnergyConnection {
 	 *            If TRUE, the extraction will only be simulated.
 	 * @return Amount of energy that was (or would have been, if simulated) extracted.
 	 */
-	int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate);
-
-	/**
-	 * Returns the amount of energy currently stored.
-	 */
-	int getEnergyStored(ForgeDirection from);
-
-	/**
-	 * Returns the maximum amount of energy that can be stored.
-	 */
-	int getMaxEnergyStored(ForgeDirection from);
+	int extractEnergy(EnumFacing from, int maxExtract, boolean simulate);
 
 }

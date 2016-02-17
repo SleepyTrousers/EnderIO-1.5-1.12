@@ -1,18 +1,19 @@
 package crazypants.enderio;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
-public abstract class BlockEio extends BlockEnder {
+public abstract class BlockEio extends BlockEnder<TileEntityEio> {
 
   protected BlockEio(String name, Class<? extends TileEntityEio> teClass) {
     super(name, teClass);
@@ -23,24 +24,29 @@ public abstract class BlockEio extends BlockEnder {
     super(name, teClass, mat);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
+  
+  
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-
-    if(shouldWrench(world, x, y, z, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {  
+    if(shouldWrench(world, pos, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, pos, entityPlayer)) {
       return true;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(pos);
 
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
+    if(tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, pos)) {
       if(te instanceof AbstractMachineEntity) {
-        ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
-        world.markBlockForUpdate(x, y, z);
+        ((AbstractMachineEntity) te).toggleIoModeForFace(side);
+        world.markBlockForUpdate(pos);
         return true;
       }
     }
     
-    return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);
+    return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
+  }
+  
+  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+    return true;
   }
 }

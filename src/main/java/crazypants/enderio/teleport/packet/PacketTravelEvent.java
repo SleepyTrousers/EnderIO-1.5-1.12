@@ -1,5 +1,11 @@
 package crazypants.enderio.teleport.packet;
 
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TeleportEntityEvent;
+import crazypants.enderio.api.teleport.TravelSource;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,14 +13,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TeleportEntityEvent;
-import crazypants.enderio.api.teleport.TravelSource;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravelEvent, IMessage> {
 

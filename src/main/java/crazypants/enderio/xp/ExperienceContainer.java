@@ -1,17 +1,16 @@
 package crazypants.enderio.xp;
 
-import io.netty.buffer.ByteBuf;
-
 import java.security.InvalidParameterException;
 
+import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
-import crazypants.enderio.EnderIO;
 
 public class ExperienceContainer extends FluidTank {
   // Note: We extend FluidTank instead of implementing IFluidTank because it has
@@ -133,7 +132,7 @@ public class ExperienceContainer extends FluidTank {
     }
   }
   
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     if(resource == null || !canDrain(from, resource.getFluid())) {
       return null;
     }    
@@ -141,7 +140,7 @@ public class ExperienceContainer extends FluidTank {
   }
 
   
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     if(EnderIO.fluidXpJuice == null) {
       return null;
     }
@@ -162,11 +161,11 @@ public class ExperienceContainer extends FluidTank {
     return new FluidStack(EnderIO.fluidXpJuice, fluidToExtract);
   }
 
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
   }
   
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(resource == null) {
       return 0;
     }
@@ -189,11 +188,11 @@ public class ExperienceContainer extends FluidTank {
     return XpUtil.experienceToLiquid(canFillXP);
   }
   
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
   }
   
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     if(EnderIO.fluidXpJuice == null) {
       return new FluidTankInfo[0];
     }
@@ -252,17 +251,17 @@ public class ExperienceContainer extends FluidTank {
 
   @Override
   public FluidTankInfo getInfo() {
-    return getTankInfo(ForgeDirection.UNKNOWN)[0];
+    return getTankInfo(null)[0];
   }
 
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    return fill(ForgeDirection.UNKNOWN, resource, doFill);
+    return fill(null, resource, doFill);
   }
 
   @Override
   public FluidStack drain(int maxDrain, boolean doDrain) {
-    return drain(ForgeDirection.UNKNOWN, maxDrain, doDrain);
+    return drain(null, maxDrain, doDrain);
   }
 
   @Override

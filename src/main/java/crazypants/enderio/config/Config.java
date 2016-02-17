@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.config.Configuration;
-
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public final class Config {
 
@@ -508,9 +508,8 @@ public final class Config {
 
   
   public static void load(FMLPreInitializationEvent event) {
-    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
-
-    FMLCommonHandler.instance().bus().register(new Config());
+    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
+    MinecraftForge.EVENT_BUS.register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.DOMAIN);
     if(!configDirectory.exists()) {
       configDirectory.mkdir();
@@ -1392,12 +1391,11 @@ public final class Config {
     String[] nameAndMeta = s.split(";");
     int meta = nameAndMeta.length == 1 ? 0 : Integer.parseInt(nameAndMeta[1]);
     String[] data = nameAndMeta[0].split(":");
-    ItemStack stack = GameRegistry.findItemStack(data[0], data[1], 1);
-    if(stack == null) {
+    Item item = GameRegistry.findItem(data[0], data[1]);
+    if(item == null) {
       return null;
-    }
-    stack.setItemDamage(meta);
-    return stack;
+    }    
+    return new ItemStack(item, 1, meta);
   }
 
   private Config() {

@@ -6,23 +6,22 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.PlayerUtil;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.util.UserIdent;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
 
@@ -167,11 +166,6 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean shouldUpdate() {
-    return false;
-  }
-
-  @Override
   @SideOnly(Side.CLIENT)
   public double getMaxRenderDistanceSquared() {
     return TravelSource.getMaxDistanceSq();
@@ -287,7 +281,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     }
     
     if(sourceBlock != null) {
-      root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock));
+      root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock).toString());
     }
     root.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
     
@@ -296,16 +290,17 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     }
     
   }
-  
+    
   @Override
-  public Packet getDescriptionPacket() {
+  public Packet<?> getDescriptionPacket() {
     NBTTagCompound tag = new NBTTagCompound();
     writeCustomNBT(tag);
-    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
+    return new S35PacketUpdateTileEntity(getPos(), 1, tag);
   }
 
   @Override
-  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-    readCustomNBT(pkt.func_148857_g());
+  public BlockCoord getLocation() {
+    return new BlockCoord(pos);
   }
+  
 }

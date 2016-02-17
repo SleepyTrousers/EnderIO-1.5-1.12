@@ -1,15 +1,19 @@
 buildscript {
     repositories {
+        jcenter()
         mavenCentral()
         maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT' }
 }
 
-apply plugin: 'forge'
+plugins {
+    id "com.matthewprenger.cursegradle" version "1.0.7"
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
-apply plugin: 'curseforge'
 
 ext.buildnumber = 0
 if (System.getenv('BUILD_NUMBER') != null)
@@ -33,6 +37,7 @@ if (project.hasProperty('mod_appendix')) {
 }
 
 minecraft {
+    mappings = "snapshot_nodoc_20160104"
     version = "${minecraft_version}-${forge_version}"
     runDir = 'run'
 
@@ -48,11 +53,8 @@ configurations {
 repositories {
     mavenCentral()
     maven { url = "http://mobiusstrip.eu/maven" }
-    maven { url = "http://chickenbones.net/maven/" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
-    maven { url = "http://maven.tterrag.com" }
-    maven { url = "http://maven.ic2.player.to" }
-    maven { url = "http://maven.cil.li/" }
+    maven { url = "http://maven.tterrag.com" }        
     mavenLocal()
 }
 
@@ -63,18 +65,7 @@ dependencies {
         compile "com.enderio.core:EnderCore:${endercore_version}:dev"
     }
 
-    compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
-    compile "mcp.mobius.waila:Waila:${waila_version}_${minecraft_version}:dev"
-    compile "net.sengir.forestry:${forestry_version}:api"
-    compile ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
-        transitive = false
-    }
-    
-    // WAILA ships really old CCC/CCL versions, so we force the new versions
-    compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
-    compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"
-    
-    compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
+    compile "mcp.mobius.waila:Waila:${waila_version}:dev"   
 }
 
 sourceSets {
@@ -110,11 +101,6 @@ jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
 task apiJar(type: Jar) {
     from sourceSets.main.allSource
     from sourceSets.main.output
@@ -142,7 +128,6 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
-install.dependsOn build
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -169,43 +154,6 @@ artifacts {
     archives deobfJar
 }
 
-String getChangelogText() {
-    def changelogFile = new File('ReleaseNotes.txt')
-    String str = ''
-    String separator = '---'
-    int lineCount = 0
-    boolean done = false
-    changelogFile.eachLine {
-        if (done || it == null) {
-            return
-        }
-        if (lineCount < 3) {
-            lineCount++
-            if (it.startsWith(separator)) {return}
-        }
-        if (!it.startsWith(separator)) {
-            str += "$it" + (lineCount < 3 ? ':\n\n' : '\n')
-            return
-        }
-        done = true // once we go past the first version block, parse no more
-    }
-    return str
-}
-
-curse {
-    dependsOn 'reobf'
-    
-    onlyIf {
-        return project.hasProperty('curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
-    }
-
-    if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
-    projectId = project.curse_projectId
-    changelog = System.getenv("CHANGELOG").equals("none") ? release ? getChangelogText() : project.changelog : System.getenv("CHANGELOG")
-    releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
-    additionalArtifact deobfJar
-    relatedProject 'endercore'
-}
 
 task checkTranslations << {
     Map<String, String> mapen = new HashMap<String, String>()

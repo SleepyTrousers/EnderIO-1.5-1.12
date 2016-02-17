@@ -7,7 +7,7 @@ public class EnergyHandlerPI extends EnergyReceiverPI {
   private IEnergyHandler rfPower;
 
   public EnergyHandlerPI(IEnergyHandler powerReceptor) {
-    super(powerReceptor);
+    super(powerReceptor);    
   }
 
   @Override

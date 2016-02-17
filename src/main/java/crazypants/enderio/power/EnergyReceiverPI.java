@@ -1,7 +1,7 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.util.EnumFacing;
 
 public class EnergyReceiverPI implements IPowerInterface {
   
@@ -17,7 +17,7 @@ public class EnergyReceiverPI implements IPowerInterface {
   }
 
   @Override
-  public boolean canConduitConnect(ForgeDirection direction) {
+  public boolean canConduitConnect(EnumFacing direction) {
     if(rfPower != null && direction != null) {
       return rfPower.canConnectEnergy(direction.getOpposite());
     }
@@ -25,7 +25,7 @@ public class EnergyReceiverPI implements IPowerInterface {
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection dir) {
+  public int getEnergyStored(EnumFacing dir) {
     if(rfPower != null && dir != null) {
       return rfPower.getEnergyStored(dir);
     }
@@ -33,7 +33,7 @@ public class EnergyReceiverPI implements IPowerInterface {
   }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection dir) {
+  public int getMaxEnergyStored(EnumFacing dir) {
     if(rfPower != null && dir != null) {
       return rfPower.getMaxEnergyStored(dir);
     }
@@ -41,14 +41,14 @@ public class EnergyReceiverPI implements IPowerInterface {
   }
 
   @Override
-  public int getPowerRequest(ForgeDirection dir) {
+  public int getPowerRequest(EnumFacing dir) {
     if(rfPower != null && dir != null && rfPower.canConnectEnergy(dir)) {
       return rfPower.receiveEnergy(dir, 99999999, true);
     }
     return 0;
   }
 
-  public static int getPowerRequest(ForgeDirection dir, IEnergyReceiver handler) {
+  public static int getPowerRequest(EnumFacing dir, IEnergyReceiver handler) {
     if(handler != null && dir != null && handler.canConnectEnergy(dir)) {
       return handler.receiveEnergy(dir, 99999999, true);
     }
@@ -56,12 +56,12 @@ public class EnergyReceiverPI implements IPowerInterface {
   }
 
   @Override
-  public int getMinEnergyReceived(ForgeDirection dir) {
+  public int getMinEnergyReceived(EnumFacing dir) {
     return 0;
   }
 
   @Override
-  public int recieveEnergy(ForgeDirection opposite, int canOffer) {
+  public int recieveEnergy(EnumFacing opposite, int canOffer) {
     if(rfPower != null && opposite != null) {
       return rfPower.receiveEnergy(opposite, canOffer, false);
     }

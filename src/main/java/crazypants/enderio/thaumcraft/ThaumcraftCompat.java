@@ -1,19 +1,7 @@
 package crazypants.enderio.thaumcraft;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
@@ -22,6 +10,18 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.oredict.OreDictionary;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 
 public class ThaumcraftCompat {
 
@@ -141,7 +141,7 @@ public class ThaumcraftCompat {
         String ownermod = ((String) o).substring(0, ((String) o).indexOf(':'));
         if(EnderIO.MODID.equals(ownermod)) {
           for (int idx = 0; idx < 16; idx++) {
-            addAspectsFromRecipes((Item) Item.itemRegistry.getObject((String) o), idx);
+            addAspectsFromRecipes(Item.itemRegistry.getObject(new ResourceLocation((String)o)), idx);
           }
         }
       }
@@ -153,7 +153,7 @@ public class ThaumcraftCompat {
   }
 
   private static AspectList getAspects(String ore) {
-    ArrayList<ItemStack> ores = OreDictionary.getOres(ore);
+    List<ItemStack> ores = OreDictionary.getOres(ore);
     return ores.isEmpty() ? new AspectList() : getAspects(ores.get(0));
   }
 

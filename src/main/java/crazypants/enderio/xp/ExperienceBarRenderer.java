@@ -1,15 +1,14 @@
 package crazypants.enderio.xp;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 
 public class ExperienceBarRenderer {
 
@@ -29,7 +28,7 @@ public class ExperienceBarRenderer {
         shadow = false;
       }
     }
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     int strX = x + length / 2 - fr.getStringWidth(text) / 2;
     fr.drawString(text, strX, y - 11, color, shadow);
 

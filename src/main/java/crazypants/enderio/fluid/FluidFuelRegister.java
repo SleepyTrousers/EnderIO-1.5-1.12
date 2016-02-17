@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import crazypants.enderio.Log;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import cpw.mods.fml.common.Loader;
-import crazypants.enderio.Log;
+import net.minecraftforge.fml.common.Loader;
 
 public class FluidFuelRegister implements IFluidRegister {
 

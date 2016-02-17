@@ -1,6 +1,6 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public interface IPowerStorage {
 
@@ -18,11 +18,11 @@ public interface IPowerStorage {
    * @param direction
    * @return
    */
-  boolean isNetworkControlledIo(ForgeDirection direction);
+  boolean isNetworkControlledIo(EnumFacing direction);
 
-  boolean isOutputEnabled(ForgeDirection direction);
+  boolean isOutputEnabled(EnumFacing direction);
 
-  boolean isInputEnabled(ForgeDirection direction);
+  boolean isInputEnabled(EnumFacing direction);
 
   int getMaxOutput();
 

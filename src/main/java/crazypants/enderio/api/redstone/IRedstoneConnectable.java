@@ -1,7 +1,7 @@
 package crazypants.enderio.api.redstone;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implement this on your Block or TileEntity to control whether insulated
@@ -11,6 +11,6 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public interface IRedstoneConnectable {
 
-  boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from);
+  boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from);
 
 }

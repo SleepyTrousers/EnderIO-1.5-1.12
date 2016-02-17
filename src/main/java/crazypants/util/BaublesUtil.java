@@ -1,14 +1,14 @@
 package crazypants.util;
 
+import baubles.api.BaublesApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import baubles.api.BaublesApi;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BaublesUtil {
 

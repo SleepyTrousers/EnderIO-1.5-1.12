@@ -1,12 +1,12 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyConnection;
+import net.minecraft.util.EnumFacing;
 
 //IEnergyHandler, 
 public interface IInternalPoweredTile extends IPowerContainer, IEnergyConnection {
 
-  int getMaxEnergyRecieved(ForgeDirection dir);
+  int getMaxEnergyRecieved(EnumFacing dir);
   
   int getMaxEnergyStored();
   

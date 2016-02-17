@@ -1,9 +1,5 @@
 package crazypants.enderio;
 
-import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.EnderIO.MOD_NAME;
-import static crazypants.enderio.EnderIO.VERSION;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,23 +12,10 @@ import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.relauncher.Side;
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.EnderIO.MOD_NAME;
+import static crazypants.enderio.EnderIO.VERSION;
+
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
@@ -156,7 +139,6 @@ import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
-import crazypants.util.EE3Util;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -165,6 +147,23 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
@@ -585,8 +584,7 @@ public class EnderIO {
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
     ItemRecipes.addRecipes();
-    TeleportRecipes.addRecipes();
-    EE3Util.registerMiscRecipes();
+    TeleportRecipes.addRecipes();    
     
     proxy.load();
   }

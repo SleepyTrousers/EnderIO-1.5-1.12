@@ -1,13 +1,14 @@
 package crazypants.enderio.teleport.packet;
 
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
  * Created by CrazyPants on 27/02/14.
@@ -45,13 +46,14 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
     mode = TileTravelAnchor.AccessMode.values()[buf.readShort()];
   }
 
+  @Override
   public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof ITravelAccessable) {
       ((ITravelAccessable) te).setAccessMode(message.mode);
-      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
-      player.worldObj.markTileEntityChunkModified(message.x, message.y, message.z, te);      
+      player.worldObj.markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+      player.worldObj.markChunkDirty(new BlockPos(message.x, message.y, message.z), te);      
     }
     return null;
   }

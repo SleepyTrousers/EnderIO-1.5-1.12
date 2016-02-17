@@ -5,6 +5,7 @@ import com.enderio.core.common.util.Util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class ShadowInventory implements IInventory {
   private final ItemStack[] items;
@@ -34,25 +35,8 @@ public class ShadowInventory implements IInventory {
   }
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-    ItemStack stack = getStackInSlot(p_70304_1_);
-    setInventorySlotContents(p_70304_1_, null);
-    return stack;
-  }
-
-  @Override
   public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
     items[p_70299_1_] = p_70299_2_;
-  }
-
-  @Override
-  public String getInventoryName() {
-    return master.getInventoryName();
-  }
-
-  @Override
-  public boolean hasCustomInventoryName() {
-    return master.hasCustomInventoryName();
   }
 
   @Override
@@ -69,19 +53,61 @@ public class ShadowInventory implements IInventory {
     return master.isUseableByPlayer(p_70300_1_);
   }
 
-  @Override
-  public void openInventory() {
-    master.openInventory();
-  }
-
-  @Override
-  public void closeInventory() {
-    master.closeInventory();
-  }
 
   @Override
   public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
     return master.isItemValidForSlot(p_94041_1_, p_94041_2_);
+  }
+
+  @Override
+  public String getName() {
+    return master.getName();
+  }
+
+  @Override
+  public boolean hasCustomName() {  
+    return master.hasCustomName();
+  }
+
+  @Override
+  public IChatComponent getDisplayName() {
+    return master.getDisplayName();
+  }
+
+  @Override
+  public ItemStack removeStackFromSlot(int index) {    
+    return master.removeStackFromSlot(index);
+  }
+
+  @Override
+  public void openInventory(EntityPlayer player) {
+    master.openInventory(player);    
+  }
+
+  @Override
+  public void closeInventory(EntityPlayer player) {
+    master.closeInventory(player);    
+  }
+
+  @Override
+  public int getField(int id) {
+    return master.getField(id);
+  }
+
+  @Override
+  public void setField(int id, int value) {
+    master.setField(id, value);
+    
+  }
+
+  @Override
+  public int getFieldCount() {
+    return master.getFieldCount();
+  }
+
+  @Override
+  public void clear() {
+    master.clear();    
   }
 
 }

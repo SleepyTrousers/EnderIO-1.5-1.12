@@ -1,22 +1,22 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public interface IPowerInterface {
 
   Object getDelegate();
 
-  boolean canConduitConnect(ForgeDirection direction);
+  boolean canConduitConnect(EnumFacing direction);
 
-  int getEnergyStored(ForgeDirection dir);
+  int getEnergyStored(EnumFacing dir);
 
-  int getMaxEnergyStored(ForgeDirection dir);
+  int getMaxEnergyStored(EnumFacing dir);
 
-  int getPowerRequest(ForgeDirection dir);
+  int getPowerRequest(EnumFacing dir);
 
-  int getMinEnergyReceived(ForgeDirection dir);
+  int getMinEnergyReceived(EnumFacing dir);
 
-  int recieveEnergy(ForgeDirection opposite, int canOffer);
+  int recieveEnergy(EnumFacing opposite, int canOffer);
 
   boolean isOutputOnly();
 

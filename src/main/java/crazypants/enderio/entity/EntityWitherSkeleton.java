@@ -2,6 +2,8 @@ package crazypants.enderio.entity;
 
 import java.util.Calendar;
 
+import com.enderio.core.common.util.EntityUtil;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -14,11 +16,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-
-import com.enderio.core.common.util.EntityUtil;
-
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EntityWitherSkeleton extends EntitySkeleton {
   public EntityWitherSkeleton(World world) {
@@ -28,7 +28,7 @@ public class EntityWitherSkeleton extends EntitySkeleton {
   public EntityWitherSkeleton(EntitySkeleton entity) {
     this(entity.worldObj);
     this.copyLocationAndAnglesFrom(entity);
-    for (int i = 0; i < entity.getLastActiveItems().length; i++) {
+    for (int i = 0; i < entity.getInventory().length; i++) {
       this.setCurrentItemOrArmor(i, entity.getEquipmentInSlot(i));
     }
   }
@@ -38,14 +38,14 @@ public class EntityWitherSkeleton extends EntitySkeleton {
   }
 
   @Override
-  public IEntityLivingData onSpawnWithEgg(IEntityLivingData entityData) {
+  public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
     this.getEntityAttribute(SharedMonsterAttributes.followRange)
         .applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextGaussian() * 0.05D, 1));
     this.setSkeletonType(1);
     this.setCurrentItemOrArmor(0, new ItemStack(Items.stone_sword));
     this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
     this.setCombatTask();
-    this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * this.worldObj.func_147462_b(this.posX, this.posY, this.posZ));
+    this.setCanPickUpLoot(this.rand.nextFloat() < 0.55F * difficulty.getClampedAdditionalDifficulty());
 
     if(this.getEquipmentInSlot(4) == null) {
       Calendar calendar = this.worldObj.getCurrentDate();
@@ -56,7 +56,7 @@ public class EntityWitherSkeleton extends EntitySkeleton {
       }
     }
 
-    return entityData;
+    return livingData;
   }
 
   @Override

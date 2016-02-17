@@ -1,13 +1,13 @@
 package crazypants.enderio.thaumcraft;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
@@ -27,13 +27,13 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
     if(stack == null) {
       return null;
     }
-    if(stack.stackTagCompound == null) {
+    if(stack.getTagCompound() == null) {
       return null;
     }
-    if(!stack.stackTagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
+    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    return new GogglesOfRevealingUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new GogglesOfRevealingUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
   
   public static boolean isUpgradeEquipped(EntityPlayer player) {

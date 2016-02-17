@@ -1,13 +1,12 @@
 package crazypants.enderio.teleport.packet;
 
+import crazypants.enderio.api.teleport.IItemOfTravel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.Log;
-import crazypants.enderio.api.teleport.IItemOfTravel;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainStaff, IMessage> {
 

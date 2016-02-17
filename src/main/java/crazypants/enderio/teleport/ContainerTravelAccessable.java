@@ -3,21 +3,19 @@ package crazypants.enderio.teleport;
 import java.awt.Point;
 import java.util.List;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.TileEntityBase;
+
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.packet.PacketPassword;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.ArrayInventory;
-
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.packet.PacketPassword;
 
 public class ContainerTravelAccessable extends ContainerEnder<IInventory> {
 
@@ -89,12 +87,12 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> {
     @Override
     public void putStack(ItemStack stack) {
       if (isAuth) {
-        if (ta instanceof TileEntityEnder) {
-          PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityEnder) ta, slot, stack));
+        if (ta instanceof TileEntityBase) {
+          PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityBase) ta, slot, stack));
         }
       } else {
-        if (ta instanceof TileEntityEnder) {
-          PacketHandler.INSTANCE.sendToServer(PacketPassword.setLabel((TileEntityEnder) ta, stack));
+        if (ta instanceof TileEntityBase) {
+          PacketHandler.INSTANCE.sendToServer(PacketPassword.setLabel((TileEntityBase) ta, stack));
         }
       }
     }

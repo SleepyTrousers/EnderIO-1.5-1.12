@@ -4,31 +4,13 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
-import mcp.mobius.waila.api.ITaggedList;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import mcp.mobius.waila.api.impl.ConfigHandler;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
@@ -47,55 +29,64 @@ import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
-
-import static crazypants.enderio.waila.IWailaInfoProvider.*;
+import mcp.mobius.waila.api.ITaggedList;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.impl.ConfigHandler;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fluids.FluidStack;
 
 public class WailaCompat implements IWailaDataProvider {
 
   private class WailaWorldWrapper extends World {
+    
     private final World wrapped;
     
     private WailaWorldWrapper(World wrapped) {
-      super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
+      //super(wrapped.getSaveHandler(), wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
+      super(wrapped.getSaveHandler(), wrapped.getWorldInfo(), wrapped.provider, wrapped.theProfiler, wrapped.isRemote);
       this.wrapped = wrapped;
-      this.isRemote = wrapped.isRemote;
     }
 
     @Override
-    public Block getBlock(int x, int y, int z) {
-      Block block = wrapped.getBlock(x, y, z);
+    public IBlockState getBlockState(BlockPos pos) {
+      IBlockState bs = wrapped.getBlockState(pos);
+      Block block = bs.getBlock();
       if(block instanceof IFacade) {
-        return ((IFacade) block).getFacade(wrapped, x, y, z, -1);
+        return ((IFacade) block).getFacade(wrapped, pos.getX(), pos.getY(), pos.getZ(), -1).getDefaultState();
       }
-      return block;
+      return bs;
     }
 
     @Override
-    public int getBlockMetadata(int x, int y, int z) {
-      Block block = wrapped.getBlock(x, y, z);
-      if(block instanceof IFacade) {
-        return ((IFacade) block).getFacadeMetadata(wrapped, x, y, z, -1);
-      }
-      return wrapped.getBlockMetadata(x, y, z);
-    }
-
-    @Override
-    public TileEntity getTileEntity(int x, int y, int z) {
-      int meta = getBlockMetadata(x, y, z);
-      Block block = getBlock(x, y, z);
-      if(block == null || !block.hasTileEntity(meta)) {
+    public TileEntity getTileEntity(BlockPos pos) {
+      
+      IBlockState bs = getBlockState(pos);
+      Block block = bs.getBlock();
+      if(block == null || !block.hasTileEntity(bs)) {
         return null;
       }
-      TileEntity te = block.createTileEntity(this, meta);
+      TileEntity te = block.createTileEntity(this, bs);
       if(te == null) {
         return null;
       }
-
       te.setWorldObj(this);
-      te.xCoord = x;
-      te.yCoord = y;
-      te.zCoord = z;
-
+      te.setPos(pos);
       return te;
     }
 
@@ -105,13 +96,13 @@ public class WailaCompat implements IWailaDataProvider {
     }
 
     @Override
-    protected int func_152379_p() {
-      return 0;
+    public Entity getEntityByID(int p_73045_1_) {
+      return null;
     }
 
     @Override
-    public Entity getEntityByID(int p_73045_1_) {
-      return null;
+    protected int getRenderDistanceChunks() {
+      return 0;
     }
   }
 
@@ -132,7 +123,7 @@ public class WailaCompat implements IWailaDataProvider {
 
   @Override
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-    MovingObjectPosition pos = accessor.getPosition();
+    BlockPos pos = accessor.getPosition();
     if(config.getConfig("facades.hidden")) {
       if(accessor.getBlock() instanceof IFacade) {
         // If facades are hidden, we need to ignore it
@@ -140,15 +131,14 @@ public class WailaCompat implements IWailaDataProvider {
           return null;
         }
         IFacade bundle = (IFacade) accessor.getBlock();
-        Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
+        Block facade = bundle.getFacade(accessor.getWorld(), pos.getX(), pos.getY(), pos.getZ(), accessor.getSide().ordinal());
         if(facade != accessor.getBlock()) {
-          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ, accessor.getPlayer());
+          ItemStack ret = facade.getPickBlock(accessor.getMOP(), new WailaWorldWrapper(accessor.getWorld()), pos, accessor.getPlayer());
           return ret;
         }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
-      return accessor.getBlock().getPickBlock(accessor.getPosition(), accessor.getWorld(), accessor.getPosition().blockX, accessor.getPosition().blockY,
-          accessor.getPosition().blockZ, accessor.getPlayer());
+      return accessor.getBlock().getPickBlock(accessor.getMOP(), accessor.getWorld(), accessor.getPosition(), accessor.getPlayer());
 
     }
     return null;
@@ -166,11 +156,12 @@ public class WailaCompat implements IWailaDataProvider {
     _accessor = accessor;
 
     EntityPlayer player = accessor.getPlayer();
-    MovingObjectPosition pos = accessor.getPosition();
-    int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
+    BlockPos pos = accessor.getPosition();
+    
     World world = accessor.getWorld();
-    Block block = world.getBlock(x, y, z);
-    TileEntity te = world.getTileEntity(x, y, z);
+    IBlockState bs = world.getBlockState(pos);
+    Block block = bs.getBlock();
+    TileEntity te = world.getTileEntity(pos);
     Item item = Item.getItemFromBlock(block);
 
     // let's get rid of WAILA's default RF stuff, only supported on WAILA 1.5.9+
@@ -178,7 +169,7 @@ public class WailaCompat implements IWailaDataProvider {
 
     if(te instanceof IIoConfigurable && block == accessor.getBlock()) {
       IIoConfigurable machine = (IIoConfigurable) te;
-      ForgeDirection side = accessor.getSide();
+      EnumFacing side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
       currenttip.add(EnumChatFormatting.YELLOW
           + EnderIO.lang.localize("gui.machine.side", EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase(Locale.US))));
@@ -191,7 +182,7 @@ public class WailaCompat implements IWailaDataProvider {
       IWailaInfoProvider info = (IWailaInfoProvider) block;
 
       if(block instanceof IAdvancedTooltipProvider) {
-        int mask = info.getDefaultDisplayMask(world, pos.blockX, pos.blockY, pos.blockZ);
+        int mask = info.getDefaultDisplayMask(world, pos.getX(), pos.getY(), pos.getZ());
         boolean basic = (mask & BIT_BASIC) == BIT_BASIC;
         boolean common = (mask & BIT_COMMON) == BIT_COMMON;
         boolean detailed = (mask & BIT_DETAILED) == BIT_DETAILED;
@@ -219,7 +210,7 @@ public class WailaCompat implements IWailaDataProvider {
         currenttip.add("");
       }
 
-      info.getWailaInfo(currenttip, player, world, pos.blockX, pos.blockY, pos.blockZ);
+      info.getWailaInfo(currenttip, player, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
     else { 
@@ -306,7 +297,7 @@ public class WailaCompat implements IWailaDataProvider {
   }
 
   @Override
-  public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+  public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {   
     if(te instanceof IWailaNBTProvider) {
       ((IWailaNBTProvider) te).getData(tag);
     }
@@ -336,13 +327,15 @@ public class WailaCompat implements IWailaDataProvider {
       tag.setInteger("maxStoredRF", ipte.getMaxEnergyStored());
     }
 
-    tag.setInteger("x", x);
-    tag.setInteger("y", y);
-    tag.setInteger("z", z);
+    tag.setInteger("x", pos.getX());
+    tag.setInteger("y", pos.getY());
+    tag.setInteger("z", pos.getZ());
     return tag;
   }
 
   public static NBTTagCompound getNBTData() {
     return _accessor.getNBTData();
   }
+
+  
 }

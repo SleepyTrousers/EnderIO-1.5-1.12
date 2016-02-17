@@ -2,10 +2,6 @@ package crazypants.util;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.IConduitBundle;
@@ -18,11 +14,16 @@ import crazypants.enderio.machine.generator.combustion.PacketCombustionTank;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 
 public class ClientUtil {
 
   public static void doFluidLevelUpdate(int x, int y, int z, PacketFluidLevel pkt) {
-    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
     if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
       return;
     }
@@ -35,7 +36,7 @@ public class ClientUtil {
   }
 
   public static void doGasLevelUpdate(int x, int y, int z, PacketGasLevel pkt) {
-    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
     if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
       return;
     }
@@ -51,12 +52,12 @@ public class ClientUtil {
     double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
     double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
     double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-    Minecraft.getMinecraft().theWorld.spawnParticle("portal", bc.x + xOff, bc.y + yOff, bc.z + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
+    Minecraft.getMinecraft().theWorld.spawnParticle(EnumParticleTypes.PORTAL, bc.x + xOff, bc.y + yOff, bc.z + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
         (rand.nextDouble() - 0.5) * 1.5);
   }
 
   public static void setTankNBT(PacketCombustionTank message, int x, int y, int z) {
-    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
     if(tile == null) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
@@ -78,7 +79,7 @@ public class ClientUtil {
 
   public static void setStirlingBurnTime(PacketBurnTime message, int x, int y, int z) {
 
-    TileEntityStirlingGenerator tile = (TileEntityStirlingGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    TileEntityStirlingGenerator tile = (TileEntityStirlingGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
     if(tile == null) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;

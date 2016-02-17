@@ -1,7 +1,7 @@
 package crazypants.enderio;
 
-import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.TileEntityBase;
 
-public abstract class TileEntityEio extends TileEntityEnder {
+public abstract class TileEntityEio extends TileEntityBase {
   // Nothing yet ;D
 }

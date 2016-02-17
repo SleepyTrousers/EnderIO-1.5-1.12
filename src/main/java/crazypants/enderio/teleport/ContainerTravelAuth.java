@@ -3,19 +3,14 @@ package crazypants.enderio.teleport;
 import java.awt.Point;
 import java.util.List;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.ArrayInventory;
+
+import crazypants.enderio.teleport.ContainerTravelAuth.AuthInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.ArrayInventory;
-
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.ContainerTravelAuth.AuthInventory;
-import crazypants.enderio.teleport.packet.PacketPassword;
 
 public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
 
@@ -61,11 +56,6 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int i) {
-      return null;
-    }
-
-    @Override
     public void setInventorySlotContents(int i, ItemStack itemstack) {
       if(itemstack != null) {
         items[i] = itemstack.copy();
@@ -76,7 +66,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
       return "Password";
     }
 

@@ -2,20 +2,9 @@ package crazypants.enderio.teleport;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import cofh.api.energy.ItemEnergyContainer;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -23,6 +12,15 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {
 
@@ -57,12 +55,6 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
     setEnergy(itemStack, 0);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:itemTravelStaff");
   }
 
   @Override
@@ -122,10 +114,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   }
 
   void setEnergy(ItemStack container, int energy) {
-    if(container.stackTagCompound == null) {
-      container.stackTagCompound = new NBTTagCompound();
+    if(container.getTagCompound() == null) {
+      container.setTagCompound(new NBTTagCompound());
     }
-    container.stackTagCompound.setInteger("Energy", energy);
+    container.getTagCompound().setInteger("Energy", energy);
     updateDamage(container);
   }
 

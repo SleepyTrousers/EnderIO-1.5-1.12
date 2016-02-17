@@ -51,29 +51,33 @@ public class EnergyStorage implements IEnergyStorage {
 		return nbt;
 	}
 
-	public void setCapacity(int capacity) {
+	public EnergyStorage setCapacity(int capacity) {
 
 		this.capacity = capacity;
 
 		if (energy > capacity) {
 			energy = capacity;
 		}
+		return this;
 	}
 
-	public void setMaxTransfer(int maxTransfer) {
+	public EnergyStorage setMaxTransfer(int maxTransfer) {
 
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);
+		return this;
 	}
 
-	public void setMaxReceive(int maxReceive) {
+	public EnergyStorage setMaxReceive(int maxReceive) {
 
 		this.maxReceive = maxReceive;
+		return this;
 	}
 
-	public void setMaxExtract(int maxExtract) {
+	public EnergyStorage setMaxExtract(int maxExtract) {
 
 		this.maxExtract = maxExtract;
+		return this;
 	}
 
 	public int getMaxReceive() {
@@ -87,7 +91,7 @@ public class EnergyStorage implements IEnergyStorage {
 	}
 
 	/**
-	 * This function is included to allow for server -&gt; client sync. Do not call this externally to the containing Tile Entity, as not all IEnergyHandlers
+	 * This function is included to allow for server to client sync. Do not call this externally to the containing Tile Entity, as not all IEnergyHandlers
 	 * are guaranteed to have it.
 	 *
 	 * @param energy

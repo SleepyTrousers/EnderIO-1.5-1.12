@@ -5,24 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Camera;
@@ -31,13 +13,6 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.api.teleport.IItemOfTravel;
@@ -50,6 +25,33 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovementInput;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TravelController {
 
@@ -103,7 +105,7 @@ public class TravelController {
       return false;
     }
     BlockCoord target = selectedCoord;
-    TileEntity te = world.getTileEntity(target.x, target.y, target.z);
+    TileEntity te = world.getTileEntity(target.getBlockPos());
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.getRequiresPassword(player)) {
@@ -127,10 +129,10 @@ public class TravelController {
     Vector3d sample = new Vector3d(look);
     sample.scale(Config.travelStaffMaxBlinkDistance);
     sample.add(eye);
-    Vec3 eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
-    Vec3 end = Vec3.createVectorHelper(sample.x, sample.y, sample.z);
+    Vec3 eye3 = new Vec3(eye.x, eye.y, eye.z);
+    Vec3 end = new Vec3(sample.x, sample.y, sample.z);
 
-    double playerHeight = player.yOffset;
+    double playerHeight = player.getYOffset();
     //if you looking at you feet, and your player height to the max distance, or part there of
     double lookComp = -look.y * playerHeight;
     double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
@@ -156,18 +158,20 @@ public class TravelController {
       List<MovingObjectPosition> res = Util.raytraceAll(player.worldObj, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
       for (MovingObjectPosition pos : res) {
         if(pos != null) {
-          Block hitBlock = player.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+          Block hitBlock = player.worldObj.getBlockState(pos.getBlockPos()).getBlock();
           if(isBlackListedBlock(player, pos, hitBlock)) {
-            maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(pos.blockX + 0.5, pos.blockY + 0.5, pos.blockZ + 0.5)) - 1.5 - lookComp);
+            BlockPos bp = pos.getBlockPos();
+            maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5)) - 1.5 - lookComp);
           }
         }
       }
 
-      eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
+      eye3 = new Vec3(eye.x, eye.y, eye.z);
 
-      Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
+      Vector3d targetBc = new Vector3d(p.getBlockPos());
       double sampleDistance = 1.5;
-      double teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance;
+      BlockPos bp = p.getBlockPos();
+      double teleDistance = VecmathUtil.distance(eye, new Vector3d(bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5)) + sampleDistance;
 
       while (teleDistance < maxDistance) {
         sample.set(look);
@@ -183,7 +187,7 @@ public class TravelController {
         sampleDistance++;
       }
       sampleDistance = -0.5;
-      teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance;
+      teleDistance = VecmathUtil.distance(eye, new Vector3d(bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5)) + sampleDistance;
       while (teleDistance > 1) {
         sample.set(look);
         sample.scale(sampleDistance);
@@ -207,7 +211,7 @@ public class TravelController {
       return false;
     }
     return blackList.contains(ui)
-        && (hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
+        && (hitBlock.getBlockHardness(player.worldObj, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
   private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
@@ -259,7 +263,7 @@ public class TravelController {
     if(selectedCoord == null) {
       return false;
     }
-    return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlock(selectedCoord.x, selectedCoord.y, selectedCoord.z) == EnderIO.blockEnderIo;
+    return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlockState(selectedCoord.getBlockPos()).getBlock() == EnderIO.blockEnderIo;
   }
 
   @SubscribeEvent
@@ -286,7 +290,7 @@ public class TravelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
-      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
       if(player == null) {
         return;
       }
@@ -341,7 +345,7 @@ public class TravelController {
 
   public void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
     BlockCoord target = TravelController.instance.selectedCoord;
-    TileEntity te = world.getTileEntity(target.x, target.y, target.z);
+    TileEntity te = world.getTileEntity(target.getBlockPos());
     if(!(te instanceof TileEnderIO)) {
       return;
     }
@@ -386,7 +390,7 @@ public class TravelController {
   public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
 
     if(source != TravelSource.STAFF_BLINK) {
-      TileEntity te = player.worldObj.getTileEntity(coord.x, coord.y, coord.z);
+      TileEntity te = player.worldObj.getTileEntity(coord.getBlockPos());
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
         if(!ta.canBlockBeAccessed(player)) {
@@ -416,7 +420,7 @@ public class TravelController {
     }
     if(doClientTeleport(player, coord, source, requiredPower, conserveMomentum)) {
       for (int i = 0; i < 6; ++i) {
-        player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
+        player.worldObj.spawnParticle(EnumParticleTypes.PORTAL, player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
             player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
             (rand.nextDouble() - 0.5D) * 2.0D);
       }
@@ -464,11 +468,11 @@ public class TravelController {
     BlockCoord baseLoc = bc;
     if(source != TravelSource.STAFF_BLINK) {
       //targeting a block so go one up
-      baseLoc = bc.getLocation(ForgeDirection.UP);
+      baseLoc = bc.getLocation(EnumFacing.UP);
     }
 
     return canTeleportTo(player, source, baseLoc, w)
-        && canTeleportTo(player, source, baseLoc.getLocation(ForgeDirection.UP), w);
+        && canTeleportTo(player, source, baseLoc.getLocation(EnumFacing.UP), w);
   }
 
   private boolean canTeleportTo(EntityPlayer player, TravelSource source, BlockCoord bc, World w) {
@@ -477,17 +481,18 @@ public class TravelController {
     }
     if(source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
       Vec3 start = Util.getEyePosition(player);
-      Vec3 target = Vec3.createVectorHelper(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
+      Vec3 target = new Vec3(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
       if(!canBlinkTo(bc, w, start, target)) {
         return false;
       }
     }
 
-    Block block = w.getBlock(bc.x, bc.y, bc.z);
-    if(block == null || block.isAir(w, bc.x, bc.y, bc.z)) {
+    IBlockState bs = w.getBlockState(bc.getBlockPos());
+    Block block = bs.getBlock();
+    if(block == null || block.isAir(w, bc.getBlockPos())) {
       return true;
     }
-    final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, bc.x, bc.y, bc.z);
+    final AxisAlignedBB aabb = block.getCollisionBoundingBox(w, bc.getBlockPos(), bs);
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
   }
 
@@ -497,9 +502,10 @@ public class TravelController {
       if(!Config.travelStaffBlinkThroughClearBlocksEnabled) {
         return false;
       }
-      Block block = w.getBlock(p.blockX, p.blockY, p.blockZ);
-      if(isClear(w, block, p.blockX, p.blockY, p.blockZ)) {
-        if(new BlockCoord(p.blockX, p.blockY, p.blockZ).equals(bc)) {
+      IBlockState bs = w.getBlockState(p.getBlockPos());
+      Block block = bs.getBlock();
+      if(isClear(w, bs, block, p.getBlockPos())) {
+        if(new BlockCoord(p).equals(bc)) {
           return true;
         }
         //need to step
@@ -508,7 +514,7 @@ public class TravelController {
         rayDir.sub(sv);
         rayDir.normalize();
         rayDir.add(sv);
-        return canBlinkTo(bc, w, Vec3.createVectorHelper(rayDir.x, rayDir.y, rayDir.z), target);
+        return canBlinkTo(bc, w, new Vec3(rayDir.x, rayDir.y, rayDir.z), target);
 
       } else {
         return false;
@@ -517,27 +523,27 @@ public class TravelController {
     return true;
   }
 
-  private boolean isClear(World w, Block block, int x, int y, int z) {
-    if(block == null || block.isAir(w, x, y, z)) {
+  private boolean isClear(World w, IBlockState bs, Block block, BlockPos bp) {
+    if(block == null || block.isAir(w, bp)) {
       return true;
     }
-    final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, x, y, z);
+    final AxisAlignedBB aabb = block.getCollisionBoundingBox(w, bp, bs);
     if(aabb == null || aabb.getAverageEdgeLength() < 0.7) {
       return true;
     }
 
-    return block.getLightOpacity(w, x, y, z) < 2;
+    return block.getLightOpacity(w, bp) < 2;
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateVerticalTarget(EntityClientPlayerMP player, int direction) {
+  private void updateVerticalTarget(EntityPlayerSP player, int direction) {
 
     BlockCoord currentBlock = getActiveTravelBlock(player);
     World world = Minecraft.getMinecraft().theWorld;
     for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaxDistance && y >= 0 && y <= 255; i++, y += direction) {
 
       //Circumvents the raytracing used to find candidates on the y axis
-      TileEntity selectedBlock = world.getTileEntity(currentBlock.x, y, currentBlock.z);
+      TileEntity selectedBlock = world.getTileEntity(new BlockPos(currentBlock.x, y, currentBlock.z));
 
       if(selectedBlock instanceof ITravelAccessable) {
         ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
@@ -564,7 +570,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateSelectedTarget(EntityClientPlayerMP player) {
+  private void updateSelectedTarget(EntityPlayerSP player) {
     selectedCoord = null;
     if(candidates.isEmpty()) {
       return;
@@ -602,7 +608,7 @@ public class TravelController {
     }
   }
 
-  private void onInput(EntityClientPlayerMP player) {
+  private void onInput(EntityPlayerSP player) {
 
     MovementInput input = player.movementInput;
     BlockCoord target = TravelController.instance.selectedCoord;
@@ -610,7 +616,7 @@ public class TravelController {
       return;
     }
 
-    TileEntity te = player.worldObj.getTileEntity(target.x, target.y, target.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(target.x, target.y, target.z));
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.getRequiresPassword(player)) {
@@ -689,7 +695,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
+  private int getMaxTravelDistanceSqForPlayer(EntityPlayerSP player) {
     if(isTravelItemActive(player)) {
       return TravelSource.STAFF.getMaxDistanceTravelledSq();
     }
@@ -710,13 +716,13 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {
+  private BlockCoord getActiveTravelBlock(EntityPlayerSP player) {
     World world = Minecraft.getMinecraft().theWorld;
     if(world != null && player != null) {
       int x = MathHelper.floor_double(player.posX);
-      int y = MathHelper.floor_double(player.boundingBox.minY) - 1;
+      int y = MathHelper.floor_double(player.getEntityBoundingBox().minY) - 1;
       int z = MathHelper.floor_double(player.posZ);
-      if(world.getBlock(x, y, z) == EnderIO.blockTravelPlatform) {
+      if(world.getBlockState(new BlockPos(x, y, z)).getBlock() == EnderIO.blockTravelPlatform) {
         return new BlockCoord(x, y, z);
       }
     }

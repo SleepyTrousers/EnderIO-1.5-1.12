@@ -3,9 +3,10 @@ package crazypants.enderio.machine;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedstoneMode, IMessage> {
 
@@ -25,9 +26,9 @@ public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedst
   }
 
   public PacketRedstoneMode(AbstractMachineEntity ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
+    x = ent.getPos().getX();
+    y = ent.getPos().getY();
+    z = ent.getPos().getZ();
     mode = ent.getRedstoneControlMode();
   }
 
@@ -51,7 +52,7 @@ public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedst
   @Override
   public IMessage onMessage(PacketRedstoneMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof IRedstoneModeControlable) {
       IRedstoneModeControlable me = (IRedstoneModeControlable) te;
       me.setRedstoneControlMode(message.mode);

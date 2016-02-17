@@ -1,24 +1,18 @@
 package crazypants.enderio.teleport.packet;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-
-import com.enderio.core.EnderCore;
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.network.MessageTileEntity;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
+public class PacketPassword extends MessageTileEntity<TileEntityBase> {
 
   private ItemStack stack;
   private int slot;
@@ -27,11 +21,11 @@ public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
   public PacketPassword() {
   }
 
-  private PacketPassword(TileEntityEnder tile) {
+  private PacketPassword(TileEntityBase tile) {
     super(tile);
   }
 
-  public static IMessage setPassword(TileEntityEnder te, int slot, ItemStack stack) {
+  public static IMessage setPassword(TileEntityBase te, int slot, ItemStack stack) {
     PacketPassword msg = new PacketPassword(te);
     msg.slot = slot;
     msg.stack = stack;
@@ -39,7 +33,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
     return msg;
   }
 
-  public static PacketPassword setLabel(TileEntityEnder te, ItemStack stack) {
+  public static PacketPassword setLabel(TileEntityBase te, ItemStack stack) {
     PacketPassword msg = new PacketPassword(te);
     msg.slot = 0;
     msg.stack = stack;
@@ -67,7 +61,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
 
     @Override
     public IMessage onMessage(PacketPassword msg, MessageContext ctx) {
-      TileEntityEnder te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+      TileEntityBase te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
       if (te instanceof ITravelAccessable) {
         if (((ITravelAccessable) te).canUiBeAccessed(ctx.getServerHandler().playerEntity)) {
           if (msg.stack != null) {
@@ -79,7 +73,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
             ((ITravelAccessable) te).getPassword()[msg.slot] = msg.stack;
             ((ITravelAccessable) te).clearAuthorisedUsers();
           }
-          te.getWorldObj().markBlockForUpdate(msg.x, msg.y, msg.z);
+          te.getWorld().markBlockForUpdate(new BlockPos(msg.x, msg.y, msg.z));
         }
       }
       return null;

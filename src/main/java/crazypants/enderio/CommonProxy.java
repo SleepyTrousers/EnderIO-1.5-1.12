@@ -2,17 +2,17 @@ package crazypants.enderio;
 
 import java.text.DecimalFormat;
 
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.render.ConduitRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.render.ConduitRenderer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class CommonProxy {
 
@@ -46,7 +46,7 @@ public class CommonProxy {
   }
   
   public void load() {
-    FMLCommonHandler.instance().bus().register(tickTimer);
+    MinecraftForge.EVENT_BUS.register(tickTimer);
   }
 
   public long getTickCount() {
@@ -58,7 +58,7 @@ public class CommonProxy {
   }
 
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
-    ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true));
+    ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true, true));
   }
 
   protected void onServerTick() {

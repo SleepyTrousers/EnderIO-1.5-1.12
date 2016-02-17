@@ -1,18 +1,18 @@
 package crazypants.enderio.machine;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
+
+import net.minecraft.util.EnumFacing;
 
 public interface IIoConfigurable {
 
-  public IoMode toggleIoModeForFace(ForgeDirection faceHit);
+  public IoMode toggleIoModeForFace(EnumFacing faceHit);
 
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode);
+  public boolean supportsMode(EnumFacing faceHit, IoMode mode);
 
-  public void setIoMode(ForgeDirection faceHit, IoMode mode);
+  public void setIoMode(EnumFacing faceHit, IoMode mode);
 
-  public IoMode getIoMode(ForgeDirection face) ;
+  public IoMode getIoMode(EnumFacing face) ;
 
   public void clearAllIoModes();
 

@@ -1,13 +1,14 @@
 package crazypants.enderio.teleport.packet;
 
+import crazypants.enderio.api.teleport.ITravelAccessable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.api.teleport.ITravelAccessable;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMessage> {
 
@@ -53,13 +54,14 @@ public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMess
     }
   }
 
+  @Override
   public IMessage onMessage(PacketLabel message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof ITravelAccessable) {
       ((ITravelAccessable) te).setLabel(message.label);
-      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
-      player.worldObj.markTileEntityChunkModified(message.x, message.y, message.z, te);      
+      player.worldObj.markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+      player.worldObj.markChunkDirty(new BlockPos(message.x, message.y, message.z), te);      
     }
     return null;
   }

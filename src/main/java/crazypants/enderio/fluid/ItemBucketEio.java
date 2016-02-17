@@ -1,5 +1,8 @@
 package crazypants.enderio.fluid;
 
+import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -7,11 +10,7 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-
-import org.apache.commons.lang3.StringUtils;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIOTab;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemBucketEio extends ItemBucket {
 
@@ -34,7 +33,6 @@ public class ItemBucketEio extends ItemBucket {
     setContainerItem(Items.bucket);
     String str = "bucket" + StringUtils.capitalize(fluidName);
     setUnlocalizedName(str);
-    setTextureName("enderio:" + str);
   }
 
   protected void init() {

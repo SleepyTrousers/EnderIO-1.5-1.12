@@ -2,7 +2,7 @@ package crazypants.enderio.api.teleport;
 
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.entity.EntityEvent;
-import cpw.mods.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
  * An event that can be used to respond to, edit, and prevent entity teleports.

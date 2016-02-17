@@ -1,25 +1,31 @@
 package crazypants.enderio.material;
 
-import java.util.ArrayList;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import java.util.List;
 
 import com.enderio.core.common.util.OreDictionaryHelper;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import static com.enderio.core.common.util.OreDictionaryHelper.hasCopper;
+import static com.enderio.core.common.util.OreDictionaryHelper.hasTin;
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+import static crazypants.enderio.material.Alloy.DARK_STEEL;
+import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.Alloy.PHASED_GOLD;
+import static crazypants.enderio.material.Alloy.PHASED_IRON;
+import static crazypants.enderio.material.Material.BINDER_COMPOSITE;
+import static crazypants.enderio.material.Material.CONDUIT_BINDER;
+import static crazypants.util.RecipeUtil.addShaped;
+import static crazypants.util.RecipeUtil.addShapeless;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemEnderFood.EnderFood;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-import static com.enderio.core.common.util.OreDictionaryHelper.*;
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-import static crazypants.enderio.material.Alloy.*;
-import static crazypants.enderio.material.Material.*;
-import static crazypants.util.RecipeUtil.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class MaterialRecipes {
 
@@ -165,7 +171,7 @@ public class MaterialRecipes {
 
     // Machine Chassis
 
-    ArrayList<ItemStack> steelIngots = OreDictionary.getOres("ingotSteel");
+    List<ItemStack> steelIngots = OreDictionary.getOres("ingotSteel");
 
     ItemStack chassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
     String mat = Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty() ? "ingotSteel" : "ingotIron";
@@ -228,7 +234,7 @@ public class MaterialRecipes {
       GameRegistry.addSmelting(dustTin, ingotTin, 0);
     }
 
-    ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
+    List<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
     String gold;
     if (Config.useHardRecipes) {
       gold = "ingotGold";

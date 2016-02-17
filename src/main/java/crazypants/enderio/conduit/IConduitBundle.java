@@ -4,30 +4,25 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.SidedEnvironment;
-import li.cil.oc.api.network.Node;
-import mekanism.api.gas.IGasHandler;
-import mods.immibis.microblocks.api.IMicroblockSupporterTile;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
-import appeng.api.networking.IGridHost;
-import cofh.api.transport.IItemDuct;
-
 import com.enderio.core.common.util.BlockCoord;
 
-import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.common.Optional.InterfaceList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import appeng.api.networking.IGridHost;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerHandler;
+import mekanism.api.gas.IGasHandler;
+import mods.immibis.microblocks.api.IMicroblockSupporterTile;
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.Optional.Interface;
+import net.minecraftforge.fml.common.Optional.InterfaceList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @InterfaceList({
     @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
@@ -36,8 +31,8 @@ import crazypants.enderio.power.IInternalPowerHandler;
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network")
 })
-public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost,
-    IMicroblockSupporterTile, Environment, SidedEnvironment {
+public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IGasHandler, IGridHost,
+    IMicroblockSupporterTile {
 
   TileEntity getEntity();
 
@@ -56,17 +51,17 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, II
 
   Collection<IConduit> getConduits();
 
-  Offset getOffset(Class<? extends IConduit> type, ForgeDirection dir);
+  Offset getOffset(Class<? extends IConduit> type, EnumFacing dir);
 
   // connections
 
-  Set<ForgeDirection> getConnections(Class<? extends IConduit> type);
+  Set<EnumFacing> getConnections(Class<? extends IConduit> type);
 
-  boolean containsConnection(Class<? extends IConduit> type, ForgeDirection west);
+  boolean containsConnection(Class<? extends IConduit> type, EnumFacing west);
 
-  Set<ForgeDirection> getAllConnections();
+  Set<EnumFacing> getAllConnections();
 
-  boolean containsConnection(ForgeDirection dir);
+  boolean containsConnection(EnumFacing dir);
 
   //geometry
 

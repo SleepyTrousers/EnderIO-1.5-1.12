@@ -2,7 +2,6 @@ package crazypants.enderio.tool;
 
 import com.google.common.base.Strings;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -53,8 +52,8 @@ public class SmartTank extends FluidTank {
   public boolean canDrainFluidType(Fluid fl) {
     if(fl == null || fluid == null) {
       return false;
-    }
-    return fl.getID() == fluid.getFluidID();
+    }    
+    return fl.getID() == fluid.getFluid().getID();
   }
 
   public FluidStack drain(FluidStack resource, boolean doDrain) {
@@ -138,7 +137,7 @@ public class SmartTank extends FluidTank {
       NBTTagCompound tankRoot = new NBTTagCompound();
       writeToNBT(tankRoot);
       if (restriction != null) {
-        tankRoot.setString("FluidRestriction", FluidRegistry.getFluidName(restriction.getID()));
+        tankRoot.setString("FluidRestriction", restriction.getName());
       }
       nbtRoot.setTag(name, tankRoot);
     } else {

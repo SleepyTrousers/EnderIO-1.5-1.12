@@ -1,19 +1,13 @@
 package crazypants.enderio.teleport;
 
 import java.awt.Color;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.World;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -23,6 +17,11 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.world.World;
 
 public class GuiTravelAccessable extends GuiContainerBaseEIO {
 
@@ -60,7 +59,7 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
     privateStr = EnderIO.lang.localize("gui.travelAccessable.private");
     protectedStr = EnderIO.lang.localize("gui.travelAccessable.protected");
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
     tf = new TextFieldEnder(fr, 28, 10, 90, 16);
 
@@ -130,7 +129,7 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
   }
 
   @Override
-  public void mouseClicked(int x, int y, int par3) {
+  public void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
   }
 

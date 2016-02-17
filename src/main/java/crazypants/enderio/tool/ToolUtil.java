@@ -6,17 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.item.ItemYetaWrench;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 
 public class ToolUtil {
 
@@ -33,12 +34,16 @@ public class ToolUtil {
   }
 
   public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer) {
+    return breakBlockWithTool(block, world, new BlockPos(x,y,z), entityPlayer);
+  }
+  
+  public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EntityPlayer entityPlayer) {
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-      if(block.removedByPlayer(world, entityPlayer, x, y, z, true)) {
-        block.harvestBlock(world, entityPlayer, x, y, z, world.getBlockMetadata(x, y, z));
+    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, pos)) {
+      if(block.removedByPlayer(world, pos, entityPlayer, true)) {
+        block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos));
       }
-      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
+      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, pos);
       return true;
     }
     return false;
@@ -73,8 +78,8 @@ public class ToolUtil {
       Log.debug("Could not find AE Wrench definition. Wrench integration with AE may fail");
     }
 
-    toolProviders.add(new TEToolProvider());
-    toolImpls.add(new TEToolProvider());
+//    toolProviders.add(new TEToolProvider());
+//    toolImpls.add(new TEToolProvider());
 
   }
 

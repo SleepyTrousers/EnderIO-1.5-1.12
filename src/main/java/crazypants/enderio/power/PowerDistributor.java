@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public class PowerDistributor {
 
@@ -66,11 +65,11 @@ public class PowerDistributor {
       return;
     }
     receptors.clear();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      TileEntity transmitter = worldObj.getTileEntity(bc.x, bc.y, bc.z);
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      TileEntity transmitter = worldObj.getTileEntity(bc.getBlockPos());
       if(!(transmitter instanceof AbstractMachineEntity) || ((AbstractMachineEntity) transmitter).getIoMode(dir).canOutput()) {
         BlockCoord checkLoc = bc.getLocation(dir);
-        TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+        TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
         IPowerInterface pi = PowerHandlerUtil.create(te);
         if(pi != null && pi.canConduitConnect(dir.getOpposite())) {
           receptors.add(new Receptor(pi, dir));
@@ -83,9 +82,9 @@ public class PowerDistributor {
 
   static class Receptor {
     IPowerInterface receptor;
-    ForgeDirection fromDir;
+    EnumFacing fromDir;
 
-    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, EnumFacing fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }
