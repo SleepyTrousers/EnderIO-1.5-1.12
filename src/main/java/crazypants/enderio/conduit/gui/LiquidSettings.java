@@ -5,14 +5,6 @@ import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ColorButton;
@@ -35,6 +27,13 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 public class LiquidSettings extends BaseSettingsPanel {
 
@@ -301,13 +300,18 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   private void renderFluid(FluidStack f, int x, int y) {
-    IIcon icon = f.getFluid().getIcon();
+    
+    ResourceLocation iconKey = f.getFluid().getStill();
+    TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(iconKey.toString());       
     if(icon != null) {
-      RenderUtil.bindBlockTexture();
-      int color = f.getFluid().getColor(f);
-      GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
-      gui.drawTexturedModelRectFromIcon(x + 1, y + 1, icon, 16, 16);
-      GL11.glColor3f(1, 1, 1);
+//      RenderUtil.bindBlockTexture();
+//      int color = f.getFluid().getColor(f);
+//      GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
+//      gui.drawTexturedModelRectFromIcon(x + 1, y + 1, icon, 16, 16);
+//      GL11.glColor3f(1, 1, 1);
+      
+      RenderUtil.renderGuiTank(f, 1000, 1000, x + 1, y + 1, 0, 16, 16);
+      
     }
 
   }

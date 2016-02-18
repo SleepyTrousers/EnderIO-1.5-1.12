@@ -6,15 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.InventoryWrapper;
 import com.enderio.core.common.util.ItemUtil;
@@ -24,14 +15,22 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 public class NetworkedInventory {
 
   private ISidedInventory inv;
   IItemConduit con;
-  ForgeDirection conDir;
+  EnumFacing conDir;
   BlockCoord location;
-  int inventorySide;
+  EnumFacing inventorySide;
 
   List<Target> sendPriority = new ArrayList<Target>();
   RoundRobinIterator<Target> rrIter = new RoundRobinIterator<Target>(sendPriority);
@@ -50,16 +49,16 @@ public class NetworkedInventory {
   World world;
   ItemConduitNetwork network;
 
-  NetworkedInventory(ItemConduitNetwork network, IInventory inv, IItemConduit con, ForgeDirection conDir, BlockCoord location) {
+  NetworkedInventory(ItemConduitNetwork network, IInventory inv, IItemConduit con, EnumFacing conDir, BlockCoord location) {
     this.network = network;
-    inventorySide = conDir.getOpposite().ordinal();
+    inventorySide = conDir.getOpposite();
 
     this.con = con;
     this.conDir = conDir;
     this.location = location;
     world = con.getBundle().getWorld();
 
-    TileEntity te = world.getTileEntity(location.x, location.y, location.z);
+    TileEntity te = world.getTileEntity(location.getBlockPos());
     if(te.getClass().getName().equals("tconstruct.tools.logic.CraftingStationLogic")) {
       ticHack = true;
     } else if(te.getClass().getName().contains("cpw.mods.ironchest")) {
@@ -72,7 +71,7 @@ public class NetworkedInventory {
     updateInventory();
   }
 
-  public boolean hasTarget(IItemConduit conduit, ForgeDirection dir) {
+  public boolean hasTarget(IItemConduit conduit, EnumFacing dir) {
     for (Target t : sendPriority) {
       if(t.inv.con == conduit && t.inv.conDir == dir) {
         return true;
@@ -145,8 +144,8 @@ public class NetworkedInventory {
     if(recheckInv) {
       updateInventory();
     }
-
-    int[] slotIndices = getInventory().getAccessibleSlotsFromSide(inventorySide);
+    
+    int[] slotIndices = getInventory().getSlotsForFace(inventorySide);
     if(slotIndices == null) {
       return false;
     }
@@ -263,7 +262,7 @@ public class NetworkedInventory {
   }
 
   public final void updateInventory() {
-    TileEntity te = world.getTileEntity(location.x, location.y, location.z);
+    TileEntity te = world.getTileEntity(location.getBlockPos());
     if(te instanceof ISidedInventory) {
       inv = (ISidedInventory) te;
     } else if(te instanceof IInventory) {
@@ -281,7 +280,7 @@ public class NetworkedInventory {
         return 0;
       }
     }
-    return ItemUtil.doInsertItem(getInventory(), item, ForgeDirection.values()[inventorySide]);
+    return ItemUtil.doInsertItem(getInventory(), item, inventorySide);
   }
 
   void updateInsertOrder() {
@@ -330,7 +329,7 @@ public class NetworkedInventory {
     for (BlockCoord bc : steps) {
       IItemConduit con = network.conMap.get(bc);
       if(con != null) {
-        for (ForgeDirection dir : con.getExternalConnections()) {
+        for (EnumFacing dir : con.getExternalConnections()) {
           Target target = getTarget(targets, con, dir);
           if(target != null && target.distance > distance) {
             target.distance = distance;
@@ -347,7 +346,7 @@ public class NetworkedInventory {
           visited.put(bc, distance);
         }
 
-        for (ForgeDirection dir : con.getConduitConnections()) {
+        for (EnumFacing dir : con.getConduitConnections()) {
           nextSteps.add(bc.getLocation(dir));
         }
       }
@@ -355,7 +354,7 @@ public class NetworkedInventory {
     calculateDistances(targets, visited, nextSteps, distance + 1);
   }
 
-  private Target getTarget(List<Target> targets, IItemConduit con, ForgeDirection dir) {
+  private Target getTarget(List<Target> targets, IItemConduit con, EnumFacing dir) {
     if(targets == null || con == null || con.getLocation() == null) {
       return null;
     }
@@ -386,16 +385,16 @@ public class NetworkedInventory {
     return inv;
   }
 
-  public int getInventorySide() {
+  public EnumFacing getInventorySide() {
     return inventorySide;
   }
 
-  public void setInventorySide(int inventorySide) {
+  public void setInventorySide(EnumFacing inventorySide) {
     this.inventorySide = inventorySide;
   }
 
   public String getLocalizedInventoryName() {
-    String inventoryName = getInventory().getInventoryName();
+    String inventoryName = getInventory().getName();
     if(inventoryName == null) {
       return "null";
     } else {

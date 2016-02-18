@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,7 +45,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 //  public IIcon overlayIconNone;
 //  public IIcon overlayIconDirty;
 //
-//  public IIcon selectedFaceIcon;
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite selectedFaceIcon;
 //
 //  @SideOnly(Side.CLIENT)
 //  protected IIcon[][] iconBuffer;

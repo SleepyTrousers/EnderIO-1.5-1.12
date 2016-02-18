@@ -1,6 +1,7 @@
 package crazypants.enderio.enderface;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,9 +28,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -42,7 +47,7 @@ import net.minecraft.world.chunk.Chunk;
 
 public class GuiEnderface extends GuiScreen {
 
-  protected static final RenderBlocks RB = new RenderBlocks();
+//  protected static final RenderBlocks RB = new RenderBlocks();
 
   private float pitch = -45;
   private float yaw = 45;
@@ -107,7 +112,7 @@ public class GuiEnderface extends GuiScreen {
 
     Chunk c = world.getChunkFromBlockCoords(new BlockPos(ioX, 64, ioZ));
     chunkLoaded = c != null && c.isLoaded();
-    RB.blockAccess = world;
+//    RB.blockAccess = world;
 
     blocks.add(new ViewableBlocks(ioX, ioY, ioZ, EnderIO.blockEnderIo, EnderIO.blockEnderIo.getDefaultState()));
 
@@ -157,11 +162,8 @@ public class GuiEnderface extends GuiScreen {
     return false;
   }
 
-  /**
-   * Handles mouse input.
-   */
   @Override
-  public void handleMouseInput() {
+  public void handleMouseInput() throws IOException {
     super.handleMouseInput();
 
     if(Mouse.getEventButton() == 0) {
@@ -271,31 +273,38 @@ public class GuiEnderface extends GuiScreen {
         mc.entityRenderer.enableLightmap();
         RenderUtil.bindBlockTexture();
 
+        //TODO 1.8: Not sure I am doing this render pass stuff correctly anymore
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
         for (int pass = 0; pass < 2; pass++) {
 
           RenderPassHelper.setBlockRenderPass(pass);
           setGlStateForPass(pass);
 
-          Tessellator.instance.startDrawingQuads();
-          Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
+          WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+          wr.begin(7, DefaultVertexFormats.BLOCK);
 
+          Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
+          
           for (ViewableBlocks ug : blocks) {
-            if(ug.block.canRenderInPass(pass)) {
-              RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-              RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
-            }
+//            if(ug.block.canRenderInPass(pass)) {
+//              RB.setRenderBounds(0, 0, 0, 1, 1, 1);
+//              RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
+              
+              BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();              
+              blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(),world, Tessellator.getInstance().getWorldRenderer());
+              
+//            }
           }
-          Tessellator.instance.draw();
-          Tessellator.instance.setTranslation(0, 0, 0);
+          Tessellator.getInstance().draw();
+          Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);
           RenderPassHelper.clearBlockRenderPass();
         }
 
         RenderHelper.enableStandardItemLighting();
 
-        TileEntityRendererDispatcher.instance.field_147558_l = origin.x - eye.x;
-        TileEntityRendererDispatcher.instance.field_147560_j = origin.y - eye.y;
-        TileEntityRendererDispatcher.instance.field_147561_k = origin.z - eye.z;
+        TileEntityRendererDispatcher.instance.entityX = origin.x - eye.x;
+        TileEntityRendererDispatcher.instance.entityY = origin.y - eye.y;
+        TileEntityRendererDispatcher.instance.entityZ = origin.z - eye.z;
 
         TileEntityRendererDispatcher.staticPlayerX = origin.x - eye.x;
         TileEntityRendererDispatcher.staticPlayerY = origin.y - eye.y;
@@ -436,17 +445,19 @@ public class GuiEnderface extends GuiScreen {
     }
     GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
     RenderUtil.bindBlockTexture();
-    IIcon icon = Blocks.portal.getBlockTextureFromSide(1);
+    TextureAtlasSprite icon = RenderUtil.getTexture(Blocks.portal.getDefaultState());//Blocks.portal.getBlockTextureFromSide(1);
     float f1 = icon.getMinU();
     float f2 = icon.getMinV();
     float f3 = icon.getMaxU();
     float f4 = icon.getMaxV();
-    Tessellator tessellator = Tessellator.instance;
-    tessellator.startDrawingQuads();
-    tessellator.addVertexWithUV(0.0D, par3, -90.0D, f1, f4);
-    tessellator.addVertexWithUV(par2, par3, -90.0D, f3, f4);
-    tessellator.addVertexWithUV(par2, 0.0D, -90.0D, f3, f2);
-    tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, f1, f2);
+    
+    Tessellator tessellator = Tessellator.getInstance();
+    WorldRenderer tes = tessellator.getWorldRenderer();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);       
+    tes.pos(0.0D, par3, -90.0D).tex( f1, f4).endVertex();
+    tes.pos(par2, par3, -90.0D).tex( f3, f4).endVertex();
+    tes.pos(par2, 0.0D, -90.0D).tex( f3, f2).endVertex();
+    tes.pos(0.0D, 0.0D, -90.0D).tex( f1, f2).endVertex();
     tessellator.draw();
   }
 
@@ -456,14 +467,18 @@ public class GuiEnderface extends GuiScreen {
 
   private void drawRect(int width, int height, float r, float g,
       float b, float a) {
-    Tessellator tessellator = Tessellator.instance;
+    
+    
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     GL11.glColor4f(r, g, b, a);
-    tessellator.startDrawingQuads();
-    tessellator.addVertex(0.0D, height, 0.0D);
-    tessellator.addVertex(width, height, 0.0D);
-    tessellator.addVertex(width, 0.0D, 0.0D);
-    tessellator.addVertex(0.0D, 0.0D, 0.0D);
+    Tessellator tessellator = Tessellator.getInstance();
+    WorldRenderer tes = tessellator.getWorldRenderer();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+    
+    tes.pos(0.0D, height, 0.0D).endVertex();
+    tes.pos(width, height, 0.0D).endVertex();
+    tes.pos(width, 0.0D, 0.0D).endVertex();
+    tes.pos(0.0D, 0.0D, 0.0D).endVertex();
     tessellator.draw();
     GL11.glEnable(GL11.GL_TEXTURE_2D);
   }
@@ -521,9 +536,7 @@ public class GuiEnderface extends GuiScreen {
     int h = gh;
     int left = guiLeft;
     int top = guiTop;
-    int cx = left + w / 2;
-    int cy = top + h / 2;
-
+    
     // black outline
     drawRect(left, top, left + w, top + h, 0xFF000000);
     left += 1;

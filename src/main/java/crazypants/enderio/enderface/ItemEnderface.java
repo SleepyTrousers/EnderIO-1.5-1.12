@@ -1,18 +1,15 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemEnderface extends Item implements IGuiHandler {
 
@@ -39,15 +36,15 @@ public class ItemEnderface extends Item implements IGuiHandler {
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:enderface");
-  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public void registerIcons(IIconRegister IIconRegister) {
+  // itemIcon = IIconRegister.registerIcon("enderio:enderface");
+  // }
+
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+  public boolean hasEffect(ItemStack stack) {
     return true;
   }
 

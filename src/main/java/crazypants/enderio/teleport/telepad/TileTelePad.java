@@ -110,7 +110,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
       if(active()) {
         if(activeSound == null) {
-          activeSound = new MachineSound(activeRes, xCoord, yCoord, zCoord, 0.3f, 1);
+          BlockPos p = getPos();
+          activeSound = new MachineSound(activeRes, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
           playSound();
         }
         updateQueuedEntities();
@@ -173,7 +174,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
     for (BlockCoord bc : getSurroundingCoords()) {
       TileEntity te = bc.getTileEntity(worldObj);
-      EnumFacing con = Util.getDirFromOffset(bc.x - xCoord, 0, bc.z - zCoord);
+      EnumFacing con = Util.getDirFromOffset(bc.x - getPos().getX(), 0, bc.z - getPos().getZ());
       if(te instanceof TileTelePad) {
         // let's find the master and let him do the work
         if (fromBlock) {
@@ -266,7 +267,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     for (int x = -1; x <= 1; x++) {
       for (int z = -1; z <= 1; z++) {
         if(x != 0 || z != 0) {
-          ret.add(new BlockCoord(xCoord + x, yCoord, zCoord + z));
+          ret.add(new BlockCoord(getPos().getX() + x, getPos().getY(), getPos().getZ()+ z));
         }
       }
     }
@@ -279,7 +280,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       BlockCoord neighbor = bc.getLocation(dir);
       Block block = neighbor.getBlock(worldObj);
       if(!(block instanceof BlockTelePad)) {
-        block.onNeighborChange(worldObj, neighbor.x, neighbor.y, neighbor.z, xCoord, yCoord, zCoord);
+        block.onNeighborChange(worldObj, neighbor.getBlockPos(), getPos());
       }
     }
   }
@@ -366,11 +367,13 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   public AxisAlignedBB getBoundingBox() {
-    if(!inNetwork()) {      
-      return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    BlockPos p = getPos();
+    if(!inNetwork()) {                
+      return new AxisAlignedBB(p, p.offset(EnumFacing.UP).offset(EnumFacing.SOUTH).offset(EnumFacing.EAST));
     }
     TileTelePad master = getMaster();
-    return AxisAlignedBB.getBoundingBox(master.xCoord - 1, master.yCoord, master.zCoord - 1, master.xCoord + 2, master.yCoord + 1, master.zCoord + 2);
+    p = master.getPos();
+    return new AxisAlignedBB(p.getX() - 1, p.getY() , p.getZ() - 1, p.getX() + 2, p.getY() + 1, p.getZ() + 2);
   }
 
   @Override

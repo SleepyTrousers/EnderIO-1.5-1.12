@@ -19,7 +19,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
@@ -168,7 +167,8 @@ public class ThaumcraftCompat {
   }
 
   private static void addAspectsFromRecipes(Item item, int meta) {
-    ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), ThaumcraftApiHelper.generateTags(item, meta));
+    //TODO: 1.8
+    //ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), ThaumcraftApiHelper.generateTags(item, meta));
   }
 
   public static void loadUpgrades(List<IDarkSteelUpgrade> upgrades) {

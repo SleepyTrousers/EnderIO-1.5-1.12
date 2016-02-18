@@ -4,14 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
@@ -23,6 +15,13 @@ import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
 
@@ -45,7 +44,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   final List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
   final List<GhostBackgroundItemSlot> bgSlots = new ArrayList<GhostBackgroundItemSlot>();
 
-  public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
+  public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, EnumFacing dir) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir));
     this.itemConduit = bundle.getConduit(IItemConduit.class);
     slotLocations.addAll(playerSlotLocations.values());
@@ -152,7 +151,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
 
   private void setSlotsVisible(boolean visible, int startIndex, int endIndex) {
     for (int i = startIndex; i < endIndex; i++) {
-      Slot s = (Slot) inventorySlots.get(i);
+      Slot s = inventorySlots.get(i);
       if(visible) {
         s.xDisplayPosition = slotLocations.get(i).x;
         s.yDisplayPosition = slotLocations.get(i).y;
@@ -220,7 +219,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
     ItemStack copystack = null;
-    Slot slot = (Slot) inventorySlots.get(slotIndex);
+    Slot slot = inventorySlots.get(slotIndex);
     if(slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
@@ -228,7 +227,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       boolean merged = false;
       if (slotIndex < outputFilterUpgradeSlot) {
         for (int targetSlotIdx = outputFilterUpgradeSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
-          Slot targetSlot = (Slot) inventorySlots.get(targetSlotIdx);
+          Slot targetSlot = inventorySlots.get(targetSlotIdx);
           if(targetSlot.xDisplayPosition >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
             merged = true;
             break;

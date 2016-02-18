@@ -1,28 +1,29 @@
 package crazypants.enderio.conduit.gui;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> implements IMessageHandler<PacketFluidFilter, IMessage>{
 
-  private ForgeDirection dir;
+  private EnumFacing dir;
   private boolean isInput;
   private FluidFilter filter;
   
   public PacketFluidFilter() {    
   }
   
-  public PacketFluidFilter(EnderLiquidConduit eConduit, ForgeDirection dir, FluidFilter filter, boolean isInput) {
+  public PacketFluidFilter(EnderLiquidConduit eConduit, EnumFacing dir, FluidFilter filter, boolean isInput) {
     super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
     this.dir = dir;
     this.filter = filter;
@@ -32,7 +33,11 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+    if(dir != null) {
+      buf.writeShort(dir.ordinal());
+    } else {
+      buf.writeShort(-1);
+    }
     buf.writeBoolean(isInput);
     NBTTagCompound tag = new NBTTagCompound();
     filter.writeToNBT(tag);
@@ -42,7 +47,12 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    dir = ForgeDirection.values()[buf.readShort()];
+    short ord = buf.readShort();
+    if(ord < 0) {
+      dir = null;
+    } else {
+      dir = EnumFacing.values()[ord];
+    }
     isInput = buf.readBoolean();    
     NBTTagCompound tag = ByteBufUtils.readTag(buf);
     filter = new FluidFilter();
@@ -57,7 +67,7 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
     }    
     EnderLiquidConduit eCon = (EnderLiquidConduit)conduit;
     eCon.setFilter(message.dir, message.filter, message.isInput);
-    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
+    message.getWorld(ctx).markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
     return null;
   }
 

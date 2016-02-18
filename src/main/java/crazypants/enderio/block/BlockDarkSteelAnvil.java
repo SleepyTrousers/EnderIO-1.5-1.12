@@ -2,30 +2,28 @@ package crazypants.enderio.block;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import net.minecraft.block.BlockAnvil;
-import net.minecraft.client.gui.GuiRepair;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemAnvilBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiRepair;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemAnvilBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider {
 
-  private static final String[] anvilIconNames = new String[] { "anvil_0", "anvil_1", "anvil_2" };
+//  private static final String[] anvilIconNames = new String[] { "anvil_0", "anvil_1", "anvil_2" };
 
-  @SideOnly(Side.CLIENT)
-  private IIcon[] anvilIcons;
+//  @SideOnly(Side.CLIENT)
+//  private IIcon[] anvilIcons;
 
   public static BlockDarkSteelAnvil create() {
     BlockDarkSteelAnvil res = new BlockDarkSteelAnvil();
@@ -40,7 +38,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     setStepSound(soundTypeAnvil);
     setResistance(2000.0F);
 
-    setBlockName(ModObject.blockDarkSteelAnvil.unlocalisedName);
+    setUnlocalizedName(ModObject.blockDarkSteelAnvil.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
@@ -55,7 +53,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
       @Override
       public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return new GuiRepair(player.inventory, world, x, y, z);
+        return new GuiRepair(player.inventory, world);
       }
     });
   }
@@ -64,41 +62,38 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return this.getUnlocalizedName();
   }
-
+  
   @Override
-  public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY, float hitZ) {
-    p.openGui(EnderIO.instance, GuiHandler.GUI_ID_ANVIL, w, x, y, z);
+  public boolean onBlockActivated(World w, BlockPos pos, IBlockState state, EntityPlayer p, EnumFacing side, float hitX, float hitY, float hitZ) {   
+    p.openGui(EnderIO.instance, GuiHandler.GUI_ID_ANVIL, w, pos.getX(), pos.getY(), pos.getZ());
     return true;
   }
+  
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int p_149691_1_, int p_149691_2_)
+//  {
+//    if(this.anvilRenderSide == 3 && p_149691_1_ == 1)
+//    {
+//      int k = (p_149691_2_ >> 2) % this.anvilIcons.length;
+//      return this.anvilIcons[k];
+//    }
+//    else
+//    {
+//      return this.blockIcon;
+//    }
+//  }
+//
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister register)
+//  {
+//    this.blockIcon = register.registerIcon(EnderIO.DOMAIN + ":anvil_base");
+//    this.anvilIcons = new IIcon[anvilIconNames.length];
+//
+//    for (int i = 0; i < this.anvilIcons.length; ++i)
+//    {
+//      this.anvilIcons[i] = register.registerIcon(EnderIO.DOMAIN + ":" + anvilIconNames[i]);
+//    }
+//  }
 
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-  {
-    if(this.anvilRenderSide == 3 && p_149691_1_ == 1)
-    {
-      int k = (p_149691_2_ >> 2) % this.anvilIcons.length;
-      return this.anvilIcons[k];
-    }
-    else
-    {
-      return this.blockIcon;
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister register)
-  {
-    this.blockIcon = register.registerIcon(EnderIO.DOMAIN + ":anvil_base");
-    this.anvilIcons = new IIcon[anvilIconNames.length];
-
-    for (int i = 0; i < this.anvilIcons.length; ++i)
-    {
-      this.anvilIcons[i] = register.registerIcon(EnderIO.DOMAIN + ":" + anvilIconNames[i]);
-    }
-  }
-
-  @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-    return new ItemStack(this, 1, world.getBlockMetadata(x, y, z) >> 2);
-  }
+  
 }

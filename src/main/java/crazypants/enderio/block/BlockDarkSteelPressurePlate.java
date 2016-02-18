@@ -1,28 +1,11 @@
 package crazypants.enderio.block;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockPressurePlate;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -33,9 +16,25 @@ import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.Util;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider, IPaintedBlock {
 
@@ -46,8 +45,8 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   public BlockDarkSteelPressurePlate() {
-    super(ModObject.blockDarkSteelPressurePlate.unlocalisedName, Material.iron, Sensitivity.players);
-    setBlockName(ModObject.blockDarkSteelPressurePlate.unlocalisedName);
+    super(Material.iron, Sensitivity.MOBS);
+    setUnlocalizedName(ModObject.blockDarkSteelPressurePlate.unlocalisedName);
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(2.0f);
@@ -59,69 +58,72 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    blockIcon = iIconRegister.registerIcon("enderio:" + ModObject.blockDarkSteelPressurePlate.unlocalisedName);
-  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public void registerBlockIcons(IIconRegister iIconRegister) {
+  // blockIcon = iIconRegister.registerIcon("enderio:" +
+  // ModObject.blockDarkSteelPressurePlate.unlocalisedName);
+  // }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    if(itemStack != null && itemStack.getItemDamage() == 1) {
+    if (itemStack != null && itemStack.getItemDamage() == 1) {
       return getUnlocalizedName() + ".silent";
     }
     return getUnlocalizedName();
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityPaintedBlock) {
-      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
-      }
-    }
-    return super.getIcon(world, x, y, z, blockSide);
-  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public IIcon getIcon(IBlockAccess world, int x, int y, int z, int
+  // blockSide) {
+  // TileEntity te = world.getTileEntity(x, y, z);
+  // if(te instanceof TileEntityPaintedBlock) {
+  // TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+  // if(tef.getSourceBlock() != null) {
+  // return tef.getSourceBlock().getIcon(blockSide,
+  // tef.getSourceBlockMetadata());
+  // }
+  // }
+  // return super.getIcon(world, x, y, z, blockSide);
+  // }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-    if(willHarvest) {
+  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+    if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, player, x, y, z, willHarvest);
+    return super.removedByPlayer(world, pos, player, willHarvest);
   }
 
   @Override
-  public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
-    super.harvestBlock(world, player, x, y, z, meta);
-    world.setBlockToAir(x, y, z);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
+    super.harvestBlock(worldIn, player, pos, state, te);
+    worldIn.setBlockToAir(pos);
   }
 
   @Override
-  public final ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) world.getTileEntity(x, y, z);
+  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+    TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) world.getTileEntity(pos);
     ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
-    if(tepb.getSourceBlock() != null) {
+    if (tepb.getSourceBlock() != null) {
       PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
     }
     return Lists.newArrayList(stack);
   }
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
     Block b = PainterUtil.getSourceBlock(stack);
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityDarkSteelPressurePlate) {
+    TileEntity te = world.getTileEntity(pos);
+    if (te instanceof TileEntityDarkSteelPressurePlate) {
       TileEntityDarkSteelPressurePlate tef = (TileEntityDarkSteelPressurePlate) te;
       tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
       tef.setSilent(stack.getItemDamage() == 1);
     }
-    world.markBlockForUpdate(x, y, z);
-    super.onBlockPlacedBy(world, x, y, z, player, stack);
+    world.markBlockForUpdate(pos);
+    super.onBlockPlacedBy(world, pos, state, placer, stack);
   }
 
   @Override
@@ -129,17 +131,17 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     return new TileEntityDarkSteelPressurePlate();
   }
 
-  @Override
   @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityPaintedBlock) {
+  @Override
+  public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
+    TileEntity te = world.getTileEntity(pos);
+    if (te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      if (tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().colorMultiplier(world, pos);
       }
     }
-    return super.colorMultiplier(world, x, y, z);
+    return super.colorMultiplier(world, pos, renderPass);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -151,32 +153,51 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   @Override
-  protected void func_150062_a(World world, int x, int y, int z, int p_150062_5_) {
-    int i1 = func_150065_e(world, x, y, z);
-    boolean flag = p_150062_5_ > 0;
-    boolean flag1 = i1 > 0;
+  protected int computeRedstoneStrength(World worldIn, BlockPos pos) {
+    AxisAlignedBB axisalignedbb = this.getSensitiveAABB(pos);
+    List<? extends Entity> list;
 
-    if(p_150062_5_ != i1) {
-      world.setBlockMetadataWithNotify(x, y, z, func_150066_d(i1), 2);
-      func_150064_a_(world, x, y, z);
-      world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-    }
+    list = worldIn.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
 
-    boolean playSound = true;
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityDarkSteelPressurePlate && ((TileEntityDarkSteelPressurePlate)te).isSilent()) {
-      playSound = false;
-    }
-    if(playSound) {
-      if(!flag1 && flag) {
-        world.playSoundEffect(x + 0.5D, y + 0.1D, z + 0.5D, "random.click", 0.3F, 0.5F);
-      } else if(flag1 && !flag) {
-        world.playSoundEffect(x + 0.5D, y + 0.1D, z + 0.5D, "random.click", 0.3F, 0.6F);
+    if (!list.isEmpty()) {
+      for (Entity entity : list) {
+        if (!entity.doesEntityNotTriggerPressurePlate()) {
+          return 15;
+        }
       }
     }
 
-    if(flag1) {
-      world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
+    return 0;
+  }
+
+  @Override
+  protected void updateState(World worldIn, BlockPos pos, IBlockState state, int oldRedstoneStrength) {
+    int i = this.computeRedstoneStrength(worldIn, pos);
+    boolean flag = oldRedstoneStrength > 0;
+    boolean flag1 = i > 0;
+
+    if (oldRedstoneStrength != i) {
+      state = this.setRedstoneStrength(state, i);
+      worldIn.setBlockState(pos, state, 2);
+      this.updateNeighbors(worldIn, pos);
+      worldIn.markBlockRangeForRenderUpdate(pos, pos);
+    }
+
+    boolean playSound = true;
+    TileEntity te = worldIn.getTileEntity(pos);
+    if (te instanceof TileEntityDarkSteelPressurePlate && ((TileEntityDarkSteelPressurePlate) te).isSilent()) {
+      playSound = false;
+    }
+    if (playSound) {
+      if (!flag1 && flag) {
+        worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.5F);
+      } else if (flag1 && !flag) {
+        worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+      }
+    }
+
+    if (flag1) {
+      worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
   }
 
@@ -188,14 +209,14 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
     @Override
     public boolean isValidPaintSource(ItemStack paintSource) {
-      if(PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
+      if (PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
         return true;
       }
-      if(paintSource == null) {
+      if (paintSource == null) {
         return false;
       }
       Block block = Util.getBlockFromItemId(paintSource);
-      if(block == null) {
+      if (block == null) {
         return false;
       }
       return Block.getBlockFromItem(paintSource.getItem()) == EnderIO.blockFusedQuartz;
@@ -204,7 +225,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     @Override
     public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-      if(paintSource == null) {
+      if (paintSource == null) {
         return new ResultStack[0];
       }
       ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);

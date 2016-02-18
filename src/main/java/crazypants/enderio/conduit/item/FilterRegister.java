@@ -1,12 +1,12 @@
 package crazypants.enderio.conduit.item;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class FilterRegister {
 
@@ -24,7 +24,7 @@ public class FilterRegister {
   }
 
   public static boolean isFilterSet(ItemStack stack) {
-    return stack != null && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter");
+    return stack != null && stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter");
   }
 
   public static void writeFilterToStack(IItemFilter filter, ItemStack stack) {
@@ -33,10 +33,10 @@ public class FilterRegister {
     }
     NBTTagCompound filterRoot = new NBTTagCompound();
     writeFilterToNbt(filter, filterRoot);
-    if(stack.stackTagCompound == null) {
-      stack.stackTagCompound = new NBTTagCompound();
+    if(stack.getTagCompound() == null) {
+      stack.setTagCompound(new NBTTagCompound());
     }
-    stack.stackTagCompound.setTag("filter", filterRoot);
+    stack.getTagCompound().setTag("filter", filterRoot);
   }
   
   public static void writeFilterToNbt(IItemFilter filter, NBTTagCompound filterTag) {

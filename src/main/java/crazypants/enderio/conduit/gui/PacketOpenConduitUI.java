@@ -1,26 +1,26 @@
 package crazypants.enderio.conduit.gui;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.network.MessageTileEntity;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage> {
 
-  private ForgeDirection dir;
+  private EnumFacing dir;
 
   public PacketOpenConduitUI() {
   }
 
-  public PacketOpenConduitUI(TileEntity tile, ForgeDirection dir) {
+  public PacketOpenConduitUI(TileEntity tile, EnumFacing dir) {
     super(tile);
     this.dir = dir;
   }
@@ -28,20 +28,30 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+    if(dir != null) {
+      buf.writeShort(dir.ordinal());
+    } else {
+      buf.writeShort(-1);
+    }
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    dir = ForgeDirection.values()[buf.readShort()];
+    short ord = buf.readShort();
+    if(ord < 0) {
+      dir = null;
+    } else {
+      dir = EnumFacing.values()[ord];
+    }
   }
 
+  @Override
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity tile = message.getWorld(ctx).getTileEntity(message.x, message.y, message.z);
+    TileEntity tile = message.getWorld(ctx).getTileEntity(new BlockPos(message.x, message.y, message.z));
     player
-        .openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + message.dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+        .openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + message.dir.ordinal(), player.worldObj, tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ());
     return null;
   }
 

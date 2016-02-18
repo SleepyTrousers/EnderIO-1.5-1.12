@@ -1,6 +1,7 @@
 package crazypants.enderio.entity;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,10 +33,8 @@ public class SkeletonHandler {
     return entity.getClass() == EntitySkeleton.class && ((EntitySkeleton) entity).getSkeletonType() == 1;
   }
 
-  public static void registerSkeleton(EnderIO mod) {
-    int entityID = EntityRegistry.findGlobalUniqueEntityId();
-    EntityRegistry.registerGlobalEntityID(EntityWitherSkeleton.class, "witherSkeleton", entityID, 0x00003D, 0x751947);
-    EntityRegistry.registerModEntity(EntityWitherSkeleton.class, "witherSkeleton", entityID, mod, 64, 3, true);
+  public static void registerSkeleton(EnderIO mod) {        
+    EntityRegistry.registerModEntity(EntityWitherSkeleton.class, "witherSkeleton", Config.witherSkeletonEntityID, mod, 64, 3, true);
     MinecraftForge.EVENT_BUS.register(new SkeletonHandler());
   }
 }

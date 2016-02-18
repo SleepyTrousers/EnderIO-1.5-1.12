@@ -4,13 +4,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.item.ItemStack;
 
 public enum FuzzyMode implements CycleButton.ICycleEnum {
   DISABLED(IconEIO.FILTER_FUZZY_DISABLED) {
@@ -40,7 +39,7 @@ public enum FuzzyMode implements CycleButton.ICycleEnum {
   FUZZY_99(IconEIO.FILTER_FUZZY_99) {
     @Override
     boolean compare(ItemStack stack) {
-      return stack.getItemDamageForDisplay() >= 1;
+      return stack.getItemDamage() >= 1;
     }
   };
 
@@ -53,7 +52,7 @@ public enum FuzzyMode implements CycleButton.ICycleEnum {
   abstract boolean compare(ItemStack stack);
 
   private static boolean compareQuarter(ItemStack stack, int ratio) {
-    return stack.getItemDamageForDisplay() * 4 >= stack.getMaxDamage() * ratio;
+    return stack.getItemDamage() * 4 >= stack.getMaxDamage() * ratio;
   }
 
   @Override

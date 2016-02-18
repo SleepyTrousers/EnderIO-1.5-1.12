@@ -5,13 +5,6 @@ import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.BlockCoord;
 
@@ -21,19 +14,24 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.EnumFacing;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
-  Set<ForgeDirection> cons;
+  Set<EnumFacing> cons;
   IConduitBundle cb;
 
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
-    cons = new HashSet<ForgeDirection>();
+    cons = new HashSet<EnumFacing>();
     for (IConduit con : cb.getConduits()) {
       if(con instanceof IInsulatedRedstoneConduit) {
-        Set<ForgeDirection> conCons = con.getConduitConnections();
-        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        Set<EnumFacing> conCons = con.getConduitConnections();
+        for(EnumFacing dir : EnumFacing.VALUES) {
           if(!conCons.contains(dir)) {
             cons.add(dir);
           }
@@ -47,8 +45,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
   @Override
   protected void actionPerformed(GuiButton b) {
-    ForgeDirection dir = ForgeDirection.values()[b.id];
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    EnumFacing dir = EnumFacing.values()[b.id];
+    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     BlockCoord loc = cb.getLocation();
     PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
@@ -57,7 +55,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   @Override
   public void initGui() {
     GuiButton b;
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       Point p = getOffsetForDir(dir);
       b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
       buttonList.add(b);
@@ -81,24 +79,22 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     int butHeight = 20;
     String txt = "Select Connection to Adjust";
-    int x = width / 2 - (Minecraft.getMinecraft().fontRenderer.getStringWidth(txt) / 2);
+    int x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
     int y = height / 2 - butHeight * 3 - 5;
-    Tessellator.instance.startDrawingQuads();
-    drawString(Minecraft.getMinecraft().fontRenderer, txt, x, y, ColorUtil.getARGB(Color.white));
-    Tessellator.instance.draw();
-
+        
+    drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
   }
 
-  private Point getOffsetForDir(ForgeDirection dir) {
+  private Point getOffsetForDir(EnumFacing dir) {
     int mx = width / 2;
     int my = height / 2;
     int butWidth = 60;
     int butHeight = 20;
 
-    int x = mx - butWidth / 2 + (dir.offsetX * butWidth);
-    int y = my - butHeight / 2 + (dir.offsetZ * butHeight * 2);
-    x += Math.abs(dir.offsetY) * (5 + butWidth * 2);
-    y -= (dir.offsetY * butHeight * 2);
+    int x = mx - butWidth / 2 + (dir.getFrontOffsetX() * butWidth);
+    int y = my - butHeight / 2 + (dir.getFrontOffsetZ() * butHeight * 2);
+    x += Math.abs(dir.getFrontOffsetY()) * (5 + butWidth * 2);
+    y -= (dir.getFrontOffsetY() * butHeight * 2);
 
     return new Point(x, y);
   }

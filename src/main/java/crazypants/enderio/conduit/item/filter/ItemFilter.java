@@ -1,30 +1,31 @@
 package crazypants.enderio.conduit.item.filter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.network.NetworkUtil;
+
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.network.NetworkUtil;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ItemFilter implements IInventory, IItemFilter {
 
@@ -153,9 +154,9 @@ public class ItemFilter implements IInventory, IItemFilter {
   
   private boolean isNBTMatch(ItemStack filter, ItemStack item)
   {
-    if (filter.stackTagCompound == null && item.stackTagCompound == null) return true;
-    if (filter.stackTagCompound == null || item.stackTagCompound == null) return false;
-    if (!filter.getTagCompound().hasKey("GEN")) return filter.stackTagCompound.equals(item.stackTagCompound);
+    if (filter.getTagCompound() == null && item.getTagCompound() == null) return true;
+    if (filter.getTagCompound() == null || item.getTagCompound() == null) return false;
+    if (!filter.getTagCompound().hasKey("GEN")) return filter.getTagCompound().equals(item.getTagCompound());
     NBTTagCompound filterTag = (NBTTagCompound) filter.getTagCompound().copy();
     NBTTagCompound itemTag = (NBTTagCompound) item.getTagCompound().copy();
     filterTag.removeTag("GEN");
@@ -333,12 +334,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     item.stackSize = 0;
     return item;
   }
-
-  @Override
-  public ItemStack getStackInSlotOnClosing(int i) {
-    return null;
-  }
-
+  
   @Override
   public void setInventorySlotContents(int i, ItemStack itemstack) {
     if(itemstack != null) {
@@ -349,9 +345,26 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
     oreIds.set(i, null);
   }
+  
+  @Override
+  public ItemStack removeStackFromSlot(int index) {
+    if(index < 0 || index >= items.length) {
+      return null;
+    }
+    ItemStack res = items[index];
+    items[index] = null;
+    return res;    
+  }
+  
+  @Override
+  public void clear() {
+    for(int i=0;i<items.length;i++) {
+      items[i] = null;
+    }    
+  }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return "Item Filter";
   }
 
@@ -361,7 +374,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -375,11 +388,11 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override
@@ -453,4 +466,25 @@ public class ItemFilter implements IInventory, IItemFilter {
       return items[slot];
     }
   }
+
+  @Override
+  public IChatComponent getDisplayName() {
+    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  }
+
+  @Override
+  public int getField(int id) {
+    return 0;
+  }
+
+  @Override
+  public void setField(int id, int value) {    
+  }
+
+  @Override
+  public int getFieldCount() {
+    return 0;
+  }
+
+
 }

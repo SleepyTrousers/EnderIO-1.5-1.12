@@ -184,7 +184,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
     Entity e = te.getCurrentTarget();
     if(e != null) {
-      String name = e.getCommandSender();
+      String name = e.getName();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
     } else if(te.wasBlocked) {
       String s = EnderIO.lang.localize("gui.telepad.blocked");
@@ -196,7 +196,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   @Override
   public void switchGui() {
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, world, te.xCoord, te.yCoord, te.zCoord);
+    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD_TRAVEL));
   }
   

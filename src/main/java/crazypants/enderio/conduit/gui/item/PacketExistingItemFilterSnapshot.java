@@ -1,20 +1,19 @@
 package crazypants.enderio.conduit.gui.item;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketExistingItemFilterSnapshot, IMessage> {
 
@@ -26,14 +25,14 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
     UNSET_BLACK
   }
 
-  private ForgeDirection dir;
+  private EnumFacing dir;
   private Opcode opcode;
   private boolean isInput;
 
   public PacketExistingItemFilterSnapshot() {
   }
   
-  public PacketExistingItemFilterSnapshot(IItemConduit con, ForgeDirection dir, boolean isInput, Opcode opcode) {
+  public PacketExistingItemFilterSnapshot(IItemConduit con, EnumFacing dir, boolean isInput, Opcode opcode) {
     super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
     this.dir = dir;
     this.isInput= isInput;
@@ -43,7 +42,7 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    dir = ForgeDirection.values()[buf.readShort()];
+    dir = EnumFacing.values()[buf.readShort()];
     isInput = buf.readBoolean();
     opcode = Opcode.values()[buf.readByte() & 255];
   }

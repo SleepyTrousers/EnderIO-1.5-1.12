@@ -1,17 +1,5 @@
 package crazypants.enderio.teleport.telepad;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -21,6 +9,17 @@ import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTelePad extends BlockTravelAnchor {
 
@@ -138,15 +137,16 @@ public class BlockTelePad extends BlockTravelAnchor {
     return true;
   }
 
+  
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
-    super.onBlockPlacedBy(world, x, y, z, entity, par6ItemStack);
-    ((TileTelePad) world.getTileEntity(x, y, z)).updateConnectedState(true);
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {  
+    super.onBlockPlacedBy(world, pos, state, entity, stack);
+    ((TileTelePad) world.getTileEntity(pos)).updateConnectedState(true);
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileTelePad) {
       switch (ID) {
       case GuiHandler.GUI_ID_TELEPAD:
@@ -162,7 +162,7 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileTelePad) {
       switch (ID) {
       case GuiHandler.GUI_ID_TELEPAD:

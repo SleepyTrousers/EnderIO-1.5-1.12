@@ -3,12 +3,6 @@ package crazypants.enderio.conduit.gui.item;
 import java.awt.Rectangle;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
@@ -25,6 +19,11 @@ import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 
@@ -205,7 +204,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   }
 
   private void showSnapshotOverlay() {
-    snapshotOverlay.setVisible(true);    
+    snapshotOverlay.setIsVisible(true);    
   }
 
   private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
@@ -261,7 +260,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       RenderUtil.renderQuad2D(6, 6, 0, gui.getXSize() - 13, gui.getYSize() - 12, new Vector4f(0.6,0.6,0.6,1));
       
       Minecraft mc = Minecraft.getMinecraft();
-      RenderItem itemRenderer = new RenderItem();
+      RenderItem itemRenderer = mc.getRenderItem();
             
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       
@@ -270,9 +269,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       int y = 10;
       int count = 0;
       for(ItemStack st : snapshot) {
-        if(st != null) {
-          itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), st, x, y);
-          //itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), st, x, y, s);  
+        if(st != null) {          
+          itemRenderer.renderItemAndEffectIntoGUI(st, x,y);            
         }        
         x += 20;
         count++;
@@ -284,7 +282,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     }
 
     @Override
-    public void setVisible(boolean visible) {
+    public void setIsVisible(boolean visible) {
       this.visible = visible;      
     }
 

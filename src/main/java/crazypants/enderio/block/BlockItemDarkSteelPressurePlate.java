@@ -1,12 +1,14 @@
 package crazypants.enderio.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 
-public class BlockItemDarkSteelPressurePlate extends ItemBlockWithMetadata {
+public class BlockItemDarkSteelPressurePlate extends ItemBlock {
 
   public BlockItemDarkSteelPressurePlate(Block block) {
-    super(block, block);
+    super(block);
+    this.setMaxDamage(0);
+    this.setHasSubtypes(true);
   }
 
   @Override

@@ -1,12 +1,12 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-import crazypants.enderio.conduit.item.FilterRegister;
 
 public class CopyFilterRecipe implements IRecipe{
   
@@ -64,6 +64,11 @@ public class CopyFilterRecipe implements IRecipe{
   @Override
   public ItemStack getRecipeOutput() {
     return output;
+  }
+
+  @Override
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+    return new ItemStack[0];
   }
 
 }

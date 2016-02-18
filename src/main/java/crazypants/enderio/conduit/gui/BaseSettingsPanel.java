@@ -2,10 +2,6 @@ package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -19,6 +15,9 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class BaseSettingsPanel implements ITabPanel {
 
@@ -51,7 +50,7 @@ public class BaseSettingsPanel implements ITabPanel {
 
     modeLabel = EnderIO.lang.localize("gui.conduit.ioMode");
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     int x = gap * 3 + fr.getStringWidth(modeLabel);
     int y = 8;// + fr.FONT_HEIGHT;
 

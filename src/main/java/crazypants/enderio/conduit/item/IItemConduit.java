@@ -1,85 +1,83 @@
 package crazypants.enderio.conduit.item;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.transport.IItemDuct;
-
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
-public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
+public interface IItemConduit extends IConduit, IExtractor {
 
-  IIcon getTextureForInputMode();
+  TextureAtlasSprite getTextureForInputMode();
 
-  IIcon getTextureForOutputMode();
+  TextureAtlasSprite getTextureForOutputMode();
 
-  IIcon getTextureForInOutMode(boolean inputComponent);
+  TextureAtlasSprite getTextureForInOutMode(boolean inputComponent);
 
-  IIcon getTextureForInOutBackground();
+  TextureAtlasSprite getTextureForInOutBackground();
 
-  IIcon getEnderIcon();
+  TextureAtlasSprite getEnderIcon();
 
-  IInventory getExternalInventory(ForgeDirection direction);
+  IInventory getExternalInventory(EnumFacing direction);
 
-  int getMaximumExtracted(ForgeDirection direction);
+  int getMaximumExtracted(EnumFacing direction);
 
-  float getTickTimePerItem(ForgeDirection direction);
+  float getTickTimePerItem(EnumFacing direction);
 
   void itemsExtracted(int numInserted, int slot);
   
-  void setInputFilterUpgrade(ForgeDirection dir, ItemStack stack);
+  void setInputFilterUpgrade(EnumFacing dir, ItemStack stack);
 
-  void setOutputFilterUpgrade(ForgeDirection dir, ItemStack stack);
+  void setOutputFilterUpgrade(EnumFacing dir, ItemStack stack);
 
-  ItemStack getInputFilterUpgrade(ForgeDirection dir);
+  ItemStack getInputFilterUpgrade(EnumFacing dir);
 
-  ItemStack getOutputFilterUpgrade(ForgeDirection dir);  
+  ItemStack getOutputFilterUpgrade(EnumFacing dir);  
 
-  void setInputFilter(ForgeDirection dir, IItemFilter filter);
+  void setInputFilter(EnumFacing dir, IItemFilter filter);
 
-  void setOutputFilter(ForgeDirection dir, IItemFilter filter);
+  void setOutputFilter(EnumFacing dir, IItemFilter filter);
 
-  IItemFilter getInputFilter(ForgeDirection dir);
+  IItemFilter getInputFilter(EnumFacing dir);
 
-  IItemFilter getOutputFilter(ForgeDirection dir);
+  IItemFilter getOutputFilter(EnumFacing dir);
   
-  void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade);
+  void setSpeedUpgrade(EnumFacing dir, ItemStack upgrade);
   
-  ItemStack getSpeedUpgrade(ForgeDirection dir);
+  ItemStack getSpeedUpgrade(EnumFacing dir);
 
-  void setFunctionUpgrade(ForgeDirection dir, ItemStack upgrade);
+  void setFunctionUpgrade(EnumFacing dir, ItemStack upgrade);
 
-  ItemStack getFunctionUpgrade(ForgeDirection dir);
+  ItemStack getFunctionUpgrade(EnumFacing dir);
 
-  boolean hasInventoryPanelUpgrade(ForgeDirection dir);
+  boolean hasInventoryPanelUpgrade(EnumFacing dir);
 
-  int getOutputPriority(ForgeDirection dir);
+  int getOutputPriority(EnumFacing dir);
   
-  void setOutputPriority(ForgeDirection dir, int priority);
+  void setOutputPriority(EnumFacing dir, int priority);
 
   int getMetaData();
 
-  boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
+  boolean isExtractionRedstoneConditionMet(EnumFacing dir);
 
-  boolean isSelfFeedEnabled(ForgeDirection dir);
+  boolean isSelfFeedEnabled(EnumFacing dir);
 
-  void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
+  void setSelfFeedEnabled(EnumFacing dir, boolean enabled);
   
-  boolean isRoundRobinEnabled(ForgeDirection dir);
+  boolean isRoundRobinEnabled(EnumFacing dir);
   
-  void setRoundRobinEnabled(ForgeDirection dir, boolean enabled);
+  void setRoundRobinEnabled(EnumFacing dir, boolean enabled);
 
-  DyeColor getInputColor(ForgeDirection dir);
+  DyeColor getInputColor(EnumFacing dir);
 
-  DyeColor getOutputColor(ForgeDirection dir);
+  DyeColor getOutputColor(EnumFacing dir);
 
-  void setInputColor(ForgeDirection dir, DyeColor col);
+  void setInputColor(EnumFacing dir, DyeColor col);
 
-  void setOutputColor(ForgeDirection dir, DyeColor col);
+  void setOutputColor(EnumFacing dir, DyeColor col);
 
 }

@@ -14,11 +14,9 @@ public class Enchantments {
     return instance;
   }
 
-  private EnchantmentSoulBound soulBound;
-
   private void registerEnchantments() {
     if(Config.enchantmentSoulBoundEnabled) {     
-      soulBound = EnchantmentSoulBound.create(Config.enchantmentSoulBoundId);
+      EnchantmentSoulBound.create(Config.enchantmentSoulBoundId);
     }
   }
   

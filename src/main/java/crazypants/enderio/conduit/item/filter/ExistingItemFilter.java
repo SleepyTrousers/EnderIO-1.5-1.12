@@ -1,27 +1,25 @@
 package crazypants.enderio.conduit.item.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.network.NetworkUtil;
+
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.ExistingItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.network.NetworkUtil;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ExistingItemFilter implements IItemFilter {
 
@@ -36,19 +34,19 @@ public class ExistingItemFilter implements IItemFilter {
 
   @Override
   public boolean doesItemPassFilter(NetworkedInventory ni, ItemStack item) {
-    if(item == null) {
+    if (item == null) {
       return false;
     }
-    if(snapshot != null) {
+    if (snapshot != null) {
       return isStackInSnapshot(item) == !blacklist;
-    } else if(ni != null) {
+    } else if (ni != null) {
       return isStackInInventory(ni, item) == !blacklist;
     }
     return false;
   }
 
   private boolean isStackInInventory(NetworkedInventory ni, ItemStack item) {
-    int[] slots = ni.getInventory().getAccessibleSlotsFromSide(ni.getInventorySide());
+    int[] slots = ni.getInventory().getSlotsForFace(ni.getInventorySide());
     for (int i = 0; i < slots.length; i++) {
       ItemStack stack = ni.getInventory().getStackInSlot(i);
       if (stackEqual(item, stack)) {
@@ -59,8 +57,8 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   boolean isStackInSnapshot(ItemStack item) {
-    for(ItemStack stack : snapshot) {
-      if(stackEqual(item, stack)) {
+    for (ItemStack stack : snapshot) {
+      if (stackEqual(item, stack)) {
         return true;
       }
     }
@@ -68,25 +66,47 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   boolean stackEqual(ItemStack toInsert, ItemStack existing) {
-    if(toInsert == null || existing == null) {
+    if (toInsert == null || existing == null) {
       return false;
     }
 
     boolean matched = false;
-    if(useOreDict) {
-      int existingId = OreDictionary.getOreID(existing);
-      matched = existingId != -1 && existingId == OreDictionary.getOreID(toInsert);
+    if (useOreDict) {
+      matched = isSameOreRegistered(existing, toInsert);//
+      // int existingId = OreDictionary.getOreID(existing);
+      // matched = existingId != -1 && existingId ==
+      // OreDictionary.getOreID(toInsert);
     }
-    if(!matched) {
+    if (!matched) {
       matched = Item.getIdFromItem(toInsert.getItem()) == Item.getIdFromItem(existing.getItem());
-      if(matched && matchMeta) {
+      if (matched && matchMeta) {
         matched = toInsert.getItemDamage() == existing.getItemDamage();
       }
-      if(matched && matchNBT) {
+      if (matched && matchNBT) {
         matched = ItemStack.areItemStackTagsEqual(toInsert, existing);
       }
     }
     return matched;
+  }
+
+  private boolean isSameOreRegistered(ItemStack existing, ItemStack toInsert) {
+    int[] existingIds = OreDictionary.getOreIDs(existing);
+    int[] toInsertIds = OreDictionary.getOreIDs(toInsert);
+    boolean matched = false;
+    for (int i = 0; i < existingIds.length && !matched; i++) {
+      int existingId = existingIds[i];
+      matched = existingId != -1 && contains(toInsertIds, existingId);
+    }
+    return matched;
+  }
+
+  private boolean contains(int[] ar, int val) {
+    for (int i : ar) {
+      if (i == val) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
@@ -108,34 +128,34 @@ public class ExistingItemFilter implements IItemFilter {
   public int getSlotCount() {
     return 0;
   }
-  
+
   public void setSnapshot(NetworkedInventory ni) {
     snapshot = new ArrayList<ItemStack>();
     mergeSnapshot(ni);
   }
 
   public void mergeSnapshot(NetworkedInventory ni) {
-    if(snapshot == null) {
+    if (snapshot == null) {
       snapshot = new ArrayList<ItemStack>();
     }
-    int[] slots = ni.getInventory().getAccessibleSlotsFromSide(ni.getInventorySide());
+    int[] slots = ni.getInventory().getSlotsForFace(ni.getInventorySide());
     for (int i = 0; i < slots.length; i++) {
       ItemStack stack = ni.getInventory().getStackInSlot(i);
-      if(stack != null && !isStackInSnapshot(stack)) {
+      if (stack != null && !isStackInSnapshot(stack)) {
         snapshot.add(stack);
       }
     }
   }
 
   public boolean mergeSnapshot(IInventory inventory) {
-    if(snapshot == null) {
+    if (snapshot == null) {
       snapshot = new ArrayList<ItemStack>();
     }
     int size = inventory.getSizeInventory();
     boolean added = false;
     for (int i = 0; i < size; i++) {
       ItemStack stack = inventory.getStackInSlot(i);
-      if(stack != null && !isStackInSnapshot(stack)) {
+      if (stack != null && !isStackInSnapshot(stack)) {
         snapshot.add(stack);
         added = true;
       }
@@ -201,18 +221,18 @@ public class ExistingItemFilter implements IItemFilter {
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);
-    
-    if(nbtRoot.hasKey("snapshot")) {
+
+    if (nbtRoot.hasKey("snapshot")) {
       snapshot = new ArrayList<ItemStack>();
-      NBTTagList itemList = (NBTTagList)nbtRoot.getTag("snapshot");
-      for(int i=0;i<itemList.tagCount();i++) {
+      NBTTagList itemList = (NBTTagList) nbtRoot.getTag("snapshot");
+      for (int i = 0; i < itemList.tagCount(); i++) {
         NBTTagCompound itemTag = itemList.getCompoundTagAt(i);
         ItemStack itemStack = ItemStack.loadItemStackFromNBT(itemTag);
-        if(itemStack != null) {
+        if (itemStack != null) {
           snapshot.add(itemStack);
         }
       }
-      
+
     } else {
       snapshot = null;
     }
@@ -229,19 +249,19 @@ public class ExistingItemFilter implements IItemFilter {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     writeSettingToNBT(nbtRoot);
-    
-    if(snapshot != null) {
-      
+
+    if (snapshot != null) {
+
       NBTTagList itemList = new NBTTagList();
       for (ItemStack item : snapshot) {
-        if(item != null) {
+        if (item != null) {
           NBTTagCompound itemTag = new NBTTagCompound();
           item.writeToNBT(itemTag);
           itemList.appendTag(itemTag);
         }
       }
       nbtRoot.setTag("snapshot", itemList);
-      
+
     }
   }
 
@@ -259,7 +279,7 @@ public class ExistingItemFilter implements IItemFilter {
     writeSettingToNBT(settingsTag);
     NetworkUtil.writeNBTTagCompound(settingsTag, buf);
     buf.writeInt(snapshot == null ? 0 : snapshot.size());
-    if(snapshot == null) {
+    if (snapshot == null) {
       return;
     }
     for (ItemStack item : snapshot) {
@@ -274,7 +294,7 @@ public class ExistingItemFilter implements IItemFilter {
     NBTTagCompound settingsTag = NetworkUtil.readNBTTagCompound(buf);
     readSettingsFromNBT(settingsTag);
     int numItems = buf.readInt();
-    if(numItems == 0) {
+    if (numItems == 0) {
       snapshot = null;
       return;
     }
@@ -282,7 +302,7 @@ public class ExistingItemFilter implements IItemFilter {
     for (int i = 0; i < numItems; i++) {
       NBTTagCompound itemTag = NetworkUtil.readNBTTagCompound(buf);
       ItemStack item = ItemStack.loadItemStackFromNBT(itemTag);
-      if(item != null) {
+      if (item != null) {
         snapshot.add(item);
       }
     }

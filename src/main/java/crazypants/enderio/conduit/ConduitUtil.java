@@ -46,7 +46,7 @@ public class ConduitUtil {
     World world = te.getWorld();
     Collection<? extends IConduit> connections = ConduitUtil.getConnectedConduits(world, te.getPos(), conduit.getBaseConduitType());
 
-    if(reuseNetwork(conduit, connections, world)) {
+    if (reuseNetwork(conduit, connections, world)) {
       return;
     }
 
@@ -59,16 +59,16 @@ public class ConduitUtil {
   private static boolean reuseNetwork(IConduit con, Collection<? extends IConduit> connections, World world) {
     AbstractConduitNetwork network = null;
     for (IConduit conduit : connections) {
-      if(network == null) {
+      if (network == null) {
         network = conduit.getNetwork();
-      } else if(network != conduit.getNetwork()) {
+      } else if (network != conduit.getNetwork()) {
         return false;
       }
     }
-    if(network == null) {
+    if (network == null) {
       return false;
     }
-    if(con.setNetwork(network)) {
+    if (con.setNetwork(network)) {
       network.addConduit(con);
       network.notifyNetworkOfUpdate();
       return true;
@@ -80,17 +80,19 @@ public class ConduitUtil {
     con.conduitConnectionRemoved(connDir);
     BlockCoord loc = con.getLocation().getLocation(connDir);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, con.getBaseConduitType());
-    if(neighbour != null) {
+    if (neighbour != null) {
       neighbour.conduitConnectionRemoved(connDir.getOpposite());
-      if(neighbour.getNetwork() != null) {
+      if (neighbour.getNetwork() != null) {
         neighbour.getNetwork().destroyNetwork();
       }
     }
-    if(con.getNetwork() != null) { //this should have been destroyed when destroying the neighbours network but lets just make sure
+    if (con.getNetwork() != null) { // this should have been destroyed when
+                                    // destroying the neighbours network but
+                                    // lets just make sure
       con.getNetwork().destroyNetwork();
     }
     con.connectionsChanged();
-    if(neighbour != null) {
+    if (neighbour != null) {
       neighbour.connectionsChanged();
     }
   }
@@ -98,13 +100,13 @@ public class ConduitUtil {
   public static <T extends IConduit> boolean joinConduits(T con, EnumFacing faceHit) {
     BlockCoord loc = con.getLocation().getLocation(faceHit);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, con.getBaseConduitType());
-    if(neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
+    if (neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
       neighbour.conduitConnectionAdded(faceHit.getOpposite());
-      if(con.getNetwork() != null) {
+      if (con.getNetwork() != null) {
         con.getNetwork().destroyNetwork();
       }
-      if(neighbour.getNetwork() != null) {
+      if (neighbour.getNetwork() != null) {
         neighbour.getNetwork().destroyNetwork();
       }
       con.connectionsChanged();
@@ -115,16 +117,22 @@ public class ConduitUtil {
   }
 
   public static boolean forceSkylightRecalculation(World worldObj, int xCoord, int yCoord, int zCoord) {
-    int height = worldObj.getHeight(new BlockPos(xCoord, yCoord, zCoord)).getY();
-    if(height <= yCoord) {
+    return forceSkylightRecalculation(worldObj, new BlockPos(xCoord, yCoord, zCoord));
+  }
+
+  public static boolean forceSkylightRecalculation(World worldObj, BlockPos pos) {
+    int height = worldObj.getHeight(pos).getY();
+    if (height <= pos.getY()) {
       for (int i = 1; i < 12; i++) {
-        if(worldObj.isAirBlock(new BlockPos(xCoord, yCoord + i, zCoord))) {
-          //We need to force the re-lighting of the column due to a change
-          //in the light reaching bellow the block from the sky. To avoid
-          //modifying core classes to expose this functionality I am just placing then breaking
-          //a block above this one to force the check
-          worldObj.setBlockState(new BlockPos(xCoord, yCoord + i, zCoord), Blocks.stone.getDefaultState(), 3);
-          worldObj.setBlockToAir(new BlockPos(xCoord, yCoord + i, zCoord));
+        if (worldObj.isAirBlock(pos)) {
+          // We need to force the re-lighting of the column due to a change
+          // in the light reaching bellow the block from the sky. To avoid
+          // modifying core classes to expose this functionality I am just
+          // placing then breaking
+          // a block above this one to force the check
+
+          worldObj.setBlockState(pos.offset(EnumFacing.UP, i), Blocks.stone.getDefaultState(), 3);
+          worldObj.setBlockToAir(pos.offset(EnumFacing.UP, i));
 
           return true;
         }
@@ -135,10 +143,10 @@ public class ConduitUtil {
 
   @SideOnly(Side.CLIENT)
   public static FacadeRenderState getRequiredFacadeRenderState(IConduitBundle bundle, EntityPlayer player) {
-    if(!bundle.hasFacade()) {
+    if (!bundle.hasFacade()) {
       return FacadeRenderState.NONE;
     }
-    if(isFacadeHidden(bundle, player)) {
+    if (isFacadeHidden(bundle, player)) {
       return FacadeRenderState.WIRE_FRAME;
     }
     return FacadeRenderState.FULL;
@@ -154,30 +162,30 @@ public class ConduitUtil {
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
+    if (player == null) {
       return ConduitDisplayMode.ALL;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
+    if (equipped == null) {
       return ConduitDisplayMode.ALL;
     }
 
     ConduitDisplayMode result = ConduitDisplayMode.getDisplayMode(equipped);
-    if(result == null) {
+    if (result == null) {
       return ConduitDisplayMode.ALL;
     }
     return result;
   }
 
   public static boolean renderConduit(EntityPlayer player, IConduit con) {
-    if(player == null || con == null) {
+    if (player == null || con == null) {
       return true;
     }
     return renderConduit(player, con.getBaseConduitType());
   }
 
   public static boolean renderConduit(EntityPlayer player, Class<? extends IConduit> conduitType) {
-    if(player == null || conduitType == null) {
+    if (player == null || conduitType == null) {
       return true;
     }
     ConduitDisplayMode mode = getDisplayMode(player);
@@ -186,11 +194,11 @@ public class ConduitUtil {
 
   public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack held = player.getCurrentEquippedItem();
-    if(held != null && held.getItem() instanceof IHideFacades) {
+    if (held != null && held.getItem() instanceof IHideFacades) {
       return ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
     }
     return ToolUtil.isToolEquipped(player);
@@ -198,11 +206,11 @@ public class ConduitUtil {
 
   public static boolean isConduitEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
+    if (equipped == null) {
       return false;
     }
     return equipped.getItem() instanceof IConduitItem;
@@ -210,11 +218,11 @@ public class ConduitUtil {
 
   public static boolean isProbeEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
+    if (equipped == null) {
       return false;
     }
     return equipped.getItem() == EnderIO.itemConduitProbe;
@@ -223,13 +231,13 @@ public class ConduitUtil {
   public static <T extends IConduit> T getConduit(World world, int x, int y, int z, Class<T> type) {
     return getConduit(world, new BlockPos(x, y, z), type);
   }
-  
+
   public static <T extends IConduit> T getConduit(World world, BlockPos pos, Class<T> type) {
-    if(world == null) {
+    if (world == null) {
       return null;
     }
     TileEntity te = world.getTileEntity(pos);
-    if(te instanceof IConduitBundle) {
+    if (te instanceof IConduitBundle) {
       IConduitBundle con = (IConduitBundle) te;
       return con.getConduit(type);
     }
@@ -237,25 +245,26 @@ public class ConduitUtil {
   }
 
   public static <T extends IConduit> T getConduit(World world, TileEntity te, EnumFacing dir, Class<T> type) {
-    return ConduitUtil.getConduit(world, te.getPos().getX() + dir.getFrontOffsetX(), te.getPos().getY()+ dir.getFrontOffsetY(), te.getPos().getZ()+ dir.getFrontOffsetZ(), type);
+    return ConduitUtil.getConduit(world, te.getPos().getX() + dir.getFrontOffsetX(), te.getPos().getY() + dir.getFrontOffsetY(),
+        te.getPos().getZ() + dir.getFrontOffsetZ(), type);
   }
 
   public static <T extends IConduit> Collection<T> getConnectedConduits(World world, int x, int y, int z, Class<T> type) {
-    return getConnectedConduits(world, new BlockPos(x,y,x), type);
+    return getConnectedConduits(world, new BlockPos(x, y, x), type);
   }
-  
+
   public static <T extends IConduit> Collection<T> getConnectedConduits(World world, BlockPos pos, Class<T> type) {
     TileEntity te = world.getTileEntity(pos);
-    if(!(te instanceof IConduitBundle)) {
+    if (!(te instanceof IConduitBundle)) {
       return Collections.emptyList();
     }
     List<T> result = new ArrayList<T>();
     IConduitBundle root = (IConduitBundle) te;
     T con = root.getConduit(type);
-    if(con != null) {
+    if (con != null) {
       for (EnumFacing dir : con.getConduitConnections()) {
         T connected = getConduit(world, root.getEntity(), dir, type);
-        if(connected != null) {
+        if (connected != null) {
           result.add(connected);
         }
 
@@ -265,7 +274,7 @@ public class ConduitUtil {
   }
 
   public static void writeToNBT(IConduit conduit, NBTTagCompound conduitRoot) {
-    if(conduit == null) {
+    if (conduit == null) {
       return;
     }
 
@@ -279,13 +288,15 @@ public class ConduitUtil {
   public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot, short nbtVersion) {
     String typeName = conduitRoot.getString("conduitType");
     NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
-    if(typeName == null || conduitBody == null) {
+    if (typeName == null || conduitBody == null) {
       return null;
     }
-//    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) || (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
-//        || (typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled())) {
-//      return null;
-//    }
+    // if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) ||
+    // (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
+    // || (typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled()))
+    // {
+    // return null;
+    // }
     if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
       Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
       typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
@@ -303,16 +314,16 @@ public class ConduitUtil {
 
   public static boolean isRedstoneControlModeMet(IConduitBundle bundle, RedstoneControlMode mode, DyeColor col) {
 
-    if(mode == RedstoneControlMode.IGNORE) {
+    if (mode == RedstoneControlMode.IGNORE) {
       return true;
-    } else if(mode == RedstoneControlMode.NEVER) {
+    } else if (mode == RedstoneControlMode.NEVER) {
       return false;
-    } else if(mode == null) {
+    } else if (mode == null) {
       return false;
     }
 
     int signalStrength = getInternalSignalForColor(bundle, col);
-    if(signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
+    if (signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
       TileEntity te = bundle.getEntity();
       signalStrength = Math.max(signalStrength, te.getWorld().getStrongPower(te.getPos()));
     }
@@ -321,15 +332,15 @@ public class ConduitUtil {
 
   public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {
     int signalStrength = 0;
-    if(bundle == null) {
+    if (bundle == null) {
       return 0;
     }
     IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);
-    if(rsCon != null) {
+    if (rsCon != null) {
       Set<Signal> signals = rsCon.getNetworkOutputs(null);
       for (Signal sig : signals) {
-        if(sig.color == col) {
-          if(sig.strength > signalStrength) {
+        if (sig.color == col) {
+          if (sig.strength > signalStrength) {
             signalStrength = sig.strength;
           }
         }
@@ -339,18 +350,18 @@ public class ConduitUtil {
   }
 
   public static boolean isFluidValid(FluidStack fluidStack) {
-    if(fluidStack != null) {
+    if (fluidStack != null) {
       String name = FluidRegistry.getFluidName(fluidStack);
-      if(name != null && !name.trim().isEmpty()) {
+      if (name != null && !name.trim().isEmpty()) {
         return true;
       }
     }
     return false;
   }
-  
-  public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {    
+
+  public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(! (te instanceof TileConduitBundle) ) {
+    if (!(te instanceof TileConduitBundle)) {
       return;
     }
     IConduitBundle cb = (IConduitBundle) te;
@@ -358,14 +369,14 @@ public class ConduitUtil {
     boolean hasInsulated = false;
     for (IConduit con : cb.getConduits()) {
       cons.addAll(con.getExternalConnections());
-      if(con instanceof IInsulatedRedstoneConduit) {
+      if (con instanceof IInsulatedRedstoneConduit) {
         hasInsulated = true;
       }
     }
-    if(cons.isEmpty() && !hasInsulated) {
+    if (cons.isEmpty() && !hasInsulated) {
       return;
     }
-    if(cons.size() == 1) {
+    if (cons.size() == 1) {
       player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
       return;
     }
@@ -407,7 +418,7 @@ public class ConduitUtil {
   private static void playClientStepSound(SoundType snd) {
     FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getFrequency());
   }
-  
+
   public static void playPlaceSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
       world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getFrequency() * 0.8F);

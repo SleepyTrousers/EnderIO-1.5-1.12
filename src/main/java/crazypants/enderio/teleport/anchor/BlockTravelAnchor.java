@@ -31,6 +31,7 @@ import crazypants.util.UserIdent;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -67,6 +68,12 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
     return result;
   }
+
+  //TODO: 1.8
+  @SideOnly(Side.CLIENT)
+  TextureAtlasSprite selectedOverlayIcon;
+  @SideOnly(Side.CLIENT)
+  TextureAtlasSprite highlightOverlayIcon;
 
 
   private BlockTravelAnchor() {

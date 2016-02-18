@@ -492,6 +492,7 @@ public final class Config {
   public static boolean enchantmentSoulBoundEnabled = true;
 
   public static boolean replaceWitherSkeletons = true;
+  public static int witherSkeletonEntityID = 288970;
 
   public static boolean enableWaterFromBottles = true;
 
@@ -505,6 +506,8 @@ public final class Config {
   public static float inventoryPanelScanCostPerSlot = 0.1f;
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
+
+  
 
   
   public static void load(FMLPreInitializationEvent event) {
@@ -1338,8 +1341,10 @@ public final class Config {
         "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
 
     replaceWitherSkeletons = config.get(sectionMisc.name, "replaceWitherSkeletons", replaceWitherSkeletons,
-            "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
-
+            "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();    
+    witherSkeletonEntityID = config.get(sectionMisc.name, "witherSkeletonEntityID", witherSkeletonEntityID,
+        "The id of the replacment with skels..").getInt(witherSkeletonEntityID);
+    
     enableWaterFromBottles = config
         .get(sectionMisc.name, "enableWaterFromBottles", enableWaterFromBottles,
             "Enables emptying vanilla water bottles without breaking the bottle. In combination with a water source block this allows duping of water without cost.")

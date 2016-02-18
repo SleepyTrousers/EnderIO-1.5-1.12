@@ -17,7 +17,8 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
@@ -28,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
+public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
   private final Vector4f selectedColor;
   private final Vector4f highlightColor;
@@ -43,7 +44,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
   }
 
   @Override
-  public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
+  public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f, int destroyStage) {
 
     if(!TravelController.instance.showTargets()) {
       return;
@@ -60,7 +61,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     }
 
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
-    Vector3d loc = new Vector3d(tileentity.xCoord + 0.5, tileentity.yCoord + 0.5, tileentity.zCoord + 0.5);
+    Vector3d loc = new Vector3d(tileentity.getPos().getX() + 0.5, tileentity.getPos().getY()+ 0.5, tileentity.getPos().getZ()+ 0.5);
     double maxDistance = TravelController.instance.isTravelItemActive(Minecraft.getMinecraft().thePlayer) ? TravelSource.STAFF.getMaxDistanceTravelledSq()
         : TravelSource.BLOCK.getMaxDistanceTravelledSq();
     if(eye.distanceSquared(loc) > maxDistance) {
@@ -72,7 +73,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     BlockCoord bc = new BlockCoord(tileentity);
     TravelController.instance.addCandidate(bc);
 
-    Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
+    Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
     RenderUtil.bindBlockTexture();
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -91,21 +92,19 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
+    
+    renderBlock(tileentity.getWorld(), sf);
 
-    Tessellator.instance.startDrawingQuads();
-    renderBlock(tileentity.getWorldObj(), sf);
-    Tessellator.instance.draw();
-
-    Tessellator.instance.startDrawingQuads();
-    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
+    
+    //Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
     if(TravelController.instance.isBlockSelected(bc)) {
-      Tessellator.instance.setColorRGBA_F(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
-      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getSelectedIcon());
+      //Tessellator.instance.setColorRGBA_F(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);   
+      GlStateManager.color(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
+      RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getSelectedIcon());
     } else {
-      Tessellator.instance.setColorRGBA_F(highlightColor.x, highlightColor.y, highlightColor.z, highlightColor.w);
-      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getHighlightIcon());
-    }
-    Tessellator.instance.draw();
+      GlStateManager.color(highlightColor.x, highlightColor.y, highlightColor.z, highlightColor.w);
+      RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getHighlightIcon());
+    }    
     GL11.glPopMatrix();
 
     renderLabel(tileentity, x, y, z, ta, sf);
@@ -113,7 +112,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     GL11.glPopAttrib();
     GL11.glPopAttrib();
 
-    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
+    Minecraft.getMinecraft().entityRenderer.enableLightmap();
 
   }
 
@@ -153,7 +152,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
             GL11.glScalef(2, 2, 2);
 
             if (ei == null) {
-              ei = new EntityItem(tileentity.getWorldObj(), x, y, z, itemLabel);
+              ei = new EntityItem(tileentity.getWorld(), x, y, z, itemLabel);
             } else {
               ei.setEntityItemStack(itemLabel);
             }
@@ -191,15 +190,15 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
   }
 
   protected void renderBlock(IBlockAccess world, double sf) {
-    Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.75f);
-    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), EnderIO.blockTravelPlatform.getIcon(0, 0));
+    //TODO: 1.8  EnderIO.blockTravelPlatform.getIcon(0, 0)
+    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), getSelectedIcon());
   }
 
   public Vector4f getSelectedColor() {
     return selectedColor;
   }
 
-  public IIcon getSelectedIcon() {
+  public TextureAtlasSprite getSelectedIcon() {
     return EnderIO.blockTravelPlatform.selectedOverlayIcon;
   }
 
@@ -207,7 +206,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     return highlightColor;
   }
 
-  public IIcon getHighlightIcon() {
+  public TextureAtlasSprite getHighlightIcon() {
     return EnderIO.blockTravelPlatform.highlightOverlayIcon;
   }
 

@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.config.Config;
@@ -143,28 +142,28 @@ public class EnderRailController {
   }
 
   public boolean isClear() {
-    World worldObj = transciever.getWorldObj();
+    World worldObj = transciever.getWorld();
 
-    BlockCoord railCoord = new BlockCoord(transciever).getLocation(ForgeDirection.UP);
+    BlockCoord railCoord = new BlockCoord(transciever).getLocation(EnumFacing.UP);
     int meta = worldObj.getBlockMetadata(railCoord.x, railCoord.y, railCoord.z);
 
     double buf = 1;
-    ForgeDirection dir = BlockEnderRail.getDirection(meta);
-    Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
+    EnumFacing dir = BlockEnderRail.getDirection(meta);
+    Vector3d offset = EnumFacingOffsets.forDirCopy(dir);
     offset.scale(buf);
     offset.x = Math.abs(offset.x);
     offset.z = Math.abs(offset.z);
-    List res = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(railCoord.x - offset.x, railCoord.y,
+    List res = worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(railCoord.x - offset.x, railCoord.y,
         railCoord.z - offset.z, railCoord.x + 1 + offset.x, railCoord.y + 1, railCoord.z + 1 + offset.z));
     return res == null || res.isEmpty();
   }
 
   public List<EntityMinecart> getMinecartsOnTrack() {
-    return getMinecartsAt(transciever.getWorldObj(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+    return getMinecartsAt(transciever.getWorld(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
   }
 
   public static List<EntityMinecart> getMinecartsAt(World world, int x, int y, int z) {
-    List entities = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1));
+    List entities = world.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
     List<EntityMinecart> carts = new ArrayList<EntityMinecart>();
     for (Object o : entities) {
       EntityMinecart cart = (EntityMinecart) o;
@@ -256,16 +255,16 @@ public class EnderRailController {
     }
     double oX = entity.posX;
     double oZ = entity.posZ;
-    World world = transciever.getWorldObj();
+    World world = transciever.getWorld();
     MinecraftServer minecraftserver = MinecraftServer.getServer();
-    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
+    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
     for (int i = 0; i < 4; i++) {
       int x = transciever.xCoord + randOffset(2);
       int y = transciever.yCoord + 1;
       int z = transciever.zCoord + randOffset(2);
       Block b = world.getBlock(x, y, z);
       entity.setPosition(x + 0.5, entity.posY, z + 0.5);
-      if(world.canPlaceEntityOnSide(b, x, y, z, false, ForgeDirection.UP.ordinal(), entity, null)) {
+      if(world.canPlaceEntityOnSide(b, x, y, z, false, EnumFacing.UP, entity, null)) {
         resetForRandomRandomSpawn(entity);
         if(worldserver.spawnEntityInWorld(entity)) {
           //entity.onUpdate();
@@ -280,7 +279,7 @@ public class EnderRailController {
   }
 
   private void resetForRandomRandomSpawn(Entity entity) {
-    CartLinkUtil.instance.breakLinks(transciever.getWorldObj(), entity);
+    CartLinkUtil.instance.breakLinks(transciever.getWorld(), entity);
     entity.riddenByEntity = null;
     entity.ridingEntity = null;
     entity.motionX = 0;
@@ -292,11 +291,11 @@ public class EnderRailController {
     entity.prevPosX = entity.posX;
     entity.prevPosY = entity.posY;
     entity.prevPosZ = entity.posZ;
-    entity.rotationYaw = (float) (transciever.getWorldObj().rand.nextDouble() * 360);
+    entity.rotationYaw = (float) (transciever.getWorld().rand.nextDouble() * 360);
   }
 
   private int randOffset(int spread) {
-    return (int) Math.round((transciever.getWorldObj().rand.nextDouble() - 0.5) * spread * 2);
+    return (int) Math.round((transciever.getWorld().rand.nextDouble() - 0.5) * spread * 2);
   }
 
   public void onPlayerTeleported(EntityPlayerMP playerToTP, EntityMinecart toMount) {
@@ -321,7 +320,7 @@ public class EnderRailController {
       List<EntityMinecart> carts = getMinecartsOnTrack();
       for (EntityMinecart cart : carts) {
         if(cart != null && cart.getPersistentID().equals(cartId)) {
-          EntityPlayer player = transciever.getWorldObj().getPlayerEntityByName(playerName);
+          EntityPlayer player = transciever.getWorld().getPlayerEntityByName(playerName);
           if(player != null) {
             Vector3d playerPos = EntityUtil.getEntityPosition(player);
             Vector3d cartPos = EntityUtil.getEntityPosition(cart);

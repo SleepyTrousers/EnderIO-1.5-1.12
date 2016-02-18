@@ -1,16 +1,12 @@
 package crazypants.enderio.conduit.item.filter;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  *
@@ -39,17 +35,17 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
   @Override
   public IItemFilter createFilterFromStack(ItemStack stack) {
     IItemFilter filter = new PowerItemFilter();
-    if(stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
-      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
+    if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter")) {
+      filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
     }
     return filter;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:filterUpgradePower");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//    itemIcon = IIconRegister.registerIcon("enderio:filterUpgradePower");
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack stack) {

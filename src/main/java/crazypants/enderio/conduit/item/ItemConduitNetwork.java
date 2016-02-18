@@ -5,17 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
@@ -43,16 +43,17 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
     TileEntity te = con.getBundle().getEntity();
     if(te != null) {
-      for (ForgeDirection direction : con.getExternalConnections()) {
+      for (EnumFacing direction : con.getExternalConnections()) {
         IInventory extCon = con.getExternalInventory(direction);
         if(extCon != null) {
-          inventoryAdded(con, direction, te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ, extCon);
+          BlockPos p = te.getPos().offset(direction);
+          inventoryAdded(con, direction, p.getX(), p.getY(), p.getZ(), extCon);
         }
       }
     }
   }
 
-  public void inventoryAdded(IItemConduit itemConduit, ForgeDirection direction, int x, int y, int z, IInventory externalInventory) {
+  public void inventoryAdded(IItemConduit itemConduit, EnumFacing direction, int x, int y, int z, IInventory externalInventory) {
     BlockCoord bc = new BlockCoord(x, y, z);
     NetworkedInventory inv = new NetworkedInventory(this, externalInventory, itemConduit, direction, bc);
     inventories.add(inv);
@@ -60,7 +61,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     requiresSort = true;
   }
   
-  public NetworkedInventory getInventory(IItemConduit conduit, ForgeDirection dir) {
+  public NetworkedInventory getInventory(IItemConduit conduit, EnumFacing dir) {
     for(NetworkedInventory inv : inventories) {
       if(inv.con == conduit && inv.conDir == dir) {
         return inv;
@@ -139,7 +140,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     }
   }
 
-  public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
+  public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, EnumFacing side) {
     if(doingSend) {
       return item;
     }
@@ -192,7 +193,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return result;
   }
 
-  public List<String> getInputSourcesFor(IItemConduit con, ForgeDirection dir, ItemStack input) {
+  public List<String> getInputSourcesFor(IItemConduit con, EnumFacing dir, ItemStack input) {
     List<String> result = new ArrayList<String>();
     for (NetworkedInventory inv : inventories) {
       if(inv.hasTarget(con, dir)) {

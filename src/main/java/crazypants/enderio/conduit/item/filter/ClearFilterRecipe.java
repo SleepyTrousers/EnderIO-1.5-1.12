@@ -1,16 +1,16 @@
 package crazypants.enderio.conduit.item.filter;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.FilterRegister;
 
 public class ClearFilterRecipe implements IRecipe{
 
@@ -36,7 +36,7 @@ public class ClearFilterRecipe implements IRecipe{
     if (count == 1 && FilterRegister.isFilterSet(input)) {
       ItemStack out = input.copy();
       out.stackSize = 1;
-      out.stackTagCompound = null;
+      out.setTagCompound(null);
       this.output = out;
     } else {
       this.output = null;
@@ -65,6 +65,11 @@ public class ClearFilterRecipe implements IRecipe{
     if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
       event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
     }
+  }
+  
+  @Override
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+    return new ItemStack[0];
   }
 
 }

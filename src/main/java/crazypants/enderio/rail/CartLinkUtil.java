@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
 
 public class CartLinkUtil implements ICartLinkUtil {
 
@@ -16,17 +15,18 @@ public class CartLinkUtil implements ICartLinkUtil {
   public static final ICartLinkUtil defaultInstance = new CartLinkUtil();
 
   static {
-    ICartLinkUtil daInstance;
-    if(Loader.isModLoaded("Railcraft")) {
-      try {
-        daInstance = new RailcraftLinkUtil();
-      } catch (Exception e) {
-        daInstance = defaultInstance;
-      }
-    } else {
-      daInstance = defaultInstance;
-    }
-    instance = daInstance;
+//    ICartLinkUtil daInstance;
+//    if(Loader.isModLoaded("Railcraft")) {
+//      try {
+//        daInstance = new RailcraftLinkUtil();
+//      } catch (Exception e) {
+//        daInstance = defaultInstance;
+//      }
+//    } else {
+//      daInstance = defaultInstance;
+//    }
+//    instance = daInstance;
+    instance = defaultInstance;
   }
 
   private CartLinkUtil() {

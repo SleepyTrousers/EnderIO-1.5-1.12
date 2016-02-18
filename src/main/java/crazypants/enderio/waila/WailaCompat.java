@@ -1,6 +1,5 @@
 package crazypants.enderio.waila;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,7 +18,6 @@ import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.liquid.AbstractTankConduit;
-import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IIoConfigurable;
@@ -280,14 +278,14 @@ public class WailaCompat implements IWailaDataProvider {
         }
       }
 
-    } else if(itemStack.getItem() == EnderIO.itemMEConduit) {
-      NBTTagCompound nbtRoot = _accessor.getNBTData();
-      if(nbtRoot.hasKey("isDense")) {
-        boolean isDense = nbtRoot.getBoolean("isDense");
-        int channelsInUse = nbtRoot.getInteger("channelsInUse");
-        currenttip.add(MessageFormat.format(EnderIO.lang.localize("itemMEConduit.channelsUsed"),
-                channelsInUse, isDense ? 32 : 8));
-      }
+//    } else if(itemStack.getItem() == EnderIO.itemMEConduit) {
+//      NBTTagCompound nbtRoot = _accessor.getNBTData();
+//      if(nbtRoot.hasKey("isDense")) {
+//        boolean isDense = nbtRoot.getBoolean("isDense");
+//        int channelsInUse = nbtRoot.getInteger("channelsInUse");
+//        currenttip.add(MessageFormat.format(EnderIO.lang.localize("itemMEConduit.channelsUsed"),
+//                channelsInUse, isDense ? 32 : 8));
+//      }
     }
   }
 
@@ -316,11 +314,11 @@ public class WailaCompat implements IWailaDataProvider {
           fluid.writeToNBT(tag);
         }
       }
-      IMEConduit mec = icb.getConduit(IMEConduit.class);
-      if(mec != null) {
-        tag.setInteger("channelsInUse", mec.getChannelsInUse());
-        tag.setBoolean("isDense", mec.isDense());
-      }
+//      IMEConduit mec = icb.getConduit(IMEConduit.class);
+//      if(mec != null) {
+//        tag.setInteger("channelsInUse", mec.getChannelsInUse());
+//        tag.setBoolean("isDense", mec.isDense());
+//      }
     } else if(te instanceof IInternalPoweredTile) {
       IInternalPoweredTile ipte = (IInternalPoweredTile) te;
       tag.setInteger("storedEnergyRF", ipte.getEnergyStored());

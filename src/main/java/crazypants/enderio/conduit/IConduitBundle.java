@@ -111,5 +111,4 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler {
 
   World getWorld();
 
-  void setGridNode(Object node);
 }

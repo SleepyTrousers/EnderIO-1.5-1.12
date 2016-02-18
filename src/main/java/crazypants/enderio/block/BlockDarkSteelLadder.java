@@ -2,18 +2,18 @@ package crazypants.enderio.block;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider {
   
@@ -26,8 +26,8 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   protected BlockDarkSteelLadder() {
     super();
     
-    setBlockName(ModObject.blockDarkSteelLadder.unlocalisedName);
-    setBlockTextureName(EnderIO.DOMAIN + ":" + ModObject.blockDarkSteelLadder.unlocalisedName);
+    setUnlocalizedName(ModObject.blockDarkSteelLadder.unlocalisedName);
+//    setBlockTextureName(EnderIO.DOMAIN + ":" + ModObject.blockDarkSteelLadder.unlocalisedName);
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);
@@ -41,9 +41,10 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   public Material getMaterial() {
     return Material.iron;
   }
+  
 
   @Override
-  public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+  public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
     if (entity.onGround || entity.isCollidedVertically) {
       return;
     }
@@ -51,7 +52,7 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     if(entity.motionY >= 0.1) {
       entity.setPosition(entity.posX, entity.posY + Config.darkSteelLadderSpeedBoost, entity.posZ);
     } else if(entity.motionY <= -0.1) {
-      Block blockUnder = entity.worldObj.getBlock(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY) - 3, MathHelper.floor_double(entity.posZ));
+      Block blockUnder = entity.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY) - 3, MathHelper.floor_double(entity.posZ))).getBlock();
       if (blockUnder == null || blockUnder == this) { // prevent clipping into block
         entity.setPosition(entity.posX, entity.posY - Config.darkSteelLadderSpeedBoost, entity.posZ);
       }

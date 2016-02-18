@@ -3,16 +3,10 @@ package crazypants.enderio.conduit.gui.item;
 import java.awt.Color;
 import java.awt.Rectangle;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
@@ -20,6 +14,10 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
 
 public class ModItemFilterGui implements IItemFilterGui {
 
@@ -130,7 +128,7 @@ public class ModItemFilterGui implements IItemFilterGui {
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
     }    
     
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     for(int i=0;i<inputBounds.length;i++) {
       String mod = filter.getModAt(i);
       if(mod != null) {

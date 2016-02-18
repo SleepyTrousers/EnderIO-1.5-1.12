@@ -11,6 +11,7 @@ import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -50,23 +51,23 @@ public class PlayerTeleportHandler {
     }
 
     void doTeleport() {
-      int toDim = reciever.getWorldObj().provider.dimensionId;
+      int toDim = reciever.getWorld().provider.getDimensionId();
       int meta = reciever.getBlockMetadata();
 
       //Make sure player not on the track and is in a safe position
-      ForgeDirection railDir = EnderIO.blockEnderRail.getDirection(meta);
+      EnumFacing railDir = EnderIO.blockEnderRail.getDirection(meta);
       int xOffset = Math.abs(railDir.offsetX);
       int zOffset = Math.abs(railDir.offsetZ);
-      BlockCoord startPos = new BlockCoord(reciever).getLocation(ForgeDirection.UP);
+      BlockCoord startPos = new BlockCoord(reciever).getLocation(EnumFacing.UP);
       boolean foundSpot = false;
       for (int i = 1; i < 3 && !foundSpot; i++) {
         //try each side of the track
         playerToTP.setPosition(startPos.x + 0.5 - (xOffset * i), startPos.y, startPos.z + 0.5 - (zOffset * i));
-        List<AxisAlignedBB> collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorldObj(), playerToTP);
+        List<AxisAlignedBB> collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorld(), playerToTP);
         foundSpot = collides == null || collides.isEmpty();
         if(!foundSpot) {
           playerToTP.setPosition(startPos.x + 0.5 + (xOffset * i), startPos.y, startPos.z + 0.5 + (zOffset * i));
-          collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorldObj(), playerToTP);
+          collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorld(), playerToTP);
           foundSpot = collides == null || collides.isEmpty();
         }
       }

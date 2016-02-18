@@ -2,24 +2,21 @@ package crazypants.enderio.conduit.item.filter;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.item.FilterRegister;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
@@ -29,7 +26,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     return result;
   }
 
-  private final IIcon[] icons;
+//  private final IIcon[] icons;
 
   protected ItemBasicItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -38,7 +35,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     setMaxDamage(0);
     setMaxStackSize(64);
 
-    icons = new IIcon[2];
+//    icons = new IIcon[2];
   }
 
   protected void init() {
@@ -54,27 +51,27 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     } else {
       filter = new ItemFilter(true);
     }
-    if(stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
-      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
+    if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter")) {
+      filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
     }
     return filter;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, 1);
-    return icons[damage];
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-
-    icons[0] = IIconRegister.registerIcon("enderio:filterUpgradeBasic");
-    icons[1] = IIconRegister.registerIcon("enderio:filterUpgradeAdvanced");
-
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIconFromDamage(int damage) {
+//    damage = MathHelper.clamp_int(damage, 0, 1);
+//    return icons[damage];
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//
+//    icons[0] = IIconRegister.registerIcon("enderio:filterUpgradeBasic");
+//    icons[1] = IIconRegister.registerIcon("enderio:filterUpgradeAdvanced");
+//
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
@@ -93,7 +90,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
     if(FilterRegister.isFilterSet(par1ItemStack)) {
       if(!SpecialTooltipHandler.showAdvancedTooltips()) {
         par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));

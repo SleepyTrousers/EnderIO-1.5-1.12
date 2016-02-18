@@ -2,26 +2,23 @@ package crazypants.enderio.conduit.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvider {
 
   private static final FunctionUpgrade UPGRADES[] = FunctionUpgrade.values();
 
-  private final IIcon[] icons;
+//  private final IIcon[] icons;
 
   public static ItemFunctionUpgrade create() {
     ItemFunctionUpgrade result = new ItemFunctionUpgrade();
@@ -36,27 +33,27 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
     setMaxDamage(0);
     setMaxStackSize(64);
 
-    icons = new IIcon[UPGRADES.length];
+//    icons = new IIcon[UPGRADES.length];
   }
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemFunctionUpgrade.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, icons.length - 1);
-    return icons[damage];
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister iconRegister) {
-    for (int i = 0; i < UPGRADES.length; i++) {
-      icons[i] = iconRegister.registerIcon(UPGRADES[i].iconName);
-    }
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIconFromDamage(int damage) {
+//    damage = MathHelper.clamp_int(damage, 0, icons.length - 1);
+//    return icons[damage];
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister iconRegister) {
+//    for (int i = 0; i < UPGRADES.length; i++) {
+//      icons[i] = iconRegister.registerIcon(UPGRADES[i].iconName);
+//    }
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

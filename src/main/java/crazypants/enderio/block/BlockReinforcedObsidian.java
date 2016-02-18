@@ -4,18 +4,20 @@ import java.util.List;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockReinforcedObsidian extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -41,8 +43,7 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
   }
   
   @Override
-  public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
-    ;
+  public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
   }
   
   @Override
@@ -60,7 +61,7 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
   }
   
   @Override
-  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {  
     return false;
   }
 

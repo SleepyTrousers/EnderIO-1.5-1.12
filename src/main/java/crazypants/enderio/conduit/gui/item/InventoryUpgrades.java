@@ -1,23 +1,26 @@
 package crazypants.enderio.conduit.gui.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 
 public class InventoryUpgrades implements IInventory {
 
   IItemConduit itemConduit;
-  ForgeDirection dir;
-  
-  public InventoryUpgrades(IItemConduit itemConduit, ForgeDirection dir) {
+  EnumFacing dir;
+
+  public InventoryUpgrades(IItemConduit itemConduit, EnumFacing dir) {
     this.itemConduit = itemConduit;
     this.dir = dir;
   }
-  
+
   @Override
   public int getSizeInventory() {
     return 4;
@@ -26,23 +29,28 @@ public class InventoryUpgrades implements IInventory {
   @Override
   public ItemStack getStackInSlot(int slot) {
     switch (slot) {
-      case 0: return itemConduit.getSpeedUpgrade(dir);
-      case 1: return itemConduit.getFunctionUpgrade(dir);
-      case 2: return itemConduit.getInputFilterUpgrade(dir);
-      case 3: return itemConduit.getOutputFilterUpgrade(dir);
-      default: return null;
+    case 0:
+      return itemConduit.getSpeedUpgrade(dir);
+    case 1:
+      return itemConduit.getFunctionUpgrade(dir);
+    case 2:
+      return itemConduit.getInputFilterUpgrade(dir);
+    case 3:
+      return itemConduit.getOutputFilterUpgrade(dir);
+    default:
+      return null;
     }
   }
 
   @Override
   public ItemStack decrStackSize(int slot, int num) {
     ItemStack current = getStackInSlot(slot);
-    if(current == null) {
+    if (current == null) {
       return current;
     }
     ItemStack result;
     ItemStack remaining;
-    if(num >= current.stackSize) {
+    if (num >= current.stackSize) {
       result = current.copy();
       remaining = null;
     } else {
@@ -56,27 +64,44 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public ItemStack getStackInSlotOnClosing(int var1) {
-    return null;
-  }
-
-  @Override
   public void setInventorySlotContents(int slot, ItemStack var2) {
     switch (slot) {
-      case 0: itemConduit.setSpeedUpgrade(dir, var2); break;
-      case 1: itemConduit.setFunctionUpgrade(dir, var2); break;
-      case 2: itemConduit.setInputFilterUpgrade(dir, var2); break;
-      case 3: itemConduit.setOutputFilterUpgrade(dir, var2); break;
+    case 0:
+      itemConduit.setSpeedUpgrade(dir, var2);
+      break;
+    case 1:
+      itemConduit.setFunctionUpgrade(dir, var2);
+      break;
+    case 2:
+      itemConduit.setInputFilterUpgrade(dir, var2);
+      break;
+    case 3:
+      itemConduit.setOutputFilterUpgrade(dir, var2);
+      break;
     }
   }
 
   @Override
-  public String getInventoryName() {
+  public void clear() {
+    for (int i = 0; i < 4; i++) {
+      setInventorySlotContents(i, null);
+    }
+  }
+
+  @Override
+  public ItemStack removeStackFromSlot(int index) {
+    ItemStack res = getStackInSlot(index);
+    setInventorySlotContents(index, null);
+    return res;
+  }
+
+  @Override
+  public String getName() {
     return "Upgrades";
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -86,7 +111,7 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public void markDirty() {      
+  public void markDirty() {
   }
 
   @Override
@@ -95,25 +120,47 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public void openInventory() {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory() {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack item) {
-    if(item == null) {
+    if (item == null) {
       return false;
     }
     switch (slot) {
-      case 0: return item.getItem() == EnderIO.itemExtractSpeedUpgrade;
-      case 1: return item.getItem() == EnderIO.itemFunctionUpgrade;
-      case 2:
-      case 3: return item.getItem() instanceof IItemFilterUpgrade;
+    case 0:
+      return item.getItem() == EnderIO.itemExtractSpeedUpgrade;
+    case 1:
+      return item.getItem() == EnderIO.itemFunctionUpgrade;
+    case 2:
+    case 3:
+      return item.getItem() instanceof IItemFilterUpgrade;
     }
     return false;
+  }
+
+  @Override
+  public IChatComponent getDisplayName() {
+    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  }
+
+  @Override
+  public int getField(int id) {
+    return 0;
+  }
+
+  @Override
+  public void setField(int id, int value) {
+  }
+
+  @Override
+  public int getFieldCount() {
+    return 0;
   }
 
 }

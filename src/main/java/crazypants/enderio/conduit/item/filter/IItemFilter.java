@@ -1,20 +1,18 @@
 package crazypants.enderio.conduit.item.filter;
 
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.item.IItemFilterGui;
-import crazypants.enderio.conduit.item.IItemConduit;
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.item.IItemFilterGui;
+import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IItemFilter {
 

@@ -26,12 +26,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockEnderRail extends BlockRail implements IResourceTooltipProvider {
 
@@ -39,12 +39,12 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     return MetadataUtil.isBitSet(3, meta);
   }
 
-  public static ForgeDirection getDirection(int meta) {
-    ForgeDirection result;
+  public static EnumFacing getDirection(int meta) {
+    EnumFacing result;
     if(isEastWest(meta)) {
-      result = ForgeDirection.EAST;
+      result = EnumFacing.EAST;
     } else {
-      result = ForgeDirection.SOUTH;
+      result = EnumFacing.SOUTH;
     }
     if(isReverse(meta)) {
       result = result.getOpposite();
@@ -61,24 +61,24 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     BlockEnderRail res = new BlockEnderRail();
     res.init();
 
-    if(Config.enderRailTeleportPlayers) {
-      FMLCommonHandler.instance().bus().register(PlayerTeleportHandler.instance);
+    if(Config.enderRailTeleportPlayers) {      
+      MinecraftForge.EVENT_BUS.register(PlayerTeleportHandler.instance);
     }
     return res;
   }
 
-  private IIcon iconEastWest;
-  private IIcon iconEastWestTurned;
+//  private IIcon iconEastWest;
+//  private IIcon iconEastWestTurned;
 
   private int linkId;
 
   protected BlockEnderRail() {
-    setBlockName(ModObject.blockEnderRail.unlocalisedName);
+    setUnlocalizedName(ModObject.blockEnderRail.unlocalisedName);
     setStepSound(Block.soundTypeMetal);
     if(Config.transceiverEnabled && Config.enderRailEnabled) {
       setCreativeTab(EnderIOTab.tabEnderIO);
     }
-    setBlockTextureName("enderio:blockEnderRail");
+//    setBlockTextureName("enderio:blockEnderRail");
     setHardness(0.7F);
     setStepSound(soundTypeMetal);
   }
@@ -87,24 +87,24 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     GameRegistry.registerBlock(this, ModObject.blockEnderRail.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister register) {
-    super.registerBlockIcons(register);
-    iconEastWest = register.registerIcon("enderio:blockEnderRailEastWest");
-    iconEastWestTurned = register.registerIcon("enderio:blockEnderRailEastWest_turned");
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int side, int meta) {
-    if(!isEastWest(meta)) {
-      return super.getIcon(side, meta);
-    } else if(isReverse(meta)) {
-      return iconEastWestTurned;
-    }
-    return iconEastWest;
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister register) {
+//    super.registerBlockIcons(register);
+//    iconEastWest = register.registerIcon("enderio:blockEnderRailEastWest");
+//    iconEastWestTurned = register.registerIcon("enderio:blockEnderRailEastWest_turned");
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int side, int meta) {
+//    if(!isEastWest(meta)) {
+//      return super.getIcon(side, meta);
+//    } else if(isReverse(meta)) {
+//      return iconEastWestTurned;
+//    }
+//    return iconEastWest;
+//  }
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
@@ -241,7 +241,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(!reciever.hasPower()) {
       return false;
     }
-    Block blk = reciever.getWorldObj().getBlock(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
+    Block blk = reciever.getWorld().getBlock(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
     if(blk != EnderIO.blockEnderRail) {
       return false;
     }
@@ -256,7 +256,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   private int getPowerRequiredForSingleCart(TileTransceiver sender, TileTransceiver reciever) {
     int powerRequired = 0;
-    if(sender.getWorldObj().provider.dimensionId != reciever.getWorldObj().provider.dimensionId) {
+    if(sender.getWorld().provider.getDimensionId() != reciever.getWorld().provider.getDimensionId()) {
       powerRequired = Config.enderRailPowerRequireCrossDimensions;
     } else {
       powerRequired += sender.getLocation().getDist(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
@@ -293,7 +293,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     }
     for (EntityMinecart despawnCart : toDespawn) {
       TeleportUtil.spawnTeleportEffects(world, despawnCart);
-      TeleportUtil.despawn(sender.getWorldObj(), despawnCart);
+      TeleportUtil.despawn(sender.getWorld(), despawnCart);
     }
     reciever.getRailController().onTrainRecieved(toTeleport);
     if(playerToTP != null) {
