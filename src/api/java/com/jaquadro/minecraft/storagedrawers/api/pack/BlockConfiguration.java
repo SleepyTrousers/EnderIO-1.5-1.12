@@ -1,6 +1,6 @@
 package com.jaquadro.minecraft.storagedrawers.api.pack;
 
-import com.jaquadro.minecraft.storagedrawers.block.EnumBasicDrawer;
+import com.jaquadro.minecraft.storagedrawers.api.storage.EnumBasicDrawer;
 
 public enum BlockConfiguration
 {
