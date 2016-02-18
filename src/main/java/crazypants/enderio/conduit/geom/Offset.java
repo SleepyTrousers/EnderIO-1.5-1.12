@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.geom;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Offset vectors are based on Y up.
@@ -10,39 +10,39 @@ import net.minecraftforge.common.util.ForgeDirection;
 public enum Offset {
 
   NONE(0, 0, 0),
-  UP(ForgeDirection.UP),
-  DOWN(ForgeDirection.DOWN),
-  EAST(ForgeDirection.EAST),
-  WEST(ForgeDirection.WEST),
-  SOUTH(ForgeDirection.SOUTH),
-  NORTH(ForgeDirection.NORTH),
-  EAST_UP(ForgeDirection.EAST, ForgeDirection.UP),
-  WEST_UP(ForgeDirection.WEST, ForgeDirection.UP),
-  SOUTH_UP(ForgeDirection.SOUTH, ForgeDirection.UP),
-  NORTH_UP(ForgeDirection.NORTH, ForgeDirection.UP),
-  EAST_DOWN(ForgeDirection.EAST, ForgeDirection.DOWN),
-  WEST_DOWN(ForgeDirection.WEST, ForgeDirection.DOWN),
-  SOUTH_DOWN(ForgeDirection.SOUTH, ForgeDirection.DOWN),
-  NORTH_DOWN(ForgeDirection.NORTH, ForgeDirection.DOWN),
-  NORTH_EAST(ForgeDirection.NORTH, ForgeDirection.EAST),
-  NORTH_WEST(ForgeDirection.NORTH, ForgeDirection.WEST),
-  SOUTH_EAST(ForgeDirection.SOUTH, ForgeDirection.EAST),
-  SOUTH_WEST(ForgeDirection.SOUTH, ForgeDirection.WEST);
+  UP(EnumFacing.UP),
+  DOWN(EnumFacing.DOWN),
+  EAST(EnumFacing.EAST),
+  WEST(EnumFacing.WEST),
+  SOUTH(EnumFacing.SOUTH),
+  NORTH(EnumFacing.NORTH),
+  EAST_UP(EnumFacing.EAST, EnumFacing.UP),
+  WEST_UP(EnumFacing.WEST, EnumFacing.UP),
+  SOUTH_UP(EnumFacing.SOUTH, EnumFacing.UP),
+  NORTH_UP(EnumFacing.NORTH, EnumFacing.UP),
+  EAST_DOWN(EnumFacing.EAST, EnumFacing.DOWN),
+  WEST_DOWN(EnumFacing.WEST, EnumFacing.DOWN),
+  SOUTH_DOWN(EnumFacing.SOUTH, EnumFacing.DOWN),
+  NORTH_DOWN(EnumFacing.NORTH, EnumFacing.DOWN),
+  NORTH_EAST(EnumFacing.NORTH, EnumFacing.EAST),
+  NORTH_WEST(EnumFacing.NORTH, EnumFacing.WEST),
+  SOUTH_EAST(EnumFacing.SOUTH, EnumFacing.EAST),
+  SOUTH_WEST(EnumFacing.SOUTH, EnumFacing.WEST);
 
   public final int xOffset;
   public final int yOffset;
   public final int zOffset;
 
-  private Offset(ForgeDirection dir) {
-    xOffset = dir.offsetX;
-    yOffset = dir.offsetY;
-    zOffset = dir.offsetZ;
+  private Offset(EnumFacing dir) {
+    xOffset = dir.getFrontOffsetX();
+    yOffset = dir.getFrontOffsetY();
+    zOffset = dir.getFrontOffsetZ();
   }
 
-  private Offset(ForgeDirection dir, ForgeDirection yDir) {
-    xOffset = dir.offsetX + yDir.offsetX;
-    yOffset = dir.offsetY + yDir.offsetY;
-    zOffset = dir.offsetZ + yDir.offsetZ;
+  private Offset(EnumFacing dir, EnumFacing yDir) {
+    xOffset = dir.getFrontOffsetX() + yDir.getFrontOffsetX();
+    yOffset = dir.getFrontOffsetY() + yDir.getFrontOffsetY();
+    zOffset = dir.getFrontOffsetZ() + yDir.getFrontOffsetZ();
   }
 
   private Offset(int xOffset, int yOffset, int zOffset) {

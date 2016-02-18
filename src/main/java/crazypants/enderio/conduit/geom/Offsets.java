@@ -3,15 +3,12 @@ package crazypants.enderio.conduit.geom;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.me.IMEConduit;
-import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import net.minecraft.util.EnumFacing;
 
 public class Offsets {
 
@@ -38,20 +35,20 @@ public class Offsets {
     OFFSETS.put(key(IItemConduit.class, Axis.Y), Offset.EAST);
     OFFSETS.put(key(IItemConduit.class, Axis.Z), Offset.EAST);
 
-    OFFSETS.put(key(IGasConduit.class, Axis.NONE), Offset.NORTH_UP);
-    OFFSETS.put(key(IGasConduit.class, Axis.X), Offset.NORTH_UP);
-    OFFSETS.put(key(IGasConduit.class, Axis.Y), Offset.NORTH_WEST);
-    OFFSETS.put(key(IGasConduit.class, Axis.Z), Offset.WEST_UP);
-    
-    OFFSETS.put(key(IMEConduit.class, Axis.NONE), Offset.SOUTH_UP);
-    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
-    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_EAST);
-    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
-
-    OFFSETS.put(key(IOCConduit.class, Axis.NONE), Offset.NORTH_DOWN);
-    OFFSETS.put(key(IOCConduit.class, Axis.X), Offset.NORTH_DOWN);
-    OFFSETS.put(key(IOCConduit.class, Axis.Y), Offset.SOUTH_WEST);
-    OFFSETS.put(key(IOCConduit.class, Axis.Z), Offset.WEST_DOWN);
+//    OFFSETS.put(key(IGasConduit.class, Axis.NONE), Offset.NORTH_UP);
+//    OFFSETS.put(key(IGasConduit.class, Axis.X), Offset.NORTH_UP);
+//    OFFSETS.put(key(IGasConduit.class, Axis.Y), Offset.NORTH_WEST);
+//    OFFSETS.put(key(IGasConduit.class, Axis.Z), Offset.WEST_UP);
+//    
+//    OFFSETS.put(key(IMEConduit.class, Axis.NONE), Offset.SOUTH_UP);
+//    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
+//    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_EAST);
+//    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
+//
+//    OFFSETS.put(key(IOCConduit.class, Axis.NONE), Offset.NORTH_DOWN);
+//    OFFSETS.put(key(IOCConduit.class, Axis.X), Offset.NORTH_DOWN);
+//    OFFSETS.put(key(IOCConduit.class, Axis.Y), Offset.SOUTH_WEST);
+//    OFFSETS.put(key(IOCConduit.class, Axis.Z), Offset.WEST_DOWN);
 
     // OFFSETS.put(key(IxConduit.class, Axis.NONE), Offset.SOUTH_DOWN);
     // OFFSETS.put(key(IxConduit.class, Axis.X), Offset.SOUTH_DOWN);
@@ -60,7 +57,7 @@ public class Offsets {
 
   }
 
-  public static Offset get(Class<? extends IConduit> type, ForgeDirection dir) {
+  public static Offset get(Class<? extends IConduit> type, EnumFacing dir) {
     Offset res = OFFSETS.get(key(type, getAxisForDir(dir)));
     if(res == null) {
       res = Offset.NONE;
@@ -72,17 +69,17 @@ public class Offsets {
     return new OffsetKey(type, axis);
   }
 
-  public static Axis getAxisForDir(ForgeDirection dir) {
-    if(dir == ForgeDirection.UNKNOWN) {
+  public static Axis getAxisForDir(EnumFacing dir) {
+    if(dir == null) {
       return Axis.NONE;
     }
-    if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
+    if(dir == EnumFacing.EAST || dir == EnumFacing.WEST) {
       return Axis.X;
     }
-    if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
+    if(dir == EnumFacing.UP || dir == EnumFacing.DOWN) {
       return Axis.Y;
     }
-    if(dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH) {
+    if(dir == EnumFacing.NORTH || dir == EnumFacing.SOUTH) {
       return Axis.Z;
     }
     return Axis.NONE;

@@ -1,9 +1,6 @@
 package crazypants.enderio.conduit;
 
-import mods.immibis.microblocks.api.EnumPosition;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional.Method;
+import net.minecraftforge.fml.common.Loader;
 
 public class MicroblocksUtil {
 
@@ -18,23 +15,23 @@ public class MicroblocksUtil {
     return supportMicroblocks;
   }
   
-  @Method(modid = "ImmibisMicroblocks")
-  public static ForgeDirection posToDir(EnumPosition pos) {
-    switch(pos) {
-    case FaceNX:
-      return ForgeDirection.WEST;
-    case FaceNY:
-      return ForgeDirection.DOWN;
-    case FaceNZ:
-      return ForgeDirection.NORTH;
-    case FacePX:
-      return ForgeDirection.EAST;
-    case FacePY:
-      return ForgeDirection.UP;
-    case FacePZ:
-      return ForgeDirection.SOUTH;
-    default:
-      return null;
-    }
-  }
+//  @Method(modid = "ImmibisMicroblocks")
+//  public static EnumFacing posToDir(EnumPosition pos) {
+//    switch(pos) {
+//    case FaceNX:
+//      return EnumFacing.WEST;
+//    case FaceNY:
+//      return EnumFacing.DOWN;
+//    case FaceNZ:
+//      return EnumFacing.NORTH;
+//    case FacePX:
+//      return EnumFacing.EAST;
+//    case FacePY:
+//      return EnumFacing.UP;
+//    case FacePZ:
+//      return EnumFacing.SOUTH;
+//    default:
+//      return null;
+//    }
+//  }
 }

@@ -5,13 +5,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.ConduitUtil;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
@@ -65,7 +64,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
 
     ticksEmpty = 0;
-    long curTime = cons.get(0).getBundle().getEntity().getWorldObj().getTotalWorldTime();
+    long curTime = cons.get(0).getBundle().getEntity().getWorld().getTotalWorldTime();
 
     // 1000 water, 6000 lava
     if(liquidType != null && liquidType.getFluid() != null && !isEmpty()) {
@@ -129,9 +128,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     List<LocatedFluidHandler> externals = new ArrayList<LocatedFluidHandler>();
     for (AbstractTankConduit con : conduits) {
-      Set<ForgeDirection> extCons = con.getExternalConnections();
+      Set<EnumFacing> extCons = con.getExternalConnections();
 
-      for (ForgeDirection dir : extCons) {
+      for (EnumFacing dir : extCons) {
         if(con.canOutputToDir(dir)) {
           IFluidHandler externalTank = con.getExternalHandler(dir);
           if(externalTank != null) {
@@ -205,12 +204,12 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     int maxFlowVolume = 20;
 
     // First flow all we can down, then balance the rest
-    if(con.getConduitConnections().contains(ForgeDirection.DOWN)) {
-      BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
-      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
+    if(con.getConduitConnections().contains(EnumFacing.DOWN)) {
+      BlockCoord loc = con.getLocation().getLocation(EnumFacing.DOWN);
+      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, ILiquidConduit.class);
       if(dc instanceof LiquidConduit) {
         LiquidConduit downCon = (LiquidConduit) dc;
-        int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
+        int filled = downCon.fill(EnumFacing.UP, tank.getFluid().copy(), false, false, pushPoken);
         int actual = filled;
         actual = Math.min(actual, tank.getFluidAmount());
         actual = Math.min(actual, downCon.getTank().getAvailableSpace());
@@ -227,7 +226,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     int totalRequested = 0;
     int numRequests = 0;
     // Then to external connections
-    for (ForgeDirection dir : con.getExternalConnections()) {
+    for (EnumFacing dir : con.getExternalConnections()) {
       if(con.canOutputToDir(dir)) {
         IFluidHandler extCon = con.getExternalHandler(dir);
         if(extCon != null) {
@@ -246,7 +245,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
       FluidStack requestSource = available.copy();
       requestSource.amount = amountPerRequest;
-      for (ForgeDirection dir : con.getExternalConnections()) {
+      for (EnumFacing dir : con.getExternalConnections()) {
         if(con.canOutputToDir(dir)) {
           IFluidHandler extCon = con.getExternalHandler(dir);
           if(extCon != null) {
@@ -268,7 +267,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     BlockCoord loc = con.getLocation();
     Collection<ILiquidConduit> connections =
-        ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorldObj(),
+        ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorld(),
             loc.x, loc.y, loc.z, ILiquidConduit.class);
     int numTargets = 0;
     for (ILiquidConduit n : connections) {
@@ -355,9 +354,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   static class LocatedFluidHandler {
     final IFluidHandler tank;
     final BlockCoord bc;
-    final ForgeDirection dir;
+    final EnumFacing dir;
 
-    LocatedFluidHandler(IFluidHandler tank, BlockCoord bc, ForgeDirection dir) {
+    LocatedFluidHandler(IFluidHandler tank, BlockCoord bc, EnumFacing dir) {
       this.tank = tank;
       this.bc = bc;
       this.dir = dir;

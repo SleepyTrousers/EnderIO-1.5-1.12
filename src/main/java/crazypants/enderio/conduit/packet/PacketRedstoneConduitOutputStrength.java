@@ -1,22 +1,22 @@
 package crazypants.enderio.conduit.packet;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<IInsulatedRedstoneConduit> implements
     IMessageHandler<PacketRedstoneConduitOutputStrength, IMessage> {
 
-  private ForgeDirection dir;
+  private EnumFacing dir;
   private boolean isStrong;
 
   public PacketRedstoneConduitOutputStrength() {
   }
 
-  public PacketRedstoneConduitOutputStrength(IInsulatedRedstoneConduit con, ForgeDirection dir) {
+  public PacketRedstoneConduitOutputStrength(IInsulatedRedstoneConduit con, EnumFacing dir) {
     super(con.getBundle().getEntity(), ConTypeEnum.REDSTONE);
     this.dir = dir;
     isStrong = con.isOutputStrong(dir);
@@ -25,14 +25,23 @@ public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<I
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+    if(dir == null) {
+      buf.writeShort(-1);
+    }else {
+      buf.writeShort(dir.ordinal());
+    }
     buf.writeBoolean(isStrong);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    dir = ForgeDirection.values()[buf.readShort()];
+    short ord = buf.readShort();
+    if(ord < 0) {
+      dir = null;
+    } else {
+      dir = EnumFacing.values()[ord];
+    }
     isStrong = buf.readBoolean();
   }
 

@@ -1,6 +1,6 @@
 package thaumcraft.api.aspects;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 
 /**
@@ -14,21 +14,21 @@ public interface IEssentiaTransport {
 	 * @param face
 	 * @return
 	 */
-	public boolean isConnectable(ForgeDirection face);
+	public boolean isConnectable(EnumFacing face);
 	
 	/**
 	 * Is this side used to input essentia?
 	 * @param face
 	 * @return
 	 */
-	boolean canInputFrom(ForgeDirection face);
+	boolean canInputFrom(EnumFacing face);
 	
 	/**
 	 * Is this side used to output essentia?
 	 * @param face
 	 * @return
 	 */
-	boolean canOutputTo(ForgeDirection face);
+	boolean canOutputTo(EnumFacing face);
 			
 	/**
 	 * Sets the amount of suction this block will apply
@@ -43,7 +43,7 @@ public interface IEssentiaTransport {
 	 * @return
 	 * 		a return type of null indicates the suction is untyped and the first thing available will be drawn
 	 */
-	public Aspect getSuctionType(ForgeDirection face);
+	public Aspect getSuctionType(EnumFacing face);
 	
 	/**
 	 * Returns the strength of suction this block is applying. 
@@ -51,48 +51,40 @@ public interface IEssentiaTransport {
 	 * 		the location from where the suction is being checked
 	 * @return
 	 */
-	public int getSuctionAmount(ForgeDirection face);
+	public int getSuctionAmount(EnumFacing face);
 	
 	/**
 	 * remove the specified amount of essentia from this transport tile
 	 * @return how much was actually taken
 	 */
-	public int takeEssentia(Aspect aspect, int amount, ForgeDirection face);
+	public int takeEssentia(Aspect aspect, int amount, EnumFacing face);
 	
 	/**
 	 * add the specified amount of essentia to this transport tile
 	 * @return how much was actually added
 	 */
-	public int addEssentia(Aspect aspect, int amount, ForgeDirection face);
+	public int addEssentia(Aspect aspect, int amount, EnumFacing face);
 	
 	/**
 	 * What type of essentia this contains
 	 * @param face
 	 * @return
 	 */
-	public Aspect getEssentiaType(ForgeDirection face);
+	public Aspect getEssentiaType(EnumFacing face);
 	
 	/**
 	 * How much essentia this block contains
 	 * @param face
 	 * @return
 	 */
-	public int getEssentiaAmount(ForgeDirection face);
+	public int getEssentiaAmount(EnumFacing face);
 	
 	
-
 	/**
 	 * Essentia will not be drawn from this container unless the suction exceeds this amount.
 	 * @return the amount
 	 */
 	public int getMinimumSuction();
-
-	/**
-	 * Return true if you want the conduit to extend a little further into the block. 
-	 * Used by jars and alembics that have smaller than normal hitboxes
-	 * @return
-	 */
-	boolean renderExtendedTube();
 
 	
 	

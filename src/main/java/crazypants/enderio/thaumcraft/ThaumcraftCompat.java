@@ -71,10 +71,11 @@ public class ThaumcraftCompat {
         .add(getAspects(Blocks.soul_sand))
         .add(getAspects(Items.gold_ingot)));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull), new AspectList()
-        .add(Aspect.MAGIC, 3)
-        .add(Aspect.TRAVEL, 4)
-        .add(Aspect.ELDRITCH, 4));
+    //TODO: 1.8
+//    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull), new AspectList()
+//        .add(Aspect.MAGIC, 3)
+//        .add(Aspect.TRAVEL, 4)
+//        .add(Aspect.ELDRITCH, 4));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull, 1, SkullType.TORMENTED.ordinal()), new AspectList()
         .add(getAspects(EnderIO.blockEndermanSkull))
@@ -109,7 +110,8 @@ public class ThaumcraftCompat {
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal()), new AspectList()
         .add(Aspect.AIR, 2)
         .add(Aspect.ELDRITCH, 4)
-        .add(Aspect.TRAVEL, 2)
+        //TODO: 1.8 
+        //.add(Aspect.TRAVEL, 2) 
         .add(getAspects(Items.emerald)));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()), new AspectList()

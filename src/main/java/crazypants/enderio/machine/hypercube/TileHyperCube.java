@@ -704,7 +704,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   private ISidedInventory getRemoteInventory() {
 
     CompositeInventory res = new CompositeInventory();
-    res.addInventory(recieveBuffer, ForgeDirection.UNKNOWN);
+    res.addInventory(recieveBuffer, null);
 
     if(!canSendItems()) {
       return res;

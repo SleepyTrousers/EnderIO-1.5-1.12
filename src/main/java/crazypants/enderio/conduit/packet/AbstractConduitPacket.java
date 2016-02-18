@@ -1,11 +1,12 @@
 package crazypants.enderio.conduit.packet;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBundlePacket {
 
@@ -42,7 +43,7 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
     if(world == null) {
       return null;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if( ! (te instanceof IConduitBundle)) {
       return null;
     }

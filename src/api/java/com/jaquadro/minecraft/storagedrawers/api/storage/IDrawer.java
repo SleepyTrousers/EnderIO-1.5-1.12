@@ -67,6 +67,7 @@ public interface IDrawer
      * Stack size and available capacity are not considered.  For drawers that are not empty, this
      * method can allow ore-dictionary compatible items to be accepted into the drawer, as defined by what
      * the drawer considers to be an equivalent item.
+     * For drawers that are empty, locking status is considered.
      *
      * @param itemPrototype An ItemStack representing the type, metadata, and tags of an item.
      */

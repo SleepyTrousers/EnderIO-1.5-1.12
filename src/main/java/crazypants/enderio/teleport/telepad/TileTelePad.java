@@ -4,26 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.Teleporter;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.EnergyStorage;
-
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
@@ -31,9 +11,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cofh.api.energy.EnergyStorage;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
@@ -47,6 +25,28 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.Teleporter;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
   
@@ -100,7 +100,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
 
     if(targetDim == Integer.MIN_VALUE) {
-      targetDim = worldObj.provider.dimensionId;
+      targetDim = worldObj.provider.getDimensionId();
     }
     
     if(worldObj.isRemote && isMaster()) {
@@ -169,11 +169,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public void updateConnectedState(boolean fromBlock) {
 
-    EnumSet<ForgeDirection> connections = EnumSet.noneOf(ForgeDirection.class);
+    EnumSet<EnumFacing> connections = EnumSet.noneOf(EnumFacing.class);
 
     for (BlockCoord bc : getSurroundingCoords()) {
       TileEntity te = bc.getTileEntity(worldObj);
-      ForgeDirection con = Util.getDirFromOffset(bc.x - xCoord, 0, bc.z - zCoord);
+      EnumFacing con = Util.getDirFromOffset(bc.x - xCoord, 0, bc.z - zCoord);
       if(te instanceof TileTelePad) {
         // let's find the master and let him do the work
         if (fromBlock) {
@@ -185,7 +185,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
           }
         }
         // otherwise we either are the master or this is a secondary call, so update connections
-        if (con != ForgeDirection.UNKNOWN && !((TileTelePad) te).inNetwork()) {
+        if (con != null && !((TileTelePad) te).inNetwork()) {
           connections.add(con);
         }
       } else {
@@ -193,7 +193,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         if(master == this) {
           breakNetwork();
           updateBlock();
-        } else if(con != ForgeDirection.UNKNOWN) {
+        } else if(con != null) {
           if(inNetwork() && master != null && fromBlock) {
             master.updateConnectedState(false);
           }
@@ -275,18 +275,13 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private void updateNeighborTEs() {
     BlockCoord bc = new BlockCoord(this);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       BlockCoord neighbor = bc.getLocation(dir);
       Block block = neighbor.getBlock(worldObj);
       if(!(block instanceof BlockTelePad)) {
         block.onNeighborChange(worldObj, neighbor.x, neighbor.y, neighbor.z, xCoord, yCoord, zCoord);
       }
     }
-  }
-
-  @Override
-  public boolean shouldUpdate() {
-    return true;
   }
 
   @Override
@@ -349,7 +344,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private int calculateTeleportPower() {
-    if (worldObj.provider.dimensionId == targetDim) {
+    if (worldObj.provider.getDimensionId() == targetDim) {
       int distance = new BlockCoord(this).getDist(target);
       double base = Math.log((0.005 * distance) + 1);
       this.maxPower = (int) (base * Config.telepadPowerCoefficient);
@@ -371,7 +366,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   public AxisAlignedBB getBoundingBox() {
-    if(!inNetwork()) {
+    if(!inNetwork()) {      
       return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
     }
     TileTelePad master = getMaster();
@@ -410,7 +405,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public void setProgress(float progress) {
-    this.powerUsed = progress < 0 ? 0 : (int) (((float) maxPower) * progress);
+    this.powerUsed = progress < 0 ? 0 : (int) ((maxPower) * progress);
   }
 
   @Override
@@ -572,11 +567,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private boolean isEntityInRange(Entity entity) {
-    return getRange().isVecInside(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ));
+    return getRange().isVecInside(new Vec3(entity.posX, entity.posY, entity.posZ));
   }
 
   private AxisAlignedBB getRange() {
-    return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
+    BlockPos p = getPos();
+    return new AxisAlignedBB(p.getX() - 1, p.getY(), p.getZ() - 1, p.getX() + 2, p.getY() + 3, p.getZ() + 2);
   }
 
   void enqueueTeleport(Entity entity, boolean sendUpdate) {
@@ -625,7 +621,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private boolean clientTeleport(Entity entity) {
-    if(entity.worldObj.provider.dimensionId == targetDim) {
+    if(entity.worldObj.provider.getDimensionId() == targetDim) {
       return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
     }
     return true;
@@ -680,7 +676,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   /* IInternalPowerReceiver */
 
   @Override
-  public int getMaxEnergyRecieved(ForgeDirection dir) {
+  public int getMaxEnergyRecieved(EnumFacing dir) {
     return inNetwork() && master != null ? master == this ? energy.getMaxReceive() : master.getMaxEnergyRecieved(dir) : 0;
   }
 
@@ -711,22 +707,22 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
+  public boolean canConnectEnergy(EnumFacing from) {
     return inNetwork() && master != null;
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
     return inNetwork() && master != null ? master == this ? energy.receiveEnergy(maxReceive, simulate) : master.receiveEnergy(from, maxReceive, simulate) : 0;
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection from) {
+  public int getEnergyStored(EnumFacing from) {
     return inNetwork() && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
   }
 
   @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
+  public int getMaxEnergyStored(EnumFacing from) {
     return inNetwork() && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
   }
 

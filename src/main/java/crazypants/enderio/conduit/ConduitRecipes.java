@@ -1,29 +1,29 @@
 package crazypants.enderio.conduit;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import appeng.api.AEApi;
-import cpw.mods.fml.common.Optional.Method;
-import cpw.mods.fml.common.registry.GameRegistry;
+import static crazypants.enderio.ModObject.blockPainter;
+import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
+import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
+import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.Alloy.PHASED_GOLD;
+import static crazypants.enderio.material.Alloy.REDSTONE_ALLOY;
+import static crazypants.enderio.material.Material.CONDUIT_BINDER;
+import static crazypants.enderio.material.Material.PHASED_IRON_NUGGET;
+import static crazypants.util.RecipeUtil.addShaped;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
-import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
-import crazypants.enderio.conduit.me.MEUtil;
-import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
-import crazypants.enderio.material.Material;
-import static crazypants.enderio.ModObject.blockPainter;
-import static crazypants.enderio.material.Alloy.*;
-import static crazypants.enderio.material.Material.*;
-import static crazypants.util.RecipeUtil.addShaped;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ConduitRecipes {
 
@@ -62,9 +62,9 @@ public class ConduitRecipes {
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', binder, 'c', redstoneConduit, 'l', Blocks.lever);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', redstoneAlloy);
 
-    if (GasUtil.isGasConduitEnabled()) {
-      addShaped(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', binder, '#', electricalSteel, 'g', fusedGlass);
-    }
+//    if (GasUtil.isGasConduitEnabled()) {
+//      addShaped(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', binder, '#', electricalSteel, 'g', fusedGlass);
+//    }
 
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     addShaped(itemConduit, "bbb", "###", "bbb", 'b', binder, '#', phasedIronNugget);
@@ -101,36 +101,36 @@ public class ConduitRecipes {
     addShaped(speedDowngrade, "iii", "ese", "ete", 's', "slimeball", 'e', electricalSteel, 't', "stickWood", 'i', "ingotIron");
     addShaped(speedDowngrade, "iii", "ese", "ete", 's', "slimeball", 'e', electricalSteel, 't', "woodStick", 'i', "ingotIron");
 
-    if (MEUtil.isMEEnabled()) {
-      addAeRecipes();
-    }
-    if (OCUtil.isOCEnabled()) {
-      addOCRecipes();
-    }
+//    if (MEUtil.isMEEnabled()) {
+//      addAeRecipes();
+//    }
+//    if (OCUtil.isOCEnabled()) {
+//      addOCRecipes();
+//    }
   }
 
-  private static void addOCRecipes() {
-    int numConduits = Config.numConduitsPerRecipe;
-    String redstoneAlloy = REDSTONE_ALLOY.getOreIngot();
-    String binder = CONDUIT_BINDER.oreDict;
+//  private static void addOCRecipes() {
+//    int numConduits = Config.numConduitsPerRecipe;
+//    String redstoneAlloy = REDSTONE_ALLOY.getOreIngot();
+//    String binder = CONDUIT_BINDER.oreDict;
+//
+//    addShaped(new ItemStack(EnderIO.itemOCConduit, numConduits, 0), "bbb", "rir", "bbb", 'b', binder, 'r', redstoneAlloy, 'i',
+//        "ingotIron");
+//  }
 
-    addShaped(new ItemStack(EnderIO.itemOCConduit, numConduits, 0), "bbb", "rir", "bbb", 'b', binder, 'r', redstoneAlloy, 'i',
-        "ingotIron");
-  }
-
-  @Method(modid = "appliedenergistics2")
-  private static void addAeRecipes() {
-    String fluix = "crystalFluix";
-    String pureFluix = "crystalPureFluix";
-
-    ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
-    ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
-    ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
-
-    addShaped(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', fluix, 'q', quartzFiber);
-    addShaped(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber);
-
-    res.stackSize = 1;
-    addShaped(new ItemStack(EnderIO.itemMEConduit, 1, 1), "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res);
-  }
+//  @Method(modid = "appliedenergistics2")
+//  private static void addAeRecipes() {
+//    String fluix = "crystalFluix";
+//    String pureFluix = "crystalPureFluix";
+//
+//    ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
+//    ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
+//    ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
+//
+//    addShaped(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', fluix, 'q', quartzFiber);
+//    addShaped(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber);
+//
+//    res.stackSize = 1;
+//    addShaped(new ItemStack(EnderIO.itemMEConduit, 1, 1), "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res);
+//  }
 }

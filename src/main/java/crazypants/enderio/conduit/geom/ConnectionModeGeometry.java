@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
@@ -19,9 +15,13 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+
 public class ConnectionModeGeometry {
 
-  private static final EnumMap<ForgeDirection, List<Vertex>> VERTS = new EnumMap<ForgeDirection, List<Vertex>>(ForgeDirection.class);
+  private static final EnumMap<EnumFacing, List<Vertex>> VERTS = new EnumMap<EnumFacing, List<Vertex>>(EnumFacing.class);
 
   static {
 
@@ -32,34 +32,34 @@ public class ConnectionModeGeometry {
 
     double offset = (ConduitGeometryUtil.HWIDTH * scale * scale) + ConduitGeometryUtil.CONNECTOR_DEPTH;
 
-    ForgeDirection dir;
+    EnumFacing dir;
     Vector3d trans;
 
     VertexRotation vrot = new VertexRotation(Math.PI / 2, new Vector3d(0, 1, 0), new Vector3d(0.5, 0.5, 0.5));
     VertexTranslation vtrans = new VertexTranslation(0, 0, 0);
     VertexTransformComposite xform = new VertexTransformComposite(vrot, vtrans);
 
-    dir = ForgeDirection.SOUTH;
+    dir = EnumFacing.SOUTH;
     trans = offsetScaled(dir, 0.5);
     trans.sub(offsetScaled(dir, offset));
     vtrans.set(trans);
     VERTS.put(dir, createVerticesForDir(refBB, xform));
 
-    dir = ForgeDirection.NORTH;
+    dir = EnumFacing.NORTH;
     vrot.setAngle(Math.PI + Math.PI / 2);
     trans = offsetScaled(dir, 0.5);
     trans.sub(offsetScaled(dir, offset));
     vtrans.set(trans);
     VERTS.put(dir, createVerticesForDir(refBB, xform));
 
-    dir = ForgeDirection.EAST;
+    dir = EnumFacing.EAST;
     vrot.setAngle(Math.PI);
     trans = offsetScaled(dir, 0.5);
     trans.sub(offsetScaled(dir, offset));
     vtrans.set(trans);
     VERTS.put(dir, createVerticesForDir(refBB, xform));
 
-    dir = ForgeDirection.WEST;
+    dir = EnumFacing.WEST;
     vrot.setAngle(0);
     trans = offsetScaled(dir, 0.5);
     trans.sub(offsetScaled(dir, offset));
@@ -68,14 +68,14 @@ public class ConnectionModeGeometry {
 
     vrot.setAxis(new Vector3d(0, 0, 1));
 
-    dir = ForgeDirection.UP;
+    dir = EnumFacing.UP;
     vrot.setAngle(-Math.PI / 2);
     trans = offsetScaled(dir, 0.5);
     trans.sub(offsetScaled(dir, offset));
     vtrans.set(trans);
     VERTS.put(dir, createVerticesForDir(refBB, xform));
 
-    dir = ForgeDirection.DOWN;
+    dir = EnumFacing.DOWN;
     vrot.setAngle(Math.PI / 2);
     trans = offsetScaled(dir, 0.5);
     trans.sub(offsetScaled(dir, offset));
@@ -86,7 +86,7 @@ public class ConnectionModeGeometry {
 
   private static List<Vertex> createVerticesForDir(BoundingBox refBB, VertexTransform xform) {
     List<Vertex> result = new ArrayList<Vertex>(24);
-    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing face : EnumFacing.VALUES) {
       result.addAll(refBB.getCornersWithUvForFace(face));
     }
     for (Vertex v : result) {
@@ -97,7 +97,7 @@ public class ConnectionModeGeometry {
     return result;
   }
 
-  public static void renderModeConnector(ForgeDirection dir, Offset offset, IIcon tex, boolean tintSides) {
+  public static void renderModeConnector(EnumFacing dir, Offset offset, TextureAtlasSprite tex, boolean tintSides) {
     List<Vertex> verts = VERTS.get(dir);
     if (verts == null) {
       return;
@@ -115,17 +115,17 @@ public class ConnectionModeGeometry {
       if (tintSides) {
         float cm = 1;
         if (v.ny() > 0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
+          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
         } else if (v.ny() < -0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
+          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
         } else if (v.nx() > 0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
+          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
         } else if (v.nx() < -0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
+          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
         } else if (v.nz() > 0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
+          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
         } else if (v.nz() < -0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
+          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
         }
         tes.setColorOpaque_F(cm, cm, cm);
       }

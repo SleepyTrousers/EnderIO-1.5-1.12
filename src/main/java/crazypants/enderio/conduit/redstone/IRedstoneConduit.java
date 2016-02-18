@@ -2,12 +2,11 @@ package crazypants.enderio.conduit.redstone;
 
 import java.util.Set;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public interface IRedstoneConduit extends IConduit {
 
@@ -18,25 +17,25 @@ public interface IRedstoneConduit extends IConduit {
 
   // External redstone interface
 
-  int isProvidingStrongPower(ForgeDirection toDirection);
+  int isProvidingStrongPower(EnumFacing toDirection);
 
-  int isProvidingWeakPower(ForgeDirection toDirection);
+  int isProvidingWeakPower(EnumFacing toDirection);
 
   Set<Signal> getNetworkInputs();
 
-  Set<Signal> getNetworkInputs(ForgeDirection side);
+  Set<Signal> getNetworkInputs(EnumFacing side);
 
-  Set<Signal> getNetworkOutputs(ForgeDirection side);
+  Set<Signal> getNetworkOutputs(EnumFacing side);
 
-  DyeColor getSignalColor(ForgeDirection dir);
+  DyeColor getSignalColor(EnumFacing dir);
 
   void updateNetwork();
 
   // MFR RedNet
 
-  int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
+  int[] getOutputValues(World world, int x, int y, int z, EnumFacing side);
 
-  int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
+  int getOutputValue(World world, int x, int y, int z, EnumFacing side, int subnet);
 
-  void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues);
+  void onInputsChanged(World world, int x, int y, int z, EnumFacing side, int[] inputValues);
 }

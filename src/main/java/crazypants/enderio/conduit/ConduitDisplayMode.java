@@ -5,20 +5,29 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+
+import static crazypants.enderio.gui.IconEIO.CROSS;
+import static crazypants.enderio.gui.IconEIO.TICK;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_FLUID;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_FLUID_OFF;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_ITEM;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_ITEM_OFF;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER_OFF;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE;
+import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE_OFF;
 
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import static crazypants.enderio.gui.IconEIO.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ConduitDisplayMode {
 
@@ -160,7 +169,7 @@ public class ConduitDisplayMode {
       return ALL;
     }
     initDisplayModeTag(equipped);
-    String name = equipped.stackTagCompound.getString(NBT_KEY);
+    String name = equipped.getTagCompound().getString(NBT_KEY);
     ConduitDisplayMode mode = fromName(name);
     if (mode == null) { // backwards compat
       setDisplayMode(equipped, ALL);
@@ -174,13 +183,14 @@ public class ConduitDisplayMode {
       return;
     }
     initDisplayModeTag(equipped);
-    equipped.stackTagCompound.setString(NBT_KEY, mode.getName());
+    equipped.getTagCompound().setString(NBT_KEY, mode.getName());
   }
 
   private static void initDisplayModeTag(ItemStack stack) {
-    if (stack.stackTagCompound == null) {
-      stack.stackTagCompound = new NBTTagCompound();
-      stack.stackTagCompound.setString(NBT_KEY, ConduitDisplayMode.ALL.getName());
+    if (stack.getTagCompound() == null) {
+      NBTTagCompound stackTagCompound = new NBTTagCompound();
+      stackTagCompound.setString(NBT_KEY, ConduitDisplayMode.ALL.getName());
+      stack.setTagCompound(stackTagCompound);
     }
   }
 

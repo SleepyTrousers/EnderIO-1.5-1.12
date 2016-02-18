@@ -2,32 +2,26 @@ package crazypants.enderio.conduit;
 
 import java.util.List;
 
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.IMicroblockSupporterTile;
-import mods.immibis.microblocks.api.MicroblockAPIUtils;
-import mods.immibis.microblocks.api.Part;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
@@ -35,7 +29,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   protected ItemConduitSubtype[] subtypes;
 
-  protected IIcon[] icons;
+//  protected IIcon[] icons;
 
   protected AbstractItemConduit(ModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
@@ -50,28 +44,29 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     GameRegistry.registerItem(this, modObj.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    icons = new IIcon[subtypes.length];
-    int index = 0;
-    for (ItemConduitSubtype subtype : subtypes) {
-      icons[index] = IIconRegister.registerIcon(subtype.iconKey);
-      index++;
-    }
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//    icons = new IIcon[subtypes.length];
+//    int index = 0;
+//    for (ItemConduitSubtype subtype : subtypes) {
+//      icons[index] = IIconRegister.registerIcon(subtype.iconKey);
+//      index++;
+//    }
+//  }
 
   @Override
-  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-    if (MicroblocksUtil.supportMicroblocks() && tryAddToMicroblocks(stack, player, world, x, y, z, side)) {
-      return true;
-    }
+  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+ 
+//    if (MicroblocksUtil.supportMicroblocks() && tryAddToMicroblocks(stack, player, world, pos, side)) {
+//      return true;
+//    }
     
-    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle, player, world, x, y, z, side);
+    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle, player, world, pos, side);
     if(placeAt != null) {
       if(!world.isRemote) {
-        if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, EnderIO.blockConduitBundle, 0, 1)) {
-          TileEntity te = world.getTileEntity(placeAt.x, placeAt.y, placeAt.z);
+        if(world.setBlockState(placeAt.getBlockPos(), EnderIO.blockConduitBundle.getDefaultState(), 1)) {
+          TileEntity te = world.getTileEntity(placeAt.getBlockPos());
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(stack, player));
@@ -86,14 +81,12 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
     } else {
 
-      ForgeDirection dir = ForgeDirection.values()[side];
-      int placeX = x + dir.offsetX;
-      int placeY = y + dir.offsetY;
-      int placeZ = z + dir.offsetZ;
+      
+      BlockPos place = pos.offset(side);
 
-      if(world.getBlock(placeX, placeY, placeZ) == EnderIO.blockConduitBundle) {
+      if(world.getBlockState(place).getBlock() == EnderIO.blockConduitBundle) {
 
-        IConduitBundle bundle = (TileConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
+        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
         if(bundle == null) {
           System.out.println("AbstractItemConduit.onItemUse: Bundle null");
           return false;
@@ -106,7 +99,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
               return false;
             }
             bundle.addConduit(con);
-            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, placeX, placeY, placeZ);
+            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, place.getX(), place.getY(), place.getZ());
             if(!player.capabilities.isCreativeMode) {
               stack.stackSize--;
             }
@@ -119,29 +112,14 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     return false;
   }
 
-  private boolean tryAddToMicroblocks(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if (te != null && te.getClass().getName().equals("mods.immibis.microblocks.TileMicroblockContainer")) {
-      IMicroblockCoverSystem covers = ((IMicroblockSupporterTile) te).getCoverSystem();
-      world.setBlock(x, y, z, EnderIO.blockConduitBundle);
-      EnderIO.blockConduitBundle.onBlockActivated(world, x, y, z, player, side, 0, 0, 0);
-      IMicroblockCoverSystem newCovers = MicroblockAPIUtils.createMicroblockCoverSystem((IMicroblockSupporterTile) world.getTileEntity(x, y, z));
-      for (Part p : covers.getAllParts()) {
-        newCovers.addPart(p);
-      }
-      ((TileConduitBundle)world.getTileEntity(x, y, z)).covers = newCovers;
-      return true;
-    }
-    return false;
-  }
 
   @Override
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {   
     // Conduit replacement
     if (player.isSneaking()) {
       return false;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(pos);
     if (te == null || !(te instanceof IConduitBundle)) {
       return false;
     }
@@ -164,7 +142,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           stack.stackSize--;
           for (ItemStack drop : existingConduit.getDrops()) {
             if (!player.inventory.addItemStackToInventory(drop)) {
-              ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, x, y, z);
+              ItemUtil.spawnItemInWorldWithRandomMotion(world, drop,pos);
             }
           }
           player.inventoryContainer.detectAndSendChanges();
@@ -177,12 +155,12 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     return false;
   }
   
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, subtypes.length - 1);
-    return icons[damage];
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIconFromDamage(int damage) {
+//    damage = MathHelper.clamp_int(damage, 0, subtypes.length - 1);
+//    return icons[damage];
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

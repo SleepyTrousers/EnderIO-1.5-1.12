@@ -4,14 +4,13 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.util.EnumFacing;
 
 public class ConduitGeometryUtil {
 
@@ -33,7 +32,7 @@ public class ConduitGeometryUtil {
 
   public static final float CONNECTOR_DEPTH = 0.05f;
 
-  private static Map<ForgeDirection, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<ForgeDirection, BoundingBox[]>();
+  private static Map<EnumFacing, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<EnumFacing, BoundingBox[]>();
 
   static {
     setupBounds(0.5f);
@@ -52,12 +51,12 @@ public class ConduitGeometryUtil {
     CORE_BOUNDS = new BoundingBox(CORE_MIN, CORE_MAX);
 
     float connectorWidth = 0.25f + (scale * 0.5f);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
   }
 
-  private static BoundingBox[] createExternalConnector(ForgeDirection dir, float connectorDepth, float connectorWidth) {
+  private static BoundingBox[] createExternalConnector(EnumFacing dir, float connectorDepth, float connectorWidth) {
 
     BoundingBox[] res = new BoundingBox[2];
 
@@ -78,14 +77,14 @@ public class ConduitGeometryUtil {
     return res;
   }
 
-  private static BoundingBox createConnectorComponent(ForgeDirection dir, float cornerMin, float cornerMax, float depthMin, float depthMax) {
-    float minX = (1 - Math.abs(dir.offsetX)) * cornerMin + dir.offsetX * depthMin;
-    float minY = (1 - Math.abs(dir.offsetY)) * cornerMin + dir.offsetY * depthMin;
-    float minZ = (1 - Math.abs(dir.offsetZ)) * cornerMin + dir.offsetZ * depthMin;
+  private static BoundingBox createConnectorComponent(EnumFacing dir, float cornerMin, float cornerMax, float depthMin, float depthMax) {
+    float minX = (1 - Math.abs(dir.getFrontOffsetX())) * cornerMin + dir.getFrontOffsetX() * depthMin;
+    float minY = (1 - Math.abs(dir.getFrontOffsetY())) * cornerMin + dir.getFrontOffsetY() * depthMin;
+    float minZ = (1 - Math.abs(dir.getFrontOffsetZ())) * cornerMin + dir.getFrontOffsetZ() * depthMin;
 
-    float maxX = (1 - Math.abs(dir.offsetX)) * cornerMax + (dir.offsetX * depthMax);
-    float maxY = (1 - Math.abs(dir.offsetY)) * cornerMax + (dir.offsetY * depthMax);
-    float maxZ = (1 - Math.abs(dir.offsetZ)) * cornerMax + (dir.offsetZ * depthMax);
+    float maxX = (1 - Math.abs(dir.getFrontOffsetX())) * cornerMax + (dir.getFrontOffsetX() * depthMax);
+    float maxY = (1 - Math.abs(dir.getFrontOffsetY())) * cornerMax + (dir.getFrontOffsetY() * depthMax);
+    float maxZ = (1 - Math.abs(dir.getFrontOffsetZ())) * cornerMax + (dir.getFrontOffsetZ() * depthMax);
 
     minX = fix(minX);
     minY = fix(minY);
@@ -111,15 +110,15 @@ public class ConduitGeometryUtil {
   private ConduitGeometryUtil() {
   }
 
-  public BoundingBox getExternalConnectorBoundingBox(ForgeDirection dir) {
+  public BoundingBox getExternalConnectorBoundingBox(EnumFacing dir) {
     return getExternalConnectorBoundingBoxes(dir)[0];
   }
 
-  public BoundingBox[] getExternalConnectorBoundingBoxes(ForgeDirection dir) {
+  public BoundingBox[] getExternalConnectorBoundingBoxes(EnumFacing dir) {
     return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
 
-  public BoundingBox getBoundingBox(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
+  public BoundingBox getBoundingBox(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);
     BoundingBox result = boundsCache.get(key);
     if(result == null) {
@@ -129,13 +128,13 @@ public class ConduitGeometryUtil {
     return result;
   }
 
-  public Vector3d getTranslation(ForgeDirection dir, Offset offset) {
+  public Vector3d getTranslation(EnumFacing dir, Offset offset) {
     Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, offset.zOffset);
     result.scale(WIDTH);
     return result;
   }
 
-  public BoundingBox createBoundsForConnectionController(ForgeDirection dir, Offset offset) {
+  public BoundingBox createBoundsForConnectionController(EnumFacing dir, Offset offset) {
 
     Vector3d nonUniformScale = ForgeDirectionOffsets.forDirCopy(dir);
     nonUniformScale.scale(0.5);
@@ -163,7 +162,7 @@ public class ConduitGeometryUtil {
     return createConduitBounds(type, key.dir, key.isStub, key.offset);
   }
 
-  private BoundingBox createConduitBounds(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
+  private BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
     BoundingBox bb = CORE_BOUNDS;
 
     Vector3d min = bb.getMin();

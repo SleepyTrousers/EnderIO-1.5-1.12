@@ -1,20 +1,18 @@
 package crazypants.enderio.conduit.packet;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.DyeColor;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 
 public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketItemConduitFilter, IMessage> {
 
-  private ForgeDirection dir;
+  private EnumFacing dir;
   private boolean loopMode;
   private boolean roundRobin;
   private DyeColor colIn;
@@ -27,7 +25,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   public PacketItemConduitFilter() {
   }
 
-  public PacketItemConduitFilter(IItemConduit con, ForgeDirection dir) {
+  public PacketItemConduitFilter(IItemConduit con, EnumFacing dir) {
     super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
     this.dir = dir;
     loopMode = con.isSelfFeedEnabled(dir);
@@ -43,7 +41,11 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+    if(dir == null) {
+      buf.writeShort(-1);
+    }else {
+      buf.writeShort(dir.ordinal());
+    }
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
     buf.writeInt(priority);
@@ -56,7 +58,12 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    dir = ForgeDirection.values()[buf.readShort()];
+    short ord = buf.readShort();
+    if(ord < 0) {
+      dir = null;
+    } else {
+      dir = EnumFacing.values()[ord];
+    }
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
     priority = buf.readInt();
@@ -81,7 +88,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     return null;
   }
 
-  private void applyFilter(ForgeDirection dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
+  private void applyFilter(EnumFacing dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
     if(isInput) {
       conduit.setInputFilter(dir, filter);
     } else {

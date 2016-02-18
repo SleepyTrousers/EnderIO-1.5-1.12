@@ -1,5 +1,5 @@
 package com.jaquadro.minecraft.storagedrawers.api.pack;
-
+/*
 import net.minecraft.creativetab.CreativeTabs;
 
 public interface IPackDataResolver
@@ -16,3 +16,4 @@ public interface IPackDataResolver
 
     String getTexturePath (TextureType type, int meta);
 }
+*/

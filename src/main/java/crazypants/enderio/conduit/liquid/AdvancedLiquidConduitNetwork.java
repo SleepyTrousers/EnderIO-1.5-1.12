@@ -4,16 +4,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
@@ -39,7 +38,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if(con.getTank().containsValidLiquid()) {
       tank.addAmount(con.getTank().getFluidAmount());
     }
-    for (ForgeDirection dir : con.getExternalConnections()) {
+    for (EnumFacing dir : con.getExternalConnections()) {
       if(con.getConnectionMode(dir).acceptsOutput()) {
         outputs.add(new LiquidOutput(con.getLocation().getLocation(dir), dir.getOpposite()));
       }
@@ -89,7 +88,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         }
         con.getTank().setLiquid(f);
         BlockCoord bc = con.getLocation();
-        con.getBundle().getEntity().getWorldObj().markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
+        con.getBundle().getEntity().getWorld().markChunkDirty(bc.getBlockPos(), con.getBundle().getEntity());
       }
 
     }
@@ -159,7 +158,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
   }
 
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(resource == null) {
       return 0;
     }
@@ -174,7 +173,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     return res;
   }
 
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     if(resource == null || tank.isEmpty() || !tank.containsValidLiquid() || !LiquidConduitNetwork.areFluidsCompatable(getFluidType(), resource)) {
       return null;
     }
@@ -188,7 +187,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     return result;
   }
 
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     if(tank.isEmpty() || !tank.containsValidLiquid()) {
       return null;
     }
@@ -201,7 +200,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     return result;
   }
 
-  public boolean extractFrom(AdvancedLiquidConduit advancedLiquidConduit, ForgeDirection dir, int maxExtractPerTick) {
+  public boolean extractFrom(AdvancedLiquidConduit advancedLiquidConduit, EnumFacing dir, int maxExtractPerTick) {
 
     if(tank.isFull()) {
       return false;
@@ -263,10 +262,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if(w == null) {
       return null;
     }
-    return FluidUtil.getFluidHandler(w.getTileEntity(bc.x, bc.y, bc.z));
+    return FluidUtil.getFluidHandler(w.getTileEntity(bc.getBlockPos()));
   }
 
-  public IFluidHandler getTankContainer(AdvancedLiquidConduit con, ForgeDirection dir) {
+  public IFluidHandler getTankContainer(AdvancedLiquidConduit con, EnumFacing dir) {
     BlockCoord bc = con.getLocation().getLocation(dir);
     return getTankContainer(bc);
   }

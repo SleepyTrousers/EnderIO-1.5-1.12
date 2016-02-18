@@ -1,12 +1,12 @@
 package crazypants.enderio.conduit.power;
 
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
 
 public interface IPowerConduit extends IConduit, IInternalPowerHandler, IExtractor {
 
@@ -18,18 +18,18 @@ public interface IPowerConduit extends IConduit, IInternalPowerHandler, IExtract
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 
-  IPowerInterface getExternalPowerReceptor(ForgeDirection direction);
+  IPowerInterface getExternalPowerReceptor(EnumFacing direction);
 
   ICapacitor getCapacitor();
 
-  int getMaxEnergyExtracted(ForgeDirection dir);
+  int getMaxEnergyExtracted(EnumFacing dir);
 
   @Override
-  int getMaxEnergyRecieved(ForgeDirection dir);
+  int getMaxEnergyRecieved(EnumFacing dir);
 
-  IIcon getTextureForInputMode();
+  TextureAtlasSprite getTextureForInputMode();
 
-  IIcon getTextureForOutputMode();
+  TextureAtlasSprite getTextureForOutputMode();
 
   //called from NetworkPowerManager
   void onTick();

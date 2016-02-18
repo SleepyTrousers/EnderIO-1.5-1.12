@@ -1,16 +1,16 @@
 package crazypants.enderio.conduit.geom;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.util.EnumFacing;
 
 public final class GeometryKey {
 
-  public final ForgeDirection dir;
+  public final EnumFacing dir;
   public final boolean isStub;
   public final Offset offset;
   public final String className;
 
-  public GeometryKey(ForgeDirection dir, boolean isStub, Offset offset, Class<? extends IConduit> type) {
+  public GeometryKey(EnumFacing dir, boolean isStub, Offset offset, Class<? extends IConduit> type) {
     this.dir = dir;
     this.isStub = isStub;
     this.offset = offset;

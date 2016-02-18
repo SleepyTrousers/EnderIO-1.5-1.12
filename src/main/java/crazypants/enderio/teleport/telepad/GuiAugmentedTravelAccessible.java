@@ -1,13 +1,13 @@
 package crazypants.enderio.teleport.telepad;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.World;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.GuiTravelAccessable;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.world.World;
 
 public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements IToggleableGui {
 
@@ -36,7 +36,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
 
   @Override
   public void switchGui() {
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, te.xCoord, te.yCoord, te.zCoord);
+    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD));
   }
 }

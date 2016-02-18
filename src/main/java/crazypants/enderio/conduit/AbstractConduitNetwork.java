@@ -48,7 +48,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     if(conduit != null && implClass.isAssignableFrom(conduit.getClass()) && conduit.setNetwork(this)) {
       addConduit(implClass.cast(conduit));
       TileEntity te = tile.getEntity();
-      Collection<T> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, getBaseConduitType());
+      Collection<T> connections = ConduitUtil.getConnectedConduits(world, te.getPos(), getBaseConduitType());
       for (T con : connections) {
         if(con.getNetwork() == null) {
           setNetwork(world, con.getBundle());
@@ -84,7 +84,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   public void notifyNetworkOfUpdate() {
     for (I con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      te.getWorldObj().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
+      te.getWorld().markBlockForUpdate(te.getPos());
     }
   }
 

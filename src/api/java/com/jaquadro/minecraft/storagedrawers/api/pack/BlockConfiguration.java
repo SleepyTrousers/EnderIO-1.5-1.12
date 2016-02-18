@@ -1,29 +1,30 @@
 package com.jaquadro.minecraft.storagedrawers.api.pack;
 
+import com.jaquadro.minecraft.storagedrawers.block.EnumBasicDrawer;
+
 public enum BlockConfiguration
 {
-    BasicFull1(BlockType.Drawers, 1, false),
-    BasicFull2(BlockType.Drawers, 2, false),
-    BasicFull4(BlockType.Drawers, 4, false),
-    BasicHalf2(BlockType.Drawers, 2, true),
-    BasicHalf4(BlockType.Drawers, 4, true),
+    BasicFull1(BlockType.Drawers, EnumBasicDrawer.FULL1),
+    BasicFull2(BlockType.Drawers, EnumBasicDrawer.FULL2),
+    BasicFull4(BlockType.Drawers, EnumBasicDrawer.FULL4),
+    BasicHalf2(BlockType.Drawers, EnumBasicDrawer.HALF2),
+    BasicHalf4(BlockType.Drawers, EnumBasicDrawer.HALF4),
 
-    SortingFull1(BlockType.DrawersSorting, 1, false),
-    SortingFull2(BlockType.DrawersSorting, 2, false),
-    SortingFull4(BlockType.DrawersSorting, 4, false),
-    SortingHalf2(BlockType.DrawersSorting, 2, true),
-    SortingHalf4(BlockType.DrawersSorting, 4, true),
+    SortingFull1(BlockType.DrawersSorting, EnumBasicDrawer.FULL1),
+    SortingFull2(BlockType.DrawersSorting, EnumBasicDrawer.FULL2),
+    SortingFull4(BlockType.DrawersSorting, EnumBasicDrawer.FULL4),
+    SortingHalf2(BlockType.DrawersSorting, EnumBasicDrawer.HALF2),
+    SortingHalf4(BlockType.DrawersSorting, EnumBasicDrawer.HALF4),
 
-    Trim(BlockType.Trim, 0, false);
+    Trim(BlockType.Trim, null),
+    TrimSorting(BlockType.TrimSorting, null);
 
     private final BlockType type;
-    private final int drawerCount;
-    private final boolean halfDepth;
+    private final EnumBasicDrawer drawer;
 
-    BlockConfiguration (BlockType type, int count, boolean half) {
+    BlockConfiguration (BlockType type, EnumBasicDrawer drawer) {
         this.type = type;
-        this.drawerCount = count;
-            this.halfDepth = half;
+        this.drawer = drawer;
     }
 
     public BlockType getBlockType () {
@@ -31,16 +32,16 @@ public enum BlockConfiguration
     }
 
     public int getDrawerCount () {
-        return drawerCount;
+        return (drawer != null) ? drawer.getDrawerCount() : 0;
     }
 
     public boolean isHalfDepth () {
-        return halfDepth;
+        return (drawer != null) && drawer.isHalfDepth();
     }
 
-    public static BlockConfiguration by (BlockType type, int drawerCount, boolean halfDepth) {
+    public static BlockConfiguration by (BlockType type, EnumBasicDrawer drawer) {
         for (BlockConfiguration config : values()) {
-            if (config.type == type && config.drawerCount == drawerCount && config.halfDepth == halfDepth)
+            if (config.type == type && config.drawer == drawer)
                 return config;
         }
 

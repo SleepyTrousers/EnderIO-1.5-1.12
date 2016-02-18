@@ -2,24 +2,11 @@ package crazypants.enderio.conduit.facade;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Util;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -32,6 +19,16 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -44,7 +41,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     }
   }
 
-  private IIcon[] icons;
+//  private IIcon[] icons;
 
   public static ItemConduitFacade create() {
     ItemConduitFacade result = new ItemConduitFacade();
@@ -52,7 +49,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     return result;
   }
 
-  protected IIcon overlayIcon;
+//  protected IIcon overlayIcon;
 
   protected ItemConduitFacade() {
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -83,29 +80,29 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     return "item.enderio." + ModObject.itemConduitFacade.name();
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    icons = new IIcon[FacadeType.values().length];
-    icons[0] = itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
-    icons[1] = IIconRegister.registerIcon("enderio:conduitFacadeHardened");
-    overlayIcon = IIconRegister.registerIcon("enderio:conduitFacadeOverlay");
-  }
-
-  public IIcon getOverlayIcon() {
-    return overlayIcon;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    return icons[damage % icons.length];
-  }
-
-  @Override
-  public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-    return getIconFromDamage(stack.getItemDamage());
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//    icons = new IIcon[FacadeType.values().length];
+//    icons[0] = itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
+//    icons[1] = IIconRegister.registerIcon("enderio:conduitFacadeHardened");
+//    overlayIcon = IIconRegister.registerIcon("enderio:conduitFacadeOverlay");
+//  }
+//
+//  public IIcon getOverlayIcon() {
+//    return overlayIcon;
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIconFromDamage(int damage) {
+//    return icons[damage % icons.length];
+//  }
+//
+//  @Override
+//  public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+//    return getIconFromDamage(stack.getItemDamage());
+//  }
 
   @Override
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
@@ -115,7 +112,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       return true;
     }
 
-    ForgeDirection dir = ForgeDirection.values()[side];
+    EnumFacing dir = EnumFacing.values()[side];
     int placeX = x + dir.offsetX;
     int placeY = y + dir.offsetY;
     int placeZ = z + dir.offsetZ;

@@ -1,21 +1,13 @@
 package crazypants.enderio.teleport.telepad;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
@@ -27,6 +19,13 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
@@ -73,7 +72,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       }
     });
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
     int x = 42;
     int y = 8;
@@ -133,7 +132,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
 
   @Override
-  protected void keyTyped(char par1, int par2) {
+  protected void keyTyped(char par1, int par2) throws IOException {
     super.keyTyped(par1, par2);
     updateCoords();
   }
@@ -185,7 +184,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
     Entity e = te.getCurrentTarget();
     if(e != null) {
-      String name = e.getCommandSenderName();
+      String name = e.getCommandSender();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
     } else if(te.wasBlocked) {
       String s = EnderIO.lang.localize("gui.telepad.blocked");
@@ -202,7 +201,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
   
   @Override
-  protected void actionPerformed(GuiButton button) {
+  protected void actionPerformed(GuiButton button) throws IOException {
     super.actionPerformed(button);
     
     if (button.id == ID_TELEPORT_BUTTON) {

@@ -1,4 +1,5 @@
-@API(owner = "Thaumcraft", apiVersion = "4.2.0.0", provides = "Thaumcraft|API")
+@API(owner = "Thaumcraft", apiVersion = "5.1.2.0", provides = "Thaumcraft|API")
 package thaumcraft.api;
 
-import cpw.mods.fml.common.API;
+import net.minecraftforge.fml.common.API;
+

@@ -5,13 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.FluidUtil;
@@ -23,13 +16,19 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
-  protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-  protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+  protected final EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
+  protected final EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
+  protected final Map<EnumFacing, Integer> externalRedstoneSignals = new HashMap<EnumFacing, Integer>();
   protected boolean redstoneStateDirty = true;
 
   public static IFluidHandler getExternalFluidHandler(IBlockAccess world, BlockCoord bc) {
@@ -37,7 +36,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
-  public IFluidHandler getExternalHandler(ForgeDirection direction) {
+  public IFluidHandler getExternalHandler(EnumFacing direction) {
     IFluidHandler con = getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
@@ -47,7 +46,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
+  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
     IFluidHandler h = getExternalHandler(direction);
     if(h == null) {
       return false;
@@ -76,13 +75,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, EnumFacing dir) {
     extractionModes.put(dir, mode);
     redstoneStateDirty = true;
   }
 
   @Override
-  public RedstoneControlMode getExtractionRedstoneMode(ForgeDirection dir) {
+  public RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if(res == null) {
       res = RedstoneControlMode.ON;
@@ -91,12 +90,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public void setExtractionSignalColor(ForgeDirection dir, DyeColor col) {
+  public void setExtractionSignalColor(EnumFacing dir, DyeColor col) {
     extractionColors.put(dir, col);
   }
 
   @Override
-  public DyeColor getExtractionSignalColor(ForgeDirection dir) {
+  public DyeColor getExtractionSignalColor(EnumFacing dir) {
     DyeColor result = extractionColors.get(dir);
     if(result == null) {
       return DyeColor.RED;
@@ -105,7 +104,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean canOutputToDir(ForgeDirection dir) {
+  public boolean canOutputToDir(EnumFacing dir) {
     if(!canInputToDir(dir)) {
       return false;
     }
@@ -124,7 +123,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return true;
   }
 
-  protected boolean autoExtractForDir(ForgeDirection dir) {
+  protected boolean autoExtractForDir(EnumFacing dir) {
     if(!canExtractFromDir(dir)) {
       return false;
     }
@@ -154,13 +153,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return res;
   }
 
-  private boolean isConditionMetByExternalSignal(ForgeDirection dir, RedstoneControlMode mode, DyeColor col) {
+  private boolean isConditionMetByExternalSignal(EnumFacing dir, RedstoneControlMode mode, DyeColor col) {
     int externalSignal = 0;
     if(col == DyeColor.RED) {
       Integer val = externalRedstoneSignals.get(dir);
       if(val == null) {
         TileEntity te = getBundle().getEntity();
-        externalSignal = te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
+        externalSignal = te.getWorld().getStrongPower(te.getPos());
         externalRedstoneSignals.put(dir, externalSignal);
       } else {
         externalSignal = val;
@@ -171,12 +170,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean canExtractFromDir(ForgeDirection dir) {
+  public boolean canExtractFromDir(EnumFacing dir) {
     return getConnectionMode(dir).acceptsInput();
   }
   
   @Override
-  public boolean canInputToDir(ForgeDirection dir) {
+  public boolean canInputToDir(EnumFacing dir) {
     return getConnectionMode(dir).acceptsOutput() && !autoExtractForDir(dir);
   }
 
@@ -185,13 +184,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
+  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
     setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
   }
 
   @Override
-  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+  protected void writeTypeSettingsToNbt(EnumFacing dir, NBTTagCompound dataRoot) {
     dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
     dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
   }
@@ -200,14 +199,14 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
-    for (Entry<ForgeDirection, RedstoneControlMode> entry : extractionModes.entrySet()) {
+    for (Entry<EnumFacing, RedstoneControlMode> entry : extractionModes.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("extRM." + entry.getKey().name(), ord);
       }
     }
 
-    for (Entry<ForgeDirection, DyeColor> entry : extractionColors.entrySet()) {
+    for (Entry<EnumFacing, DyeColor> entry : extractionColors.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
@@ -220,7 +219,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
     super.readFromNBT(nbtRoot, nbtVersion);
 
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       String key = "extRM." + dir.name();
       if(nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);

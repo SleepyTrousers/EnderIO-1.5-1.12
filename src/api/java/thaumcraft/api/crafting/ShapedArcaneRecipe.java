@@ -1,17 +1,18 @@
 package thaumcraft.api.crafting;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.research.ResearchHelper;
 
 public class ShapedArcaneRecipe implements IArcaneRecipe
 {
@@ -22,14 +23,15 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     public ItemStack output = null;
     public  Object[] input = null;
     public AspectList aspects = null;
-    public String research; 
+    public String[] research; 
     public int width = 0;
     public int height = 0;
     private boolean mirrored = true;
 
-    public ShapedArcaneRecipe(String research, Block     result, AspectList aspects, Object... recipe){ this(research, new ItemStack(result), aspects, recipe); }
-    public ShapedArcaneRecipe(String research, Item      result, AspectList aspects, Object... recipe){ this(research, new ItemStack(result), aspects, recipe); }
-    public ShapedArcaneRecipe(String research, ItemStack result, AspectList aspects, Object... recipe)
+    
+    public ShapedArcaneRecipe(String research, ItemStack result, AspectList aspects, Object... recipe){ this(new String[]{research}, result, aspects, recipe); }
+    
+    public ShapedArcaneRecipe(String[] research, ItemStack result, AspectList aspects, Object... recipe)
     {
         output = result.copy();
         this.research = research;
@@ -126,21 +128,28 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
         {
             input[x++] = itemMap.get(chr);
         }
+        
     }
 
     @Override
-    public ItemStack getCraftingResult(IInventory var1){ return output.copy(); }
+    public ItemStack getCraftingResult(InventoryCrafting var1){ return output.copy(); }
 
     @Override
     public int getRecipeSize(){ return input.length; }
 
     @Override
     public ItemStack getRecipeOutput(){ return output; }
+    
+    @Override
+    public boolean matches(InventoryCrafting inv, World world)
+    {
+    	return inv instanceof IArcaneWorkbench && matches(inv,world,null);
+    }
 
     @Override
-    public boolean matches(IInventory inv, World world, EntityPlayer player)
+    public boolean matches(InventoryCrafting inv, World world, EntityPlayer player)
     {
-    	if (research.length()>0 && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), research)) {
+    	if (player!=null && ( research!=null && research[0].length()>0 && !ResearchHelper.isResearchComplete(player.getName(), research))) {
     		return false;
     	}
         for (int x = 0; x <= MAX_CRAFT_GRID_WIDTH - width; x++)
@@ -162,7 +171,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
         return false;
     }
 
-    private boolean checkMatch(IInventory inv, int startX, int startY, boolean mirror)
+    private boolean checkMatch(InventoryCrafting inv, int startX, int startY, boolean mirror)
     {
         for (int x = 0; x < MAX_CRAFT_GRID_WIDTH; x++)
         {
@@ -184,7 +193,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
                     }
                 }
 
-                ItemStack slot = ThaumcraftApiHelper.getStackInRowAndColumn(inv, x, y);
+                ItemStack slot = inv.getStackInRowAndColumn(x, y);
 
                 if (target instanceof ItemStack)
                 {
@@ -193,11 +202,11 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
                         return false;
                     }
                 }
-                else if (target instanceof ArrayList)
+                else if (target instanceof List)
                 {
                     boolean matched = false;
 
-                    for (ItemStack item : (ArrayList<ItemStack>)target)
+                    for (ItemStack item : (List<ItemStack>)target)
                     {
                         matched = matched || checkItemEquals(item, slot);
                     }
@@ -250,12 +259,26 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
 	}
     
     @Override		
-	public AspectList getAspects(IInventory inv) {
+	public AspectList getAspects(InventoryCrafting inv) {
 		return aspects;
 	}
 	
 	@Override
-	public String getResearch() {
+	public String[] getResearch() {
 		return research;
 	}
+	
+	@Override
+	public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_)
+    {
+        ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
+
+        for (int i = 0; i < Math.min(9, aitemstack.length); ++i)
+        {
+            ItemStack itemstack = p_179532_1_.getStackInSlot(i);
+            aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
+        }
+
+        return aitemstack;
+    }
 }

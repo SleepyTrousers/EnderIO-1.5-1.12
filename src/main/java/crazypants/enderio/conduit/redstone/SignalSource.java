@@ -3,15 +3,15 @@ package crazypants.enderio.conduit.redstone;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public class SignalSource {
 
   public final Signal signal;
 
-  public final ForgeDirection fromDirection;
+  public final EnumFacing fromDirection;
 
-  public SignalSource(Signal signal, ForgeDirection fromDirection) {
+  public SignalSource(Signal signal, EnumFacing fromDirection) {
     this.signal = signal;
     this.fromDirection = fromDirection;
   }
@@ -79,8 +79,8 @@ public class SignalSource {
   public static Set<SignalSource> fromIntArray(int[] enc) {
     Set<SignalSource> result = new HashSet<SignalSource>();
     for (int i = 0; i < enc.length; i += 5) {
-      //      Signal sig = new Signal(enc[i], enc[i + 1], enc[i + 2], enc[i + 3], ForgeDirection.UNKNOWN,14, SignalColor.values()[enc[i + 4]]);
-      //      result.add(new SignalSource(sig, ForgeDirection.values()[enc[i + 4]]));
+      //      Signal sig = new Signal(enc[i], enc[i + 1], enc[i + 2], enc[i + 3], EnumFacing.UNKNOWN,14, SignalColor.values()[enc[i + 4]]);
+      //      result.add(new SignalSource(sig, EnumFacing.values()[enc[i + 4]]));
     }
     return result;
   }

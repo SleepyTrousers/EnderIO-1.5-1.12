@@ -9,6 +9,7 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -98,9 +99,9 @@ public interface IConduit {
 
   // rendering, only needed us default rendering is used
 
-  IIcon getTextureForState(CollidableComponent component);
+  TextureAtlasSprite getTextureForState(CollidableComponent component);
 
-  IIcon getTransmitionTextureForState(CollidableComponent component);
+  TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component);
 
   float getTransmitionGeometryScale();
 

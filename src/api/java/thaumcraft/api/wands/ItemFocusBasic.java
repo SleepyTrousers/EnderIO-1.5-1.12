@@ -4,44 +4,96 @@ import java.text.DecimalFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemFocusBasic extends Item {
 	
-	public ItemFocusBasic ()
+	public ItemFocusBasic (String id, ResourceLocation texture, int renderColor)
     {
         super();
         maxStackSize = 1;
         canRepair=false;
         this.setMaxDamage(0);
+        this.id = id;
+        this.texture = texture;
+        foci.put(id, this);
+        this.focusColor = renderColor;
     }
 	
-	public IIcon icon;
+	public ItemFocusBasic (String id, int renderColor)
+    {
+        this(id,new ResourceLocation("thaumcraft","items/wand/focus"), renderColor);
+    }
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIconFromDamage(int par1) {
-		return icon;
+	public static LinkedHashMap<String,ItemFocusBasic> foci = new LinkedHashMap<String,ItemFocusBasic>();
+	
+	/**
+	 * Unique identifier used for this focus
+	 */
+	private String id;
+	
+	public String getFocusId() {
+		return id;
 	}
+
+	/**
+	 * Texture used to render the cap on the wand
+	 */
+	private ResourceLocation texture;	
+	
+	public ResourceLocation getFocusTexture() {
+		return texture;
+	}
+	
+	/**
+	 * What color the focus will be rendered ingame on the wand
+	 */
+	private int focusColor=0;
+	
+	/**
+	 * What color will the focus orb be rendered on the held wand
+	 */
+	public int getFocusColor(ItemStack focusstack) {
+		return this.focusColor;
+	}		
 	
 	@Override
 	public boolean isDamageable() {
 		return false;
+	}
+	
+	public boolean canBePlacedInTurret() {
+		return false;
+	}
+	
+	/**
+	 * This is used to correct for foci that shoot projectiles effected by gravity. 
+	 * The number will be modified by range to the target
+	 * @return a number to add to the angle the turrent aims at.
+	 */
+	public float getTurretCorrection(ItemStack focusstack) {
+		return 0;
+	}
+	
+	/**
+	 * @return the possible range of the attack - if the entity is outside this range the turret will not attempt to attack it. Values higher than 32 will have no effect
+	 */
+	public float getTurretRange(ItemStack focusstack) {
+		return 32;
 	}
 
 	@Override
@@ -49,9 +101,9 @@ public class ItemFocusBasic extends Item {
 		AspectList al = this.getVisCost(stack);
 		if (al!=null && al.size()>0) {
 			list.add(StatCollector.translateToLocal(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
-			for (Aspect aspect:al.getAspectsSorted()) {
+			for (Aspect aspect:al.getAspectsSortedByName()) {
 				DecimalFormat myFormatter = new DecimalFormat("#####.##");
-				String amount = myFormatter.format(al.getAmount(aspect)/100f);
+				String amount = myFormatter.format(al.getAmount(aspect));
 				list.add(" \u00A7"+aspect.getChatcolor()+aspect.getName()+"\u00A7r x "+ amount);				
 			}
 		}
@@ -85,32 +137,11 @@ public class ItemFocusBasic extends Item {
 	@Override
 	public EnumRarity getRarity(ItemStack focusstack)
     {
-        return EnumRarity.rare;
+        return EnumRarity.RARE;
     }	
 	
-	/**
-	 * What color will the focus orb be rendered on the held wand
-	 */
-	public int getFocusColor(ItemStack focusstack) {
-		return 0;
-	}
+	
 
-	
-	/**
-	 * Does the focus have ornamentation like the focus of the nine hells. Ornamentation is a standard icon rendered in a cross around the focus
-	 */	
-	public IIcon getOrnament(ItemStack focusstack) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	/**
-	 * An icon to be rendered inside the focus itself
-	 */
-	public IIcon getFocusDepthLayerIcon(ItemStack focusstack) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public enum WandFocusAnimation {
 		WAVE, CHARGE;
@@ -124,7 +155,7 @@ public class ItemFocusBasic extends Item {
 	 * Just insert two alphanumeric characters before this string in your focus item class
 	 */
 	public String getSortingHelper(ItemStack focusstack) {		
-		String out="";
+		String out=this.id;
 		for (short id:this.getAppliedUpgrades(focusstack)) {
 			out = out + id;
 		}
@@ -223,21 +254,36 @@ public class ItemFocusBasic extends Item {
         return level;
 	}	
 	
-	public ItemStack onFocusRightClick(ItemStack wandstack, World world,EntityPlayer player, MovingObjectPosition movingobjectposition) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * This method will be called whenever you right click, and possibly per wand usage tick depending on isVisCostPerTick
+	 * IMPORTANT: It should be noted that vis consumption is now handled by the wand and not the focus so do not subtract any vis here.
+	 * @param wandstack
+	 * @param world
+	 * @param entity - do not assume it will always be a player since it could be used by other entities as well
+	 * @param movingobjectposition The target
+	 * @param useCount the amount of ticks the item has been used for
+	 * @return did the focus actually activate. Used to determine if vis should be consumed or not. 
+	 */
+	public boolean onFocusActivation(ItemStack wandstack, World world, EntityLivingBase entity, MovingObjectPosition movingobjectposition, int useCount) {
+		return true;
 	}
 	
-	public void onUsingFocusTick(ItemStack wandstack, EntityPlayer player,int count) {
-		// TODO Auto-generated method stub		
-	}
 	
-	public void onPlayerStoppedUsingFocus(ItemStack wandstack, World world,	EntityPlayer player, int count) {
-		// TODO Auto-generated method stub
-		
-	}
+//	public ItemStack onFocusRightClick(ItemStack wandstack, World world,EntityPlayer player, MovingObjectPosition movingobjectposition) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//	
+//	public void onUsingFocusTick(ItemStack wandstack, EntityPlayer player,int count) {
+//		// TODO Auto-generated method stub		
+//	}
+//	
+//	public void onPlayerStoppedUsingFocus(ItemStack wandstack, World world,	EntityPlayer player, int count) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 	
-	public boolean onFocusBlockStartBreak(ItemStack wandstack, int x, int y,int z, EntityPlayer player) {
+	public boolean onFocusBlockStartBreak(ItemStack wandstack, BlockPos pos, EntityPlayer player) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -247,7 +293,7 @@ public class ItemFocusBasic extends Item {
 	 */
 	private NBTTagList getFocusUpgradeTagList(ItemStack focusstack)
     {
-        return focusstack.stackTagCompound == null ? null : focusstack.stackTagCompound.getTagList("upgrade", 10);
+        return focusstack.getTagCompound() == null ? null : focusstack.getTagCompound().getTagList("upgrade", 10);
     }
 	
 	private void setFocusUpgradeTagList(ItemStack focusstack, short[] upgrades) {
@@ -262,15 +308,6 @@ public class ItemFocusBasic extends Item {
 			tlist.appendTag(f);
 		}
 	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
-		if (stack.stackTagCompound !=null && stack.stackTagCompound.hasKey("ench")) {
-			stack.stackTagCompound.removeTag("ench");
-		}
-		super.onUpdate(stack, world, entity, p_77663_4_, p_77663_5_);
-	}
-
 	
 	
 }

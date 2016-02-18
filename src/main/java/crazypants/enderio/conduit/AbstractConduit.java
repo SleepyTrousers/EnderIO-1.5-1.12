@@ -9,24 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import mods.immibis.microblocks.api.EnumPartClass;
-import mods.immibis.microblocks.api.EnumPosition;
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.Part;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.gas.GasConduitNetwork;
-import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -39,20 +24,25 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
-import crazypants.enderio.conduit.me.IMEConduit;
-import crazypants.enderio.conduit.me.MEConduitNetwork;
-import crazypants.enderio.conduit.oc.IOCConduit;
-import crazypants.enderio.conduit.oc.OCConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public abstract class AbstractConduit implements IConduit {
 
-  protected final Set<ForgeDirection> conduitConnections = EnumSet.noneOf(ForgeDirection.class);
+  protected final Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
-  protected final Set<ForgeDirection> externalConnections = EnumSet.noneOf(ForgeDirection.class);
+  protected final Set<EnumFacing> externalConnections = EnumSet.noneOf(EnumFacing.class);
 
   public static final float STUB_WIDTH = 0.2f;
 
@@ -68,8 +58,8 @@ public abstract class AbstractConduit implements IConduit {
 
   protected List<CollidableComponent> collidables;
 
-  protected final EnumMap<ForgeDirection, ConnectionMode> conectionModes = new EnumMap<ForgeDirection, ConnectionMode>(
-      ForgeDirection.class);
+  protected final EnumMap<EnumFacing, ConnectionMode> conectionModes = new EnumMap<EnumFacing, ConnectionMode>(
+      EnumFacing.class);
 
   protected boolean collidablesDirty = true;
 
@@ -83,7 +73,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt) {
+  public boolean writeConnectionSettingsToNBT(EnumFacing dir, NBTTagCompound nbt) {
     if (!getExternalConnections().contains(dir)) {
       return false;
     }
@@ -94,7 +84,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt) {
+  public boolean readConduitSettingsFromNBT(EnumFacing dir, NBTTagCompound nbt) {
     if (!getExternalConnections().contains(dir)) {
       return false;
     }
@@ -110,10 +100,10 @@ public abstract class AbstractConduit implements IConduit {
     return true;
   }
 
-  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
+  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
   }
 
-  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+  protected void writeTypeSettingsToNbt(EnumFacing dir, NBTTagCompound dataRoot) {
   }
 
   protected NBTTagCompound getNbtRootForType(NBTTagCompound nbt, boolean createIfNull) {
@@ -131,7 +121,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getConnectionMode(ForgeDirection dir) {
+  public ConnectionMode getConnectionMode(EnumFacing dir) {
     ConnectionMode res = conectionModes.get(dir);
     if (res == null) {
       return getDefaultConnectionMode();
@@ -149,7 +139,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+  public void setConnectionMode(EnumFacing dir, ConnectionMode mode) {
     ConnectionMode oldVal = conectionModes.get(dir);
     if (oldVal == mode) {
       return;
@@ -183,7 +173,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
+  public ConnectionMode getNextConnectionMode(EnumFacing dir) {
     ConnectionMode curMode = getConnectionMode(dir);
     ConnectionMode next = ConnectionMode.getNext(curMode);
     if (next == ConnectionMode.NOT_SET) {
@@ -193,7 +183,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
+  public ConnectionMode getPreviousConnectionMode(EnumFacing dir) {
     ConnectionMode curMode = getConnectionMode(dir);
     ConnectionMode prev = ConnectionMode.getPrevious(curMode);
     if (prev == ConnectionMode.NOT_SET) {
@@ -231,60 +221,44 @@ public abstract class AbstractConduit implements IConduit {
 
   // Connections
   @Override
-  public Set<ForgeDirection> getConduitConnections() {
+  public Set<EnumFacing> getConduitConnections() {
     return conduitConnections;
   }
 
   @Override
-  public boolean containsConduitConnection(ForgeDirection dir) {
+  public boolean containsConduitConnection(EnumFacing dir) {
     return conduitConnections.contains(dir);
   }
 
   @Override
-  public void conduitConnectionAdded(ForgeDirection fromDirection) {
+  public void conduitConnectionAdded(EnumFacing fromDirection) {
     conduitConnections.add(fromDirection);
   }
 
   @Override
-  public void conduitConnectionRemoved(ForgeDirection fromDirection) {
+  public void conduitConnectionRemoved(EnumFacing fromDirection) {
     conduitConnections.remove(fromDirection);
   }
 
   @Override
-  public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
+  public boolean canConnectToConduit(EnumFacing direction, IConduit conduit) {
     if (conduit == null) {
       return false;
     }
-    if (MicroblocksUtil.supportMicroblocks() && isBlockedByMicroblocks(direction, conduit)) {
-      return false;
-    }
+//    if (MicroblocksUtil.supportMicroblocks() && isBlockedByMicroblocks(direction, conduit)) {
+//      return false;
+//    }
     return getConnectionMode(direction) != ConnectionMode.DISABLED
         && conduit.getConnectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
-    return false;
-  }
-
-  protected boolean isBlockedByMicroblocks(ForgeDirection direction, IConduit conduit) {
-    IMicroblockCoverSystem covers = getBundle().getCoverSystem();
-    for (Part part : covers.getAllParts()) {
-      if (part.type.getPartClass() == EnumPartClass.Panel) {
-        return part.pos == EnumPosition.getFacePosition(direction.ordinal());
-      }
-    }
-    covers = conduit.getBundle().getCoverSystem();
-    for (Part part : covers.getAllParts()) {
-      if (part.type.getPartClass() == EnumPartClass.Panel) {
-        return part.pos == EnumPosition.getFacePosition(direction.getOpposite().ordinal());
-      }
-    }
+  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionMode) {
     return false;
   }
 
   @Override
-  public Set<ForgeDirection> getExternalConnections() {
+  public Set<EnumFacing> getExternalConnections() {
     return externalConnections;
   }
 
@@ -304,22 +278,22 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean containsExternalConnection(ForgeDirection dir) {
+  public boolean containsExternalConnection(EnumFacing dir) {
     return externalConnections.contains(dir);
   }
 
   @Override
-  public void externalConnectionAdded(ForgeDirection fromDirection) {
+  public void externalConnectionAdded(EnumFacing fromDirection) {
     externalConnections.add(fromDirection);
   }
 
   @Override
-  public void externalConnectionRemoved(ForgeDirection fromDirection) {
+  public void externalConnectionRemoved(EnumFacing fromDirection) {
     externalConnections.remove(fromDirection);
   }
 
   @Override
-  public boolean isConnectedTo(ForgeDirection dir) {
+  public boolean isConnectedTo(EnumFacing dir) {
     return containsConduitConnection(dir) || containsExternalConnection(dir);
   }
 
@@ -339,7 +313,7 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     int[] dirs = new int[conduitConnections.size()];
-    Iterator<ForgeDirection> cons = conduitConnections.iterator();
+    Iterator<EnumFacing> cons = conduitConnections.iterator();
     for (int i = 0; i < dirs.length; i++) {
       dirs[i] = cons.next().ordinal();
     }
@@ -356,7 +330,7 @@ public abstract class AbstractConduit implements IConduit {
     if (conectionModes.size() > 0) {
       byte[] modes = new byte[6];
       int i = 0;
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing dir : EnumFacing.VALUES) {
         modes[i] = (byte) getConnectionMode(dir).ordinal();
         i++;
       }
@@ -369,13 +343,13 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
     int[] dirs = nbtRoot.getIntArray("connections");
     for (int i = 0; i < dirs.length; i++) {
-      conduitConnections.add(ForgeDirection.values()[dirs[i]]);
+      conduitConnections.add(EnumFacing.values()[dirs[i]]);
     }
 
     externalConnections.clear();
     dirs = nbtRoot.getIntArray("externalConnections");
     for (int i = 0; i < dirs.length; i++) {
-      externalConnections.add(ForgeDirection.values()[dirs[i]]);
+      externalConnections.add(EnumFacing.values()[dirs[i]]);
     }
     active = nbtRoot.getBoolean("signalActive");
 
@@ -383,7 +357,7 @@ public abstract class AbstractConduit implements IConduit {
     byte[] modes = nbtRoot.getByteArray("conModes");
     if (modes != null && modes.length == 6) {
       int i = 0;
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing dir : EnumFacing.VALUES) {
         conectionModes.put(dir, ConnectionMode.values()[modes[i]]);
         i++;
       }
@@ -437,9 +411,9 @@ public abstract class AbstractConduit implements IConduit {
     }
 
     boolean externalConnectionsChanged = false;
-    List<ForgeDirection> copy = new ArrayList<ForgeDirection>(externalConnections);
+    List<EnumFacing> copy = new ArrayList<EnumFacing>(externalConnections);
     // remove any no longer valid connections
-    for (ForgeDirection dir : copy) {
+    for (EnumFacing dir : copy) {
       if (!canConnectToExternal(dir, false)) {
         externalConnectionRemoved(dir);
         externalConnectionsChanged = true;
@@ -447,7 +421,7 @@ public abstract class AbstractConduit implements IConduit {
     }
 
     // then check for new ones
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       if (!conduitConnections.contains(dir) && !externalConnections.contains(dir)) {
         if (canConnectToExternal(dir, false)) {
           externalConnectionAdded(dir);
@@ -475,7 +449,7 @@ public abstract class AbstractConduit implements IConduit {
 
   protected void updateNetwork(World world) {
     BlockCoord pos = getLocation();
-    if (getNetwork() == null && world.blockExists(pos.x, pos.y, pos.z)) {
+    if (getNetwork() == null && world.isBlockLoaded(pos.getBlockPos())) {
       ConduitUtil.ensureValidNetwork(this);
       // TODO figure out if removing this causes anything horrible to happen.
       // Initial testing shows no difference.
@@ -491,10 +465,10 @@ public abstract class AbstractConduit implements IConduit {
   public void onAddedToBundle() {
 
     TileEntity te = bundle.getEntity();
-    World world = te.getWorldObj();
+    World world = te.getWorld();
 
     conduitConnections.clear();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
       if (neighbour != null && neighbour.canConnectToConduit(dir.getOpposite(), this)) {
         conduitConnections.add(dir);
@@ -504,7 +478,7 @@ public abstract class AbstractConduit implements IConduit {
     }
 
     externalConnections.clear();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       if (!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
         externalConnectionAdded(dir);
       }
@@ -516,9 +490,9 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void onRemovedFromBundle() {
     TileEntity te = bundle.getEntity();
-    World world = te.getWorldObj();
+    World world = te.getWorld();
 
-    for (ForgeDirection dir : conduitConnections) {
+    for (EnumFacing dir : conduitConnections) {
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
       if (neighbour != null) {
         neighbour.conduitConnectionRemoved(dir.getOpposite());
@@ -528,7 +502,7 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
 
     if (!externalConnections.isEmpty()) {
-      world.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
+      world.notifyNeighborsOfStateChange(te.getPos(), EnderIO.blockConduitBundle);
     }
     externalConnections.clear();
 
@@ -551,8 +525,8 @@ public abstract class AbstractConduit implements IConduit {
 
     // Check for changes to external connections, connections to conduits are
     // handled by the bundle
-    Set<ForgeDirection> newCons = EnumSet.noneOf(ForgeDirection.class);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    Set<EnumFacing> newCons = EnumSet.noneOf(EnumFacing.class);
+    for (EnumFacing dir : EnumFacing.VALUES) {
       if (!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
         newCons.add(dir);
       }
@@ -561,7 +535,7 @@ public abstract class AbstractConduit implements IConduit {
       connectionsDirty = true;
       return true;
     }
-    for (ForgeDirection dir : externalConnections) {
+    for (EnumFacing dir : externalConnections) {
       if (!newCons.remove(dir)) {
         connectionsDirty = true;
         return true;
@@ -576,11 +550,11 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-    return onNeighborBlockChange(world.getBlock(tileX, tileY, tileZ));
+    return onNeighborBlockChange(world.getBlockState(new BlockPos(tileX, tileY, tileZ)).getBlock());
   }
 
   @Override
-  public Collection<CollidableComponent> createCollidables(CacheKey key) {
+  public Collection<CollidableComponent> createCollidables(CacheKey key) {    
     return Collections.singletonList(new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(
         getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null));
   }
@@ -598,7 +572,7 @@ public abstract class AbstractConduit implements IConduit {
     }
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       Collection<CollidableComponent> col = getCollidables(dir);
       if (col != null) {
         result.addAll(col);
@@ -611,12 +585,12 @@ public abstract class AbstractConduit implements IConduit {
     return result;
   }
 
-  protected boolean renderStub(ForgeDirection dir) {
+  protected boolean renderStub(EnumFacing dir) {
     // return getConectionMode(dir) == ConnectionMode.DISABLED;
     return false;
   }
 
-  private Collection<CollidableComponent> getCollidables(ForgeDirection dir) {
+  private Collection<CollidableComponent> getCollidables(EnumFacing dir) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getCollidableType();
     if (isConnectedTo(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
@@ -640,12 +614,12 @@ public abstract class AbstractConduit implements IConduit {
       return new LiquidConduitNetwork();
     } else if (IItemConduit.class.isAssignableFrom(type)) {
       return new ItemConduitNetwork();
-    } else if (IGasConduit.class.isAssignableFrom(type)) {
-      return new GasConduitNetwork();
-    } else if (IMEConduit.class.isAssignableFrom(type)) {
-      return new MEConduitNetwork();
-    } else if (IOCConduit.class.isAssignableFrom(type)) {
-      return new OCConduitNetwork();
+//    } else if (IGasConduit.class.isAssignableFrom(type)) {
+//      return new GasConduitNetwork();
+//    } else if (IMEConduit.class.isAssignableFrom(type)) {
+//      return new MEConduitNetwork();
+//    } else if (IOCConduit.class.isAssignableFrom(type)) {
+//      return new OCConduitNetwork();
     } else {
       return null;
     }

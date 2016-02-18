@@ -28,6 +28,13 @@ public class WandCap {
 	float baseCostModifier; 
 	
 	/**
+	 * how many additional vis is gained per charge 'tick' (one charge tick occurs every 5 game ticks)
+	 * examples: brass caps have a bonus of 1 and void caps have a bonus of 3 
+	 */
+	int chargeBonus; 
+	
+	
+	/**
 	 * specifies a list of primal aspects that use the special discount figure instead of the normal discount.
 	 */
 	List<Aspect> specialCostModifierAspects;
@@ -49,23 +56,25 @@ public class WandCap {
 	
 	public static LinkedHashMap<String,WandCap> caps = new LinkedHashMap<String,WandCap>();
 
-	public WandCap (String tag, float discount, ItemStack item, int craftCost) {
+	public WandCap (String tag, float discount, int charge, ItemStack item, int craftCost, ResourceLocation texture) {
 		this.setTag(tag);
 		this.baseCostModifier = discount;
 		this.specialCostModifierAspects = null;
-		texture = new ResourceLocation("thaumcraft","textures/models/wand_cap_"+getTag()+".png");
+		this.texture = texture;
 		this.item=item;
+		this.chargeBonus = charge;
 		this.setCraftCost(craftCost);
 		caps.put(tag, this);
 	}
 	
-	public WandCap (String tag, float discount, List<Aspect> specialAspects, float discountSpecial, ItemStack item, int craftCost) {
+	public WandCap (String tag, float discount, int charge, List<Aspect> specialAspects, float discountSpecial, ItemStack item, int craftCost, ResourceLocation texture) {
 		this.setTag(tag);
 		this.baseCostModifier = discount;
 		this.specialCostModifierAspects = specialAspects;
 		this.specialCostModifier = discountSpecial;
-		texture = new ResourceLocation("thaumcraft","textures/models/wand_cap_"+getTag()+".png");
+		this.texture = texture;
 		this.item=item;
+		this.chargeBonus = charge;
 		this.setCraftCost(craftCost);
 		caps.put(tag, this);
 	}
@@ -80,6 +89,10 @@ public class WandCap {
 
 	public float getSpecialCostModifier() {
 		return specialCostModifier;
+	}
+	
+	public int getChargeBonus() {
+		return chargeBonus;
 	}
 
 	public ResourceLocation getTexture() {

@@ -6,22 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -31,6 +17,15 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 public class EnderLiquidConduit extends AbstractLiquidConduit {
 
@@ -40,34 +35,34 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
   public static final String ICON_IN_OUT_KEY = "enderio:liquidConduitAdvancedInOut";
 
-  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
+  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(IIconRegister register) {
-        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
-        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
-        ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
-      }
-
-      @Override
-      public int getTextureType() {
-        return 0;
-      }
-
-    });
-  }
+//  @SideOnly(Side.CLIENT)
+//  public static void initIcons() {
+//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+//
+//      @Override
+//      public void registerIcons(IIconRegister register) {
+//        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
+//        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
+//        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
+//        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
+//        ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
+//      }
+//
+//      @Override
+//      public int getTextureType() {
+//        return 0;
+//      }
+//
+//    });
+//  }
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
 
-  private final EnumMap<ForgeDirection, FluidFilter> outputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
-  private final EnumMap<ForgeDirection, FluidFilter> inputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
+  private final EnumMap<EnumFacing, FluidFilter> outputFilters = new EnumMap<EnumFacing, FluidFilter>(EnumFacing.class);
+  private final EnumMap<EnumFacing, FluidFilter> inputFilters = new EnumMap<EnumFacing, FluidFilter>(EnumFacing.class);
 
   @Override
   public ItemStack createItem() {
@@ -82,14 +77,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
     if(ToolUtil.isToolEquipped(player)) {
 
-      if(!getBundle().getEntity().getWorldObj().isRemote) {
+      if(!getBundle().getEntity().getWorld().isRemote) {
 
         if(res != null && res.component != null) {
 
-          ForgeDirection connDir = res.component.dir;
-          ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
+          EnumFacing connDir = res.component.dir;
+          EnumFacing faceHit = res.movingObjectPosition.sideHit;
 
-          if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+          if(connDir == null || connDir == faceHit) {
 
             if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
@@ -97,7 +92,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
             }
 
             BlockCoord loc = getLocation().getLocation(faceHit);
-            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
+            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, ILiquidConduit.class);
             if(n == null) {
               return false;
             }
@@ -124,14 +119,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     return network;
   }
 
-  public FluidFilter getFilter(ForgeDirection dir, boolean isInput) {
+  public FluidFilter getFilter(EnumFacing dir, boolean isInput) {
     if(isInput) {
       return inputFilters.get(dir);
     }
     return outputFilters.get(dir);
   }
 
-  public void setFilter(ForgeDirection dir, FluidFilter filter, boolean isInput) {
+  public void setFilter(EnumFacing dir, FluidFilter filter, boolean isInput) {
     if(isInput) {
       inputFilters.put(dir, filter);
     } else {
@@ -149,7 +144,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       return false;
     }
     this.network = (EnderLiquidConduitNetwork) network;
-    for (ForgeDirection dir : externalConnections) {
+    for (EnumFacing dir : externalConnections) {
       this.network.connectionChanged(this, dir);
     }
 
@@ -157,32 +152,32 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public IIcon getTextureForState(CollidableComponent component) {
-    if(component.dir == ForgeDirection.UNKNOWN) {
+  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
+    if(component.dir ==null) {
       return ICONS.get(ICON_CORE_KEY);
     }
     return ICONS.get(ICON_KEY);
   }
 
-  public IIcon getTextureForInputMode() {
+  public TextureAtlasSprite getTextureForInputMode() {
     return ICONS.get(ICON_EXTRACT_KEY);
   }
 
-  public IIcon getTextureForOutputMode() {
+  public TextureAtlasSprite getTextureForOutputMode() {
     return ICONS.get(ICON_INSERT_KEY);
   }
 
-  public IIcon getTextureForInOutMode() {
+  public TextureAtlasSprite getTextureForInOutMode() {
     return ICONS.get(ICON_IN_OUT_KEY);
   }
 
   @Override
-  public IIcon getTransmitionTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return null;
   }
 
   @Override
-  public boolean canConnectToConduit(ForgeDirection direction, IConduit con) {
+  public boolean canConnectToConduit(EnumFacing direction, IConduit con) {
     if(!super.canConnectToConduit(direction, con)) {
       return false;
     }
@@ -193,18 +188,18 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+  public void setConnectionMode(EnumFacing dir, ConnectionMode mode) {
     super.setConnectionMode(dir, mode);
     refreshConnections(dir);
   }
   
   @Override
-  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, EnumFacing dir) {
     super.setExtractionRedstoneMode(mode, dir);
     refreshConnections(dir);
   }
 
-  private void refreshConnections(ForgeDirection dir) {
+  private void refreshConnections(EnumFacing dir) {
     if(network == null) {
       return;
     }
@@ -212,13 +207,13 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public void externalConnectionAdded(ForgeDirection fromDirection) {
+  public void externalConnectionAdded(EnumFacing fromDirection) {
     super.externalConnectionAdded(fromDirection);
     refreshConnections(fromDirection);
   }
 
   @Override
-  public void externalConnectionRemoved(ForgeDirection fromDirection) {
+  public void externalConnectionRemoved(EnumFacing fromDirection) {
     super.externalConnectionRemoved(fromDirection);
     refreshConnections(fromDirection);
   }
@@ -248,7 +243,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       return;
     }
 
-    for (ForgeDirection dir : externalConnections) {
+    for (EnumFacing dir : externalConnections) {
       if(autoExtractForDir(dir)) {
         if(network.extractFrom(this, dir)) {
           ticksSinceFailedExtract = 0;
@@ -261,7 +256,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   //Fluid API
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
@@ -269,7 +264,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     if(network == null) {
       return false;
     }
@@ -277,22 +272,22 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return false;
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return null;
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return null;
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     if(network == null) {
       return new FluidTankInfo[0];
     }
@@ -300,7 +295,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
   
   @Override
-  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
+  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
     if (dataRoot.hasKey("outputFilters")) {
       FluidFilter out = new FluidFilter();
@@ -315,7 +310,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+  protected void writeTypeSettingsToNbt(EnumFacing dir, NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
     FluidFilter out = outputFilters.get(dir);
     if (out != null) {
@@ -334,7 +329,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
-    for (Entry<ForgeDirection, FluidFilter> entry : inputFilters.entrySet()) {
+    for (Entry<EnumFacing, FluidFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
         if(f != null && !f.isDefault()) {
@@ -344,7 +339,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         }
       }
     }
-    for (Entry<ForgeDirection, FluidFilter> entry : outputFilters.entrySet()) {
+    for (Entry<EnumFacing, FluidFilter> entry : outputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
         if(f != null && !f.isDefault()) {
@@ -359,7 +354,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
     super.readFromNBT(nbtRoot, nbtVersion);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);

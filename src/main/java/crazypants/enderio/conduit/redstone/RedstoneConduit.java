@@ -8,26 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
-
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional.Method;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -35,30 +20,41 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import dan200.computercraft.api.ComputerCraftAPI;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedstoneWire;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional.Method;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
-  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
+  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(IIconRegister register) {
-        ICONS.put(KEY_CORE_OFF_ICON, register.registerIcon(KEY_CORE_OFF_ICON));
-        ICONS.put(KEY_CORE_ON_ICON, register.registerIcon(KEY_CORE_ON_ICON));
-        ICONS.put(KEY_CONDUIT_ICON, register.registerIcon(KEY_CONDUIT_ICON));
-        ICONS.put(KEY_TRANSMISSION_ICON, register.registerIcon(KEY_TRANSMISSION_ICON));
-      }
-
-      @Override
-      public int getTextureType() {
-        return 0;
-      }
-
-    });
-  }
+//  @SideOnly(Side.CLIENT)
+//  public static void initIcons() {
+//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+//
+//      @Override
+//      public void registerIcons(IIconRegister register) {
+//        ICONS.put(KEY_CORE_OFF_ICON, register.registerIcon(KEY_CORE_OFF_ICON));
+//        ICONS.put(KEY_CORE_ON_ICON, register.registerIcon(KEY_CORE_ON_ICON));
+//        ICONS.put(KEY_CONDUIT_ICON, register.registerIcon(KEY_CONDUIT_ICON));
+//        ICONS.put(KEY_TRANSMISSION_ICON, register.registerIcon(KEY_TRANSMISSION_ICON));
+//      }
+//
+//      @Override
+//      public int getTextureType() {
+//        return 0;
+//      }
+//
+//    });
+//  }
 
   protected RedstoneConduitNetwork network;
 
@@ -68,7 +64,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @SuppressWarnings("unused")
   public RedstoneConduit() {
-    for (ForgeDirection ignored : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing ignored : EnumFacing.VALUES) {
       externalSignals.add(new HashSet<Signal>());
     }
   }
@@ -95,13 +91,13 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
+  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
     return false;
   }
 
   @Override
   public void updateNetwork() {
-    World world = getBundle().getEntity().getWorldObj();
+    World world = getBundle().getEntity().getWorld();
     if(world != null) {
       updateNetwork(world);
     }
@@ -118,9 +114,9 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
   }
 
-  protected boolean acceptSignalsForDir(ForgeDirection dir) {
+  protected boolean acceptSignalsForDir(EnumFacing dir) {
     BlockCoord loc = getLocation().getLocation(dir);
-    return ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class) == null;
+    return ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, IRedstoneConduit.class) == null;
   }
 
   @Override
@@ -129,13 +125,13 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public Set<Signal> getNetworkInputs(ForgeDirection side) {
+  public Set<Signal> getNetworkInputs(EnumFacing side) {
     if(network != null) {
       network.setNetworkEnabled(false);
     }
 
     Set<Signal> res = new HashSet<Signal>();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       if((side == null || dir == side) && acceptSignalsForDir(dir)) {
         int input = getExternalPowerLevel(dir);
         if(input > 1) { // need to degrade external signals by one as they
@@ -186,12 +182,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public DyeColor getSignalColor(ForgeDirection dir) {
+  public DyeColor getSignalColor(EnumFacing dir) {
     return DyeColor.RED;
   }
 
   @Override
-  public Set<Signal> getNetworkOutputs(ForgeDirection side) {
+  public Set<Signal> getNetworkOutputs(EnumFacing side) {
     if(network == null) {
       return Collections.emptySet();
     }
@@ -200,7 +196,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public boolean onNeighborBlockChange(Block blockId) {    
-    World world = getBundle().getEntity().getWorldObj();
+    World world = getBundle().getEntity().getWorld();
     if(world.isRemote) {
       return false;
     }
@@ -223,50 +219,56 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   //returns 16 for string power inputs
-  protected int getExternalPowerLevel(ForgeDirection dir) {
-    World world = getBundle().getEntity().getWorldObj();
+  protected int getExternalPowerLevel(EnumFacing dir) {
+    World world = getBundle().getEntity().getWorld();
     BlockCoord loc = getLocation();
     loc = loc.getLocation(dir);
 
-    int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
+    //int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
+    int strong = world.getStrongPower(loc.getBlockPos(), dir);
     if(strong > 0) {
       return 16;
     }
 
-    int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
-    if(res < 15 && world.getBlock(loc.x, loc.y, loc.z) == Blocks.redstone_wire) {
-      int wireIn = world.getBlockMetadata(loc.x, loc.y, loc.z);
+    //int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
+    int res = world.getRedstonePower(loc.getBlockPos(), dir);
+    IBlockState bs = world.getBlockState(loc.getBlockPos());
+    Block block = bs.getBlock();
+    if(res < 15 && block == Blocks.redstone_wire) {
+      int wireIn = bs.getValue(BlockRedstoneWire.POWER);
       res = Math.max(res, wireIn);
+      
+      
     }
     return res;
   }
 
-  protected int[] getExternalBundledPowerLevel(ForgeDirection dir) {
-    World world = getBundle().getEntity().getWorldObj();
-    BlockCoord loc = getLocation();
-    loc = loc.getLocation(dir);
-
-    Block block = world.getBlock(loc.x, loc.y, loc.z);
-    if(block instanceof IRedNetOutputNode) {
-      return ((IRedNetOutputNode) block).getOutputValues(world, loc.x, loc.y, loc.z, dir.getOpposite());
-    }
+  protected int[] getExternalBundledPowerLevel(EnumFacing dir) {
+//    World world = getBundle().getEntity().getWorld();
+//    BlockCoord loc = getLocation();
+//    loc = loc.getLocation(dir);
+//
+//    Block block = world.getBlock(loc.x, loc.y, loc.z);
+//    if(block instanceof IRedNetOutputNode) {
+//      return ((IRedNetOutputNode) block).getOutputValues(world, loc.x, loc.y, loc.z, dir.getOpposite());
+//    }
 
     return null;
   }
 
   @Method(modid = "ComputerCraft")
-  protected int getComputerCraftBundledPowerLevel(ForgeDirection dir) {
+  protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
     BlockCoord loc = getLocation().getLocation(dir);
-    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getWorld(), loc.x,loc.y,loc.z, dir.getOpposite().ordinal());
+    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getWorld(), loc.getBlockPos(), dir.getOpposite().ordinal());
   }
 
   @Override
-  public int isProvidingStrongPower(ForgeDirection toDirection) {
+  public int isProvidingStrongPower(EnumFacing toDirection) {
     return 0;
   }
 
   @Override
-  public int isProvidingWeakPower(ForgeDirection toDirection) {
+  public int isProvidingWeakPower(EnumFacing toDirection) {
     if(network == null || !network.isNetworkEnabled()) {
       return 0;
     }
@@ -278,15 +280,15 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public IIcon getTextureForState(CollidableComponent component) {
-    if(component.dir == ForgeDirection.UNKNOWN) {
+  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
+    if(component.dir == null) {
       return isActive() ? ICONS.get(KEY_CORE_ON_ICON) : ICONS.get(KEY_CORE_OFF_ICON);
     }
     return isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);
   }
 
   @Override
-  public IIcon getTransmitionTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return null;
   }
 
@@ -296,7 +298,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
+  public int[] getOutputValues(World world, int x, int y, int z, EnumFacing side) {
     int[] result = new int[16];
 
     Set<Signal> outs = network != null ? network.getSignals() : null;
@@ -321,7 +323,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
+  public int getOutputValue(World world, int x, int y, int z, EnumFacing side, int subnet) {
     Set<Signal> outs = network != null ? network.getSignals() : null;
     if(outs != null) {
       BlockCoord loc = getLocation().getLocation(side);
@@ -340,7 +342,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
+  public void onInputsChanged(World world, int x, int y, int z, EnumFacing side, int[] inputValues) {
     // Check if anything changed, if so mark neighbor dirty to trigger an
     // update in the next tick. We have to iterate over the colors in the
     // outer loop to make sure we check all of them, because for channels

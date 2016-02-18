@@ -17,7 +17,6 @@ public class ResearchPage {
 	public static enum PageType
     {
         TEXT,
-        TEXT_CONCEALED,
         IMAGE,
         CRUCIBLE_CRAFTING,
         ARCANE_CRAFTING,
@@ -36,7 +35,7 @@ public class ResearchPage {
 	public ResourceLocation image=null;
 	public AspectList aspects=null;
 	public Object recipe=null;
-	public ItemStack recipeOutput=null;
+	public Object recipeOutput=null;
 	
 	/**
 	 * @param text this can (but does not have to) be a reference to a localization variable, not the actual text.
@@ -45,17 +44,7 @@ public class ResearchPage {
 		this.type = PageType.TEXT;
 		this.text = text;
 	}
-	
-	/**
-	 * @param research this page will only be displayed if the player has discovered this research
-	 * @param text this can (but does not have to) be a reference to a localization variable, not the actual text.
-	 */
-	public ResearchPage(String research, String text) {
-		this.type = PageType.TEXT_CONCEALED;
-		this.research = research;
-		this.text = text;
-	}
-	
+		
 	/**
 	 * @param recipe a vanilla crafting recipe.
 	 */
@@ -129,7 +118,7 @@ public class ResearchPage {
 	public ResearchPage(ItemStack input) {
 		this.type = PageType.SMELTING;
 		this.recipe = input;
-		this.recipeOutput = FurnaceRecipes.smelting().getSmeltingResult(input);
+		this.recipeOutput = FurnaceRecipes.instance().getSmeltingResult(input);
 	}
 	
 	/**
@@ -151,11 +140,6 @@ public class ResearchPage {
 	public ResearchPage(InfusionEnchantmentRecipe recipe) {
 		this.type = PageType.INFUSION_ENCHANTMENT;
 		this.recipe = recipe;
-//		if (recipe.recipeOutput instanceof ItemStack) {
-//			this.recipeOutput = (ItemStack) recipe.recipeOutput;
-//		} else {
-//			this.recipeOutput = recipe.recipeInput;
-//		}
 	}
 	
 	/**
@@ -188,6 +172,12 @@ public class ResearchPage {
 		}
 		return ret;
 	}
-	
+	/**
+	 * This page will only be shown if this research is unlocked 
+	 */
+	public ResearchPage setRequisite(String research) {
+		this.research = research;
+		return this;
+	}
 	
 }

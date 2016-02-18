@@ -1,25 +1,30 @@
 package crazypants.enderio.conduit.redstone;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.DyeColor;
+
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 
 public class Signal {
 
   public final int x;
   public final int y;
   public final int z;
-  public final ForgeDirection dir;
+  public final EnumFacing dir;
   public final int strength;
   public final DyeColor color;
 
-  public Signal(int x, int y, int z, ForgeDirection dir, int strength, DyeColor color) {
+  public Signal(int x, int y, int z, EnumFacing dir, int strength, DyeColor color) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.dir = dir;
     this.strength = strength;
     this.color = color;
+  }
+
+  public Signal(BlockPos pos, EnumFacing dir, int strength, DyeColor color) {
+    this(pos.getX(),pos.getY(),pos.getZ(), dir, strength, color);
   }
 
   @Override

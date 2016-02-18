@@ -4,5 +4,6 @@ public enum BlockType
 {
     Drawers,
     DrawersSorting,
-    Trim
+    Trim,
+    TrimSorting
 }

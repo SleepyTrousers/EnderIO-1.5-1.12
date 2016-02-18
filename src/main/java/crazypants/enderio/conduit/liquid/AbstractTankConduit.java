@@ -2,17 +2,6 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ChatUtil;
 
@@ -22,6 +11,15 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
@@ -40,14 +38,14 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
     if(ToolUtil.isToolEquipped(player)) {
 
-      if(!getBundle().getEntity().getWorldObj().isRemote) {
+      if(!getBundle().getEntity().getWorld().isRemote) {
 
         if(res != null && res.component != null) {
 
-          ForgeDirection connDir = res.component.dir;
-          ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
+          EnumFacing connDir = res.component.dir;
+          EnumFacing faceHit = res.movingObjectPosition.sideHit;
 
-          if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+          if(connDir == null || connDir == faceHit) {
 
             if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
@@ -55,7 +53,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
             }
 
             BlockCoord loc = getLocation().getLocation(faceHit);
-            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
+            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, ILiquidConduit.class);
             if(n == null) {
               return false;
             }
@@ -91,8 +89,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
     } else if(player.getCurrentEquippedItem().getItem() == Items.bucket) {
 
-      if(!getBundle().getEntity().getWorldObj().isRemote) {
-        long curTick = getBundle().getEntity().getWorldObj().getTotalWorldTime();
+      if(!getBundle().getEntity().getWorld().isRemote) {
+        long curTick = getBundle().getEntity().getWorld().getTotalWorldTime();
         if(curTick - lastEmptyTick < 20) {
           numEmptyEvents++;
         } else {
@@ -117,7 +115,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
       FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(player.getCurrentEquippedItem());
       if (fluid != null) {
-        if (!getBundle().getEntity().getWorldObj().isRemote) {
+        if (!getBundle().getEntity().getWorld().isRemote) {
           if (network != null
               && (network.getFluidType() == null || network.getTotalVolume() < 500 || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
             network.setFluidType(fluid);
@@ -193,8 +191,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   public void updateEntity(World world) {
     int lightValue = getLightValue();
     if(lastLightValue != lightValue) {
-      BlockCoord bc = getLocation();
-      getBundle().getWorld().updateLightByType(EnumSkyBlock.Block, bc.x, bc.y, bc.z);
+      BlockCoord bc = getLocation();      
+      getBundle().getWorld().checkLightFor(EnumSkyBlock.BLOCK, bc.getBlockPos());
       lastLightValue = lightValue;
     }
     super.updateEntity(world);

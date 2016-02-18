@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.util.EnumFacing;
 
 public class CollidableCache {
 
@@ -13,7 +13,7 @@ public class CollidableCache {
 
   private final Map<CacheKey, Collection<CollidableComponent>> cache = new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
 
-  public CacheKey createKey(Class<? extends IConduit> baseType, Offset offset, ForgeDirection dir, boolean isStub) {
+  public CacheKey createKey(Class<? extends IConduit> baseType, Offset offset, EnumFacing dir, boolean isStub) {
     return new CacheKey(baseType, offset, dir, isStub);
   }
 
@@ -32,10 +32,10 @@ public class CollidableCache {
     public final String className; // used to generate reliable equals /
                                    // hashcode
     public final Offset offset;
-    public final ForgeDirection dir;
+    public final EnumFacing dir;
     public final boolean isStub;
 
-    public CacheKey(Class<? extends IConduit> baseType, Offset offset, ForgeDirection dir, boolean isStub) {
+    public CacheKey(Class<? extends IConduit> baseType, Offset offset, EnumFacing dir, boolean isStub) {
       this.baseType = baseType;
       className = baseType.getCanonicalName();
       this.offset = offset;

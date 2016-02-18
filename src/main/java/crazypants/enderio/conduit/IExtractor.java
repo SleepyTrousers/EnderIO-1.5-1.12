@@ -1,19 +1,18 @@
 package crazypants.enderio.conduit;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.machine.RedstoneControlMode;
+import net.minecraft.util.EnumFacing;
 
 public interface IExtractor extends IConduit {
 
-  void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir);
+  void setExtractionRedstoneMode(RedstoneControlMode mode, EnumFacing dir);
 
-  RedstoneControlMode getExtractionRedstoneMode(ForgeDirection dir);
+  RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir);
 
-  void setExtractionSignalColor(ForgeDirection dir, DyeColor col);
+  void setExtractionSignalColor(EnumFacing dir, DyeColor col);
 
-  DyeColor getExtractionSignalColor(ForgeDirection dir);
+  DyeColor getExtractionSignalColor(EnumFacing dir);
 
 }

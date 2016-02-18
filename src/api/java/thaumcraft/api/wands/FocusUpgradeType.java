@@ -2,9 +2,6 @@ package thaumcraft.api.wands;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-
-import org.apache.logging.log4j.LogManager;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
@@ -25,19 +22,15 @@ public class FocusUpgradeType {
 	 */
 	public AspectList aspects;
 
-	
+	private static int lastID = 0; 
 
-	public FocusUpgradeType(int id, ResourceLocation icon, String name, String text, AspectList aspects) {
-		this.id = (short) id;	
+	public FocusUpgradeType(ResourceLocation icon, String name, String text, AspectList aspects) {
+		this.id = (short) lastID;	
+		lastID++;
 		this.icon = icon;
 		this.name = name;
 		this.text = text;
 		this.aspects = aspects;
-		
-		if (id<types.length && types[id]!=null) {
-			LogManager.getLogger("THAUMCRAFT").fatal("Focus Upgrade id "+id+" already occupied. Ignoring.");
-			return;
-		}
 		
 		// allocate space
 		if (id>=types.length) {
@@ -65,50 +58,50 @@ public class FocusUpgradeType {
 	}
 
 	// basic upgrade types
-	public static FocusUpgradeType potency = new FocusUpgradeType( 0,
+	public static FocusUpgradeType potency = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/potency.png"),
 			"focus.upgrade.potency.name","focus.upgrade.potency.text",
-			new AspectList().add(Aspect.WEAPON,1));
+			new AspectList().add(Aspect.AVERSION,1));
 	
-	public static FocusUpgradeType frugal = new FocusUpgradeType( 1,
+	public static FocusUpgradeType frugal = new FocusUpgradeType(
 			new ResourceLocation("thaumcraft", "textures/foci/frugal.png"),
 			"focus.upgrade.frugal.name","focus.upgrade.frugal.text",
-			new AspectList().add(Aspect.HUNGER,1));
+			new AspectList().add(Aspect.DESIRE,1));
 	
-	public static FocusUpgradeType treasure = new FocusUpgradeType( 2,
+	public static FocusUpgradeType treasure = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/treasure.png"),
 			"focus.upgrade.treasure.name","focus.upgrade.treasure.text",
-			new AspectList().add(Aspect.GREED,1));
+			new AspectList().add(Aspect.DESIRE,1));
 	
-	public static FocusUpgradeType enlarge = new FocusUpgradeType( 3,
+	public static FocusUpgradeType enlarge = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/enlarge.png"),
 			"focus.upgrade.enlarge.name","focus.upgrade.enlarge.text",
-			new AspectList().add(Aspect.TRAVEL,1));
+			new AspectList().add(Aspect.MOTION,1));
 
-	public static FocusUpgradeType alchemistsfire = new FocusUpgradeType( 4,
+	public static FocusUpgradeType alchemistsfire = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/alchemistsfire.png"),
 			"focus.upgrade.alchemistsfire.name","focus.upgrade.alchemistsfire.text",
-			new AspectList().add(Aspect.ENERGY,1).add(Aspect.SLIME,1));
+			new AspectList().add(Aspect.ENERGY,1).add(Aspect.WATER,1));
 	
-	public static FocusUpgradeType alchemistsfrost = new FocusUpgradeType( 5,
+	public static FocusUpgradeType alchemistsfrost = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/alchemistsfrost.png"),
 			"focus.upgrade.alchemistsfrost.name","focus.upgrade.alchemistsfrost.text",
 			new AspectList().add(Aspect.COLD,1).add(Aspect.TRAP,1));
 	
-	public static FocusUpgradeType architect = new FocusUpgradeType( 6,
+	public static FocusUpgradeType architect = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/architect.png"),
 			"focus.upgrade.architect.name","focus.upgrade.architect.text",
 			new AspectList().add(Aspect.CRAFT,1));
 	
-	public static FocusUpgradeType extend = new FocusUpgradeType( 7,
+	public static FocusUpgradeType extend = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/extend.png"),
 			"focus.upgrade.extend.name","focus.upgrade.extend.text",
 			new AspectList().add(Aspect.EXCHANGE,1));
 	
-	public static FocusUpgradeType silktouch = new FocusUpgradeType( 8,
+	public static FocusUpgradeType silktouch = new FocusUpgradeType( 
 			new ResourceLocation("thaumcraft", "textures/foci/silktouch.png"),
 			"focus.upgrade.silktouch.name","focus.upgrade.silktouch.text",
-			new AspectList().add(Aspect.GREED,1));
+			new AspectList().add(Aspect.DESIRE,1));
 	
 	
 }

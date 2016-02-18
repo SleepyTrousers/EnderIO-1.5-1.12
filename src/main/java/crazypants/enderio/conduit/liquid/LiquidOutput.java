@@ -1,15 +1,15 @@
 package crazypants.enderio.conduit.liquid;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
+
+import net.minecraft.util.EnumFacing;
 
 public class LiquidOutput {
 
-  final ForgeDirection dir;
+  final EnumFacing dir;
   final BlockCoord location;
 
-  public LiquidOutput(BlockCoord bc, ForgeDirection dir) {
+  public LiquidOutput(BlockCoord bc, EnumFacing dir) {
     this.dir = dir;
     this.location = bc;
   }

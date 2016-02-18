@@ -1,19 +1,18 @@
 package crazypants.enderio.conduit.geom;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.util.EnumFacing;
 
 public class CollidableComponent {
 
   public final Class<? extends IConduit> conduitType;
   public final BoundingBox bound;
-  public final ForgeDirection dir;
+  public final EnumFacing dir;
   public final Object data;
 
-  public CollidableComponent(Class<? extends IConduit> conduitType, BoundingBox bound, ForgeDirection id, Object data) {
+  public CollidableComponent(Class<? extends IConduit> conduitType, BoundingBox bound, EnumFacing id, Object data) {
     this.conduitType = conduitType;
     this.bound = bound;
     this.dir = id;

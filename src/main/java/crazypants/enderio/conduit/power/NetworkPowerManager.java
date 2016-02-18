@@ -8,15 +8,15 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 public class NetworkPowerManager {
 
@@ -503,9 +503,9 @@ public class NetworkPowerManager {
     final int canFill;
     int toBalance;
     IPowerConduit emmiter;
-    ForgeDirection direction;
+    EnumFacing direction;
 
-    private CapBankSupplyEntry(IPowerStorage capBank, int available, int canFill, IPowerConduit emmiter, ForgeDirection direction) {
+    private CapBankSupplyEntry(IPowerStorage capBank, int available, int canFill, IPowerConduit emmiter, EnumFacing direction) {
       this.capBank = capBank;
       canExtract = available;
       this.canFill = canFill;

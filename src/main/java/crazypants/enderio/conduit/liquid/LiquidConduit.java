@@ -5,24 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -31,6 +15,17 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class LiquidConduit extends AbstractTankConduit {
 
@@ -44,30 +39,30 @@ public class LiquidConduit extends AbstractTankConduit {
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitInsert";
   public static final String ICON_EMPTY_INSERT_KEY = "enderio:emptyLiquidConduitInsert";
 
-  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
+  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(IIconRegister register) {
-        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
-        ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerIcon(ICON_EMPTY_EXTRACT_KEY));
-        ICONS.put(ICON_EMPTY_INSERT_KEY, register.registerIcon(ICON_EMPTY_INSERT_KEY));
-        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
-        ICONS.put(ICON_KEY_LOCKED, register.registerIcon(ICON_KEY_LOCKED));
-      }
-
-      @Override
-      public int getTextureType() {
-        return 0;
-      }
-
-    });
-  }
+//  @SideOnly(Side.CLIENT)
+//  public static void initIcons() {
+//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+//
+//      @Override
+//      public void registerIcons(IIconRegister register) {
+//        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
+//        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
+//        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
+//        ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerIcon(ICON_EMPTY_EXTRACT_KEY));
+//        ICONS.put(ICON_EMPTY_INSERT_KEY, register.registerIcon(ICON_EMPTY_INSERT_KEY));
+//        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
+//        ICONS.put(ICON_KEY_LOCKED, register.registerIcon(ICON_KEY_LOCKED));
+//      }
+//
+//      @Override
+//      public int getTextureType() {
+//        return 0;
+//      }
+//
+//    });
+//  }
 
   private LiquidConduitNetwork network;
 
@@ -81,7 +76,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   public static final int MAX_IO_PER_TICK = Config.fluidConduitMaxIoRate;
 
-  private ForgeDirection startPushDir = ForgeDirection.DOWN;
+  private EnumFacing startPushDir = EnumFacing.DOWN;
 
   private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
 
@@ -107,7 +102,7 @@ public class LiquidConduit extends AbstractTankConduit {
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer
       BlockCoord loc = getLocation();
-      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
+      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimensionId(), loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }
@@ -124,7 +119,7 @@ public class LiquidConduit extends AbstractTankConduit {
       return;
     }
 
-    for (ForgeDirection dir : externalConnections) {
+    for (EnumFacing dir : externalConnections) {
       if(autoExtractForDir(dir)) {
 
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
@@ -161,7 +156,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
     if(network == null || resource == null) {
       return 0;
@@ -197,7 +192,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   }
 
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
     if(resource == null || resource.amount <= 0) {
       return 0;
     }
@@ -226,7 +221,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   private void updateStartPushDir() {
 
-    ForgeDirection newVal = getNextDir(startPushDir);
+    EnumFacing newVal = getNextDir(startPushDir);
     boolean foundNewStart = false;
     while (newVal != startPushDir && !foundNewStart) {
       foundNewStart = getConduitConnections().contains(newVal) || getExternalConnections().contains(newVal);
@@ -235,14 +230,14 @@ public class LiquidConduit extends AbstractTankConduit {
     startPushDir = newVal;
   }
 
-  private ForgeDirection getNextDir(ForgeDirection dir) {
-    if(dir.ordinal() >= ForgeDirection.UNKNOWN.ordinal() - 1) {
-      return ForgeDirection.VALID_DIRECTIONS[0];
+  private EnumFacing getNextDir(EnumFacing dir) {
+    if(dir.ordinal() >= EnumFacing.VALUES.length - 1) {
+      return EnumFacing.VALUES[0];
     }
-    return ForgeDirection.VALID_DIRECTIONS[dir.ordinal() + 1];
+    return EnumFacing.VALUES[dir.ordinal() + 1];
   }
 
-  private int pushLiquid(ForgeDirection from, FluidStack pushStack, boolean doPush, int token) {
+  private int pushLiquid(EnumFacing from, FluidStack pushStack, boolean doPush, int token) {
     if(token == currentPushToken || pushStack == null || pushStack.amount <= 0 || network == null) {
       return 0;
     }
@@ -250,7 +245,7 @@ public class LiquidConduit extends AbstractTankConduit {
     int pushed = 0;
     int total = pushStack.amount;
 
-    ForgeDirection dir = startPushDir;
+    EnumFacing dir = startPushDir;
     FluidStack toPush = pushStack.copy();
 
     int filledLocal = tank.fill(toPush, doPush);
@@ -284,13 +279,13 @@ public class LiquidConduit extends AbstractTankConduit {
     return pushed;
   }
 
-  private ILiquidConduit getFluidConduit(ForgeDirection dir) {
+  private ILiquidConduit getFluidConduit(EnumFacing dir) {
     TileEntity ent = getBundle().getEntity();
-    return ConduitUtil.getConduit(ent.getWorldObj(), ent, dir, ILiquidConduit.class);
+    return ConduitUtil.getConduit(ent.getWorld(), ent, dir, ILiquidConduit.class);
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return null;
     }
@@ -298,7 +293,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
@@ -306,21 +301,22 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     if(getConnectionMode(from) == ConnectionMode.OUTPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return false;
     }
     if(tank.getFluid() == null) {
       return true;
     }
-    if (fluid != null && fluid.getID() == tank.getFluid().getFluidID()) {
+    
+    if (fluid != null && fluid.getID() == tank.getFluid().getFluid().getID()) {
       return true;
     }
     return false;
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED
         || tank.getFluid() == null || fluid == null) {
       return false;
@@ -329,7 +325,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     return new FluidTankInfo[] { tank.getInfo() };
   }
 
@@ -374,7 +370,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public boolean canConnectToConduit(ForgeDirection direction, IConduit con) {
+  public boolean canConnectToConduit(EnumFacing direction, IConduit con) {
     if(!super.canConnectToConduit(direction, con)) {
       return false;
     }
@@ -388,8 +384,8 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public IIcon getTextureForState(CollidableComponent component) {
-    if(component.dir == ForgeDirection.UNKNOWN) {
+  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
+    if(component.dir == null) {
       return ICONS.get(ICON_CORE_KEY);
     }
     if(getConnectionMode(component.dir) == ConnectionMode.INPUT) {
@@ -405,9 +401,10 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public IIcon getTransmitionTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
-      return tank.getFluid().getFluid().getStillIcon();
+      //TODO: 1.8
+//      return tank.getFluid().getFluid().getStillIcon();
     }
     return null;
   }

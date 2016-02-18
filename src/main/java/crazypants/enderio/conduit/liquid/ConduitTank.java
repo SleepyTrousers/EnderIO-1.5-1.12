@@ -1,11 +1,11 @@
 package crazypants.enderio.conduit.liquid;
 
+import crazypants.enderio.conduit.ConduitUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
-import crazypants.enderio.conduit.ConduitUtil;
 
 public class ConduitTank implements IFluidTank {
 
@@ -78,11 +78,11 @@ public class ConduitTank implements IFluidTank {
 
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    if (resource == null || resource.getFluidID() <= 0) {
+    if (resource == null || resource.getFluid().getID() <= 0) {
       return 0;
     }
 
-    if (fluid == null || fluid.getFluidID() <= 0) {
+    if (fluid == null || fluid.getFluid().getID() <= 0) {
       if(resource.amount <= capacity) {
         if(doFill) {
           setLiquid(resource.copy());
@@ -118,7 +118,7 @@ public class ConduitTank implements IFluidTank {
 
   @Override
   public FluidStack drain(int maxDrain, boolean doDrain) {
-    if (fluid == null || fluid.getFluidID() <= 0) {
+    if (fluid == null || fluid.getFluid().getID() <= 0) {
       return null;
     }
     if(fluid.amount <= 0) {
@@ -134,7 +134,7 @@ public class ConduitTank implements IFluidTank {
       addAmount(-used);
     }
 
-    FluidStack drained = new FluidStack(fluid.getFluidID(), used);
+    FluidStack drained = new FluidStack(fluid.getFluid(), used);
 
     if(fluid.amount < 0) {
       fluid.amount = 0;

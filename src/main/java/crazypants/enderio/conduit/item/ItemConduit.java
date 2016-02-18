@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -640,7 +641,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public IIcon getTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return getCoreIcon();
     }
@@ -651,7 +652,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public IIcon getTransmitionTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return getEnderIcon();
   }
 

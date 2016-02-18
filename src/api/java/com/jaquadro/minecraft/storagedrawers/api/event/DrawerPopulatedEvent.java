@@ -1,7 +1,7 @@
 package com.jaquadro.minecraft.storagedrawers.api.event;
 
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawer;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * This event is called when a drawer has been bound to a new item.  This is

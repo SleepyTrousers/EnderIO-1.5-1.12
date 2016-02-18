@@ -6,8 +6,6 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.gas.IGasConduit;
-import crazypants.enderio.conduit.gas.PacketGasLevel;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
 import crazypants.enderio.machine.generator.combustion.PacketCombustionTank;
@@ -35,18 +33,18 @@ public class ClientUtil {
     con.readFromNBT(pkt.tc, TileConduitBundle.NBT_VERSION);
   }
 
-  public static void doGasLevelUpdate(int x, int y, int z, PacketGasLevel pkt) {
-    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
-    if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
-      return;
-    }
-    IConduitBundle bundle = (IConduitBundle) tile;
-    IGasConduit con = bundle.getConduit(IGasConduit.class);
-    if(con == null) {
-      return;
-    }
-    con.readFromNBT(pkt.tc, TileConduitBundle.NBT_VERSION);
-  }
+//  public static void doGasLevelUpdate(int x, int y, int z, PacketGasLevel pkt) {
+//    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
+//    if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
+//      return;
+//    }
+//    IConduitBundle bundle = (IConduitBundle) tile;
+//    IGasConduit con = bundle.getConduit(IGasConduit.class);
+//    if(con == null) {
+//      return;
+//    }
+//    con.readFromNBT(pkt.tc, TileConduitBundle.NBT_VERSION);
+//  }
 
   public static void spawnFarmParcticles(Random rand, BlockCoord bc) {
     double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;

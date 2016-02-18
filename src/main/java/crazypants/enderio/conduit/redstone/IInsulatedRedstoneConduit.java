@@ -1,10 +1,9 @@
 package crazypants.enderio.conduit.redstone;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.ConnectionMode;
+import net.minecraft.util.EnumFacing;
 
 public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 
@@ -14,18 +13,18 @@ public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 
-  void onInputsChanged(ForgeDirection side, int[] inputValues);
+  void onInputsChanged(EnumFacing side, int[] inputValues);
 
-  void onInputChanged(ForgeDirection side, int inputValue);
+  void onInputChanged(EnumFacing side, int inputValue);
 
-  void forceConnectionMode(ForgeDirection dir, ConnectionMode mode);
+  void forceConnectionMode(EnumFacing dir, ConnectionMode mode);
 
-  void setSignalColor(ForgeDirection dir, DyeColor col);
+  void setSignalColor(EnumFacing dir, DyeColor col);
 
-  boolean isSpecialConnection(ForgeDirection dir);
+  boolean isSpecialConnection(EnumFacing dir);
 
-  boolean isOutputStrong(ForgeDirection dir);
+  boolean isOutputStrong(EnumFacing dir);
 
-  void setOutputStrength(ForgeDirection dir, boolean isStrong);
+  void setOutputStrength(EnumFacing dir, boolean isStrong);
 
 }

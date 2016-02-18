@@ -1,15 +1,14 @@
 package crazypants.enderio.teleport.telepad;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-
-import com.enderio.core.common.network.MessageTileEntity;
-
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> implements IMessageHandler<PacketOpenServerGui, IMessage> {
 
@@ -42,7 +41,7 @@ public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> implemen
     TileTelePad te = message.getTileEntity(world);
     
     if(te != null) {
-        player.openGui(EnderIO.instance, message.id, world, te.xCoord, te.yCoord, te.zCoord);
+        player.openGui(EnderIO.instance, message.id, world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
     }
     
     return null;

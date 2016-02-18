@@ -27,6 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -115,7 +116,7 @@ public class EnderRailController {
           cart = (EntityMinecart) ent;
           setCartDirection(cart);
         }        
-        TeleportUtil.spawn(transciever.getWorldObj(), ent);
+        TeleportUtil.spawn(transciever.getWorld(), ent);
         if(cart != null) {          
           newlySpawnedCarts.add(cart.getPersistentID());
           CartLinkUtil.instance.recreateLinks(cart);
@@ -128,8 +129,8 @@ public class EnderRailController {
   }
 
   private void setCartDirection(EntityMinecart cart) {
-    int meta = transciever.getWorldObj().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
-    ForgeDirection dir = BlockEnderRail.getDirection(meta);
+    int meta = transciever.getWorld().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+    EnumFacing dir = BlockEnderRail.getDirection(meta);
     CartLinkUtil.instance.setCartDirection(cart, dir);
   }
 

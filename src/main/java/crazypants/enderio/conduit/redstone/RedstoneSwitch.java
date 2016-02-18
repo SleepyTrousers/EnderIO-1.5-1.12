@@ -3,27 +3,22 @@ package crazypants.enderio.conduit.redstone;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 public class RedstoneSwitch extends RedstoneConduit {
 
@@ -33,23 +28,23 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   private boolean isOn;
 
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(IIconRegister register) {
-        ICONS.put(RedstoneSwitch.SWITHC_ICON_OFF_KEY, register.registerIcon(SWITHC_ICON_OFF_KEY));
-        ICONS.put(RedstoneSwitch.SWITCH_ICON_ON_KEY, register.registerIcon(SWITCH_ICON_ON_KEY));
-      }
-
-      @Override
-      public int getTextureType() {
-        return 0;
-      }
-
-    });
-  }
+//  @SideOnly(Side.CLIENT)
+//  public static void initIcons() {
+//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+//
+//      @Override
+//      public void registerIcons(IIconRegister register) {
+//        ICONS.put(RedstoneSwitch.SWITHC_ICON_OFF_KEY, register.registerIcon(SWITHC_ICON_OFF_KEY));
+//        ICONS.put(RedstoneSwitch.SWITCH_ICON_ON_KEY, register.registerIcon(SWITCH_ICON_ON_KEY));
+//      }
+//
+//      @Override
+//      public int getTextureType() {
+//        return 0;
+//      }
+//
+//    });
+//  }
 
   @Override
   public ItemStack createItem() {
@@ -57,7 +52,7 @@ public class RedstoneSwitch extends RedstoneConduit {
   }
 
   @Override
-  public int isProvidingStrongPower(ForgeDirection toDirection) {
+  public int isProvidingStrongPower(EnumFacing toDirection) {
     if(network == null || !network.isNetworkEnabled()) {
       return 0;
     }
@@ -76,12 +71,12 @@ public class RedstoneSwitch extends RedstoneConduit {
     isOn = nbtRoot.getBoolean("switchOn");
   }
 
-  IIcon getSwitchIcon() {
+  TextureAtlasSprite getSwitchIcon() {
     return isOn ? ICONS.get(SWITCH_ICON_ON_KEY) : ICONS.get(SWITHC_ICON_OFF_KEY);
   }
 
   @Override
-  public IIcon getTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if(SWITCH_TAG.equals(component.data)) {
       return isOn ? ICONS.get(SWITCH_ICON_ON_KEY) : ICONS.get(SWITHC_ICON_OFF_KEY);
     }
@@ -94,14 +89,14 @@ public class RedstoneSwitch extends RedstoneConduit {
       return collidables;
     }
 
-    Offset o = getBundle().getOffset(getBaseConduitType(), ForgeDirection.UNKNOWN);
-    Vector3d trans = ConduitGeometryUtil.instance.getTranslation(ForgeDirection.UNKNOWN, o);
+    Offset o = getBundle().getOffset(getBaseConduitType(), null);
+    Vector3d trans = ConduitGeometryUtil.instance.getTranslation(null, o);
 
     List<CollidableComponent> result = super.getCollidableComponents();
     BoundingBox[] aabb = RedstoneSwitchBounds.getInstance().getAABB();
 
     for (BoundingBox bb : aabb) {
-      result.add(new CollidableComponent(IRedstoneConduit.class, bb.translate(trans), ForgeDirection.UNKNOWN, SWITCH_TAG));
+      result.add(new CollidableComponent(IRedstoneConduit.class, bb.translate(trans), null, SWITCH_TAG));
     }
 
     return result;
@@ -122,7 +117,7 @@ public class RedstoneSwitch extends RedstoneConduit {
       return;
     }
     TileEntity te = bundle.getEntity();
-    Signal signal = new Signal(te.xCoord, te.yCoord, te.zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
+    Signal signal = new Signal(te.getPos(), null, 15, DyeColor.RED);
     if(isOn) {
       network.addSignal(signal);
     } else {
@@ -135,7 +130,7 @@ public class RedstoneSwitch extends RedstoneConduit {
     Set<Signal> res = super.getNetworkInputs();
     if(isOn) {
       BlockCoord loc = getLocation();
-      Signal signal = new Signal(loc.x, loc.y, loc.z, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
+      Signal signal = new Signal(loc.x, loc.y, loc.z, null, 15, DyeColor.RED);
       res.add(signal);
     }
     return res;

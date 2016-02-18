@@ -1,35 +1,28 @@
 package thaumcraft.api.crafting;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.AspectList;
 
-public interface IArcaneRecipe
+public interface IArcaneRecipe extends IRecipe
 {
 	
-	
-    /**
-     * Used to check if a recipe matches current crafting inventory
-     * @param player 
-     */
-    boolean matches(IInventory var1, World world, EntityPlayer player);
+	boolean matches(InventoryCrafting inv, World worldIn);
+	boolean matches(InventoryCrafting inv, World world, EntityPlayer player);
 
-    /**
-     * Returns an Item that is the result of this recipe
-     */
-    ItemStack getCraftingResult(IInventory var1);
+    ItemStack getCraftingResult(InventoryCrafting inv);
 
-    /**
-     * Returns the size of the recipe area
-     */
     int getRecipeSize();
 
     ItemStack getRecipeOutput();
-    AspectList getAspects();
-    AspectList getAspects(IInventory var1);
-    String getResearch();
 
+    ItemStack[] getRemainingItems(InventoryCrafting inv);
+    
+    AspectList getAspects();
+    AspectList getAspects(InventoryCrafting inv);
+    String[] getResearch();
     
 }

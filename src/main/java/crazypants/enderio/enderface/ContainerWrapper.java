@@ -1,6 +1,11 @@
 package crazypants.enderio.enderface;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class ContainerWrapper extends net.minecraft.inventory.Container {
 
@@ -27,10 +32,9 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
   public net.minecraft.inventory.Slot getSlot(int arg0) {
     return wrapped.getSlot(arg0);
   }
-
-  @SuppressWarnings("rawtypes")
+  
   @Override
-  public java.util.List getInventory() {
+  public List<ItemStack> getInventory() {
     return wrapped.getInventory();
   }
 
@@ -44,14 +48,10 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
     return wrapped.slotClick(arg0, arg1, arg2, arg3);
   }
 
+ 
   @Override
-  public boolean func_94530_a(net.minecraft.item.ItemStack arg0, net.minecraft.inventory.Slot arg1) {
-    return wrapped.func_94530_a(arg0, arg1);
-  }
-
-  @Override
-  public void addCraftingToCrafters(net.minecraft.inventory.ICrafting arg0) {
-    wrapped.addCraftingToCrafters(arg0);
+  public void onCraftGuiOpened(ICrafting listener) {
+    wrapped.onCraftGuiOpened(listener);
   }
 
   @Override
@@ -100,13 +100,25 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
   }
 
   @Override
-  public boolean isPlayerNotUsingContainer(net.minecraft.entity.player.EntityPlayer arg0) {
-    return wrapped.isPlayerNotUsingContainer(arg0);
+  public boolean canMergeSlot(ItemStack stack, Slot p_94530_2_) {
+    return wrapped.canMergeSlot(stack, p_94530_2_);
   }
 
   @Override
-  public void setPlayerIsPresent(net.minecraft.entity.player.EntityPlayer arg0, boolean arg1) {
-    wrapped.setPlayerIsPresent(arg0, arg1);
+  public void onContainerClosed(EntityPlayer playerIn) {
+    wrapped.onContainerClosed(playerIn);
   }
+
+  @Override
+  public boolean getCanCraft(EntityPlayer p_75129_1_) {
+    return wrapped.getCanCraft(p_75129_1_);
+  }
+
+  @Override
+  public void setCanCraft(EntityPlayer p_75128_1_, boolean p_75128_2_) {
+    wrapped.setCanCraft(p_75128_1_, p_75128_2_);
+  }
+
+  
 
 }

@@ -7,16 +7,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Sets;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -150,7 +150,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     StringBuilder sb = new StringBuilder();
     for (IRedstoneConduit con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      sb.append("<").append(te.xCoord).append(",").append(te.yCoord).append(",").append(te.zCoord).append(">");
+      sb.append("<").append(te.getPos().getX()).append(",").append(te.getPos().getY()).append(",").append(te.getPos().getZ()).append(">");
     }
     return sb.toString();
   }
@@ -186,24 +186,25 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
     TileEntity te = con.getBundle().getEntity();
 
-    World worldObj = te.getWorldObj();
+    World worldObj = te.getWorld();
 
     BlockCoord bc1 = new BlockCoord(te);
 
-    if (!worldObj.blockExists(te.xCoord, te.yCoord, te.zCoord)) {
+    if (!worldObj.isBlockLoaded(te.getPos())) {
       return;
     }
 
     // Done manually to avoid orphaning chunks
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
       BlockCoord bc2 = bc1.getLocation(dir);
-      if (worldObj.blockExists(bc2.x, bc2.y, bc2.z)) {
-        worldObj.notifyBlockOfNeighborChange(bc2.x, bc2.y, bc2.z, EnderIO.blockConduitBundle);
+      if (worldObj.isBlockLoaded(bc2.getBlockPos())) {
+        //worldObj.notifyBlockOfNeighborChange(bc2.x, bc2.y, bc2.z, EnderIO.blockConduitBundle);
+        worldObj.notifyNeighborsOfStateChange(bc2.getBlockPos(), EnderIO.blockConduitBundle);
         if (signal != null && bc2.getBlock(worldObj).isNormalCube()) {
-          for (ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
+          for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockCoord bc3 = bc2.getLocation(dir2);
-            if (!bc3.equals(bc1) && worldObj.blockExists(bc3.x, bc3.y, bc3.z)) {
-              worldObj.notifyBlockOfNeighborChange(bc3.x, bc3.y, bc3.z, EnderIO.blockConduitBundle);
+            if (!bc3.equals(bc1) && worldObj.isBlockLoaded(bc3.getBlockPos())) {
+              worldObj.notifyNeighborsOfStateChange(bc3.getBlockPos(), EnderIO.blockConduitBundle);
             }
           }
         }
@@ -226,14 +227,14 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         world = c.getBundle().getWorld();
       }
       BlockCoord loc = c.getLocation();
-      if (world.blockExists(loc.x, loc.y, loc.z)) {
+      if (world.isBlockLoaded(loc.getBlockPos())) {
         this.conduits.add(c);
         c.setNetwork(this);
       }
     }
     Set<Signal> valid = Sets.newHashSet();
     for (Signal s : oldSignals) {
-      if (world.blockExists(s.x, s.y, s.z)) {
+      if (world.isBlockLoaded(new BlockPos(s.x, s.y, s.z))) {
         valid.add(s);
       }
     }
