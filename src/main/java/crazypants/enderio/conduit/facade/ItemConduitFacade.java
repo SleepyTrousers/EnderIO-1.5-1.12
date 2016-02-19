@@ -24,6 +24,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -104,45 +105,48 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 //    return getIconFromDamage(stack.getItemDamage());
 //  }
 
-  @Override
-  public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
-      float par9, float par10) {
+  
+  
+  @Override 
+ public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 
     if(world.isRemote) {
       return true;
     }
 
-    EnumFacing dir = EnumFacing.values()[side];
-    int placeX = x + dir.offsetX;
-    int placeY = y + dir.offsetY;
-    int placeZ = z + dir.offsetZ;
+//    EnumFacing dir = EnumFacing.values()[side];
+//    int placeX = x + dir.offsetX;
+//    int placeY = y + dir.offsetY;
+//    int placeZ = z + dir.offsetZ;
+    BlockPos placeAt = pos.offset(side);
 
-    if (player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && PainterUtil.getSourceBlock(itemStack) != null) {
-      if (world.isAirBlock(placeX, placeY, placeZ)) {
-        world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
-        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
+    if (player.canPlayerEdit(placeAt, side, itemStack) && PainterUtil.getSourceBlock(itemStack) != null) {
+      if (world.isAirBlock(placeAt)) {
+        world.setBlockState(placeAt, EnderIO.blockConduitBundle.getDefaultState());
+        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeAt);
         Block facadeID = PainterUtil.getSourceBlock(itemStack);
         int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
         facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
         bundle.setFacadeId(facadeID);
         bundle.setFacadeMetadata(facadeMeta);
         bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
-        ConduitUtil.playPlaceSound(facadeID.stepSound, world, x, y, z);
+        ConduitUtil.playPlaceSound(facadeID.stepSound, world, pos.getX(), pos.getY(), pos.getZ());
         if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
         return true;
       } else {
-        Block block = world.getBlock(placeX, placeY, placeZ);
+        Block block = world.getBlockState(placeAt).getBlock();
         if (block == EnderIO.blockConduitBundle) {
-          ((BlockConduitBundle) block).handleFacadeClick(world, placeX, placeY, placeZ, player, dir.getOpposite().ordinal(),
-              (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ), itemStack);
+          ((BlockConduitBundle) block).handleFacadeClick(world, placeAt, player, side.getOpposite(),
+              (IConduitBundle) world.getTileEntity(placeAt), itemStack);
         }
       }
     }
 
     return false;
   }
+
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -219,8 +223,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       }
       if(PaintSourceValidator.instance.isWhitelisted(paintSource)) {
         return true;
-      }
-      if (!Config.allowTileEntitiesAsPaintSource && block.hasTileEntity(paintSource.getItemDamage())) {
+      }      
+      if (!Config.allowTileEntitiesAsPaintSource && block.hasTileEntity(block.getStateFromMeta(paintSource.getItemDamage()))) {
         return false;
       }
       if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {

@@ -549,7 +549,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
     return onNeighborBlockChange(world.getBlockState(new BlockPos(tileX, tileY, tileZ)).getBlock());
   }
 

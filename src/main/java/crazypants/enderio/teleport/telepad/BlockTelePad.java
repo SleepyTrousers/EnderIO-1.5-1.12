@@ -109,7 +109,7 @@ public class BlockTelePad extends BlockTravelAnchor {
 
   @Override
   public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-    super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+    super.onNeighborChange(world, null, null);
     ((TileTelePad) world.getTileEntity(x, y, z)).updateConnectedState(true);
   }
 

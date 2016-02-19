@@ -2,21 +2,23 @@ package crazypants.enderio.item.skull;
 
 import java.util.List;
 
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemEndermanSkull extends ItemBlockWithMetadata {
+public class ItemEndermanSkull extends ItemBlock {
 
   public ItemEndermanSkull(Block block) {
-    super(block, block);
+    super(block);
+    setHasSubtypes(true);
+    setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
@@ -27,10 +29,9 @@ public class ItemEndermanSkull extends ItemBlockWithMetadata {
     return "tile.blockEndermanSkull." + SkullType.values()[meta].name;
   }
 
-  @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @Override  
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (int j = 0; j < SkullType.values().length; ++j) {
       if(!SkullType.values()[j].showEyes) {
         par3List.add(new ItemStack(par1, 1, j));

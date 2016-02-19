@@ -26,6 +26,7 @@ import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.Fluid;
@@ -312,10 +313,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
   
   @Override
-  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+  public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
     boolean needsUpdate = false;
     for (IConduit conduit : conduits) {
-      needsUpdate |= conduit.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+      needsUpdate |= conduit.onNeighborChange(world, pos, neighbor);
     }
     if(needsUpdate) {
       dirty();

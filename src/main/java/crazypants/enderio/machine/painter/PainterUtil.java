@@ -103,19 +103,20 @@ public final class PainterUtil {
     return facadeMeta;
   }
 
-  public static int adjustFacadeMetadata(Block facadeID, int facadeMeta, int side) {
-    if(facadeID instanceof BlockRotatedPillar) {
-      int dir = facadeMeta & 0xC;
-      switch (side) {
-        case 0:
-        case 1: dir = 0; break;
-        case 4:
-        case 5: dir = 4; break;
-        case 2:
-        case 3: dir = 8; break;
-      }
-      facadeMeta = (facadeMeta & 3) | dir;
-    }
+  public static int adjustFacadeMetadata(Block facadeID, int facadeMeta, EnumFacing side) {
+    //TODO: 1.8
+//    if(facadeID instanceof BlockRotatedPillar) {
+//      int dir = facadeMeta & 0xC;
+//      switch (side) {
+//        case 0:
+//        case 1: dir = 0; break;
+//        case 4:
+//        case 5: dir = 4; break;
+//        case 2:
+//        case 3: dir = 8; break;
+//      }
+//      facadeMeta = (facadeMeta & 3) | dir;
+//    }
     return facadeMeta;
   }
 

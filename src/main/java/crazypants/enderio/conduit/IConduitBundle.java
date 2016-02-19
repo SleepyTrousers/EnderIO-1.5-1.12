@@ -12,6 +12,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -69,7 +70,7 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler {
 
   void onNeighborBlockChange(Block blockId);
   
-  void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
+  void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor);
 
   void onBlockRemoved();
 

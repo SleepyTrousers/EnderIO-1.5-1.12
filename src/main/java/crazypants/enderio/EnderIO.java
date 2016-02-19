@@ -21,6 +21,9 @@ import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
+import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.facade.BlockConduitFacade;
+import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -34,13 +37,17 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
+import crazypants.enderio.item.ItemSoulVessel;
+import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundEntity;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
@@ -54,6 +61,7 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
+import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
@@ -61,8 +69,10 @@ import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import net.minecraft.block.material.Material;
@@ -130,8 +140,8 @@ public class EnderIO {
 //  //Teleporting
   public static BlockTravelAnchor blockTravelPlatform;
 //  public static BlockTelePad blockTelePad;
-//  public static ItemCoordSelector itemCoordSelector;
-//  public static ItemTravelStaff itemTravelStaff;
+  public static ItemCoordSelector itemCoordSelector;
+  public static ItemTravelStaff itemTravelStaff;
 //
 //  // Painter
 //  public static BlockPainter blockPainter;
@@ -145,9 +155,9 @@ public class EnderIO {
 //  public static BlockPaintedCarpet blockPaintedCarpet;
 //
 //  // Conduits
-//  public static BlockConduitBundle blockConduitBundle;
-//  public static BlockConduitFacade blockConduitFacade;
-//  public static ItemConduitFacade itemConduitFacade;
+  public static BlockConduitBundle blockConduitBundle;
+  public static BlockConduitFacade blockConduitFacade;
+  public static ItemConduitFacade itemConduitFacade;
 //  public static ItemRedstoneConduit itemRedstoneConduit;
 //  public static ItemPowerConduit itemPowerConduit;
 //  public static ItemLiquidConduit itemLiquidConduit;
@@ -190,9 +200,7 @@ public class EnderIO {
 //  public static BlockTransceiver blockTransceiver;
 //  public static BlockBuffer blockBuffer;
 //  public static BlockInventoryPanel blockInventoryPanel;
-//
 //  public static BlockKillerJoe blockKillerJoe;
-//
 //  public static BlockEnchanter blockEnchanter;
 //
 //  public static BlockElectricLight blockElectricLight;
@@ -202,7 +210,7 @@ public class EnderIO {
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
   public static BlockDarkSteelAnvil blockDarkSteelAnvil;
   public static BlockDarkSteelLadder blockDarkSteelLadder;
-//  public static BlockEndermanSkull blockEndermanSkull;
+  public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
 //  public static BlockEnderRail blockEnderRail;
 
@@ -228,12 +236,12 @@ public class EnderIO {
   public static ItemBucketEio itemBucketXpJuice;
 //
 //  // Items
-//  public static ItemYetaWrench itemYetaWench;
+  public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
-//  public static ItemXpTransfer itemXpTransfer;
-//
-//  public static ItemSoulVessel itemSoulVessel;
-//  public static ItemFrankenSkull itemFrankenSkull;
+  public static ItemXpTransfer itemXpTransfer;
+
+  public static ItemSoulVessel itemSoulVessel;
+  public static ItemFrankenSkull itemFrankenSkull;
 //
 //  public static BlockVacuumChest blockVacuumChest;
 
@@ -289,7 +297,7 @@ public class EnderIO {
 //    blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
 //    blockTelePad = BlockTelePad.create();
-//    itemCoordSelector = ItemCoordSelector.create();
+    itemCoordSelector = ItemCoordSelector.create();
 //
 //    blockSliceAndSplice = BlockSliceAndSplice.create();
 //    blockSoulFuser = BlockSoulBinder.create();
@@ -315,15 +323,15 @@ public class EnderIO {
 
 //    blockEnderRail = BlockEnderRail.create();
 //
-//    blockConduitBundle = BlockConduitBundle.create();
-//    blockConduitFacade = BlockConduitFacade.create();
-//    itemConduitFacade = ItemConduitFacade.create();
+    blockConduitBundle = BlockConduitBundle.create();
+    blockConduitFacade = BlockConduitFacade.create();
+    itemConduitFacade = ItemConduitFacade.create();
 //
 //    itemBrokenSpawner = ItemBrokenSpawner.create();
 //
-//    blockEndermanSkull = BlockEndermanSkull.create();
-//    itemFrankenSkull = ItemFrankenSkull.create();
-//
+    blockEndermanSkull = BlockEndermanSkull.create();
+    itemFrankenSkull = ItemFrankenSkull.create();
+
 //    itemRedstoneConduit = ItemRedstoneConduit.create();
 //    itemPowerConduit = ItemPowerConduit.create();
 //    itemLiquidConduit = ItemLiquidConduit.create();
@@ -347,14 +355,13 @@ public class EnderIO {
 
     registerFluids();
 
-//    itemYetaWench = ItemYetaWrench.create();
+    itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
-//    itemTravelStaff = ItemTravelStaff.create();
+    itemTravelStaff = ItemTravelStaff.create();
     itemConduitProbe = ItemConduitProbe.create();
-//
-//    itemXpTransfer = ItemXpTransfer.create();
-//
-//    itemSoulVessel = ItemSoulVessel.create();
+
+    itemXpTransfer = ItemXpTransfer.create();
+    itemSoulVessel = ItemSoulVessel.create();
 
     blockIngotStorage = BlockIngotStorage.create();
 
@@ -631,8 +638,8 @@ public class EnderIO {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             TravelController.instance.addBlockToBlinkBlackList(value);
-//          } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
-//            itemSoulVessel.addEntityToBlackList(value);
+          } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
+            itemSoulVessel.addEntityToBlackList(value);
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {

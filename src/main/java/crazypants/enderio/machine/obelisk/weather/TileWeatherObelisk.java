@@ -116,7 +116,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @SideOnly(Side.CLIENT)
   private void spawnParticle() {
-    EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.ordinal(), getPos().getX() + 0.5, getPos().getY()+ 0.3, getPos().getZ()+ 0.5, 0, 0, 0, 0);
+    EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), getPos().getX() + 0.5, getPos().getY()+ 0.3, getPos().getZ()+ 0.5, 0, 0, 0, 0);
 //    EntitySmokeFX fx = new EntitySmokeFX(getWorld(), getPos().getX() + 0.5, getPos().getY()+ 0.3, getPos().getZ()+ 0.5, 0, 0, 0, 0f);
     fx.setRBGColorF(particleColor.getRed() / 255f, particleColor.getGreen() / 255f, particleColor.getBlue() / 255f);
     fx.setVelocity(worldObj.rand.nextDouble() * 0.1 - 0.05, 0.35, worldObj.rand.nextDouble() * 0.1 - 0.05);

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -127,7 +128,7 @@ public interface IConduit {
 
   boolean onNeighborBlockChange(Block blockId);
   
-  boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
+  boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos);
 
   //For Copy/Paste of connection settings
   boolean writeConnectionSettingsToNBT(EnumFacing dir, NBTTagCompound nbt);

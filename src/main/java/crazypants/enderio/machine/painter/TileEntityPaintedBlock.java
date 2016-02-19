@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.painter;
 
+import crazypants.enderio.TileEntityEio;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import crazypants.enderio.TileEntityEio;
 
 public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableTileEntity {
 
@@ -27,7 +27,7 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     if(sourceBlock != null) {
-      nbtRoot.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock));
+      nbtRoot.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock).toString());
     }
     nbtRoot.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
   }
@@ -58,8 +58,4 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
     this.sourceBlockMetadata = sourceBlockMetadata;
   }
 
-  @Override
-  public boolean shouldUpdate() {
-    return false;
-  }
 }

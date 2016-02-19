@@ -5,30 +5,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-
 import org.lwjgl.input.Keyboard;
-
-import cofh.api.block.IDismantleable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -38,6 +19,23 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
@@ -47,7 +45,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     }
     ItemYetaWrench result = new ItemYetaWrench();
     result = ToolUtil.addInterfaces(result);
-    //result.init();
+
     GameRegistry.registerItem(result, ModObject.itemYetaWrench.unlocalisedName);
 
     return result;
@@ -58,51 +56,42 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     setUnlocalizedName(ModObject.itemYetaWrench.unlocalisedName);
     setMaxStackSize(1);
   }
+  
+  
 
-  //  protected void init() {
-  //    //GameRegistry.registerItem(this, ModObject.itemYetaWrench.unlocalisedName);
-  //  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:yetaWrench");
-  }
-
-  @Override
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-    Block block = world.getBlock(x, y, z);
+  
+  
+  @Override  
+  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+    IBlockState bs = world.getBlockState(pos);
+    Block block = bs.getBlock();
     boolean ret = false;
     if (block != null) {
-      PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, side, world);
+      PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pos, side, world);
       if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.useBlock == Result.DENY || e.useItem == Result.DENY) {
         return false;
       }
-      if (player.isSneaking() && block instanceof IDismantleable && ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
-        if (!world.isRemote) {
-          ((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
-        }
-        ret = true;
-      } else if (!player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+      if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
         if (block == Blocks.chest) {
           // This works around a forge bug where you can rotate double chests to invalid directions
-          TileEntityChest te = (TileEntityChest) world.getTileEntity(x, y, z);
+          TileEntityChest te = (TileEntityChest) world.getTileEntity(pos);
           if (te.adjacentChestXNeg != null || te.adjacentChestXPos != null || te.adjacentChestZNeg != null || te.adjacentChestZPos != null) {
             // Render master is always the chest to the negative direction
             TileEntityChest masterChest = te.adjacentChestXNeg == null && te.adjacentChestZNeg == null ? te : te.adjacentChestXNeg == null ? te.adjacentChestZNeg: te.adjacentChestXNeg;
             if (masterChest != te) {
-              int meta = world.getBlockMetadata(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord);
-              world.setBlockMetadataWithNotify(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord, meta ^ 1, 3);
+              //TODO: 1.8
+//              int meta = world.getBlockMetadata(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord);
+//              world.setBlockMetadataWithNotify(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord, meta ^ 1, 3);
             } else {
               // If this is the master chest, we can just rotate twice
-              block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side));
+              block.rotateBlock(world,pos, side);
             }
           }
         }
         ret = true;
       } else if (block instanceof IRotatableFacade && !player.isSneaking()
           && (block != EnderIO.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
-        if (((IRotatableFacade) block).tryRotateFacade(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        if (((IRotatableFacade) block).tryRotateFacade(world, pos.getX(), pos.getY(), pos.getZ(), side)) {
           ret = true;
         }
       }
@@ -131,10 +120,11 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
-  public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
-    Block block = player.worldObj.getBlock(x, y, z);
+  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+    IBlockState bs = player.worldObj.getBlockState(pos);
+    Block block = bs.getBlock();
     if (player.isSneaking() && block == EnderIO.blockConduitBundle && player.capabilities.isCreativeMode) {
-      block.onBlockClicked(player.worldObj, x, y, z, player);
+      block.onBlockClicked(player.worldObj, pos, player);
       return true;
     }
     return false;
@@ -147,17 +137,18 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
-  public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+  public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player) {
+    return true;
+  }
+
+  
+  @Override
+  public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {  
     return true;
   }
 
   @Override
-  public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z) {
-    return true;
-  }
-
-  @Override
-  public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
+  public void used(ItemStack stack, EntityPlayer player, BlockPos pos) {
   }
 
   @Override
@@ -173,19 +164,16 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   /* IAdvancedTooltipProvider */
 
-  @SuppressWarnings("rawtypes")
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     ArrayList<String> tmp = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(tmp, getUnlocalizedName());
     String keyName = Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode());

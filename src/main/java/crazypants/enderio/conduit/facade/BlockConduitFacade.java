@@ -1,19 +1,19 @@
 package crazypants.enderio.conduit.facade;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.painter.IPaintedBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
 
@@ -31,36 +31,30 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
     setCreativeTab(null);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister IIconRegister) {
-    blockIcon = IIconRegister.registerIcon("enderio:conduitFacade");
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
-    TileEntity te = ba.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
-      return blockIcon;
-    }
-    IConduitBundle cb = (IConduitBundle) te;
-    Block block = cb.getFacadeId();
-    if(block != null) {
-      int meta = cb.getFacadeMetadata();
-      return block.getIcon(side, meta);
-    }
-    return blockIcon;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int par1, int par2) {
-    if(blockOverride != null) {
-      return blockOverride.getIcon(par1, par2);
-    }
-    return blockIcon;
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
+//    TileEntity te = ba.getTileEntity(x, y, z);
+//    if(!(te instanceof IConduitBundle)) {
+//      return blockIcon;
+//    }
+//    IConduitBundle cb = (IConduitBundle) te;
+//    Block block = cb.getFacadeId();
+//    if(block != null) {
+//      int meta = cb.getFacadeMetadata();
+//      return block.getIcon(side, meta);
+//    }
+//    return blockIcon;
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int par1, int par2) {
+//    if(blockOverride != null) {
+//      return blockOverride.getIcon(par1, par2);
+//    }
+//    return blockIcon;
+//  }
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -71,17 +65,17 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
       return super.getBlockColor();
     }
   }
-
+  
   @Override
   @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+  public int colorMultiplier(IBlockAccess par1IBlockAccess, BlockPos pos, int renderPass) {
     if(blockOverride != null) {
       try { //work around for Issue #589
-        return blockOverride.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+        return blockOverride.colorMultiplier(par1IBlockAccess, pos, renderPass);
       } catch (Exception e) {
       }
     }
-    return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+    return super.colorMultiplier(par1IBlockAccess, pos, renderPass);
   }
 
   public Block getIconOverrideBlock() {
@@ -90,11 +84,11 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public int getRenderColor(int par1) {
+  public int getRenderColor(IBlockState bs) {
     if(blockOverride != null) {
-      return blockOverride.getRenderColor(par1);
+      return blockOverride.getRenderColor(bs);
     } else {
-      return super.getRenderColor(par1);
+      return super.getRenderColor(bs);
     }
   }
 
@@ -113,8 +107,8 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
   }
 
   @Override
-  public int getDamageValue(World par1World, int x, int y, int z) {
-    Mimic m = getMimic(par1World, x, y, z);
+  public int getDamageValue(World par1World, BlockPos pos) {
+    Mimic m = getMimic(par1World, pos.getX(), pos.getY(), pos.getZ());
     if(m != null) {
       return m.meta;
     }
@@ -122,7 +116,7 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
   }
 
   private Mimic getMimic(IBlockAccess ba, int x, int y, int z) {
-    TileEntity te = ba.getTileEntity(x, y, z);
+    TileEntity te = ba.getTileEntity(new BlockPos(x, y, z));
     if(!(te instanceof IConduitBundle)) {
       return null;
     }

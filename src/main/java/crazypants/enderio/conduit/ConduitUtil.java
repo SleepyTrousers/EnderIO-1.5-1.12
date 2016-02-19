@@ -359,6 +359,10 @@ public class ConduitUtil {
     return false;
   }
 
+  public static void openConduitGui(World world, BlockPos pos, EntityPlayer player) {
+    openConduitGui(world, pos.getX(),pos.getY(),pos.getZ(), player);
+  }
+  
   public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (!(te instanceof TileConduitBundle)) {
