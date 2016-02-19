@@ -1,12 +1,9 @@
 package crazypants.enderio.machine.tank;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
@@ -21,8 +18,10 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
-import crazypants.enderio.machine.killera.ContainerKillerJoe;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
@@ -73,6 +72,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     });
     
     addToolTip(new GuiToolTip(new Rectangle(14, 35, 18, 18), EnderIO.lang.localize("gui.tooltip.voidslot")) {
+      @Override
       public boolean shouldDraw() {
         return super.shouldDraw() && getTileEntity().canVoidItems();
       }
@@ -91,7 +91,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
 
   @Override
   public void updateScreen() {
-    Slot slot = (Slot) inventorySlots.inventorySlots.get(2);
+    Slot slot = inventorySlots.inventorySlots.get(2);
     if (getTileEntity().canVoidItems()) {
       slot.xDisplayPosition = 15;
       slot.yDisplayPosition = 36;
@@ -104,7 +104,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   }
   
   @Override
-  protected void actionPerformed(GuiButton button) {
+  protected void actionPerformed(GuiButton button) throws IOException {
     super.actionPerformed(button);
     if (button.id == voidBut.id) {
       getTileEntity().setVoidMode(voidBut.getMode());
@@ -119,6 +119,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
@@ -127,12 +128,12 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     
     if (getTileEntity().canVoidItems()) {
-      Slot slot = (Slot) inventorySlots.inventorySlots.get(2);
+      Slot slot = inventorySlots.inventorySlots.get(2);
       drawTexturedModalRect(sx + slot.xDisplayPosition - 1, sy + slot.yDisplayPosition - 1, xSize, 0, 18, 18);
       IconEIO.map.render(IconEIO.MINUS, sx + slot.xDisplayPosition, sy + slot.yDisplayPosition, true);
     }
 
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);    
     
     RenderUtil.bindBlockTexture();
     RenderUtil.renderGuiTank(getTileEntity().tank, guiLeft + 80, guiTop + 21, zLevel, 16,47);    

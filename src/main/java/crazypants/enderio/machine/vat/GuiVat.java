@@ -2,12 +2,7 @@ package crazypants.enderio.machine.vat;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.Fluid;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
@@ -22,6 +17,11 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
@@ -107,13 +107,13 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       int scaled = getProgressScaled(14) + 1;
       drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);
 
-      IIcon inputIcon = null;
-      if(vat.currentTaskInputFluid != null) {
-        inputIcon = vat.currentTaskInputFluid.getStillIcon();
+      TextureAtlasSprite inputIcon = null;
+      if(vat.currentTaskInputFluid != null) {        
+        inputIcon = RenderUtil.getStillTexture(vat.currentTaskInputFluid);
       }
-      IIcon outputIcon = null;
+      TextureAtlasSprite outputIcon = null;
       if(vat.currentTaskOutputFluid != null) {
-        outputIcon = vat.currentTaskOutputFluid.getStillIcon();
+        outputIcon = RenderUtil.getStillTexture(vat.currentTaskOutputFluid);
       }
 
       if(inputIcon != null && outputIcon != null) {
@@ -159,7 +159,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
-  private void renderVat(IIcon inputIcon, IIcon outputIcon, float progress) {
+  private void renderVat(TextureAtlasSprite inputIcon, TextureAtlasSprite outputIcon, float progress) {
     RenderUtil.bindBlockTexture();
 
     int x = guiLeft + 76;
@@ -167,10 +167,10 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glColor4f(1, 1, 1, 0.75f * (1f - progress));
-    drawTexturedModelRectFromIcon(x, y, inputIcon, 26, 28);
+    drawTexturedModalRect(x, y, inputIcon, 26, 28);
 
     GL11.glColor4f(1, 1, 1, 0.75f * progress);
-    drawTexturedModelRectFromIcon(x, y, outputIcon, 26, 28);
+    drawTexturedModalRect(x, y, outputIcon, 26, 28);
 
     GL11.glDisable(GL11.GL_BLEND);
 
@@ -180,7 +180,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
 
     if(b == dump1) {

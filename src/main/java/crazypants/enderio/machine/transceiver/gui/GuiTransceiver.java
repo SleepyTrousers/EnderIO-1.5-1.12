@@ -18,6 +18,8 @@ import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
@@ -196,8 +198,9 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     int sy = (height - ySize) / 2;
     int tabX = sx + xSize - 3;
 
-    Tessellator tes = Tessellator.instance;
-    tes.startDrawingQuads();
+    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();              
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    
     for (int i = 0; i < tabs.size(); i++) {
       if(i != activeTab) {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
@@ -207,7 +210,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
       }
     }
 
-    tes.draw();
+    Tessellator.getInstance().draw();
 
     bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
@@ -215,17 +218,16 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture(IconEIO.TEXTURE);
-    tes.startDrawingQuads();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
+    Tessellator.getInstance().draw();
 
     if(tabs.size() > 0) {
       IWidgetIcon icon = tabs.get(activeTab).getIcon();
-      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
-      tes.draw();
+      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);      
       tabs.get(activeTab).render(par1, par2, par3);
-    } else {
-      tes.draw();
-    }
+    } 
+    Tessellator.getInstance().draw();
   }
   
   public TileTransceiver getTransciever() {

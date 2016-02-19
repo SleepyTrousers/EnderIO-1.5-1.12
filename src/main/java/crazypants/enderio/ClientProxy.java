@@ -39,8 +39,11 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -151,7 +154,13 @@ public class ClientProxy extends CommonProxy {
 
     KillerJoeRenderer kjr = new KillerJoeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
+    
+//    OBJLoader.instance.addDomain(EnderIO.MODID.toLowerCase());
+//    Item item = Item.getItemFromBlock(EnderIO.blockTransceiver);
+//    ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(EnderIO.MODID.toLowerCase() + ":" + "models/transceiver.obj", "inventory"));
 
+//    regRendererRes()
+    
 //    if(EnderIO.blockCapBank != null) {
 //      CapBankRenderer newCbr = new CapBankRenderer();
 //      ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
@@ -225,6 +234,29 @@ public class ClientProxy extends CommonProxy {
 //    }
 
 //    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
+  }
+  
+  private void regRenderer(Item item, int meta, String name) {
+    regRenderer(item, meta, EnderIO.MODID, name);
+  }
+
+  private void regRenderer(Item item, int meta, String modId, String name) {    
+    String resourceName;
+    if (modId != null) {
+      resourceName = modId + ":" + name;
+    } else {
+      resourceName = name;
+    }
+    regRendererRes(item, meta, resourceName);
+  }
+
+  private void regRendererRes(Item item, int meta, String resourceName) {
+    RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+    renderItem.getItemModelMesher().register(item, meta, new ModelResourceLocation(resourceName, "inventory"));
+  }
+
+  private void regRenderer(Item item, String name) {
+    regRenderer(item, 0, name);
   }
 
   @Override

@@ -9,13 +9,11 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.UUID;
 
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
@@ -24,11 +22,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class EnderRailController {
 
@@ -128,9 +123,10 @@ public class EnderRailController {
   }
 
   private void setCartDirection(EntityMinecart cart) {
-    int meta = transciever.getWorld().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
-    EnumFacing dir = BlockEnderRail.getDirection(meta);
-    CartLinkUtil.instance.setCartDirection(cart, dir);
+    //TODO: 1.8
+//    int meta = transciever.getWorld().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+//    EnumFacing dir = BlockEnderRail.getDirection(meta);
+//    CartLinkUtil.instance.setCartDirection(cart, dir);
   }
 
   public void onTrainRecieved(List<List<Entity>> toTeleport) {
@@ -142,40 +138,41 @@ public class EnderRailController {
   }
 
   public boolean isClear() {
-    World worldObj = transciever.getWorld();
-
-    BlockCoord railCoord = new BlockCoord(transciever).getLocation(EnumFacing.UP);
-    int meta = worldObj.getBlockMetadata(railCoord.x, railCoord.y, railCoord.z);
-
-    double buf = 1;
-    EnumFacing dir = BlockEnderRail.getDirection(meta);
-    Vector3d offset = EnumFacingOffsets.forDirCopy(dir);
-    offset.scale(buf);
-    offset.x = Math.abs(offset.x);
-    offset.z = Math.abs(offset.z);
-    List res = worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(railCoord.x - offset.x, railCoord.y,
-        railCoord.z - offset.z, railCoord.x + 1 + offset.x, railCoord.y + 1, railCoord.z + 1 + offset.z));
-    return res == null || res.isEmpty();
+    //TODO: 1.8
+//    World worldObj = transciever.getWorld();
+//
+//    BlockCoord railCoord = new BlockCoord(transciever).getLocation(EnumFacing.UP);
+//    int meta = worldObj.getBlockMetadata(railCoord.x, railCoord.y, railCoord.z);
+//
+//    double buf = 1;
+//    EnumFacing dir = BlockEnderRail.getDirection(meta);
+//    Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
+//    offset.scale(buf);
+//    offset.x = Math.abs(offset.x);
+//    offset.z = Math.abs(offset.z);
+//    List res = worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(railCoord.x - offset.x, railCoord.y,
+//        railCoord.z - offset.z, railCoord.x + 1 + offset.x, railCoord.y + 1, railCoord.z + 1 + offset.z));
+//    return res == null || res.isEmpty();
+    return false;
   }
 
   public List<EntityMinecart> getMinecartsOnTrack() {
-    return getMinecartsAt(transciever.getWorld(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+    return getMinecartsAt(transciever.getWorld(), transciever.getPos().getX(), transciever.getPos().getY() + 1, transciever.getPos().getZ());
   }
 
   public static List<EntityMinecart> getMinecartsAt(World world, int x, int y, int z) {
-    List entities = world.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
+    List<EntityMinecart> entities = world.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
     List<EntityMinecart> carts = new ArrayList<EntityMinecart>();
-    for (Object o : entities) {
-      EntityMinecart cart = (EntityMinecart) o;
+    for (EntityMinecart cart : entities) {      
       if(!cart.isDead) {
-        carts.add((EntityMinecart) o);
+        carts.add(cart);
       }
     }
     return carts;
   }
 
   private void loadCartsToSpawn() {
-    World worldObj = transciever.getWorldObj();
+    World worldObj = transciever.getWorld();
     while (cartList.tagCount() > 0) {
       NBTTagList entityList = (NBTTagList) cartList.removeTag(0);
       List<Entity> ents = new ArrayList<Entity>(entityList.tagCount());
@@ -253,29 +250,31 @@ public class EnderRailController {
     if(entity == null) {
       return;
     }
-    double oX = entity.posX;
-    double oZ = entity.posZ;
-    World world = transciever.getWorld();
-    MinecraftServer minecraftserver = MinecraftServer.getServer();
-    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
-    for (int i = 0; i < 4; i++) {
-      int x = transciever.xCoord + randOffset(2);
-      int y = transciever.yCoord + 1;
-      int z = transciever.zCoord + randOffset(2);
-      Block b = world.getBlock(x, y, z);
-      entity.setPosition(x + 0.5, entity.posY, z + 0.5);
-      if(world.canPlaceEntityOnSide(b, x, y, z, false, EnumFacing.UP, entity, null)) {
-        resetForRandomRandomSpawn(entity);
-        if(worldserver.spawnEntityInWorld(entity)) {
-          //entity.onUpdate();
-          worldserver.updateEntity(entity);
-          return;
-        }
-      }
-    }
-    entity.setPosition(oX, entity.posY, oZ);
-    resetForRandomRandomSpawn(entity);
-    worldserver.spawnEntityInWorld(entity);
+  //TODO: 1.8
+//    double oX = entity.posX;
+//    double oZ = entity.posZ;
+//    World world = transciever.getWorld();
+//    MinecraftServer minecraftserver = MinecraftServer.getServer();
+//    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
+//    for (int i = 0; i < 4; i++) {      
+//      int x = transciever.getPos().getX() + randOffset(2);
+//      int y = transciever.getPos().getY() + 1;
+//      int z = transciever.getPos().getZ() + randOffset(2);
+//      BlockPos spawnPos = new BlockPos(x,y,z);
+//      Block b = world.getBlock(x, y, z);
+//      entity.setPosition(x + 0.5, entity.posY, z + 0.5);      
+//      if(world.canPlaceEntityOnSide(b, x, y, z, false, EnumFacing.UP, entity, null)) {
+//        resetForRandomRandomSpawn(entity);
+//        if(worldserver.spawnEntityInWorld(entity)) {
+//          //entity.onUpdate();
+//          worldserver.updateEntity(entity);
+//          return;
+//        }
+//      }
+//    }
+//    entity.setPosition(oX, entity.posY, oZ);
+//    resetForRandomRandomSpawn(entity);
+//    worldserver.spawnEntityInWorld(entity);
   }
 
   private void resetForRandomRandomSpawn(Entity entity) {
@@ -300,7 +299,7 @@ public class EnderRailController {
 
   public void onPlayerTeleported(EntityPlayerMP playerToTP, EntityMinecart toMount) {
     if(playerToTP != null) {
-      playersToRemount.add(new PlayerTpInfo(playerToTP.getCommandSenderName(), toMount.getPersistentID(), 20));
+      playersToRemount.add(new PlayerTpInfo(playerToTP.getName(), toMount.getPersistentID(), 20));
     }
   }
 

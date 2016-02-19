@@ -39,6 +39,7 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
+import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.entity.SkeletonHandler;
 import crazypants.enderio.fluid.BlockFluidEio;
@@ -63,10 +64,16 @@ import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
+import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
+import crazypants.enderio.machine.tank.BlockTank;
+import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
+import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -146,7 +153,7 @@ public class EnderIO {
   public static ItemEnderFood itemEnderFood;
 
 //  // Enderface
-//  public static BlockEnderIO blockEnderIo;
+  public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
 
 //  //Teleporting
@@ -193,14 +200,14 @@ public class EnderIO {
 //  public static BlockAlloySmelter blockAlloySmelter;
 //  public static BlockCapacitorBank blockCapacitorBank;
 //  public static BlockCapBank blockCapBank;
-//  public static BlockWirelessCharger blockWirelessCharger;
+  public static BlockWirelessCharger blockWirelessCharger;
 //  public static BlockCrusher blockCrusher; 
 //  public static BlockPowerMonitor blockPowerMonitor;
-//  public static BlockVat blockVat;
+  public static BlockVat blockVat;
 //  public static BlockFarmStation blockFarmStation;
-//  public static BlockTank blockTank;
+  public static BlockTank blockTank;
 //  public static BlockCrafter blockCrafter;
-//  public static BlockPoweredSpawner blockPoweredSpawner;
+  public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
 //  public static BlockSliceAndSplice blockSliceAndSplice;
 //  public static BlockSoulBinder blockSoulFuser;
@@ -209,7 +216,7 @@ public class EnderIO {
 //  public static BlockExperienceObelisk blockExperianceOblisk;
 //  public static BlockWeatherObelisk blockWeatherObelisk;
 //  public static BlockInhibitorObelisk blockInhibitorObelisk;
-//  public static BlockTransceiver blockTransceiver;
+  public static BlockTransceiver blockTransceiver;
 //  public static BlockBuffer blockBuffer;
 //  public static BlockInventoryPanel blockInventoryPanel;
 //  public static BlockKillerJoe blockKillerJoe;
@@ -254,8 +261,8 @@ public class EnderIO {
 
   public static ItemSoulVessel itemSoulVessel;
   public static ItemFrankenSkull itemFrankenSkull;
-//
-//  public static BlockVacuumChest blockVacuumChest;
+
+  public static BlockVacuumChest blockVacuumChest;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -291,29 +298,29 @@ public class EnderIO {
 //    blockPaintedGlowstone = BlockPaintedGlowstone.create();
 //    blockPaintedCarpet = BlockPaintedCarpet.create();
 //
-//    blockVat = BlockVat.create();
+    blockVat = BlockVat.create();
 //    blockPowerMonitor = BlockPowerMonitor.create();
 //    blockFarmStation = BlockFarmStation.create();
 //
-//    blockWirelessCharger = BlockWirelessCharger.create();
+    blockWirelessCharger = BlockWirelessCharger.create();
 //    
-//    blockTank = BlockTank.create();
+    blockTank = BlockTank.create();
 //    blockReservoir = BlockReservoir.create();
-//    blockVacuumChest = BlockVacuumChest.create();
-//
-//    blockTransceiver = BlockTransceiver.create();
-//
+    blockVacuumChest = BlockVacuumChest.create();
+
+    blockTransceiver = BlockTransceiver.create();
+
 //    blockBuffer = BlockBuffer.create();
 //    blockInventoryPanel = BlockInventoryPanel.create();
 //
-//    blockEnderIo = BlockEnderIO.create();
+    blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
 //    blockTelePad = BlockTelePad.create();
     itemCoordSelector = ItemCoordSelector.create();
 //
 //    blockSliceAndSplice = BlockSliceAndSplice.create();
 //    blockSoulFuser = BlockSoulBinder.create();
-//    blockPoweredSpawner = BlockPoweredSpawner.create();
+    blockPoweredSpawner = BlockPoweredSpawner.create();
 //    blockKillerJoe = BlockKillerJoe.create();
 //    blockAttractor = BlockAttractor.create();
 //    blockSpawnGuard = BlockAversionObelisk.create();

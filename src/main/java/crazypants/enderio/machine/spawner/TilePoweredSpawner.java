@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.spawner;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -18,6 +11,15 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
@@ -129,7 +131,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
     if(isSpawnMode) {
       if(MIN_PLAYER_DISTANCE > 0) {
-        if(worldObj.getClosestPlayer(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, MIN_PLAYER_DISTANCE) == null) {
+        BlockPos p = getPos();
+        if(worldObj.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, MIN_PLAYER_DISTANCE) == null) {
           return null;
         }
       }
@@ -191,11 +194,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   @Override
   protected void updateEntityClient() {
     if(isActive()) {
-        double x = xCoord + worldObj.rand.nextFloat();
-        double y = yCoord + worldObj.rand.nextFloat();
-        double z = zCoord + worldObj.rand.nextFloat();
-        worldObj.spawnParticle("smoke", x, y, z, 0.0D, 0.0D, 0.0D);
-        worldObj.spawnParticle("flame", x, y, z, 0.0D, 0.0D, 0.0D);
+        double x = getPos().getX() + worldObj.rand.nextFloat();
+        double y = getPos().getY()+ worldObj.rand.nextFloat();
+        double z = getPos().getZ() + worldObj.rand.nextFloat();
+        worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
+        worldObj.spawnParticle(EnumParticleTypes.FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
     }
     super.updateEntityClient();
   }
@@ -222,9 +225,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   }
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
-    boolean spaceClear = worldObj.checkNoEntityCollision(entityliving.boundingBox)
-        && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).isEmpty()
-        && (!worldObj.isAnyLiquid(entityliving.boundingBox) || entityliving.isCreatureType(EnumCreatureType.waterCreature, false));
+    boolean spaceClear = worldObj.checkNoEntityCollision(entityliving.getEntityBoundingBox())
+        && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
+        && (!worldObj.isAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
     if(spaceClear && USE_VANILLA_SPAWN_CHECKS) {
       //Full checks for lighting, dimension etc 
       spaceClear = entityliving.getCanSpawnHere();
@@ -236,7 +239,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     Entity ent = EntityList.createEntityByName(getEntityName(), worldObj);
     if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
        ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
-      ((EntityLiving) ent).func_110163_bv();
+      ((EntityLiving) ent).enablePersistence();
     }
     return ent;
   }
@@ -249,10 +252,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     EntityLiving entityliving = (EntityLiving) entity;
     int spawnRange = Config.poweredSpawnerSpawnRange;
 
+    int xCoord = getPos().getX();
+    int yCoord= getPos().getY();
+    int zCoord= getPos().getZ();
     if(Config.poweredSpawnerMaxNearbyEntities > 0) {
       int nearbyEntities = worldObj.getEntitiesWithinAABB(
           entity.getClass(),
-          AxisAlignedBB.getBoundingBox(
+          new AxisAlignedBB(
                   xCoord - spawnRange*2, yCoord - 4, zCoord - spawnRange*2,
                   xCoord + spawnRange*2, yCoord + 4, zCoord + spawnRange*2)).size();
 
@@ -268,9 +274,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       entity.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
       if(canSpawnEntity(entityliving)) {
-        entityliving.onSpawnWithEgg(null);
+        entityliving.onInitialSpawn(worldObj.getDifficultyForLocation(new BlockPos(x,y,z)), null);
         worldObj.spawnEntityInWorld(entityliving);
-        worldObj.playAuxSFX(2004, xCoord, yCoord, zCoord, 0);
+        worldObj.playAuxSFX(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();
         return true;
       }

@@ -1,25 +1,27 @@
 package crazypants.enderio.machine.vacuum;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.TileEntityEnder;
-
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.network.PacketHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
 
@@ -34,19 +36,19 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
 
   protected BlockVacuumChest() {
     super(ModObject.blockVacuumChest.unlocalisedName, TileVacuumChest.class);
-    setBlockTextureName("enderio:blockVacuumChest");
   }
 
   @Override
-  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
     return true;
   }
 
+
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
-    TileEntity ent = world.getTileEntity(x, y, z);
+  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+    TileEntity ent = world.getTileEntity(pos);
     if(ent instanceof TileVacuumChest) {
-      ((TileVacuumChest) ent).onNeighborBlockChange(blockId);
+      ((TileVacuumChest) ent).onNeighborBlockChange(neighborBlock);
     }
   }
 
@@ -56,34 +58,36 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_VACUUM_CHEST, this);
   }
 
+  
+
   @Override
-  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     if(!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, x, y, z);
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, pos.getX(), pos.getX(), pos.getZ());
     }
     return true;
   }
 
   @Override
-  public boolean doNormalDrops(World world, int x, int y, int z) {
+  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {  
     return false;
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
-    drop.stackTagCompound = new NBTTagCompound();
+  protected void processDrop(IBlockAccess world, BlockPos pos, TileEntityEio te, ItemStack drop) {
+    drop.setTagCompound(new NBTTagCompound());
     if(te != null) {
-      ((TileVacuumChest) te).writeContentsToNBT(drop.stackTagCompound);
+      ((TileVacuumChest) te).writeContentsToNBT(drop.getTagCompound());
     }
   }
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placedBy, ItemStack stack) {
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(stack != null && stack.stackTagCompound != null && te instanceof TileVacuumChest) {
-        ((TileVacuumChest) te).readContentsFromNBT(stack.stackTagCompound);
-        world.markBlockForUpdate(x, y, z);
+      TileEntity te = world.getTileEntity(pos);
+      if(stack != null && stack.getTagCompound() != null && te instanceof TileVacuumChest) {
+        ((TileVacuumChest) te).readContentsFromNBT(stack.getTagCompound());
+        world.markBlockForUpdate(pos);
       }
     }
   }
@@ -100,7 +104,7 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileVacuumChest) {
       return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }
@@ -109,7 +113,7 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileVacuumChest) {
       return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }

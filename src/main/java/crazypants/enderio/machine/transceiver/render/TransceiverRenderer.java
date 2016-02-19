@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TransceiverRenderer extends TileEntitySpecialRenderer<TileTransceiver> {
 
-  private IModel model;
+  private IModelTrans model;
 
   private BoundingBox bb;
 

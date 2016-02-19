@@ -3,15 +3,9 @@ package crazypants.enderio.rail;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.EntityUtil;
-
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -51,35 +45,36 @@ public class PlayerTeleportHandler {
     }
 
     void doTeleport() {
-      int toDim = reciever.getWorld().provider.getDimensionId();
-      int meta = reciever.getBlockMetadata();
-
-      //Make sure player not on the track and is in a safe position
-      EnumFacing railDir = EnderIO.blockEnderRail.getDirection(meta);
-      int xOffset = Math.abs(railDir.offsetX);
-      int zOffset = Math.abs(railDir.offsetZ);
-      BlockCoord startPos = new BlockCoord(reciever).getLocation(EnumFacing.UP);
-      boolean foundSpot = false;
-      for (int i = 1; i < 3 && !foundSpot; i++) {
-        //try each side of the track
-        playerToTP.setPosition(startPos.x + 0.5 - (xOffset * i), startPos.y, startPos.z + 0.5 - (zOffset * i));
-        List<AxisAlignedBB> collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorld(), playerToTP);
-        foundSpot = collides == null || collides.isEmpty();
-        if(!foundSpot) {
-          playerToTP.setPosition(startPos.x + 0.5 + (xOffset * i), startPos.y, startPos.z + 0.5 + (zOffset * i));
-          collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorld(), playerToTP);
-          foundSpot = collides == null || collides.isEmpty();
-        }
-      }
-      if(!foundSpot) {
-        //If not space each side will have to spawn on the track
-        playerToTP.setPosition(startPos.x + 0.5, startPos.y, startPos.z + 0.5);
-      }
-//      ChunkCoordinates spawn = new ChunkCoordinates((int) playerToTP.posX, (int) playerToTP.posY, (int) playerToTP.posZ);
-//      TeleportUtil.teleportPlayer((WorldServer) reciever.getWorldObj(), playerToTP, toDim, spawn);
-            
-      reciever.getRailController().onPlayerTeleported(playerToTP, playerToMount);
-      playerToTP.mcServer.getConfigurationManager().transferPlayerToDimension(playerToTP, toDim, new TeleporterEIO( playerToTP.mcServer.worldServerForDimension(toDim)));      
+      //TODO: 1.8
+//      int toDim = reciever.getWorld().provider.getDimensionId();
+//      int meta = reciever.getBlockMetadata();
+//
+//      //Make sure player not on the track and is in a safe position
+//      EnumFacing railDir = EnderIO.blockEnderRail.getDirection(meta);
+//      int xOffset = Math.abs(railDir.offsetX);
+//      int zOffset = Math.abs(railDir.offsetZ);
+//      BlockCoord startPos = new BlockCoord(reciever).getLocation(EnumFacing.UP);
+//      boolean foundSpot = false;
+//      for (int i = 1; i < 3 && !foundSpot; i++) {
+//        //try each side of the track
+//        playerToTP.setPosition(startPos.x + 0.5 - (xOffset * i), startPos.y, startPos.z + 0.5 - (zOffset * i));
+//        List<AxisAlignedBB> collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorld(), playerToTP);
+//        foundSpot = collides == null || collides.isEmpty();
+//        if(!foundSpot) {
+//          playerToTP.setPosition(startPos.x + 0.5 + (xOffset * i), startPos.y, startPos.z + 0.5 + (zOffset * i));
+//          collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorld(), playerToTP);
+//          foundSpot = collides == null || collides.isEmpty();
+//        }
+//      }
+//      if(!foundSpot) {
+//        //If not space each side will have to spawn on the track
+//        playerToTP.setPosition(startPos.x + 0.5, startPos.y, startPos.z + 0.5);
+//      }
+////      ChunkCoordinates spawn = new ChunkCoordinates((int) playerToTP.posX, (int) playerToTP.posY, (int) playerToTP.posZ);
+////      TeleportUtil.teleportPlayer((WorldServer) reciever.getWorldObj(), playerToTP, toDim, spawn);
+//            
+//      reciever.getRailController().onPlayerTeleported(playerToTP, playerToMount);
+//      playerToTP.mcServer.getConfigurationManager().transferPlayerToDimension(playerToTP, toDim, new TeleporterEIO( playerToTP.mcServer.worldServerForDimension(toDim)));      
     }
 
   }

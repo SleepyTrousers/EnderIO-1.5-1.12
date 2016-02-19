@@ -47,7 +47,7 @@ import net.minecraft.world.chunk.Chunk;
 
 public class GuiEnderface extends GuiScreen {
 
-//  protected static final RenderBlocks RB = new RenderBlocks();
+  // protected static final RenderBlocks RB = new RenderBlocks();
 
   private float pitch = -45;
   private float yaw = 45;
@@ -100,7 +100,7 @@ public class GuiEnderface extends GuiScreen {
     distance = 10 + (range * 2);
 
     TileEntity te = world.getTileEntity(new BlockPos(ioX, ioY, ioZ));
-    if(te instanceof TileEnderIO) {
+    if (te instanceof TileEnderIO) {
       pitch = ((TileEnderIO) te).lastUiPitch;
       yaw = ((TileEnderIO) te).lastUiYaw;
       distance = ((TileEnderIO) te).lastUiDistance;
@@ -112,14 +112,15 @@ public class GuiEnderface extends GuiScreen {
 
     Chunk c = world.getChunkFromBlockCoords(new BlockPos(ioX, 64, ioZ));
     chunkLoaded = c != null && c.isLoaded();
-//    RB.blockAccess = world;
+    // RB.blockAccess = world;
 
     blocks.add(new ViewableBlocks(ioX, ioY, ioZ, EnderIO.blockEnderIo, EnderIO.blockEnderIo.getDefaultState()));
 
     for (int x = ioX - range; x <= ioX + range; x++) {
       for (int y = ioY - range; y <= ioY + range; y++) {
         for (int z = ioZ - range; z <= ioZ + range; z++) {
-          IBlockState bs = world.getBlockState(new BlockPos(x, y, z));;
+          IBlockState bs = world.getBlockState(new BlockPos(x, y, z));
+          ;
           Block block = bs.getBlock();
           blocks.add(new ViewableBlocks(x, y, z, block, bs));
         }
@@ -130,7 +131,7 @@ public class GuiEnderface extends GuiScreen {
   @Override
   public void onGuiClosed() {
     TileEntity te = world.getTileEntity(new BlockPos(ioX, ioY, ioZ));
-    if(te instanceof TileEnderIO) {
+    if (te instanceof TileEnderIO) {
       ((TileEnderIO) te).lastUiPitch = pitch;
       ((TileEnderIO) te).lastUiYaw = yaw;
       ((TileEnderIO) te).lastUiDistance = distance;
@@ -166,15 +167,15 @@ public class GuiEnderface extends GuiScreen {
   public void handleMouseInput() throws IOException {
     super.handleMouseInput();
 
-    if(Mouse.getEventButton() == 0) {
+    if (Mouse.getEventButton() == 0) {
       dragging = Mouse.getEventButtonState();
     }
 
-    if(dragging) {
+    if (dragging) {
 
       double dx = (Mouse.getEventDX() / (double) mc.displayWidth);
       double dy = (Mouse.getEventDY() / (double) mc.displayHeight);
-      if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
         distance -= dy * 15;
       } else {
         yaw -= dx * 180;
@@ -188,13 +189,13 @@ public class GuiEnderface extends GuiScreen {
 
     long elapsed = EnderIO.proxy.getTickCount() - initTime;
 
-    if(Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+    if (Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
 
       int x = Mouse.getEventX();
       int y = Mouse.getEventY();
       Vector3d start = new Vector3d();
       Vector3d end = new Vector3d();
-      if(camera.getRayForPixel(x, y, start, end)) {
+      if (camera.getRayForPixel(x, y, start, end)) {
         end.scale(distance * 2);
         end.add(start);
         doSelection(start, end);
@@ -207,18 +208,14 @@ public class GuiEnderface extends GuiScreen {
   private void doSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
-    MovingObjectPosition hit = player.worldObj.rayTraceBlocks(new Vec3(start.x, start.y, start.z), new Vec3(end.x, end.y, end.z),
-        false);
+    MovingObjectPosition hit = player.worldObj.rayTraceBlocks(new Vec3(start.x, start.y, start.z), new Vec3(end.x, end.y, end.z), false);
 
     if (hit != null) {
       IBlockState bs = world.getBlockState(hit.getBlockPos());
       Block block = bs.getBlock();
-      if (block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
-        block.onBlockActivated(world, hit.getBlockPos(),bs, player, EnumFacing.NORTH, 0, 0, 0);
-      } else {
-        BlockPos p = hit.getBlockPos();
-        openInterface(p.getX(), p.getY(), p.getZ(), hit.sideHit, hit.hitVec);
-      }
+
+      BlockPos p = hit.getBlockPos();
+      openInterface(p.getX(), p.getY(), p.getZ(), hit.sideHit, hit.hitVec);
     }
 
   }
@@ -228,9 +225,9 @@ public class GuiEnderface extends GuiScreen {
     MovingObjectPosition closest = null;
 
     for (MovingObjectPosition hit : candidates) {
-      if(hit != null) {
+      if (hit != null) {
         double lengthSquared = hit.hitVec.squareDistanceTo(origin);
-        if(lengthSquared < minLengthSquared) {
+        if (lengthSquared < minLengthSquared) {
           minLengthSquared = lengthSquared;
           closest = hit;
         }
@@ -252,16 +249,16 @@ public class GuiEnderface extends GuiScreen {
     RenderHelper.enableGUIStandardItemLighting();
     drawEnderfaceBackground();
 
-    if(!updateCamera(partialTick)) {
+    if (!updateCamera(partialTick)) {
       return;
     }
     applyCamera(partialTick);
 
-    if(!animateInX && !animateInY) {
+    if (!animateInX && !animateInY) {
 
-      if(chunkLoaded) {
+      if (chunkLoaded) {
 
-        //TODO: Need to depth sort transparent passes
+        // TODO: Need to depth sort transparent passes
 
         TravelController.instance.setSelectionEnabled(false);
 
@@ -273,7 +270,8 @@ public class GuiEnderface extends GuiScreen {
         mc.entityRenderer.enableLightmap();
         RenderUtil.bindBlockTexture();
 
-        //TODO 1.8: Not sure I am doing this render pass stuff correctly anymore
+        // TODO 1.8: Not sure I am doing this render pass stuff correctly
+        // anymore
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
         for (int pass = 0; pass < 2; pass++) {
 
@@ -284,16 +282,16 @@ public class GuiEnderface extends GuiScreen {
           wr.begin(7, DefaultVertexFormats.BLOCK);
 
           Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
-          
+
           for (ViewableBlocks ug : blocks) {
-//            if(ug.block.canRenderInPass(pass)) {
-//              RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-//              RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
-              
-              BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();              
-              blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(),world, Tessellator.getInstance().getWorldRenderer());
-              
-//            }
+            // if(ug.block.canRenderInPass(pass)) {
+            // RB.setRenderBounds(0, 0, 0, 1, 1, 1);
+            // RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
+
+            BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
+            blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
+
+            // }
           }
           Tessellator.getInstance().draw();
           Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);
@@ -317,7 +315,7 @@ public class GuiEnderface extends GuiScreen {
 
           for (ViewableBlocks ug : blocks) {
             TileEntity tile = world.getTileEntity(ug.bc.getBlockPos());
-            if(tile != null) {
+            if (tile != null) {
               Vector3d at = new Vector3d(eye.x - 0.5, eye.y - 0.5, eye.z - 0.5);
               at.x += ug.bc.x - ioX;
               at.y += ug.bc.y - ioY;
@@ -342,7 +340,7 @@ public class GuiEnderface extends GuiScreen {
 
   private void setGlStateForPass(int pass) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    if(pass == 0) {
+    if (pass == 0) {
       GL11.glDisable(GL11.GL_BLEND);
       GL11.glDepthMask(true);
     } else {
@@ -359,7 +357,7 @@ public class GuiEnderface extends GuiScreen {
     int vpy = guiTop * scaledresolution.getScaleFactor();
     int vpw = (int) ((float) gw / width * mc.displayWidth);
     int vph = (int) ((float) gh / height * mc.displayHeight);
-    if(vpw <= 0 || vph <= 0) {
+    if (vpw <= 0 || vph <= 0) {
       return false;
     }
 
@@ -418,7 +416,7 @@ public class GuiEnderface extends GuiScreen {
 
     portalFade -= (partialTick * (1f / animationDuration));
     portalFade = Math.max(0, portalFade);
-    if(portalFade >= 0) {
+    if (portalFade >= 0) {
       drawRect(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), 0, 0.3f, 0.16f, Math.max(0.3f, portalFade));
     }
 
@@ -438,26 +436,26 @@ public class GuiEnderface extends GuiScreen {
    * Renders the portal overlay. Args: portalStrength, width, height
    */
   protected void renderPortalOverlay(float par1, int par2, int par3) {
-    if(par1 < 1.0F) {
+    if (par1 < 1.0F) {
       par1 *= par1;
       par1 *= par1;
       par1 = par1 * 0.9F + 0.1F;
     }
     GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
     RenderUtil.bindBlockTexture();
-    TextureAtlasSprite icon = RenderUtil.getTexture(Blocks.portal.getDefaultState());//Blocks.portal.getBlockTextureFromSide(1);
+    TextureAtlasSprite icon = RenderUtil.getTexture(Blocks.portal.getDefaultState());// Blocks.portal.getBlockTextureFromSide(1);
     float f1 = icon.getMinU();
     float f2 = icon.getMinV();
     float f3 = icon.getMaxU();
     float f4 = icon.getMaxV();
-    
+
     Tessellator tessellator = Tessellator.getInstance();
     WorldRenderer tes = tessellator.getWorldRenderer();
-    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);       
-    tes.pos(0.0D, par3, -90.0D).tex( f1, f4).endVertex();
-    tes.pos(par2, par3, -90.0D).tex( f3, f4).endVertex();
-    tes.pos(par2, 0.0D, -90.0D).tex( f3, f2).endVertex();
-    tes.pos(0.0D, 0.0D, -90.0D).tex( f1, f2).endVertex();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    tes.pos(0.0D, par3, -90.0D).tex(f1, f4).endVertex();
+    tes.pos(par2, par3, -90.0D).tex(f3, f4).endVertex();
+    tes.pos(par2, 0.0D, -90.0D).tex(f3, f2).endVertex();
+    tes.pos(0.0D, 0.0D, -90.0D).tex(f1, f2).endVertex();
     tessellator.draw();
   }
 
@@ -465,16 +463,14 @@ public class GuiEnderface extends GuiScreen {
     return gw < finalGw || gh < finalGh;
   }
 
-  private void drawRect(int width, int height, float r, float g,
-      float b, float a) {
-    
-    
+  private void drawRect(int width, int height, float r, float g, float b, float a) {
+
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     GL11.glColor4f(r, g, b, a);
     Tessellator tessellator = Tessellator.getInstance();
     WorldRenderer tes = tessellator.getWorldRenderer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-    
+
     tes.pos(0.0D, height, 0.0D).endVertex();
     tes.pos(width, height, 0.0D).endVertex();
     tes.pos(width, 0.0D, 0.0D).endVertex();
@@ -485,7 +481,7 @@ public class GuiEnderface extends GuiScreen {
 
   private void animateBackground(float partialTick) {
 
-    if(!animating()) {
+    if (!animating()) {
       return;
     }
 
@@ -499,10 +495,10 @@ public class GuiEnderface extends GuiScreen {
     // int ymag = mag;
     int ymag2 = ymag * 2;
 
-    if(animateInX) {
+    if (animateInX) {
       gw -= mag2;
       guiLeft += mag;
-      if(gw <= 0) {
+      if (gw <= 0) {
         animateInX = false;
         // animateInY = false;
       }
@@ -511,10 +507,10 @@ public class GuiEnderface extends GuiScreen {
       guiLeft -= mag;
     }
 
-    if(animateInY) {
+    if (animateInY) {
       gh -= ymag2;
       guiTop += ymag;
-      if(gh <= 0) {
+      if (gh <= 0) {
         animateInY = false;
         // animateInX= false;
       }
@@ -536,7 +532,7 @@ public class GuiEnderface extends GuiScreen {
     int h = gh;
     int left = guiLeft;
     int top = guiTop;
-    
+
     // black outline
     drawRect(left, top, left + w, top + h, 0xFF000000);
     left += 1;
@@ -549,11 +545,11 @@ public class GuiEnderface extends GuiScreen {
     int botH = 0xFF555555;
     int rightH = 0xFF555555;
     int leftH = 0xFFFFFFFF;
-    if(animateInX) {
+    if (animateInX) {
       leftH = 0xFF555555;
       rightH = 0xFFFFFFFF;
     }
-    if(animateInY) {
+    if (animateInY) {
       topH = 0xFF555555;
       botH = 0xFFFFFFFF;
     }
@@ -578,11 +574,11 @@ public class GuiEnderface extends GuiScreen {
     IBlockState bs;
 
     private ViewableBlocks(BlockPos pos, Block block, IBlockState bs) {
-      this(pos.getX(),pos.getY(),pos.getZ(),block,bs);
+      this(pos.getX(), pos.getY(), pos.getZ(), block, bs);
     }
-    
+
     private ViewableBlocks(int x, int y, int z, Block block, IBlockState bs) {
-      
+
       bc = new BlockCoord(x, y, z);
       this.block = block;
       this.bs = bs;

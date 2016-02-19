@@ -2,7 +2,17 @@ package crazypants.enderio.machine.tank;
 
 import java.util.List;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,27 +20,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.PacketHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
@@ -56,8 +55,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public int damageDropped(int par1) {
-    return par1;
+  public int damageDropped(IBlockState st) {
+    return getMetaFromState(st);
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -69,13 +68,13 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    return new TileTank(metadata);
+  public TileEntity createTileEntity(World world, IBlockState bs) {
+    return new TileTank(getMetaFromState(bs));
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(!(te instanceof TileTank)) {
       return null;
     }
@@ -84,7 +83,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(!(te instanceof TileTank)) {
       return null;
     }
@@ -101,41 +100,41 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return GuiHandler.GUI_ID_TANK;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+//
+//    // used to render the block in the world
+//    TileEntity te = world.getTileEntity(x, y, z);
+//    int facing = 0;
+//    if(te instanceof AbstractMachineEntity) {
+//      AbstractMachineEntity me = (AbstractMachineEntity) te;
+//      facing = me.facing;
+//    }
+//    int meta = world.getBlockMetadata(x, y, z);
+//    meta = MathHelper.clamp_int(meta, 0, 1);
+//    if(meta == 1) {
+//      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
+//    } else {
+//      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
+//    }
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int blockSide, int blockMeta) {
+//    int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
+//    return iconBuffer[0][blockSide + offset];
+//  }
 
-    // used to render the block in the world
-    TileEntity te = world.getTileEntity(x, y, z);
-    int facing = 0;
-    if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity) te;
-      facing = me.facing;
-    }
-    int meta = world.getBlockMetadata(x, y, z);
-    meta = MathHelper.clamp_int(meta, 0, 1);
-    if(meta == 1) {
-      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
-    } else {
-      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
-    }
-  }
-
   @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int blockSide, int blockMeta) {
-    int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
-    return iconBuffer[0][blockSide + offset];
-  }
-
-  @Override
-  public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    TileEntity tank = world.getTileEntity(x, y, z);
+  public int getLightValue(IBlockAccess world, BlockPos pos) {
+    TileEntity tank = world.getTileEntity(pos);
     if(tank instanceof TileTank) {
       FluidStack stack = ((TileTank) tank).tank.getFluid();
       return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
     }
-    return super.getLightValue(world, x, y, z);
+    return super.getLightValue(world, pos);
   }
 
   @Override
@@ -166,12 +165,13 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
   }
 
   @Override
-  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-    int meta = world.getBlockMetadata(x, y, z);
+  public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
+    IBlockState bs = world.getBlockState(pos);
+    int meta = getMetaFromState(bs);
     meta = MathHelper.clamp_int(meta, 0, 1);
     if(meta == 1) {
       return 2000;
@@ -186,8 +186,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
-    TileEntity te = w.getTileEntity(x, y, z);
+  public int getComparatorInputOverride(World w, BlockPos pos) {
+    TileEntity te = w.getTileEntity(pos);
     if (te instanceof TileTank) {
       return ((TileTank) te).getComparatorOutput();
     }
@@ -196,11 +196,11 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {
-      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) itemstack.stackTagCompound.getTag("tankContents"));
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    if(itemstack.getTagCompound()!= null && itemstack.getTagCompound().hasKey("tankContents")) {
+      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) itemstack.getTagCompound().getTag("tankContents"));
       if(fl != null && fl.getFluid() != null) {
-        String str = fl.amount + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getLocalizedName();
+        String str = fl.amount + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getName();
         list.add(str);
       }
     }
@@ -208,7 +208,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == 1) {
       list.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
@@ -223,7 +223,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof TileTank) {
       TileTank tank = (TileTank) te;
       FluidStack stored = tank.tank.getFluid();

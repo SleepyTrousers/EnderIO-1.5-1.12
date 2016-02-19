@@ -36,8 +36,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio implements IGuiHandler, IResourceTooltipProvider,
     IWailaInfoProvider {
 
-  public static int renderId;
-
 //  public IIcon overlayIconPull;
 //  public IIcon overlayIconPush;
 //  public IIcon overlayIconPushPull;
@@ -79,11 +77,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
-  }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
   }
 
   @Override
@@ -300,12 +293,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return getSideIconKey(active);
   }
 
-  protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
-    TileEntity te = blockAccess.getTileEntity(new BlockPos(x, y, z));
+  protected boolean isActive(IBlockAccess blockAccess, BlockPos pos) {
+    TileEntity te = blockAccess.getTileEntity(pos);
     if(te instanceof AbstractMachineEntity) {
       return ((AbstractMachineEntity) te).isActive();
     }
     return false;
+  }
+  
+  protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {    
+    return isActive(blockAccess, new BlockPos(x,y,z));
   }
 
   @Override
