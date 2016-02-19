@@ -1,24 +1,24 @@
 package crazypants.enderio.item;
 
+import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.api.tool.IConduitControl;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.network.PacketHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ToolTickHandler {
 
   @SubscribeEvent
   public void onMouseEvent(MouseEvent event) {
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     if(event.dwheel != 0 && player != null && player.isSneaking()) {
       ItemStack stack = player.getCurrentEquippedItem();
       if (stack != null) {

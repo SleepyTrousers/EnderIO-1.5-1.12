@@ -487,7 +487,7 @@ public final class Config {
   public static boolean clearGlassSameTexture = false;
   public static boolean clearGlassConnectToFusedQuartz = false;
 
-  public static int enchantmentSoulBoundId = 49;
+  public static int enchantmentSoulBoundId = 172;
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
 

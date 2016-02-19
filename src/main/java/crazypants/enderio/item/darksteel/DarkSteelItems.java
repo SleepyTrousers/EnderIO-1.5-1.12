@@ -1,13 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.ChestGenHooks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DarkSteelItems {
 
@@ -61,14 +60,14 @@ public class DarkSteelItems {
 
   @SideOnly(Side.CLIENT)
   public static void registerItemRenderer() {
-    PoweredItemRenderer dsr = new PoweredItemRenderer();
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelBoots, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelLeggings, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelChestplate, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelHelmet, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelSword, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
-    MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
+//    PoweredItemRenderer dsr = new PoweredItemRenderer();
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelBoots, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelLeggings, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelChestplate, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelHelmet, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelSword, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
+//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
   }
 }

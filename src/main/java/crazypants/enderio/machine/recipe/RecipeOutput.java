@@ -70,4 +70,11 @@ public class RecipeOutput {
     return outputFluid != null;
   }
 
+  public boolean isValid() {
+    if(isFluid()) {
+      return outputFluid.getFluid() != null;
+    } 
+    return output != null && output.getItem() != null;
+  }
+
 }

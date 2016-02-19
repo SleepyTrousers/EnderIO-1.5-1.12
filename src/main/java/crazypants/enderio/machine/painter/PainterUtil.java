@@ -1,16 +1,16 @@
 package crazypants.enderio.machine.painter;
 
+import com.google.common.base.Strings;
+
+import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.google.common.base.Strings;
-
-import crazypants.enderio.EnderIO;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 
 public final class PainterUtil {
 
@@ -34,7 +34,7 @@ public final class PainterUtil {
     if(tag != null) {
       String blockId = tag.getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
       if(!Strings.isNullOrEmpty(blockId)) {
-        Block res = (Block) Block.blockRegistry.getObject(blockId);
+        Block res = Block.blockRegistry.getObject(new ResourceLocation(blockId));
         return res;
       }
     }
@@ -83,7 +83,7 @@ public final class PainterUtil {
     if (tag == null) {
       return;
     }
-    String name = Block.blockRegistry.getNameForObject(source);
+    String name = Block.blockRegistry.getNameForObject(source).toString();
     if(name != null && !name.trim().isEmpty()) {
       meta = normalizeFacadeMetadata(source, meta);
       tag.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, name);
@@ -119,17 +119,17 @@ public final class PainterUtil {
     return facadeMeta;
   }
 
-  public static int rotateFacadeMetadata(Block facadeID, int facadeMeta, ForgeDirection axis) {
+  public static int rotateFacadeMetadata(Block facadeID, int facadeMeta, EnumFacing axis) {
     if(facadeID instanceof BlockRotatedPillar) {
       int dir = facadeMeta & 0xC;
-      ForgeDirection orientation;
+      EnumFacing orientation;
       switch (dir) {
-        case 0: orientation = ForgeDirection.UP; break;
-        case 4: orientation = ForgeDirection.EAST; break;
-        case 8: orientation = ForgeDirection.SOUTH; break;
+        case 0: orientation = EnumFacing.UP; break;
+        case 4: orientation = EnumFacing.EAST; break;
+        case 8: orientation = EnumFacing.SOUTH; break;
         default: return facadeMeta;
       }
-      orientation = orientation.getRotation(axis);
+      orientation = orientation.rotateAround(axis.getAxis());
       switch (orientation) {
         case UP:
         case DOWN: dir = 0; break;

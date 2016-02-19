@@ -4,23 +4,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.obj.GroupObject;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.TechneUtil;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 
 public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
 
@@ -48,7 +44,7 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
   }
 
   @Override
-  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_) {
+  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_, int b) {
     TileTelePad tp = (TileTelePad) te;
     if (tp.isMaster() && tp.inNetwork()) {
       TravelController.instance.addCandidate(tp.getLocation());
@@ -82,12 +78,12 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
   }
 
   @Override
-  public IIcon getSelectedIcon() {
+  public TextureAtlasSprite getSelectedIcon() {
     return IconUtil.whiteTexture;
   }
 
   @Override
-  public IIcon getHighlightIcon() {
+  public TextureAtlasSprite getHighlightIcon() {
     return IconUtil.whiteTexture;
   }
 

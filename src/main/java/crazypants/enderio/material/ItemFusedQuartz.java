@@ -2,23 +2,25 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.material.BlockFusedQuartz.Type;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.material.BlockFusedQuartz.Type;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFusedQuartz extends ItemBlockWithMetadata {
+public class ItemFusedQuartz extends ItemBlock {
 
   public ItemFusedQuartz(Block block) {
-    super(block, block);
+    super(block);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setMaxDamage(0);
+    setHasSubtypes(true);
   }
 
   @Override
@@ -39,7 +41,7 @@ public class ItemFusedQuartz extends ItemBlockWithMetadata {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
     int meta = par1ItemStack.getItemDamage();
     Type type = Type.byMeta(meta);
     if (type.blastResistance) {

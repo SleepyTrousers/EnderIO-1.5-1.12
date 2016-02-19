@@ -1,19 +1,19 @@
 package crazypants.enderio.machine.farm;
 
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
 
-import static org.lwjgl.opengl.GL11.*;
+import crazypants.enderio.config.Config;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer{
+public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer<TileFarmStation> {
 
   private void renderFarmStationAt(TileFarmStation tile, double x, double y, double z, float partialTickTime) {
 
@@ -29,9 +29,7 @@ public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer{
   }
 
   @Override
-  public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTickTime) {
-    if (tile instanceof TileFarmStation) {
-      renderFarmStationAt((TileFarmStation) tile, x, y, z, partialTickTime);
-    }
+  public void renderTileEntityAt(TileFarmStation tile, double x, double y, double z, float partialTickTime, int b) {
+    renderFarmStationAt(tile, x, y, z, partialTickTime);
   }
 }

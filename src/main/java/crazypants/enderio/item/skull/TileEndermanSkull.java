@@ -21,9 +21,4 @@ public class TileEndermanSkull extends TileEntityEio {
     this.yaw = yaw;    
   }
 
-  @Override
-  public boolean shouldUpdate() {
-    return false;
-  }
-
 }

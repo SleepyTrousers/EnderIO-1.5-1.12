@@ -3,27 +3,25 @@ package crazypants.enderio.item;
 import java.text.NumberFormat;
 import java.util.Collection;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades {
 
@@ -39,14 +37,14 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     return result;
   }
   
-  public static boolean copyPasteSettings(EntityPlayer player, ItemStack stack, IConduitBundle bundle, ForgeDirection dir) {
+  public static boolean copyPasteSettings(EntityPlayer player, ItemStack stack, IConduitBundle bundle, EnumFacing dir) {
     boolean isCopy = player.isSneaking();
     boolean clearedData = false;
-    NBTTagCompound nbt = stack.stackTagCompound;
+    NBTTagCompound nbt = stack.getTagCompound();
     
     if(nbt == null) {
       nbt = new NBTTagCompound();
-      stack.stackTagCompound = nbt;
+      stack.setTagCompound(nbt);
     }
     
     boolean performedAction = false;
@@ -55,7 +53,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
       if(conduit.getExternalConnections().contains(dir)) {
         if(isCopy && !clearedData) {
           nbt = new NBTTagCompound();
-          stack.stackTagCompound = nbt;
+          stack.setTagCompound(nbt);
           clearedData = true;
         }
         if(isCopy) {
@@ -79,20 +77,18 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
-
+  
   @Override
-  public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
-      float par9, float par10) {
-
-    TileEntity te = world.getTileEntity(x, y, z);
+  public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+         TileEntity te = world.getTileEntity(pos);
     if(!(te instanceof IConduitBundle)) {
       return false;
     }
     IConduitBundle cb = (IConduitBundle)te;    
     if(itemStack.getItemDamage() == 0) {      
-      if(PacketConduitProbe.canCreatePacket(world, x, y, z)) {
+      if(PacketConduitProbe.canCreatePacket(world, pos.getX(), pos.getY(), pos.getZ())) {
         if(world.isRemote) {
-          PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(x, y, z, side));
+          PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos.getX(), pos.getY(), pos.getZ(), side));
         }
         return true;
       }
@@ -104,19 +100,14 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     GameRegistry.registerItem(this, ModObject.itemConduitProbe.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:mJReader");
-  }
-
+ 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 
   @Override
-  public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+  public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player) {  
     return true;
   }
   

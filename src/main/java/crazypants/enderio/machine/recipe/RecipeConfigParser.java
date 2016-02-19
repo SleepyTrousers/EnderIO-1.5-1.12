@@ -387,7 +387,7 @@ public class RecipeConfigParser extends DefaultHandler {
         return null;
       }
       ItemStack stack = OreDictionaryPreferences.instance.getPreferred(oreDict);
-      if(stack == null) {
+      if(stack == null || stack.getItem() == null) {
         Log.debug(LP + "Could not find a prefered item  in the ore dictionary for " + oreDict);
         return null;
       }
@@ -423,7 +423,7 @@ public class RecipeConfigParser extends DefaultHandler {
       }
     }
 
-    if(res == null) {
+    if(res == null || res.getItem() == null) {
       Log.debug("Could not create an item stack from the attributes " + toString(attributes));
       return null;
     }

@@ -1,27 +1,24 @@
 package crazypants.enderio.machine.tank;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TankFluidRenderer extends TileEntitySpecialRenderer {
+public class TankFluidRenderer extends TileEntitySpecialRenderer<TileTank> {
 
   @Override
-  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
+  public void renderTileEntityAt(TileTank te, double x, double y, double z, float partialTick, int b) {
 
-    TileTank tank = (TileTank)te;
+    TileTank tank = te;
     if(tank.tank.getFluidAmount() <= 0) {
       return;
     }
@@ -32,7 +29,7 @@ public class TankFluidRenderer extends TileEntitySpecialRenderer {
     if(tank == null || tank.getFluid() == null) {
       return;
     }
-    IIcon icon = tank.getFluid().getFluid().getStillIcon();
+    TextureAtlasSprite icon = RenderUtil.getStillTexture(tank.getFluid());
     if(icon != null) {
       float fullness = tank.getFilledRatio();
       y += 0.01f; // prevent bottom side z-fighting
@@ -49,11 +46,12 @@ public class TankFluidRenderer extends TileEntitySpecialRenderer {
 
       RenderUtil.bindBlockTexture();
 
-      Tessellator.instance.startDrawingQuads();
-      Tessellator.instance.addTranslation(x, y, z);
-      CubeRenderer.render(bb, icon);
-      Tessellator.instance.addTranslation(-x, -y, -z);
-      Tessellator.instance.draw();
+      //Tessellator.instance.addTranslation(x, y, z);
+      GlStateManager.translate(x, y, z);
+      RenderUtil.renderBoundingBox(bb, icon);
+      GlStateManager.translate(-x, -y, -z);
+      //Tessellator.instance.addTranslation(-x, -y, -z);
+      
 
       GL11.glPopAttrib();
     }

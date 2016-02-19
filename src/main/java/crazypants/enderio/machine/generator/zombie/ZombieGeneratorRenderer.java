@@ -1,56 +1,50 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidTank;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.util.RenderPassHelper;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
+public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombieGenerator> {
 
   private static final String TEXTURE = "enderio:models/ZombieJar.png";
 
   private ModelZombieJar model = new ModelZombieJar();
 
   @Override
-  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick) {
+  public void renderTileEntityAt(TileZombieGenerator te, double x, double y, double z, float tick, int b) {
 
-    World world = te.getWorldObj();
-    TileZombieGenerator gen = (TileZombieGenerator) te;
+    World world = te.getWorld();
 
-    float f = world.getBlockLightValue(te.xCoord, te.yCoord, te.zCoord);
-    int l = world.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
+    float f = world.getLightBrightness(te.getPos());    
+    int l = world.getLightFor(EnumSkyBlock.SKY, te.getPos());
     int l1 = l % 65536;
     int l2 = l / 65536;
-    Tessellator.instance.setColorOpaque_F(f, f, f);
+    GlStateManager.color(f, f, f); 
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
     if (RenderPassHelper.getEntityRenderPass() == 0) {
-      renderModel(gen.facing);
+      renderModel(te.facing);
     } else if (RenderPassHelper.getEntityRenderPass() == 1) {
-      renderFluid(gen);
+      renderFluid(te);
     }
     GL11.glPopMatrix();
   }
@@ -60,18 +54,15 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     if(tank.getFluidAmount() <= 0) {
       return;
     }
-    IIcon icon = tank.getFluid().getFluid().getStillIcon();
+    TextureAtlasSprite icon = RenderUtil.getStillTexture(tank.getFluid());
     if(icon != null) {
       RenderUtil.bindBlockTexture();
-      Tessellator tes = Tessellator.instance;
-      tes.startDrawingQuads();
 
-      ForgeDirection facingDir = ForgeDirection.values()[gen.facing];
       double facingOffset = 0.075;
 
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.85, 0.96, 0.85);
       float fullness = (float) (tank.getFluidAmount()) / (tank.getCapacity());
-      Vector3d absFac = ForgeDirectionOffsets.absolueOffset(facingDir);
+      Vector3d absFac = ForgeDirectionOffsets.absolueOffset(gen.facing);
 
       double scaleX = absFac.x == 0 ? 0.95 : 1 - facingOffset / 2;
       double scaleY = 0.85 * fullness;
@@ -80,33 +71,33 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
       bb = bb.scale(scaleX, 0.85 * fullness, scaleZ);
 
       float ty = -(0.85f - (bb.maxY - bb.minY)) / 2;
-      Vector3d transOffset = ForgeDirectionOffsets.offsetScaled(facingDir, -facingOffset);
+      Vector3d transOffset = ForgeDirectionOffsets.offsetScaled(gen.facing, -facingOffset);
       bb = bb.translate((float) transOffset.x, ty, (float) transOffset.z);
 
       int brightness;
-      if(gen.getWorldObj() == null) {
+      if(gen.getWorld() == null) {
         brightness = 15 << 20 | 15 << 4;
       } else {
-        brightness = gen.getWorldObj().getLightBrightnessForSkyBlocks(gen.xCoord, gen.yCoord, gen.zCoord, 0);
+        brightness = gen.getWorld().getLightFor(EnumSkyBlock.SKY, gen.getPos());
       }
-      tes.setBrightness(brightness);
-
-      CubeRenderer.render(bb, icon);
-
+      
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_CULL_FACE);
       GL11.glDepthMask(false);
-      tes.draw();
+      
+//      tes.setBrightness(brightness);
+      RenderUtil.renderBoundingBox(bb, icon);
+
       GL11.glDepthMask(true);
       GL11.glPopAttrib();
 
     }
   }
 
-  private void renderModel(int facing) {
+  private void renderModel(EnumFacing facing) {
 
     GL11.glPushMatrix();
 
@@ -114,14 +105,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     GL11.glRotatef(180F, 1F, 0F, 0F);
     GL11.glScalef(1.2f, 0.9f, 1.2f);
 
-    ForgeDirection dir = ForgeDirection.getOrientation(facing);
-    if(dir == ForgeDirection.SOUTH) {
-      facing = 0;
-
-    } else if(dir == ForgeDirection.WEST) {
-      facing = -1;
-    }
-    GL11.glRotatef(facing * -90F, 0F, 1F, 0F);
+    GL11.glRotatef(facing.getHorizontalIndex() * -90F, 0F, 1F, 0F);
 
     RenderUtil.bindTexture(TEXTURE);
     model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
@@ -129,31 +113,6 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     GL11.glTranslatef(-0.5F, 0, -0.5F);
     GL11.glPopMatrix();
 
-  }
-
-  @Override
-  public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    return true;
-  }
-
-  @Override
-  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-    return true;
-  }
-
-  @Override
-  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    renderItem(0, 0, 0);
-  }
-
-  private void renderItem(float x, float y, float z) {
-    GL11.glPushMatrix();
-    GL11.glTranslatef(x, y, z);
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    renderModel(ForgeDirection.SOUTH.ordinal());
-    GL11.glDisable(GL11.GL_BLEND);
-    GL11.glPopMatrix();
   }
 
 }

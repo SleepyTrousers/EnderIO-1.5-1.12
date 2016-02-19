@@ -1,19 +1,11 @@
 package crazypants.enderio.item;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-
 import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.common.util.ChatUtil;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
+import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -30,7 +22,15 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.BaublesUtil;
-import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class KeyTracker {
 
@@ -107,7 +107,7 @@ public class KeyTracker {
 
   private void handleMagnet() {
     if(magnetKey.isPressed()) {
-      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
       ItemStack[] inv = player.inventory.mainInventory;
       for (int i = 0; i < 9; i++) {
         if(inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {
@@ -177,7 +177,7 @@ public class KeyTracker {
       }
       return;
     }
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     ItemStack equipped = player.getCurrentEquippedItem();
     if(equipped == null) {
       return;
@@ -237,7 +237,7 @@ public class KeyTracker {
     }
   }
 
-  public boolean isSoundDetectorUpgradeEquipped(EntityClientPlayerMP player) {
+  public boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
     ItemStack helmet = player.getEquipmentInSlot(4);
     SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
     if(upgrade == null) {

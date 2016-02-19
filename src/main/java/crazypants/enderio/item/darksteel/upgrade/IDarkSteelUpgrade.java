@@ -2,12 +2,11 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider {
 

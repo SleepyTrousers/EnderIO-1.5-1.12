@@ -1,21 +1,9 @@
 package crazypants.enderio.item;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.ChatUtil;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -30,6 +18,17 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.EnergyHandlerPI;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredTile;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
 
@@ -51,11 +50,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
   private static final String CUR_REQUEST = " " + EnderIO.lang.localize("gui.mjReader.currentRequest") + ": ";;
 
   public static boolean canCreatePacket(World world, int x, int y, int z) {
-    Block block = world.getBlock(x, y, z);
-    if(block == null) {
-      return false;
-    }
-    TileEntity te = world.getTileEntity(x, y, z);
+    
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileConduitBundle) {
       TileConduitBundle tcb = (TileConduitBundle) te;
       return tcb.getConduit(IPowerConduit.class) != null || tcb.getConduit(IItemConduit.class) != null;
@@ -69,16 +65,12 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
   private int x;
   private int y;
   private int z;
-  private ForgeDirection side;
+  private EnumFacing side;
 
   public PacketConduitProbe() {
   }
-
-  public PacketConduitProbe(int x2, int y2, int z2, int side2) {
-    this(x2, y2, z2, ForgeDirection.getOrientation(side2));
-  }
-
-  public PacketConduitProbe(int x, int y, int z, ForgeDirection side) {
+ 
+  public PacketConduitProbe(int x, int y, int z, EnumFacing side) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -90,7 +82,11 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeShort(side.ordinal());
+    if(side == null) {
+      buf.writeShort(-1);
+    } else {
+      buf.writeShort(side.ordinal());
+    }
 
   }
 
@@ -99,7 +95,12 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();
-    side = ForgeDirection.getOrientation(buffer.readShort());
+    short ord = buffer.readShort();
+    if(ord < 0) {
+      side = null;
+    } else {
+      side = EnumFacing.VALUES[ord];
+    }
   }
 
   @Override
@@ -110,12 +111,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
       return null;
     }
-    Block block = world.getBlock(message.x, message.y, message.z);
-    if(block == null) {
-      return null;
-    }
+    Block block = world.getBlockState(new BlockPos(message.x, message.y, message.z)).getBlock();    
 
-    TileEntity te = world.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileConduitBundle) {
 
       sendInfoMessage(player, (TileConduitBundle) te);
@@ -123,7 +121,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     } else if(te instanceof IInternalPowerReceiver) {
       IInternalPowerReceiver pr = (IInternalPowerReceiver) te;
       sendPowerReciptorInfo(player, block, pr.getEnergyStored(), pr.getMaxEnergyStored(), 0,
-            0, EnergyHandlerPI.getPowerRequest(ForgeDirection.NORTH, pr));
+            0, EnergyHandlerPI.getPowerRequest(EnumFacing.NORTH, pr));
 
     } 
     return null;
@@ -162,7 +160,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       sb.append(ITEM_NO_CONNECTIONS);
       sb.append("\n");
     } else {
-      for (ForgeDirection dir : conduit.getExternalConnections()) {
+      for (EnumFacing dir : conduit.getExternalConnections()) {
         ConnectionMode mode = conduit.getConnectionMode(dir);
 
         sb.append(ITEM_HEADING);

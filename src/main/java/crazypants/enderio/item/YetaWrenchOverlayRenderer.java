@@ -1,5 +1,15 @@
 package crazypants.enderio.item;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.handlers.ClientHandler;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -8,18 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.api.client.render.IWidgetIcon;
-import com.enderio.core.client.handlers.ClientHandler;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector4f;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.api.tool.IConduitControl;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.config.Config;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class YetaWrenchOverlayRenderer {
   

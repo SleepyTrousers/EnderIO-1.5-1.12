@@ -1,11 +1,11 @@
 package crazypants.enderio.material;
 
-import net.minecraft.block.BlockPane;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import net.minecraft.block.BlockPane;
+import net.minecraft.block.material.Material;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockDarkIronBars extends BlockPane {
   
@@ -16,11 +16,11 @@ public class BlockDarkIronBars extends BlockPane {
   }
 
   public BlockDarkIronBars() {
-    super("enderio:blockDarkIronBars", "enderio:blockDarkIronBars", Material.iron, true);
+    super(Material.iron, true);
     setResistance(2000.0F); //TNT Proof
     setHardness(5.0F);
     setStepSound(soundTypeMetal);
-    setBlockName(ModObject.blockDarkIronBars.unlocalisedName);
+    setUnlocalizedName(ModObject.blockDarkIronBars.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
   

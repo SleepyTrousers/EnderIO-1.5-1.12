@@ -2,34 +2,29 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFusedQuartz extends BlockEio {
-
-  public static int renderId;
-
+  
   private final static Type[] metaMapping = new Type[16];
   public enum Type {
 
@@ -96,9 +91,9 @@ public class BlockFusedQuartz extends BlockEio {
     return result;
   }
 
-  IIcon[] blockIcon;
-  IIcon[] itemsIcons;
-  IIcon[] frameIcons;
+//  IIcon[] blockIcon;
+//  IIcon[] itemsIcons;
+//  IIcon[] frameIcons;
 
   private BlockFusedQuartz() {
     super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityPaintedBlock.class, Material.glass);
@@ -112,10 +107,12 @@ public class BlockFusedQuartz extends BlockEio {
       GameRegistry.registerTileEntity(teClass, name + "TileEntity");
     }
   }
+  
 
   @Override
-  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-    int meta = world.getBlockMetadata(x, y, z);
+  public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {   
+    IBlockState bs = world.getBlockState(pos);
+    int meta = bs.getBlock().getMetaFromState(bs);
     Type type = Type.byMeta(meta);
     if (type.blastResistance) {
       return 2000;
@@ -123,133 +120,100 @@ public class BlockFusedQuartz extends BlockEio {
       return super.getExplosionResistance(par1Entity);
     }
   }
-
-  @Override
-  public boolean renderAsNormalBlock() {
-    return false;
-  }
-
+  
   @Override
   public boolean isOpaqueCube() {
     return false;
   }
 
   @Override
-  public int getRenderType() {
-    return renderId;
-  }
-
-  //TODO:1.7 this makes it go splat
-  //  @Override
-  //  @SideOnly(Side.CLIENT)
-  //  public int getRenderBlockPass() {
-  //    return 1;
-  //  }
-  //
-  //  @Override
-  //  public boolean canRenderInPass(int pass) {
-  //    FusedQuartzRenderer.renderPass = pass;
-  //    return true;
-  //  }
-
-  @Override
-  public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-    int meta = world.getBlockMetadata(x, y, z);
+  public int getLightOpacity(IBlockAccess world, BlockPos pos) {
+    IBlockState bs = world.getBlockState(pos);
+    int meta = bs.getBlock().getMetaFromState(bs);
     Type type = Type.byMeta(meta);
     return type.lightOpacity;
   }
-
+  
   @Override
-  public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    Block block = world.getBlock(x, y, z);
+  public int getLightValue(IBlockAccess world, BlockPos pos) {
+    IBlockState bs = world.getBlockState(pos);
+    Block block = bs.getBlock();
     if(block != this) {
-      return super.getLightValue(world, x, y, z);
+      return super.getLightValue(world, pos);
     }
-    int meta = world.getBlockMetadata(x, y, z);
+    int meta = block.getMetaFromState(bs);
     Type type = Type.byMeta(meta);
-    return type.enlightened ? 15 : super.getLightValue(world, x, y, z);
-  }
-
-  @Override
-  public int damageDropped(int par1) {
-    return par1;
+    return type.enlightened ? 15 : super.getLightValue(world, pos);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (int j = 0; j < Type.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }
 
   @Override
+  public int damageDropped(IBlockState state) {
+    return getMetaFromState(state);
+  }
+
+  @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
-    Block block = world.getBlock(x, y, z);
-    int meta = world.getBlockMetadata(x, y, z);
+  public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
+      
+    IBlockState bs = world.getBlockState(pos);
+    Block block = bs.getBlock();
+    int meta = block.getMetaFromState(bs);
     if(block == this) {
-      BlockCoord here = new BlockCoord(x, y, z).getLocation(ForgeDirection.VALID_DIRECTIONS[side].getOpposite());
-      int myMeta = world.getBlockMetadata(here.x, here.y, here.z);
+      BlockPos here = pos.offset(side.getOpposite());
+      bs = world.getBlockState(here);
+      block = bs.getBlock();      
+      int myMeta = block.getMetaFromState(bs);
       return !Type.byMeta(myMeta).connectTo(meta);
     }
     return true;
   }
 
   @Override
-  public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_) {
+  public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {  
     return true;
   }
 
+  
   @Override
-  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-    if(side == ForgeDirection.UP) { //stop drips
+  public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {  
+    if(side == EnumFacing.UP) { //stop drips
       return false;
     }
     return true;
   }
 
   @Override
-  public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
+  public boolean canPlaceTorchOnTop(IBlockAccess world, BlockPos pos) {
     return true;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    //This little oddity is so the standard rendering used for items and breaking effects
-    //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
-    Type[] ts = Type.values();
-    blockIcon = new IIcon[ts.length];
-    itemsIcons = new IIcon[ts.length];
-    frameIcons = new IIcon[ts.length];
-
-    for (int i = 0; i < ts.length; i++) {
-      blockIcon[i] = iIconRegister.registerIcon(ts[i].blockIcon);
-      itemsIcons[i] = iIconRegister.registerIcon(ts[i].itemIcon);
-      frameIcons[i] = iIconRegister.registerIcon(ts[i].frameIcon);
-    }
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int par1, int meta) {
-    meta = MathHelper.clamp_int(meta, 0, blockIcon.length - 1);
-    return blockIcon[meta];
-  }
-
-  public IIcon getItemIcon(int meta) {
-    meta = MathHelper.clamp_int(meta, 0, itemsIcons.length - 1);
-    return itemsIcons[meta];
-  }
-
-  public IIcon getDefaultFrameIcon(int meta) {
-    meta = MathHelper.clamp_int(meta, 0, frameIcons.length - 1);
-    return frameIcons[meta];
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister iIconRegister) {
+//    //This little oddity is so the standard rendering used for items and breaking effects
+//    //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
+//    Type[] ts = Type.values();
+//    blockIcon = new IIcon[ts.length];
+//    itemsIcons = new IIcon[ts.length];
+//    frameIcons = new IIcon[ts.length];
+//
+//    for (int i = 0; i < ts.length; i++) {
+//      blockIcon[i] = iIconRegister.registerIcon(ts[i].blockIcon);
+//      itemsIcons[i] = iIconRegister.registerIcon(ts[i].itemIcon);
+//      frameIcons[i] = iIconRegister.registerIcon(ts[i].frameIcon);
+//    }
+//  }
 
   @Override
-  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return false;
   }
 

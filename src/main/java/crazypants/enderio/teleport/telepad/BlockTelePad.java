@@ -19,16 +19,16 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BlockTelePad extends BlockTravelAnchor {
 
-  @SideOnly(Side.CLIENT)
-  private IIcon[] icons;
-  @SideOnly(Side.CLIENT)
-  private IIcon model;
-  @SideOnly(Side.CLIENT)
-  private IIcon highlightIcon;
+//  @SideOnly(Side.CLIENT)
+//  private IIcon[] icons;
+//  @SideOnly(Side.CLIENT)
+//  private IIcon model;
+//  @SideOnly(Side.CLIENT)
+//  private IIcon highlightIcon;
   
   public static int renderId;
 
@@ -54,37 +54,37 @@ public class BlockTelePad extends BlockTravelAnchor {
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD_TRAVEL, this);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    icons = new IIcon[3];
-    icons[0] = iIconRegister.registerIcon("enderio:telePadBottom");
-    icons[1] = iIconRegister.registerIcon("enderio:telePadTop");
-    icons[2] = iIconRegister.registerIcon("enderio:telePadSide");
-    model = iIconRegister.registerIcon("enderio:telePadModel");
-    highlightIcon = iIconRegister.registerIcon("enderio:telePadHighlight");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister iIconRegister) {
+//    icons = new IIcon[3];
+//    icons[0] = iIconRegister.registerIcon("enderio:telePadBottom");
+//    icons[1] = iIconRegister.registerIcon("enderio:telePadTop");
+//    icons[2] = iIconRegister.registerIcon("enderio:telePadSide");
+//    model = iIconRegister.registerIcon("enderio:telePadModel");
+//    highlightIcon = iIconRegister.registerIcon("enderio:telePadHighlight");
+//  }
+//
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+//    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
+//    if(te != null && te.inNetwork()) {
+//      return model;
+//    }
+//    return getIcon(blockSide, 0);
+//  }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
-    if(te != null && te.inNetwork()) {
-      return model;
-    }
-    return getIcon(blockSide, 0);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int side, int meta) {
-    return icons[Math.min(side, 2)];
-  }
-
-  @SideOnly(Side.CLIENT)
-  public IIcon getHighlightIcon() {
-    return highlightIcon;
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int side, int meta) {
+//    return icons[Math.min(side, 2)];
+//  }
+//
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getHighlightIcon() {
+//    return highlightIcon;
+//  }
 
   @Override
   public int getRenderType() {

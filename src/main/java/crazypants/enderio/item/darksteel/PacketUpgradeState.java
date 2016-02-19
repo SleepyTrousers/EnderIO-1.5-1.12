@@ -1,12 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.PacketHandler;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgradeState, IMessage> {
 
@@ -55,7 +55,7 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
       DarkSteelController.instance.setActive(player, message.type, message.isActive);
       if (ctx.side.isServer()) {
         message.entityID = player.getEntityId();
-        PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.dimensionId);
+        PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.getDimensionId());
       }
     }
     return null;

@@ -2,16 +2,8 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntitySmokeFX;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.storage.WorldInfo;
-
 import com.enderio.core.api.common.util.IProgressTile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
@@ -20,6 +12,14 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile {
 
@@ -58,11 +58,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     abstract void complete(TileEntity te);
 
     void rain(TileEntity te, boolean state) {
-      te.getWorldObj().getWorldInfo().setRaining(state);
+      te.getWorld().getWorldInfo().setRaining(state);
     }
 
     void thunder(TileEntity te, boolean state) {
-      te.getWorldObj().getWorldInfo().setThundering(state);
+      te.getWorld().getWorldInfo().setThundering(state);
     }
 
     public boolean isValid(ItemStack item) {
@@ -104,6 +104,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
+  @Override
   public void doUpdate() {
     super.doUpdate();
     if(worldObj.isRemote) {
@@ -115,8 +116,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @SideOnly(Side.CLIENT)
   private void spawnParticle() {
-    EntitySmokeFX fx = new EntitySmokeFX(getWorldObj(), xCoord + 0.5, yCoord + 0.3, zCoord + 0.5, 0, 0, 0);
-    fx.setRBGColorF((float) particleColor.getRed() / 255f, (float) particleColor.getGreen() / 255f, (float) particleColor.getBlue() / 255f);
+    EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.ordinal(), getPos().getX() + 0.5, getPos().getY()+ 0.3, getPos().getZ()+ 0.5, 0, 0, 0, 0);
+//    EntitySmokeFX fx = new EntitySmokeFX(getWorld(), getPos().getX() + 0.5, getPos().getY()+ 0.3, getPos().getZ()+ 0.5, 0, 0, 0, 0f);
+    fx.setRBGColorF(particleColor.getRed() / 255f, particleColor.getGreen() / 255f, particleColor.getBlue() / 255f);
     fx.setVelocity(worldObj.rand.nextDouble() * 0.1 - 0.05, 0.35, worldObj.rand.nextDouble() * 0.1 - 0.05);
     Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     activeParticleTicks--;
@@ -191,7 +193,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
         if(powerUsed >= activeTask.power) {
           activeTask.complete(this);
-          PacketHandler.INSTANCE.sendToDimension(new PacketFinishWeather(this, activeTask), worldObj.provider.dimensionId);
+          PacketHandler.INSTANCE.sendToDimension(new PacketFinishWeather(this, activeTask), worldObj.provider.getDimensionId());
           startTask(-1);
           res = true;
         }
@@ -232,7 +234,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       activeTask = null;
       powerUsed = 0;
       if(!worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.dimensionId);
+        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.getDimensionId());
       }
       return true;
     }

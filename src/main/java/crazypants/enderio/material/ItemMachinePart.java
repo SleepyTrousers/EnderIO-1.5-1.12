@@ -2,23 +2,19 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMachinePart extends Item {
 
-  private final IIcon[] icons;
-
-  public static ItemMachinePart create() {
+    public static ItemMachinePart create() {
     ItemMachinePart mp = new ItemMachinePart();
     mp.init();
     return mp;
@@ -29,29 +25,20 @@ public class ItemMachinePart extends Item {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMachinePart.unlocalisedName);
-
-    icons = new IIcon[MachinePart.values().length];
   }
 
   private void init() {
     GameRegistry.registerItem(this, ModObject.itemMachinePart.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, MachinePart.values().length - 1);
-    return icons[damage];
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    int numParts = MachinePart.values().length;
-    for (int i = 0; i < numParts; i++) {
-      icons[i] = IIconRegister.registerIcon(MachinePart.values()[i].iconKey);
-    }
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//    int numParts = MachinePart.values().length;
+//    for (int i = 0; i < numParts; i++) {
+//      icons[i] = IIconRegister.registerIcon(MachinePart.values()[i].iconKey);
+//    }
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

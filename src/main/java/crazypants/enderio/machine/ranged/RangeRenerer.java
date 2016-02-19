@@ -1,21 +1,27 @@
 package crazypants.enderio.machine.ranged;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderEntity;
-import net.minecraft.entity.Entity;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderEntity;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RangeRenerer extends RenderEntity {
+
+  public static final Factory FACTORY = new Factory();
+  
+  public RangeRenerer(RenderManager renderManagerIn) {
+    super(renderManagerIn);
+  }
 
   @Override
   public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
@@ -43,17 +49,22 @@ public class RangeRenerer extends RenderEntity {
     GL11.glColor4f(1, 1, 1, 0.4f);
 
     RenderUtil.bindBlockTexture();
-    Tessellator.instance.startDrawingQuads();
-    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
-    CubeRenderer.render(BoundingBox.UNIT_CUBE, IconUtil.whiteTexture);
-    Tessellator.instance.draw();
-
-    RenderUtil.bindItemTexture();
+    
+    //Tessellator.instance.setBrightness(15 << 20 | 15 << 4);   
+    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, IconUtil.whiteTexture);
 
     GL11.glDepthMask(true);
     GL11.glPopAttrib();
     GL11.glPopMatrix();
 
+  }
+  
+  public static class Factory implements IRenderFactory<RangeEntity> {
+
+    @Override
+    public Render<? super RangeEntity> createRenderFor(RenderManager manager) {
+      return new RangeRenerer(manager);
+    }
   }
 
 }

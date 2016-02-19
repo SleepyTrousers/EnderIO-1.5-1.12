@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import crazypants.enderio.machine.MachineRecipeInput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.machine.MachineRecipeInput;
 
 public class Recipe implements IRecipe {
 
@@ -172,6 +172,19 @@ public class Recipe implements IRecipe {
 
   @Override
   public boolean isValid() {
+    if(inputs == null || outputs == null || energyRequired <= 0) {
+      return false;
+    }
+    for(RecipeInput input : inputs) {
+      if(!input.isValid()) {
+        return false;
+      }
+    }
+    for(RecipeOutput output : outputs) {
+      if(!output.isValid()) {
+        return false;
+      }
+    }
     return inputs != null && outputs != null && energyRequired > 0;
   }
 

@@ -7,8 +7,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemIngotStorage extends ItemBlock {
 
@@ -27,11 +27,10 @@ public class BlockItemIngotStorage extends ItemBlock {
   public int getMetadata(int damage) {
     return damage;
   }
-  
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+    
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
     for (Alloy alloy : Alloy.values()) {
       list.add(new ItemStack(this, 1, alloy.ordinal()));
     }

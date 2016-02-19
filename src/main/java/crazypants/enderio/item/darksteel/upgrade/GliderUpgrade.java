@@ -1,23 +1,22 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import static org.lwjgl.opengl.GL11.glDepthMask;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelController;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-
-import static org.lwjgl.opengl.GL11.glDepthMask;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GliderUpgrade extends AbstractUpgrade {
 
@@ -32,13 +31,13 @@ public class GliderUpgrade extends AbstractUpgrade {
     if(stack == null) {
       return null;
     }
-    if(stack.stackTagCompound == null) {
+    if(stack.getTagCompound() == null) {
       return null;
     }
-    if(!stack.stackTagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
+    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    return new GliderUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new GliderUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
   
   

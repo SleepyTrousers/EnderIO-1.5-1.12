@@ -2,21 +2,17 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMaterial extends Item {
-
-  private final IIcon[] icons;
 
   public static ItemMaterial create() {
     ItemMaterial mp = new ItemMaterial();
@@ -30,28 +26,20 @@ public class ItemMaterial extends Item {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMaterial.unlocalisedName);
 
-    icons = new IIcon[Material.values().length];
   }
 
   private void init() {
     GameRegistry.registerItem(this, ModObject.itemMaterial.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, Material.values().length - 1);
-    return icons[damage];
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    int numParts = Material.values().length;
-    for (int i = 0; i < numParts; i++) {
-      icons[i] = IIconRegister.registerIcon(Material.values()[i].iconKey);
-    }
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//    int numParts = Material.values().length;
+//    for (int i = 0; i < numParts; i++) {
+//      icons[i] = IIconRegister.registerIcon(Material.values()[i].iconKey);
+//    }
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
@@ -70,7 +58,7 @@ public class ItemMaterial extends Item {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+  public boolean hasEffect(ItemStack par1ItemStack) {
     if(par1ItemStack == null) {
       return false;
     }

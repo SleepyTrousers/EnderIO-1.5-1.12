@@ -97,7 +97,19 @@ public class RecipeInput {
 
   @Override
   public String toString() {
-    return "RecipeInput [input=" + input + ", useMeta=" + useMeta + "]";
+    if(isValid()) {
+      return "RecipeInput [input=" + input + ", useMeta=" + useMeta + "]";
+    } 
+    return "RecipeInput invalid";
+  }
+
+  public boolean isValid() {
+    if(isFluid()) {
+      return fluid != null && fluid.getFluid() != null;
+    } else {
+      return input != null && input.getItem() != null;
+    }
+    
   }
 
 }

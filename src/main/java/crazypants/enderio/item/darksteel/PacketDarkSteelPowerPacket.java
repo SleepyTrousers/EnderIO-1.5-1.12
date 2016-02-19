@@ -1,9 +1,9 @@
 package crazypants.enderio.item.darksteel;
 
 import io.netty.buffer.ByteBuf;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<PacketDarkSteelPowerPacket, IMessage> {
 
@@ -30,6 +30,7 @@ public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<Pac
     armorType = buffer.readShort();
   }
 
+  @Override
   public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
     DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().playerEntity, ItemDarkSteelArmor.forArmorType(message.armorType), message.powerUse);
     ctx.getServerHandler().playerEntity.fallDistance = 0;

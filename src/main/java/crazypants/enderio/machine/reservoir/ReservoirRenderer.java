@@ -1,33 +1,34 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ReservoirRenderer extends TileEntitySpecialRenderer implements IResourceManagerReloadListener {
+public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> implements IResourceManagerReloadListener {
 
   private ResourceLocation texName = null;
-  private IIcon tex = null;
+  private TextureAtlasSprite tex = null;
 
   private final BlockReservoir block;
 
@@ -42,10 +43,10 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
   }
   
   @Override
-  public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
+  public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
 
-    TileReservoir res = (TileReservoir) tileentity;
-    if(res.haveRendered(tileentity.getWorldObj().getTotalWorldTime(), f)) {
+    TileReservoir res = tileentity;
+    if(res.haveRendered(tileentity.getWorld().getTotalWorldTime(), f)) {
       return;
     }
 
@@ -54,8 +55,8 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
       return;
     }
 
-    float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.getWorldObj(), tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
-    Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
+    float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.getWorld(), tileentity.getPos());
+    Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
     GL11.glPushMatrix();
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -76,12 +77,15 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
       // switch
       RenderUtil.bindBlockTexture();
 
-      Tessellator.instance.startDrawingQuads();
-      Tessellator.instance.setColorRGBA_F(val, val, val, 1);
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      Tessellator tessellator = Tessellator.getInstance();
+      WorldRenderer tes = tessellator.getWorldRenderer();
+      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+      
+      GlStateManager.color(val, val, val, 1);      
+      for (EnumFacing dir : EnumFacing.VALUES) {
         drawSwitch(dir, bb);
       }
-      Tessellator.instance.draw();
+      tessellator.draw();  
     }
 
     if(fullness > 0) {
@@ -89,21 +93,22 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
 
       float margin = 0.01f;
 
-      IIcon tex = getLiquidTexture();
+      TextureAtlasSprite tex = getLiquidTexture();
       float maxV = tex.getMinV() + ((tex.getMaxV() - tex.getMinV()) * fullness);
 
-      Tessellator.instance.startDrawingQuads();
-      Tessellator.instance.setColorRGBA_F(val, val, val, 1);
-      CubeRenderer.render(
+      GlStateManager.color(val, val, val);
+      
+      RenderUtil.renderBoundingBox(bb, tex);
+      
+      RenderUtil.renderBoundingBox(
           new BoundingBox(bb.minX + margin, bb.minY + margin, bb.minZ + margin, bb.maxX - margin,
               bb.minY + (fullness * (Math.abs(bb.maxY - bb.minY))) - margin, bb.maxZ - margin), tex.getMinU(), tex.getMaxU(), tex.getMinV(), maxV);
-      Tessellator.instance.draw();
     }
 
     GL11.glPopAttrib();
     GL11.glPopMatrix();
 
-    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
+    Minecraft.getMinecraft().entityRenderer.enableLightmap();
 
   }
 
@@ -112,15 +117,14 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
   private Vector3d up = new Vector3d();
   private Vector3d offset = new Vector3d();
 
-  private void drawSwitch(ForgeDirection dir, BoundingBox bb) {
-    Tessellator tes = Tessellator.instance;
+  private void drawSwitch(EnumFacing dir, BoundingBox bb) {
+    
 
     Vector3d cent = bb.getCenter();
     offset.set(cent);
 
-    boolean isUp = dir.offsetY != 0;
-
-    forward.set(dir.offsetX, dir.offsetY, dir.offsetZ);
+    boolean isUp = dir.getFrontOffsetY() != 0;
+    forward.set(ForgeDirectionOffsets.forDir(dir));
     forward.scale(0.5);
     forward.x *= bb.sizeX();
     forward.y *= bb.sizeY();
@@ -128,17 +132,17 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
 
     offset.add(forward);
 
-    if(dir.offsetY == 0) {
+    if(dir.getFrontOffsetY()  == 0) {
       offset.y += bb.sizeY() * 0.25;
     }
-    if(dir.offsetX == 0) {
-      offset.x -= (isUp ? dir.offsetY : dir.offsetZ) * bb.sizeX() * 0.25;
+    if(dir.getFrontOffsetX()  == 0) {
+      offset.x -= (isUp ? dir.getFrontOffsetY() : dir.getFrontOffsetZ()) * bb.sizeX() * 0.25;
     }
-    if(dir.offsetZ == 0) {
-      offset.z += (isUp ? -dir.offsetY : dir.offsetX) * bb.sizeZ() * 0.25;
+    if(dir.getFrontOffsetZ() == 0) {
+      offset.z += (isUp ? -dir.getFrontOffsetY()  : dir.getFrontOffsetX()) * bb.sizeZ() * 0.25;
     }
 
-    left.set(isUp ? -dir.offsetY : -dir.offsetZ, 0, dir.offsetX);
+    left.set(isUp ? -dir.getFrontOffsetY()  : -dir.getFrontOffsetZ(), 0, dir.getFrontOffsetX());
 
     if(isUp) {
       up.set(0, 0, -1);
@@ -150,17 +154,19 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
     left.scale(0.125);
     up.scale(0.125);
 
-    IIcon icon = block.switchIcon;
+    TextureAtlasSprite icon = block.switchIcon;
+          
+    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();    
+    tes.pos(offset.x + left.x - up.x, offset.y + left.y - up.y,
+        offset.z + left.z - up.z).tex(icon.getMinU(), icon.getMaxV()).endVertex();    
+    tes.pos(offset.x - left.x - up.x, offset.y - left.y - up.y,
+        offset.z - left.z - up.z).tex(icon.getMaxU(), icon.getMaxV()).endVertex();    
+    tes.pos(offset.x - left.x + up.x, offset.y - left.y + up.y,
+        offset.z - left.z + up.z).tex(icon.getMaxU(), icon.getMinV()).endVertex();    
+    tes.pos(offset.x + left.x + up.x, offset.y + left.y + up.y,
+        offset.z + left.z + up.z).tex(icon.getMinU(), icon.getMinV()).endVertex();
 
-    tes.addVertexWithUV(offset.x + left.x - up.x, offset.y + left.y - up.y,
-        offset.z + left.z - up.z, icon.getMinU(), icon.getMaxV());
-    tes.addVertexWithUV(offset.x - left.x - up.x, offset.y - left.y - up.y,
-        offset.z - left.z - up.z, icon.getMaxU(), icon.getMaxV());
-    tes.addVertexWithUV(offset.x - left.x + up.x, offset.y - left.y + up.y,
-        offset.z - left.z + up.z, icon.getMaxU(), icon.getMinV());
-    tes.addVertexWithUV(offset.x + left.x + up.x, offset.y + left.y + up.y,
-        offset.z + left.z + up.z, icon.getMinU(), icon.getMinV());
-
+      
   }
 
   private ResourceLocation getLiquidSheet() {
@@ -170,9 +176,9 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
     return texName;
   }
 
-  private IIcon getLiquidTexture() {
+  private TextureAtlasSprite getLiquidTexture() {
     if(tex == null) {
-      tex = FluidRegistry.WATER.getStillIcon();
+      tex = RenderUtil.getStillTexture(FluidRegistry.WATER);      
     }
     return tex;
   }

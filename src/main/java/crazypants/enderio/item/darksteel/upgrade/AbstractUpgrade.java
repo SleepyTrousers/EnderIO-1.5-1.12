@@ -2,17 +2,16 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import java.util.List;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.ItemUtil;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
@@ -66,19 +65,19 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     list.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     list.add(EnumChatFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
@@ -104,10 +103,10 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     if(stack == null) {
       return false;
     }
-    if(stack.stackTagCompound == null) {
+    if(stack.getTagCompound() == null) {
       return false;
     }
-    return stack.stackTagCompound.hasKey(id);
+    return stack.getTagCompound().hasKey(id);
   }
 
   @Override
@@ -136,7 +135,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     if(!hasUpgrade(stack)) {
       return null;
     }
-    return (NBTTagCompound) stack.stackTagCompound.getTag(id);
+    return (NBTTagCompound) stack.getTagCompound().getTag(id);
   }
 
   public abstract void writeUpgradeToNBT(NBTTagCompound upgradeRoot);
@@ -146,10 +145,10 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     if(stack == null) {
       return;
     }
-    if(stack.stackTagCompound == null) {
+    if(stack.getTagCompound() == null) {
       return;
     }
-    stack.stackTagCompound.removeTag(id);
+    stack.getTagCompound().removeTag(id);
   }
 
 }

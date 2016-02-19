@@ -2,29 +2,26 @@ package crazypants.enderio.item;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider {
 
@@ -34,16 +31,16 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
     private FontRenderer wrapped;
     private ItemStack stack = EnderFood.ENDERIOS.getStack();
     private int inARow = 0;
-    
+
     public SpecialFont(FontRenderer wrapped) {
       super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
       this.wrapped = wrapped;
     }
-    
+
     @Override
-    public int drawString(String string, int x, int y, int color, boolean p_85187_5_) {
-     boolean pop = false;
-     if (isSmallText(string)) {
+    public int drawString(String string, float x, float y, int color, boolean dropShadow) {
+      boolean pop = false;
+      if (isSmallText(string)) {
         GL11.glPushMatrix();
         GL11.glScalef(0.5f, 0.5f, 0.5f);
         GL11.glTranslated(x, y, 0);
@@ -53,13 +50,13 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
       } else {
         inARow = 0;
       }
-      int ret = wrapped.drawString(string, x, y, color, p_85187_5_);
+      int ret = wrapped.drawString(string, x, y, color, dropShadow);
       if (pop) {
         GL11.glPopMatrix();
       }
       return ret;
     }
-    
+
     @Override
     public int getStringWidth(String p_78256_1_) {
       int ret = wrapped.getStringWidth(p_78256_1_);
@@ -68,7 +65,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
       }
       return ret;
     }
-    
+
     private boolean isSmallText(String string) {
       List<String> lines = Lists.newArrayList();
       SpecialTooltipHandler.addDetailedTooltipFromResources(lines, getUnlocalizedNameForTooltip(stack));
@@ -80,7 +77,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
       return wrapped.getCharWidth(p_78263_1_);
     }
   }
-  
+
   public enum EnderFood {
     ENDERIOS("itemEnderios", 10, 0.8f);
 
@@ -89,7 +86,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
     public final float saturation;
 
     public static final EnderFood[] VALUES = values();
-    
+
     private EnderFood(String name, int hunger, float saturation) {
       this.unlocalisedName = name;
       this.hunger = hunger;
@@ -105,7 +102,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
     }
 
     public static EnderFood get(ItemStack stack) {
-      return VALUES[stack.getItemDamage() % VALUES.length]; 
+      return VALUES[stack.getItemDamage() % VALUES.length];
     }
   }
 
@@ -114,13 +111,10 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
     GameRegistry.registerItem(ret, ModObject.itemEnderFood.unlocalisedName);
     return ret;
   }
-  
-  @SideOnly(Side.CLIENT)
-  private IIcon[] icons;
-  
+
   @SideOnly(Side.CLIENT)
   private SpecialFont fr;
-  
+
   public ItemEnderFood() {
     super(0, false);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -135,45 +129,40 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
       list.add(f.getStack());
     }
   }
-  
+
   @Override
   public String getUnlocalizedName(ItemStack p_77667_1_) {
     return "enderio." + EnderFood.get(p_77667_1_).unlocalisedName;
   }
-  
+
+  // @Override
+  // public void registerIcons(IIconRegister register) {
+  // icons = new IIcon[EnderFood.VALUES.length];
+  // for (EnderFood f : EnderFood.VALUES) {
+  // icons[f.ordinal()] = register.registerIcon("enderio:" + f.unlocalisedName);
+  // }
+  // }
+
   @Override
-  public void registerIcons(IIconRegister register) {
-    icons = new IIcon[EnderFood.VALUES.length];
-    for (EnderFood f : EnderFood.VALUES) {
-      icons[f.ordinal()] = register.registerIcon("enderio:" + f.unlocalisedName);
-    }
-  }
-  
-  @Override
-  public IIcon getIconFromDamage(int damage) {
-    return icons[damage % icons.length];
+  public int getHealAmount(ItemStack stack) {
+    return EnderFood.get(stack).hunger;
   }
 
   @Override
-  public int func_150905_g(ItemStack p_150905_1_) {
-    return EnderFood.get(p_150905_1_).hunger;
-  }
-
-  @Override
-  public float func_150906_h(ItemStack p_150906_1_) {
-    return EnderFood.get(p_150906_1_).saturation;
+  public float getSaturationModifier(ItemStack stack) {
+    return EnderFood.get(stack).saturation;
   }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName(itemStack);
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public FontRenderer getFontRenderer(ItemStack stack) {
     if (fr == null) {
-      fr = new SpecialFont(Minecraft.getMinecraft().fontRenderer);
+      fr = new SpecialFont(Minecraft.getMinecraft().fontRendererObj);
     }
     return fr;
   }

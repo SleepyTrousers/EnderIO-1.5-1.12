@@ -4,20 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SoundDetector {
 
@@ -88,7 +87,7 @@ public class SoundDetector {
     boolean isEntity;
 
     public SoundSource(Entity ent, float volume) {
-      AxisAlignedBB bb = ent.boundingBox;
+      AxisAlignedBB bb = ent.getEntityBoundingBox();
       if(bb != null) {
         pos = new Vector3d(bb.minX + (bb.maxX - bb.minX) / 2, bb.minY + (bb.maxY - bb.minY) / 2, bb.minZ + (bb.maxZ - bb.minZ) / 2);
       } else {

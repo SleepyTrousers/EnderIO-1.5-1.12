@@ -1,28 +1,24 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReservoir extends BlockEio implements IResourceTooltipProvider {
 
@@ -50,8 +46,8 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
 
   }
 
-  private IIcon[] mbIcons = new IIcon[8];
-  IIcon switchIcon;
+//  private IIcon[] mbIcons = new IIcon[8];
+  TextureAtlasSprite switchIcon;
 
   private BlockReservoir() {
     super(ModObject.blockReservoir.unlocalisedName, TileReservoir.class, Material.rock);

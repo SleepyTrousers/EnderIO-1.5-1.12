@@ -1,19 +1,27 @@
 package crazypants.enderio.item.darksteel;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.RenderEntity;
-import net.minecraft.entity.Entity;
-
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderEntity;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class SoundRenderer extends RenderEntity {
+
+  public static final Factory FACTORY = new Factory();
+  
+  public SoundRenderer(RenderManager renderManagerIn) {
+    super(renderManagerIn);
+  }
 
   @Override
   public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
@@ -32,9 +40,9 @@ public class SoundRenderer extends RenderEntity {
 
     GL11.glColor4f(1, 1, 1, alpha);
 
-    float scale = se.lifeSpan / 20f;
+//    float scale = se.lifeSpan / 20f;
 
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
     GL11.glRotatef(-player.rotationYaw, 0.0F, 1.0F, 0.0F);
@@ -46,6 +54,14 @@ public class SoundRenderer extends RenderEntity {
 
     GL11.glPopAttrib();
     GL11.glPopMatrix();
+  }
+  
+  public static class Factory implements IRenderFactory<SoundEntity> {
+
+    @Override
+    public Render<? super SoundEntity> createRenderFor(RenderManager manager) {
+      return new SoundRenderer(manager);
+    }
   }
 
 }

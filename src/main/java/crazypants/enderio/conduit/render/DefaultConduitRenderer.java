@@ -1,25 +1,13 @@
 package crazypants.enderio.conduit.render;
 
-import java.util.Collection;
-import java.util.List;
-
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-
-import static com.enderio.core.client.render.CubeRenderer.*;
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
@@ -31,63 +19,31 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   }
 
   @Override
-  public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight, RenderBlocks rb) {
-
-    Collection<CollidableComponent> components = conduit.getCollidableComponents();
-    Tessellator tessellator = Tessellator.instance;
-
-    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
-
-    IIcon tex;
-
-    if(!rb.hasOverrideBlockTexture()) {
-      for (CollidableComponent component : components) {
-        if(renderComponent(component)) {
-          float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-          if(isNSEWUD(component.dir) &&
-              conduit.getTransmitionTextureForState(component) != null) {
-            tessellator.setBrightness((int) (worldLight));
-            tex = conduit.getTransmitionTextureForState(component);
-            renderTransmission(conduit, tex, component, selfIllum);
-          }
-
-          tex = conduit.getTextureForState(component);
-          if(tex != null) {
-            tessellator.setBrightness((int) (worldLight));
-            renderConduit(tex, conduit, component, selfIllum);
-          }
-        }
-      }
-    }
-  }
-
-  @Override
   public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z,
       float partialTick, float worldLight) {
 
   }
 
-  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
 
     if(isNSEWUD(component.dir)) {
 
       float scaleFactor = 0.75f;
-      float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
-      float yLen = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
-      float zLen = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
       drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false, conduit.shouldMirrorTexture());
 
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-        Tessellator tessellator = Tessellator.instance;
-        for (Vertex c : corners) {
-          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-        }
+//        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
+//        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+//        Tessellator tessellator = Tessellator.instance;
+//        for (Vertex c : corners) {
+//          CubeRenderer.addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//        }
       }
 
     } else {
@@ -96,14 +52,14 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   }
 
-  protected void renderTransmission(IConduit conduit, IIcon tex, CollidableComponent component, float selfIllum) {
+  protected void renderTransmission(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
     //    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
     //        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
 
     float scaleFactor = 0.6f;
-    float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
-    float yLen = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
-    float zLen = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
 
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
@@ -114,161 +70,161 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     return true;
   }
 
-  protected boolean isNSEWUD(ForgeDirection dir) {
-    return dir == NORTH || dir == SOUTH || dir == EAST || dir == WEST || dir == UP || dir == DOWN;
+  protected boolean isNSEWUD(EnumFacing dir) {
+    return dir == EnumFacing.NORTH || dir == EnumFacing.SOUTH || dir == EnumFacing.EAST || dir == EnumFacing.WEST || dir == EnumFacing.UP || dir == EnumFacing.DOWN;
   }
 
-  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir, boolean isTransmission) {
+  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir, boolean isTransmission) {
     drawSection(bound, minU, maxU, minV, maxV, dir, isTransmission, true);
   }
 
-  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir,
+  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir,
       boolean isTransmission, boolean mirrorTexture) {
 
-    Tessellator tessellator = Tessellator.instance;
-
-    if(isTransmission) {
-      setVerticesForTransmission(bound, dir);
-    } else {
-      setupVertices(bound);
-    }
-
-    if (mirrorTexture && (dir == NORTH || dir == UP || dir == EAST)) {
-      // maintain consistent texture dir relative to the center of the conduit
-      float tmp = minU;
-      minU = maxU;
-      maxU = tmp;
-    }
-
-    boolean rotateSides = dir == UP || dir == DOWN;
-    boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
-    float cm;
-    if(dir != NORTH && dir != SOUTH) {
-      tessellator.setNormal(0, 0, -1);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
-        tessellator.setColorOpaque_F(cm, cm, cm);
-      }
-      if(rotateSides) {
-        addVecWithUV(verts[1], maxU, maxV);
-        addVecWithUV(verts[0], maxU, minV);
-        addVecWithUV(verts[3], minU, minV);
-        addVecWithUV(verts[2], minU, maxV);
-      } else {
-        addVecWithUV(verts[1], minU, minV);
-        addVecWithUV(verts[0], maxU, minV);
-        addVecWithUV(verts[3], maxU, maxV);
-        addVecWithUV(verts[2], minU, maxV);
-      }
-      if(dir == WEST || dir == EAST) {
-        float tmp = minU;
-        minU = maxU;
-        maxU = tmp;
-      }
-      tessellator.setNormal(0, 0, 1);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
-        tessellator.setColorOpaque_F(cm, cm, cm);
-      }
-      if(rotateSides) {
-        addVecWithUV(verts[4], maxU, maxV);
-        addVecWithUV(verts[5], maxU, minV);
-        addVecWithUV(verts[6], minU, minV);
-        addVecWithUV(verts[7], minU, maxV);
-      } else {
-        addVecWithUV(verts[4], minU, minV);
-        addVecWithUV(verts[5], maxU, minV);
-        addVecWithUV(verts[6], maxU, maxV);
-        addVecWithUV(verts[7], minU, maxV);
-      }
-      if(dir == WEST || dir == EAST) {
-        float tmp = minU;
-        minU = maxU;
-        maxU = tmp;
-      }
-    }
-
-    if(dir != UP && dir != DOWN) {
-
-      tessellator.setNormal(0, 1, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
-        tessellator.setColorOpaque_F(cm, cm, cm);
-      }
-      if(rotateTopBottom) {
-        addVecWithUV(verts[6], maxU, maxV);
-        addVecWithUV(verts[2], minU, maxV);
-        addVecWithUV(verts[3], minU, minV);
-        addVecWithUV(verts[7], maxU, minV);
-      } else {
-        addVecWithUV(verts[6], minU, minV);
-        addVecWithUV(verts[2], minU, maxV);
-        addVecWithUV(verts[3], maxU, maxV);
-        addVecWithUV(verts[7], maxU, minV);
-      }
-
-      tessellator.setNormal(0, -1, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
-        tessellator.setColorOpaque_F(cm, cm, cm);
-      }
-      if(rotateTopBottom) {
-        addVecWithUV(verts[0], minU, minV);
-        addVecWithUV(verts[1], minU, maxV);
-        addVecWithUV(verts[5], maxU, maxV);
-        addVecWithUV(verts[4], maxU, minV);
-      } else {
-        addVecWithUV(verts[0], maxU, maxV);
-        addVecWithUV(verts[1], minU, maxV);
-        addVecWithUV(verts[5], minU, minV);
-        addVecWithUV(verts[4], maxU, minV);
-      }
-    }
-
-    if(dir != EAST && dir != WEST) {
-
-      tessellator.setNormal(1, 0, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
-        tessellator.setColorOpaque_F(cm, cm, cm);
-      }
-      if(rotateSides) {
-        addVecWithUV(verts[2], minU, maxV);
-        addVecWithUV(verts[6], minU, minV);
-        addVecWithUV(verts[5], maxU, minV);
-        addVecWithUV(verts[1], maxU, maxV);
-      } else {
-        addVecWithUV(verts[2], minU, maxV);
-        addVecWithUV(verts[6], maxU, maxV);
-        addVecWithUV(verts[5], maxU, minV);
-        addVecWithUV(verts[1], minU, minV);
-      }
-
-      tessellator.setNormal(-1, 0, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
-        tessellator.setColorOpaque_F(cm, cm, cm);
-      }
-      if(rotateSides) {
-        addVecWithUV(verts[0], maxU, maxV);
-        addVecWithUV(verts[4], maxU, minV);
-        addVecWithUV(verts[7], minU, minV);
-        addVecWithUV(verts[3], minU, maxV);
-      } else {
-        addVecWithUV(verts[0], minU, minV);
-        addVecWithUV(verts[4], maxU, minV);
-        addVecWithUV(verts[7], maxU, maxV);
-        addVecWithUV(verts[3], minU, maxV);
-      }
-    }
-    tessellator.setColorOpaque_F(1, 1, 1);
+//    Tessellator tessellator = Tessellator.instance;
+//
+//    if(isTransmission) {
+//      setVerticesForTransmission(bound, dir);
+//    } else {
+//      CubeRenderer.setupVertices(bound);
+//    }
+//
+//    if (mirrorTexture && (dir == NORTH || dir == UP || dir == EAST)) {
+//      // maintain consistent texture dir relative to the center of the conduit
+//      float tmp = minU;
+//      minU = maxU;
+//      maxU = tmp;
+//    }
+//
+//    boolean rotateSides = dir == UP || dir == DOWN;
+//    boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
+//    float cm;
+//    if(dir != NORTH && dir != SOUTH) {
+//      tessellator.setNormal(0, 0, -1);
+//      if(!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+//      }
+//      if(rotateSides) {
+//        addVecWithUV(verts[1], maxU, maxV);
+//        addVecWithUV(verts[0], maxU, minV);
+//        addVecWithUV(verts[3], minU, minV);
+//        addVecWithUV(verts[2], minU, maxV);
+//      } else {
+//        addVecWithUV(verts[1], minU, minV);
+//        addVecWithUV(verts[0], maxU, minV);
+//        addVecWithUV(verts[3], maxU, maxV);
+//        addVecWithUV(verts[2], minU, maxV);
+//      }
+//      if(dir == WEST || dir == EAST) {
+//        float tmp = minU;
+//        minU = maxU;
+//        maxU = tmp;
+//      }
+//      tessellator.setNormal(0, 0, 1);
+//      if(!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+//      }
+//      if(rotateSides) {
+//        addVecWithUV(verts[4], maxU, maxV);
+//        addVecWithUV(verts[5], maxU, minV);
+//        addVecWithUV(verts[6], minU, minV);
+//        addVecWithUV(verts[7], minU, maxV);
+//      } else {
+//        addVecWithUV(verts[4], minU, minV);
+//        addVecWithUV(verts[5], maxU, minV);
+//        addVecWithUV(verts[6], maxU, maxV);
+//        addVecWithUV(verts[7], minU, maxV);
+//      }
+//      if(dir == WEST || dir == EAST) {
+//        float tmp = minU;
+//        minU = maxU;
+//        maxU = tmp;
+//      }
+//    }
+//
+//    if(dir != UP && dir != DOWN) {
+//
+//      tessellator.setNormal(0, 1, 0);
+//      if(!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+//      }
+//      if(rotateTopBottom) {
+//        addVecWithUV(verts[6], maxU, maxV);
+//        addVecWithUV(verts[2], minU, maxV);
+//        addVecWithUV(verts[3], minU, minV);
+//        addVecWithUV(verts[7], maxU, minV);
+//      } else {
+//        addVecWithUV(verts[6], minU, minV);
+//        addVecWithUV(verts[2], minU, maxV);
+//        addVecWithUV(verts[3], maxU, maxV);
+//        addVecWithUV(verts[7], maxU, minV);
+//      }
+//
+//      tessellator.setNormal(0, -1, 0);
+//      if(!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+//      }
+//      if(rotateTopBottom) {
+//        addVecWithUV(verts[0], minU, minV);
+//        addVecWithUV(verts[1], minU, maxV);
+//        addVecWithUV(verts[5], maxU, maxV);
+//        addVecWithUV(verts[4], maxU, minV);
+//      } else {
+//        addVecWithUV(verts[0], maxU, maxV);
+//        addVecWithUV(verts[1], minU, maxV);
+//        addVecWithUV(verts[5], minU, minV);
+//        addVecWithUV(verts[4], maxU, minV);
+//      }
+//    }
+//
+//    if(dir != EAST && dir != WEST) {
+//
+//      tessellator.setNormal(1, 0, 0);
+//      if(!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+//      }
+//      if(rotateSides) {
+//        addVecWithUV(verts[2], minU, maxV);
+//        addVecWithUV(verts[6], minU, minV);
+//        addVecWithUV(verts[5], maxU, minV);
+//        addVecWithUV(verts[1], maxU, maxV);
+//      } else {
+//        addVecWithUV(verts[2], minU, maxV);
+//        addVecWithUV(verts[6], maxU, maxV);
+//        addVecWithUV(verts[5], maxU, minV);
+//        addVecWithUV(verts[1], minU, minV);
+//      }
+//
+//      tessellator.setNormal(-1, 0, 0);
+//      if(!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+//      }
+//      if(rotateSides) {
+//        addVecWithUV(verts[0], maxU, maxV);
+//        addVecWithUV(verts[4], maxU, minV);
+//        addVecWithUV(verts[7], minU, minV);
+//        addVecWithUV(verts[3], minU, maxV);
+//      } else {
+//        addVecWithUV(verts[0], minU, minV);
+//        addVecWithUV(verts[4], maxU, minV);
+//        addVecWithUV(verts[7], maxU, maxV);
+//        addVecWithUV(verts[3], minU, maxV);
+//      }
+//    }
+//    tessellator.setColorOpaque_F(1, 1, 1);
   }
 
-  protected void setVerticesForTransmission(BoundingBox bound, ForgeDirection dir) {
-    float xs = dir.offsetX == 0 ? transmissionScaleFactor : 1;
-    float ys = dir.offsetY == 0 ? transmissionScaleFactor : 1;
-    float zs = dir.offsetZ == 0 ? transmissionScaleFactor : 1;
-    setupVertices(bound.scale(xs, ys, zs));
+  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing dir) {
+    float xs = dir.getFrontOffsetX() == 0 ? transmissionScaleFactor : 1;
+    float ys = dir.getFrontOffsetY() == 0 ? transmissionScaleFactor : 1;
+    float zs = dir.getFrontOffsetZ() == 0 ? transmissionScaleFactor : 1;
+//    CubeRenderer.setupVertices(bound.scale(xs, ys, zs));
   }
 
   // TODO: This is a really hacky, imprecise and slow way to do this

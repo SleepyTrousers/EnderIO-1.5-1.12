@@ -21,27 +21,11 @@ import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
-import crazypants.enderio.conduit.BlockConduitBundle;
-import crazypants.enderio.conduit.ConduitRecipes;
-import crazypants.enderio.conduit.facade.BlockConduitFacade;
-import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
-import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
-import crazypants.enderio.conduit.item.ItemItemConduit;
-import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
-import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
-import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
-import crazypants.enderio.enderface.BlockEnderIO;
-import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.entity.SkeletonHandler;
 import crazypants.enderio.fluid.BlockFluidEio;
@@ -50,76 +34,26 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
-import crazypants.enderio.item.ItemRecipes;
-import crazypants.enderio.item.ItemSoulVessel;
-import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundEntity;
-import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
-import crazypants.enderio.machine.alloy.BlockAlloySmelter;
-import crazypants.enderio.machine.buffer.BlockBuffer;
-import crazypants.enderio.machine.capbank.BlockCapBank;
-import crazypants.enderio.machine.crafter.BlockCrafter;
-import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
-import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.farm.BlockFarmStation;
-import crazypants.enderio.machine.farm.FarmersRegistry;
-import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
-import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
-import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.machine.hypercube.BlockHyperCube;
-import crazypants.enderio.machine.hypercube.HyperCubeRegister;
-import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
-import crazypants.enderio.machine.killera.BlockKillerJoe;
-import crazypants.enderio.machine.light.BlockElectricLight;
-import crazypants.enderio.machine.light.BlockLightNode;
-import crazypants.enderio.machine.monitor.BlockPowerMonitor;
-import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
-import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
-import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
-import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
-import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
-import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
-import crazypants.enderio.machine.painter.BlockPaintedCarpet;
-import crazypants.enderio.machine.painter.BlockPaintedFence;
-import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
-import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
-import crazypants.enderio.machine.painter.BlockPaintedSlab;
-import crazypants.enderio.machine.painter.BlockPaintedStair;
-import crazypants.enderio.machine.painter.BlockPaintedWall;
-import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
-import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.machine.reservoir.BlockReservoir;
-import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.machine.solar.BlockSolarPanel;
-import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
-import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
-import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.tank.BlockTank;
-import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
-import crazypants.enderio.machine.vacuum.BlockVacuumChest;
-import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
-import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
-import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
@@ -127,13 +61,8 @@ import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.rail.BlockEnderRail;
-import crazypants.enderio.teleport.ItemTravelStaff;
-import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import crazypants.enderio.teleport.telepad.BlockTelePad;
-import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import net.minecraft.block.material.Material;
@@ -194,90 +123,88 @@ public class EnderIO {
   public static BlockDarkIronBars blockDarkIronBars;
   public static ItemEnderFood itemEnderFood;
 
-  // Enderface
-  public static BlockEnderIO blockEnderIo;
+//  // Enderface
+//  public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
 
-  //Teleporting
+//  //Teleporting
   public static BlockTravelAnchor blockTravelPlatform;
-  public static BlockTelePad blockTelePad;
-  public static ItemCoordSelector itemCoordSelector;
-  public static ItemTravelStaff itemTravelStaff;
-
-  // Painter
-  public static BlockPainter blockPainter;
-  public static BlockPaintedFence blockPaintedFence;
-  public static BlockPaintedFenceGate blockPaintedFenceGate;
-  public static BlockPaintedWall blockPaintedWall;
-  public static BlockPaintedStair blockPaintedStair;
-  public static BlockPaintedSlab blockPaintedSlab;
-  public static BlockPaintedSlab blockPaintedDoubleSlab;
-  public static BlockPaintedGlowstone blockPaintedGlowstone;
-  public static BlockPaintedCarpet blockPaintedCarpet;
-
-  // Conduits
-  public static BlockConduitBundle blockConduitBundle;
-  public static BlockConduitFacade blockConduitFacade;
-  public static ItemConduitFacade itemConduitFacade;
-  public static ItemRedstoneConduit itemRedstoneConduit;
-  public static ItemPowerConduit itemPowerConduit;
-  public static ItemLiquidConduit itemLiquidConduit;
-  public static ItemItemConduit itemItemConduit;
-//  public static ItemGasConduit itemGasConduit;
-//  public static ItemMEConduit itemMEConduit;
-//  public static ItemOCConduit itemOCConduit;
-  public static ItemBasicItemFilter itemBasicFilterUpgrade;
-  public static ItemExistingItemFilter itemExistingItemFilter;
-  public static ItemModItemFilter itemModItemFilter;
-  public static ItemPowerItemFilter itemPowerItemFilter;
-  public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
-  public static ItemFunctionUpgrade itemFunctionUpgrade;
-
-  // Machines
-  public static BlockStirlingGenerator blockStirlingGenerator;
-  public static BlockCombustionGenerator blockCombustionGenerator;
-  public static BlockZombieGenerator blockZombieGenerator;
-  public static BlockSolarPanel blockSolarPanel;
-  public static BlockReservoir blockReservoir;
-  public static BlockAlloySmelter blockAlloySmelter;
-  public static BlockCapacitorBank blockCapacitorBank;
-  public static BlockCapBank blockCapBank;
-  public static BlockWirelessCharger blockWirelessCharger;
-  public static BlockCrusher blockCrusher;
-  public static BlockHyperCube blockHyperCube;
-  public static BlockPowerMonitor blockPowerMonitor;
-  public static BlockVat blockVat;
-  public static BlockFarmStation blockFarmStation;
-  public static BlockTank blockTank;
-  public static BlockCrafter blockCrafter;
-  public static BlockPoweredSpawner blockPoweredSpawner;
-  public static ItemBrokenSpawner itemBrokenSpawner;
-  public static BlockSliceAndSplice blockSliceAndSplice;
-  public static BlockSoulBinder blockSoulFuser;
-  public static BlockAttractor blockAttractor;
-  public static BlockAversionObelisk blockSpawnGuard;
-  public static BlockExperienceObelisk blockExperianceOblisk;
-  public static BlockWeatherObelisk blockWeatherObelisk;
-  public static BlockInhibitorObelisk blockInhibitorObelisk;
-  public static BlockTransceiver blockTransceiver;
-  public static BlockBuffer blockBuffer;
-  public static BlockInventoryPanel blockInventoryPanel;
-
-  public static BlockKillerJoe blockKillerJoe;
-
-  public static BlockEnchanter blockEnchanter;
-
-  public static BlockElectricLight blockElectricLight;
-  public static BlockLightNode blockLightNode;
+//  public static BlockTelePad blockTelePad;
+//  public static ItemCoordSelector itemCoordSelector;
+//  public static ItemTravelStaff itemTravelStaff;
+//
+//  // Painter
+//  public static BlockPainter blockPainter;
+//  public static BlockPaintedFence blockPaintedFence;
+//  public static BlockPaintedFenceGate blockPaintedFenceGate;
+//  public static BlockPaintedWall blockPaintedWall;
+//  public static BlockPaintedStair blockPaintedStair;
+//  public static BlockPaintedSlab blockPaintedSlab;
+//  public static BlockPaintedSlab blockPaintedDoubleSlab;
+//  public static BlockPaintedGlowstone blockPaintedGlowstone;
+//  public static BlockPaintedCarpet blockPaintedCarpet;
+//
+//  // Conduits
+//  public static BlockConduitBundle blockConduitBundle;
+//  public static BlockConduitFacade blockConduitFacade;
+//  public static ItemConduitFacade itemConduitFacade;
+//  public static ItemRedstoneConduit itemRedstoneConduit;
+//  public static ItemPowerConduit itemPowerConduit;
+//  public static ItemLiquidConduit itemLiquidConduit;
+//  public static ItemItemConduit itemItemConduit;
+////  public static ItemGasConduit itemGasConduit;
+////  public static ItemMEConduit itemMEConduit;
+////  public static ItemOCConduit itemOCConduit;
+//  public static ItemBasicItemFilter itemBasicFilterUpgrade;
+//  public static ItemExistingItemFilter itemExistingItemFilter;
+//  public static ItemModItemFilter itemModItemFilter;
+//  public static ItemPowerItemFilter itemPowerItemFilter;
+//  public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
+//  public static ItemFunctionUpgrade itemFunctionUpgrade;
+//
+//  // Machines
+//  public static BlockStirlingGenerator blockStirlingGenerator;
+//  public static BlockCombustionGenerator blockCombustionGenerator;
+//  public static BlockZombieGenerator blockZombieGenerator;
+//  public static BlockSolarPanel blockSolarPanel;
+//  public static BlockReservoir blockReservoir;
+//  public static BlockAlloySmelter blockAlloySmelter;
+//  public static BlockCapacitorBank blockCapacitorBank;
+//  public static BlockCapBank blockCapBank;
+//  public static BlockWirelessCharger blockWirelessCharger;
+//  public static BlockCrusher blockCrusher; 
+//  public static BlockPowerMonitor blockPowerMonitor;
+//  public static BlockVat blockVat;
+//  public static BlockFarmStation blockFarmStation;
+//  public static BlockTank blockTank;
+//  public static BlockCrafter blockCrafter;
+//  public static BlockPoweredSpawner blockPoweredSpawner;
+//  public static ItemBrokenSpawner itemBrokenSpawner;
+//  public static BlockSliceAndSplice blockSliceAndSplice;
+//  public static BlockSoulBinder blockSoulFuser;
+//  public static BlockAttractor blockAttractor;
+//  public static BlockAversionObelisk blockSpawnGuard;
+//  public static BlockExperienceObelisk blockExperianceOblisk;
+//  public static BlockWeatherObelisk blockWeatherObelisk;
+//  public static BlockInhibitorObelisk blockInhibitorObelisk;
+//  public static BlockTransceiver blockTransceiver;
+//  public static BlockBuffer blockBuffer;
+//  public static BlockInventoryPanel blockInventoryPanel;
+//
+//  public static BlockKillerJoe blockKillerJoe;
+//
+//  public static BlockEnchanter blockEnchanter;
+//
+//  public static BlockElectricLight blockElectricLight;
+//  public static BlockLightNode blockLightNode;
 
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
   public static BlockDarkSteelAnvil blockDarkSteelAnvil;
   public static BlockDarkSteelLadder blockDarkSteelLadder;
-  public static BlockEndermanSkull blockEndermanSkull;
+//  public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
-
-  public static BlockEnderRail blockEnderRail;
+//  public static BlockEnderRail blockEnderRail;
 
   //Fluids
   public static Fluid fluidNutrientDistillation;
@@ -299,16 +226,16 @@ public class EnderIO {
   //Open block compatable liquid XP
   public static Fluid fluidXpJuice;
   public static ItemBucketEio itemBucketXpJuice;
-
-  // Items
-  public static ItemYetaWrench itemYetaWench;
+//
+//  // Items
+//  public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
-  public static ItemXpTransfer itemXpTransfer;
-
-  public static ItemSoulVessel itemSoulVessel;
-  public static ItemFrankenSkull itemFrankenSkull;
-
-  public static BlockVacuumChest blockVacuumChest;
+//  public static ItemXpTransfer itemXpTransfer;
+//
+//  public static ItemSoulVessel itemSoulVessel;
+//  public static ItemFrankenSkull itemFrankenSkull;
+//
+//  public static BlockVacuumChest blockVacuumChest;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -321,96 +248,96 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    blockStirlingGenerator = BlockStirlingGenerator.create();
-    blockCombustionGenerator = BlockCombustionGenerator.create();
-    blockZombieGenerator = BlockZombieGenerator.create();
-    blockSolarPanel = BlockSolarPanel.create();
-
-    blockCrusher = BlockCrusher.create();
-    blockAlloySmelter = BlockAlloySmelter.create();
-    blockCapacitorBank = BlockCapacitorBank.create();
-    blockCapBank = BlockCapBank.create();
-
-    blockPainter = BlockPainter.create();
-    blockPaintedFence = BlockPaintedFence.create();
-    blockPaintedFenceGate = BlockPaintedFenceGate.create();
-    blockPaintedWall = BlockPaintedWall.create();
-    blockPaintedStair = BlockPaintedStair.create();
-    blockPaintedSlab = new BlockPaintedSlab(false);
-    blockPaintedDoubleSlab = new BlockPaintedSlab(true);
-    blockPaintedSlab.init();
-    blockPaintedDoubleSlab.init();
-    blockCrafter = BlockCrafter.create();
-    blockPaintedGlowstone = BlockPaintedGlowstone.create();
-    blockPaintedCarpet = BlockPaintedCarpet.create();
-
-    blockVat = BlockVat.create();
-    blockPowerMonitor = BlockPowerMonitor.create();
-    blockFarmStation = BlockFarmStation.create();
-
-    blockWirelessCharger = BlockWirelessCharger.create();
-    blockHyperCube = BlockHyperCube.create();
-    blockTank = BlockTank.create();
-    blockReservoir = BlockReservoir.create();
-    blockVacuumChest = BlockVacuumChest.create();
-
-    blockTransceiver = BlockTransceiver.create();
-
-    blockBuffer = BlockBuffer.create();
-    blockInventoryPanel = BlockInventoryPanel.create();
-
-    blockEnderIo = BlockEnderIO.create();
+//    blockStirlingGenerator = BlockStirlingGenerator.create();
+//    blockCombustionGenerator = BlockCombustionGenerator.create();
+//    blockZombieGenerator = BlockZombieGenerator.create();
+//    blockSolarPanel = BlockSolarPanel.create();
+//
+//    blockCrusher = BlockCrusher.create();
+//    blockAlloySmelter = BlockAlloySmelter.create();
+//    blockCapacitorBank = BlockCapacitorBank.create();
+//    blockCapBank = BlockCapBank.create();
+//
+//    blockPainter = BlockPainter.create();
+//    blockPaintedFence = BlockPaintedFence.create();
+//    blockPaintedFenceGate = BlockPaintedFenceGate.create();
+//    blockPaintedWall = BlockPaintedWall.create();
+//    blockPaintedStair = BlockPaintedStair.create();
+//    blockPaintedSlab = new BlockPaintedSlab(false);
+//    blockPaintedDoubleSlab = new BlockPaintedSlab(true);
+//    blockPaintedSlab.init();
+//    blockPaintedDoubleSlab.init();
+//    blockCrafter = BlockCrafter.create();
+//    blockPaintedGlowstone = BlockPaintedGlowstone.create();
+//    blockPaintedCarpet = BlockPaintedCarpet.create();
+//
+//    blockVat = BlockVat.create();
+//    blockPowerMonitor = BlockPowerMonitor.create();
+//    blockFarmStation = BlockFarmStation.create();
+//
+//    blockWirelessCharger = BlockWirelessCharger.create();
+//    
+//    blockTank = BlockTank.create();
+//    blockReservoir = BlockReservoir.create();
+//    blockVacuumChest = BlockVacuumChest.create();
+//
+//    blockTransceiver = BlockTransceiver.create();
+//
+//    blockBuffer = BlockBuffer.create();
+//    blockInventoryPanel = BlockInventoryPanel.create();
+//
+//    blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
-    blockTelePad = BlockTelePad.create();
-    itemCoordSelector = ItemCoordSelector.create();
-
-    blockSliceAndSplice = BlockSliceAndSplice.create();
-    blockSoulFuser = BlockSoulBinder.create();
-    blockPoweredSpawner = BlockPoweredSpawner.create();
-    blockKillerJoe = BlockKillerJoe.create();
-    blockAttractor = BlockAttractor.create();
-    blockSpawnGuard = BlockAversionObelisk.create();
-    blockExperianceOblisk = BlockExperienceObelisk.create();
-    blockWeatherObelisk = BlockWeatherObelisk.create();
-    blockInhibitorObelisk = BlockInhibitorObelisk.create();
-    blockEnchanter = BlockEnchanter.create();
+//    blockTelePad = BlockTelePad.create();
+//    itemCoordSelector = ItemCoordSelector.create();
+//
+//    blockSliceAndSplice = BlockSliceAndSplice.create();
+//    blockSoulFuser = BlockSoulBinder.create();
+//    blockPoweredSpawner = BlockPoweredSpawner.create();
+//    blockKillerJoe = BlockKillerJoe.create();
+//    blockAttractor = BlockAttractor.create();
+//    blockSpawnGuard = BlockAversionObelisk.create();
+//    blockExperianceOblisk = BlockExperienceObelisk.create();
+//    blockWeatherObelisk = BlockWeatherObelisk.create();
+//    blockInhibitorObelisk = BlockInhibitorObelisk.create();
+//    blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockDarkSteelLadder = BlockDarkSteelLadder.create();
-    blockElectricLight = BlockElectricLight.create();
-    blockLightNode = BlockLightNode.create();
+//    blockElectricLight = BlockElectricLight.create();
+//    blockLightNode = BlockLightNode.create();
 
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
-    blockEnderRail = BlockEnderRail.create();
-
-    blockConduitBundle = BlockConduitBundle.create();
-    blockConduitFacade = BlockConduitFacade.create();
-    itemConduitFacade = ItemConduitFacade.create();
-
-    itemBrokenSpawner = ItemBrokenSpawner.create();
-
-    blockEndermanSkull = BlockEndermanSkull.create();
-    itemFrankenSkull = ItemFrankenSkull.create();
-
-    itemRedstoneConduit = ItemRedstoneConduit.create();
-    itemPowerConduit = ItemPowerConduit.create();
-    itemLiquidConduit = ItemLiquidConduit.create();
-    itemItemConduit = ItemItemConduit.create();
-//    itemGasConduit = ItemGasConduit.create();
-//    itemMEConduit = ItemMEConduit.create();
-//    itemOCConduit = ItemOCConduit.create();
-
-    itemBasicFilterUpgrade = ItemBasicItemFilter.create();
-    itemExistingItemFilter = ItemExistingItemFilter.create();
-    itemModItemFilter = ItemModItemFilter.create();
-    itemPowerItemFilter = ItemPowerItemFilter.create();
-    itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
-    itemFunctionUpgrade = ItemFunctionUpgrade.create();
+//    blockEnderRail = BlockEnderRail.create();
+//
+//    blockConduitBundle = BlockConduitBundle.create();
+//    blockConduitFacade = BlockConduitFacade.create();
+//    itemConduitFacade = ItemConduitFacade.create();
+//
+//    itemBrokenSpawner = ItemBrokenSpawner.create();
+//
+//    blockEndermanSkull = BlockEndermanSkull.create();
+//    itemFrankenSkull = ItemFrankenSkull.create();
+//
+//    itemRedstoneConduit = ItemRedstoneConduit.create();
+//    itemPowerConduit = ItemPowerConduit.create();
+//    itemLiquidConduit = ItemLiquidConduit.create();
+//    itemItemConduit = ItemItemConduit.create();
+////    itemGasConduit = ItemGasConduit.create();
+////    itemMEConduit = ItemMEConduit.create();
+////    itemOCConduit = ItemOCConduit.create();
+//
+//    itemBasicFilterUpgrade = ItemBasicItemFilter.create();
+//    itemExistingItemFilter = ItemExistingItemFilter.create();
+//    itemModItemFilter = ItemModItemFilter.create();
+//    itemPowerItemFilter = ItemPowerItemFilter.create();
+//    itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
+//    itemFunctionUpgrade = ItemFunctionUpgrade.create();
 
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();
@@ -420,14 +347,14 @@ public class EnderIO {
 
     registerFluids();
 
-    itemYetaWench = ItemYetaWrench.create();
+//    itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
-    itemTravelStaff = ItemTravelStaff.create();
+//    itemTravelStaff = ItemTravelStaff.create();
     itemConduitProbe = ItemConduitProbe.create();
-
-    itemXpTransfer = ItemXpTransfer.create();
-
-    itemSoulVessel = ItemSoulVessel.create();
+//
+//    itemXpTransfer = ItemXpTransfer.create();
+//
+//    itemSoulVessel = ItemSoulVessel.create();
 
     blockIngotStorage = BlockIngotStorage.create();
 
@@ -435,7 +362,7 @@ public class EnderIO {
     
     itemEnderFood = ItemEnderFood.create();
 
-    DarkSteelItems.createDarkSteelArmorItems();
+//    DarkSteelItems.createDarkSteelArmorItems();
 
     int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
@@ -557,11 +484,11 @@ public class EnderIO {
           new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
     }
 
-    if(Config.lootTravelStaff) {
-      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
-      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-    }
+//    if(Config.lootTravelStaff) {
+//      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
+//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+//    }
 
     DarkSteelItems.addLoot();
 
@@ -576,12 +503,12 @@ public class EnderIO {
 
     MaterialRecipes.registerDependantOresInDictionary();
 
-    EnderfaceRecipes.addRecipes();
+//    EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
-    ConduitRecipes.addRecipes();
-    MachineRecipes.addRecipes();
-    ItemRecipes.addRecipes();
-    TeleportRecipes.addRecipes();    
+//    ConduitRecipes.addRecipes();
+//    MachineRecipes.addRecipes();
+//    ItemRecipes.addRecipes();
+//    TeleportRecipes.addRecipes();    
     
     proxy.load();
   }
@@ -602,9 +529,9 @@ public class EnderIO {
     SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
-    FarmersRegistry.addFarmers();
-    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
-    PaintSourceValidator.instance.loadConfig();
+//    FarmersRegistry.addFarmers();
+//    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
+//    PaintSourceValidator.instance.loadConfig();
 
     if(fluidXpJuice == null) { //should have been registered by open blocks 
       fluidXpJuice = FluidRegistry.getFluid(getXPJuiceName());
@@ -663,22 +590,22 @@ public class EnderIO {
   @SuppressWarnings("unchecked")
   private void addModIntegration() {
 
-    if(Loader.isModLoaded("TConstruct")) {
-      try {
-        Class<?> ttClass = Class.forName("tconstruct.tools.TinkerTools");
-        Field modFluxF = ttClass.getField("modFlux");
-        Object modFluxInst = modFluxF.get(null);
-
-        Class<?> modFluxClass = Class.forName("tconstruct.modifiers.tools.ModFlux");
-        Field batteriesField = modFluxClass.getField("batteries");
-        List<ItemStack> batteries = (List<ItemStack>) batteriesField.get(modFluxInst);
-        batteries.add(new ItemStack(blockCapBank));
-        Log.info("Registered Capacitor Banks as Tinkers Construct Flux Upgrades");
-      } catch (Exception e) {
-        //Doesn't matter if it didnt work
-        Log.info("Failed to registered Capacitor Banks as Tinkers Construct Flux Upgrades");
-      }
-    }
+//    if(Loader.isModLoaded("TConstruct")) {
+//      try {
+//        Class<?> ttClass = Class.forName("tconstruct.tools.TinkerTools");
+//        Field modFluxF = ttClass.getField("modFlux");
+//        Object modFluxInst = modFluxF.get(null);
+//
+//        Class<?> modFluxClass = Class.forName("tconstruct.modifiers.tools.ModFlux");
+//        Field batteriesField = modFluxClass.getField("batteries");
+//        List<ItemStack> batteries = (List<ItemStack>) batteriesField.get(modFluxInst);
+//        batteries.add(new ItemStack(blockCapBank));
+//        Log.info("Registered Capacitor Banks as Tinkers Construct Flux Upgrades");
+//      } catch (Exception e) {
+//        //Doesn't matter if it didnt work
+//        Log.info("Failed to registered Capacitor Banks as Tinkers Construct Flux Upgrades");
+//      }
+//    }
     
     ThaumcraftCompat.load();
   }
@@ -704,8 +631,8 @@ public class EnderIO {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             TravelController.instance.addBlockToBlinkBlackList(value);
-          } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
-            itemSoulVessel.addEntityToBlackList(value);
+//          } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
+//            itemSoulVessel.addEntityToBlackList(value);
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
@@ -737,14 +664,12 @@ public class EnderIO {
   }
 
   @EventHandler
-  public void serverStarted(FMLServerStartedEvent event) {
-    HyperCubeRegister.load();
+  public void serverStarted(FMLServerStartedEvent event) {    
     ServerChannelRegister.load();
   }
 
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
-    HyperCubeRegister.unload();
     ServerChannelRegister.store();
   }
 }

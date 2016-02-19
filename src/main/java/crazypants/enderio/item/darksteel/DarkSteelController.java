@@ -6,26 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.particle.EntityReddustFX;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovementInput;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-
 import org.lwjgl.opengl.GL11;
-
-import cofh.api.energy.IEnergyContainerItem;
 
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -33,11 +14,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
@@ -52,6 +29,27 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.particle.EntityReddustFX;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovementInput;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DarkSteelController {
 
@@ -382,7 +380,7 @@ public class DarkSteelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
-      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
       if (player == null) {
         return;
       }
@@ -456,7 +454,7 @@ public class DarkSteelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void doJump(EntityClientPlayerMP player) {
+  private void doJump(EntityPlayerSP player) {
     if (!isJumpActive(player)) {
       return;
     }
@@ -478,7 +476,7 @@ public class DarkSteelController {
       player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.jump", 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f, false);
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
-        EntityReddustFX fx = new EntityReddustFX(player.worldObj, player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.yOffset, player.posZ
+        EntityReddustFX fx = new EntityReddustFX(player.worldObj, player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ
             + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
         fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
             player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
@@ -492,7 +490,7 @@ public class DarkSteelController {
   
   private void updateNightvision(EntityPlayer player) {
     if(isNightVisionUpgradeEquipped(player) && nightVisionActive) {
-      player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 210, 0, true));
+      player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 210, 0, true, true));
     } 
     if(!isNightVisionUpgradeEquipped(player) && nightVisionActive) {
       nightVisionActive = false;

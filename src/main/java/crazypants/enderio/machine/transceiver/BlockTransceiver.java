@@ -6,18 +6,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-
 import com.enderio.core.common.util.Util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -26,6 +16,14 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
@@ -38,8 +36,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannelList.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
 
-    ConnectionHandler ch = new ConnectionHandler();
-    FMLCommonHandler.instance().bus().register(ch);
+    ConnectionHandler ch = new ConnectionHandler();   
     MinecraftForge.EVENT_BUS.register(ch);
 
     BlockTransceiver res = new BlockTransceiver();
@@ -47,11 +44,20 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     return res;
   }
 
+  //TODO: 1.8
+  @SideOnly(Side.CLIENT)
+  private TextureAtlasSprite portalIcon;
+
   private BlockTransceiver() {
     super(ModObject.blockTransceiver, TileTransceiver.class);
     if(!Config.transceiverEnabled) {
       setCreativeTab(null);
     }
+  }
+  
+
+  public TextureAtlasSprite getPortalIcon() {    
+    return portalIcon;
   }
 
   @Override
@@ -170,5 +176,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     }
     return sb.toString();
   }
+
 
 }
