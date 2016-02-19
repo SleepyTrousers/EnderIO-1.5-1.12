@@ -2,34 +2,26 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.power.Capacitors;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGliderWing extends Item implements IResourceTooltipProvider {
-
-  private static final BasicCapacitor CAP = new BasicCapacitor();
 
   public static ItemGliderWing create() {
     ItemGliderWing result = new ItemGliderWing();
     result.init();
     return result;
   }
-
-  private IIcon wingsIcon;
 
   protected ItemGliderWing() {
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -43,22 +35,12 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
     GameRegistry.registerItem(this, ModObject.itemGliderWing.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, 1);
-    if(damage == 0) {
-      return itemIcon;
-    }
-    return wingsIcon;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister register) {
-    itemIcon = register.registerIcon("enderio:itemGliderWing");
-    wingsIcon = register.registerIcon("enderio:itemGliderWings");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister register) {
+//    itemIcon = register.registerIcon("enderio:itemGliderWing");
+//    wingsIcon = register.registerIcon("enderio:itemGliderWings");
+//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
@@ -69,10 +51,9 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
     return super.getUnlocalizedName() + "s";
   }
 
-  @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @Override  
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (int j = 0; j < 2; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }

@@ -5,37 +5,36 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.oredict.OreDictionary;
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
@@ -75,8 +74,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     super(ItemDarkSteelSword.MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
     String str = "darkSteel_axe";
-    setUnlocalizedName(str);
-    setTextureName(EnderIO.DOMAIN + ":" + str);
+    setUnlocalizedName(str);    
   }
 
   @Override
@@ -86,7 +84,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);   
     par3List.add(is);
 
@@ -102,26 +100,25 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer player) {
+  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     if (!player.worldObj.isRemote && player.isSneaking()) {
-      Block block = player.worldObj.getBlock(X, Y, Z);
-      int blockMetadata = player.worldObj.getBlockMetadata(X, Y, Z);
-      if (isLog(block, blockMetadata)) {
+      IBlockState bs = player.worldObj.getBlockState(pos);
+      Block block = bs.getBlock();      
+      if (isLog(bs)) {
         int powerStored = EnergyUpgrade.getEnergyStored(itemstack);
 
         TreeHarvestUtil harvester = new TreeHarvestUtil();
-        HarvestResult res = new HarvestResult();
-        BlockCoord bc = new BlockCoord(X, Y, Z);
-        harvester.harvest(player.worldObj, bc, res);
+        HarvestResult res = new HarvestResult();        
+        harvester.harvest(player.worldObj, pos, res);
 
-        List<BlockCoord> sortedTargets = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
-        harvestComparator.refPoint = bc;
+        List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res.getHarvestedBlocks());
+        harvestComparator.refPoint = pos;
         Collections.sort(sortedTargets, harvestComparator);
 
         int maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;
         int numUsedPower = 0;
         for (int i = 0; numUsedPower < maxBlocks && i < sortedTargets.size(); i++) {
-          if (doMultiHarvest(player, player.worldObj, sortedTargets.get(i), block, blockMetadata % 4)) {
+          if (doMultiHarvest(player, player.worldObj, sortedTargets.get(i), block)) {
             numUsedPower++;
           }
         }
@@ -131,22 +128,20 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return false;
   }
 
-  private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockCoord bc, Block refBlock, int refMeta) {  
+  private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockPos bc, Block refBlock) {  
     
-    Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
-    int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
+    IBlockState bs = worldObj.getBlockState(bc);
+    Block block = bs.getBlock();
+    bs = block.getActualState(bs, worldObj, bc);
     
-    ArrayList<ItemStack> itemDrops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, 0);
-    worldObj.setBlockToAir(bc.x, bc.y, bc.z);
+    
+    List<ItemStack> itemDrops = block.getDrops(worldObj, bc, bs,0);
+    worldObj.setBlockToAir(bc);
     boolean usedPower = false;
     if(itemDrops != null) {
       for (ItemStack stack : itemDrops) {                
-        worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));                
-        if(TreeHarvestUtil.canDropApples(block, meta)) {
-          if(worldObj.rand.nextInt(200) == 0) {            
-            worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
-          }
-        } else if(block == refBlock) { //other wise leaves
+        worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));                
+        if(block == refBlock) { //other wise leaves
           extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
           usedPower = true;
         }
@@ -157,18 +152,18 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.block, evt.metadata)) {
+    if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.state)) {
       evt.newSpeed = evt.originalSpeed / Config.darkSteelAxeSpeedPenaltyMultiHarvest;
     }
-    if(isEquipped(evt.entityPlayer) && evt.block.getMaterial() == Material.leaves) {
+    if(isEquipped(evt.entityPlayer) && evt.state.getBlock().getMaterial() == Material.leaves) {
       evt.newSpeed = 6;
     }
   }
 
-  @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+  @Override  
+    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
     if (world.isRemote) {
-      return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+      return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hitX, hitY, hitZ);
     }
     return false;
   }
@@ -199,24 +194,31 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public float getDigSpeed(ItemStack stack, Block block, int meta) {
-    if(ForgeHooks.isToolEffective(stack, block, meta)) {
+  public float getDigSpeed(ItemStack stack, IBlockState state) {
+    if(ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
       if(Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
     }
-    return super.getDigSpeed(stack, block, meta);
+    return super.getDigSpeed(stack, state);
   }
 
-  private boolean isLog(Block block, int meta) {
+  private boolean isLog(IBlockState bs) {
     if(logOreId == -1) {
       logOreId = OreDictionary.getOreID("logWood");      
     }
-    int targetOreId = OreDictionary.getOreID(new ItemStack(block, 1, meta));
-    //NB: Specifying the wildcard as meta is a work around for forge issue #1103
-    int workAroundId = OreDictionary.getOreID(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE));
-    return  targetOreId == logOreId || workAroundId == logOreId;
+    int[] targetOreId = OreDictionary.getOreIDs(new ItemStack(bs.getBlock(), 1, bs.getBlock().getMetaFromState(bs)));
+    //TODO: 1.8
+//    //NB: Specifying the wildcard as meta is a work around for forge issue #1103
+//    int workAroundId = OreDictionary.getOreID(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE));
+//    return  targetOreId == logOreId || workAroundId == logOreId;
+    for(int id : targetOreId) {
+      if(logOreId == id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   protected void init() {
@@ -250,17 +252,17 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     if(!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
@@ -280,19 +282,19 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return new ItemStack(this);
   }
 
-  private static class MultiHarvestComparator implements Comparator<BlockCoord> {
+  private static class MultiHarvestComparator implements Comparator<BlockPos> {
 
-    BlockCoord refPoint;
+    BlockPos refPoint;
 
     @Override
-    public int compare(BlockCoord arg0, BlockCoord arg1) {
-      int d1 = refPoint.getDistSq(arg0);
-      int d2 = refPoint.getDistSq(arg1);
-      return compare(d1, d1);
+    public int compare(BlockPos arg0, BlockPos arg1) {
+      double d1 = refPoint.distanceSq(arg0.getX(), arg0.getY(), arg0.getZ());
+      double d2 = refPoint.distanceSq(arg1.getX(), arg1.getY(), arg1.getZ());
+      return compare(d1, d2);
     }
 
-    //NB: Copy of Integer.compare, which i sonly in Java 1.7+
-    public static int compare(int x, int y) {
+    // NB: Copy of Integer.compare, which is only in Java 1.7+
+    public static int compare(double x, double y) {
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
 

@@ -31,7 +31,7 @@ import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.EntityReddustFX;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -41,6 +41,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -166,7 +168,7 @@ public class DarkSteelController {
       return;
     }
     
-    int RFperSecond = Math.round((float) upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ)));
+    int RFperSecond = Math.round(upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj, new BlockPos(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ))));
     
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
@@ -476,7 +478,7 @@ public class DarkSteelController {
       player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.jump", 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f, false);
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
-        EntityReddustFX fx = new EntityReddustFX(player.worldObj, player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ
+        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(), player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ
             + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
         fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
             player.motionZ + (rand.nextDouble() * 0.5 - 0.25));

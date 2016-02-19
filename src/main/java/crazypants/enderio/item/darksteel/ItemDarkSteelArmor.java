@@ -3,6 +3,16 @@ package crazypants.enderio.item.darksteel;
 import java.util.Iterator;
 import java.util.List;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,32 +25,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import thaumcraft.api.IGoggles;
-import thaumcraft.api.IVisDiscountGear;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Optional.Interface;
+import net.minecraftforge.fml.common.Optional.InterfaceList;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.nodes.IRevealer;
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.ItemUtil;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.common.Optional.InterfaceList;
-import cpw.mods.fml.common.Optional.Method;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
-import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
-import forestry.api.apiculture.IArmorApiarist;
-import forestry.api.core.IArmorNaturalist;
+import thaumcraft.api.items.IGoggles;
+import thaumcraft.api.items.IRevealer;
+import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({
     @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
@@ -50,9 +45,10 @@ import forestry.api.core.IArmorNaturalist;
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles,
-    IRevealer, IVisDiscountGear, IArmorApiarist, IArmorNaturalist {
+    IRevealer, IVisDiscountGear {
 
-  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
+  //TODO: 1.8
+  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
   public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
       Config.darkSteelPowerStorageBase * 2 };
@@ -112,7 +108,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
     String str = "darkSteel_" + NAMES[armorType];
     setUnlocalizedName(str);
-    setTextureName(EnderIO.DOMAIN+ ":" + str);
 
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }
@@ -300,21 +295,5 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public void setGogglesUgradeActive(boolean gogglesUgradeActive) {
     this.gogglesUgradeActive = gogglesUgradeActive;
   }
-
-  // Forestry
-
-  @Override
-  @Method(modid = "Forestry")
-  public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
-    return ApiaristArmorUpgrade.loadFromItem(armor) != null;
-  }
-
-  @Override
-  @Method(modid = "Forestry")
-  public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
-    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
-      return false;
-    }
-    return NaturalistEyeUpgrade.isUpgradeEquipped(player);
-  }
+  
 }

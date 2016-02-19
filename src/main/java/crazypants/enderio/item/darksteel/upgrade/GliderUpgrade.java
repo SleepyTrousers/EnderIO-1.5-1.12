@@ -1,16 +1,9 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import static org.lwjgl.opengl.GL11.glDepthMask;
-
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -84,14 +77,15 @@ public class GliderUpgrade extends AbstractUpgrade {
     @Override
     public void render(RenderPlayerEvent event, ItemStack stack, boolean head) {
       if (!head && DarkSteelController.instance.isGlideActive(event.entityPlayer)) {
-        RenderUtil.bindItemTexture();
-        glDepthMask(true);
-        item.hoverStart = 0;
-        Helper.rotateIfSneaking(event.entityPlayer);
-        GL11.glTranslatef(-0, 1, 0.25f);
-        GL11.glRotatef(180, 1, 0, 0);
-        GL11.glScalef(3, 3, 3);
-        RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
+        //TODO: 1.8
+//        RenderUtil.bindItemTexture();
+//        glDepthMask(true);
+//        item.hoverStart = 0;
+//        Helper.rotateIfSneaking(event.entityPlayer);
+//        GL11.glTranslatef(-0, 1, 0.25f);
+//        GL11.glRotatef(180, 1, 0, 0);
+//        GL11.glScalef(3, 3, 3);
+//        RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
       }
     }
   }

@@ -17,39 +17,39 @@ public class EnergyContainer {
 
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
 
-    if(container.stackTagCompound == null) {
-      container.stackTagCompound = new NBTTagCompound();
+    if(container.getTagCompound() == null) {
+      container.setTagCompound(new NBTTagCompound());
     }
-    int energy = container.stackTagCompound.getInteger("Energy");
+    int energy = container.getTagCompound().getInteger("Energy");
     int energyReceived = Math.min(capacityRF - energy, Math.min(this.maxReceiveRF, maxReceive));
 
     if(!simulate) {
       energy += energyReceived;
-      container.stackTagCompound.setInteger("Energy", energy);
+      container.getTagCompound().setInteger("Energy", energy);
     }
     return energyReceived;
   }
 
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-    if(container == null || container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
+    if(container == null || container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
       return 0;
     }
-    int energy = container.stackTagCompound.getInteger("Energy");
+    int energy = container.getTagCompound().getInteger("Energy");
     int energyExtracted = Math.min(energy, Math.min(this.maxExtractRF, maxExtract));
 
     if(!simulate) {
       energy -= energyExtracted;
-      container.stackTagCompound.setInteger("Energy", energy);
+      container.getTagCompound().setInteger("Energy", energy);
     }
     return energyExtracted;
   }
 
   public static int getEnergyStored(ItemStack container) {
-    if(container == null || container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
+    if(container == null || container.getTagCompound() == null || !container.getTagCompound().hasKey("Energy")) {
       return 0;
     }
-    return container.stackTagCompound.getInteger("Energy");
+    return container.getTagCompound().getInteger("Energy");
   }
 
   public int getMaxEnergyStored(ItemStack container) {
@@ -57,10 +57,10 @@ public class EnergyContainer {
   }
 
   public static void setEnergy(ItemStack container, int energy) {
-    if(container.stackTagCompound == null) {
-      container.stackTagCompound = new NBTTagCompound();
+    if(container.getTagCompound() == null) {
+      container.setTagCompound(new NBTTagCompound());
     }
-    container.stackTagCompound.setInteger("Energy", energy);
+    container.getTagCompound().setInteger("Energy", energy);
   }
 
   public void setFull(ItemStack container) {

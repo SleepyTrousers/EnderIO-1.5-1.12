@@ -4,28 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
-
-import com.enderio.core.common.util.BlockCoord;
+import net.minecraft.util.BlockPos;
 
 public class HarvestResult implements IHarvestResult {
 
   List<EntityItem> drops;
-  List<BlockCoord> harvestedBlocks;
+  List<BlockPos> harvestedBlocks;
 
-  public HarvestResult(List<EntityItem> drops, List<BlockCoord> harvestedBlocks) {
+  public HarvestResult(List<EntityItem> drops, List<BlockPos> harvestedBlocks) {
     this.drops = drops;
     this.harvestedBlocks = harvestedBlocks;
   }
 
-  public HarvestResult(List<EntityItem> drops, BlockCoord harvestedBlock) {
+  public HarvestResult(List<EntityItem> drops, BlockPos harvestedBlock) {
     this.drops = drops;
-    this.harvestedBlocks = new ArrayList<BlockCoord>();    
+    this.harvestedBlocks = new ArrayList<BlockPos>();    
     harvestedBlocks.add(harvestedBlock);
   }
 
   public HarvestResult() {
     drops = new ArrayList<EntityItem>();
-    harvestedBlocks = new ArrayList<BlockCoord>();
+    harvestedBlocks = new ArrayList<BlockPos>();
   }
 
   @Override
@@ -34,7 +33,7 @@ public class HarvestResult implements IHarvestResult {
   }
 
   @Override
-  public List<BlockCoord> getHarvestedBlocks() {
+  public List<BlockPos> getHarvestedBlocks() {
     return harvestedBlocks;
   }
 

@@ -25,8 +25,18 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.conduit.item.ItemItemConduit;
+import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
+import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
+import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.ItemEnderface;
@@ -51,7 +61,9 @@ import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
+import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vat.VatRecipeManager;
@@ -158,25 +170,25 @@ public class EnderIO {
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
   public static ItemConduitFacade itemConduitFacade;
-//  public static ItemRedstoneConduit itemRedstoneConduit;
-//  public static ItemPowerConduit itemPowerConduit;
-//  public static ItemLiquidConduit itemLiquidConduit;
-//  public static ItemItemConduit itemItemConduit;
-////  public static ItemGasConduit itemGasConduit;
-////  public static ItemMEConduit itemMEConduit;
-////  public static ItemOCConduit itemOCConduit;
-//  public static ItemBasicItemFilter itemBasicFilterUpgrade;
-//  public static ItemExistingItemFilter itemExistingItemFilter;
-//  public static ItemModItemFilter itemModItemFilter;
-//  public static ItemPowerItemFilter itemPowerItemFilter;
-//  public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
-//  public static ItemFunctionUpgrade itemFunctionUpgrade;
+  public static ItemRedstoneConduit itemRedstoneConduit;
+  public static ItemPowerConduit itemPowerConduit;
+  public static ItemLiquidConduit itemLiquidConduit;
+  public static ItemItemConduit itemItemConduit;
+//  public static ItemGasConduit itemGasConduit;
+//  public static ItemMEConduit itemMEConduit;
+//  public static ItemOCConduit itemOCConduit;
+  public static ItemBasicItemFilter itemBasicFilterUpgrade;
+  public static ItemExistingItemFilter itemExistingItemFilter;
+  public static ItemModItemFilter itemModItemFilter;
+  public static ItemPowerItemFilter itemPowerItemFilter;
+  public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
+  public static ItemFunctionUpgrade itemFunctionUpgrade;
 //
 //  // Machines
 //  public static BlockStirlingGenerator blockStirlingGenerator;
 //  public static BlockCombustionGenerator blockCombustionGenerator;
 //  public static BlockZombieGenerator blockZombieGenerator;
-//  public static BlockSolarPanel blockSolarPanel;
+  public static BlockSolarPanel blockSolarPanel;
 //  public static BlockReservoir blockReservoir;
 //  public static BlockAlloySmelter blockAlloySmelter;
 //  public static BlockCapacitorBank blockCapacitorBank;
@@ -189,7 +201,7 @@ public class EnderIO {
 //  public static BlockTank blockTank;
 //  public static BlockCrafter blockCrafter;
 //  public static BlockPoweredSpawner blockPoweredSpawner;
-//  public static ItemBrokenSpawner itemBrokenSpawner;
+  public static ItemBrokenSpawner itemBrokenSpawner;
 //  public static BlockSliceAndSplice blockSliceAndSplice;
 //  public static BlockSoulBinder blockSoulFuser;
 //  public static BlockAttractor blockAttractor;
@@ -259,7 +271,7 @@ public class EnderIO {
 //    blockStirlingGenerator = BlockStirlingGenerator.create();
 //    blockCombustionGenerator = BlockCombustionGenerator.create();
 //    blockZombieGenerator = BlockZombieGenerator.create();
-//    blockSolarPanel = BlockSolarPanel.create();
+    blockSolarPanel = BlockSolarPanel.create();
 //
 //    blockCrusher = BlockCrusher.create();
 //    blockAlloySmelter = BlockAlloySmelter.create();
@@ -326,26 +338,26 @@ public class EnderIO {
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
-//
-//    itemBrokenSpawner = ItemBrokenSpawner.create();
-//
+
+    itemBrokenSpawner = ItemBrokenSpawner.create();
+
     blockEndermanSkull = BlockEndermanSkull.create();
     itemFrankenSkull = ItemFrankenSkull.create();
 
-//    itemRedstoneConduit = ItemRedstoneConduit.create();
-//    itemPowerConduit = ItemPowerConduit.create();
-//    itemLiquidConduit = ItemLiquidConduit.create();
-//    itemItemConduit = ItemItemConduit.create();
-////    itemGasConduit = ItemGasConduit.create();
-////    itemMEConduit = ItemMEConduit.create();
-////    itemOCConduit = ItemOCConduit.create();
-//
-//    itemBasicFilterUpgrade = ItemBasicItemFilter.create();
-//    itemExistingItemFilter = ItemExistingItemFilter.create();
-//    itemModItemFilter = ItemModItemFilter.create();
-//    itemPowerItemFilter = ItemPowerItemFilter.create();
-//    itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
-//    itemFunctionUpgrade = ItemFunctionUpgrade.create();
+    itemRedstoneConduit = ItemRedstoneConduit.create();
+    itemPowerConduit = ItemPowerConduit.create();
+    itemLiquidConduit = ItemLiquidConduit.create();
+    itemItemConduit = ItemItemConduit.create();
+//    itemGasConduit = ItemGasConduit.create();
+//    itemMEConduit = ItemMEConduit.create();
+//    itemOCConduit = ItemOCConduit.create();
+
+    itemBasicFilterUpgrade = ItemBasicItemFilter.create();
+    itemExistingItemFilter = ItemExistingItemFilter.create();
+    itemModItemFilter = ItemModItemFilter.create();
+    itemPowerItemFilter = ItemPowerItemFilter.create();
+    itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
+    itemFunctionUpgrade = ItemFunctionUpgrade.create();
 
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();
@@ -369,7 +381,7 @@ public class EnderIO {
     
     itemEnderFood = ItemEnderFood.create();
 
-//    DarkSteelItems.createDarkSteelArmorItems();
+    DarkSteelItems.createDarkSteelArmorItems();
 
     int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);

@@ -3,12 +3,11 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
-
-import com.enderio.core.common.util.BlockCoord;
+import net.minecraft.util.BlockPos;
 
 public interface IHarvestResult {
 
   List<EntityItem> getDrops();
-  List<BlockCoord> getHarvestedBlocks();
+  List<BlockPos> getHarvestedBlocks();
 
 }

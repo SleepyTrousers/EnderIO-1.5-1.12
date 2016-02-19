@@ -2,36 +2,36 @@ package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlockWithMetadata;
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvancedTooltipProvider, IResourceTooltipProvider {
+public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
   public BlockItemSolarPanel() {
-    super(EnderIO.blockSolarPanel, EnderIO.blockSolarPanel);
+    super(EnderIO.blockSolarPanel);
     setHasSubtypes(true);
+    setMaxDamage(0);    
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   public BlockItemSolarPanel(Block block) {
-    super(block, block);
+    super(block);
     setHasSubtypes(true);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIO);    
   }
 
   @Override

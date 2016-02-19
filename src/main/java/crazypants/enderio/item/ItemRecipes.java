@@ -1,17 +1,21 @@
 package crazypants.enderio.item;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
+import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
+import static crazypants.enderio.material.Alloy.DARK_STEEL;
+import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
+import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.Alloy.SOULARIUM;
+import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
+import static crazypants.util.RecipeUtil.addShaped;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.MachinePart;
-
-import static crazypants.enderio.material.Alloy.*;
-import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
-import static crazypants.util.RecipeUtil.addShaped;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ItemRecipes {
 

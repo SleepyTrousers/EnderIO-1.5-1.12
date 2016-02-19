@@ -5,8 +5,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+import com.google.common.base.Predicate;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import net.minecraft.block.Block;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,25 +24,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ItemUtil;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.machine.farm.farmers.HarvestResult;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
@@ -74,8 +73,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
     setCreativeTab(EnderIOTab.tabEnderIO);
     String str = "darkSteel_shears";
-    setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setUnlocalizedName(str);    
   }
 
   @Override
@@ -85,7 +83,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -99,44 +97,48 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   public boolean isDamaged(ItemStack stack) {
     return false;
   }
-
+  
   @Override
-  public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player) {
+  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     if (player.worldObj.isRemote) {
       return false;
     }
 
     int powerStored = getStoredPower(player);
     if (powerStored < Config.darkSteelShearsPowerUsePerDamagePoint) {
-      return super.onBlockStartBreak(itemstack, x, y, z, player);
+      return super.onBlockStartBreak(itemstack, pos, player);
     }
 
-    Block block = player.worldObj.getBlock(x, y, z);
-    if (block instanceof IShearable && ((IShearable)block).isShearable(itemstack, player.worldObj, x, y, z)) {
-      BlockCoord bc = new BlockCoord(x, y, z);
-      HarvestResult res = new HarvestResult(null, bc);
+    Block block = player.worldObj.getBlockState(pos).getBlock();
+    if (block instanceof IShearable && ((IShearable)block).isShearable(itemstack, player.worldObj, pos)) {
+      
+      HarvestResult res = new HarvestResult(null, pos);
 
+      int x = pos.getX();
+      int y = pos.getX();
+      int z = pos.getX();
+      
       for (int dx = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dx <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dx++) {
         for (int dy = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dy <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dy++) {
           for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dz <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dz++) {
-            Block block2 = player.worldObj.getBlock(x+dx, y+dy, z+dz);
-            if (block2 instanceof IShearable && ((IShearable)block2).isShearable(itemstack, player.worldObj, x+dx, y+dy, z+dz)) {
-                res.getHarvestedBlocks().add(new BlockCoord(x+dx, y+dy, z+dz));
+            Block block2 = player.worldObj.getBlockState(new BlockPos(x+dx, y+dy, z+dz)).getBlock();
+            if (block2 instanceof IShearable && ((IShearable)block2).isShearable(itemstack, player.worldObj, new BlockPos(x+dx, y+dy, z+dz))) {
+                res.getHarvestedBlocks().add(new BlockPos(x+dx, y+dy, z+dz));
             }
           }
         }
       }
 
-      List<BlockCoord> sortedTargets = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
-      harvestComparator.refPoint = bc;
+      List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res.getHarvestedBlocks());
+      harvestComparator.refPoint = pos;
       Collections.sort(sortedTargets, harvestComparator);
 
       int maxBlocks = Math.min(sortedTargets.size(), powerStored / Config.darkSteelShearsPowerUsePerDamagePoint);
       for (int i=0 ; i < maxBlocks ; i++) {
-        BlockCoord bc2 = sortedTargets.get(i);
-        super.onBlockStartBreak(itemstack, bc2.x, bc2.y, bc2.z, player);
-        if (bc2 != bc) {
-          player.worldObj.setBlockToAir(bc2.x, bc2.y, bc2.z);
+        BlockPos bc2 = sortedTargets.get(i);
+        super.onBlockStartBreak(itemstack, bc2, player);
+        if (bc2 != pos) {
+          player.worldObj.setBlockToAir(bc2);
         }
       }
 
@@ -144,10 +146,11 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     return false;
   }
 
-  IEntitySelector selectShearable = new IEntitySelector() {
+  Predicate<Entity> selectShearable = new Predicate<Entity> () {
+
     @Override
-    public boolean isEntityApplicable(Entity entity) {
-      return entity instanceof IShearable && ((IShearable)entity).isShearable(null, entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ);
+    public boolean apply(Entity entity) {
+      return entity instanceof IShearable && ((IShearable)entity).isShearable(null, entity.worldObj, entity.getPosition());
     }
   };
 
@@ -163,10 +166,12 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     }
 
     if (entity instanceof IShearable) {
-      AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
+      AxisAlignedBB bb = new AxisAlignedBB(
           entity.posX - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ - Config.darkSteelShearsEntityAreaBoostWhenPowered,
           entity.posX + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ + Config.darkSteelShearsEntityAreaBoostWhenPowered);
-      List<Entity> sortedTargets = new ArrayList<Entity>(entity.worldObj.selectEntitiesWithinAABB(IShearable.class, bb, selectShearable));
+      
+      
+      List<Entity> sortedTargets = new ArrayList<Entity>(entity.worldObj.getEntitiesWithinAABB(Entity.class, bb, selectShearable));
       entityComparator.refPoint = entity;
       Collections.sort(sortedTargets, entityComparator);
 
@@ -246,17 +251,17 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     if(!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
@@ -276,19 +281,19 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     return new ItemStack(this);
   }
 
-  private static class MultiHarvestComparator implements Comparator<BlockCoord> {
+  private static class MultiHarvestComparator implements Comparator<BlockPos> {
 
-    BlockCoord refPoint;
+    BlockPos refPoint;
 
     @Override
-    public int compare(BlockCoord arg0, BlockCoord arg1) {
-      int d1 = refPoint.getDistSq(arg0);
-      int d2 = refPoint.getDistSq(arg1);
+    public int compare(BlockPos arg0, BlockPos arg1) {
+      double d1 = refPoint.distanceSq(arg0.getX(), arg0.getY(), arg0.getZ());
+      double d2 = refPoint.distanceSq(arg1.getX(), arg1.getY(), arg1.getZ());
       return compare(d1, d2);
     }
 
     // NB: Copy of Integer.compare, which is only in Java 1.7+
-    public static int compare(int x, int y) {
+    public static int compare(double x, double y) {
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
 

@@ -2,7 +2,18 @@ package crazypants.enderio.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import cofh.api.energy.ItemEnergyContainer;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.util.BaublesUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,25 +22,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cofh.api.energy.ItemEnergyContainer;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.ItemUtil;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.Optional.Method;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.util.BaublesUtil;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
 public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble {
@@ -48,13 +46,13 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     if(item == null) {
       return false;
     }
-    if(item.stackTagCompound == null) {
+    if(item.getTagCompound() == null) {
       return false;
     }
-    if(!item.stackTagCompound.hasKey(ACTIVE_KEY)) {
+    if(!item.getTagCompound().hasKey(ACTIVE_KEY)) {
       return false;
     }
-    return item.stackTagCompound.getBoolean(ACTIVE_KEY);
+    return item.getTagCompound().getBoolean(ACTIVE_KEY);
   }
 
   public static boolean hasPower(ItemStack itemStack) {
@@ -88,15 +86,15 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     GameRegistry.registerItem(this, ModObject.itemMagnet.unlocalisedName);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:magnet");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerIcons(IIconRegister IIconRegister) {
+//    itemIcon = IIconRegister.registerIcon("enderio:magnet");
+//  }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     setFull(is);
     par3List.add(is);
@@ -108,7 +106,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
         + PowerDisplayUtil.abrevation();
@@ -117,7 +115,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean hasEffect(ItemStack item, int pass) {
+  public boolean hasEffect(ItemStack item) {
     return isActive(item);
   }
 
@@ -145,10 +143,10 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   void setEnergy(ItemStack container, int energy) {
-    if(container.stackTagCompound == null) {
-      container.stackTagCompound = new NBTTagCompound();
+    if(container.getTagCompound() == null) {
+      container.setTagCompound(new NBTTagCompound());
     }
-    container.stackTagCompound.setInteger("Energy", energy);
+    container.getTagCompound() .setInteger("Energy", energy);
     updateDamage(container);
   }
 

@@ -1,10 +1,15 @@
 package crazypants.enderio.item;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.command.IEntitySelector;
+import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PacketMagnetState.SlotType;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.util.BaublesUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -17,16 +22,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PacketMagnetState.SlotType;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BaublesUtil;
-import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
-import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class MagnetController {
 
@@ -72,7 +71,7 @@ public class MagnetController {
       initBlacklist();
     }
 
-    AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(
+    AxisAlignedBB aabb = new AxisAlignedBB(
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
         
@@ -134,13 +133,13 @@ public class MagnetController {
     for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
       for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
         Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, chunk.entityLists.length - 1);
-        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, chunk.entityLists.length - 1);
+        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, chunk.getEntityLists().length - 1);
+        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, chunk.getEntityLists().length - 1);
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
-          for (Entity entity : (List<Entity>) chunk.entityLists[chunkY]) {
+          for (Entity entity : chunk.getEntityLists()[chunkY]) {
             if (!entity.isDead) {
               boolean gotOne = false;
-              if (entity instanceof EntityItem && entity.boundingBox.intersectsWith(bb)) {
+              if (entity instanceof EntityItem && entity.getEntityBoundingBox().intersectsWith(bb)) {
                 gotOne = !hasSolegnoliaAround(entity);
                 if (gotOne && !blacklist.isEmpty()) {
                   final Item item = ((EntityItem) entity).getEntityItem().getItem();
@@ -151,7 +150,7 @@ public class MagnetController {
                     }
                   }
                 }
-              } else if (entity instanceof EntityXPOrb && entity.boundingBox.intersectsWith(bb)) {
+              } else if (entity instanceof EntityXPOrb && entity.getEntityBoundingBox().intersectsWith(bb)) {
                 gotOne = true;
               }
               if (gotOne) {

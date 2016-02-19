@@ -5,20 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.oredict.OreDictionary;
-
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.ImmutableList;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
@@ -35,6 +24,15 @@ import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class DarkSteelRecipeManager {
 
@@ -114,8 +112,8 @@ public class DarkSteelRecipeManager {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.isUpgradeItem(evt.right) && upgrade.canAddToItem(evt.left)) {
         ItemStack res = new ItemStack(evt.left.getItem(), 1, evt.left.getItemDamage());
-        if(evt.left.stackTagCompound != null) {
-          res.stackTagCompound = (NBTTagCompound) evt.left.stackTagCompound.copy();
+        if(evt.left.getTagCompound() != null) {
+          res.setTagCompound((NBTTagCompound) evt.left.getTagCompound().copy());
         }
         upgrade.writeToItem(res);
         evt.output = res;
@@ -128,12 +126,12 @@ public class DarkSteelRecipeManager {
   public static int getEnchantmentRepairCost(ItemStack itemStack) {
     //derived from ContainerRepair
     int res = 0;
-    Map map1 = EnchantmentHelper.getEnchantments(itemStack);
-    Iterator iter = map1.keySet().iterator();
+    Map<?, ?> map1 = EnchantmentHelper.getEnchantments(itemStack);
+    Iterator<?> iter = map1.keySet().iterator();
     while (iter.hasNext()) {
       int i1 = ((Integer) iter.next()).intValue();
-      Enchantment enchantment = Enchantment.enchantmentsList[i1];
-
+      Enchantment enchantment = Enchantment.getEnchantmentById(i1);
+      
       int level = ((Integer) map1.get(Integer.valueOf(i1))).intValue();
       if(enchantment.canApply(itemStack)) {
         if(level > enchantment.getMaxLevel()) {
@@ -170,7 +168,7 @@ public class DarkSteelRecipeManager {
     return upgrades;
   }
 
-  public void addCommonTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.hasUpgrade(itemstack)) {
         upgrade.addCommonEntries(itemstack, entityplayer, list, flag);
@@ -178,7 +176,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public void addBasicTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.hasUpgrade(itemstack)) {
         upgrade.addBasicEntries(itemstack, entityplayer, list, flag);
@@ -186,7 +184,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public void addAdvancedTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addAdvancedTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
 
     List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
     for (IDarkSteelUpgrade upgrade : upgrades) {

@@ -2,6 +2,19 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,25 +36,11 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
-
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.teleport.TravelController;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
@@ -83,12 +82,11 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
     String str = "darkSteel_sword";
     setUnlocalizedName(str);
-    setTextureName(EnderIO.DOMAIN + ":" + str);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -180,7 +178,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   private boolean handleBeheadingWeapons(EntityPlayer player, LivingDropsEvent evt) {
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null || equipped.stackTagCompound == null) {
+    if(equipped == null || equipped.getTagCompound() == null) {
       return false;
     }
     NBTTagCompound infiToolRoot = equipped.getTagCompound().getCompoundTag("InfiTool");
@@ -337,17 +335,17 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     if(!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }

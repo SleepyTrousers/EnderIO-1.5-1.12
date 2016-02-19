@@ -2,29 +2,25 @@ package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -37,14 +33,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   private static final float BLOCK_HEIGHT = 0.15f;
-
-  IIcon sideIcon;
-  IIcon advancedSideIcon;
-  IIcon advancedIcon;
-
-  IIcon borderIcon;
-  IIcon advancedBorderIcon;
-
+  
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class);
     if(!Config.photovoltaicCellEnabled) {
@@ -62,13 +51,8 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public int damageDropped(int damage) {
-    return damage;
-  }
-
-  @Override
-  public boolean renderAsNormalBlock() {
-    return false;
+  public int damageDropped(IBlockState bs) {
+    return getMetaFromState(bs);
   }
 
   @Override
@@ -76,18 +60,18 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     return false;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int side, int meta) {
-    if(side == ForgeDirection.UP.ordinal()) {
-      return meta == 0 ? blockIcon : advancedIcon;
-    }
-    return meta == 0 ? sideIcon : advancedSideIcon;
-  }
-
-  public IIcon getBorderIcon(int i, int meta) {
-    return meta == 0 ? borderIcon : advancedBorderIcon;
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int side, int meta) {
+//    if(side == ForgeDirection.UP.ordinal()) {
+//      return meta == 0 ? blockIcon : advancedIcon;
+//    }
+//    return meta == 0 ? sideIcon : advancedSideIcon;
+//  }
+//
+//  public IIcon getBorderIcon(int i, int meta) {
+//    return meta == 0 ? borderIcon : advancedBorderIcon;
+//  }
 
   @Override
   public int getRenderType() {
@@ -95,26 +79,28 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
-    TileEntity te = world.getTileEntity(x, y, z);
+  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+    TileEntity te = world.getTileEntity(pos);
     if(te instanceof TileEntitySolarPanel) {
       ((TileEntitySolarPanel) te).onNeighborBlockChange();
     }
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister register) {
-    blockIcon = register.registerIcon("enderio:solarPanelTop");
-    advancedIcon = register.registerIcon("enderio:solarPanelAdvancedTop");
-    sideIcon = register.registerIcon("enderio:solarPanelSide");
-    advancedSideIcon = register.registerIcon("enderio:solarPanelAdvancedSide");
-    borderIcon = register.registerIcon("enderio:solarPanelBorder");
-    advancedBorderIcon = register.registerIcon("enderio:solarPanelAdvancedBorder");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister register) {
+//    blockIcon = register.registerIcon("enderio:solarPanelTop");
+//    advancedIcon = register.registerIcon("enderio:solarPanelAdvancedTop");
+//    sideIcon = register.registerIcon("enderio:solarPanelSide");
+//    advancedSideIcon = register.registerIcon("enderio:solarPanelAdvancedSide");
+//    borderIcon = register.registerIcon("enderio:solarPanelBorder");
+//    advancedBorderIcon = register.registerIcon("enderio:solarPanelAdvancedBorder");
+//  }
 
+  
+  
   @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+  public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos) {
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
@@ -123,11 +109,10 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
-  @SuppressWarnings("rawtypes")
-  @Override
-  public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
-    setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-    super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+  @Override  
+  public void addCollisionBoxesToList(World par1World, BlockPos pos, IBlockState state, AxisAlignedBB par5AxisAlignedBB, List<AxisAlignedBB> par6List, Entity par7Entity) {
+    setBlockBoundsBasedOnState(par1World, pos);
+    super.addCollisionBoxesToList(par1World, pos, state, par5AxisAlignedBB,par6List, par7Entity);
   }
 
   @Override
@@ -137,7 +122,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
