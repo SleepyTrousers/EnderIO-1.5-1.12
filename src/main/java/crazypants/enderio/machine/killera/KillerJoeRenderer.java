@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
@@ -30,7 +29,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
 
   private static final String TEXTURE = "enderio:models/KillerJoe.png";
 
-  private static final ItemStack DEFAULT_SWORD = new ItemStack(Items.iron_sword);
+//  private static final ItemStack DEFAULT_SWORD = new ItemStack(Items.iron_sword);
 
   private ModelZombieJar model = new ModelZombieJar();
 

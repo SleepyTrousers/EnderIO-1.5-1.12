@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import io.netty.buffer.ByteBuf;
-
 import com.enderio.core.common.network.MessageTileEntity;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk> implements IMessageHandler<PacketActivateWeather, IMessage> {
 
@@ -27,6 +26,7 @@ public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk>
     buf.writeInt(taskid);
   }
 
+  @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     taskid = buf.readInt();

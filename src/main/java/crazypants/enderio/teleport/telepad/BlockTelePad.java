@@ -17,11 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class BlockTelePad extends BlockTravelAnchor {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
 
 //  @SideOnly(Side.CLIENT)
 //  private IIcon[] icons;
@@ -32,13 +33,15 @@ public class BlockTelePad extends BlockTravelAnchor {
   
   public static int renderId;
 
-  public static BlockTelePad create() {
-    BlockTelePad ret = new BlockTelePad();
+  public static BlockTelePad createTelepad() {
+    
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpdateCoords.class, PacketUpdateCoords.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpdateCoords.class, PacketUpdateCoords.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
+    
+    BlockTelePad ret = new BlockTelePad();
     ret.init();
     return ret;
   }
@@ -91,10 +94,11 @@ public class BlockTelePad extends BlockTravelAnchor {
     return renderId;
   }
 
+
   @Override
-  public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-    AxisAlignedBB bb = super.getSelectedBoundingBoxFromPool(world, x, y, z);
-    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
+  public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
+    AxisAlignedBB bb = super.getSelectedBoundingBox(world,pos);
+    TileTelePad te = (TileTelePad) world.getTileEntity(pos);
     if(!te.inNetwork()) {
       return bb;
     }
@@ -102,26 +106,26 @@ public class BlockTelePad extends BlockTravelAnchor {
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block changedTo) {
-    super.onNeighborBlockChange(world, x, y, z, changedTo);
-    ((TileTelePad) world.getTileEntity(x, y, z)).updateRedstoneState();
+  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block changedTo) {
+    super.onNeighborBlockChange(world, pos, state, changedTo);
+    getTileEntity(world, pos).updateRedstoneState();
   }
 
   @Override
-  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+  public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
     super.onNeighborChange(world, null, null);
-    ((TileTelePad) world.getTileEntity(x, y, z)).updateConnectedState(true);
+    ((TileTelePad) world.getTileEntity(pos)).updateConnectedState(true);
   }
 
   @Override
-  public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
+  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+    TileEntity te = world.getTileEntity(pos);
     if(te instanceof TileTelePad) {
       TileTelePad tp = (TileTelePad) te;
       if(tp.inNetwork()) {
         if(!tp.isMaster()) {
           TileTelePad master = tp.getMaster();
-          return openGui(world, master.xCoord, master.yCoord, master.zCoord, entityPlayer, side);
+          return openGui(world, master.getPos(), entityPlayer, side);
         }
       } else {
         return false;
@@ -129,7 +133,7 @@ public class BlockTelePad extends BlockTravelAnchor {
 
       // from here out we know that we are connected and are the master
       if(tp.canBlockBeAccessed(entityPlayer)) {
-        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, x, y, z);
+        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, pos.getX(), pos.getY(), pos.getZ());
       } else {
         sendPrivateChatMessage(entityPlayer, tp.getOwner());
       }

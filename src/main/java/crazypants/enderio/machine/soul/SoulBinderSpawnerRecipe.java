@@ -3,8 +3,6 @@ package crazypants.enderio.machine.soul;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.common.util.EntityUtil;
 
 import crazypants.enderio.EnderIO;
@@ -13,8 +11,9 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
+import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.xp.XpUtil;
+import net.minecraft.item.ItemStack;
 
 public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -77,7 +76,7 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
     if(mobType == null) {
       return new ResultStack[0];
     }
-    ItemStack spawner = EnderIO.itemBrokenSpawner.createStackForMobType(mobType);
+    ItemStack spawner = ItemBrokenSpawner.createStackForMobType(mobType);
     if(spawner == null) {
       return new ResultStack[0];
     }
@@ -107,9 +106,9 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
     return false;    
   }
 
-  private boolean isBlackListed(String entityId) {
-    return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
-  }
+//  private boolean isBlackListed(String entityId) {
+//    return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
+//  }
   
   @Override
   public String getMachineName() {

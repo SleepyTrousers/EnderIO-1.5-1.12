@@ -63,7 +63,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
   private String engineTxt3;
   private String engineTxt4;
   private String engineTxt5;
-  private String engineTxt6;
+  
 
   private String monHeading1;
   private String monHeading2;
@@ -84,8 +84,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
     engineTxt2 = EnderIO.lang.localize("gui.powerMonitor.engineSection2");
     engineTxt3 = EnderIO.lang.localize("gui.powerMonitor.engineSection3");
     engineTxt4 = EnderIO.lang.localize("gui.powerMonitor.engineSection4");
-    engineTxt5 = EnderIO.lang.localize("gui.powerMonitor.engineSection5");
-    engineTxt6 = EnderIO.lang.localize("gui.powerMonitor.engineSection6");
+    engineTxt5 = EnderIO.lang.localize("gui.powerMonitor.engineSection5");  
 
     monHeading1 = EnderIO.lang.localize("gui.powerMonitor.monHeading1");
     monHeading2 = EnderIO.lang.localize("gui.powerMonitor.monHeading2");
@@ -234,7 +233,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
   private void renderRedstoneTab(int sx, int sy) {
     if (isRedstoneMode) {
       IconEIO.map.render(IconEIO.ACTIVE_TAB, sx + 200, sy + 30 + SPACING, true);
-      itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
+      itemRender.renderItemIntoGUI(new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);      
       
       GL11.glDisable(GL11.GL_LIGHTING);
       
@@ -295,7 +294,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       fontRenderer.drawString(txt, x, y, rgb, false);
     } else {
       IconEIO.map.render(IconEIO.INACTIVE_TAB, sx + 200, sy + 30 + SPACING, true);
-      itemRender.renderItemIntoGUI(fontRendererObj, mc.renderEngine, new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
+      itemRender.renderItemIntoGUI(new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
     }
   }
 

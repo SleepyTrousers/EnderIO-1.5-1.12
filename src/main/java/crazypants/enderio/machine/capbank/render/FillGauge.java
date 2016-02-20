@@ -5,16 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -26,6 +19,17 @@ import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 
 public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener {
 
@@ -40,8 +44,8 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     MIDDLE
   }
 
-  private IIcon barIcon;
-  private IIcon gaugeIcon;
+  private TextureAtlasSprite barIcon;
+  private TextureAtlasSprite gaugeIcon;
 
   private float barHeightV;
 
@@ -54,15 +58,16 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
   }
 
   @Override
-  public void render(TileCapBank cb, ForgeDirection dir, double x, double y, double z, float partialTick) {
+  public void render(TileCapBank cb, EnumFacing dir, double x, double y, double z, float partialTick) {
 
     CapBankClientNetwork nw = null;
-    if(cb.getNetwork() != null) {
+    if (cb.getNetwork() != null) {
       nw = (CapBankClientNetwork) cb.getNetwork();
       nw.requestPowerUpdate(cb, 20);
     }
 
-    int brightness = cb.getWorldObj().getLightBrightnessForSkyBlocks(cb.xCoord + dir.offsetX, cb.yCoord + dir.offsetY, cb.zCoord + dir.offsetZ, 0);
+    BlockPos p = cb.getPos().offset(dir);
+    int brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, p);
     GaugeInfo info = getGaugeInfo(cb, dir);
     GaugeKey key = new GaugeKey(dir, info.type);
     doRender(nw, brightness, info, key);
@@ -70,80 +75,74 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
   }
 
   public void doRender(CapBankClientNetwork nw, int brightness, GaugeInfo info, GaugeKey key) {
-    if(gaugeVertexCache == null) {
+    if (gaugeVertexCache == null) {
       createVertexCache();
     }
     RenderUtil.bindBlockTexture();
-    Tessellator tes = Tessellator.instance;
-    tes.startDrawingQuads();
-    tes.setBrightness(brightness);
-    tes.setColorOpaque_F(1, 1, 1);
     List<Vertex> verts = gaugeVertexCache.get(key);
-    RenderUtil.addVerticesToTessellator(verts, Tessellator.instance);
-    renderFillBar(key, nw, info);
-    tes.draw();
+    RenderUtil.addVerticesToTessellator(verts, DefaultVertexFormats.POSITION_TEX, true);
+    addFillBarVertices(key, nw, info);
+    GlStateManager.color(1, 1, 1);
+    Tessellator.getInstance().draw();
   }
 
-  private void renderFillBar(GaugeKey key, CapBankClientNetwork nw, GaugeInfo info) {
+  private void addFillBarVertices(GaugeKey key, CapBankClientNetwork nw, GaugeInfo info) {
     double ratio = 0;
-    if(nw != null) {
+    if (nw != null) {
       ratio = nw.getEnergyStoredRatio();
     }
-    if(ratio <= 0) {
+    if (ratio <= 0) {
       return;
     }
     double maxY = ratio * info.height;
-    if(maxY <= info.yPosition) {
-      //empty
+    if (maxY <= info.yPosition) {
+      // empty
       return;
     }
 
     Vector3d offset = ForgeDirectionOffsets.offsetScaled(key.dir, 0.005);
-    Tessellator.instance.addTranslation((float) offset.x, (float) offset.y, (float) offset.z);
 
     List<Vertex> verts = levelVertexCache.get(key);
-    if(maxY >= info.yPosition + 1) {
-      //full bar         
-      RenderUtil.addVerticesToTessellator(verts, Tessellator.instance);
+    if (maxY >= info.yPosition + 1) {
+      // full bar
+      RenderUtil.addVerticesToTessellator(verts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);
 
     } else {
-      //need to render partial bar
+      // need to render partial bar
       double myMaxY = maxY - info.yPosition;
 
-      if(info.type == Type.BOTTOM || info.type == Type.SINGLE) {
-        //If we have some power and we are the bottom bit of the display, 
-        //always show at least a little bit in the bar
+      if (info.type == Type.BOTTOM || info.type == Type.SINGLE) {
+        // If we have some power and we are the bottom bit of the display,
+        // always show at least a little bit in the bar
         myMaxY = Math.max(0.2, myMaxY);
       }
       List<Vertex> newVerts = new ArrayList<Vertex>();
       for (Vertex v : verts) {
         v = new Vertex(v);
         newVerts.add(v);
-        if(v.y() > myMaxY) {
+        if (v.y() > myMaxY) {
           v.setXYZ(v.x(), myMaxY, v.z());
           v.setUV(v.u(), barMinV + (float) (myMaxY * barHeightV));
         }
       }
-      RenderUtil.addVerticesToTessellator(newVerts, Tessellator.instance);
+      RenderUtil.addVerticesToTessellator(newVerts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);
     }
-    offset.scale(-1);
-    Tessellator.instance.addTranslation((float) offset.x, (float) offset.y, (float) offset.z);
 
   }
 
-  private GaugeInfo getGaugeInfo(TileCapBank cb, ForgeDirection dir) {
-    
+  private GaugeInfo getGaugeInfo(TileCapBank cb, EnumFacing dir) {
+
     if (!cb.getType().isMultiblock()) {
       return new GaugeInfo(1, 0);
     }
-    
+
     int height = 1;
     int yPos = 0;
     BlockCoord loc = cb.getLocation();
     boolean found = true;
     while (found) {
-      loc = loc.getLocation(ForgeDirection.UP);
-      if(isGaugeType(cb.getWorldObj(), loc, dir, cb.getType())) {
+      loc = loc.getLocation(EnumFacing.UP);
+      if (isGaugeType(cb.getWorld(), loc, dir, cb.getType())) {
         height++;
       } else {
         found = false;
@@ -153,8 +152,8 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     loc = cb.getLocation();
     found = true;
     while (found) {
-      loc = loc.getLocation(ForgeDirection.DOWN);
-      if(isGaugeType(cb.getWorldObj(), loc, dir, cb.getType())) {
+      loc = loc.getLocation(EnumFacing.DOWN);
+      if (isGaugeType(cb.getWorld(), loc, dir, cb.getType())) {
         height++;
         yPos++;
       } else {
@@ -166,15 +165,15 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
 
   }
 
-  private boolean isGaugeType(World worldObj, BlockCoord bc, ForgeDirection face, CapBankType type) {
-    TileEntity te = worldObj.getTileEntity(bc.x, bc.y, bc.z);
-    if(te instanceof TileCapBank) {
+  private boolean isGaugeType(World worldObj, BlockCoord bc, EnumFacing face, CapBankType type) {
+    TileEntity te = worldObj.getTileEntity(bc.getBlockPos());
+    if (te instanceof TileCapBank) {
       TileCapBank cb = (TileCapBank) te;
       return type == cb.getType() && cb.getDisplayType(face) == InfoDisplayType.LEVEL_BAR;
     }
     return false;
   }
-  
+
   @Override
   public void onResourceManagerReload(IResourceManager p_110549_1_) {
     createVertexCache();
@@ -182,14 +181,19 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
 
   private void createVertexCache() {
     barIcon = EnderIO.blockCapBank.getFillBarIcon();
-    barMinV = barIcon.getMinV();
-    barHeightV = barIcon.getMaxV() - barIcon.getMinV();
+    if (barIcon == null) {
+      barMinV = 0;
+      barHeightV = 0;
+    } else {
+      barMinV = barIcon.getMinV();
+      barHeightV = barIcon.getMaxV() - barIcon.getMinV();
+    }
     gaugeIcon = EnderIO.blockCapBank.getGaugeIcon();
 
     gaugeVertexCache = new HashMap<FillGauge.GaugeKey, List<Vertex>>();
     levelVertexCache = new HashMap<FillGauge.GaugeKey, List<Vertex>>();
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      if(dir.offsetY == 0) {
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      if (dir.getFrontOffsetY() == 0) {
         for (Type type : Type.values()) {
           GaugeKey key = new GaugeKey(dir, type);
           gaugeVertexCache.put(key, createGaugeBoundForFace(key, gaugeIcon));
@@ -199,17 +203,15 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     }
   }
 
-  protected List<Vertex> createGaugeBoundForFace(GaugeKey key, IIcon icon) {
+  protected List<Vertex> createGaugeBoundForFace(GaugeKey key, TextureAtlasSprite icon) {
 
-    ForgeDirection dir = key.dir;
-    Type type = key.type;
+    EnumFacing dir = key.dir;
 
     double widthScale = 0.25;
-    double heightScale = 0.8;
 
-    double xScale = dir.offsetX == 0 ? widthScale : 1;
+    double xScale = dir.getFrontOffsetX() == 0 ? widthScale : 1;
     double yScale = 1;
-    double zScale = dir.offsetZ == 0 ? widthScale : 1;
+    double zScale = dir.getFrontOffsetZ() == 0 ? widthScale : 1;
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
     Vector3d off = ForgeDirectionOffsets.forDirCopy(dir);
@@ -219,13 +221,18 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     off.scale(-1);
     bb = bb.translate(off);
 
-    Vector4f uv = getUvForType(key.type, icon);
+    Vector4f uv;
+    if (icon != null) {
+      uv = getUvForType(key.type, icon);
+    } else {
+      uv = new Vector4f(0, 0, 1, 1);
+    }
 
     List<Vertex> result = bb.getCornersWithUvForFace(dir, uv.x, uv.y, uv.z, uv.w);
     return result;
   }
 
-  private Vector4f getUvForType(Type type, IIcon icon) {
+  private Vector4f getUvForType(Type type, TextureAtlasSprite icon) {
     double uWidth = (icon.getMaxU() - icon.getMinU()) / 4;
 
     Vector4f res = new Vector4f();
@@ -250,13 +257,13 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     }
 
     Type calcType() {
-      if(height == 1) {
+      if (height == 1) {
         return Type.SINGLE;
       }
-      if(yPosition == 0) {
+      if (yPosition == 0) {
         return Type.BOTTOM;
       }
-      if(yPosition == height - 1) {
+      if (yPosition == height - 1) {
         return Type.TOP;
       }
       return Type.MIDDLE;
@@ -266,10 +273,10 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
 
   static class GaugeKey {
 
-    ForgeDirection dir;
+    EnumFacing dir;
     Type type;
 
-    GaugeKey(ForgeDirection dir, Type type) {
+    GaugeKey(EnumFacing dir, Type type) {
       this.dir = dir;
       this.type = type;
     }
@@ -285,20 +292,20 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj) {
+      if (this == obj) {
         return true;
       }
-      if(obj == null) {
+      if (obj == null) {
         return false;
       }
-      if(getClass() != obj.getClass()) {
+      if (getClass() != obj.getClass()) {
         return false;
       }
       GaugeKey other = (GaugeKey) obj;
-      if(dir != other.dir) {
+      if (dir != other.dir) {
         return false;
       }
-      if(type != other.type) {
+      if (type != other.type) {
         return false;
       }
       return true;

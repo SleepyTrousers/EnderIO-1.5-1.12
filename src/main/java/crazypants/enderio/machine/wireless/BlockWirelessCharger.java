@@ -4,7 +4,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class BlockWirelessCharger extends BlockEio implements IResourceTooltipProvider /* IGuiHandler */{
+public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider /* IGuiHandler */{
 
   public static BlockWirelessCharger create() {
 
@@ -120,11 +119,9 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileEntityEio te, ItemStack drop) {
-    drop.setTagCompound(new NBTTagCompound());
-    if(te instanceof TileWirelessCharger) {
-      ((TileWirelessCharger) te).writeCustomNBT(drop.getTagCompound());
-    }
+  protected void processDrop(IBlockAccess world, BlockPos pos, TileWirelessCharger te, ItemStack drop) {
+    drop.setTagCompound(new NBTTagCompound());    
+    te.writeCustomNBT(drop.getTagCompound());    
   }
 
 }

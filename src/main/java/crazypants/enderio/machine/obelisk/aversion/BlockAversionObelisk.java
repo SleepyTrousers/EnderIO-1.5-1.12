@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObelisk> {
 
@@ -25,7 +26,7 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileAversionObelisk) {
       return new ContainerAversionObelisk(player.inventory, (TileAversionObelisk) te);
     }
@@ -34,7 +35,7 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileAversionObelisk) {
       return new GuiAversionObelisk(player.inventory, (TileAversionObelisk) te);
     }

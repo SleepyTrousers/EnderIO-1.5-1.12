@@ -1,14 +1,9 @@
 package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -19,6 +14,9 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
@@ -54,18 +52,17 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   @Override
   public void updateScreen() {
     super.updateScreen();
-    if(getTileEntity().getWorldObj().getTotalWorldTime() % 20 == 0) {
+    if(getTileEntity().getWorld().getTotalWorldTime() % 20 == 0) {
       refreshButtons();
     }
   }
   
-  @SuppressWarnings("unchecked")
   private void refreshButtons() {
-    for (GuiButton button : (List<GuiButton>) buttonList) {
+    for (GuiButton button : buttonList) {
       WeatherTask[] tasks = WeatherTask.values();
       if(button.id >= 0 && button.id < tasks.length) {
         WeatherTask task = WeatherTask.values()[button.id];
-        if(WeatherTask.worldIsState(task, getTileEntity().getWorldObj().getWorldInfo())) {
+        if(WeatherTask.worldIsState(task, getTileEntity().getWorld().getWorldInfo())) {
           button.enabled = false;
         } else {
           button.enabled = true;
@@ -89,7 +86,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
       // TODO test
       int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
       Color color = getTileEntity().activeTask.color;
-      GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+      GL11.glColor3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -121,7 +118,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   }
   
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id >= 0 && b.id <= 2) {
       getTileEntity().startTask(b.id);

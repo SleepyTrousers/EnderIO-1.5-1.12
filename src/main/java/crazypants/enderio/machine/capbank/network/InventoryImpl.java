@@ -6,6 +6,9 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
 public class InventoryImpl implements IInventory {
 
@@ -103,6 +106,26 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
+  public ItemStack removeStackFromSlot(int index) {
+    if(inventory == null) {
+      return null;
+    }
+    ItemStack res = getStackInSlot(index);
+    setInventorySlotContents(index, null);
+    return res;
+  }
+
+  @Override
+  public void clear() {
+    if(inventory == null) {
+      return;
+    }
+    for(int i=0;i<inventory.length;i++) {
+      inventory[i] = null;
+    }
+  }
+  
+  @Override
   public int getSizeInventory() {
     return 4;
   }
@@ -148,5 +171,26 @@ public class InventoryImpl implements IInventory {
   @Override
   public void markDirty() {
   }
+
+  @Override
+  public IChatComponent getDisplayName() {
+    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  }
+
+  @Override
+  public int getField(int id) {
+    return 0;
+  }
+
+  @Override
+  public void setField(int id, int value) {    
+  }
+
+  @Override
+  public int getFieldCount() {
+    return 0;
+  }
+
+  
 
 }

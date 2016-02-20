@@ -39,19 +39,19 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
   @Override
   public void onResourceManagerReload(IResourceManager p_110549_1_) {
-      tex = null;
+    tex = null;
   }
-  
+
   @Override
   public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
 
     TileReservoir res = tileentity;
-    if(res.haveRendered(tileentity.getWorld().getTotalWorldTime(), f)) {
+    if (res.haveRendered(tileentity.getWorld().getTotalWorldTime(), f)) {
       return;
     }
 
     float fullness = res.getFilledRatio();
-    if(fullness <= 0 && !res.isAutoEject()) {
+    if (fullness <= 0 && !res.isAutoEject()) {
       return;
     }
 
@@ -72,7 +72,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
     BoundingBox bb = res.getLiquidRenderBounds();
 
-    if(res.isAutoEject()) {
+    if (res.isAutoEject()) {
 
       // switch
       RenderUtil.bindBlockTexture();
@@ -80,15 +80,15 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
       Tessellator tessellator = Tessellator.getInstance();
       WorldRenderer tes = tessellator.getWorldRenderer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-      
-      GlStateManager.color(val, val, val, 1);      
+
+      GlStateManager.color(val, val, val, 1);
       for (EnumFacing dir : EnumFacing.VALUES) {
         drawSwitch(dir, bb);
       }
-      tessellator.draw();  
+      tessellator.draw();
     }
 
-    if(fullness > 0) {
+    if (fullness > 0) {
       RenderUtil.bindTexture(getLiquidSheet());
 
       float margin = 0.01f;
@@ -97,12 +97,11 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
       float maxV = tex.getMinV() + ((tex.getMaxV() - tex.getMinV()) * fullness);
 
       GlStateManager.color(val, val, val);
-      
+
       RenderUtil.renderBoundingBox(bb, tex);
-      
-      RenderUtil.renderBoundingBox(
-          new BoundingBox(bb.minX + margin, bb.minY + margin, bb.minZ + margin, bb.maxX - margin,
-              bb.minY + (fullness * (Math.abs(bb.maxY - bb.minY))) - margin, bb.maxZ - margin), tex.getMinU(), tex.getMaxU(), tex.getMinV(), maxV);
+
+      RenderUtil.renderBoundingBox(new BoundingBox(bb.minX + margin, bb.minY + margin, bb.minZ + margin, bb.maxX - margin,
+          bb.minY + (fullness * (Math.abs(bb.maxY - bb.minY))) - margin, bb.maxZ - margin), tex.getMinU(), tex.getMaxU(), tex.getMinV(), maxV);
     }
 
     GL11.glPopAttrib();
@@ -118,7 +117,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   private Vector3d offset = new Vector3d();
 
   private void drawSwitch(EnumFacing dir, BoundingBox bb) {
-    
 
     Vector3d cent = bb.getCenter();
     offset.set(cent);
@@ -132,19 +130,19 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
     offset.add(forward);
 
-    if(dir.getFrontOffsetY()  == 0) {
+    if (dir.getFrontOffsetY() == 0) {
       offset.y += bb.sizeY() * 0.25;
     }
-    if(dir.getFrontOffsetX()  == 0) {
+    if (dir.getFrontOffsetX() == 0) {
       offset.x -= (isUp ? dir.getFrontOffsetY() : dir.getFrontOffsetZ()) * bb.sizeX() * 0.25;
     }
-    if(dir.getFrontOffsetZ() == 0) {
-      offset.z += (isUp ? -dir.getFrontOffsetY()  : dir.getFrontOffsetX()) * bb.sizeZ() * 0.25;
+    if (dir.getFrontOffsetZ() == 0) {
+      offset.z += (isUp ? -dir.getFrontOffsetY() : dir.getFrontOffsetX()) * bb.sizeZ() * 0.25;
     }
 
-    left.set(isUp ? -dir.getFrontOffsetY()  : -dir.getFrontOffsetZ(), 0, dir.getFrontOffsetX());
+    left.set(isUp ? -dir.getFrontOffsetY() : -dir.getFrontOffsetZ(), 0, dir.getFrontOffsetX());
 
-    if(isUp) {
+    if (isUp) {
       up.set(0, 0, -1);
     } else {
       up.set(0, 1, 0);
@@ -155,30 +153,27 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
     up.scale(0.125);
 
     TextureAtlasSprite icon = block.switchIcon;
-          
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();    
-    tes.pos(offset.x + left.x - up.x, offset.y + left.y - up.y,
-        offset.z + left.z - up.z).tex(icon.getMinU(), icon.getMaxV()).endVertex();    
-    tes.pos(offset.x - left.x - up.x, offset.y - left.y - up.y,
-        offset.z - left.z - up.z).tex(icon.getMaxU(), icon.getMaxV()).endVertex();    
-    tes.pos(offset.x - left.x + up.x, offset.y - left.y + up.y,
-        offset.z - left.z + up.z).tex(icon.getMaxU(), icon.getMinV()).endVertex();    
-    tes.pos(offset.x + left.x + up.x, offset.y + left.y + up.y,
-        offset.z + left.z + up.z).tex(icon.getMinU(), icon.getMinV()).endVertex();
+    if (icon != null) {
 
-      
+      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+      tes.pos(offset.x + left.x - up.x, offset.y + left.y - up.y, offset.z + left.z - up.z).tex(icon.getMinU(), icon.getMaxV()).endVertex();
+      tes.pos(offset.x - left.x - up.x, offset.y - left.y - up.y, offset.z - left.z - up.z).tex(icon.getMaxU(), icon.getMaxV()).endVertex();
+      tes.pos(offset.x - left.x + up.x, offset.y - left.y + up.y, offset.z - left.z + up.z).tex(icon.getMaxU(), icon.getMinV()).endVertex();
+      tes.pos(offset.x + left.x + up.x, offset.y + left.y + up.y, offset.z + left.z + up.z).tex(icon.getMinU(), icon.getMinV()).endVertex();
+    }
+
   }
 
   private ResourceLocation getLiquidSheet() {
-    if(texName == null) {
+    if (texName == null) {
       texName = TextureMap.locationBlocksTexture;
     }
     return texName;
   }
 
   private TextureAtlasSprite getLiquidTexture() {
-    if(tex == null) {
-      tex = RenderUtil.getStillTexture(FluidRegistry.WATER);      
+    if (tex == null) {
+      tex = RenderUtil.getStillTexture(FluidRegistry.WATER);
     }
     return tex;
   }

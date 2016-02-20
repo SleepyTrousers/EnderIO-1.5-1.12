@@ -2,20 +2,19 @@ package crazypants.enderio.machine.soul;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.World;
 
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   
@@ -28,12 +27,6 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
     result.init();
     return result;
   }
-
-  IIcon zombieSkullIcon;
-  IIcon skeletonSkullIcon;
-  IIcon creeperSkullIcon;
-  IIcon endermanSkullIcon;
-  IIcon endermanSkullIconOn;
   
   protected BlockSoulBinder() {
     super(ModObject.blockSoulBinder, TileSoulBinder.class);
@@ -41,7 +34,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileSoulBinder) {
       return new ContainerSoulBinder(player.inventory, (TileSoulBinder) te);
     }
@@ -50,7 +43,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileSoulBinder) {
       return new GuiSoulBinder(player.inventory, (TileSoulBinder) te);
     }
@@ -63,11 +56,6 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   }
 
   @Override
-  public boolean renderAsNormalBlock() {
-    return false;
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }
@@ -77,16 +65,16 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
     return 0;
   }
   
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {    
-    super.registerBlockIcons(iIconRegister);
-    zombieSkullIcon = iIconRegister.registerIcon("enderio:skullZombie");
-    creeperSkullIcon = iIconRegister.registerIcon("enderio:skullCreeper");
-    skeletonSkullIcon = iIconRegister.registerIcon("enderio:skullSkeleton");
-    endermanSkullIcon = iIconRegister.registerIcon("enderio:endermanSkullFront");
-    endermanSkullIconOn= iIconRegister.registerIcon("enderio:endermanSkullFrontEyes");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister iIconRegister) {    
+//    super.registerBlockIcons(iIconRegister);
+//    zombieSkullIcon = iIconRegister.registerIcon("enderio:skullZombie");
+//    creeperSkullIcon = iIconRegister.registerIcon("enderio:skullCreeper");
+//    skeletonSkullIcon = iIconRegister.registerIcon("enderio:skullSkeleton");
+//    endermanSkullIcon = iIconRegister.registerIcon("enderio:endermanSkullFront");
+//    endermanSkullIconOn= iIconRegister.registerIcon("enderio:endermanSkullFrontEyes");
+//  }
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {   
@@ -113,10 +101,14 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
     return renderId;
   }
   
-  @SideOnly(Side.CLIENT)
+  
+  
   @Override
-  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    // If active, randomly throw some smoke around
+  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+    int x = pos.getX();
+    int y = pos.getY();
+    int z = pos.getZ();
+     // If active, randomly throw some smoke around
     if(isActive(world, x, y, z)) {
       float startX = x + 1.0F;
       float startY = y + 1.0F;
@@ -126,8 +118,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
         float yOffset = -0.1F + rand.nextFloat() * 0.2F;
         float zOffset = -0.2F - rand.nextFloat() * 0.6F;        
         
-        EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("spell", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
-        //EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("instantSpell", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
+        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D, 0);
         if(fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);          
           //fx.setRBGColorF(0.1f, 0.4f, 0.1f);

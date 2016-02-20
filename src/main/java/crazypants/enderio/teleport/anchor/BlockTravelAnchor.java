@@ -7,7 +7,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -46,11 +45,11 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
+public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
 
   public static int renderId = -1;
 
-  public static BlockTravelAnchor create() {
+  public static BlockTravelAnchor<TileTravelAnchor> create() {
 
     PacketHandler.INSTANCE.registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketLabel.class, PacketLabel.class, PacketHandler.nextID(), Side.SERVER);
@@ -59,7 +58,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     PacketHandler.INSTANCE.registerMessage(PacketOpenAuthGui.class, PacketOpenAuthGui.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPassword.Handler.class, PacketPassword.class, PacketHandler.nextID(), Side.SERVER);
 
-    BlockTravelAnchor result = new BlockTravelAnchor();
+    BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(TileTravelAnchor.class);
     result.init();
 
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
@@ -76,14 +75,14 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   TextureAtlasSprite highlightOverlayIcon;
 
 
-  private BlockTravelAnchor() {
-    super(ModObject.blockTravelAnchor.unlocalisedName, TileTravelAnchor.class);
+  private BlockTravelAnchor(Class<T> clz) {
+    super(ModObject.blockTravelAnchor.unlocalisedName, clz);
     if (!Config.travelAnchorEnabled) {
       setCreativeTab(null);
     }
   }
 
-  public BlockTravelAnchor(String unlocalisedName, Class<? extends TileEntityEio> teClass) {
+  public BlockTravelAnchor(String unlocalisedName, Class<T> teClass) {
     super(unlocalisedName, teClass);
   }
 
@@ -185,8 +184,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   
   
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileEntityEio te, ItemStack drop) {   
-    TileTravelAnchor anchor = (TileTravelAnchor) te;
+  protected void processDrop(IBlockAccess world, BlockPos pos, TileTravelAnchor anchor, ItemStack drop) {       
     if (anchor == null) {
       return;
     }

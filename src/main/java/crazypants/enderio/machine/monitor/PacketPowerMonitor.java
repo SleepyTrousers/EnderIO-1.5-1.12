@@ -4,6 +4,7 @@ import crazypants.enderio.Log;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -21,9 +22,9 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
   }
 
   public PacketPowerMonitor(TilePowerMonitor pm) {
-    x = pm.xCoord;
-    y = pm.yCoord;
-    z = pm.zCoord;
+    x = pm.getPos().getX();
+    y = pm.getPos().getY();
+    z = pm.getPos().getZ();
     engineControlEnabled = pm.engineControlEnabled;
     startLevel = pm.startLevel;
     stopLevel = pm.stopLevel;
@@ -53,7 +54,7 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
   @Override
   public IMessage onMessage(PacketPowerMonitor message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(!(te instanceof TilePowerMonitor)) {
       Log.warn("createPowerMonitotPacket: Could not handle packet as TileEntity was not a TilePowerMonitor.");
       return null;
@@ -62,7 +63,7 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
     pm.engineControlEnabled = message.engineControlEnabled;
     pm.startLevel = message.startLevel;
     pm.stopLevel = message.stopLevel;
-    player.worldObj.markBlockForUpdate(x, y, z);
+    player.worldObj.markBlockForUpdate(new BlockPos(x, y, z));
     return null;
   }
 

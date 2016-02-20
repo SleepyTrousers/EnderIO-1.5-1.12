@@ -16,6 +16,7 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -79,7 +80,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     if(bc == null) {
       inventory.setCapBank(null);
     } else if(world != null) {
-      TileEntity te = world.getTileEntity(bc.x, bc.y, bc.z);
+      TileEntity te = world.getTileEntity(bc.getBlockPos());
       if(te instanceof TileCapBank) {
         inventory.setCapBank((TileCapBank) te);
       }
@@ -283,6 +284,10 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     ioDisplayInfoCache = null;
   }
 
+  public IOInfo getIODisplayInfo(BlockPos pos, EnumFacing face) {
+    return getIODisplayInfo(pos.getX(), pos.getY(), pos.getZ(), face);
+  }
+  
   public IOInfo getIODisplayInfo(int x, int y, int z, EnumFacing face) {
     DisplayInfoKey key = new DisplayInfoKey(x, y, z, face);
     if(ioDisplayInfoCache == null) {
@@ -297,7 +302,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   private IOInfo computeIODisplayInfo(int xOrg, int yOrg, int zOrg, EnumFacing dir) {
-    if(dir.offsetY != 0) {
+    if(dir.getFrontOffsetY() != 0) {
       return IOInfo.SINGLE;
     }
 
@@ -307,16 +312,16 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
 
     CapBankType type = cb.getType();
-    ForgeDirection left = dir.getRotation(ForgeDirection.DOWN);
-    ForgeDirection right = left.getOpposite();
+    EnumFacing left = dir.rotateAround(EnumFacing.Axis.Y);
+    EnumFacing right = left.getOpposite();
 
     int hOff = 0;
     int vOff = 0;
 
     // step 1: find top left
-    while(isIOType(xOrg+left.offsetX, yOrg, zOrg+left.offsetZ, dir, type)) {
-      xOrg += left.offsetX;
-      zOrg += left.offsetZ;
+    while(isIOType(xOrg+left.getFrontOffsetX(), yOrg, zOrg+left.getFrontOffsetZ(), dir, type)) {
+      xOrg += left.getFrontOffsetX();
+      zOrg += left.getFrontOffsetZ();
       hOff++;
     }
 
@@ -325,7 +330,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
       vOff++;
     }
 
-    if(isIOType(xOrg+left.offsetX, yOrg, zOrg+left.offsetZ, dir, type)) {
+    if(isIOType(xOrg+left.getFrontOffsetZ(), yOrg, zOrg+left.getFrontOffsetZ(), dir, type)) {
       // not a rectangle
       return IOInfo.SINGLE;
     }
@@ -336,13 +341,13 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     int xTmp = xOrg;
     int yTmp = yOrg;
     int zTmp = zOrg;
-    while(isIOType(xTmp+right.offsetX, yTmp, zTmp+right.offsetZ, dir, type)) {
-      if(isIOType(xTmp+right.offsetX, yTmp+1, zTmp+right.offsetZ, dir, type)) {
+    while(isIOType(xTmp+right.getFrontOffsetX(), yTmp, zTmp+right.getFrontOffsetZ(), dir, type)) {
+      if(isIOType(xTmp+right.getFrontOffsetX(), yTmp+1, zTmp+right.getFrontOffsetZ(), dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
-      xTmp += right.offsetX;
-      zTmp += right.offsetZ;
+      xTmp += right.getFrontOffsetX();
+      zTmp += right.getFrontOffsetZ();
       width++;
     }
 
@@ -352,14 +357,14 @@ public class CapBankClientNetwork implements ICapBankNetwork {
       yTmp--;
       zTmp = zOrg;
 
-      if(isIOType(xTmp+left.offsetX, yTmp, zTmp+left.offsetZ, dir, type)) {
+      if(isIOType(xTmp+left.getFrontOffsetX(), yTmp, zTmp+left.getFrontOffsetZ(), dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
 
       for(int i=1 ; i<width ; i++) {
-        xTmp += right.offsetX;
-        zTmp += right.offsetZ;
+        xTmp += right.getFrontOffsetX();
+        zTmp += right.getFrontOffsetZ();
 
         if(!isIOType(xTmp, yTmp, zTmp, dir, type)) {
           // not a rectangle
@@ -367,7 +372,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
         }
       }
 
-      if(isIOType(xTmp+right.offsetX, yTmp, zTmp+right.offsetZ, dir, type)) {
+      if(isIOType(xTmp+right.getFrontOffsetX(), yTmp, zTmp+right.getFrontOffsetZ(), dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
@@ -385,8 +390,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
         return IOInfo.SINGLE;
       }
 
-      xTmp += right.offsetX;
-      zTmp += right.offsetZ;
+      xTmp += right.getFrontOffsetX();
+      zTmp += right.getFrontOffsetZ();
     }
 
     if(width == 1 && height == 1) {

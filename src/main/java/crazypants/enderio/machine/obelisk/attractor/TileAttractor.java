@@ -20,7 +20,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -35,9 +35,13 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,11 +76,11 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   @SideOnly(Side.CLIENT)
   public void setShowRange(boolean showRange) {
-    if(showingRange == showRange) {
+    if (showingRange == showRange) {
       return;
     }
     showingRange = showRange;
-    if(showingRange) {
+    if (showingRange) {
       worldObj.spawnEntityInWorld(new RangeEntity(this));
     }
   }
@@ -118,15 +122,15 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if(!slotDefinition.isInputSlot(i)) {
+    if (!slotDefinition.isInputSlot(i)) {
       return false;
     }
     String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(itemstack);
-    if(mob == null) {
+    if (mob == null) {
       return false;
     }
     Class<?> cl = EntityList.stringToClassMapping.get(mob);
-    if(cl == null) {
+    if (cl == null) {
       return false;
     }
     return EntityLiving.class.isAssignableFrom(cl);
@@ -136,16 +140,16 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   public boolean isActive() {
     return hasPower();
   }
-  
+
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    if(redstoneCheckPassed && hasPower()) {
+    if (redstoneCheckPassed && hasPower()) {
       usePower();
     } else {
       return false;
     }
     tickCounter++;
-    if(tickCounter < 10) {
+    if (tickCounter < 10) {
       for (EntityLiving ent : tracking) {
         onEntityTick(ent);
       }
@@ -158,12 +162,12 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
     int candidates = 0;
     for (EntityLiving ent : entsInBounds) {
-      if(!ent.isDead && isMobInFilter(ent)) {
+      if (!ent.isDead && isMobInFilter(ent)) {
         candidates++;
-        if(tracking.contains(ent)) {
+        if (tracking.contains(ent)) {
           trackingThisTick.add(ent);
           onEntityTick(ent);
-        } else if(tracking.size() < maxMobsAttracted && trackMob(ent)) {
+        } else if (tracking.size() < maxMobsAttracted && trackMob(ent)) {
           trackingThisTick.add(ent);
           onTracked(ent);
         }
@@ -178,19 +182,19 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     tracking = trackingThisTick;
     return false;
   }
-  
+
   private void onUntracked(EntityLiving e) {
     if (e instanceof EntityEnderman) {
       e.getEntityData().setBoolean("EIO:tracked", false);
     }
   }
-  
+
   private void onTracked(EntityLiving e) {
     if (e instanceof EntityEnderman) {
       e.getEntityData().setBoolean("EIO:tracked", true);
     }
   }
-  
+
   @Override
   public void invalidate() {
     super.invalidate();
@@ -216,7 +220,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   FakePlayer getTarget() {
-    if(target == null) {
+    if (target == null) {
       target = new Target();
     }
     return target;
@@ -231,7 +235,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   private boolean isMobInRange(EntityLiving mob, int range) {
-    if(mob == null) {
+    if (mob == null) {
       return false;
     }
     return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(getPos())) <= range;
@@ -243,9 +247,9 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   private boolean isMobInFilter(String entityId) {
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
-      if(inventory[i] != null) {
+      if (inventory[i] != null) {
         String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(inventory[i]);
-        if(mob != null && mob.equals(entityId)) {
+        if (mob != null && mob.equals(entityId)) {
           return true;
         }
       }
@@ -254,10 +258,10 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   private boolean trackMob(EntityLiving ent) {
-    if(useSetTarget(ent)) {
+    if (useSetTarget(ent)) {
       ((EntityMob) ent).setAttackTarget(getTarget());
       return true;
-    } else if(useSpecialCase(ent)) {
+    } else if (useSpecialCase(ent)) {
       return applySpecialCase(ent);
     } else {
       return attractyUsingAITask(ent);
@@ -267,54 +271,56 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private boolean attractyUsingAITask(EntityLiving ent) {
     tracking.add(ent);
     List<EntityAITaskEntry> entries = ent.tasks.taskEntries;
-    boolean hasTask = false;
+    // boolean hasTask = false;
     EntityAIBase remove = null;
-    boolean isTracked;
+    // boolean isTracked;
     for (EntityAITaskEntry entry : entries) {
-      if(entry.action instanceof AttractTask) {
+      if (entry.action instanceof AttractTask) {
         AttractTask at = (AttractTask) entry.action;
-        if(at.coord.equals(new BlockCoord(this)) || !at.continueExecuting()) {
+        if (at.coord.equals(new BlockCoord(this)) || !at.continueExecuting()) {
           remove = entry.action;
         } else {
           return false;
         }
       }
     }
-    if(remove != null) {
+    if (remove != null) {
       ent.tasks.removeTask(remove);
     }
     cancelCurrentTasks(ent);
     ent.tasks.addTask(0, new AttractTask(ent, getTarget(), new BlockCoord(this)));
-    
+
     return true;
   }
 
   private void cancelCurrentTasks(EntityLiving ent) {
-    Iterator iterator = ent.tasks.taskEntries.iterator();
+    Iterator<EntityAITaskEntry> iterator = ent.tasks.taskEntries.iterator();
 
     List<EntityAITasks.EntityAITaskEntry> currentTasks = new ArrayList<EntityAITasks.EntityAITaskEntry>();
     while (iterator.hasNext()) {
-        EntityAITaskEntry entityaitaskentry = (EntityAITasks.EntityAITaskEntry)iterator.next();
-        if(entityaitaskentry != null) {
-          currentTasks.add(entityaitaskentry);
-        } 
-    }    
-    //Only available way to stop current execution is to remove all current tasks, then re-add them 
-    for(EntityAITaskEntry task : currentTasks) {
+      EntityAITaskEntry entityaitaskentry = iterator.next();
+      if (entityaitaskentry != null) {
+        currentTasks.add(entityaitaskentry);
+      }
+    }
+    // Only available way to stop current execution is to remove all current
+    // tasks, then re-add them
+    for (EntityAITaskEntry task : currentTasks) {
       ent.tasks.removeTask(task.action);
-      ent.tasks.addTask(task.priority, task.action);  
-    }    
+      ent.tasks.addTask(task.priority, task.action);
+    }
   }
 
   private boolean applySpecialCase(EntityLiving ent) {
-    if(ent instanceof EntitySlime) {
+    if (ent instanceof EntitySlime) {
       ent.faceEntity(getTarget(), 10.0F, 20.0F);
       return true;
-    } else if(ent instanceof EntitySilverfish) {
-      PathEntity pathentity = worldObj.getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
-      ((EntityCreature) ent).setPathToEntity(pathentity);
+    } else if (ent instanceof EntitySilverfish) {
+      EntitySilverfish es = (EntitySilverfish) ent;
+      PathEntity pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
+      es.getNavigator().setPath(pathentity, es.getAIMoveSpeed());
       return true;
-    } else if(ent instanceof EntityBlaze) {
+    } else if (ent instanceof EntityBlaze) {
       return true;
     }
     return false;
@@ -325,47 +331,46 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   private void onEntityTick(EntityLiving ent) {
-    if(ent instanceof EntitySlime) {
+    if (ent instanceof EntitySlime) {
       ent.faceEntity(getTarget(), 10.0F, 20.0F);
-    } else if(ent instanceof EntitySilverfish) {
-      if(tickCounter < 10) {
+    } else if (ent instanceof EntitySilverfish) {
+      if (tickCounter < 10) {
         return;
       }
       EntitySilverfish sf = (EntitySilverfish) ent;
-      PathEntity pathentity = worldObj.getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
-      sf.setPathToEntity(pathentity);
-    } else if(ent instanceof EntityBlaze) {
-      EntityBlaze mob = (EntityBlaze) ent;
-
-      double x = (xCoord + 0.5D - ent.posX);
-      double y = (yCoord + 1D - ent.posY);
-      double z = (zCoord + 0.5D - ent.posZ);
+      PathEntity pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
+      sf.getNavigator().setPath(pathentity, sf.getAIMoveSpeed());
+    } else if (ent instanceof EntityBlaze) {
+      
+      double x = (getPos().getX() + 0.5D - ent.posX);
+      double y = (getPos().getX() + 1D - ent.posY);
+      double z = (getPos().getX() + 0.5D - ent.posZ);
       double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance > 1.25) {
+      if (distance > 1.25) {
         double speed = 0.01;
         ent.motionX += x / distance * speed;
-        if(y > 0) {
+        if (y > 0) {
           ent.motionY += (0.30000001192092896D - ent.motionY) * 0.30000001192092896D;
         }
         ent.motionZ += z / distance * speed;
       }
-    } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {  
+    } else if (ent instanceof EntityPigZombie || ent instanceof EntitySpider) {
       forceMove(ent);
-    } else if(ent instanceof EntityEnderman) {
+    } else if (ent instanceof EntityEnderman) {
       ((EntityEnderman) ent).setAttackTarget(getTarget());
     }
   }
 
   private void forceMove(EntityLiving ent) {
-    double x = (xCoord + 0.5D - ent.posX);
-    double y = (yCoord + 1D - ent.posY);
-    double z = (zCoord + 0.5D - ent.posZ);
+    double x = (getPos().getX() + 0.5D - ent.posX);
+    double y = (getPos().getY() + 1D - ent.posY);
+    double z = (getPos().getZ() + 0.5D - ent.posZ);
     double distance = Math.sqrt(x * x + y * y + z * z);
-    if(distance > 2) {
+    if (distance > 2) {
       EntityMob mod = (EntityMob) ent;
       mod.faceEntity(getTarget(), 180, 0);
       mod.moveEntityWithHeading(0, 1);
-      if(mod.posY < yCoord) {
+      if (mod.posY < getPos().getY()) {
         mod.setJumping(true);
       } else {
         mod.setJumping(false);
@@ -375,6 +380,17 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   private boolean useSetTarget(EntityLiving ent) {
     return ent instanceof EntityPigZombie || ent instanceof EntitySpider || ent instanceof EntitySilverfish;
+  }
+
+  public PathEntity getPathEntityToEntity(Entity entity, Entity targetEntity, float range) {
+
+    int targX = MathHelper.floor_double(targetEntity.posX);
+    int targY = MathHelper.floor_double(targetEntity.posY + 1.0D);
+    int targZ = MathHelper.floor_double(targetEntity.posZ);
+
+    PathFinder pf = new PathFinder(new WalkNodeProcessor());
+    return pf.createEntityPathTo(worldObj, entity, new BlockPos(targX, targY, targZ), range);
+
   }
 
   private class Target extends FakePlayerEIO {
@@ -417,7 +433,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     public boolean continueExecuting() {
       boolean res = false;
       TileEntity te = mob.worldObj.getTileEntity(coord.getBlockPos());
-      if(te instanceof TileAttractor) {
+      if (te instanceof TileAttractor) {
         TileAttractor attractor = (TileAttractor) te;
         res = attractor.canAttract(entityId, mob);
       }
@@ -431,13 +447,13 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
     @Override
     public void updateTask() {
-      if(!started || updatesSincePathing > 20) {
+      if (!started || updatesSincePathing > 20) {
         started = true;
         int speed = 1;
-        mob.getNavigator().setAvoidsWater(false);
+//        mob.getNavigator().setAvoidsWater(false);
         boolean res = mob.getNavigator().tryMoveToEntityLiving(target, speed);
-        if(!res) {
-          mob.getNavigator().tryMoveToXYZ(target.posX, target.posY +1, target.posZ, speed);
+        if (!res) {
+          mob.getNavigator().tryMoveToXYZ(target.posX, target.posY + 1, target.posZ, speed);
         }
         updatesSincePathing = 0;
       } else {

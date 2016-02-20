@@ -54,20 +54,18 @@ public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipPr
     par3List.add(stack);
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, itemstack);
   }
 
-  @SuppressWarnings("rawtypes")
+
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String>  list, boolean flag) {
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String>  list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     int prod = Config.maxPhotovoltaicOutputRF;
     if(itemstack.getItemDamage() == 1) {

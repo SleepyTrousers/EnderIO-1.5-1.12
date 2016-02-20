@@ -38,7 +38,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -58,8 +61,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
   private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
 
-  private boolean redstoneStateDirty = true;
-  private boolean isRecievingRedstoneSignal;
+  private boolean redstoneStateDirty = true;  
 
   private final List<EnergyReceptor> receptors = new ArrayList<EnergyReceptor>();
   private boolean receptorsDirty = true;
@@ -738,13 +740,29 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
+  public ItemStack removeStackFromSlot(int index) {
+    if(network == null) {
+      return null;
+    }
+    return network.getInventory().removeStackFromSlot(index);    
+  }
+  
+  @Override
+  public void clear() {
+    if(network == null) {
+      return;
+    }
+    network.getInventory().clear();    
+  }
+  
+  @Override
   public int getSizeInventory() {
     return 4;
   }
 
   @Override
   public String getName() {
-    return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
+    return EnderIO.blockCapBank.getUnlocalizedName() + ".name";
   }
 
   @Override
@@ -928,5 +946,31 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       }
     }
   }
+
+  @Override
+  public BlockCoord getLocation() {
+    return new BlockCoord(pos);
+  }
+
+  @Override
+  public IChatComponent getDisplayName() {
+    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  }
+
+  @Override
+  public int getField(int id) {
+    return 0;
+  }
+
+  @Override
+  public void setField(int id, int value) {    
+  }
+
+  @Override
+  public int getFieldCount() {
+    return 0;
+  }
+
+  
 
 }

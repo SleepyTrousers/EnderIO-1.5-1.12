@@ -10,7 +10,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.Block;
@@ -33,7 +32,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio implements IGuiHandler, IResourceTooltipProvider,
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
     IWailaInfoProvider {
 
 //  public IIcon overlayIconPull;
@@ -196,9 +195,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileEntityEio te, ItemStack drop) {
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable AbstractMachineEntity te, ItemStack drop) {
     if(te != null) {
-      ((AbstractMachineEntity) te).writeToItemStack(drop);
+      te.writeToItemStack(drop);
     }
   }
 

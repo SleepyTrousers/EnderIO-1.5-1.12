@@ -1,29 +1,35 @@
 package crazypants.enderio.machine.capbank.render;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
 
 public class IoDisplay implements IInfoRenderer {
 
   @Override
-  public void render(TileCapBank cb, ForgeDirection dir, double x, double y, double z, float partialTick) {
-    if(dir.offsetY != 0) {
+  public void render(TileCapBank cb, EnumFacing dir, double x, double y, double z, float partialTick) {
+    if(dir.getFrontOffsetY() != 0) {
       return;
     }
 
@@ -32,7 +38,7 @@ public class IoDisplay implements IInfoRenderer {
       return;
     }
 
-    CapBankClientNetwork.IOInfo info = nw.getIODisplayInfo(cb.xCoord, cb.yCoord, cb.zCoord, dir);
+    CapBankClientNetwork.IOInfo info = nw.getIODisplayInfo(cb.getPos(), dir);
     if(info.isInside()) {
       return;
     }
@@ -40,7 +46,9 @@ public class IoDisplay implements IInfoRenderer {
     boolean selfIlum = true;
     int brightness = 0;
     if(!selfIlum) {
-      brightness = cb.getWorldObj().getLightBrightnessForSkyBlocks(cb.xCoord + dir.offsetX, cb.yCoord + dir.offsetY, cb.zCoord + dir.offsetZ, 0);
+      
+      BlockPos p = cb.getPos().offset(dir);
+      brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, p);      
       int l1 = brightness % 65536;
       int l2 = brightness / 65536;
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
@@ -52,33 +60,32 @@ public class IoDisplay implements IInfoRenderer {
     if(drawBackground) {
       RenderUtil.bindBlockTexture();
 
-      Tessellator tes = Tessellator.instance;
-      tes.startDrawingQuads();
-      if(!selfIlum) {
-        tes.setBrightness(brightness);
-      }
-      tes.setColorOpaque_F(1, 1, 1);
+      //TODO: 1.8
+//      if(!selfIlum) {
+//        tes.setBrightness(brightness);
+//      }
 
       float scale = 0.85f;
       float offset = (1-scale)/2;
-      IIcon icon = EnderIO.blockCapBank.getInfoPanelIcon();
+      TextureAtlasSprite icon = EnderIO.blockCapBank.getInfoPanelIcon();
       float minU = icon.getMinU();
       float maxU = icon.getMaxU();
       float minV = icon.getMinV();
       float maxV = icon.getMaxV();
 
+      List<Vertex> vertices = new ArrayList<Vertex>();
+      
       switch (dir) {
         case NORTH: {
           float y0 = offset - (info.height-1);
           float y1 = 1 - offset;
           float x0 = offset;
           float x1 = info.width - offset;
-          float z0 = 0;
-          tes.setNormal(0, 0, -1);
-          tes.addVertexWithUV(x1, y0, z0, minU, minV);
-          tes.addVertexWithUV(x0, y0, z0, maxU, minV);
-          tes.addVertexWithUV(x0, y1, z0, maxU, maxV);
-          tes.addVertexWithUV(x1, y1, z0, minU, maxV);
+          float z0 = 0;          
+          vertices.add(new Vertex(x1, y0, z0, minU, minV, 0f, 0f, -1f));          
+          vertices.add(new Vertex(x0, y0, z0, maxU, minV, 0f, 0f, -1f));          
+          vertices.add(new Vertex(x0, y1, z0, maxU, maxV, 0f, 0f, -1f));
+          vertices.add(new Vertex(x1, y1, z0, minU, maxV, 0f, 0f, -1f));          
           break;
         }
 
@@ -87,12 +94,12 @@ public class IoDisplay implements IInfoRenderer {
           float y1 = 1 - offset;
           float x0 = offset - (info.width-1);
           float x1 = 1 - offset;
-          float z1 = 1;
-          tes.setNormal(0, 0, 1);
-          tes.addVertexWithUV(x0, y0, z1, maxU, minV);
-          tes.addVertexWithUV(x1, y0, z1, minU, minV);
-          tes.addVertexWithUV(x1, y1, z1, minU, maxV);
-          tes.addVertexWithUV(x0, y1, z1, maxU, maxV);
+          float z1 = 1;          
+          vertices.add(new Vertex(x0, y0, z1, maxU, minV, 0f, 0f, 1f));          
+          vertices.add(new Vertex(x1, y0, z1, minU, minV, 0f, 0f, 1f));          
+          vertices.add(new Vertex(x1, y1, z1, minU, maxV, 0f, 0f, 1f));
+          vertices.add(new Vertex(x0, y1, z1, maxU, maxV, 0f, 0f, 1f));
+          
           break;
         }
 
@@ -101,12 +108,12 @@ public class IoDisplay implements IInfoRenderer {
           float y1 = 1 - offset;
           float z0 = offset;
           float z1 = info.width - offset;
-          float x1 = 1;
-          tes.setNormal(1, 0, 0);
-          tes.addVertexWithUV(x1, y1, z0, maxU, maxV);
-          tes.addVertexWithUV(x1, y1, z1, minU, maxV);
-          tes.addVertexWithUV(x1, y0, z1, minU, minV);
-          tes.addVertexWithUV(x1, y0, z0, maxU, minV);
+          float x1 = 1;          
+          vertices.add(new Vertex(x1, y1, z0, maxU, maxV, 1f, 0f, 0f));          
+          vertices.add(new Vertex(x1, y1, z1, minU, maxV, 1f, 0f, 0f));          
+          vertices.add(new Vertex(x1, y0, z1, minU, minV, 1f, 0f, 0f));
+          vertices.add(new Vertex(x1, y0, z0, maxU, minV, 1f, 0f, 0f));
+          
           break;
         }
 
@@ -115,12 +122,12 @@ public class IoDisplay implements IInfoRenderer {
           float y1 = 1 - offset;
           float z0 = offset - (info.width-1);
           float z1 = 1 - offset;
-          float x0 = 0;
-          tes.setNormal(-1, 0, 0);
-          tes.addVertexWithUV(x0, y0, z0, maxU, minV);
-          tes.addVertexWithUV(x0, y0, z1, minU, minV);
-          tes.addVertexWithUV(x0, y1, z1, minU, maxV);
-          tes.addVertexWithUV(x0, y1, z0, maxU, maxV);
+          float x0 = 0;          
+          vertices.add(new Vertex(x0, y0, z0, maxU, minV, -1f, 0f, 0f));          
+          vertices.add(new Vertex(x0, y0, z1, minU, minV, -1f, 0f, 0f));          
+          vertices.add(new Vertex(x0, y1, z1, minU, maxV, -1f, 0f, 0f));
+          vertices.add(new Vertex(x0, y1, z0, maxU, maxV, -1f, 0f, 0f));
+          
           break;
         }
 
@@ -128,7 +135,9 @@ public class IoDisplay implements IInfoRenderer {
           throw new AssertionError();
       }
 
-      tes.draw();
+      GlStateManager.color(1, 1, 1);
+      RenderUtil.addVerticesToTessellator(vertices, DefaultVertexFormats.POSITION_TEX_NORMAL, true);
+      Tessellator.getInstance().draw();
     }
 
     nw.requestPowerUpdate(cb, 20);
@@ -138,7 +147,7 @@ public class IoDisplay implements IInfoRenderer {
     String text1;
     String text2 = "";
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     float size = 0.15f * Math.min(info.width, info.height);
     float scale = size / fr.FONT_HEIGHT;
     float offset;
@@ -160,19 +169,19 @@ public class IoDisplay implements IInfoRenderer {
       offset = -size;
     }
 
-    ForgeDirection right = dir.getRotation(ForgeDirection.UP);
+    EnumFacing right = dir.rotateAround(EnumFacing.Axis.Y);
 
     GL11.glPushMatrix();
     GL11.glTranslatef(
-            (dir.offsetX * 1.02f)/2 + 0.5f + right.offsetX*(info.width-1)*0.5f,
+            (dir.getFrontOffsetX() * 1.02f)/2 + 0.5f + right.getFrontOffsetX()*(info.width-1)*0.5f,
             1 + size*0.5f - info.height*0.5f,
-            (dir.offsetZ * 1.02f)/2 + 0.5f + right.offsetZ*(info.width-1)*0.5f);
+            (dir.getFrontOffsetZ() * 1.02f)/2 + 0.5f + right.getFrontOffsetZ()*(info.width-1)*0.5f);
     GL11.glRotatef(-180, 1, 0, 0);
-    if(dir == ForgeDirection.NORTH) {
+    if(dir == EnumFacing.NORTH) {
       GL11.glRotatef(-180, 0, 1, 0);
-    } else if(dir == ForgeDirection.EAST) {
+    } else if(dir == EnumFacing.EAST) {
       GL11.glRotatef(-90, 0, 1, 0);
-    } else if(dir == ForgeDirection.WEST) {
+    } else if(dir == EnumFacing.WEST) {
       GL11.glRotatef(90, 0, 1, 0);
     }
 

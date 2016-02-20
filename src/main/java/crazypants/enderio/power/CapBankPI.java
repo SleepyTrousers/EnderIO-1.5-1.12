@@ -1,9 +1,8 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyHandler;
 import crazypants.enderio.machine.capbank.TileCapBank;
 
-public class CapBankPI extends EnergyReceiverPI {
+public class CapBankPI extends PowerInterfaceRF {
 
   public CapBankPI(TileCapBank powerReceptor) {
     super(powerReceptor);

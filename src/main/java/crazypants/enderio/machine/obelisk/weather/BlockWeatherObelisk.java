@@ -2,14 +2,16 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import java.util.Random;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk> {
 
@@ -28,12 +30,12 @@ public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
+    return new ContainerWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(new BlockPos(x, y, z)));
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(x, y, z));
+    return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(new BlockPos(x, y, z)));
   }
 
   @Override
@@ -43,7 +45,7 @@ public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
     ; // no active particles
   }
 }

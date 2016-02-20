@@ -2,25 +2,20 @@ package crazypants.enderio.machine.obelisk.xp;
 
 import java.util.Random;
 
-import com.enderio.core.common.ContainerEnder;
-
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.ContainerNoInv;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.ContainerNoInv;
-import crazypants.enderio.machine.monitor.GuiPowerMonitor;
-import crazypants.enderio.machine.monitor.TilePowerMonitor;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceObelisk> {
 
@@ -39,11 +34,11 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
     return true; // always render as active
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int blockSide, int blockMeta) {
-    return super.getIcon(blockSide + 6, blockMeta); // always render as active
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(int blockSide, int blockMeta) {
+//    return super.getIcon(blockSide + 6, blockMeta); // always render as active
+//  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
@@ -52,7 +47,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof TileExperienceObelisk) {
       return new ContainerNoInv((IInventory) te);
     }
@@ -61,7 +56,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileExperienceObelisk) {
       return new GuiExperienceObelisk(player.inventory, (TileExperienceObelisk) te);
     }
@@ -76,7 +71,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
     ; // Has no particles
   }
 

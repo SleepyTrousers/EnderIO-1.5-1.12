@@ -23,6 +23,8 @@ import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.darksteel.SoundRenderer;
+import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.render.CapBankRenderer;
 import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
@@ -161,10 +163,10 @@ public class ClientProxy extends CommonProxy {
 
 //    regRendererRes()
     
-//    if(EnderIO.blockCapBank != null) {
-//      CapBankRenderer newCbr = new CapBankRenderer();
-//      ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
-//    }
+    if(EnderIO.blockCapBank != null) {
+      CapBankRenderer newCbr = new CapBankRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
+    }
 
 //    TelePadRenderer telePadRenderer = new TelePadRenderer();
 //    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer(telePadRenderer));

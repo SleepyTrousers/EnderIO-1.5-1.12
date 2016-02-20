@@ -4,41 +4,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -54,13 +29,37 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector, IHaveExperience, ITankAccess, IHasNutrientTank {
+public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess, IHasNutrientTank, Predicate<EntityXPOrb> {
 
   public static class ZombieCache {
-    
+
     private Set<EntityZombie> cache = Sets.newHashSet();
-    
+
     @SubscribeEvent
     public void onSummonAid(SummonAidEvent event) {
       if (!cache.isEmpty() && cache.remove(event.getSummoner())) {
@@ -68,14 +67,14 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       }
     }
   }
-  
+
   public static ZombieCache zCache;
-  
+
   private static final int IO_MB_TICK = 250;
 
   protected AxisAlignedBB killBounds;
 
-  private int[] frontFaceAndSides;
+  private EnumFacing[] frontFaceAndSides;
 
   protected AxisAlignedBB hooverBounds;
 
@@ -116,7 +115,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if(itemstack == null) {
+    if (itemstack == null) {
       return false;
     }
     return itemstack.getItem() instanceof ItemSword;
@@ -126,15 +125,15 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public boolean isActive() {
     return false;
   }
-  
+
   @Override
   public void doUpdate() {
     updateArmSwingProgress();
     hooverXP();
     if (!worldObj.isRemote) {
       getAttackera().onUpdate();
-      if(inventory[0] != null != hadSword) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      if (inventory[0] != null != hadSword) {
+        worldObj.markBlockForUpdate(getPos());
         hadSword = inventory[0] != null;
       }
     }
@@ -149,57 +148,56 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private static final int[] slots = new int[1];
 
   @Override
-  public int[] getAccessibleSlotsFromSide(int var1) {
+  public int[] getSlotsForFace(EnumFacing var1) {
     return slots;
   }
 
   @Override
-  public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-    if(isSideDisabled(side)) {
+  public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
+    if (isSideDisabled(side)) {
       return false;
     }
-    if(inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
+    if (inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
       return false;
     }
     return itemstack.getItem() == inventory[slot].getItem();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
-    if(!shouldDoWorkThisTick(10)) {
+    if (!shouldDoWorkThisTick(10)) {
       return false;
     }
 
-    if(tanksDirty) {
+    if (tanksDirty) {
       PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
       tanksDirty = false;
     }
-    if(xpCon.isDirty()) {
+    if (xpCon.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
       xpCon.setDirty(false);
     }
 
-    if(!redstoneCheckPassed) {
+    if (!redstoneCheckPassed) {
       return false;
     }
 
-    if(fuelTank.getFluidAmount() < getActivationAmount()) {
+    if (fuelTank.getFluidAmount() < getActivationAmount()) {
       return false;
     }
 
-    if(getStackInSlot(0) == null) {
+    if (getStackInSlot(0) == null) {
       return false;
     }
 
     List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
-    if(!entsInBounds.isEmpty()) {
+    if (!entsInBounds.isEmpty()) {
 
       for (EntityLivingBase ent : entsInBounds) {
-        if(!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable() && ent.hurtResistantTime == 0) {
-          if(ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
-            continue; //Ignore players in creative, can't damage them;
+        if (!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable(DamageSource.generic) && ent.hurtResistantTime == 0) {
+          if (ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
+            continue; // Ignore players in creative, can't damage them;
           }
           boolean togglePvp = false;
           if (ent instanceof EntityPlayer && !MinecraftServer.getServer().isPVPEnabled()) {
@@ -209,11 +207,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
               togglePvp = true;
             }
           }
-          if(Config.killerJoeMustSee && !canJoeSee(ent)) {
+          if (Config.killerJoeMustSee && !canJoeSee(ent)) {
             continue;
           }
-          
-          if(ent instanceof EntityZombie) {
+
+          if (ent instanceof EntityZombie) {
             zCache.cache.add((EntityZombie) ent);
           }
           FakePlayer fakee = getAttackera();
@@ -230,7 +228,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           }
           useNutrient();
           swingWeapon();
-          if(getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
+          if (getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
             setInventorySlotContents(0, null);
           }
           return false;
@@ -239,18 +237,16 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
     return false;
   }
-  
+
   int getActivationAmount() {
     return (int) (fuelTank.getCapacity() * 0.7f);
   }
 
-  private boolean canJoeSee(EntityLivingBase ent)
-  {
-    Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double) ent.getEyeHeight(), ent.posZ);
-    for (int facing : frontFaceAndSides)
-    {
-      if(this.worldObj.rayTraceBlocks(
-          Vec3.createVectorHelper(this.xCoord + faceMidPoints[facing][0], this.yCoord + faceMidPoints[facing][1], this.zCoord + faceMidPoints[facing][2]),
+  private boolean canJoeSee(EntityLivingBase ent) {
+    Vec3 entPos = new Vec3(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
+    for (EnumFacing facing : frontFaceAndSides) {
+      if (this.worldObj.rayTraceBlocks(
+          new Vec3(getPos().getX() + faceMidPoints[facing.ordinal()][0], getPos().getY() + faceMidPoints[facing.ordinal()][1], getPos().getZ() + faceMidPoints[facing.ordinal()][2]),
           entPos) == null)
         return true;
     }
@@ -258,16 +254,15 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  public void setFacing(short facing)
-  {
+  public void setFacing(EnumFacing facing) {
     super.setFacing(facing);
-    frontFaceAndSides = new int[] { this.facing, ForgeDirection.ROTATION_MATRIX[0][this.facing], ForgeDirection.ROTATION_MATRIX[1][this.facing] };
+    frontFaceAndSides = new EnumFacing[] { facing, facing.rotateY(), facing.rotateYCCW() };
   }
 
   private static final double[][] faceMidPoints = new double[][] { { 0.5D, 0.0D, 0.5D }, { 0.5D, 1.0D, 0.5D }, { 0.5D, 0.5D, 0.0D }, { 0.5D, 0.5D, 1.0D },
       { 0.0D, 0.5D, 0.5D }, { 1.0D, 0.5D, 0.5D } };
 
-  //-------------------------------  XP
+  // ------------------------------- XP
 
   public ExperienceContainer getXpContainer() {
     return xpCon;
@@ -277,16 +272,16 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
     double maxDist = Config.killerJoeHooverXpLength;
 
-    List<EntityXPOrb> xp = worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), this);
+    List<EntityXPOrb> xp = worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), this);
 
     for (EntityXPOrb entity : xp) {
-      double xDist = (xCoord + 0.5D - entity.posX);
-      double yDist = (yCoord + 0.5D - entity.posY);
-      double zDist = (zCoord + 0.5D - entity.posZ);
+      double xDist = (getPos().getX() + 0.5D - entity.posX);
+      double yDist = (getPos().getX() + 0.5D - entity.posY);
+      double zDist = (getPos().getX() + 0.5D - entity.posZ);
 
       double totalDistance = Math.sqrt(xDist * xDist + yDist * yDist + zDist * zDist);
 
-      if(totalDistance < 1.5) {
+      if (totalDistance < 1.5) {
         hooverXP(entity);
       } else {
         double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
@@ -295,7 +290,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         entity.motionX += xDist / totalDistance * speed;
         entity.motionZ += zDist / totalDistance * speed;
         entity.motionY += yDist / totalDistance * speed;
-        if(yDist > 0.5) {
+        if (yDist > 0.5) {
           entity.motionY = 0.12;
         }
 
@@ -304,29 +299,29 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private void hooverXP(EntityXPOrb entity) {
-    if(!worldObj.isRemote) {
-      if(!entity.isDead) {
+    if (!worldObj.isRemote) {
+      if (!entity.isDead) {
         xpCon.addExperience(entity.getXpValue());
         entity.setDead();
       }
     }
   }
-
+  
   @Override
-  public boolean isEntityApplicable(Entity arg0) {
+  public boolean apply(EntityXPOrb input) {
     return true;
   }
 
-  //------------------------------- Weapon stuffs
+  // ------------------------------- Weapon stuffs
 
   void swingWeapon() {
-    if(getStackInSlot(0) == null) {
+    if (getStackInSlot(0) == null) {
       return;
     }
-    if(!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
+    if (!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
       swingProgressInt = -1;
       isSwingInProgress = true;
-      if(worldObj instanceof WorldServer) {
+      if (worldObj instanceof WorldServer) {
         PacketHandler.sendToAllAround(new PacketSwing(this), this);
       }
     }
@@ -335,7 +330,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   float getSwingProgress(float p_70678_1_) {
     float f1 = swingProgress - prevSwingProgress;
 
-    if(f1 < 0.0F) {
+    if (f1 < 0.0F) {
       ++f1;
     }
 
@@ -347,9 +342,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     prevSwingProgress = swingProgress;
 
     int i = getArmSwingAnimationEnd();
-    if(isSwingInProgress) {
+    if (isSwingInProgress) {
       ++swingProgressInt;
-      if(swingProgressInt >= i) {
+      if (swingProgressInt >= i) {
         swingProgressInt = 0;
         isSwingInProgress = false;
       }
@@ -364,29 +359,29 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   FakePlayer getAttackera() {
-    if(attackera == null) {
+    if (attackera == null) {
       attackera = new Attackera();
     }
     return attackera;
   }
 
   WirelessChargedLocation getChargedLocation() {
-    if(chargedLocation == null) {
+    if (chargedLocation == null) {
       chargedLocation = new WirelessChargedLocation(this);
     }
     return chargedLocation;
   }
 
   private AxisAlignedBB getKillBounds() {
-    if(killBounds == null) {
+    if (killBounds == null) {
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
       Vector3d max = bb.getMax();
       max.y += Config.killerJoeAttackHeight;
       min.y -= Config.killerJoeAttackHeight;
 
-      ForgeDirection facingDir = ForgeDirection.getOrientation(facing);
-      if(ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
+      EnumFacing facingDir = facing;
+      if (ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
         max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
@@ -394,28 +389,28 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
-      if(facingDir.offsetX == 0) {
+      if (facingDir.getFrontOffsetX() == 0) {
         min.x -= Config.killerJoeAttackWidth;
         max.x += Config.killerJoeAttackWidth;
       } else {
         min.z -= Config.killerJoeAttackWidth;
         max.z += Config.killerJoeAttackWidth;
       }
-      killBounds = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
+      killBounds = new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);
     }
     return killBounds;
   }
 
   private AxisAlignedBB getHooverBounds() {
-    if(hooverBounds == null) {
+    if (hooverBounds == null) {
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
       Vector3d max = bb.getMax();
       max.y += Config.killerJoeAttackHeight;
       min.y -= Config.killerJoeAttackHeight;
 
-      ForgeDirection facingDir = ForgeDirection.getOrientation(facing);
-      if(ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
+      EnumFacing facingDir = facing;
+      if (ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
         max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
@@ -423,19 +418,19 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
-      if(facingDir.offsetX == 0) {
+      if (facingDir.getFrontOffsetX() == 0) {
         min.x -= Config.killerJoeHooverXpWidth * 2;
         max.x += Config.killerJoeHooverXpWidth * 2;
       } else {
         min.z -= Config.killerJoeHooverXpWidth * 2;
         max.z += Config.killerJoeHooverXpWidth * 2;
       }
-      hooverBounds = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
+      hooverBounds = new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);
     }
     return hooverBounds;
   }
 
-  //-------------------------------  Fluid Stuff
+  // ------------------------------- Fluid Stuff
 
   private void useNutrient() {
     fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
@@ -443,46 +438,46 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  protected boolean doPull(ForgeDirection dir) {
+  protected boolean doPull(EnumFacing dir) {
     boolean res = super.doPull(dir);
-    //    BlockCoord loc = getLocation().getLocation(dir);
-    //    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-    //    if(target != null) {
-    //      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-    //      if(infos != null) {
-    //        for (FluidTankInfo info : infos) {
-    //          if(info.fluid != null && info.fluid.amount > 0) {
-    //            if(canFill(dir, info.fluid.getFluid())) {
-    //              FluidStack canPull = info.fluid.copy();
-    //              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-    //              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-    //              if(drained != null && drained.amount > 0) {
-    //                int filled = fill(dir, drained, false);
-    //                if(filled > 0) {
-    //                  drained = target.drain(dir.getOpposite(), filled, true);
-    //                  fill(dir, drained, true);
-    //                  return res;
-    //                }
-    //              }
-    //            }
-    //          }
-    //        }
-    //      }
-    //    }
+    // BlockCoord loc = getLocation().getLocation(dir);
+    // IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+    // if(target != null) {
+    // FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
+    // if(infos != null) {
+    // for (FluidTankInfo info : infos) {
+    // if(info.fluid != null && info.fluid.amount > 0) {
+    // if(canFill(dir, info.fluid.getFluid())) {
+    // FluidStack canPull = info.fluid.copy();
+    // canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+    // FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
+    // if(drained != null && drained.amount > 0) {
+    // int filled = fill(dir, drained, false);
+    // if(filled > 0) {
+    // drained = target.drain(dir.getOpposite(), filled, true);
+    // fill(dir, drained, true);
+    // return res;
+    // }
+    // }
+    // }
+    // }
+    // }
+    // }
+    // }
     FluidUtil.doPull(this, dir, IO_MB_TICK);
     return res;
   }
 
   @Override
-  protected boolean doPush(ForgeDirection dir) {
+  protected boolean doPush(EnumFacing dir) {
     boolean res = super.doPush(dir);
     BlockCoord loc = getLocation().getLocation(dir);
     IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-    if(target != null) {
+    if (target != null) {
       FluidStack canDrain = drain(dir, IO_MB_TICK, false);
-      if(canDrain != null && canDrain.amount > 0) {
+      if (canDrain != null && canDrain.amount > 0) {
         int drained = target.fill(dir.getOpposite(), canDrain, true);
-        if(drained > 0) {
+        if (drained > 0) {
           drain(dir, drained, true);
         }
       }
@@ -491,40 +486,40 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     int res = fuelTank.fill(resource, doFill);
-    if(res > 0 && doFill) {
+    if (res > 0 && doFill) {
       tanksDirty = true;
     }
     return res;
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     return fuelTank.canFill(fluid);
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     return new FluidTankInfo[] { fuelTank.getInfo() };
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return xpCon.drain(from, resource, doDrain);
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return xpCon.drain(from, maxDrain, doDrain);
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return xpCon.canDrain(from, fluid);
   }
 
-  //-------------------------------  Save / Load
+  // ------------------------------- Save / Load
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
@@ -548,7 +543,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     ItemStack prevWeapon;
 
     public Attackera() {
-      super(getWorldObj(), getLocation(), DUMMY_PROFILE);
+      super(getWorld(), getLocation(), DUMMY_PROFILE);
     }
 
     @Override
@@ -558,12 +553,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
       ItemStack prev = prevWeapon;
       ItemStack cur = getCurrentEquippedItem();
-      if(!ItemStack.areItemStacksEqual(cur, prev)) {
-        if(prev != null) {
+      if (!ItemStack.areItemStacksEqual(cur, prev)) {
+        if (prev != null) {
           getAttributeMap().removeAttributeModifiers(prev.getAttributeModifiers());
         }
 
-        if(cur != null) {
+        if (cur != null) {
           getAttributeMap().applyAttributeModifiers(cur.getAttributeModifiers());
         }
         prevWeapon = cur == null ? null : cur.copy();
@@ -587,7 +582,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public FluidTank[] getOutputTanks() {
-    return new FluidTank[] { xpCon /* , fuelTank */};
+    return new FluidTank[] { xpCon /* , fuelTank */ };
   }
 
   @Override

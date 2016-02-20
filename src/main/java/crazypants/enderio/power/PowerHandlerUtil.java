@@ -1,9 +1,6 @@
 package crazypants.enderio.power;
 
 import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,15 +13,9 @@ public class PowerHandlerUtil {
   public static IPowerInterface create(Object o) {
     if (o instanceof TileCapBank) {
       return new CapBankPI((TileCapBank) o);
-    } else if (o instanceof IEnergyHandler) {
-      return new EnergyHandlerPI((IEnergyHandler) o);
-    } else if (o instanceof IEnergyProvider) {
-      return new EnergyProviderPI((IEnergyProvider) o);
-    } else if(o instanceof IEnergyReceiver) {
-      return new EnergyReceiverPI((IEnergyReceiver) o);
-    } else if(o instanceof IEnergyConnection) {
-      return new EnergyConnectionPI((IEnergyConnection) o);
-    }
+    } else if (o instanceof IEnergyConnection) {
+      return new PowerInterfaceRF((IEnergyConnection) o);
+    }     
     return null;
   }
 

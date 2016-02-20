@@ -9,7 +9,6 @@ import java.util.Map;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -38,7 +37,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -361,24 +359,24 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     return stack;
   }
 
-  private static class DropInfo {
-
-    BlockEvent.BreakEvent evt;
-    ItemStack drop;
-
-    DropInfo(BreakEvent evt, ItemStack stack) {
-      super();
-      this.evt = evt;
-      drop = stack;
-    }
-
-    void doDrop() {
-      if(evt.isCanceled()) {
-        return;
-      }
-
-      Util.dropItems(evt.getPlayer().worldObj, drop, evt.pos, true);
-    }
-
-  }
+//  private static class DropInfo {
+//
+//    BlockEvent.BreakEvent evt;
+//    ItemStack drop;
+//
+//    DropInfo(BreakEvent evt, ItemStack stack) {
+//      super();
+//      this.evt = evt;
+//      drop = stack;
+//    }
+//
+//    void doDrop() {
+//      if(evt.isCanceled()) {
+//        return;
+//      }
+//
+//      Util.dropItems(evt.getPlayer().worldObj, drop, evt.pos, true);
+//    }
+//
+//  }
 }

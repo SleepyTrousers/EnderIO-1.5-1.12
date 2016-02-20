@@ -55,14 +55,25 @@ import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
+import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machine.killera.BlockKillerJoe;
+import crazypants.enderio.machine.monitor.BlockPowerMonitor;
+import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
+import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
+import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
+import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
+import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
@@ -91,6 +102,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
@@ -158,7 +170,7 @@ public class EnderIO {
 
 //  //Teleporting
   public static BlockTravelAnchor blockTravelPlatform;
-//  public static BlockTelePad blockTelePad;
+  public static BlockTelePad blockTelePad;
   public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
 //
@@ -196,30 +208,30 @@ public class EnderIO {
 //  public static BlockCombustionGenerator blockCombustionGenerator;
 //  public static BlockZombieGenerator blockZombieGenerator;
   public static BlockSolarPanel blockSolarPanel;
-//  public static BlockReservoir blockReservoir;
+  public static BlockReservoir blockReservoir;
 //  public static BlockAlloySmelter blockAlloySmelter;
 //  public static BlockCapacitorBank blockCapacitorBank;
-//  public static BlockCapBank blockCapBank;
+  public static BlockCapBank blockCapBank;
   public static BlockWirelessCharger blockWirelessCharger;
 //  public static BlockCrusher blockCrusher; 
-//  public static BlockPowerMonitor blockPowerMonitor;
+  public static BlockPowerMonitor blockPowerMonitor;
   public static BlockVat blockVat;
 //  public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
 //  public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
-//  public static BlockSliceAndSplice blockSliceAndSplice;
-//  public static BlockSoulBinder blockSoulFuser;
-//  public static BlockAttractor blockAttractor;
-//  public static BlockAversionObelisk blockSpawnGuard;
-//  public static BlockExperienceObelisk blockExperianceOblisk;
-//  public static BlockWeatherObelisk blockWeatherObelisk;
-//  public static BlockInhibitorObelisk blockInhibitorObelisk;
+  public static BlockSliceAndSplice blockSliceAndSplice;
+  public static BlockSoulBinder blockSoulFuser;
+  public static BlockAttractor blockAttractor;
+  public static BlockAversionObelisk blockSpawnGuard;
+  public static BlockExperienceObelisk blockExperianceOblisk;
+  public static BlockWeatherObelisk blockWeatherObelisk;
+  public static BlockInhibitorObelisk blockInhibitorObelisk;
   public static BlockTransceiver blockTransceiver;
 //  public static BlockBuffer blockBuffer;
 //  public static BlockInventoryPanel blockInventoryPanel;
-//  public static BlockKillerJoe blockKillerJoe;
+  public static BlockKillerJoe blockKillerJoe;
 //  public static BlockEnchanter blockEnchanter;
 //
 //  public static BlockElectricLight blockElectricLight;
@@ -283,8 +295,8 @@ public class EnderIO {
 //    blockCrusher = BlockCrusher.create();
 //    blockAlloySmelter = BlockAlloySmelter.create();
 //    blockCapacitorBank = BlockCapacitorBank.create();
-//    blockCapBank = BlockCapBank.create();
-//
+    blockCapBank = BlockCapBank.create();
+
 //    blockPainter = BlockPainter.create();
 //    blockPaintedFence = BlockPaintedFence.create();
 //    blockPaintedFenceGate = BlockPaintedFenceGate.create();
@@ -299,13 +311,13 @@ public class EnderIO {
 //    blockPaintedCarpet = BlockPaintedCarpet.create();
 //
     blockVat = BlockVat.create();
-//    blockPowerMonitor = BlockPowerMonitor.create();
+    blockPowerMonitor = BlockPowerMonitor.create();
 //    blockFarmStation = BlockFarmStation.create();
 //
     blockWirelessCharger = BlockWirelessCharger.create();
 //    
     blockTank = BlockTank.create();
-//    blockReservoir = BlockReservoir.create();
+    blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
 
     blockTransceiver = BlockTransceiver.create();
@@ -315,18 +327,18 @@ public class EnderIO {
 //
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
-//    blockTelePad = BlockTelePad.create();
+    blockTelePad = BlockTelePad.createTelepad();
     itemCoordSelector = ItemCoordSelector.create();
-//
-//    blockSliceAndSplice = BlockSliceAndSplice.create();
-//    blockSoulFuser = BlockSoulBinder.create();
+
+    blockSliceAndSplice = BlockSliceAndSplice.create();
+    blockSoulFuser = BlockSoulBinder.create();
     blockPoweredSpawner = BlockPoweredSpawner.create();
-//    blockKillerJoe = BlockKillerJoe.create();
-//    blockAttractor = BlockAttractor.create();
-//    blockSpawnGuard = BlockAversionObelisk.create();
-//    blockExperianceOblisk = BlockExperienceObelisk.create();
-//    blockWeatherObelisk = BlockWeatherObelisk.create();
-//    blockInhibitorObelisk = BlockInhibitorObelisk.create();
+    blockKillerJoe = BlockKillerJoe.create();
+    blockAttractor = BlockAttractor.create();
+    blockSpawnGuard = BlockAversionObelisk.create();
+    blockExperianceOblisk = BlockExperienceObelisk.create();
+    blockWeatherObelisk = BlockWeatherObelisk.create();
+    blockInhibitorObelisk = BlockInhibitorObelisk.create();
 //    blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
@@ -556,7 +568,7 @@ public class EnderIO {
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
 //    FarmersRegistry.addFarmers();
-//    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
+    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
 //    PaintSourceValidator.instance.loadConfig();
 
     if(fluidXpJuice == null) { //should have been registered by open blocks 

@@ -6,7 +6,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
@@ -23,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
+public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
 
   public static BlockVacuumChest create() {
     PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.class,PacketVaccumChest.class,PacketHandler.nextID(), Side.SERVER);
@@ -74,10 +73,10 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileEntityEio te, ItemStack drop) {
+  protected void processDrop(IBlockAccess world, BlockPos pos, TileVacuumChest te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
     if(te != null) {
-      ((TileVacuumChest) te).writeContentsToNBT(drop.getTagCompound());
+      te.writeContentsToNBT(drop.getTagCompound());
     }
   }
 

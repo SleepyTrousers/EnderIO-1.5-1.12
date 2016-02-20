@@ -1,13 +1,10 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class SoulBinderRecipeManager {
 
@@ -32,11 +29,12 @@ public class SoulBinderRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderAttractorCystalRecipe.instance);
 
     //Ender Rail
-    if(Config.transceiverEnabled && Config.enderRailEnabled) {
-      BasicSoulBinderRecipe err = new BasicSoulBinderRecipe(new ItemStack(Blocks.detector_rail), new ItemStack(EnderIO.blockEnderRail),
-          Config.soulBinderEnderRailRF, Config.soulBinderEnderRailLevels, "EnderRail", "SpecialMobs.SpecialEnderman", "Enderman");
-      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, err);
-    }
+    //TODO: 1.8 Enable once BlockEnderRail is available
+//    if(Config.transceiverEnabled && Config.enderRailEnabled) {
+//      BasicSoulBinderRecipe err = new BasicSoulBinderRecipe(new ItemStack(Blocks.detector_rail), new ItemStack(EnderIO.blockEnderRail),
+//          Config.soulBinderEnderRailRF, Config.soulBinderEnderRailLevels, "EnderRail", "SpecialMobs.SpecialEnderman", "Enderman");
+//      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, err);
+//    }
   }
 
   // Example of how to add a recipe:

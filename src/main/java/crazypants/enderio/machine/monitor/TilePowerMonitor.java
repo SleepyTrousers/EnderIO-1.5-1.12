@@ -169,7 +169,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
         float percentFull = getPercentFull();        
         if(currentlyEmmittedSignal == null) {
           if(percentFull <= startLevel) {
-            sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
+            sig = new Signal(getPos(), null, 15, DyeColor.RED);
           }
         } else {
           if(percentFull >= stopLevel) {
@@ -276,7 +276,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 

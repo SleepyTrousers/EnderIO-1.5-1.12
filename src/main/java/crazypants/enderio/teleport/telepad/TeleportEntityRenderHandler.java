@@ -1,18 +1,34 @@
 package crazypants.enderio.teleport.telepad;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_ZERO;
+import static org.lwjgl.opengl.GL11.glDepthMask;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glPushAttrib;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glShadeModel;
+import static org.lwjgl.opengl.GL11.glTranslated;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderLivingEvent;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-import static org.lwjgl.opengl.GL11.*;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TeleportEntityRenderHandler {
 
@@ -24,7 +40,7 @@ public class TeleportEntityRenderHandler {
     if(e.getEntityData().getBoolean(TileTelePad.TELEPORTING_KEY)) {
 
       float radius = e.width / 2.0F;
-      AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(-radius, 0, -radius, radius, e.height + 0.25, radius);
+      AxisAlignedBB bb = new AxisAlignedBB(-radius, 0, -radius, radius, e.height + 0.25, radius);
 
       glPushMatrix();
       glPushAttrib(GL_ALL_ATTRIB_BITS);

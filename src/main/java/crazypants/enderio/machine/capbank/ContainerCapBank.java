@@ -2,21 +2,20 @@ package crazypants.enderio.machine.capbank;
 
 import java.awt.Point;
 
+import com.enderio.core.common.ContainerEnder;
+
+import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.util.BaublesUtil;
+import crazypants.util.ShadowInventory;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-
-import com.enderio.core.common.ContainerEnder;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.util.BaublesUtil;
-import crazypants.util.ShadowInventory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
@@ -73,8 +72,10 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
         @Override
         @SideOnly(Side.CLIENT)
-        public IIcon getBackgroundIconIndex() {
-          return ItemArmor.func_94602_b(k);
+        public TextureAtlasSprite getBackgroundSprite() {          
+          //TODO: 1.8
+//          return ItemArmor.func_94602_b(k);
+          return super.getBackgroundSprite();
         }
       });
     }
@@ -115,7 +116,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     int endBaublesSlot = baubles == null ? 0 : startBaublesSlot + baubles.getSizeInventory();
 
     ItemStack copystack = null;
-    Slot slot = (Slot) inventorySlots.get(slotIndex);
+    Slot slot = inventorySlots.get(slotIndex);
     if(slot != null && slot.getHasStack()) {
 
       ItemStack origStack = slot.getStack();

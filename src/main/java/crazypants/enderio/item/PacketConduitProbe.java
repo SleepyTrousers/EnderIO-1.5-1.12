@@ -15,9 +15,9 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.EnergyHandlerPI;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.PowerInterfaceRF;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -121,7 +121,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     } else if(te instanceof IInternalPowerReceiver) {
       IInternalPowerReceiver pr = (IInternalPowerReceiver) te;
       sendPowerReciptorInfo(player, block, pr.getEnergyStored(), pr.getMaxEnergyStored(), 0,
-            0, EnergyHandlerPI.getPowerRequest(EnumFacing.NORTH, pr));
+            0, PowerInterfaceRF.getPowerRequest(EnumFacing.NORTH, pr));
 
     } 
     return null;

@@ -259,7 +259,7 @@ public class IoConfigRenderer {
     GlStateManager.color(1, 1, 1);
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
     tes.setTranslation(trans.x, trans.y, trans.z);
-    RenderUtil.addVerticesToTessellator(corners, DefaultVertexFormats.POSITION_TEX);
+    RenderUtil.addVerticesToTessellator(corners, DefaultVertexFormats.POSITION_TEX, true);
     Tessellator.getInstance().draw();
     tes.setTranslation(0, 0, 0);
 

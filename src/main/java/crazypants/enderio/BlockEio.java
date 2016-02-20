@@ -13,14 +13,14 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public abstract class BlockEio extends BlockEnder<TileEntityEio> {
+public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
 
-  protected BlockEio(String name, Class<? extends TileEntityEio> teClass) {
+  protected BlockEio(String name, Class<T> teClass) {
     super(name, teClass);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
-  protected BlockEio(String name, Class<? extends TileEntityEio> teClass, Material mat) {
+  protected BlockEio(String name, Class<T> teClass, Material mat) {
     super(name, teClass, mat);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }

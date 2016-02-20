@@ -59,7 +59,7 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
         float yOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
         float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;  
         
-        EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle(EnumParticleTypes.SPELL, 
+        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), 
             message.x + xOffset, message.y + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);
         if(fx != null) {
           fx.setRBGColorF(0.2f, 0.8f, 0.2f);
