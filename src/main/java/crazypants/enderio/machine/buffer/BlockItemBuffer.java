@@ -3,20 +3,23 @@ package crazypants.enderio.machine.buffer;
 import java.util.List;
 import java.util.Locale;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockItemBuffer extends ItemBlockWithMetadata {
+public class BlockItemBuffer extends ItemBlock {
 
   public enum Type {
     ITEM(true, false, false),
@@ -48,7 +51,9 @@ public class BlockItemBuffer extends ItemBlockWithMetadata {
   }
 
   public BlockItemBuffer(Block block) {
-    super(block, block);
+    super(block);
+    setHasSubtypes(false);
+    setMaxDamage(0);
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -66,13 +71,15 @@ public class BlockItemBuffer extends ItemBlockWithMetadata {
   }
 
   @Override
-  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-    super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-    if(world.getBlock(x, y, z) == field_150939_a) {
-      TileEntity te = world.getTileEntity(x, y, z);
+  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
+      IBlockState newState) {
+    super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
+    
+    if(newState.getBlock() == block) {
+      TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileBuffer) {
-        TileBuffer buffer = ((TileBuffer) te);
-        Type t = Type.values()[metadata];
+        TileBuffer buffer = ((TileBuffer) te);        
+        Type t = Type.values()[block.getMetaFromState(newState)];
         buffer.setHasInventory(t.hasInventory);
         buffer.setHasPower(t.hasPower);
         buffer.setCreative(t.isCreative);

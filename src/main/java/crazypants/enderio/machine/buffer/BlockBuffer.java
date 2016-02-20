@@ -1,20 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -26,6 +11,17 @@ import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.IFacade;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
 
@@ -36,9 +32,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return res;
   }
 
-  private static final String[] textureNames = new String[] { "blockBufferItem", "blockBufferPower", "blockBufferOmni", "blockBufferCreative" };
-  @SideOnly(Side.CLIENT)
-  private IIcon[] textures;
+//  private static final String[] textureNames = new String[] { "blockBufferItem", "blockBufferPower", "blockBufferOmni", "blockBufferCreative" };
+  
 
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class);
@@ -54,7 +49,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileBuffer) {
       return new ContainerBuffer(player.inventory, (TileBuffer) te);
     }
@@ -63,7 +58,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileBuffer) {
       return new GuiBuffer(player.inventory, (TileBuffer) te);
     }
@@ -76,58 +71,42 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    super.registerBlockIcons(iIconRegister);
-    textures = new IIcon[textureNames.length];
-    for (int i = 0; i < textureNames.length; i++) {
-      textures[i] = iIconRegister.registerIcon("enderio:" + textureNames[i]);
-    }
-  }
-
-  @Override
   protected String getMachineFrontIconKey(boolean active) {
     return getSideIconKey(active);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int blockSide, int blockMeta) {
-    return blockSide > 1 ? textures[blockMeta] : super.getIcon(blockSide, blockMeta);
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+//    TileEntity te = world.getTileEntity(x, y, z);
+//    if(te instanceof TileBuffer) {
+//      TileBuffer tef = (TileBuffer) te;
+//      if(tef.getSourceBlock() != null) {
+//        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+//      } else if(blockSide > 1) {
+//        return textures[world.getBlockMetadata(x, y, z)];
+//      }
+//    }
+//    return super.getIcon(world, x, y, z, blockSide);
+//  }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileBuffer) {
-      TileBuffer tef = (TileBuffer) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
-      } else if(blockSide > 1) {
-        return textures[world.getBlockMetadata(x, y, z)];
-      }
-    }
-    return super.getIcon(world, x, y, z, blockSide);
-  }
-
-  @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
     if(entity instanceof EntityPlayer) {
-      TileEntity te = world.getTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileBuffer) {
         TileBuffer ta = (TileBuffer) te;
-        if(stack.stackTagCompound != null) {
-          ta.readCommon(stack.stackTagCompound);
+        if(stack.getTagCompound() != null) {
+          ta.readCommon(stack.getTagCompound());
         }
-        world.markBlockForUpdate(x, y, z);
+        world.markBlockForUpdate(pos);
       }
     }
   }
 
   @Override
-  public int damageDropped(int meta) {
-    return meta;
+  public int damageDropped(IBlockState bs) {
+    return getMetaFromState(bs);
   }
 
   public ItemStack createItemStackForSourceBlock(ItemStack machine, Block block, int sourceMeta) {
@@ -157,7 +136,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
 
   @Override
   public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileBuffer) {
       return ((TileBuffer) te).getSourceBlockMetadata();
     }
@@ -166,7 +145,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
 
   @Override
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof IPaintableTileEntity) {
       Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
       if (sourceBlock != null) {
@@ -176,18 +155,4 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return this;
   }
 
-  @Override
-  public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-    return getFacade(world, x, y, z, side.ordinal());
-  }
-
-  @Override
-  public int getVisualMeta(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-    return getFacadeMetadata(world, x, y, z, side.ordinal());
-  }
-
-  @Override
-  public boolean supportsVisualConnections() {
-    return true;
-  }
 }

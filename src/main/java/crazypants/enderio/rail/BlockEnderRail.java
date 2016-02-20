@@ -20,14 +20,15 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -106,88 +107,89 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 //    return iconEastWest;
 //  }
 
+  
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
     if(ToolUtil.isToolEquipped(player)) {
       if(!world.isRemote) {
-        int meta = world.getBlockMetadata(x, y, z);
-        meta = MetadataUtil.setBit(3, !MetadataUtil.isBitSet(3, meta), meta);
-        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+        //TODO: 1.8
+//        int meta = world.getBlockMetadata(x, y, z);
+//        meta = MetadataUtil.setBit(3, !MetadataUtil.isBitSet(3, meta), meta);
+//        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
       }
       return true;
     }
     return false;
   }
-
+  
+  
+  
   @Override
-  public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
-    return false;
+  public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+  return false;
   }
-
+  
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {  
     if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y - 1, z);
+      TileEntity te = world.getTileEntity(pos.down());
       if(te instanceof TileTransceiver) {
         ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
       }
     }
-    return super.removedByPlayer(world, player, x, y, z, willHarvest);
+    return super.removedByPlayer(world, pos, player, willHarvest);
   }
 
-  @Override
-  public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int x, int y, int z) {
-    //Ignore turning bit, used for receive direction
-    return world.getBlockMetadata(x, y, z) & 7;
-  }
+//  @Override
+//  public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int x, int y, int z) {
+//    //Ignore turning bit, used for receive direction
+//    return world.getBlockMetadata(x, y, z) & 7;
+//  }
 
   @Override
-  public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-    return world.getBlock(x, y - 1, z) == EnderIO.blockTransceiver;
+  public boolean canPlaceBlockAt(World world, BlockPos pos) {
+    return world.getBlockState(pos.down()).getBlock() == EnderIO.blockTransceiver;
   }
 
-  @Override
-  public boolean canBlockStay(World world, int x, int y, int z) {
-    return canPlaceBlockAt(world, x, y, z);
-  }
-
-  @Override
-  public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
-    return false;
-  }
+//  @Override
+//  public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
+//    return false;
+//  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
-  
+
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
     if(world.isRemote) {
       return;
     }
-
-    int origMeta = world.getBlockMetadata(x, y, z);
-    int newMeta = origMeta;
-    if(field_150053_a) {
-      newMeta = origMeta & 7;
-    }
-
-    if(!canBlockStay(world, x, y, z)) {
-      dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-      world.setBlockToAir(x, y, z);
-    } else {
-      func_150048_a(world, x, y, z, origMeta, newMeta, block);
-    }
+//TODO: 1.8
+//    int origMeta = world.getBlockMetadata(x, y, z);
+//    int newMeta = origMeta;
+//    if(field_150053_a) {
+//      newMeta = origMeta & 7;
+//    }
+//
+//    if(!canBlockStay(world, x, y, z)) {
+//      dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+//      world.setBlockToAir(x, y, z);
+//    } else {
+//      func_150048_a(world, x, y, z, origMeta, newMeta, block);
+//    }
 
   }
+  
+  
 
   @Override
-  public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
+  public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getTileEntity(x, y - 1, z);
+    TileEntity te = world.getTileEntity(new BlockPos(pos.down()));
     if(!(te instanceof TileTransceiver)) {
       return;
     }
@@ -195,12 +197,12 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(ter.getRailController().isRecievedCart(cart)) {
       return;
     }
-    tryTeleport(world, cart, x, y, z);
+    tryTeleport(world, cart, pos.getX(), pos.getY(), pos.getZ());
   }
 
   private void tryTeleport(World world, EntityMinecart cart, int x, int y, int z) {
 
-    TileEntity te = world.getTileEntity(x, y - 1, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y - 1, z));
     if(!(te instanceof TileTransceiver)) {
       return;
     }
@@ -241,8 +243,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(!reciever.hasPower()) {
       return false;
     }
-    Block blk = reciever.getWorld().getBlock(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
-    if(blk != EnderIO.blockEnderRail) {
+    Block blk = reciever.getWorld().getBlockState(reciever.getPos()).getBlock();
+    if(blk != this) {
       return false;
     }
     return reciever.getRailController().isClear();

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class PacketCapBank<T extends PacketCapBank, Q extends IMessage> implements IMessage, IMessageHandler<T, Q> {
+public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMessage> implements IMessage, IMessageHandler<T, Q> {
 
   private int x;
   private int y;

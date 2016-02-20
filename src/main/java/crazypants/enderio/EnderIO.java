@@ -55,7 +55,10 @@ import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
+import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
@@ -99,6 +102,7 @@ import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
@@ -209,7 +213,7 @@ public class EnderIO {
 //  public static BlockZombieGenerator blockZombieGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
-//  public static BlockAlloySmelter blockAlloySmelter;
+  public static BlockAlloySmelter blockAlloySmelter;
 //  public static BlockCapacitorBank blockCapacitorBank;
   public static BlockCapBank blockCapBank;
   public static BlockWirelessCharger blockWirelessCharger;
@@ -218,7 +222,7 @@ public class EnderIO {
   public static BlockVat blockVat;
 //  public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
-//  public static BlockCrafter blockCrafter;
+  public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
   public static BlockSliceAndSplice blockSliceAndSplice;
@@ -229,7 +233,7 @@ public class EnderIO {
   public static BlockWeatherObelisk blockWeatherObelisk;
   public static BlockInhibitorObelisk blockInhibitorObelisk;
   public static BlockTransceiver blockTransceiver;
-//  public static BlockBuffer blockBuffer;
+  public static BlockBuffer blockBuffer;
 //  public static BlockInventoryPanel blockInventoryPanel;
   public static BlockKillerJoe blockKillerJoe;
 //  public static BlockEnchanter blockEnchanter;
@@ -243,7 +247,7 @@ public class EnderIO {
   public static BlockDarkSteelLadder blockDarkSteelLadder;
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
-//  public static BlockEnderRail blockEnderRail;
+  public static BlockEnderRail blockEnderRail;
 
   //Fluids
   public static Fluid fluidNutrientDistillation;
@@ -293,7 +297,7 @@ public class EnderIO {
     blockSolarPanel = BlockSolarPanel.create();
 //
 //    blockCrusher = BlockCrusher.create();
-//    blockAlloySmelter = BlockAlloySmelter.create();
+    blockAlloySmelter = BlockAlloySmelter.create();
 //    blockCapacitorBank = BlockCapacitorBank.create();
     blockCapBank = BlockCapBank.create();
 
@@ -306,7 +310,7 @@ public class EnderIO {
 //    blockPaintedDoubleSlab = new BlockPaintedSlab(true);
 //    blockPaintedSlab.init();
 //    blockPaintedDoubleSlab.init();
-//    blockCrafter = BlockCrafter.create();
+    blockCrafter = BlockCrafter.create();
 //    blockPaintedGlowstone = BlockPaintedGlowstone.create();
 //    blockPaintedCarpet = BlockPaintedCarpet.create();
 //
@@ -322,9 +326,9 @@ public class EnderIO {
 
     blockTransceiver = BlockTransceiver.create();
 
-//    blockBuffer = BlockBuffer.create();
+    blockBuffer = BlockBuffer.create();
 //    blockInventoryPanel = BlockInventoryPanel.create();
-//
+
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
     blockTelePad = BlockTelePad.createTelepad();
@@ -352,8 +356,8 @@ public class EnderIO {
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
-//    blockEnderRail = BlockEnderRail.create();
-//
+    blockEnderRail = BlockEnderRail.create();
+
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();

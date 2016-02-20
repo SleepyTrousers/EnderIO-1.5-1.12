@@ -17,31 +17,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
+public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider {
 
   public static BlockEnderIO create() {
 
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGUI.class, PacketOpenServerGUI.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketLockClientContainer.Handler.class, PacketLockClientContainer.class, PacketHandler.nextID(), Side.CLIENT);
 
-    BlockEnderIO result = new BlockEnderIO();
+    BlockEnderIO result = new BlockEnderIO();    
     result.init();
+    
+    MinecraftForge.EVENT_BUS.register(result);
+    
     return result;
   }
 
-  // @SideOnly(Side.CLIENT)
-  // IIcon frameIcon;
-  // @SideOnly(Side.CLIENT)
-  // IIcon selectedOverlayIcon;
-  // @SideOnly(Side.CLIENT)
-  // IIcon highlightOverlayIcon;
-
-  //TODO: 1.8
   @SideOnly(Side.CLIENT)
   TextureAtlasSprite selectedOverlayIcon;
   @SideOnly(Side.CLIENT)
@@ -106,6 +105,16 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   @Override
   public int getLightOpacity() {
     return 100;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Pre event) {        
+    selectedOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOSelected"));
+    highlightOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOHighlight"));
+    enderEyeTex= event.map.registerSprite(new ResourceLocation("minecraft", "items/ender_eye"));
+    frameIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOFrame"));
+    
   }
 
   // @Override

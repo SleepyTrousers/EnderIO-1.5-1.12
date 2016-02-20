@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.crafter;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
 
@@ -24,7 +25,7 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileCrafter) {
       return new ContainerCrafter(player.inventory, (TileCrafter) te);
     }
@@ -33,7 +34,7 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileCrafter) {
       return new GuiCrafter(player.inventory, (TileCrafter) te);
     }

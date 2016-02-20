@@ -100,8 +100,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-    ItemStack output = null;
-    int inputCount = 0;
+    ItemStack output = null;    
     for (MachineRecipeInput ri : inputs) {
       if(ri != null && ri.item != null && output == null) {
         output = FurnaceRecipes.instance().getSmeltingResult(ri.item);
@@ -123,7 +122,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     if(output == null) {
       return 0;
     }
-    float result = FurnaceRecipes.instance().func_151398_b(output);
+    float result = FurnaceRecipes.instance().getSmeltingExperience(output);
     if (result > 1.0f) {
       // see net.minecraft.inventory.SlotFurnace.onCrafting(ItemStack)
       result = 1.0f;
