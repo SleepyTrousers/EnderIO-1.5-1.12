@@ -25,8 +25,12 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,12 +45,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 //  public IIcon overlayIconDisabled;
 //  public IIcon overlayIconNone;
 //  public IIcon overlayIconDirty;
-//
+
   @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite selectedFaceIcon;
-//
-//  @SideOnly(Side.CLIENT)
-//  protected IIcon[][] iconBuffer;
+  public static TextureAtlasSprite selectedFaceIcon;
 
   protected final Random random;
 
@@ -76,6 +77,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    MinecraftForge.EVENT_BUS.register(this);
+  }
+  
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Pre event) {    
+    selectedFaceIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/overlays/selectedFace"));              
   }
 
   @Override

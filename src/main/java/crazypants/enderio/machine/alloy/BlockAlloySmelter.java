@@ -1,16 +1,21 @@
 package crazypants.enderio.machine.alloy;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
@@ -18,33 +23,45 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
     PacketHandler.INSTANCE.registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
 
-    BlockAlloySmelter ppainter = new BlockAlloySmelter();
-    ppainter.init();
-    return ppainter;
+    BlockAlloySmelter res = new BlockAlloySmelter();
+    res.init();    
+    MinecraftForge.EVENT_BUS.register(res);    
+    return res;
   }
 
-  IIcon vanillaSmeltingOn;
-  IIcon vanillaSmeltingOff;
-  IIcon vanillaSmeltingOnly;
+  @SideOnly(Side.CLIENT)
+  TextureAtlasSprite vanillaSmeltingOn;
+  @SideOnly(Side.CLIENT)
+  TextureAtlasSprite vanillaSmeltingOff;
+  @SideOnly(Side.CLIENT)
+  TextureAtlasSprite vanillaSmeltingOnly;
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
   }
 
-  @Override
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister iIconRegister) {
+//    super.registerBlockIcons(iIconRegister);
+//    vanillaSmeltingOn = iIconRegister.registerIcon("enderio:furnaceSmeltingOn");
+//    vanillaSmeltingOff = iIconRegister.registerIcon("enderio:furnaceSmeltingOff");
+//    vanillaSmeltingOnly = iIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
+//  }
+  
   @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    super.registerBlockIcons(iIconRegister);
-    vanillaSmeltingOn = iIconRegister.registerIcon("enderio:furnaceSmeltingOn");
-    vanillaSmeltingOff = iIconRegister.registerIcon("enderio:furnaceSmeltingOff");
-    vanillaSmeltingOnly = iIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Pre event) {    
+    vanillaSmeltingOn = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/furnaceSmeltingOn"));
+    vanillaSmeltingOff = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/furnaceSmeltingOff"));
+    vanillaSmeltingOnly = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/furnaceSmeltingOnly"));          
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileAlloySmelter) {
       return new ContainerAlloySmelter(player.inventory, (TileAlloySmelter) te);
     }
@@ -53,7 +70,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);
   }
 

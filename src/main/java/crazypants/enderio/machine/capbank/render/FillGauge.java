@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexTranslation;
@@ -20,7 +22,9 @@ import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
@@ -32,10 +36,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener {
-
-  private static final double HEIGHT = 0.75;
-  private static final double VERT_BORDER = (1 - HEIGHT) / 2;
-  private static final double WIDTH = 0.25;
 
   enum Type {
     SINGLE,
@@ -68,6 +68,19 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
 
     BlockPos p = cb.getPos().offset(dir);
     int brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, p);
+    
+    boolean selfIlum = true;    
+    if(!selfIlum) {
+      
+      BlockPos blockPos = cb.getPos().offset(dir);
+      brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, blockPos);      
+      int l1 = brightness % 65536;
+      int l2 = brightness / 65536;
+      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+    } else {
+      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+    }
+    
     GaugeInfo info = getGaugeInfo(cb, dir);
     GaugeKey key = new GaugeKey(dir, info.type);
     doRender(nw, brightness, info, key);
@@ -80,7 +93,10 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     }
     RenderUtil.bindBlockTexture();
     List<Vertex> verts = gaugeVertexCache.get(key);
-    RenderUtil.addVerticesToTessellator(verts, DefaultVertexFormats.POSITION_TEX, true);
+    
+    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();    
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);    
+    RenderUtil.addVerticesToTessellator(verts, DefaultVertexFormats.POSITION_TEX, false);
     addFillBarVertices(key, nw, info);
     GlStateManager.color(1, 1, 1);
     Tessellator.getInstance().draw();
@@ -106,6 +122,7 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     if (maxY >= info.yPosition + 1) {
       // full bar
       RenderUtil.addVerticesToTessellator(verts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);
+//      RenderUtil.addVerticesToTessellator(verts, null, DefaultVertexFormats.POSITION_TEX, false);
 
     } else {
       // need to render partial bar
@@ -125,7 +142,9 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
           v.setUV(v.u(), barMinV + (float) (myMaxY * barHeightV));
         }
       }
+      
       RenderUtil.addVerticesToTessellator(newVerts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);
+//      RenderUtil.addVerticesToTessellator(newVerts, null, DefaultVertexFormats.POSITION_TEX, false);      
     }
 
   }

@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.alloy;
 
 import java.awt.Rectangle;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.IIcon;
+import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,6 +14,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
@@ -37,7 +37,6 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
     addProgressTooltip(103, 35, 14, 14);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void initGui() {
     super.initGui();
@@ -61,7 +60,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton par1GuiButton) {
+  protected void actionPerformed(GuiButton par1GuiButton) throws IOException {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
       getTileEntity().setMode(getTileEntity().getMode().next());
       updateVanillaFurnaceButton();
@@ -72,7 +71,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   private void updateVanillaFurnaceButton() {
-    IIcon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
+    TextureAtlasSprite icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
     String unlocText = "gui.alloy.mode.all";
     if(getTileEntity().getMode() == Mode.ALLOY) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;

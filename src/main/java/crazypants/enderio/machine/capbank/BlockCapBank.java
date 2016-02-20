@@ -47,8 +47,12 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -68,6 +72,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
     BlockCapBank res = new BlockCapBank();
     res.init();
+    MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
@@ -75,19 +80,19 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   private TextureAtlasSprite gaugeIcon;
   @SideOnly(Side.CLIENT)
   private TextureAtlasSprite fillBarIcon;
-
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] blockIcons;
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] borderIcons;
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] inputIcons;
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] outputIcons;
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] lockedIcons;
   @SideOnly(Side.CLIENT)
   private TextureAtlasSprite infoPanelIcon;
+
+  // @SideOnly(Side.CLIENT)
+  // private IIcon[] blockIcons;
+  // @SideOnly(Side.CLIENT)
+  // private IIcon[] borderIcons;
+  // @SideOnly(Side.CLIENT)
+  // private IIcon[] inputIcons;
+  // @SideOnly(Side.CLIENT)
+  // private IIcon[] outputIcons;
+  // @SideOnly(Side.CLIENT)
+  // private IIcon[] lockedIcons;
 
   protected BlockCapBank() {
     super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class);
@@ -97,7 +102,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   protected void init() {
     GameRegistry.registerBlock(this, BlockItemCapBank.class, name);
-    if(teClass != null) {
+    if (teClass != null) {
       GameRegistry.registerTileEntity(teClass, name + "TileEntity");
     }
 
@@ -110,7 +115,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List<ItemStack> list) {
     int meta = 0;
     for (CapBankType type : CapBankType.types()) {
-      if(type.isCreative()) {
+      if (type.isCreative()) {
         list.add(BlockItemCapBank.createItemStackWithPower(meta, type.getMaxEnergyStored() / 2));
       } else {
         list.add(BlockItemCapBank.createItemStackWithPower(meta, 0));
@@ -133,9 +138,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
-        .getMaxEnergyStored()));
-    if(itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Items")) {
+    list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack),
+        CapBankType.getTypeFromMeta(itemstack.getItemDamage()).getMaxEnergyStored()));
+    if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Items")) {
       NBTTagList itemList = (NBTTagList) itemstack.getTagCompound().getTag("Items");
       String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
       list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
@@ -153,15 +158,15 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       float hitZ) {
 
     TileEntity te = world.getTileEntity(pos);
-    if(!(te instanceof TileCapBank)) {
+    if (!(te instanceof TileCapBank)) {
       return false;
     }
 
-    TileCapBank tcb = (TileCapBank) te;    
+    TileCapBank tcb = (TileCapBank) te;
 
-    if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() == null && faceHit.getFrontOffsetY() == 0) {
+    if (entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() == null && faceHit.getFrontOffsetY() == 0) {
       InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
-      if(newDisplayType == InfoDisplayType.NONE) {
+      if (newDisplayType == InfoDisplayType.NONE) {
         tcb.setDefaultIoMode(faceHit);
       } else {
         tcb.setIoMode(faceHit, IoMode.DISABLED);
@@ -170,14 +175,14 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       return true;
     }
 
-    if(!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer)) {
+    if (!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer)) {
 
       IoMode ioMode = tcb.getIoMode(faceHit);
-      if(faceHit.getFrontOffsetY() == 0) {
-        if(ioMode == IoMode.DISABLED) {
+      if (faceHit.getFrontOffsetY() == 0) {
+        if (ioMode == IoMode.DISABLED) {
           InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
           tcb.setDisplayType(faceHit, newDisplayType);
-          if(newDisplayType == InfoDisplayType.NONE) {
+          if (newDisplayType == InfoDisplayType.NONE) {
             tcb.setDefaultIoMode(faceHit);
           }
         } else {
@@ -187,10 +192,10 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         tcb.toggleIoModeForFace(faceHit);
       }
 
-      if(world.isRemote) {
+      if (world.isRemote) {
         world.markBlockForUpdate(pos);
       } else {
-        world.notifyNeighborsOfStateChange(pos, EnderIO.blockCapBank);        
+        world.notifyNeighborsOfStateChange(pos, EnderIO.blockCapBank);
         world.markBlockForUpdate(pos);
       }
 
@@ -205,11 +210,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     return false;
   }
 
-  
-  
   @Override
-  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {  
-    if(!world.isRemote) {
+  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+    if (!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAP_BANK, world, pos.getX(), pos.getY(), pos.getZ());
     }
     return true;
@@ -218,7 +221,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCapBank) {
+    if (te instanceof TileCapBank) {
       return new ContainerCapBank(player.inventory, (TileCapBank) te);
     }
     return null;
@@ -227,37 +230,44 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCapBank) {
+    if (te instanceof TileCapBank) {
       return new GuiCapBank(player, player.inventory, (TileCapBank) te);
     }
     return null;
   }
 
-//  @SideOnly(Side.CLIENT)
-//  @Override
-//  public void registerBlockIcons(IIconRegister IIconRegister) {
-//    blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
-//    gaugeIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
-//    fillBarIcon = IIconRegister.registerIcon("enderio:capacitorBankFillBar");
-//    infoPanelIcon = IIconRegister.registerIcon("enderio:capBankInfoPanel");
-//
-//    blockIcons = new IIcon[CapBankType.types().size()];
-//    borderIcons = new IIcon[CapBankType.types().size()];
-//    inputIcons = new IIcon[CapBankType.types().size()];
-//    outputIcons = new IIcon[CapBankType.types().size()];
-//    lockedIcons = new IIcon[CapBankType.types().size()];
-//    int index = 0;
-//    for (CapBankType type : CapBankType.types()) {
-//      blockIcons[index] = IIconRegister.registerIcon(type.getIcon());
-//      borderIcons[index] = IIconRegister.registerIcon(type.getBorderIcon());
-//      inputIcons[index] = IIconRegister.registerIcon(type.getInputIcon());
-//      outputIcons[index] = IIconRegister.registerIcon(type.getOutputIcon());
-//      lockedIcons[index] = IIconRegister.registerIcon(type.getLockedIcon());
-//      ++index;
-//    }
-//
-//  }
+  // @SideOnly(Side.CLIENT)
+  // @Override
+  // public void registerBlockIcons(IIconRegister IIconRegister) {
+  // blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
+  // gaugeIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
+  // fillBarIcon = IIconRegister.registerIcon("enderio:capacitorBankFillBar");
+  // infoPanelIcon = IIconRegister.registerIcon("enderio:capBankInfoPanel");
+  //
+  // blockIcons = new IIcon[CapBankType.types().size()];
+  // borderIcons = new IIcon[CapBankType.types().size()];
+  // inputIcons = new IIcon[CapBankType.types().size()];
+  // outputIcons = new IIcon[CapBankType.types().size()];
+  // lockedIcons = new IIcon[CapBankType.types().size()];
+  // int index = 0;
+  // for (CapBankType type : CapBankType.types()) {
+  // blockIcons[index] = IIconRegister.registerIcon(type.getIcon());
+  // borderIcons[index] = IIconRegister.registerIcon(type.getBorderIcon());
+  // inputIcons[index] = IIconRegister.registerIcon(type.getInputIcon());
+  // outputIcons[index] = IIconRegister.registerIcon(type.getOutputIcon());
+  // lockedIcons[index] = IIconRegister.registerIcon(type.getLockedIcon());
+  // ++index;
+  // }
+  //
+  // }
 
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Pre event) {
+    gaugeIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/capacitorBankOverlays"));
+    fillBarIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/capacitorBankFillBar"));
+    infoPanelIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/capBankInfoPanel"));
+  }
 
   @Override
   public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
@@ -276,49 +286,50 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, pos, side);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int side, int meta) {
-//    meta = MathHelper.clamp_int(meta, 0, blockIcons.length - 1);
-//    return blockIcons[meta];
-//  }
-//
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getBorderIcon(int side, int meta) {
-//    meta = MathHelper.clamp_int(meta, 0, blockIcons.length - 1);
-//    return borderIcons[meta];
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
-//    TileEntity te = ba.getTileEntity(x, y, z);
-//    if(!(te instanceof TileCapBank)) {
-//      return blockIcons[0];
-//    }
-//
-//    //    if(true) {
-//    //      return IconUtil.blankTexture;
-//    //    }
-//
-//    TileCapBank cb = (TileCapBank) te;
-//    EnumFacing face = EnumFacing.values()[side];
-//
-//    int meta = ba.getBlockMetadata(x, y, z);
-//    meta = MathHelper.clamp_int(meta, 0, CapBankType.types().size() - 1);
-//
-//    IoMode mode = cb.getIoMode(face);
-//    if(mode == null || mode == IoMode.NONE || cb.getDisplayType(face) != InfoDisplayType.NONE) {
-//      return blockIcons[meta];
-//    }
-//    if(mode == IoMode.PULL) {
-//      return inputIcons[meta];
-//    }
-//    if(mode == IoMode.PUSH) {
-//      return outputIcons[meta];
-//    }
-//    return lockedIcons[meta];
-//  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public IIcon getIcon(int side, int meta) {
+  // meta = MathHelper.clamp_int(meta, 0, blockIcons.length - 1);
+  // return blockIcons[meta];
+  // }
+  //
+  // @SideOnly(Side.CLIENT)
+  // public IIcon getBorderIcon(int side, int meta) {
+  // meta = MathHelper.clamp_int(meta, 0, blockIcons.length - 1);
+  // return borderIcons[meta];
+  // }
+  //
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
+  // TileEntity te = ba.getTileEntity(x, y, z);
+  // if(!(te instanceof TileCapBank)) {
+  // return blockIcons[0];
+  // }
+  //
+  // // if(true) {
+  // // return IconUtil.blankTexture;
+  // // }
+  //
+  // TileCapBank cb = (TileCapBank) te;
+  // EnumFacing face = EnumFacing.values()[side];
+  //
+  // int meta = ba.getBlockMetadata(x, y, z);
+  // meta = MathHelper.clamp_int(meta, 0, CapBankType.types().size() - 1);
+  //
+  // IoMode mode = cb.getIoMode(face);
+  // if(mode == null || mode == IoMode.NONE || cb.getDisplayType(face) !=
+  // InfoDisplayType.NONE) {
+  // return blockIcons[meta];
+  // }
+  // if(mode == IoMode.PULL) {
+  // return inputIcons[meta];
+  // }
+  // if(mode == IoMode.PUSH) {
+  // return outputIcons[meta];
+  // }
+  // return lockedIcons[meta];
+  // }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getGaugeIcon() {
@@ -335,15 +346,13 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     return infoPanelIcon;
   }
 
-  
-  
   @Override
   public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-    if(world.isRemote) {
+    if (world.isRemote) {
       return;
     }
     TileEntity tile = world.getTileEntity(pos);
-    if(tile instanceof TileCapBank) {
+    if (tile instanceof TileCapBank) {
       TileCapBank te = (TileCapBank) tile;
       te.onNeighborBlockChange(neighborBlock);
     }
@@ -359,15 +368,15 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     super.onBlockPlacedBy(world, pos, state, player, stack);
 
     TileCapBank cb = getTileEntity(world, pos);
-    if(cb == null) {
+    if (cb == null) {
       return;
     }
-    if(stack.getTagCompound() != null) {
+    if (stack.getTagCompound() != null) {
       cb.readCommonNBT(stack.getTagCompound());
     }
 
     Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
-    if(neigbours.isEmpty()) {
+    if (neigbours.isEmpty()) {
       int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
       EnumFacing dir = getDirForHeading(heading);
       cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
@@ -375,12 +384,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       boolean modifiedDisplayType;
       modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, pos.down()));
       modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, pos.up()));
-      if(modifiedDisplayType) {
+      if (modifiedDisplayType) {
         cb.validateDisplayTypes();
       }
     }
 
-    if(world.isRemote) {
+    if (world.isRemote) {
       return;
     }
     world.markBlockForUpdate(pos);
@@ -388,9 +397,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   protected boolean setDisplayToVerticalFillBar(TileCapBank cb, TileCapBank capBank) {
     boolean modifiedDisplayType = false;
-    if(capBank != null) {
+    if (capBank != null) {
       for (EnumFacing dir : EnumFacing.VALUES) {
-        if(dir.getFrontOffsetY() == 0 && capBank.getDisplayType(dir) == InfoDisplayType.LEVEL_BAR && capBank.getType() == cb.getType()) {
+        if (dir.getFrontOffsetY() == 0 && capBank.getDisplayType(dir) == InfoDisplayType.LEVEL_BAR && capBank.getType() == cb.getType()) {
           cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
           modifiedDisplayType = true;
         }
@@ -415,9 +424,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-    if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
+    if (!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(pos);
-      if(te instanceof TileCapBank) {
+      if (te instanceof TileCapBank) {
         TileCapBank cb = (TileCapBank) te;
         cb.moveInventoryToNetwork();
       }
@@ -428,16 +437,16 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   protected void processDrop(IBlockAccess world, BlockPos pos, TileCapBank te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
-    if(te != null) {
+    if (te != null) {
       te.writeCommonNBT(drop.getTagCompound());
     }
   }
 
   @Override
   public void breakBlock(World world, BlockPos pos, IBlockState state) {
-    if(!world.isRemote) {
+    if (!world.isRemote) {
       TileEntity te = world.getTileEntity(pos);
-      if(!(te instanceof TileCapBank)) {
+      if (!(te instanceof TileCapBank)) {
         return;
       }
       TileCapBank cb = (TileCapBank) te;
@@ -449,12 +458,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
-    TileCapBank tr = getTileEntity(world, pos);    
-    if(tr == null) {
+    TileCapBank tr = getTileEntity(world, pos);
+    if (tr == null) {
       return super.getSelectedBoundingBox(world, pos);
-    }    
+    }
     ICapBankNetwork network = tr.getNetwork();
-    if(!tr.getType().isMultiblock() || network == null) {
+    if (!tr.getType().isMultiblock() || network == null) {
       return super.getSelectedBoundingBox(world, pos);
     }
 
@@ -482,7 +491,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public int getComparatorInputOverride(World w, BlockPos pos) {
     TileEntity te = w.getTileEntity(pos);
-    if(te instanceof TileCapBank) {
+    if (te instanceof TileCapBank) {
       return ((TileCapBank) te).getComparatorOutput();
     }
     return 0;
@@ -491,18 +500,18 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCapBank) {
+    if (te instanceof TileCapBank) {
       TileCapBank cap = (TileCapBank) te;
-      if(cap.getNetwork() != null) {
-        if(world.isRemote && shouldDoWorkThisTick(world, new BlockPos(x, y, z), 20)) {
+      if (cap.getNetwork() != null) {
+        if (world.isRemote && shouldDoWorkThisTick(world, new BlockPos(x, y, z), 20)) {
           PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(cap));
         }
         ICapBankNetwork nw = cap.getNetwork();
-        if(world.isRemote) {
+        if (world.isRemote) {
           ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
         }
 
-        if(SpecialTooltipHandler.showAdvancedTooltips()) {
+        if (SpecialTooltipHandler.showAdvancedTooltips()) {
           String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
           String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
           tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
@@ -514,13 +523,13 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         long stored = nw.getEnergyStoredL();
         long max = nw.getMaxEnergyStoredL();
         tooltip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
-                EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
+            EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
 
         int change = Math.round(nw.getAverageChangePerTick());
         String color = EnumChatFormatting.WHITE.toString();
-        if(change > 0) {
+        if (change > 0) {
           color = EnumChatFormatting.GREEN.toString() + "+";
-        } else if(change < 0) {
+        } else if (change < 0) {
           color = EnumChatFormatting.RED.toString();
         }
         tooltip.add(String.format("%s%s%s", color, PowerDisplayUtil.formatPowerPerTick(change), " " + EnumChatFormatting.RESET.toString()));
