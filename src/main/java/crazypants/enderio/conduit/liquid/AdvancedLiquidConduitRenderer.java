@@ -2,12 +2,6 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -16,14 +10,12 @@ import com.enderio.core.common.vecmath.Vertex;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-
-import static com.enderio.core.client.render.CubeRenderer.addVecWithUV;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
 
 public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
@@ -33,44 +25,14 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight, RenderBlocks rb) {
-    super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
-
-    if (!conduit.hasConnectionMode(ConnectionMode.INPUT) && !conduit.hasConnectionMode(ConnectionMode.OUTPUT)) {
-      return;
-    }
-    AdvancedLiquidConduit pc = (AdvancedLiquidConduit) conduit;
-    for (ForgeDirection dir : conduit.getExternalConnections()) {
-      IIcon tex = null;
-      if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-        tex = pc.getTextureForInputMode();
-      } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-        tex = pc.getTextureForOutputMode();
-      }
-      if (tex != null) {
-        Offset offset = te.getOffset(ILiquidConduit.class, dir);
-        ConnectionModeGeometry.renderModeConnector(dir, offset, tex, true);
-      }
-    }
-  }
-
-  @Override
-  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
     super.renderConduit(tex, conduit, component, brightness);
 
     if (isNSEWUD(component.dir)) {
       AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
 
       FluidStack fluid = lc.getFluidType();
-      IIcon texture = null;
-      if (fluid != null) {
-        texture = fluid.getFluid().getStillIcon();
-        if (texture == null) {
-          texture = fluid.getFluid().getIcon();
-        }
-      }
-
+      TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);      
       if (texture == null) {
         texture = lc.getNotSetEdgeTexture();
       }
@@ -83,13 +45,13 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
 
-      for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
+      for (EnumFacing d : EnumFacing.VALUES) {
         if (d != component.dir && d != component.dir.getOpposite()) {
 
-          ForgeDirection vDir = RenderUtil.getVDirForFace(d);
-          if (component.dir == ForgeDirection.UP || component.dir == ForgeDirection.DOWN) {
+          EnumFacing vDir = RenderUtil.getVDirForFace(d);
+          if (component.dir == EnumFacing.UP || component.dir == EnumFacing.DOWN) {
             vDir = RenderUtil.getUDirForFace(d);
-          } else if ((component.dir == ForgeDirection.NORTH || component.dir == ForgeDirection.SOUTH) && d.offsetY != 0) {
+          } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.offsetY != 0) {
             vDir = RenderUtil.getUDirForFace(d);
           }
 
@@ -138,11 +100,11 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderTransmission(IConduit conduit, IIcon tex, CollidableComponent component, float selfIllum) {
+  protected void renderTransmission(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
     super.renderTransmission(conduit, tex, component, selfIllum);
   }
 
-  private void moveEdgeCorners(List<Vertex> vertices, ForgeDirection edge, float scaleFactor) {
+  private void moveEdgeCorners(List<Vertex> vertices, EnumFacing edge, float scaleFactor) {
     int[] indices = getClosest(edge, vertices);
     vertices.get(indices[0]).xyz.x -= scaleFactor * edge.offsetX;
     vertices.get(indices[1]).xyz.x -= scaleFactor * edge.offsetX;
@@ -152,7 +114,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     vertices.get(indices[1]).xyz.z -= scaleFactor * edge.offsetZ;
   }
 
-  private int[] getClosest(ForgeDirection edge, List<Vertex> vertices) {
+  private int[] getClosest(EnumFacing edge, List<Vertex> vertices) {
     int[] res = new int[] { -1, -1 };
     boolean highest = edge.offsetX > 0 || edge.offsetY > 0 || edge.offsetZ > 0;
     double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
@@ -172,11 +134,11 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     return res;
   }
 
-  private double get(Vector3d xyz, ForgeDirection edge) {
-    if (edge == ForgeDirection.EAST || edge == ForgeDirection.WEST) {
+  private double get(Vector3d xyz, EnumFacing edge) {
+    if (edge == EnumFacing.EAST || edge == EnumFacing.WEST) {
       return xyz.x;
     }
-    if (edge == ForgeDirection.UP || edge == ForgeDirection.DOWN) {
+    if (edge == EnumFacing.UP || edge == EnumFacing.DOWN) {
       return xyz.y;
     }
     return xyz.z;

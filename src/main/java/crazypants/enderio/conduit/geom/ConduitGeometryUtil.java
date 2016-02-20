@@ -121,7 +121,7 @@ public class ConduitGeometryUtil {
   public BoundingBox getBoundingBox(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);
     BoundingBox result = boundsCache.get(key);
-    if(result == null) {
+    if (result == null) {
       result = createConduitBounds(type, key);
       boundsCache.put(key, result);
     }
@@ -168,33 +168,35 @@ public class ConduitGeometryUtil {
     Vector3d min = bb.getMin();
     Vector3d max = bb.getMax();
 
-    switch (dir) {
-    case WEST:
-      min.x = isStub ? Math.max(0, bb.minX - STUB_WIDTH) : 0;
-      max.x = bb.minX;
-      break;
-    case EAST:
-      min.x = bb.maxX;
-      max.x = isStub ? Math.min(1, bb.maxX + STUB_WIDTH) : 1;
-      break;
-    case DOWN:
-      min.y = isStub ? Math.max(0, bb.minY - STUB_HEIGHT) : 0;
-      max.y = bb.minY;
-      break;
-    case UP:
-      max.y = isStub ? Math.min(1, bb.maxY + STUB_HEIGHT) : 1;
-      min.y = bb.maxY;
-      break;
-    case NORTH:
-      min.z = isStub ? Math.max(0.0F, bb.minZ - STUB_WIDTH) : 0;
-      max.z = bb.minZ;
-      break;
-    case SOUTH:
-      max.z = isStub ? Math.min(1F, bb.maxZ + STUB_WIDTH) : 1;
-      min.z = bb.maxZ;
-      break;
-    default:
-      break;
+    if (dir != null) {
+      switch (dir) {
+      case WEST:
+        min.x = isStub ? Math.max(0, bb.minX - STUB_WIDTH) : 0;
+        max.x = bb.minX;
+        break;
+      case EAST:
+        min.x = bb.maxX;
+        max.x = isStub ? Math.min(1, bb.maxX + STUB_WIDTH) : 1;
+        break;
+      case DOWN:
+        min.y = isStub ? Math.max(0, bb.minY - STUB_HEIGHT) : 0;
+        max.y = bb.minY;
+        break;
+      case UP:
+        max.y = isStub ? Math.min(1, bb.maxY + STUB_HEIGHT) : 1;
+        min.y = bb.maxY;
+        break;
+      case NORTH:
+        min.z = isStub ? Math.max(0.0F, bb.minZ - STUB_WIDTH) : 0;
+        max.z = bb.minZ;
+        break;
+      case SOUTH:
+        max.z = isStub ? Math.min(1F, bb.maxZ + STUB_WIDTH) : 1;
+        min.z = bb.maxZ;
+        break;
+      default:
+        break;
+      }
     }
 
     Vector3d trans = getTranslation(dir, offset);

@@ -7,15 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
@@ -25,14 +16,19 @@ import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import static com.enderio.core.client.render.CubeRenderer.*;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public class LiquidConduitRenderer extends DefaultConduitRenderer implements IResourceManagerReloadListener {
 
@@ -59,16 +55,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
     return false;
   }
-
+ 
   @Override
-  public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight, RenderBlocks rb) {
-    calculateRatios((LiquidConduit) conduit);
-    super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
-  }
-
-  @Override
-  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
     if (isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
@@ -142,15 +131,15 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       bbb = component.bound.scale(xScale, yScale, zScale);
     }
 
-    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
+    for (EnumFacing face : EnumFacing.VALUES) {
       if (face != component.dir && face != component.dir.getOpposite()) {
 
         data.add(new CachableRenderStatement.SetNormal(face.offsetX, face.offsetY, face.offsetZ));
         Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, -0.005);
 
         Vector2f uv = new Vector2f();
-        List<ForgeDirection> edges = RenderUtil.getEdgesForFace(face);
-        for (ForgeDirection edge : edges) {
+        List<EnumFacing> edges = RenderUtil.getEdgesForFace(face);
+        for (EnumFacing edge : edges) {
           if (edge != component.dir && edge != component.dir.getOpposite()) {
             float xLen = 1 - Math.abs(edge.offsetX) * outlineWidth;
             float yLen = 1 - Math.abs(edge.offsetY) * outlineWidth;
@@ -218,7 +207,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderTransmission(IConduit con, IIcon tex, CollidableComponent component, float brightness) {
+  protected void renderTransmission(IConduit con, TextureAtlasSprite tex, CollidableComponent component, float brightness) {
     //done in the dynamic section
   }
 
@@ -259,7 +248,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void setVerticesForTransmission(BoundingBox bound, ForgeDirection id) {
+  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing id) {
 
     float yScale = getRatioForConnection(id);
 
@@ -280,11 +269,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     int totalAmount = tank.getFluidAmount();
 
     int upCapacity = 0;
-    if (conduit.containsConduitConnection(ForgeDirection.UP) || conduit.containsExternalConnection(ForgeDirection.UP)) {
+    if (conduit.containsConduitConnection(EnumFacing.UP) || conduit.containsExternalConnection(EnumFacing.UP)) {
       upCapacity = LiquidConduit.VOLUME_PER_CONNECTION;
     }
     int downCapacity = 0;
-    if (conduit.containsConduitConnection(ForgeDirection.DOWN) || conduit.containsExternalConnection(ForgeDirection.DOWN)) {
+    if (conduit.containsConduitConnection(EnumFacing.DOWN) || conduit.containsExternalConnection(EnumFacing.DOWN)) {
       downCapacity = LiquidConduit.VOLUME_PER_CONNECTION;
     }
 
@@ -312,11 +301,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
   }
 
-  private float getRatioForConnection(ForgeDirection id) {
-    if (id == ForgeDirection.UP) {
+  private float getRatioForConnection(EnumFacing id) {
+    if (id == EnumFacing.UP) {
       return upRatio;
     }
-    if (id == ForgeDirection.DOWN) {
+    if (id == EnumFacing.DOWN) {
       return downRatio;
     }
     return flatRatio;

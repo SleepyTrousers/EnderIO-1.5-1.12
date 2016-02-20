@@ -63,6 +63,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 //    }
     
     BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle, player, world, pos, side);
+//    BlockCoord placeAt = new BlockCoord(pos.offset(side));
     if(placeAt != null) {
       if(!world.isRemote) {
         if(world.setBlockState(placeAt.getBlockPos(), EnderIO.blockConduitBundle.getDefaultState(), 1)) {

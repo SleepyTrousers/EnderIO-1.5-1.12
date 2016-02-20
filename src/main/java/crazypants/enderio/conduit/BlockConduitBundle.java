@@ -78,7 +78,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
   @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
   @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks")
 })
-public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRotatableFacade {
+public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IFacade, IRotatableFacade {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
   private static final String KEY_CONNECTOR_ICON_EXTERNAL = "enderIO:conduitConnectorExternal";
@@ -319,6 +319,11 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
   @Override
   public boolean canReplace(World worldIn, BlockPos pos, EnumFacing side, ItemStack stack) {
+    return super.canReplace(worldIn, pos, side, stack);
+  }
+  
+  @Override
+  public boolean canBeReplacedByLeaves(IBlockAccess world, BlockPos pos) {  
     return false;
   }
 
