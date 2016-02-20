@@ -62,10 +62,10 @@ dependencies {
     exportedCompile 'cglib:cglib-nodep:3.1'
 
     if (!project.hasProperty('useLocalEnderCore')) {
-        compile "com.enderio.core:EnderCore:${endercore_version}:dev"
+        deobfCompile "com.enderio.core:EnderCore-1.8:${endercore_version}"
     }
 
-    compile "mcp.mobius.waila:Waila:${waila_version}:dev"   
+    deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
 }
 
 sourceSets {
