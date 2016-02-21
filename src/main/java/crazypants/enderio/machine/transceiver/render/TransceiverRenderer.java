@@ -9,11 +9,8 @@ import com.enderio.core.client.render.RenderUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,15 +39,8 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer<TileTransceiv
     TileTransceiver trans = te;
 
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
-    World world = te.getWorld();
-    float f = world.getLightBrightness(te.getPos());    
-    int l = world.getLightFor(EnumSkyBlock.SKY, te.getPos());
-    int l1 = l % 65536;
-    int l2 = l / 65536;
-    GlStateManager.color(f, f, f);
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
-
+    
+    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
     model.render(trans, x, y, z);
     if(trans.isActive()) {
       renderPower(te.getWorld(), x, y, z, true);

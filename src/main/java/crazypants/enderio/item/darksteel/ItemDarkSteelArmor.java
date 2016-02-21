@@ -25,7 +25,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.common.Optional.Method;
@@ -61,8 +60,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   boolean gogglesUgradeActive = true;
 
-  static {
-    FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
+  static {    
     MinecraftForge.EVENT_BUS.register(DarkSteelController.instance);
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }

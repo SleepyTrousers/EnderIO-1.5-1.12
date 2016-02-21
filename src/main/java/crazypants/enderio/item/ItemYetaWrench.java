@@ -56,11 +56,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     setUnlocalizedName(ModObject.itemYetaWrench.unlocalisedName);
     setMaxStackSize(1);
   }
-  
-  
 
-  
-  
   @Override  
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
     IBlockState bs = world.getBlockState(pos);

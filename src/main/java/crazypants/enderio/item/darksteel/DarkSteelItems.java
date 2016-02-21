@@ -1,7 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -60,6 +65,8 @@ public class DarkSteelItems {
 
   @SideOnly(Side.CLIENT)
   public static void registerItemRenderer() {
+    
+    regRenderer(itemDarkSteelBoots, 0, itemDarkSteelBoots.getUnlocalizedName());
 //    PoweredItemRenderer dsr = new PoweredItemRenderer();
 //    MinecraftForgeClient.registerItemRenderer(itemDarkSteelBoots, dsr);
 //    MinecraftForgeClient.registerItemRenderer(itemDarkSteelLeggings, dsr);
@@ -69,5 +76,12 @@ public class DarkSteelItems {
 //    MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
 //    MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
 //    MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
+  }
+  
+
+  private static void regRenderer(Item item, int meta, String name) {    
+    String resourceName = EnderIO.MODID.toLowerCase() + ":" + name;
+    RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+    renderItem.getItemModelMesher().register(item, meta, new ModelResourceLocation(resourceName, "inventory"));
   }
 }

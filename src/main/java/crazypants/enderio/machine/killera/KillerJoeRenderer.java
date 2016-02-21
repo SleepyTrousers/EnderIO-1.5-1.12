@@ -10,7 +10,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.machine.generator.zombie.ModelZombieJar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -19,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,20 +34,11 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
   @Override
   public void renderTileEntityAt(TileKillerJoe te, double x, double y, double z, float tick, int b) {
 
-    World world = te.getWorld();    
-    float swingProg = te.getSwingProgress(tick);
-
-    float f = world.getLightBrightness(te.getPos());    
-    int l = world.getLightFor(EnumSkyBlock.SKY, te.getPos());
-    int l1 = l % 65536;
-    int l2 = l / 65536;
-    GlStateManager.color(f, f, f);    
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
-
+    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
     renderModel(te.facing);
-    renderSword(te.facing, te.getStackInSlot(0), swingProg);
+    renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(tick));
     renderFluid(te);
     GL11.glPopMatrix();
 
@@ -65,12 +54,12 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     GL11.glPushMatrix();
 
     GL11.glTranslatef(0.5f, 0, 0.5f);
-    float offset = 90f;
+    float offset = 270f;
     if(facing.getFrontOffsetX() != 0) {
       offset *= -1;
     }
 
-    GL11.glRotatef((facing.getHorizontalIndex() * -90F) + offset, 0F, 1F, 0F);
+    GL11.glRotatef((facing.getHorizontalIndex() * 90F) + offset, 0F, 1F, 0F);
     GL11.glTranslatef(-0.5f, 0, -0.5F);
 
     GL11.glPushMatrix();
@@ -78,22 +67,16 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
       float f6 = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
       float f7 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI);
       GL11.glRotatef(f6 * 5.0F, 1.0F, 0.0F, 0.0F);
-      GL11.glRotatef(f7 * 50.0F, 0.0F, 0.0F, 1.0F);
+      GL11.glRotatef(-f7 * 30.0F, 0.0F, 0.0F, 1.0F);
     }
-    GL11.glTranslatef(-0.255f, 0.2f, 0.05f);
+    GL11.glTranslatef(0.85f, 0.6f, 0.03f);
 
-//    RenderUtil.bindItemTexture();
-//
-//    IIcon icon = sword.getIconIndex();
-//    float f9 = 0.0625F;
-//    float minU = icon.getMinU();
-//    float maxU = icon.getMaxU();
-//    float minV = icon.getMinV();
-//    float maxV = icon.getMaxV();
-//    ItemRenderer.renderItemIn2D(Tessellator.instance, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), f9);
-    //TODO: 1.8
+    GL11.glPushMatrix();
+    float scale = 0.75f;
+    GL11.glScaled(scale, scale, scale);
     Minecraft.getMinecraft().getRenderItem().renderItem(sword, TransformType.NONE);
-
+    GL11.glPopMatrix();
+    
     GL11.glPopMatrix();
     GL11.glPopMatrix();
 
@@ -149,7 +132,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     GL11.glScalef(1.2f, 0.9f, 1.2f);
 
    
-    GL11.glRotatef(facing.getHorizontalIndex() * -90F, 0F, 1F, 0F);
+    GL11.glRotatef(facing.getHorizontalIndex() * 90F, 0F, 1F, 0F);
 
     RenderUtil.bindTexture(TEXTURE);
     model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

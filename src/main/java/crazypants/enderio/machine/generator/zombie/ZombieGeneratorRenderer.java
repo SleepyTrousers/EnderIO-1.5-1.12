@@ -8,14 +8,10 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.util.RenderPassHelper;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,14 +26,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
   @Override
   public void renderTileEntityAt(TileZombieGenerator te, double x, double y, double z, float tick, int b) {
 
-    World world = te.getWorld();
-
-    float f = world.getLightBrightness(te.getPos());    
-    int l = world.getLightFor(EnumSkyBlock.SKY, te.getPos());
-    int l1 = l % 65536;
-    int l2 = l / 65536;
-    GlStateManager.color(f, f, f); 
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
@@ -65,7 +54,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
       Vector3d absFac = ForgeDirectionOffsets.absolueOffset(gen.facing);
 
       double scaleX = absFac.x == 0 ? 0.95 : 1 - facingOffset / 2;
-      double scaleY = 0.85 * fullness;
+//      double scaleY = 0.85 * fullness;
       double scaleZ = absFac.z == 0 ? 0.95 : 1 - facingOffset / 2;
 
       bb = bb.scale(scaleX, 0.85 * fullness, scaleZ);
@@ -74,12 +63,12 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
       Vector3d transOffset = ForgeDirectionOffsets.offsetScaled(gen.facing, -facingOffset);
       bb = bb.translate((float) transOffset.x, ty, (float) transOffset.z);
 
-      int brightness;
-      if(gen.getWorld() == null) {
-        brightness = 15 << 20 | 15 << 4;
-      } else {
-        brightness = gen.getWorld().getLightFor(EnumSkyBlock.SKY, gen.getPos());
-      }
+//      int brightness;
+//      if(gen.getWorld() == null) {
+//        brightness = 15 << 20 | 15 << 4;
+//      } else {
+//        brightness = gen.getWorld().getLightFor(EnumSkyBlock.SKY, gen.getPos());
+//      }
       
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);

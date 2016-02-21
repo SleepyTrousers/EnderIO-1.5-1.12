@@ -70,13 +70,9 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     int brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, p);
     
     boolean selfIlum = true;    
-    if(!selfIlum) {
-      
+    if(!selfIlum) {      
       BlockPos blockPos = cb.getPos().offset(dir);
-      brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, blockPos);      
-      int l1 = brightness % 65536;
-      int l2 = brightness / 65536;
-      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+      RenderUtil.setupLightmapCoords(blockPos, cb.getWorld());
     } else {
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
     }

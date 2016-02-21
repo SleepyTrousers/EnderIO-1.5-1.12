@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.EnumSkyBlock;
 
 public class IoDisplay implements IInfoRenderer {
 
@@ -43,15 +42,10 @@ public class IoDisplay implements IInfoRenderer {
       return;
     }
 
-    boolean selfIlum = true;
-    int brightness = 0;
-    if(!selfIlum) {
-      
+    boolean selfIlum = true;    
+    if(!selfIlum) {      
       BlockPos p = cb.getPos().offset(dir);
-      brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, p);      
-      int l1 = brightness % 65536;
-      int l2 = brightness / 65536;
-      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+      RenderUtil.setupLightmapCoords(p, cb.getWorld());
     } else {
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
     }

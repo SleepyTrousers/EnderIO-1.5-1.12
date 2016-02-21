@@ -8,6 +8,11 @@ import com.enderio.core.client.render.IconUtil;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
+import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
+import crazypants.enderio.conduit.power.PowerConduitRenderer;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
+import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.ConduitRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
@@ -17,6 +22,7 @@ import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
+import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
 import crazypants.enderio.item.ToolTickHandler;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
@@ -36,8 +42,12 @@ import crazypants.enderio.machine.killera.KillerJoeRenderer;
 import crazypants.enderio.machine.killera.TileKillerJoe;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.ranged.RangeRenerer;
+import crazypants.enderio.machine.reservoir.ReservoirRenderer;
+import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TileTank;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
@@ -87,7 +97,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public boolean isNeiInstalled() {
-    if(checkedNei) {
+    if (checkedNei) {
       return neiInstalled;
     }
     try {
@@ -112,28 +122,28 @@ public class ClientProxy extends CommonProxy {
   public void setCbr(ConduitBundleRenderer cbr) {
     this.cbr = cbr;
   }
-  
+
   @Override
   public void loadIcons() {
-    //Hack to get the static init to run and load our textures
+    // Hack to get the static init to run and load our textures
     IconUtil.class.getName();
-//    RedstoneConduit.initIcons();
-//    InsulatedRedstoneConduit.initIcons();
-//    RedstoneSwitch.initIcons();
-//    PowerConduit.initIcons();
-//    LiquidConduit.initIcons();
-//    AdvancedLiquidConduit.initIcons();
-//    EnderLiquidConduit.initIcons();
-//    ItemConduit.initIcons();
-//    if(GasUtil.isGasConduitEnabled()) {
-//      GasConduit.initIcons();
-//    }
-//    if(MEUtil.isMEEnabled()) {
-//      MEConduit.initIcons();
-//    }
-//    if (OCUtil.isOCEnabled()) {
-//      OCConduit.initIcons();
-//    }
+    // RedstoneConduit.initIcons();
+    // InsulatedRedstoneConduit.initIcons();
+    // RedstoneSwitch.initIcons();
+    // PowerConduit.initIcons();
+    // LiquidConduit.initIcons();
+    // AdvancedLiquidConduit.initIcons();
+    // EnderLiquidConduit.initIcons();
+    // ItemConduit.initIcons();
+    // if(GasUtil.isGasConduitEnabled()) {
+    // GasConduit.initIcons();
+    // }
+    // if(MEUtil.isMEEnabled()) {
+    // MEConduit.initIcons();
+    // }
+    // if (OCUtil.isOCEnabled()) {
+    // OCConduit.initIcons();
+    // }
   }
 
   @Override
@@ -147,105 +157,94 @@ public class ClientProxy extends CommonProxy {
       tt.addCallback(new TooltipHandlerFluid());
     }
 
-    // Renderers
+    // Tile Renderers
 
-    EnchanterModelRenderer emr = new EnchanterModelRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
-
-    ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
-
-    ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
-
-    KillerJoeRenderer kjr = new KillerJoeRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
-    
-//    OBJLoader.instance.addDomain(EnderIO.MODID.toLowerCase());
-//    Item item = Item.getItemFromBlock(EnderIO.blockTransceiver);
-//    ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(EnderIO.MODID.toLowerCase() + ":" + "models/transceiver.obj", "inventory"));
-
-//    regRendererRes()
-    
-    if(EnderIO.blockCapBank != null) {
+    if (EnderIO.blockEnchanter != null) {
+      EnchanterModelRenderer emr = new EnchanterModelRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
+    }
+    if (EnderIO.blockFarmStation != null) {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
+    }
+    if (EnderIO.blockZombieGenerator != null) {
+      ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
+    }
+    if (EnderIO.blockKillerJoe != null) {
+      KillerJoeRenderer kjr = new KillerJoeRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
+    }
+    if (EnderIO.blockCapBank != null) {
       CapBankRenderer newCbr = new CapBankRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
     }
+    
+    if (EnderIO.blockEnderIo != null) {
+      EnderIoRenderer eior = new EnderIoRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
+    }
+    if (EnderIO.blockReservoir != null) {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+    }
+    if (EnderIO.blockTank != null) {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
+    }
 
-//    TelePadRenderer telePadRenderer = new TelePadRenderer();
-//    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer(telePadRenderer));
-
-    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
-    ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
+    if (Config.transceiverEnabled) {
+      TransceiverRenderer tr = new TransceiverRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
+    }
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
 
-//    conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
-//    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
-//    conduitRenderers.add(LiquidConduitRenderer.create());
-//    conduitRenderers.add(new PowerConduitRenderer());
-//    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
-//    conduitRenderers.add(new EnderLiquidConduitRenderer());
-//    conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());    
-//    if (OCUtil.isOCEnabled()) {
-//      conduitRenderers.add(new OCConduitRenderer());
-//    }
+    // OBJLoader.instance.addDomain(EnderIO.MODID.toLowerCase());
+    // Item item = Item.getItemFromBlock(EnderIO.blockTransceiver);
+    // ModelLoader.setCustomModelResourceLocation(item, 0, new
+    // ModelResourceLocation(EnderIO.MODID.toLowerCase() + ":" +
+    // "models/transceiver.obj", "inventory"));
 
-    EnderIoRenderer eior = new EnderIoRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
+    // TelePadRenderer telePadRenderer = new TelePadRenderer();
+    // ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new
+    // TelePadSpecialRenderer(telePadRenderer));
 
-//    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
+    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
+    ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
+    conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
+    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
+    conduitRenderers.add(LiquidConduitRenderer.create());
+    conduitRenderers.add(new PowerConduitRenderer());
+    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
 
-//    if(Config.transceiverEnabled) {
-//      TransceiverRenderer tr = new TransceiverRenderer();
-//      ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
-//    }
-
+    //Overlays
     new YetaWrenchOverlayRenderer();
-//    new ConduitProbeOverlayRenderer();
-    if(Config.useSneakMouseWheelYetaWrench) {
-      ToolTickHandler th = new ToolTickHandler();
-      MinecraftForge.EVENT_BUS.register(th);      
+    new ConduitProbeOverlayRenderer();
+    
+    //Items
+    if(EnderIO.itemYetaWench != null) {
+      regRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);
     }
-    MinecraftForge.EVENT_BUS.register(TravelController.instance);    
-
     DarkSteelItems.registerItemRenderer();
-
-    MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
-
+    
+    //Entities
     RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, SoundRenderer.FACTORY);
     RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, RangeRenerer.FACTORY);
-
-    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);    
-
-//    if(!Loader.isModLoaded("OpenBlocks")) {
-//      //We have registered liquid XP so we need to give it textures
-//      IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//        @Override
-//        public void registerIcons(IIconRegister register) {
-//          //NB: textures re-used with permission from OpenBlocks to maintain look
-//          IIcon flowing = register.registerIcon("enderio:xpjuiceflowing");
-//          IIcon still = register.registerIcon("enderio:xpjuicestill");
-//          EnderIO.fluidXpJuice.setIcons(still, flowing);
-//        }
-//
-//        @Override
-//        public int getTextureType() {
-//          return 0;
-//        }
-//
-//      });
-//    }
-
-//    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
+    
+    //Listeners    
+    if (Config.useSneakMouseWheelYetaWrench) {
+      ToolTickHandler th = new ToolTickHandler();
+      MinecraftForge.EVENT_BUS.register(th);
+    }
+    MinecraftForge.EVENT_BUS.register(TravelController.instance);
+    MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
+    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
+   
   }
-  
+
   private void regRenderer(Item item, int meta, String name) {
     regRenderer(item, meta, EnderIO.MODID, name);
   }
 
-  private void regRenderer(Item item, int meta, String modId, String name) {    
+  private void regRenderer(Item item, int meta, String modId, String name) {
     String resourceName;
     if (modId != null) {
       resourceName = modId + ":" + name;
@@ -267,7 +266,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {
     for (ConduitRenderer renderer : conduitRenderers) {
-      if(renderer.isRendererForConduit(conduit)) {
+      if (renderer.isRendererForConduit(conduit)) {
         return renderer;
       }
     }
@@ -276,7 +275,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    if(entityPlayer instanceof EntityPlayerMP) {
+    if (entityPlayer instanceof EntityPlayerMP) {
       return ((EntityPlayerMP) entityPlayer).theItemInWorldManager.getBlockReachDistance();
     }
     return super.getReachDistanceForPlayer(entityPlayer);
@@ -295,7 +294,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   protected void onClientTick() {
-    if(!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
+    if (!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
       ++clientTickCount;
     }
   }

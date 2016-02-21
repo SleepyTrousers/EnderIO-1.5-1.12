@@ -179,17 +179,17 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       xpCon.setDirty(false);
     }
 
-    if (!redstoneCheckPassed) {
-      return false;
-    }
-
-    if (fuelTank.getFluidAmount() < getActivationAmount()) {
-      return false;
-    }
-
-    if (getStackInSlot(0) == null) {
-      return false;
-    }
+//    if (!redstoneCheckPassed) {
+//      return false;
+//    }
+//
+//    if (fuelTank.getFluidAmount() < getActivationAmount()) {
+//      return false;
+//    }
+//
+//    if (getStackInSlot(0) == null) {
+//      return false;
+//    }
 
     List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     if (!entsInBounds.isEmpty()) {

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.glDepthMask;
 import static org.lwjgl.opengl.GL11.glPopAttrib;
@@ -16,15 +18,12 @@ import static org.lwjgl.opengl.GL11.glTranslated;
 
 import crazypants.enderio.EnderIO;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,12 +47,7 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick, int b) {
 
     World world = te.getWorld();
-    float f = world.getLightBrightness(te.getPos());    
-    int l = world.getLightFor(EnumSkyBlock.SKY, te.getPos());
-    int l1 = l % 65536;
-    int l2 = l / 65536;
-    GlStateManager.color(f, f, f);    
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
 
     renderItemStack((T) te, world, x, y, z, tick);
   }

@@ -51,6 +51,11 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
     world.markBlockForUpdate(pos);
   }
 
+  @Override
+  public int getRenderType() { 
+    return -1;
+  }
+
   protected EnumFacing getFacingForHeading(int heading) {
     switch (heading) {
     case 0:
