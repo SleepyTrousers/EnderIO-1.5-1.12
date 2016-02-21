@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFusedQuartz extends BlockEio {
+public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> {
   
   private final static Type[] metaMapping = new Type[16];
   public enum Type {

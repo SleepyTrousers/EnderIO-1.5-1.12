@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.invpanel;
 
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -372,7 +371,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   private void updateNEI(String text) {
-    LayoutManager.searchField.setText(text);
+//    LayoutManager.searchField.setText(text);
   }
 
   @Override
@@ -393,7 +392,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     } else if(stack.stackSize > 1) {
       str = Integer.toString(stack.stackSize);
     }
-    itemRender.renderItemAndEffectIntoGUI(font, mc.renderEngine, stack, x, y);
+    itemRender.renderItemAndEffectIntoGUI(stack, x, y);
     if(str != null) {
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -405,7 +404,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       GL11.glEnable(GL11.GL_LIGHTING);
       GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
-    itemRender.renderItemOverlayIntoGUI(font, mc.renderEngine, stack, x, y, "");
+    itemRender.renderItemOverlayIntoGUI(font, stack, x, y, "");
   }
 
   @Override
@@ -545,7 +544,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   private void playClickSound() {
-    mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
   }
 
   @Override

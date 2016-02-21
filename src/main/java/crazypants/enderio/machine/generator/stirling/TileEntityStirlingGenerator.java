@@ -49,17 +49,17 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public int[] getAccessibleSlotsFromSide(int var1) {
+  public int[] getSlotsForFace(EnumFacing var1) {    
     return new int[] { 0 };
   }
 
   @Override
-  public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+  public boolean canInsertItem(int i, ItemStack itemstack, EnumFacing j) {
     return isItemValidForSlot(i, itemstack);
   }
 
   @Override
-  public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+  public boolean canExtractItem(int i, ItemStack itemstack, EnumFacing j) {
     return !TileEntityFurnace.isItemFuel(itemstack);
   }
 
@@ -172,7 +172,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
       return false;
     }
 
-    if(!canExtractItem(0, inventory[0], 0)) {
+    if(!canExtractItem(0, inventory[0], dir)) {
       return false;
     }
 

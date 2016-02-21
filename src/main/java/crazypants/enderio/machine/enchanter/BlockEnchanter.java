@@ -2,24 +2,25 @@ package crazypants.enderio.machine.enchanter;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
 
-import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
-public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
+public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider {
 
   public static BlockEnchanter create() {
     BlockEnchanter res = new BlockEnchanter();
@@ -27,11 +28,8 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     return res;
   }
 
-  public static int renderId = -1;
-
   protected BlockEnchanter() {
     super(ModObject.blockEnchanter.unlocalisedName, TileEnchanter.class);
-    setBlockTextureName("enderio:blockEnchanter");
     setLightOpacity(4);
   }
 
@@ -42,59 +40,61 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    super.onBlockPlacedBy(world, x, y, z, player, stack);
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+    super.onBlockPlacedBy(world, pos, state, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    TileEnchanter te = (TileEnchanter) world.getTileEntity(x, y, z);
-    switch (heading) {
-    case 0:
-      te.setFacing((short) 2);
-      break;
-    case 1:
-      te.setFacing((short) 5);
-      break;
-    case 2:
-      te.setFacing((short) 3);
-      break;
-    case 3:
-      te.setFacing((short) 4);
-      break;
-    default:
-      break;
-    }
-    if(world.isRemote) {
+    TileEnchanter te = (TileEnchanter) world.getTileEntity(pos);
+    te.setFacing(getFacingForHeading(heading));
+    if (world.isRemote) {
       return;
     }
-    world.markBlockForUpdate(x, y, z);
+    world.markBlockForUpdate(pos);
   }
-  
+
+  protected EnumFacing getFacingForHeading(int heading) {
+    switch (heading) {
+    case 0:
+      return EnumFacing.NORTH;
+    case 1:
+      return EnumFacing.EAST;
+    case 2:
+      return EnumFacing.SOUTH;
+    case 3:
+    default:
+      return EnumFacing.WEST;
+    }
+  }
+
   @Override
-  protected boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
-    if(!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, x, y, z);
+  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+    if (!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, pos.getX(), pos.getY(), pos.getZ());
     }
     return true;
   }
 
+  
+  
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnchanter) {
-      dropItems(world, x, y, z, (TileEnchanter) te);
-    }
-    super.breakBlock(world, x, y, z, block, meta);
+  public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+    
+    TileEnchanter te = getTileEntity(worldIn, pos);
+    if(te != null) {
+      dropItems(worldIn, pos, te);
+    }    
+    super.breakBlock(worldIn, pos, state);
   }
 
   public boolean doNormalDrops(World world, int x, int y, int z) {
     return false;
   }
 
-  private void dropItems(World world, int x, int y, int z, TileEnchanter te) {
-    if(te.getStackInSlot(0) != null) {
-      Util.dropItems(world, te.getStackInSlot(0), x, y, z, true);
+  private void dropItems(World world, BlockPos pos, TileEnchanter te) {
+    if (te.getStackInSlot(0) != null) {
+      Util.dropItems(world, te.getStackInSlot(0), pos, true);
     }
-    if(te.getStackInSlot(1) != null) {
-      Util.dropItems(world, te.getStackInSlot(1), x, y, z, true);
+    if (te.getStackInSlot(1) != null) {
+      Util.dropItems(world, te.getStackInSlot(1), pos, true);
     }
   }
 
@@ -104,24 +104,14 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public int getRenderType() {
-    return renderId;
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }
-
-  @Override
-  public boolean renderAsNormalBlock() {
-    return false;
-  }
-
+  
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnchanter) {
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+    if (te instanceof TileEnchanter) {
       return new ContainerEnchanter(player, player.inventory, (TileEnchanter) te);
     }
     return null;
@@ -129,13 +119,13 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEnchanter) {
+    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+    if (te instanceof TileEnchanter) {
       return new GuiEnchanter(player, player.inventory, (TileEnchanter) te);
     }
     return null;
   }
-  
+
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();

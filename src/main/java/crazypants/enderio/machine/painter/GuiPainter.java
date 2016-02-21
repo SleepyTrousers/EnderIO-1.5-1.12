@@ -1,15 +1,13 @@
 package crazypants.enderio.machine.painter;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {

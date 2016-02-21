@@ -34,7 +34,7 @@ public enum Fertilizer {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
-      return stack.getItem().onItemUse(stack, player, world, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
+      return stack.getItem().onItemUse(stack, player, world, bc.getBlockPos(), EnumFacing.UP, 0.5f, 0.5f, 0.5f);
     }
   },
 
@@ -53,7 +53,7 @@ public enum Fertilizer {
       BlockCoord below = bc.getLocation(EnumFacing.DOWN);
       Block belowBlock = below.getBlock(world);
       if(belowBlock == Blocks.dirt || belowBlock == Blocks.grass) {
-        return stack.getItem().onItemUse(stack, player, world, below.x, below.y, below.z, 1, 0.5f, 0.5f, 0.5f);
+        return stack.getItem().onItemUse(stack, player, world, below.getBlockPos(), EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       }
       return false;
     }

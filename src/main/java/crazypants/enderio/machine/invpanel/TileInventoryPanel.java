@@ -2,17 +2,6 @@ package crazypants.enderio.machine.invpanel;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import com.enderio.core.api.common.util.ITankAccess;
 
 import crazypants.enderio.EnderIO;
@@ -33,6 +22,17 @@ import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
@@ -87,7 +87,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack var2, int side) {
+  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {  
     return false;
   }
 
@@ -152,7 +152,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     }
 
     if(forceClientUpdate) {
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      worldObj.markBlockForUpdate(pos);
       markDirty();
     }
 
@@ -163,12 +163,13 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   private void scanNetwork() {
-    ForgeDirection facingDir = getFacingDir();
-    ForgeDirection backside = facingDir.getOpposite();
+    EnumFacing facingDir = getFacingDir();
+    EnumFacing backside = facingDir.getOpposite();
 
     ItemConduitNetwork icn = null;
 
-    TileEntity te = worldObj.getTileEntity(xCoord + backside.offsetX, yCoord + backside.offsetY, zCoord + backside.offsetZ);
+    BlockPos p = pos.offset(backside);
+    TileEntity te = worldObj.getTileEntity(p);
     if(te instanceof TileConduitBundle) {
       TileConduitBundle teCB = (TileConduitBundle) te;
       ItemConduit conduit = teCB.getConduit(ItemConduit.class);
@@ -289,7 +290,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
         PacketHandler.INSTANCE.sendToServer(new PacketSetExtractionDisabled(this, extractionDisabled));
       } else if(this.extractionDisabled != extractionDisabled) {
         this.extractionDisabled = extractionDisabled;
-        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.dimensionId);
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.getDimensionId());
       }
     }
   }
@@ -368,25 +369,25 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public IoMode getIoMode(ForgeDirection face) {
+  public IoMode getIoMode(EnumFacing face) {
     return face == getIODirection() ? IoMode.NONE : IoMode.DISABLED;
   }
 
   @Override
-  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+  public void setIoMode(EnumFacing faceHit, IoMode mode) {
   }
 
   @Override
-  public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
+  public IoMode toggleIoModeForFace(EnumFacing faceHit) {
     return getIoMode(faceHit);
   }
 
-  private ForgeDirection getIODirection() {
+  private EnumFacing getIODirection() {
     return getFacingDir().getOpposite();
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if(from != getIODirection()) {
       return 0;
     }
@@ -398,27 +399,27 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return null;
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     return null;
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
+  public boolean canFill(EnumFacing from, Fluid fluid) {
     return from == getIODirection() && fuelTank.canFill(fluid);
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, Fluid fluid) {
     return false;
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  public FluidTankInfo[] getTankInfo(EnumFacing from) {
     if(from == getIODirection()) {
       return new FluidTankInfo[] { fuelTank.getInfo() };
     } else {

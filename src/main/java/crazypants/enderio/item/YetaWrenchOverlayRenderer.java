@@ -12,7 +12,11 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -57,10 +61,12 @@ public class YetaWrenchOverlayRenderer {
     }
     
     ScaledResolution res = event.resolution;
-    Tessellator tess = Tessellator.instance;
+    
     int modeCount = ConduitDisplayMode.registrySize();
     Iterable<ConduitDisplayMode> renderable = ConduitDisplayMode.getRenderableModes();
 
+    //System.out.println("YetaWrenchOverlayRenderer.doRenderOverlay: " + Config.yetaWrenchOverlayMode);
+    
     switch (Config.yetaWrenchOverlayMode) {
     case 0:
       if (displayTickCount > 0) {
@@ -92,6 +98,7 @@ public class YetaWrenchOverlayRenderer {
         IWidgetIcon widget = mode.getWidgetSelected();
         RenderUtil.bindTexture(widget.getMap().getTexture());
         widget.getMap().render(widget, x, y, true);
+//        RenderUtil.renderQuad2D(x, y, 0, 16, 16, 0xFFFFFF);
       }
       break;
     case 1:
@@ -110,16 +117,20 @@ public class YetaWrenchOverlayRenderer {
 
       GL11.glDisable(GL11.GL_TEXTURE_2D);
       GL11.glShadeModel(GL11.GL_SMOOTH);
-      tess.startDrawingQuads();
-      tess.setColorRGBA_F(0, 0, 0, 0.2f);
-      tess.addVertex(x, y, -5);
-      tess.addVertex(x, y + height, -5);
-      Vector4f color = new Vector4f(0, 0, 0, 1);
-      tess.setColorRGBA_F(color.x, color.y, color.z, color.w);
-      tess.addVertex(x + size, y + height, -5);
-      tess.addVertex(x + size, y, -5);
+      
+      
+      VertexFormat vf = DefaultVertexFormats.POSITION_COLOR;   
+      Tessellator tess = Tessellator.getInstance();
+      WorldRenderer wr = tess.getWorldRenderer();
+      wr.begin(GL11.GL_QUADS, vf);      
+      wr.pos(x, y, -5).color(0, 0, 0, 0.2f).endVertex();;
+      wr.pos(x, y + height, -5).color(0, 0, 0, 0.2f).endVertex();;
+      Vector4f color = new Vector4f(0, 0, 0, 1);      
+      wr.pos(x + size, y + height, -5).color(color.x, color.y, color.z, color.w).endVertex();
+      wr.pos(x + size, y, -5).color(color.x, color.y, color.z, color.w).endVertex();
       tess.draw();
-      tess.setColorOpaque_I(0xFFFFFF);
+      
+      GlStateManager.color(1, 1, 1);
       GL11.glShadeModel(GL11.GL_FLAT);
       
       y += padding * 2;
@@ -130,19 +141,19 @@ public class YetaWrenchOverlayRenderer {
       }
 
       GL11.glEnable(GL11.GL_TEXTURE_2D);
-      tess.startDrawingQuads();
+      
       for (ConduitDisplayMode toRender : renderable) {
         IWidgetIcon widget = mode == ConduitDisplayMode.ALL ? toRender.getWidgetSelected() : toRender.getWidgetUnselected();
         RenderUtil.bindTexture(widget.getMap().getTexture());
         if (toRender == mode) {
           widget = toRender.getWidgetSelected();
-          widget.getMap().render(widget, x - inset, y);
+          widget.getMap().render(widget, x - inset, y, true);
         } else {
-          widget.getMap().render(widget, x, y);
+          widget.getMap().render(widget, x, y, true);
         }
         y += size + padding;
       }
-      tess.draw();
+      
       break;
     case 2:
       
@@ -155,19 +166,18 @@ public class YetaWrenchOverlayRenderer {
       }
       
       int count = 0;
-      tess.startDrawingQuads();
+      
       for (ConduitDisplayMode toRender : renderable) {
         IWidgetIcon widget = mode == ConduitDisplayMode.ALL || toRender == mode ? toRender.getWidgetSelected() : toRender.getWidgetUnselected();
         RenderUtil.bindTexture(widget.getMap().getTexture());
-        widget.getMap().render(widget, x, y);
+        widget.getMap().render(widget, x, y, true);
         x += 16;
         if (count == modeCount / 2 - 1) {
           x = offsetX;
           y += 16;
         }
         count++;
-      }
-      tess.draw();
+      }      
     }
   }
 }

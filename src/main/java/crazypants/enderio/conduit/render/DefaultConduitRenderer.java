@@ -1,6 +1,16 @@
 package crazypants.enderio.conduit.render;
 
+import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import static net.minecraft.util.EnumFacing.DOWN;
+import static net.minecraft.util.EnumFacing.EAST;
+import static net.minecraft.util.EnumFacing.NORTH;
+import static net.minecraft.util.EnumFacing.SOUTH;
+import static net.minecraft.util.EnumFacing.UP;
+import static net.minecraft.util.EnumFacing.WEST;
 
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -11,6 +21,13 @@ import net.minecraft.util.EnumFacing;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
+  static final Vector3d[] verts = new Vector3d[8];
+  static {
+    for (int i = 0; i < verts.length; i++) {
+      verts[i] = new Vector3d();
+    }
+  }
+  
   protected float transmissionScaleFactor;
 
   @Override
@@ -82,149 +99,142 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       boolean isTransmission, boolean mirrorTexture) {
 
 //    Tessellator tessellator = Tessellator.instance;
-//
-//    if(isTransmission) {
-//      setVerticesForTransmission(bound, dir);
-//    } else {
-//      CubeRenderer.setupVertices(bound);
-//    }
-//
-//    if (mirrorTexture && (dir == NORTH || dir == UP || dir == EAST)) {
-//      // maintain consistent texture dir relative to the center of the conduit
-//      float tmp = minU;
-//      minU = maxU;
-//      maxU = tmp;
-//    }
-//
-//    boolean rotateSides = dir == UP || dir == DOWN;
-//    boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
-//    float cm;
-//    if(dir != NORTH && dir != SOUTH) {
-//      tessellator.setNormal(0, 0, -1);
-//      if(!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
-//      }
-//      if(rotateSides) {
-//        addVecWithUV(verts[1], maxU, maxV);
-//        addVecWithUV(verts[0], maxU, minV);
-//        addVecWithUV(verts[3], minU, minV);
-//        addVecWithUV(verts[2], minU, maxV);
-//      } else {
-//        addVecWithUV(verts[1], minU, minV);
-//        addVecWithUV(verts[0], maxU, minV);
-//        addVecWithUV(verts[3], maxU, maxV);
-//        addVecWithUV(verts[2], minU, maxV);
-//      }
-//      if(dir == WEST || dir == EAST) {
-//        float tmp = minU;
-//        minU = maxU;
-//        maxU = tmp;
-//      }
-//      tessellator.setNormal(0, 0, 1);
-//      if(!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
-//      }
-//      if(rotateSides) {
-//        addVecWithUV(verts[4], maxU, maxV);
-//        addVecWithUV(verts[5], maxU, minV);
-//        addVecWithUV(verts[6], minU, minV);
-//        addVecWithUV(verts[7], minU, maxV);
-//      } else {
-//        addVecWithUV(verts[4], minU, minV);
-//        addVecWithUV(verts[5], maxU, minV);
-//        addVecWithUV(verts[6], maxU, maxV);
-//        addVecWithUV(verts[7], minU, maxV);
-//      }
-//      if(dir == WEST || dir == EAST) {
-//        float tmp = minU;
-//        minU = maxU;
-//        maxU = tmp;
-//      }
-//    }
-//
-//    if(dir != UP && dir != DOWN) {
-//
-//      tessellator.setNormal(0, 1, 0);
-//      if(!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
-//      }
-//      if(rotateTopBottom) {
-//        addVecWithUV(verts[6], maxU, maxV);
-//        addVecWithUV(verts[2], minU, maxV);
-//        addVecWithUV(verts[3], minU, minV);
-//        addVecWithUV(verts[7], maxU, minV);
-//      } else {
-//        addVecWithUV(verts[6], minU, minV);
-//        addVecWithUV(verts[2], minU, maxV);
-//        addVecWithUV(verts[3], maxU, maxV);
-//        addVecWithUV(verts[7], maxU, minV);
-//      }
-//
-//      tessellator.setNormal(0, -1, 0);
-//      if(!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
-//      }
-//      if(rotateTopBottom) {
-//        addVecWithUV(verts[0], minU, minV);
-//        addVecWithUV(verts[1], minU, maxV);
-//        addVecWithUV(verts[5], maxU, maxV);
-//        addVecWithUV(verts[4], maxU, minV);
-//      } else {
-//        addVecWithUV(verts[0], maxU, maxV);
-//        addVecWithUV(verts[1], minU, maxV);
-//        addVecWithUV(verts[5], minU, minV);
-//        addVecWithUV(verts[4], maxU, minV);
-//      }
-//    }
-//
-//    if(dir != EAST && dir != WEST) {
-//
-//      tessellator.setNormal(1, 0, 0);
-//      if(!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
-//      }
-//      if(rotateSides) {
-//        addVecWithUV(verts[2], minU, maxV);
-//        addVecWithUV(verts[6], minU, minV);
-//        addVecWithUV(verts[5], maxU, minV);
-//        addVecWithUV(verts[1], maxU, maxV);
-//      } else {
-//        addVecWithUV(verts[2], minU, maxV);
-//        addVecWithUV(verts[6], maxU, maxV);
-//        addVecWithUV(verts[5], maxU, minV);
-//        addVecWithUV(verts[1], minU, minV);
-//      }
-//
-//      tessellator.setNormal(-1, 0, 0);
-//      if(!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
-//      }
-//      if(rotateSides) {
-//        addVecWithUV(verts[0], maxU, maxV);
-//        addVecWithUV(verts[4], maxU, minV);
-//        addVecWithUV(verts[7], minU, minV);
-//        addVecWithUV(verts[3], minU, maxV);
-//      } else {
-//        addVecWithUV(verts[0], minU, minV);
-//        addVecWithUV(verts[4], maxU, minV);
-//        addVecWithUV(verts[7], maxU, maxV);
-//        addVecWithUV(verts[3], minU, maxV);
-//      }
-//    }
-//    tessellator.setColorOpaque_F(1, 1, 1);
-  }
 
-  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing dir) {
-    float xs = dir.getFrontOffsetX() == 0 ? transmissionScaleFactor : 1;
-    float ys = dir.getFrontOffsetY() == 0 ? transmissionScaleFactor : 1;
-    float zs = dir.getFrontOffsetZ() == 0 ? transmissionScaleFactor : 1;
-//    CubeRenderer.setupVertices(bound.scale(xs, ys, zs));
+    if(isTransmission) {
+      setVerticesForTransmission(bound, dir);
+    } else {
+      setupVertices(bound);
+    }
+
+    if (mirrorTexture && (dir == EnumFacing.NORTH || dir == UP || dir == EAST)) {
+      // maintain consistent texture dir relative to the center of the conduit
+      float tmp = minU;
+      minU = maxU;
+      maxU = tmp;
+    }
+
+    boolean rotateSides = dir == UP || dir == DOWN;
+    boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
+    float cm;
+    if(dir != NORTH && dir != SOUTH) {
+//      tessellator.setNormal(0, 0, -1);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
+      if(rotateSides) {
+        addVecWithUV(verts[1], maxU, maxV);
+        addVecWithUV(verts[0], maxU, minV);
+        addVecWithUV(verts[3], minU, minV);
+        addVecWithUV(verts[2], minU, maxV);
+      } else {
+        addVecWithUV(verts[1], minU, minV);
+        addVecWithUV(verts[0], maxU, minV);
+        addVecWithUV(verts[3], maxU, maxV);
+        addVecWithUV(verts[2], minU, maxV);
+      }
+      if(dir == WEST || dir == EAST) {
+        float tmp = minU;
+        minU = maxU;
+        maxU = tmp;
+      }
+//      tessellator.setNormal(0, 0, 1);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
+      if(rotateSides) {
+        addVecWithUV(verts[4], maxU, maxV);
+        addVecWithUV(verts[5], maxU, minV);
+        addVecWithUV(verts[6], minU, minV);
+        addVecWithUV(verts[7], minU, maxV);
+      } else {
+        addVecWithUV(verts[4], minU, minV);
+        addVecWithUV(verts[5], maxU, minV);
+        addVecWithUV(verts[6], maxU, maxV);
+        addVecWithUV(verts[7], minU, maxV);
+      }
+      if(dir == WEST || dir == EAST) {
+        float tmp = minU;
+        minU = maxU;
+        maxU = tmp;
+      }
+    }
+
+    if(dir != UP && dir != DOWN) {
+
+//      tessellator.setNormal(0, 1, 0);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
+      if(rotateTopBottom) {
+        addVecWithUV(verts[6], maxU, maxV);
+        addVecWithUV(verts[2], minU, maxV);
+        addVecWithUV(verts[3], minU, minV);
+        addVecWithUV(verts[7], maxU, minV);
+      } else {
+        addVecWithUV(verts[6], minU, minV);
+        addVecWithUV(verts[2], minU, maxV);
+        addVecWithUV(verts[3], maxU, maxV);
+        addVecWithUV(verts[7], maxU, minV);
+      }
+
+//      tessellator.setNormal(0, -1, 0);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
+      if(rotateTopBottom) {
+        addVecWithUV(verts[0], minU, minV);
+        addVecWithUV(verts[1], minU, maxV);
+        addVecWithUV(verts[5], maxU, maxV);
+        addVecWithUV(verts[4], maxU, minV);
+      } else {
+        addVecWithUV(verts[0], maxU, maxV);
+        addVecWithUV(verts[1], minU, maxV);
+        addVecWithUV(verts[5], minU, minV);
+        addVecWithUV(verts[4], maxU, minV);
+      }
+    }
+
+    if(dir != EAST && dir != WEST) {
+
+//      tessellator.setNormal(1, 0, 0);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
+      if(rotateSides) {
+        addVecWithUV(verts[2], minU, maxV);
+        addVecWithUV(verts[6], minU, minV);
+        addVecWithUV(verts[5], maxU, minV);
+        addVecWithUV(verts[1], maxU, maxV);
+      } else {
+        addVecWithUV(verts[2], minU, maxV);
+        addVecWithUV(verts[6], maxU, maxV);
+        addVecWithUV(verts[5], maxU, minV);
+        addVecWithUV(verts[1], minU, minV);
+      }
+
+//      tessellator.setNormal(-1, 0, 0);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
+//        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
+      if(rotateSides) {
+        addVecWithUV(verts[0], maxU, maxV);
+        addVecWithUV(verts[4], maxU, minV);
+        addVecWithUV(verts[7], minU, minV);
+        addVecWithUV(verts[3], minU, maxV);
+      } else {
+        addVecWithUV(verts[0], minU, minV);
+        addVecWithUV(verts[4], maxU, minV);
+        addVecWithUV(verts[7], maxU, maxV);
+        addVecWithUV(verts[3], minU, maxV);
+      }
+    }
+//    tessellator.setColorOpaque_F(1, 1, 1);
   }
 
   // TODO: This is a really hacky, imprecise and slow way to do this
@@ -288,6 +298,38 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   @Override
   public boolean isDynamic() {
     return false;
+  }
+  
+  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing dir) {
+    float xs = dir.getFrontOffsetX() == 0 ? transmissionScaleFactor : 1;
+    float ys = dir.getFrontOffsetY() == 0 ? transmissionScaleFactor : 1;
+    float zs = dir.getFrontOffsetZ() == 0 ? transmissionScaleFactor : 1;
+    setupVertices(bound.scale(xs, ys, zs));
+  }
+  
+  protected void addVecWithUV(Vector3d vec, double u, double v) {
+    
+  }
+  
+  protected void setupVertices(BoundingBox bound) {
+    setupVertices(bound, null);
+  }
+
+  protected void setupVertices(BoundingBox bound, VertexTransform xForm) {
+    verts[0].set(bound.minX, bound.minY, bound.minZ);
+    verts[1].set(bound.maxX, bound.minY, bound.minZ);
+    verts[2].set(bound.maxX, bound.maxY, bound.minZ);
+    verts[3].set(bound.minX, bound.maxY, bound.minZ);
+    verts[4].set(bound.minX, bound.minY, bound.maxZ);
+    verts[5].set(bound.maxX, bound.minY, bound.maxZ);
+    verts[6].set(bound.maxX, bound.maxY, bound.maxZ);
+    verts[7].set(bound.minX, bound.maxY, bound.maxZ);
+
+    if (xForm != null) {
+      for (Vector3d vec : verts) {
+        xForm.apply(vec);
+      }
+    }
   }
 
 }

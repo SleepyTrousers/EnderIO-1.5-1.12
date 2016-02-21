@@ -3,18 +3,19 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 
 public class CustomSeedFarmer implements IFarmerJoe {
 
@@ -73,7 +74,8 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState bs) {
+    int meta = bs.getBlock().getMetaFromState(bs);
     return block == getPlantedBlock() && getFullyGrownBlockMeta() == meta;
   }
 
@@ -86,12 +88,11 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     if(!farm.isOpen(bc)) {
       return false;
     }
-    if(requiresFarmland()) {
-      World worldObj = farm.getWorldObj();
+    if(requiresFarmland()) {      
       if(isGroundTilled(farm, bc)) {
         return plantFromInventory(farm, bc);
       }
@@ -114,7 +115,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
-    World worldObj = farm.getWorldObj();
+    World worldObj = farm.getWorld();
     if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(getSeeds(), bc) != null) {
       return plant(farm, worldObj, bc);
     }
@@ -122,7 +123,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
 
     if(!canHarvest(farm, bc, block, meta)) {
       return null;
@@ -132,10 +133,10 @@ public class CustomSeedFarmer implements IFarmerJoe {
       return null;
     }
 
-    World worldObj = farm.getWorldObj();
+    World worldObj = farm.getWorld();
     List<EntityItem> result = new ArrayList<EntityItem>();
 
-    ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
+    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, farm.getMaxLootingValue());
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     boolean removed = false;
@@ -156,24 +157,24 @@ public class CustomSeedFarmer implements IFarmerJoe {
     if(removed) {
       if(!plant(farm, worldObj, bc)) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, getSeeds().copy()));
-        worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
+        worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
       }
     } else {
-      worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
+      worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
     }
 
-    return new HarvestResult(result, bc);
+    return new HarvestResult(result, bc.getBlockPos());
   }
 
   protected boolean tillBlock(TileFarmStation farm, BlockCoord plantingLocation) {
-    World worldObj = farm.getWorldObj();
-    BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
+    World worldObj = farm.getWorld();
+    BlockCoord dirtLoc = plantingLocation.getLocation(EnumFacing.DOWN);
     Block dirtBlock = farm.getBlock(dirtLoc);
     if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && farm.hasHoe()) {
       farm.damageHoe(1, dirtLoc);
-      worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
-      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
-          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
+      worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.farmland.getDefaultState());
+      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepSound(),
+          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getFrequency() * 0.8F);
       farm.actionPerformed(false);
       return true;
     }
@@ -181,7 +182,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   protected boolean isGroundTilled(TileFarmStation farm, BlockCoord plantingLocation) {
-    Block target = farm.getBlock(plantingLocation.getLocation(ForgeDirection.DOWN));    
+    Block target = farm.getBlock(plantingLocation.getLocation(EnumFacing.DOWN));    
     for(Block tst : tilledBlocks) {      
       if(tst == target) {
         return true;
@@ -192,20 +193,21 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
   protected boolean canPlant(World worldObj, BlockCoord bc) {
     Block target = getPlantedBlock();
-    Block ground = worldObj.getBlock(bc.x, bc.y - 1, bc.z);
+    BlockPos groundPos = bc.getBlockPos().down();
+    IBlockState bs = worldObj.getBlockState(groundPos);
+    Block ground = bs.getBlock();
     IPlantable plantable = (IPlantable) getPlantedBlock();
-    if(target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) &&
-        target.canBlockStay(worldObj, bc.x, bc.y, bc.z) &&
-        (ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable) || ignoreSustainCheck)) {
+    if(target.canPlaceBlockAt(worldObj, bc.getBlockPos()) &&        
+        (ground.canSustainPlant(worldObj, groundPos, EnumFacing.UP, plantable) || ignoreSustainCheck)) {
       return true;
     }
     return false;
   }
 
   protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc) {
-    worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
+    worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
     if(canPlant(worldObj, bc)) {
-      worldObj.setBlock(bc.x, bc.y, bc.z, getPlantedBlock(), getPlantedBlockMeta(), 1 | 2);
+      worldObj.setBlockState(bc.getBlockPos(), getPlantedBlock().getStateFromMeta(getPlantedBlockMeta()), 1 | 2);
       farm.actionPerformed(false);
       return true;
     }

@@ -1,26 +1,22 @@
 package crazypants.enderio.machine.light;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
+public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable {
 
   static final float BLOCK_HEIGHT = 0.05f;
   static final float BLOCK_WIDTH = 0.3f;
@@ -28,16 +24,11 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   static final float BLOCK_EDGE_MAX = 0.5f + (BLOCK_WIDTH / 2);
   static final float BLOCK_EDGE_MIN = 0.5f - (BLOCK_WIDTH / 2);
 
-  public static int renderId;
-
   public static BlockElectricLight create() {
     BlockElectricLight result = new BlockElectricLight();
     result.init();
     return result;
   }
-
-  private IIcon blockIconOff;
-  private IIcon blockIconSide;
 
   public BlockElectricLight() {
     super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class);
@@ -52,67 +43,41 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
-    blockIconOff = iIconRegister.registerIcon("enderio:blockElectricLightFaceOff");
-    blockIconSide = iIconRegister.registerIcon("enderio:conduitConnector");
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-
-    TileEntity te = blockAccess.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
-      ForgeDirection onFace = ((TileElectricLight) te).getFace();
-      if(side == (onFace.getOpposite().ordinal())) {
-        boolean on = blockAccess.getBlockMetadata(x, y, z) != 0;
-        return on ? blockIcon : blockIconOff;
-      }
-      return blockIconSide;
-    }
-    return getIcon(side, 0);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IIcon getIcon(int side, int par2) {
-    if(side == ForgeDirection.UP.ordinal()) {
-      return blockIcon;
-    }
-    return blockIconSide;
-  }
-
-  @Override
-  public boolean renderAsNormalBlock() {
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
+    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
-  public int getRenderType() {
-    return renderId;
+  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+    return null;
   }
 
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public void registerBlockIcons(IIconRegister iIconRegister) {
+  // blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
+  // blockIconOff =
+  // iIconRegister.registerIcon("enderio:blockElectricLightFaceOff");
+  // blockIconSide = iIconRegister.registerIcon("enderio:conduitConnector");
+  // }
+
   @Override
-  public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    Block block = world.getBlock(x, y, z);
-    if(block != null && block != this) {
-      return block.getLightValue(world, x, y, z);
+  public int getLightValue(IBlockAccess world, BlockPos pos) {
+    IBlockState bs = world.getBlockState(pos);
+    Block block = bs.getBlock();
+    if (block != null && block != this) {
+      return block.getLightValue(world, pos);
     }
-    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
+    int meta = block.getMetaFromState(bs);
+    return meta > 0 ? 15 : 0;
   }
 
   @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z) {
-    ForgeDirection onFace = ForgeDirection.DOWN;
-    TileEntity te = blockAccess.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
+  public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos) {
+    EnumFacing onFace = EnumFacing.DOWN;
+    TileEntity te = blockAccess.getTileEntity(pos);
+    if (te instanceof TileElectricLight) {
       onFace = ((TileElectricLight) te).getFace();
     }
 
@@ -143,7 +108,6 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
       min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 1 - BLOCK_HEIGHT);
       max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, 1);
       break;
-    case UNKNOWN:
     default:
       min.set(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN);
       max.set(BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
@@ -164,45 +128,38 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockID) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
-      ((TileElectricLight) te).onNeighborBlockChange(blockID);
+  public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block blockID) {
+    TileElectricLight te = getTileEntity(worldIn, pos);
+    if (te != null) {
+      te.onNeighborBlockChange(blockID);
     }
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
-      ((TileElectricLight) te).onBlockRemoved();
+  public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+    TileElectricLight te = getTileEntity(worldIn, pos);
+    if (te != null) {
+      te.onBlockRemoved();
     }
   }
 
   @Override
-  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
-    TileElectricLight light = (TileElectricLight) te;
-    if(light == null) {
+  protected void processDrop(IBlockAccess world, BlockPos pos, TileElectricLight light, ItemStack drop) {
+    if (light == null) {
       return;
     }
     int meta = light.isInvereted() ? 1 : 0;
-    if(!light.isRequiresPower()) {
+    if (!light.isRequiresPower()) {
       meta += 2;
-    } else if(light.isWireless()) {
+    } else if (light.isWireless()) {
       meta += 4;
     }
     drop.setItemDamage(meta);
   }
 
   @Override
-  public boolean doNormalDrops(World world, int x, int y, int z) {
+  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
     return false;
   }
 
-  /* IRedstoneConnectable */
-
-  @Override
-  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
-    return true;
-  }
 }

@@ -22,7 +22,6 @@ import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.buffer.BlockItemBuffer.Type;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
-import crazypants.enderio.machine.capbank.ConvertOldRecipe;
 import crazypants.enderio.machine.light.BlockItemElectricLight;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
@@ -155,19 +154,17 @@ public class MachineRecipes {
     ItemStack capBank3 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
     addShaped(capBank3, "bcb", "cmc", "bcb", 'b', electricalSteel, 'c', capacitor3, 'm', vibCry);
 
-    ConvertOldRecipe convertRecipe = new ConvertOldRecipe();
-    GameRegistry.addRecipe(convertRecipe);
-
     GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
     GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
 
-    //painter
-    ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
-    if (Config.useHardRecipes) {
-      addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
-    } else {
-      addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
-    }
+    //TODO: 1.8
+//    //painter
+//    ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
+//    if (Config.useHardRecipes) {
+//      addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
+//    } else {
+//      addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
+//    }
 
     //Farm
     ItemStack farm = new ItemStack(EnderIO.blockFarmStation, 1, 0);
@@ -185,8 +182,7 @@ public class MachineRecipes {
         addShaped(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd',
             Items.diamond);
       } else {
-        addShaped(transceiver, "oeo", "pdp", "oco", 'o', electricalSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);
-        addShapeless(transceiver, new ItemStack(EnderIO.blockHyperCube, 1, 0));
+        addShaped(transceiver, "oeo", "pdp", "oco", 'o', electricalSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);        
       }
     }
 

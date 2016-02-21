@@ -11,6 +11,7 @@ import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,7 @@ public class PlantableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     if(block == null) {
       return false;
     }
@@ -108,35 +109,35 @@ public class PlantableFarmer implements IFarmerJoe {
   }
 
   protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, IPlantable plantable) {
-    worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
-    Block target = plantable.getPlant(null, 0, 0, 0);
-    int meta = plantable.getPlantMetadata(null, 0, 0, 0);
-    worldObj.setBlock(bc.x, bc.y, bc.z, target, meta, 1 | 2);
+    worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+    IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));    
+    worldObj.setBlockState(bc.getBlockPos(), target, 1 | 2);
     farm.actionPerformed(false);
     return true;
   }
 
   protected boolean canPlant(World worldObj, BlockCoord bc, IPlantable plantable) {
-    Block target = plantable.getPlant(null, 0, 0, 0);
-    Block ground = worldObj.getBlock(bc.x, bc.y - 1, bc.z);
-    if(target != null && target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) &&
-        target.canBlockStay(worldObj, bc.x, bc.y, bc.z) &&
-        ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, EnumFacing.UP, plantable)) {
+    IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));
+    BlockPos groundPos = bc.getBlockPos().down();
+    IBlockState groundBS = worldObj.getBlockState(groundPos);
+    Block ground = groundBS.getBlock();
+    if(target != null && target.getBlock().canPlaceBlockAt(worldObj, bc.getBlockPos()) &&        
+        ground.canSustainPlant(worldObj, groundPos, EnumFacing.UP, plantable)) {
       return true;
     }
     return false;
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     if(!harvestExcludes.contains(block) && block instanceof IGrowable && !(block instanceof BlockStem)) {
-      return !((IGrowable) block).func_149851_a(farm.getWorld(), bc.x, bc.y, bc.z, true);
+      return !((IGrowable) block).canGrow(farm.getWorld(), bc.getBlockPos(),meta, true);
     }
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     if(!canHarvest(farm, bc, block, meta)) {
       return null;
     }
@@ -150,7 +151,7 @@ public class PlantableFarmer implements IFarmerJoe {
 
     ItemStack removedPlantable = null;
 
-    ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
+    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, farm.getMaxLootingValue());
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     boolean removed = false;
@@ -172,13 +173,13 @@ public class PlantableFarmer implements IFarmerJoe {
     if(removed) {
       if(!plant(farm, worldObj, bc, (IPlantable) removedPlantable.getItem())) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, removedPlantable.copy()));
-        worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
+        worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
       }
     } else {
-      worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
+      worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
     }
 
-    return new HarvestResult(result, bc);
+    return new HarvestResult(result, bc.getBlockPos());
   }
 
   private boolean isPlantableForBlock(ItemStack stack, Block block) {

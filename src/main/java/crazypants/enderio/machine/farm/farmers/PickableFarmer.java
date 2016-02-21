@@ -3,15 +3,16 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public class PickableFarmer extends CustomSeedFarmer {
   
@@ -28,7 +29,7 @@ public class PickableFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     
     if(!canHarvest(farm, bc, block, meta)) {
       return null;
@@ -38,8 +39,8 @@ public class PickableFarmer extends CustomSeedFarmer {
       return null;
     }
     EntityPlayerMP player = farm.getFakePlayer();
-    World world = farm.getWorldObj();
-    player.theItemInWorldManager.activateBlockOrUseItem(player, player.worldObj, null, bc.x, bc.y, bc.z, 0, 0, 0, 0);    
+    World world = farm.getWorld();
+    player.theItemInWorldManager.activateBlockOrUseItem(player, player.worldObj, null, bc.getBlockPos(), EnumFacing.DOWN, 0, 0, 0);    
     
     List<EntityItem> drops = new ArrayList<EntityItem>();
     
@@ -55,7 +56,7 @@ public class PickableFarmer extends CustomSeedFarmer {
     }
     farm.actionPerformed(false);
     farm.damageHoe(1, bc);
-    return new HarvestResult(drops, bc);
+    return new HarvestResult(drops, bc.getBlockPos());
   }
   
 

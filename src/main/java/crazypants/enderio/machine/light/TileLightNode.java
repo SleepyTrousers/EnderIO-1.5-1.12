@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.light;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 public class TileLightNode extends TileEntityEio {
 
@@ -12,22 +13,21 @@ public class TileLightNode extends TileEntityEio {
   int parentZ;
 
   public TileElectricLight getParent() {
-    TileEntity te = worldObj.getTileEntity(parentX, parentY, parentZ);
+    if(worldObj == null) {
+      return null;
+    }
+    TileEntity te = worldObj.getTileEntity(new BlockPos(parentX, parentY, parentZ));
     if(te instanceof TileElectricLight) {
       return (TileElectricLight) te;
     }
     return null;
   }
 
-  @Override
-  protected boolean shouldUpdate() {
-    return false;
-  }
-
   public void checkParent() {
-    if(worldObj.blockExists(parentX, parentY, parentZ)) {
-      if(worldObj.getBlock(parentX, parentY, parentZ) != EnderIO.blockElectricLight) {
-        worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+    BlockPos bp = new BlockPos(parentX, parentY, parentZ);
+    if(worldObj.isBlockLoaded(bp)) {
+      if(worldObj.getBlockState(bp).getBlock() != EnderIO.blockElectricLight) {
+        worldObj.setBlockToAir(pos);
       }
     }
   }
@@ -62,8 +62,7 @@ public class TileLightNode extends TileEntityEio {
 
   @Override
   public String toString() {
-    return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ",  xCoord=" + xCoord
-        + ", yCoord=" + yCoord + ", zCoord=" + zCoord + ", tileEntityInvalid=" + tileEntityInvalid + "]";
+    return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ",  pos=" + pos + ", tileEntityInvalid=" + tileEntityInvalid + "]";
   }
 
 }

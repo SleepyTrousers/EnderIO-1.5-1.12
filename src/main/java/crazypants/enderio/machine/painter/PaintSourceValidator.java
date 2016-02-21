@@ -3,22 +3,20 @@ package crazypants.enderio.machine.painter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 public class PaintSourceValidator {
 
   public static PaintSourceValidator instance = new PaintSourceValidator();
-
-  private boolean listsPopulated = false;
+  
   private final List<RecipeInput> whitelist = new ArrayList<RecipeInput>();
   private final List<RecipeInput> blacklist = new ArrayList<RecipeInput>();
 
@@ -40,7 +38,7 @@ public class PaintSourceValidator {
       return false;
     }
 
-    return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock()) || block == Blocks.glass;
+    return block.isOpaqueCube() || (block.getMaterial().isOpaque()) || block == Blocks.glass;
   }
 
   public boolean isWhitelisted(ItemStack paintSource) {

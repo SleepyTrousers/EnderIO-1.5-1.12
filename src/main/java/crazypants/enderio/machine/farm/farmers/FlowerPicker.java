@@ -3,16 +3,15 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class FlowerPicker implements IFarmerJoe {
 
@@ -32,12 +31,12 @@ public class FlowerPicker implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     return false;
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     for (Block flower : flowers) {
       if (block == flower) {
         return true;
@@ -52,17 +51,17 @@ public class FlowerPicker implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
 
     if(!farm.hasHoe()) {
       farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
       return null;
     }
 
-    World worldObj = farm.getWorldObj();
+    World worldObj = farm.getWorld();
     List<EntityItem> result = new ArrayList<EntityItem>();
 
-    ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
+    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, farm.getMaxLootingValue());
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     if(drops != null) {
@@ -71,9 +70,9 @@ public class FlowerPicker implements IFarmerJoe {
       }
     }
 
-    worldObj.setBlockToAir(bc.x, bc.y, bc.z);
+    worldObj.setBlockToAir(bc.getBlockPos());
 
-    return new HarvestResult(result, bc);
+    return new HarvestResult(result, bc.getBlockPos());
   }
 
 }

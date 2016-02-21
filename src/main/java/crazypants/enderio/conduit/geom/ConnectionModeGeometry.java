@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.enderio.core.client.render.VertexTranslation;
@@ -15,7 +14,6 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 
@@ -110,29 +108,30 @@ public class ConnectionModeGeometry {
     float minU = tex.getMinU() + (uWidth - uScale);
     float vScale = tex.getMaxV() - tex.getMinV();
 
-    Tessellator tes = Tessellator.instance;
-    for (Vertex v : verts) {
-      if (tintSides) {
-        float cm = 1;
-        if (v.ny() > 0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
-        } else if (v.ny() < -0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
-        } else if (v.nx() > 0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
-        } else if (v.nx() < -0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
-        } else if (v.nz() > 0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
-        } else if (v.nz() < -0.1) {
-          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
-        }
-        tes.setColorOpaque_F(cm, cm, cm);
-      }
-
-      tes.setNormal(v.nx(), v.ny(), v.nz());
-      tes.addVertexWithUV(v.x() + trans.x, v.y() + trans.y, v.z() + trans.z, minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
-    }
+    //TODO: 1.8
+//    Tessellator tes = Tessellator.instance;
+//    for (Vertex v : verts) {
+//      if (tintSides) {
+//        float cm = 1;
+//        if (v.ny() > 0.1) {
+//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
+//        } else if (v.ny() < -0.1) {
+//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
+//        } else if (v.nx() > 0.1) {
+//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
+//        } else if (v.nx() < -0.1) {
+//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
+//        } else if (v.nz() > 0.1) {
+//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
+//        } else if (v.nz() < -0.1) {
+//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
+//        }
+//        tes.setColorOpaque_F(cm, cm, cm);
+//      }
+//
+//      tes.setNormal(v.nx(), v.ny(), v.nz());
+//      tes.addVertexWithUV(v.x() + trans.x, v.y() + trans.y, v.z() + trans.z, minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
+//    }
 
   }
 

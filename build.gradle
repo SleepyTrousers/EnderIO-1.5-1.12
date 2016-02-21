@@ -72,7 +72,7 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-            exclude '**/enderio/trigger/**'
+	    exclude '**/unported/**'
         }
         resources {
             srcDir 'resources'

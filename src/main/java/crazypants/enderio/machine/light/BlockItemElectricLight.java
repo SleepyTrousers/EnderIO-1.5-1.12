@@ -2,24 +2,25 @@ package crazypants.enderio.machine.light;
 
 import java.util.List;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-
-public class BlockItemElectricLight extends ItemBlockWithMetadata implements IResourceTooltipProvider {
+public class BlockItemElectricLight extends ItemBlock implements IResourceTooltipProvider {
 
   public enum Type {
     ELECTRIC("item.itemElectricLight", false, true, false),
@@ -44,8 +45,10 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
   }
 
   public BlockItemElectricLight(Block block) {
-    super(block, block);
+    super(block);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setHasSubtypes(true);
+    setMaxDamage(0);
   }
 
   @Override
@@ -56,26 +59,32 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
   }
 
   @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for(Type type : Type.values()) {
       par3List.add(new ItemStack(this,1,type.ordinal()));
     }
   }
 
   @Override
-  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-    if(!world.setBlock(x, y, z, field_150939_a, 0, 3)) {
-      return false;
+  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+    
+    if (!world.setBlockState(pos, newState, 3)) return false;
+
+    IBlockState state = world.getBlockState(pos);
+    if (state.getBlock() == block) {
+      setTileEntityNBT(world, player, pos, stack);
+      block.onBlockPlacedBy(world, pos, state, player, stack);
     }
-    if(world.getBlock(x, y, z) == field_150939_a) {
-      ForgeDirection onFace = ForgeDirection.values()[side].getOpposite();
-      TileEntity te = world.getTileEntity(x, y, z);
+
+    IBlockState bs = world.getBlockState(pos);
+    if(bs.getBlock() == block) {
+      EnumFacing onFace = side;      
+      TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileElectricLight) {
         TileElectricLight el = ((TileElectricLight) te);
         el.setFace(onFace);
-        Type t= Type.values()[metadata];
+        Type t= Type.values()[block.getMetaFromState(bs)];
         el.setInverted(t.isInverted);
         el.setRequiresPower(t.isPowered);
         el.setWireless(t.isWireless);

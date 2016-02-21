@@ -1,17 +1,18 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 import com.enderio.core.common.util.BlockCoord;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RubberTreeFarmerIC2 extends TreeFarmer {
 
@@ -36,7 +37,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     for(int x=-1;x<2;x++) {
       for(int z=-1;z<2;z++) {
        Block blk = farm.getBlock(bc.x + x, bc.y, bc.z + z);
@@ -49,7 +50,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
   }
   
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     HarvestResult res = new HarvestResult();
     int y = bc.y;
     boolean done = false;
@@ -58,9 +59,8 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
       block = farm.getBlock(bc);
       if(!isWood(block)) {
         done = true;
-      } else {
-        meta = farm.getBlockMeta(bc);
-        if(attemptHarvest(res, farm.getWorldObj(), bc.x, y, bc.z, meta)) {
+      } else {        
+        if(attemptHarvest(res, farm.getWorld(), bc.x, y, bc.z, farm.getBlockState(bc.getBlockPos()))) {
           farm.damageTool(ToolType.TREETAP, woods[0], bc, 1);
         }
       }
@@ -69,10 +69,11 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
     return res;
   }
 
-  private boolean attemptHarvest(HarvestResult res, World world, int x, int y, int z, int meta) {
+  private boolean attemptHarvest(HarvestResult res, World world, int x, int y, int z, IBlockState bs) {
+    int meta = bs.getBlock().getMetaFromState(bs);
     if(meta > 1 && meta < 6) {
-      world.setBlockMetadataWithNotify(x, y, z, meta + 6, 3);      
-      world.scheduleBlockUpdate(x, y, z, woods[0], woods[0].tickRate(world));      
+      world.setBlockState(new BlockPos(x, y, z), bs.getBlock().getStateFromMeta(meta + 6), 3);      
+      world.scheduleBlockUpdate(new BlockPos(x, y, z), woods[0], woods[0].tickRate(world), 0);      
       ItemStack drop = stickyResin.copy();
       drop.stackSize = world.rand.nextInt(3) + 1;
       EntityItem dropEnt = new EntityItem(world, x + 0.5, y + 1, z + 0.5, drop);

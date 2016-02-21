@@ -19,6 +19,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.tool.ArrayMappingTool;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -29,6 +30,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -163,7 +165,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         return false;
       }
       damageHoe(1, dirtLoc);
-      worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
+      worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.farmland.getDefaultState());
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepSound(),
           (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getFrequency() * 0.8F);
       actionPerformed(false);
@@ -255,10 +257,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
     boolean canDamage = canDamage(tool);
     if(type == ToolType.AXE) {
-      tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.x, bc.y, bc.z, farmerJoe);
+      tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.getBlockPos(), farmerJoe);
     } else if(type == ToolType.HOE) {
       int origDamage = tool.getItemDamage();
-      tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
+      tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.getBlockPos(), EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       if(origDamage == tool.getItemDamage() && canDamage) {
         tool.damageItem(1, farmerJoe);
       }
@@ -296,20 +298,24 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   public Block getBlock(BlockCoord bc) {
-    return worldObj.getBlock(bc.x, bc.y, bc.z);
+    return getBlock(bc.getBlockPos());
   }
 
   public Block getBlock(int x, int y, int z) {
-    return worldObj.getBlock(x, y, z);
+    return getBlock(new BlockPos(x, y, z));
   }
-
-  public int getBlockMeta(BlockCoord bc) {
-    return worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
+  
+  public Block getBlock(BlockPos pos) {
+    return getBlockState(pos).getBlock();
+  }
+  
+  public IBlockState getBlockState(BlockPos pos) {
+    return worldObj.getBlockState(pos);
   }
 
   public boolean isOpen(BlockCoord bc) {
-    Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
-    return block.isAir(worldObj, bc.x, bc.y, bc.z) || block.isReplaceable(worldObj, bc.x, bc.y, bc.z);
+    Block block = getBlock(bc);
+    return block.isAir(worldObj, bc.getBlockPos()) || block.isReplaceable(worldObj, bc.getBlockPos());
   }
 
   public void setNotification(String unloc) {
@@ -364,7 +370,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     super.doUpdate();
     if(isActive() != wasActive) {
       wasActive = isActive();
-      worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+      worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
     }
   }
 
@@ -414,18 +420,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     lastScanned = bc;
 
-    Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
-    if(block == null) {
-      return;
-    }
-    int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
+    IBlockState bs = getBlockState(bc.getBlockPos());
+    Block block = bs.getBlock();
+    
     if(farmerJoe == null) {
       farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.getDimensionId()));
     }
 
     if(isOpen(bc)) {
-      FarmersCommune.instance.prepareBlock(this, bc, block, meta);
-      block = worldObj.getBlock(bc.x, bc.y, bc.z);
+      FarmersCommune.instance.prepareBlock(this, bc, block, bs);
+      bs = getBlockState(bc.getBlockPos());
+      block = bs.getBlock();
     }
 
     if(isOutputFull()) {
@@ -439,7 +444,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
 
     if(!isOpen(bc)) {
-      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
+      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, bs);
       if(harvest != null && harvest.getDrops() != null) {
         PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
         PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimensionId(), bc.x, bc.y, bc.z, 64));
@@ -462,7 +467,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
     if (hasBonemeal() && bonemealCooldown-- <= 0) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
-      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.x, bc.y, bc.z))) {
+      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.getBlockPos()))) {
         farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
         farmerJoe.inventory.currentItem = 0;
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {

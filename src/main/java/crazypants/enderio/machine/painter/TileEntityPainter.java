@@ -3,14 +3,15 @@ package crazypants.enderio.machine.painter;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
 
@@ -22,17 +23,17 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   }
 
   @Override
-  public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-    return super.canExtractItem(i, itemstack, j) && PainterUtil.isMetadataEquivelent(itemstack, inventory[2]);
+  public boolean canExtractItem(int i, ItemStack itemstack, EnumFacing side) {
+    return super.canExtractItem(i, itemstack, side) && PainterUtil.isMetadataEquivelent(itemstack, inventory[2]);
   }
 
   @Override
-  public String getInventoryName() {
+  public String getName() {
     return "Auto Painter";
   }
 
   @Override
-  public boolean hasCustomInventoryName() {
+  public boolean hasCustomName() {
     return false;
   }
 
@@ -92,12 +93,13 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
       // next result is a different item type
       return 0;
     } else if (result.hasTagCompound() && inventory[2].hasTagCompound()) {
-      int cookedId = result.getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      int invId = inventory[2].getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      if (cookedId != invId) {
-        // next result has a different source item than the current one
-        return 0;
-      }
+     //TODO: 1.8
+//      int cookedId = result.getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
+//      int invId = inventory[2].getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
+//      if (cookedId != invId) {
+//        // next result has a different source item than the current one
+//        return 0;
+//      }
     }
     return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }

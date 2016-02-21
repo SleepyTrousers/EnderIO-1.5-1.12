@@ -8,10 +8,11 @@ import crazypants.enderio.Log;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C15PacketClientSettings;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.stats.StatBase;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -37,10 +38,10 @@ public class FakeFarmPlayer extends EntityPlayerMP {
     return false;
   }
 
-  @Override
-  public ChunkCoordinates getPlayerCoordinates() {
-    return new ChunkCoordinates(0, 0, 0);
-  }
+  // @Override
+  // public ChunkCoordinates getPlayerCoordinates() {
+  // return new ChunkCoordinates(0, 0, 0);
+  // }
 
   @Override
   public void addStat(StatBase par1StatBase, int par2) {
@@ -51,7 +52,7 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   }
 
   @Override
-  public boolean isEntityInvulnerable() {
+  public boolean isEntityInvulnerable(DamageSource source) {
     return true;
   }
 
@@ -76,19 +77,13 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   }
 
   @Override
-  public void func_147100_a(C15PacketClientSettings pkt) {
-    return;
-  }
-
-  @Override
-  public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack) {
+  public boolean canPlayerEdit(BlockPos p_175151_1_, EnumFacing p_175151_2_, ItemStack p_175151_3_) {
     return true;
   }
 
   @Override
   public void setWorld(World p_70029_1_) {
-    Log.warn("Ender IO Farming station fake player is being transfered to world '" + p_70029_1_
-        + "'. Trying to reject transfer. Call stack follows:");
+    Log.warn("Ender IO Farming station fake player is being transfered to world '" + p_70029_1_ + "'. Trying to reject transfer. Call stack follows:");
     Thread.dumpStack();
   }
 

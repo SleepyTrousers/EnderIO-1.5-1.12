@@ -30,9 +30,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -62,7 +59,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     super(playerInv, te);
     te.eventHandler = this;
 
-    if(te.getWorldObj().isRemote) {
+    if(te.getWorld().isRemote) {
       changedItems = null;
     } else {
       changedItems = new HashSet<ItemEntry>();
@@ -72,49 +69,51 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
     slotCraftResult = inventorySlots.size();
-    addSlotToContainer(new SlotCrafting(playerInv.player, getInv(), getInv(), TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59,
-        CRAFTING_GRID_Y + 18) {
-      @Override
-      public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
-        FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, getInv());
-        for (int i = TileInventoryPanel.SLOT_CRAFTING_START; i < TileInventoryPanel.SLOT_CRAFTING_RESULT; i++) {
-          ItemStack itemstack = getInv().getStackInSlot(i);
-          if(itemstack == null)
-            continue;
-
-          getInv().decrStackSize(i, 1);
-          if(!itemstack.getItem().hasContainerItem(itemstack))
-            continue;
-
-          ItemStack containerIS = itemstack.getItem().getContainerItem(itemstack);
-          if(containerIS != null && containerIS.isItemStackDamageable() && containerIS.getItemDamage() > containerIS.getMaxDamage()) {
-            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerIS));
-          } else {
-            if(itemstack.getItem().doesContainerItemLeaveCraftingGrid(itemstack)) {
-              if(ItemUtil.doInsertItem(getInv(), 10, 20, itemstack) > 0)
-                continue;
-              if(player.inventory.addItemStackToInventory(containerIS))
-                continue;
-            }
-            if(getInv().getStackInSlot(i) == null) {
-              getInv().setInventorySlotContents(i, containerIS);
-            } else {
-              player.dropPlayerItemWithRandomChoice(containerIS, false);
-            }
-          }
-        }
-      }
-
-      @Override
-      public ItemStack decrStackSize(int p_75209_1_) {
-        if (this.getHasStack()) {
-          // on a right click we are asked to craft half a result. Ignore that.
-          return super.decrStackSize(this.getStack().stackSize);
-        }
-        return super.decrStackSize(p_75209_1_);
-      }
-
-    });
+    //TODO: 1.8: getInv() needs to redturn an InventoyCrafting
+//    addSlotToContainer(new SlotCrafting(playerInv.player, getInv(), getInv(), TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59,
+//        CRAFTING_GRID_Y + 18) {
+//      @Override
+//      public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
+//        FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, getInv());
+//        for (int i = TileInventoryPanel.SLOT_CRAFTING_START; i < TileInventoryPanel.SLOT_CRAFTING_RESULT; i++) {
+//          ItemStack itemstack = getInv().getStackInSlot(i);
+//          if(itemstack == null)
+//            continue;
+//
+//          getInv().decrStackSize(i, 1);
+//          if(!itemstack.getItem().hasContainerItem(itemstack))
+//            continue;
+//
+//          ItemStack containerIS = itemstack.getItem().getContainerItem(itemstack);
+//          if(containerIS != null && containerIS.isItemStackDamageable() && containerIS.getItemDamage() > containerIS.getMaxDamage()) {
+//            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerIS));
+//          } else {
+//            if(itemstack.getItem().doesContainerItemLeaveCraftingGrid(itemstack)) {
+//              if(ItemUtil.doInsertItem(getInv(), 10, 20, itemstack) > 0)
+//                continue;
+//              if(player.inventory.addItemStackToInventory(containerIS))
+//                continue;
+//            }
+//            if(getInv().getStackInSlot(i) == null) {
+//              getInv().setInventorySlotContents(i, containerIS);
+//            } else {
+//              player.dropPlayerItemWithRandomChoice(containerIS, false);
+//            }
+//          }
+//        }
+//      }
+//
+//      @Override
+//      public ItemStack decrStackSize(int p_75209_1_) {
+//        if (this.getHasStack()) {
+//          // on a right click we are asked to craft half a result. Ignore that.
+//          return super.decrStackSize(this.getStack().stackSize);
+//        }
+//        return super.decrStackSize(p_75209_1_);
+//      }
+//
+//    });
+    
 
     firstSlotCraftingGrid = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_CRAFTING_START; y < 3; y++) {
@@ -200,13 +199,15 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     super.removeCraftingFromCrafters(crafting);
     removeChangeLog();
   }
+  
+  
 
   @Override
-  public void addCraftingToCrafters(ICrafting crafting) {
+  public void onCraftGuiOpened(ICrafting crafting) {
     if(changedItems != null) {
       sendChangeLog();
     }
-    super.addCraftingToCrafters(crafting);
+    super.onCraftGuiOpened(crafting);
     if(changedItems != null) {
       InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
       if(db != null) {
@@ -257,8 +258,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public boolean func_94530_a(ItemStack par1, Slot slot) {
-    return !(slot instanceof SlotCrafting) && super.func_94530_a(par1, slot);
+  public boolean canMergeSlot(ItemStack par1, Slot slot) {
+    return !(slot instanceof SlotCrafting) && super.canMergeSlot(par1, slot);
   }
 
   public boolean clearCraftingGrid() {
@@ -368,7 +369,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   public int getSlotIndex(IInventory inv, int index) {
     for (int i = 0; i < inventorySlots.size(); i++) {
       Slot slot = inventorySlots.get(i);
-      if(slot.isSlotInInventory(inv, index)) {
+      if(slot.isHere(inv, index)) {
         return i;
       }
     }

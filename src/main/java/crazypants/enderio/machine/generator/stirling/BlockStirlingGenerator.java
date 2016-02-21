@@ -2,15 +2,18 @@ package crazypants.enderio.machine.generator.stirling;
 
 import java.util.Random;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> {
 
@@ -29,12 +32,12 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new StirlingGeneratorContainer(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
+    return new StirlingGeneratorContainer(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(new BlockPos(x, y, z)));
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiStirlingGenerator(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
+    return new GuiStirlingGenerator(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(new BlockPos(x, y, z)));
   }
 
   @Override
@@ -44,7 +47,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
+    if (active) {
       return "enderio:stirlingGenFrontOn";
     }
     return "enderio:stirlingGenFrontOff";
@@ -52,27 +55,26 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    TileEntityStirlingGenerator te = (TileEntityStirlingGenerator) world.getTileEntity(x, y, z);
-    if(te != null && te.isActive()) {
-      ForgeDirection front = ForgeDirection.values()[te.facing];
-
+  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+    TileEntityStirlingGenerator te = (TileEntityStirlingGenerator) world.getTileEntity(pos);
+    if (te != null && te.isActive()) {
+      EnumFacing front = te.facing;
       for (int i = 0; i < 2; i++) {
-        double px = x + 0.5 + front.offsetX * 0.6;
-        double pz = z + 0.5 + front.offsetZ * 0.6;
+        double px = pos.getX() + 0.5 + front.getFrontOffsetX() * 0.6;
+        double pz = pos.getY() + 0.5 + front.getFrontOffsetZ() * 0.6;
         double v = 0.05;
         double vx = 0;
         double vz = 0;
-        
-        if(front == ForgeDirection.NORTH || front == ForgeDirection.SOUTH) {
+
+        if (front == EnumFacing.NORTH || front == EnumFacing.SOUTH) {
           px += world.rand.nextFloat() * 0.9 - 0.45;
-          vz += front == ForgeDirection.NORTH ? -v : v;
+          vz += front == EnumFacing.NORTH ? -v : v;
         } else {
           pz += world.rand.nextFloat() * 0.9 - 0.45;
-          vx += front == ForgeDirection.WEST ? -v : v;
+          vx += front == EnumFacing.WEST ? -v : v;
         }
 
-        world.spawnParticle("smoke", px, y + 0.1, pz, vx, 0, vz);
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, px, pos.getY() + 0.1, pz, vx, 0, vz);
       }
     }
   }

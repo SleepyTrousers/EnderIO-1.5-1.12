@@ -5,15 +5,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
 public class StemFarmer extends CustomSeedFarmer {
 
@@ -24,7 +25,7 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     if(plantedBlock == block) {
       return true;
     }
@@ -32,8 +33,8 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    BlockCoord up = bc.getLocation(ForgeDirection.UP);
+  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+    BlockCoord up = bc.getLocation(EnumFacing.UP);
     Block upBLock = farm.getBlock(up);
     return upBLock == plantedBlock;
   }
@@ -44,24 +45,24 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
 
     
     HarvestResult res = new HarvestResult();
-    BlockCoord harvestCoord = bc;
+    BlockPos harvestCoord = bc.getBlockPos();
     boolean done = false;
     do{
-      harvestCoord = harvestCoord.getLocation(ForgeDirection.UP);
+      harvestCoord = harvestCoord.offset(EnumFacing.UP);
       boolean hasHoe = farm.hasHoe();
       if(plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
         res.harvestedBlocks.add(harvestCoord);
-        ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorldObj(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
+        List<ItemStack> drops = plantedBlock.getDrops(farm.getWorld(), harvestCoord, meta, farm.getMaxLootingValue());
         if(drops != null) {
           for(ItemStack drop : drops) {
-            res.drops.add(new EntityItem(farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
           }
         }
-        farm.damageHoe(1, harvestCoord);
+        farm.damageHoe(1, new BlockCoord(harvestCoord));
         farm.actionPerformed(false);
       } else {
         if (!hasHoe) {
@@ -73,10 +74,10 @@ public class StemFarmer extends CustomSeedFarmer {
       }
     } while(!done);
 
-    List<BlockCoord> toClear = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
+    List<BlockPos> toClear = new ArrayList<BlockPos>(res.getHarvestedBlocks());
     Collections.sort(toClear, COMP);
-    for (BlockCoord coord : toClear) {
-      farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
+    for (BlockPos coord : toClear) {
+      farm.getWorld().setBlockToAir(coord);
     }
 
     return res;
@@ -84,18 +85,18 @@ public class StemFarmer extends CustomSeedFarmer {
 
   @Override
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
-    World worldObj = farm.getWorldObj();
+    World worldObj = farm.getWorld();
     if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(seeds, bc) != null) {
       return plant(farm, worldObj, bc);
     }
     return false;
   }
 
-  private static class HeightCompatator implements Comparator<BlockCoord> {
+  private static class HeightCompatator implements Comparator<BlockPos> {
 
     @Override
-    public int compare(BlockCoord o1, BlockCoord o2) {
-      return -compare(o1.y, o2.y);
+    public int compare(BlockPos o1, BlockPos o2) {
+      return -compare(o1.getY(), o2.getY());
     }
 
     public static int compare(int x, int y) {

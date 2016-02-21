@@ -10,7 +10,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -63,7 +62,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, result);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
+    //TODO: 1.8
+//    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
 
     return result;
   }
@@ -122,9 +122,10 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       if (te instanceof TileTravelAnchor) {
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
-        Block b = PainterUtil.getSourceBlock(stack);
-        ta.setSourceBlock(b);
-        ta.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
+      //TODO: 1.8
+//        Block b = PainterUtil.getSourceBlock(stack);
+//        ta.setSourceBlock(b);
+//        ta.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
         world.markBlockForUpdate(pos);
       }
     }

@@ -3,12 +3,12 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 
 public class FarmersCommune implements IFarmerJoe {
 
@@ -34,7 +34,7 @@ public class FarmersCommune implements IFarmerJoe {
   }
   
   @Override
-  public boolean canHarvest(TileFarmStation farm,  BlockCoord bc, Block block, int meta) {
+  public boolean canHarvest(TileFarmStation farm,  BlockCoord bc, Block block, IBlockState meta) {
     for (IFarmerJoe joe : farmers) {
       if(joe.canHarvest(farm, bc, block, meta)) {
         return true;
@@ -44,7 +44,7 @@ public class FarmersCommune implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     for (IFarmerJoe joe : farmers) {
       if (ignoreTreeHarvest(farm, bc, joe)) continue;
       if (joe.canHarvest(farm, bc, block, meta)) {
@@ -55,7 +55,7 @@ public class FarmersCommune implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     for (IFarmerJoe joe : farmers) {
       if(joe.prepareBlock(farm, bc, block, meta)) {
         return true;

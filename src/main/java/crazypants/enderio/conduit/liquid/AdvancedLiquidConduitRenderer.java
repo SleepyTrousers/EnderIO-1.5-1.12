@@ -7,12 +7,10 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,7 +26,10 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
     super.renderConduit(tex, conduit, component, brightness);
 
-    if (isNSEWUD(component.dir)) {
+    if (!isNSEWUD(component.dir)) {
+      return;
+    }
+    
       AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
 
       FluidStack fluid = lc.getFluidType();
@@ -38,9 +39,9 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       }
 
       float scaleFactor = 0.75f;
-      float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
-      float yLen = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
-      float zLen = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
@@ -51,7 +52,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
           EnumFacing vDir = RenderUtil.getVDirForFace(d);
           if (component.dir == EnumFacing.UP || component.dir == EnumFacing.DOWN) {
             vDir = RenderUtil.getUDirForFace(d);
-          } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.offsetY != 0) {
+          } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.getFrontOffsetY() != 0) {
             vDir = RenderUtil.getUDirForFace(d);
           }
 
@@ -82,20 +83,18 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       }
 
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-        Tessellator tessellator = Tessellator.instance;
-        for (Vertex c : corners) {
-          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-        }
-        //back face
-        for (int i = corners.size() - 1; i >= 0; i--) {
-          Vertex c = corners.get(i);
-          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-        }
+//        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
+//        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+//        Tessellator tessellator = Tessellator.instance;
+//        for (Vertex c : corners) {
+//          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//        }
+//        //back face
+//        for (int i = corners.size() - 1; i >= 0; i--) {
+//          Vertex c = corners.get(i);
+//          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//        }
       }
-
-    }
 
   }
 
@@ -106,17 +105,17 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
   private void moveEdgeCorners(List<Vertex> vertices, EnumFacing edge, float scaleFactor) {
     int[] indices = getClosest(edge, vertices);
-    vertices.get(indices[0]).xyz.x -= scaleFactor * edge.offsetX;
-    vertices.get(indices[1]).xyz.x -= scaleFactor * edge.offsetX;
-    vertices.get(indices[0]).xyz.y -= scaleFactor * edge.offsetY;
-    vertices.get(indices[1]).xyz.y -= scaleFactor * edge.offsetY;
-    vertices.get(indices[0]).xyz.z -= scaleFactor * edge.offsetZ;
-    vertices.get(indices[1]).xyz.z -= scaleFactor * edge.offsetZ;
+    vertices.get(indices[0]).xyz.x -= scaleFactor * edge.getFrontOffsetX();
+    vertices.get(indices[1]).xyz.x -= scaleFactor * edge.getFrontOffsetX();
+    vertices.get(indices[0]).xyz.y -= scaleFactor * edge.getFrontOffsetY();
+    vertices.get(indices[1]).xyz.y -= scaleFactor * edge.getFrontOffsetY();
+    vertices.get(indices[0]).xyz.z -= scaleFactor * edge.getFrontOffsetZ();
+    vertices.get(indices[1]).xyz.z -= scaleFactor * edge.getFrontOffsetZ();
   }
 
   private int[] getClosest(EnumFacing edge, List<Vertex> vertices) {
     int[] res = new int[] { -1, -1 };
-    boolean highest = edge.offsetX > 0 || edge.offsetY > 0 || edge.offsetZ > 0;
+    boolean highest = edge.getFrontOffsetX() > 0 || edge.getFrontOffsetY() > 0 || edge.getFrontOffsetZ() > 0;
     double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
     int index = 0;
     for (Vertex v : vertices) {

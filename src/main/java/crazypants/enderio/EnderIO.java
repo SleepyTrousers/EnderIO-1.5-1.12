@@ -59,10 +59,19 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
+import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
+import crazypants.enderio.machine.farm.BlockFarmStation;
+import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
+import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
+import crazypants.enderio.machine.light.BlockElectricLight;
+import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
@@ -70,7 +79,6 @@ import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
-import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
@@ -106,6 +114,7 @@ import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
@@ -173,7 +182,7 @@ public class EnderIO {
   public static ItemEnderface itemEnderface;
 
 //  //Teleporting
-  public static BlockTravelAnchor blockTravelPlatform;
+  public static BlockTravelAnchor<TileTravelAnchor> blockTravelPlatform;
   public static BlockTelePad blockTelePad;
   public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
@@ -206,21 +215,21 @@ public class EnderIO {
   public static ItemPowerItemFilter itemPowerItemFilter;
   public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
   public static ItemFunctionUpgrade itemFunctionUpgrade;
-//
-//  // Machines
-//  public static BlockStirlingGenerator blockStirlingGenerator;
-//  public static BlockCombustionGenerator blockCombustionGenerator;
-//  public static BlockZombieGenerator blockZombieGenerator;
+
+  // Machines
+  public static BlockStirlingGenerator blockStirlingGenerator;
+  public static BlockCombustionGenerator blockCombustionGenerator;
+  public static BlockZombieGenerator blockZombieGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-//  public static BlockCapacitorBank blockCapacitorBank;
+
   public static BlockCapBank blockCapBank;
   public static BlockWirelessCharger blockWirelessCharger;
-//  public static BlockCrusher blockCrusher; 
+  public static BlockCrusher blockCrusher; 
   public static BlockPowerMonitor blockPowerMonitor;
   public static BlockVat blockVat;
-//  public static BlockFarmStation blockFarmStation;
+  public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
@@ -234,12 +243,12 @@ public class EnderIO {
   public static BlockInhibitorObelisk blockInhibitorObelisk;
   public static BlockTransceiver blockTransceiver;
   public static BlockBuffer blockBuffer;
-//  public static BlockInventoryPanel blockInventoryPanel;
+  public static BlockInventoryPanel blockInventoryPanel;
   public static BlockKillerJoe blockKillerJoe;
-//  public static BlockEnchanter blockEnchanter;
-//
-//  public static BlockElectricLight blockElectricLight;
-//  public static BlockLightNode blockLightNode;
+  public static BlockEnchanter blockEnchanter;
+
+  public static BlockElectricLight blockElectricLight;
+  public static BlockLightNode blockLightNode;
 
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
@@ -291,14 +300,13 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-//    blockStirlingGenerator = BlockStirlingGenerator.create();
-//    blockCombustionGenerator = BlockCombustionGenerator.create();
-//    blockZombieGenerator = BlockZombieGenerator.create();
+    blockStirlingGenerator = BlockStirlingGenerator.create();
+    blockCombustionGenerator = BlockCombustionGenerator.create();
+    blockZombieGenerator = BlockZombieGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
-//
-//    blockCrusher = BlockCrusher.create();
+
+    blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();
-//    blockCapacitorBank = BlockCapacitorBank.create();
     blockCapBank = BlockCapBank.create();
 
 //    blockPainter = BlockPainter.create();
@@ -309,17 +317,18 @@ public class EnderIO {
 //    blockPaintedSlab = new BlockPaintedSlab(false);
 //    blockPaintedDoubleSlab = new BlockPaintedSlab(true);
 //    blockPaintedSlab.init();
-//    blockPaintedDoubleSlab.init();
-    blockCrafter = BlockCrafter.create();
+//    blockPaintedDoubleSlab.init();    
 //    blockPaintedGlowstone = BlockPaintedGlowstone.create();
 //    blockPaintedCarpet = BlockPaintedCarpet.create();
-//
+
+    blockCrafter = BlockCrafter.create();
+    
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
-//    blockFarmStation = BlockFarmStation.create();
-//
+    blockFarmStation = BlockFarmStation.create();
+
     blockWirelessCharger = BlockWirelessCharger.create();
-//    
+    
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
@@ -327,7 +336,7 @@ public class EnderIO {
     blockTransceiver = BlockTransceiver.create();
 
     blockBuffer = BlockBuffer.create();
-//    blockInventoryPanel = BlockInventoryPanel.create();
+    blockInventoryPanel = BlockInventoryPanel.create();
 
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
@@ -343,13 +352,13 @@ public class EnderIO {
     blockExperianceOblisk = BlockExperienceObelisk.create();
     blockWeatherObelisk = BlockWeatherObelisk.create();
     blockInhibitorObelisk = BlockInhibitorObelisk.create();
-//    blockEnchanter = BlockEnchanter.create();
+    blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockDarkSteelLadder = BlockDarkSteelLadder.create();
-//    blockElectricLight = BlockElectricLight.create();
-//    blockLightNode = BlockLightNode.create();
+    blockElectricLight = BlockElectricLight.create();
+    blockLightNode = BlockLightNode.create();
 
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
 
@@ -693,11 +702,12 @@ public class EnderIO {
             InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if(msg.isItemStackMessage()) {
-          if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {
-            PaintSourceValidator.instance.addToWhitelist(msg.getItemStackValue());
-          } else if(IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
-            PaintSourceValidator.instance.addToBlacklist(msg.getItemStackValue());
-          }
+          //TODO: 1.8
+//          if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {
+//            PaintSourceValidator.instance.addToWhitelist(msg.getItemStackValue());
+//          } else if(IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
+//            PaintSourceValidator.instance.addToBlacklist(msg.getItemStackValue());
+//          }
         }
       } catch (Exception e) {
         Log.error("Error occured handling IMC message " + key + " from " + msg.getSender());

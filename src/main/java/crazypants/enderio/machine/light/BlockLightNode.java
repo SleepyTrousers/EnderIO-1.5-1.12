@@ -2,18 +2,18 @@ package crazypants.enderio.machine.light;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
-public class BlockLightNode extends BlockEio {
+public class BlockLightNode extends BlockEio<TileLightNode> {
 
   public static BlockLightNode create() {
     BlockLightNode result = new BlockLightNode();
@@ -29,64 +29,67 @@ public class BlockLightNode extends BlockEio {
   }
 
   @Override
-  public boolean renderAsNormalBlock() {
-    return false;
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }
 
   @Override
-  public boolean isBlockSolid(IBlockAccess iblockaccess, int x, int y, int z, int l) {
-    return false;
-  }
-
-  @Override
-  public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-    return null;
-  }
-
-  @Override
-  public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
+  public boolean isReplaceable(World worldIn, BlockPos pos) {
     return true;
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
-    if(te != null) {
+  public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    return false;
+  }
+
+  @Override
+  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+    return null;
+  }
+
+  @Override
+  public int getRenderType() {  
+    return -1;
+  }
+
+  @Override
+  public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    TileLightNode te = getTileEntity(world, pos);
+    if (te != null) {
       te.onBlockRemoved();
     }
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
+  public int getLightValue(IBlockAccess world, BlockPos pos) {
+  IBlockState bs = world.getBlockState(pos);  
+    return bs.getBlock().getMetaFromState(bs)  > 0 ? 15 : 0;
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
-    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
-    if(te != null) {
+  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {  
+    TileLightNode te = getTileEntity(world, pos);
+    if (te != null) {
       te.onNeighbourChanged();
     }
   }
 
+  
+  
   @Override
-  public void updateTick(World world, int x, int y, int z, Random r) {
-    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
-    if(te != null) {
+  public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {    
+    TileLightNode te = getTileEntity(world, pos);
+    if (te != null) {
       te.checkParent();
     }
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void registerBlockIcons(IIconRegister iIconRegister) {
+//    blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
+//  }
 
   @Override
   public int quantityDropped(Random p_149745_1_) {

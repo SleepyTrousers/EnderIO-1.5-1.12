@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 
 public class MelonFarmer extends CustomSeedFarmer {
 
@@ -17,7 +17,7 @@ public class MelonFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     int xVal = farm.getLocation().x % 2; 
     int zVal = farm.getLocation().z % 2;
     if(bc.x % 2 != xVal || bc.z % 2 != zVal) {
@@ -29,7 +29,7 @@ public class MelonFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     return block == grownBlock;
   }
 

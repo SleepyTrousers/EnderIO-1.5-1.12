@@ -8,6 +8,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -16,28 +17,28 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
 
   private static Random rand = new Random();
 
-  private List<BlockCoord> coords;
+  private List<BlockPos> coords;
 
   public PacketFarmAction() {
   }
 
-  public PacketFarmAction(List<BlockCoord> coords) {
+  public PacketFarmAction(List<BlockPos> coords) {
     this.coords = coords;
   }
 
   public PacketFarmAction(BlockCoord bc) {
-    this.coords = new ArrayList<BlockCoord>(1);
-    this.coords.add(bc);
+    this.coords = new ArrayList<BlockPos>(1);
+    this.coords.add(bc.getBlockPos());
   }
 
   @Override
   public void toBytes(ByteBuf buffer) {
     int size = coords.size();
     buffer.writeInt(size);
-    for (BlockCoord coord : coords) {
-      buffer.writeInt(coord.x);
-      buffer.writeInt(coord.y);
-      buffer.writeInt(coord.z);
+    for (BlockPos coord : coords) {
+      buffer.writeInt(coord.getX());
+      buffer.writeInt(coord.getY());
+      buffer.writeInt(coord.getZ());
     }
 
   }
@@ -45,15 +46,15 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
   @Override
   public void fromBytes(ByteBuf buffer) {
     int size = buffer.readInt();
-    coords = new ArrayList<BlockCoord>(size);
+    coords = new ArrayList<BlockPos>(size);
     for (int i = 0; i < size; i++) {
-      coords.add(new BlockCoord(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+      coords.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
     }
   }
 
   @Override
   public IMessage onMessage(PacketFarmAction message, MessageContext ctx) {
-    for (BlockCoord bc : message.coords) {
+    for (BlockPos bc : message.coords) {
       for (int i = 0; i < 15; i++) {
         ClientUtil.spawnFarmParcticles(rand, bc);
       }

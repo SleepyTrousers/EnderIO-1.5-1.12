@@ -2,8 +2,6 @@ package crazypants.util;
 
 import java.util.Random;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -46,11 +44,11 @@ public class ClientUtil {
 //    con.readFromNBT(pkt.tc, TileConduitBundle.NBT_VERSION);
 //  }
 
-  public static void spawnFarmParcticles(Random rand, BlockCoord bc) {
+  public static void spawnFarmParcticles(Random rand, BlockPos bc) {
     double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
     double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
     double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-    Minecraft.getMinecraft().theWorld.spawnParticle(EnumParticleTypes.PORTAL, bc.x + xOff, bc.y + yOff, bc.z + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
+    Minecraft.getMinecraft().theWorld.spawnParticle(EnumParticleTypes.PORTAL, bc.getX() + xOff, bc.getY() + yOff, bc.getZ() + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
         (rand.nextDouble() - 0.5) * 1.5);
   }
 

@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +12,12 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
-import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -73,18 +68,18 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
     }
 
-    if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-      tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-      List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-      for (Vertex c : corners) {
-        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-      }
-      //back face
-      for (int i = corners.size() - 1; i >= 0; i--) {
-        Vertex c = corners.get(i);
-        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-      }
-    }
+//    if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+//      tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
+//      List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+//      for (Vertex c : corners) {
+//        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//      }
+//      //back face
+//      for (int i = corners.size() - 1; i >= 0; i--) {
+//        Vertex c = corners.get(i);
+//        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//      }
+//    }
   }
 
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
@@ -113,37 +108,34 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     data = new ArrayList<CachableRenderStatement>();
     cache0.put(fluid, data);
 
-    IIcon texture = fluid.getStillIcon();
-    if (texture == null) {
-      texture = fluid.getIcon();
-      if (texture == null) {
-        return data;
-      }
+    TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);
+    if (texture == null) {      
+      return data;      
     }
 
     BoundingBox bbb;
     if (scaleFactor == 1) {
       bbb = component.bound;
     } else {
-      double xScale = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
-      double yScale = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
-      double zScale = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+      double xScale = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+      double yScale = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+      double zScale = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
       bbb = component.bound.scale(xScale, yScale, zScale);
     }
 
     for (EnumFacing face : EnumFacing.VALUES) {
       if (face != component.dir && face != component.dir.getOpposite()) {
 
-        data.add(new CachableRenderStatement.SetNormal(face.offsetX, face.offsetY, face.offsetZ));
+        data.add(new CachableRenderStatement.SetNormal(face.getFrontOffsetX(), face.getFrontOffsetY(), face.getFrontOffsetZ()));
         Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, -0.005);
 
         Vector2f uv = new Vector2f();
         List<EnumFacing> edges = RenderUtil.getEdgesForFace(face);
         for (EnumFacing edge : edges) {
           if (edge != component.dir && edge != component.dir.getOpposite()) {
-            float xLen = 1 - Math.abs(edge.offsetX) * outlineWidth;
-            float yLen = 1 - Math.abs(edge.offsetY) * outlineWidth;
-            float zLen = 1 - Math.abs(edge.offsetZ) * outlineWidth;
+            float xLen = 1 - Math.abs(edge.getFrontOffsetX()) * outlineWidth;
+            float yLen = 1 - Math.abs(edge.getFrontOffsetY()) * outlineWidth;
+            float zLen = 1 - Math.abs(edge.getFrontOffsetZ()) * outlineWidth;
             BoundingBox bb = bbb.scale(xLen, yLen, zLen);
 
             List<Vector3f> corners = bb.getCornersForFace(face);
@@ -152,9 +144,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
               Vector3d corner = new Vector3d(unitCorn);
               corner.add(offset);
 
-              corner.x += (float) (edge.offsetX * 0.5 * bbb.sizeX()) - (Math.signum(edge.offsetX) * xLen / 2f * bbb.sizeX()) * 2f;
-              corner.y += (float) (edge.offsetY * 0.5 * bbb.sizeY()) - (Math.signum(edge.offsetY) * yLen / 2f * bbb.sizeY()) * 2f;
-              corner.z += (float) (edge.offsetZ * 0.5 * bbb.sizeZ()) - (Math.signum(edge.offsetZ) * zLen / 2f * bbb.sizeZ()) * 2f;
+              corner.x += (float) (edge.getFrontOffsetX() * 0.5 * bbb.sizeX()) - (Math.signum(edge.getFrontOffsetX()) * xLen / 2f * bbb.sizeX()) * 2f;
+              corner.y += (float) (edge.getFrontOffsetY() * 0.5 * bbb.sizeY()) - (Math.signum(edge.getFrontOffsetY()) * yLen / 2f * bbb.sizeY()) * 2f;
+              corner.z += (float) (edge.getFrontOffsetZ() * 0.5 * bbb.sizeZ()) - (Math.signum(edge.getFrontOffsetZ()) * zLen / 2f * bbb.sizeZ()) * 2f;
 
               //polyOffset
 
@@ -184,7 +176,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
       @Override
       public void execute() {
-        Tessellator.instance.setNormal(x, y, z);
+//        Tessellator.instance.setNormal(x, y, z);
       }
     }
 
@@ -201,7 +193,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
       @Override
       public void execute() {
-        Tessellator.instance.addVertexWithUV(x, y, z, u, v);
+//        Tessellator.instance.addVertexWithUV(x, y, z, u, v);
       }
     }
   }
@@ -224,27 +216,27 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       return;
     }
 
-    Collection<CollidableComponent> components = conduit.getCollidableComponents();
-    Tessellator tessellator = Tessellator.instance;
-
-    calculateRatios((LiquidConduit) conduit);
-    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
-
-    IIcon tex;
-    for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
-        if (isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
-
-          tessellator.setColorOpaque_F(1, 1, 1);
-          tex = conduit.getTransmitionTextureForState(component);
-
-          BoundingBox[] cubes = toCubes(component.bound);
-          for (BoundingBox cube : cubes) {
-            drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
-          }
-        }
-      }
-    }
+//    Collection<CollidableComponent> components = conduit.getCollidableComponents();
+//    Tessellator tessellator = Tessellator.instance;
+//
+//    calculateRatios((LiquidConduit) conduit);
+//    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
+//
+//    TextureAtlasSprite tex;
+//    for (CollidableComponent component : components) {
+//      if (renderComponent(component)) {
+//        if (isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
+//
+//          tessellator.setColorOpaque_F(1, 1, 1);
+//          tex = conduit.getTransmitionTextureForState(component);
+//
+//          BoundingBox[] cubes = toCubes(component.bound);
+//          for (BoundingBox cube : cubes) {
+//            drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+//          }
+//        }
+//      }
+//    }
   }
 
   @Override
@@ -252,16 +244,16 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
     float yScale = getRatioForConnection(id);
 
-    float xs = id.offsetX == 0 ? 0.9f : 1;
-    float ys = id.offsetY == 0 ? Math.min(yScale, 0.9f) : yScale;
-    float zs = id.offsetZ == 0 ? 0.9f : 1;
+    float xs = id.getFrontOffsetX() == 0 ? 0.9f : 1;
+    float ys = id.getFrontOffsetY() == 0 ? Math.min(yScale, 0.9f) : yScale;
+    float zs = id.getFrontOffsetZ() == 0 ? 0.9f : 1;
 
     float sizeY = bound.sizeY();
     bound = bound.scale(xs, ys, zs);
     float transY = (bound.sizeY() - sizeY) / 2;
 
     Vector3d translation = new Vector3d(0, transY, 0);
-    setupVertices(bound.translate(translation));
+//    setupVertices(bound.translate(translation));
   }
 
   private void calculateRatios(LiquidConduit conduit) {

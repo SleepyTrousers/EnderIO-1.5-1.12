@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public final class PainterUtil {
 
+  
   private PainterUtil() {
   }
 

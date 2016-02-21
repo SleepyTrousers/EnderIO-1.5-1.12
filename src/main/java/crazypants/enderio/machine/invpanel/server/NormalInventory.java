@@ -3,6 +3,7 @@ package crazypants.enderio.machine.invpanel.server;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 class NormalInventory extends AbstractInventory {
   final NetworkedInventory ni;
@@ -14,8 +15,8 @@ class NormalInventory extends AbstractInventory {
   @Override
   int scanInventory(InventoryDatabaseServer db) {
     ISidedInventory inv = ni.getInventoryRecheck();
-    int side = ni.getInventorySide();
-    int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
+    EnumFacing side = ni.getInventorySide();
+    int[] slotIndices = inv.getSlotsForFace(side);
     if (slotIndices == null || slotIndices.length == 0) {
       setEmpty(db);
       return 0;
@@ -38,8 +39,8 @@ class NormalInventory extends AbstractInventory {
   @Override
   public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int count) {
     ISidedInventory inv = ni.getInventoryRecheck();
-    int side = ni.getInventorySide();
-    int[] slotIndices = inv.getAccessibleSlotsFromSide(side);
+    EnumFacing side = ni.getInventorySide();
+    int[] slotIndices = inv.getSlotsForFace(side);
     if (slotIndices == null || slot >= slotIndices.length) {
       return 0;
     }

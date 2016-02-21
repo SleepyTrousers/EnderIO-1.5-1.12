@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.client.render.IconUtil;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -114,6 +115,8 @@ public class ClientProxy extends CommonProxy {
   
   @Override
   public void loadIcons() {
+    //Hack to get the static init to run and load our textures
+    IconUtil.class.getName();
 //    RedstoneConduit.initIcons();
 //    InsulatedRedstoneConduit.initIcons();
 //    RedstoneSwitch.initIcons();

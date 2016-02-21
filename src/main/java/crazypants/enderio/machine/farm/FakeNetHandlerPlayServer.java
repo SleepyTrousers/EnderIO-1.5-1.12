@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.farm;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.EnumConnectionState;
+import net.minecraft.network.EnumPacketDirection;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -26,21 +26,19 @@ import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.network.play.client.C15PacketClientSettings;
 import net.minecraft.network.play.client.C16PacketClientStatus;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraft.network.play.client.C18PacketSpectate;
+import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.IChatComponent;
 
 public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
 
   public FakeNetHandlerPlayServer(EntityPlayerMP p_i1530_3_) {
-    super(MinecraftServer.getServer(), new net.minecraft.network.NetworkManager(false), p_i1530_3_);
+    super(MinecraftServer.getServer(), new net.minecraft.network.NetworkManager(EnumPacketDirection.CLIENTBOUND), p_i1530_3_);
   }
-
+ 
   @Override
-  public void onNetworkTick() {
-  }
-
-  @Override
-  public NetworkManager func_147362_b() {
+  public NetworkManager getNetworkManager() {
     return null;
   }
 
@@ -85,7 +83,8 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void processAnimation(C0APacketAnimation p_147350_1_) {
+  public void handleAnimation(C0APacketAnimation packetIn) {
+  
   }
 
   @Override
@@ -145,7 +144,13 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void onConnectionStateTransition(EnumConnectionState p_147232_1_, EnumConnectionState p_147232_2_) {
+  public void handleSpectate(C18PacketSpectate packetIn) {
   }
+
+  @Override
+  public void handleResourcePackStatus(C19PacketResourcePackStatus packetIn) {
+  }
+  
+  
 
 }
