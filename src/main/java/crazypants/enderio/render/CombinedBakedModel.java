@@ -4,20 +4,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.vecmath.Matrix4f;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.gson.Gson;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
+/**
+ * A baked model that consists of other baked models.
+ * <p>
+ * This is used to combine models at runtime to be rendered in combinations that can not be expressed in the blockstate json.
+ *
+ */
 public class CombinedBakedModel implements IBakedModel {
 
-  private final List<IBakedModel> models;
+  protected final List<IBakedModel> models;
 
   private CombinedBakedModel(IBakedModel model) {
     this.models = Collections.singletonList(model);
@@ -27,12 +43,22 @@ public class CombinedBakedModel implements IBakedModel {
     this.models = models;
   }
 
-  public static CombinedBakedModel buildFromModels(List<IBakedModel> models) {
-    IBakedModel missingModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
-    return models.size() > 0 ? new CombinedBakedModel(models) : new CombinedBakedModel(missingModel);
+  /**
+   * Builds a new baked model that combines the given baked models. If the optional transform model is given, and it is perspective aware, a perspective aware
+   * baked model with the transform model's transforms will be created. The transform model will not be added to the rendering list of the result model.
+   */
+  public static CombinedBakedModel buildFromModels(IBakedModel transforms, List<IBakedModel> models) {
+    return models.size() > 0 ? transforms instanceof IPerspectiveAwareModel ? new PerspectiveAwareCombinedBakedModel((IPerspectiveAwareModel) transforms,
+        models) : new CombinedBakedModel(models) : new CombinedBakedModel(Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
+        .getModelManager().getMissingModel());
   }
 
-  public static CombinedBakedModel buildFromLocations(List<ModelResourceLocation> modelLocations) {
+  /**
+   * Builds a new baked model that combines the baked models for the given ModelResourceLocations. If the optional transform model is given, and it is
+   * perspective aware, a perspective aware baked model with the transform model's transforms will be created. The transform model will not be added to the
+   * rendering list of the result model.
+   */
+  public static CombinedBakedModel buildFromLocations(IBakedModel transforms, List<ModelResourceLocation> modelLocations) {
     List<IBakedModel> models = new ArrayList<IBakedModel>();
     ModelManager modelManager = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager();
     IBakedModel missingModel = modelManager.getMissingModel();
@@ -42,10 +68,15 @@ public class CombinedBakedModel implements IBakedModel {
         models.add(model);
       }
     }
-    return models.size() > 0 ? new CombinedBakedModel(models) : new CombinedBakedModel(missingModel);
+    return buildFromModels(transforms, models);
   }
 
-  public static CombinedBakedModel buildFromStates(List<IBlockState> states) {
+  /**
+   * Builds a new baked model that combines the baked models for the given blockstates. If the optional transform model is given, and it is perspective aware, a
+   * perspective aware baked model with the transform model's transforms will be created. The transform model will not be added to the rendering list of the
+   * result model.
+   */
+  public static CombinedBakedModel buildFromStates(IBakedModel transforms, List<IBlockState> states) {
     List<IBakedModel> models = new ArrayList<IBakedModel>();
     BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
     IBakedModel missingModel = modelShapes.getModelManager().getMissingModel();
@@ -55,7 +86,7 @@ public class CombinedBakedModel implements IBakedModel {
         models.add(model);
       }
     }
-    return models.size() > 0 ? new CombinedBakedModel(models) : new CombinedBakedModel(missingModel);
+    return buildFromModels(transforms, models);
   }
 
   @Override
@@ -98,7 +129,47 @@ public class CombinedBakedModel implements IBakedModel {
 
   @Override
   public ItemCameraTransforms getItemCameraTransforms() {
-    return ItemCameraTransforms.DEFAULT;
+    return models.get(0).getItemCameraTransforms();
+  }
+
+  private static class PerspectiveAwareCombinedBakedModel extends CombinedBakedModel implements IPerspectiveAwareModel {
+
+    protected final IPerspectiveAwareModel transforms;
+
+    private PerspectiveAwareCombinedBakedModel(IPerspectiveAwareModel transforms, IBakedModel model) {
+      super(model);
+      this.transforms = transforms;
+    }
+
+    private PerspectiveAwareCombinedBakedModel(IPerspectiveAwareModel transforms, List<IBakedModel> models) {
+      super(models);
+      this.transforms = transforms;
+    }
+
+    @Override
+    public boolean isGui3d() {
+      return transforms.isGui3d();
+    }
+
+    /**
+     * I have no idea what this does. But my Eclipse tells me it is never called by anyone but a wrapper, like this. So I'm ignoring it. --Henry
+     */
+    @Override
+    public VertexFormat getFormat() {
+      return transforms.getFormat();
+    }
+
+    @Override
+    public ItemCameraTransforms getItemCameraTransforms() {
+      return transforms.getItemCameraTransforms();
+    }
+
+    @Override
+    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+      Pair<? extends IFlexibleBakedModel, Matrix4f> perspective = transforms.handlePerspective(cameraTransformType);
+      return Pair.of(this, perspective.getRight());
+    }
+
   }
 
 }

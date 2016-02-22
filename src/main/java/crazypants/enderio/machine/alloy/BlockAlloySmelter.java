@@ -16,6 +16,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
@@ -54,12 +55,12 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
     SmartModelAttacher.register(name);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(MachineSmartModel.RENDER, EnumRenderMode.AUTO));
+    this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   @Override
   protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { MachineSmartModel.RENDER });
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
@@ -89,6 +90,11 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
 
   @Override
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return new RenderMapperAlloySmelter();
+  }
+
+  @Override
+  public IRenderMapper getRenderMapper(ItemStack stack) {
     return new RenderMapperAlloySmelter();
   }
 

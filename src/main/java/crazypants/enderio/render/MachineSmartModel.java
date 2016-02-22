@@ -10,15 +10,17 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ISmartBlockModel;
+import net.minecraftforge.client.model.ISmartItemModel;
 
-public class MachineSmartModel implements ISmartBlockModel {
-
-  public static final PropertyEnum<EnumRenderMode> RENDER = PropertyEnum.<EnumRenderMode> create("render", EnumRenderMode.class);
+public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
   private IBakedModel defaults;
 
@@ -93,7 +95,7 @@ public class MachineSmartModel implements ISmartBlockModel {
       if (block instanceof ISmartRenderAwareBlock) {
         IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos);
         List<IBlockState> states = renderMapper.mapBlockRender(state, world, pos);
-        CombinedBakedModel bakedModel = CombinedBakedModel.buildFromStates(states);
+        CombinedBakedModel bakedModel = CombinedBakedModel.buildFromStates(null, states);
         if (rc != null) {
           rc.cacheModel(bakedModel);
         }
@@ -101,6 +103,23 @@ public class MachineSmartModel implements ISmartBlockModel {
       }
     }
 
+    return this;
+  }
+
+  @Override
+  public IBakedModel handleItemState(ItemStack stack) {
+    if (stack != null) {
+      Item item = stack.getItem();
+      if (item instanceof ItemBlock) {
+        Block block = ((ItemBlock) item).getBlock();
+        if (block instanceof ISmartRenderAwareBlock) {
+          IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(stack);
+          List<IBlockState> states = renderMapper.mapBlockRender(block, stack);
+          CombinedBakedModel bakedModel = CombinedBakedModel.buildFromStates(getDefaults(), states);
+          return bakedModel;
+        }
+      }
+    }
     return this;
   }
 

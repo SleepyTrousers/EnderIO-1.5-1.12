@@ -21,8 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockMachineIO extends Block {
 
-  private static final PropertyIO IO = PropertyIO.getInstance();
-
   public static BlockMachineIO block;
 
   public static String name() {
@@ -36,13 +34,13 @@ public class BlockMachineIO extends Block {
   public BlockMachineIO() {
     super(Material.circuits);
     setUnlocalizedName(name());
-    this.setDefaultState(this.blockState.getBaseState().withProperty(IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
+    this.setDefaultState(this.blockState.getBaseState().withProperty(IOMode.IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
     // setCreativeTab(CreativeTabs.tabRedstone);
     disableStats();
   }
 
   protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { IO });
+    return new BlockState(this, new IProperty[] { IOMode.IO });
   }
 
   public IBlockState getStateFromMeta(int meta) {

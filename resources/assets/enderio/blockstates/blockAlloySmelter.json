@@ -40,11 +40,121 @@
 		    }
         },
         "render":{
-            "defaults":{
-                
-            },
+	        "defaults":{
+                "model":"enderio:null",
+	            "transform":{
+	                "thirdperson":{
+	                    "rotation":[ {"x":10}, {"y":-45}, {"z":170} ],
+	                    "translation":[ 0, 0.09375, -0.171875 ],
+	                    "scale":[ 0.375, 0.375, 0.375 ]
+	                },
+	                "firstperson":{
+	                    "rotation":[ {"x":0}, {"y":90}, {"z":0} ],
+	                    "translation":[ 0, 0, 0 ],
+	                    "scale":[ 1, 1, 1 ]
+	                },
+	                "gui":{
+	                    "rotation":[ {"x":0}, {"y":-90}, {"z":0} ],
+	                    "translation":[ 0, 0, 0 ],
+	                    "scale":[ 1, 1, 1 ]
+	                },
+	                "fixed":{
+	                    "rotation":[ {"x":0}, {"y":0}, {"z":0} ],
+	                    "translation":[ 0, 0, 0 ],
+	                    "scale":[ 1, 1, 1 ]
+	                }
+	            }
+	        },
             "auto":{
                 
+            },
+            "front":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFront"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":180
+                    }
+                }
+            },
+            "front_east":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFront"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":270
+                    }
+                }
+            },
+            "front_south":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFront"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":0
+                    }
+                }
+            },
+            "front_west":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFront"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":90
+                    }
+                }
+            },
+            "front_on":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFrontOn"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":180
+                    }
+                }
+            },
+            "front_on_east":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFrontOn"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":270
+                    }
+                }
+            },
+            "front_on_south":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFrontOn"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":0
+                    }
+                }
+            },
+            "front_on_west":{
+                "textures":{
+                    "front":"enderio:blocks/alloySmelterFrontOn"
+                },
+                "submodel":{
+                    "front":{
+                        "model":"enderio:machine_front",
+                        "y":90
+                    }
+                }
             }
         }
     }

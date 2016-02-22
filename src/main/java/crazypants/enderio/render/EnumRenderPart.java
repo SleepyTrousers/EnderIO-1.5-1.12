@@ -2,6 +2,7 @@ package crazypants.enderio.render;
 
 import java.util.Locale;
 
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 
@@ -10,15 +11,9 @@ public enum EnumRenderPart implements IStringSerializable {
   BODY(true),
   BODY_SOUTH(BODY),
   BODY_WEST(BODY),
-  BODY_EAST(BODY),
-  ALLOY_SMELTER(true),
-  ALLOY_SMELTER_SOUTH(ALLOY_SMELTER),
-  ALLOY_SMELTER_WEST(ALLOY_SMELTER),
-  ALLOY_SMELTER_EAST(ALLOY_SMELTER),
-  ALLOY_SMELTER_ON(true),
-  ALLOY_SMELTER_ON_SOUTH(ALLOY_SMELTER_ON),
-  ALLOY_SMELTER_ON_WEST(ALLOY_SMELTER_ON),
-  ALLOY_SMELTER_ON_EAST(ALLOY_SMELTER_ON), ;
+  BODY_EAST(BODY), ;
+
+  public static final PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 
   private final int parentid;
   private final boolean rotates;
@@ -47,7 +42,7 @@ public enum EnumRenderPart implements IStringSerializable {
 
   /* D0-U1-N2-S3-W4-E5 */
   public EnumRenderPart rotate(EnumFacing facing) {
-    if (rotates) {
+    if (rotates && facing.getIndex() >= 2) {
       return values()[parentid + facing.getIndex() - 2];
     } else {
       return this;

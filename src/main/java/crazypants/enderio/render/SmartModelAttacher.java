@@ -6,6 +6,7 @@ import java.util.List;
 import crazypants.enderio.EnderIO;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.util.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -31,8 +32,11 @@ public class SmartModelAttacher {
     for (String blockname : blocks) {
       ModelResourceLocation defaultModelLocation = new ModelResourceLocation(EnderIO.DOMAIN + ":" + blockname + "#render=defaults");
       ModelResourceLocation autoModelLocation = new ModelResourceLocation(EnderIO.DOMAIN + ":" + blockname + "#render=auto");
+      ModelResourceLocation itemModelLocation = new ModelResourceLocation(EnderIO.DOMAIN + ":" + blockname + "#inventory");
       IBakedModel bakedModel = event.modelRegistry.getObject(defaultModelLocation);
-      event.modelRegistry.putObject(autoModelLocation, new MachineSmartModel(bakedModel));
+      MachineSmartModel model = new MachineSmartModel(bakedModel);
+      event.modelRegistry.putObject(autoModelLocation, model);
+      event.modelRegistry.putObject(itemModelLocation, model);
     }
   }
 }
