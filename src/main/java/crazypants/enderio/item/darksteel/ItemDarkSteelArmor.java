@@ -110,8 +110,14 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }
 
-  protected void init() {
-    GameRegistry.registerItem(this, getUnlocalizedName());
+  protected void init() {    
+    GameRegistry.registerItem(this, getItemName());
+  }
+  
+  public String getItemName() {
+    String regName = getUnlocalizedName();
+    regName = regName.substring(5, regName.length());
+    return regName;
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -152,17 +158,17 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     if(!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }

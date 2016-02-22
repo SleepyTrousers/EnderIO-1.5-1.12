@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3f;
 
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
@@ -91,24 +92,24 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       return;
     }
 
-    if(isMaster()) {
-      //sanity check to prevent crash when moved using redstone in motion
-      if(regenTank == null || tank == null) {
+    if (isMaster()) {
+      // sanity check to prevent crash when moved using redstone in motion
+      if (regenTank == null || tank == null) {
         return;
       }
 
-      if(regenTank.isFull() && !tank.isFull()) {
+      if (regenTank.isFull() && !tank.isFull()) {
         ++ticksSinceFill;
-        if(ticksSinceFill >= 20) {
+        if (ticksSinceFill >= 20) {
           ticksSinceFill = 0;
           tank.fill(WATER_BUCKET, true);
           tankDirty = true;
         }
       }
-      if(autoEject && neighboursDirty) {
+      if (autoEject && neighboursDirty) {
         doUpdateTankNeighbours();
       }
-      if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getFluidAmount() > 0) {
+      if (autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getFluidAmount() > 0) {
         int ejectable = tank.getFluidAmount();
         int amountPerNeighbour = ejectable / tankNeighbours.size();
         FluidStack source = WATER_BUCKET.copy();
@@ -117,13 +118,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
           source.amount = amountPerNeighbour;
           used += tc.container.fill(tc.fillFromDir, source, true);
         }
-        if(used > 0) {
+        if (used > 0) {
           tank.drain(used, true);
           tankDirty = true;
         }
       }
     }
-    if(tankDirty && shouldDoWorkThisTick(2)) {
+    if (tankDirty && shouldDoWorkThisTick(2)) {
       worldObj.markBlockForUpdate(getPos());
       tankDirty = false;
     }
@@ -131,7 +132,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if(isMultiblock()) {
+    if (isMultiblock()) {
       return 0;
     }
     return getController().doFill(from, resource, doFill);
@@ -152,7 +153,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    if(tank.getFluid() == null) {
+    if (tank.getFluid() == null) {
       return true;
     }
     if (fluid != null && fluid.getID() == tank.getFluid().getFluid().getID()) {
@@ -163,7 +164,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public boolean canDrain(EnumFacing from, Fluid fluid) {
-    if(tank.getFluid() == null || fluid == null) {
+    if (tank.getFluid() == null || fluid == null) {
       return false;
     }
     return tank.getFluid().getFluid().getID() == fluid.getID();
@@ -180,7 +181,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   public void setAutoEject(boolean autoEject) {
     TileReservoir c = getController();
-    if(c != null) {
+    if (c != null) {
       c.doSetAutoEject(autoEject);
     } else {
       doSetAutoEject(autoEject);
@@ -188,7 +189,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private void doSetAutoEject(boolean newVal) {
-    if(newVal && !autoEject) {
+    if (newVal && !autoEject) {
       updateTankNeighbours();
     }
     this.autoEject = newVal;
@@ -196,7 +197,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   public boolean isAutoEject() {
     TileReservoir c = getController();
-    if(c != null) {
+    if (c != null) {
       return c.doIsAutoEject();
     } else {
       return doIsAutoEject();
@@ -209,22 +210,22 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   private void updateTankNeighbours() {
     TileReservoir c = getController();
-    if(c != null) {
+    if (c != null) {
       c.neighboursDirty = true;
     }
   }
 
   private void doUpdateTankNeighbours() {
-    if(tankNeighbours == null) {
+    if (tankNeighbours == null) {
       tankNeighbours = new ArrayList<TankNeighbour>();
     }
     tankNeighbours.clear();
     for (BlockCoord bc : multiblock) {
       for (EnumFacing dir : EnumFacing.VALUES) {
         BlockCoord check = bc.getLocation(dir);
-        if(!inMultiblock(check)) {
+        if (!inMultiblock(check)) {
           IFluidHandler tc = getTankContainer(check);
-          if(tc != null) {
+          if (tc != null) {
             tankNeighbours.add(new TankNeighbour(tc, dir.getOpposite()));
           }
         }
@@ -235,7 +236,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   private boolean inMultiblock(BlockCoord check) {
     for (BlockCoord bc : multiblock) {
-      if(check.equals(bc)) {
+      if (check.equals(bc)) {
         return true;
       }
     }
@@ -245,9 +246,9 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 
-    front = EnumFacing.VALUES[nbtRoot.getShort("front")];
-    up = EnumFacing.VALUES[nbtRoot.getShort("up")];
-    right = EnumFacing.VALUES[nbtRoot.getShort("right")];
+    front = Util.readFacingFromNBT(nbtRoot, "front");
+    up = Util.readFacingFromNBT(nbtRoot, "up");
+    right = Util.readFacingFromNBT(nbtRoot, "right");        
     pos = Pos.values()[nbtRoot.getShort("pos")];
 
     autoEject = nbtRoot.getBoolean("autoEject");
@@ -256,13 +257,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     FluidStack regenLiquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("regenTank"));
 
     tank.setCapacity(regenLiquid == null ? BUCKET_VOLUME : BUCKET_VOLUME * 2);
-    if(liquid != null) {
+    if (liquid != null) {
       tank.setFluid(liquid);
     } else {
       tank.setFluidAmount(0);
     }
 
-    if(regenLiquid == null) {
+    if (regenLiquid == null) {
       regenTank = null;
     } else {
       regenTank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME * 2);
@@ -271,7 +272,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
     boolean wasMulti = isMultiblock();
 
-    if(nbtRoot.getBoolean("isMultiblock")) {
+    if (nbtRoot.getBoolean("isMultiblock")) {
       int[] coords = nbtRoot.getIntArray("multiblock");
       multiblock = new BlockCoord[4];
       int c = 0;
@@ -279,7 +280,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
         multiblock[i] = new BlockCoord(coords[c++], coords[c++], coords[c++]);
       }
 
-      if(isMaster() && autoEject) {
+      if (isMaster() && autoEject) {
         updateTankNeighbours();
       }
 
@@ -287,7 +288,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       multiblock = null;
     }
 
-    if(wasMulti != isMultiblock()) {
+    if (wasMulti != isMultiblock()) {
       liquidRenderBounds = null;
     }
 
@@ -296,22 +297,25 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
 
-    nbtRoot.setShort("front", (short) front.ordinal());
-    nbtRoot.setShort("up", (short) up.ordinal());
-    nbtRoot.setShort("right", (short) right.ordinal());
-    nbtRoot.setShort("pos", (short) pos.ordinal());
+    Util.writeFacingToNBT(nbtRoot, "front", front);
+    Util.writeFacingToNBT(nbtRoot, "up", up);
+    Util.writeFacingToNBT(nbtRoot, "right", right);
+    
+    if (pos != null) {
+      nbtRoot.setShort("pos", (short) pos.ordinal());
+    }
 
     nbtRoot.setBoolean("autoEject", autoEject);
 
-    if(tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid()) != null) {
+    if (tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid()) != null) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
     }
-    if(regenTank != null) {
+    if (regenTank != null) {
       nbtRoot.setTag("regenTank", regenTank.getFluid().writeToNBT(new NBTTagCompound()));
     }
 
     nbtRoot.setBoolean("isMultiblock", isMultiblock());
-    if(isMultiblock()) {
+    if (isMultiblock()) {
       int[] vals = new int[12];
       int i = 0;
       for (BlockCoord bc : multiblock) {
@@ -329,12 +333,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   public boolean onNeighborBlockChange(Block blockId) {
-    if(blockId == EnderIO.blockReservoir) {
+    if (blockId == EnderIO.blockReservoir) {
 
-      if(!isCurrentMultiblockValid()) {
+      if (!isCurrentMultiblockValid()) {
         // if its not, try and form a new one
         TileReservoir controller = getController();
-        if(controller != null) {
+        if (controller != null) {
           controller.clearCurrentMultiblock();
           controller.formMultiblock();
         } else {
@@ -343,7 +347,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
         }
         return true;
       }
-    } else if(isMultiblock() && isAutoEject()) {
+    } else if (isMultiblock() && isAutoEject()) {
       updateTankNeighbours();
     }
     return false;
@@ -354,7 +358,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   boolean isMaster() {
-    if(multiblock != null) {
+    if (multiblock != null) {
       return multiblock[0].equals(new BlockCoord(getPos()));
     }
     return false;
@@ -369,8 +373,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   BoundingBox getLiquidRenderBounds() {
-    if(liquidRenderBounds == null) {
-      if(!isMultiblock()) {
+    if (liquidRenderBounds == null) {
+      if (!isMultiblock()) {
         return BoundingBox.UNIT_CUBE;
       }
       BoundingBox bounds = new BoundingBox(multiblock[0]);
@@ -384,20 +388,20 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   protected float doGetFilledRatio() {
     float result = tank.getFilledRatio();
-    if(isMaster() && regenTank != null) {
+    if (isMaster() && regenTank != null) {
       result = regenTank.getFilledRatio() * 0.5f + result * 0.5f;
     }
     return result;
   }
 
   int doFill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if(!WATER_BUCKET.isFluidEqual(resource)) {
+    if (!WATER_BUCKET.isFluidEqual(resource)) {
       return 0;
     }
 
     int ret = 0;
     // fill buffer first
-    if(resource != null && isMaster()) {
+    if (resource != null && isMaster()) {
       resource = resource.copy();
       int filled = regenTank.fill(resource, doFill);
       resource.amount -= filled;
@@ -418,26 +422,26 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     multiblock = mb;
     updatePosition();
 
-    if(isMaster()) {
+    if (isMaster()) {
 
       regenTank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME * 2);
       tank.setCapacity(BUCKET_VOLUME * 2);
       for (BlockCoord bc : multiblock) {
         TileReservoir res = getReservoir(bc);
-        if(res != null) {
+        if (res != null) {
           FluidStack drained = res.doDrain(null, regenTank.getAvailableSpace(), true);
-          if(drained != null) {
+          if (drained != null) {
             regenTank.addFluidAmount(drained.amount);
           }
           // incase regen tank is full, add to normal tank
           drained = res.doDrain(null, tank.getAvailableSpace(), true);
-          if(drained != null) {
+          if (drained != null) {
             tank.addFluidAmount(drained.amount);
           }
         }
       }
 
-      if(doIsAutoEject()) {
+      if (doIsAutoEject()) {
         updateTankNeighbours();
       }
 
@@ -450,12 +454,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     liquidRenderBounds = null;
 
     // Forces an update
-    //TODO: 1.8
-    //worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isMultiblock() ? 1 : 0, 2);
+    // TODO: 1.8
+    // worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord,
+    // isMultiblock() ? 1 : 0, 2);
   }
 
   TileReservoir getController() {
-    if(isMaster() || !isMultiblock()) {
+    if (isMaster() || !isMultiblock()) {
       return this;
     }
     TileReservoir res = getReservoir(multiblock[0]);
@@ -463,7 +468,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private void updatePosition() {
-    if(multiblock == null) {
+    if (multiblock == null) {
       front = null;
       up = null;
       right = null;
@@ -473,16 +478,16 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     BlockPos p = getPos();
     boolean isVertical = false;
     for (BlockCoord bc : multiblock) {
-      if(bc.y != p.getY()) {
+      if (bc.y != p.getY()) {
         isVertical = true;
         break;
       }
     }
-    if(isVertical) {
+    if (isVertical) {
       up = EnumFacing.UP;
       boolean isWestEast = false;
       for (BlockCoord bc : multiblock) {
-        if(bc.x != p.getX()) {
+        if (bc.x != p.getX()) {
           isWestEast = true;
           break;
         }
@@ -498,17 +503,17 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     boolean isRight = false;
     BlockCoord myCoord = new BlockCoord(this);
     for (BlockCoord bc : multiblock) {
-      if(isInDir(myCoord, right, bc)) {
+      if (isInDir(myCoord, right, bc)) {
         isRight = true;
       }
     }
     boolean isTop = false;
     for (BlockCoord bc : multiblock) {
-      if(isInDir(myCoord, up, bc)) {
+      if (isInDir(myCoord, up, bc)) {
         isTop = true;
       }
     }
-    if(isTop) {
+    if (isTop) {
       pos = isRight ? Pos.TR : Pos.TL;
     } else {
       pos = isRight ? Pos.BR : Pos.BL;
@@ -517,31 +522,31 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private boolean isInDir(BlockCoord from, EnumFacing inDir, BlockCoord to) {
-    if(inDir.getFrontOffsetX() != 0) {
+    if (inDir.getFrontOffsetX() != 0) {
       return from.x - inDir.getFrontOffsetX() == to.x;
-    } else if(inDir.getFrontOffsetY() != 0) {
+    } else if (inDir.getFrontOffsetY() != 0) {
       return from.y - inDir.getFrontOffsetY() == to.y;
-    } else if(inDir.getFrontOffsetZ() != 0) {
+    } else if (inDir.getFrontOffsetZ() != 0) {
       return from.z - inDir.getFrontOffsetZ() == to.z;
     }
     return false;
   }
 
   private void clearCurrentMultiblock() {
-    if(multiblock == null) {
+    if (multiblock == null) {
       return;
     }
     boolean fillTanks = false;
-    if(isMaster()) {
+    if (isMaster()) {
       fillTanks = regenTank.isFull();
       regenTank = null;
     }
 
     for (BlockCoord bc : multiblock) {
       TileReservoir res = getReservoir(bc);
-      if(res != null) {
+      if (res != null) {
         res.setMultiblock(null);
-        if(fillTanks) {
+        if (fillTanks) {
           res.tank.fill(WATER_BUCKET, true);
         } else {
           res.tank.drain(BUCKET_VOLUME, true);
@@ -553,12 +558,12 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private boolean isCurrentMultiblockValid() {
-    if(multiblock == null) {
+    if (multiblock == null) {
       return false;
     }
     for (BlockCoord bc : multiblock) {
       TileReservoir res = getReservoir(bc);
-      if(res == null || !res.isMultiblock()) {
+      if (res == null || !res.isMultiblock()) {
         return false;
       }
     }
@@ -567,15 +572,17 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   private boolean formMultiblock() {
     for (EnumFacing dir : EnumFacing.VALUES) {
-      if(isNonMultiReservoir(dir)) {
+      if (isNonMultiReservoir(dir)) {
         EnumFacing[] cans = candidates(dir);
         for (EnumFacing neighbor : cans) {
-          if(isNonMultiReservoir(neighbor)) {
-            if(isNonMultiReservoir(dir.getFrontOffsetX() + neighbor.getFrontOffsetX(), dir.getFrontOffsetY() + neighbor.getFrontOffsetY(), dir.getFrontOffsetZ() + neighbor.getFrontOffsetZ())) {
+          if (isNonMultiReservoir(neighbor)) {
+            if (isNonMultiReservoir(dir.getFrontOffsetX() + neighbor.getFrontOffsetX(), dir.getFrontOffsetY() + neighbor.getFrontOffsetY(),
+                dir.getFrontOffsetZ() + neighbor.getFrontOffsetZ())) {
               BlockCoord[] mb = new BlockCoord[4];
               mb[0] = inDirection(dir);
               mb[1] = inDirection(neighbor);
-              mb[2] = inDirection(dir.getFrontOffsetX() + neighbor.getFrontOffsetX(), dir.getFrontOffsetY() + neighbor.getFrontOffsetY(), dir.getFrontOffsetZ() + neighbor.getFrontOffsetZ());
+              mb[2] = inDirection(dir.getFrontOffsetX() + neighbor.getFrontOffsetX(), dir.getFrontOffsetY() + neighbor.getFrontOffsetY(),
+                  dir.getFrontOffsetZ() + neighbor.getFrontOffsetZ());
               mb[3] = new BlockCoord(getPos());
               for (BlockCoord bc : mb) {
                 TileReservoir res = getReservoir(bc);
@@ -604,11 +611,11 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private IFluidHandler getTankContainer(int x, int y, int z) {
-    if(worldObj == null) {
+    if (worldObj == null) {
       return null;
     }
     TileEntity te = worldObj.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof IFluidHandler) {
+    if (te instanceof IFluidHandler) {
       return (IFluidHandler) te;
     }
     return null;
@@ -620,7 +627,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   private TileReservoir getReservoir(int x, int y, int z) {
     TileEntity te = worldObj.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileReservoir) {
+    if (te instanceof TileReservoir) {
       return (TileReservoir) te;
     }
     return null;
@@ -629,7 +636,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   private boolean isNonMultiReservoir(int offsetX, int offsetY, int offsetZ) {
     BlockPos p = getPos();
     TileReservoir res = getReservoir(p.getX() + offsetX, p.getY() + offsetY, p.getZ() + offsetZ);
-    if(res == null) {
+    if (res == null) {
       return false;
     }
     return !res.isMultiblock();
@@ -640,7 +647,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   private EnumFacing[] candidates(EnumFacing matchDir) {
-    EnumFacing[] res = new EnumFacing[4];    
+    EnumFacing[] res = new EnumFacing[4];
     res[0] = matchDir.rotateAround(matchDir.getFrontOffsetY() == 0 ? EnumFacing.UP.getAxis() : EnumFacing.NORTH.getAxis());
     res[1] = res[0].getOpposite();
     res[2] = matchDir.rotateAround(matchDir.getFrontOffsetX() == 0 ? EnumFacing.EAST.getAxis() : EnumFacing.NORTH.getAxis());
@@ -649,7 +656,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   }
 
   public Vector3f getOffsetFromController() {
-    if(!isMultiblock()) {
+    if (!isMultiblock()) {
       return new Vector3f();
     }
     BlockCoord masterBC = multiblock[0];
@@ -662,7 +669,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   public boolean haveRendered(long renderTick, float renderPartialTick) {
     TileReservoir c = getController();
-    if(c.lastRenderTick == renderTick && renderPartialTick == c.lastRenderPartialTick) {
+    if (c.lastRenderTick == renderTick && renderPartialTick == c.lastRenderPartialTick) {
       return true;
     }
 

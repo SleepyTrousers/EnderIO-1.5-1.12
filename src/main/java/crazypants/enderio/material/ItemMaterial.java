@@ -4,10 +4,13 @@ import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,14 +35,14 @@ public class ItemMaterial extends Item {
     GameRegistry.registerItem(this, ModObject.itemMaterial.unlocalisedName);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    int numParts = Material.values().length;
-//    for (int i = 0; i < numParts; i++) {
-//      icons[i] = IIconRegister.registerIcon(Material.values()[i].iconKey);
-//    }
-//  }
+  @SideOnly(Side.CLIENT)
+  public void addRenderers() {
+    List<ResourceLocation> names = Material.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (Material c : Material.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
+    }     
+  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

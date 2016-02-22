@@ -4,10 +4,13 @@ import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,6 +33,15 @@ public class ItemPowderIngot extends Item {
 
   private void init() {
     GameRegistry.registerItem(this, ModObject.itemPowderIngot.unlocalisedName);
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public void addRenderers() {
+    List<ResourceLocation> names = PowderIngot.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (PowderIngot c : PowderIngot.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
+    }     
   }
 
 //  @Override

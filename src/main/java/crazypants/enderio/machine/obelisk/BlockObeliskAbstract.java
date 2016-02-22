@@ -14,8 +14,6 @@ import net.minecraft.world.World;
 
 public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> {
 
-  public static int defaultObeliskRenderId;
-
   protected BlockObeliskAbstract(ModObject mo, Class<T> teClass) {
     super(mo, teClass);
     setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
@@ -59,14 +57,6 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
     return 0;
   }
 
-  @Override
-  public int getRenderType() {
-    return defaultObeliskRenderId;
-  }
-
-  
-  
-  
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {  
     if(isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {

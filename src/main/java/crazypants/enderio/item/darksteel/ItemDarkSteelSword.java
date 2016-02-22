@@ -44,6 +44,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
+  public static final String NAME = "darkSteel_sword";
+  
   private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 1561, 7, 2, 25);
@@ -78,10 +80,13 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   public ItemDarkSteelSword() {
     super(MATERIAL);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-
-    String str = "darkSteel_sword";
-    setUnlocalizedName(str);
+    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setUnlocalizedName(NAME);
+  }
+  
+  @Override
+  public String getItemName() {  
+    return NAME;
   }
 
   @Override
@@ -270,7 +275,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, getUnlocalizedName());
+    GameRegistry.registerItem(this, NAME);
   }
 
   @Override

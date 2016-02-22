@@ -1,6 +1,15 @@
 package crazypants.enderio.material;
 
-import static com.enderio.core.common.util.OreDictionaryHelper.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.enderio.core.common.util.OreDictionaryHelper.DUST_ENDERPEARL;
+import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_COPPER;
+import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_ENDERIUM;
+import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_TIN;
+import static com.enderio.core.common.util.OreDictionaryHelper.isRegistered;
+
+import net.minecraft.util.ResourceLocation;
 
 public enum PowderIngot {
 
@@ -23,6 +32,16 @@ public enum PowderIngot {
   // INGOT_BRONZE("ingotBronze", "Bronze Ingot", "ingotBronze"),
   // INGOT_ELECTRUM("ingotElectrum", "Electrum Ingot", "ingotElectrum");
 
+  
+  public static List<ResourceLocation> resources() {
+    List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
+    for(PowderIngot c : values()) {
+      res.add(new ResourceLocation(c.iconKey));
+    }
+    return res;
+  }
+  
+  public final String baseName;
   public final String unlocalisedName;
   public final String oreDictName;
   public final String iconKey;
@@ -30,9 +49,10 @@ public enum PowderIngot {
   public final boolean reverseDependency;
   public boolean ignoreRuntimeDependencyCheck = false;
 
-  private PowderIngot(String unlocalisedName, String oreDictDependancy, String oreDictName, boolean reverseDependency) {
-    this.unlocalisedName = "enderio." + unlocalisedName;
-    iconKey = "enderio:" + unlocalisedName;
+  private PowderIngot(String baseName, String oreDictDependancy, String oreDictName, boolean reverseDependency) {
+    this.baseName = baseName;
+    this.unlocalisedName = "enderio." + baseName;
+    iconKey = "enderio:" + baseName;
     this.oreDictName = oreDictName;
     this.oreDictDependancy = oreDictDependancy;
     this.reverseDependency = reverseDependency;

@@ -1,12 +1,15 @@
 package crazypants.enderio.material;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 public enum Material {
 
@@ -22,6 +25,15 @@ public enum Material {
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
   WEATHER_CRYSTAL("weatherCrystal", true);
 
+  public static List<ResourceLocation> resources() {
+    List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
+    for(Material c : values()) {
+      res.add(new ResourceLocation(c.iconKey));
+    }
+    return res;
+  }
+  
+  public final String baseName;
   public final String unlocalisedName;
   public final String iconKey;
   public final String oreDict;
@@ -31,11 +43,12 @@ public enum Material {
     this(unlocalisedName, false);
   }
 
-  private Material(String unlocalisedName, boolean hasEffect) {
-    this.unlocalisedName = "enderio." + unlocalisedName;
-    this.iconKey = "enderio:" + unlocalisedName;
+  private Material(String baseName, boolean hasEffect) {
+    this.baseName = baseName;
+    this.unlocalisedName = "enderio." + baseName;
+    this.iconKey = "enderio:" + baseName;
     this.hasEffect = hasEffect;
-    this.oreDict = "item" + StringUtils.capitalize(unlocalisedName);
+    this.oreDict = "item" + StringUtils.capitalize(baseName);
   }
 
   public static void registerOres(Item item) {

@@ -40,6 +40,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
+  public static final String NAME = "darkSteel_pickaxe";
+  
   public static boolean isEquipped(EntityPlayer player) {
     if (player == null) {
       return false;
@@ -69,9 +71,13 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-    String str = "darkSteel_pickaxe";
-    setUnlocalizedName(str);
+    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setUnlocalizedName(NAME);
+  }
+  
+  @Override
+  public String getItemName() {  
+    return NAME;
   }
 
   @Override
@@ -234,7 +240,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, getUnlocalizedName());
+    GameRegistry.registerItem(this, NAME);
   }
 
   @Override

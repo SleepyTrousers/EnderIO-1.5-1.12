@@ -36,6 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
+  public static final String NAME = "darkSteel_shears";
+  
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
       return false;
@@ -71,11 +73,15 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   protected ItemDarkSteelShears() {
     super();
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-    String str = "darkSteel_shears";
-    setUnlocalizedName(str);    
+    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setUnlocalizedName(NAME);    
   }
 
+  @Override
+  public String getItemName() {  
+    return NAME;
+  }
+  
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 2;
@@ -216,7 +222,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, getUnlocalizedName());
+    GameRegistry.registerItem(this, NAME);
   }
 
   @Override

@@ -4,10 +4,13 @@ import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,13 +34,14 @@ public class ItemFrankenSkull extends Item {
     GameRegistry.registerItem(this, ModObject.itemFrankenSkull.unlocalisedName);
   }
   
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    for (int i = 0; i < icons.length; i++) {
-//      icons[i] = IIconRegister.registerIcon(FrankenSkull.values()[i].iconKey);
-//    }
-//  }
+  @SideOnly(Side.CLIENT)
+  public void addRenderers() {
+    List<ResourceLocation> names = FrankenSkull.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (FrankenSkull c : FrankenSkull.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
+    }     
+  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
