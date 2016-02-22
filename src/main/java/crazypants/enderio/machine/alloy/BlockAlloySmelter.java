@@ -54,7 +54,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
-    SmartModelAttacher.register(name);
+    SmartModelAttacher.register(this);
     this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
