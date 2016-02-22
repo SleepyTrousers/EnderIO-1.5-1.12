@@ -11,6 +11,14 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.collect.ImmutableMap;
 
+/**
+ * This blockstate wrapper allows the block to give more information to the smart model. This allows it to talk to the block properly (with world and pos) and
+ * to talk to the tile entity.
+ * <p>
+ * This is to be added in the getExtendedState() call.
+ * <p>
+ * Note: Careful! This happens in a render thread!
+ */
 public class BlockStateWrapper implements IBlockState {
 
   private final IBlockState state;

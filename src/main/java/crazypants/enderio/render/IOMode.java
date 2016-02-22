@@ -5,6 +5,10 @@ import java.util.Map;
 
 import net.minecraft.util.EnumFacing;
 
+/**
+ * A property for the IO overlays of the block sides. These are implemented in the MachineIO dummy block and can be pulled from there for rendering using these
+ * blockstates.
+ */
 public class IOMode implements Comparable<IOMode> {
 
   private final EnumFacing direction;
@@ -32,6 +36,8 @@ public class IOMode implements Comparable<IOMode> {
   }
 
   private static final Map<String, IOMode> values = new HashMap<String, IOMode>();
+
+  public static final PropertyIO IO = PropertyIO.getInstance();
 
   public static IOMode get(EnumFacing direction, EnumIOMode iomode) {
     String key = direction.toString() + "_" + iomode.toString();
