@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableList;
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
+
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
@@ -42,9 +43,9 @@ import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.entity.SkeletonHandler;
 import crazypants.enderio.fluid.BlockFluidEio;
+import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
 import crazypants.enderio.item.ItemSoulVessel;
@@ -262,25 +263,21 @@ public class EnderIO {
   //Fluids
   public static Fluid fluidNutrientDistillation;
   public static BlockFluidEio blockNutrientDistillation;
-  public static ItemBucketEio itemBucketNutrientDistillation;
-
+  
   public static Fluid fluidHootch;
   public static BlockFluidEio blockHootch;
-  public static ItemBucketEio itemBucketHootch;
 
   public static Fluid fluidRocketFuel;
   public static BlockFluidEio blockRocketFuel;
-  public static ItemBucketEio itemBucketRocketFuel;
-
+    
   public static Fluid fluidFireWater;
   public static BlockFluidEio blockFireWater;
-  public static ItemBucketEio itemBucketFireWater;
 
   //Open block compatable liquid XP
   public static Fluid fluidXpJuice;
-  public static ItemBucketEio itemBucketXpJuice;
-//
-//  // Items
+  
+
+  // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
   public static ItemXpTransfer itemXpTransfer;
@@ -468,17 +465,13 @@ public class EnderIO {
 
     if(!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid(Config.xpJuiceName,Fluids.getStill(Config.xpJuiceName),Fluids.getFlowing(Config.xpJuiceName)).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+      fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getStill(Fluids.FIRE_WATER_NAME),Fluids.getFlowing(Fluids.FIRE_WATER_NAME)).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
-      itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
     } else {
       Log.info("XP Juice regististration left to Open Blocks.");
     }
-
-    itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
-    itemBucketHootch = ItemBucketEio.create(fluidHootch);
-    itemBucketRocketFuel = ItemBucketEio.create(fluidRocketFuel);
-    itemBucketFireWater = ItemBucketEio.create(fluidFireWater);
+    
+    Buckets.createBuckets();
   }
 
   @EventHandler

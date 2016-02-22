@@ -35,7 +35,7 @@ public class ItemFrankenSkull extends Item {
   }
   
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
     List<ResourceLocation> names = FrankenSkull.resources();    
     ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
     for (FrankenSkull c : FrankenSkull.values()) {

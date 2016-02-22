@@ -36,7 +36,7 @@ public class ItemMaterial extends Item {
   }
 
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
     List<ResourceLocation> names = Material.resources();    
     ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
     for (Material c : Material.values()) {

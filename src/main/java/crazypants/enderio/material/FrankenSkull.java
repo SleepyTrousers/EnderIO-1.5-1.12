@@ -3,6 +3,7 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.EnderIO;
 import net.minecraft.util.ResourceLocation;
 
 public enum FrankenSkull {
@@ -21,7 +22,7 @@ public enum FrankenSkull {
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
     for(FrankenSkull c : values()) {
-      res.add(new ResourceLocation(c.iconKey));
+      res.add(new ResourceLocation(EnderIO.MODID, c.baseName));
     }
     return res;
   }

@@ -6,10 +6,13 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,8 +20,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipProvider {
 
   private static final SpeedUpgrade UPGRADES[] = SpeedUpgrade.values();
-
-//  private final IIcon[] icons;
 
   public static ItemExtractSpeedUpgrade create() {
     ItemExtractSpeedUpgrade result = new ItemExtractSpeedUpgrade();
@@ -32,28 +33,20 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
-
-//    icons = new IIcon[UPGRADES.length];
   }
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemExtractSpeedUpgrade.unlocalisedName);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIconFromDamage(int damage) {
-//    damage = MathHelper.clamp_int(damage, 0, icons.length - 1);
-//    return icons[damage];
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister iconRegister) {
-//    for (int i = 0; i < UPGRADES.length; i++) {
-//      icons[i] = iconRegister.registerIcon(UPGRADES[i].iconName);
-//    }
-//  }
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    List<ResourceLocation> names = SpeedUpgrade.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (SpeedUpgrade c : SpeedUpgrade.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
+    }     
+  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

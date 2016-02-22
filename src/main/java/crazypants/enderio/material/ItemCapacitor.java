@@ -45,7 +45,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   }
 
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
     List<ResourceLocation> names = Capacitors.resources();    
     ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
     for (Capacitors c : Capacitors.values()) {

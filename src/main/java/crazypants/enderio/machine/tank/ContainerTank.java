@@ -6,18 +6,18 @@ import java.util.Random;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import crazypants.enderio.fluid.Buckets;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
-  static private final Item[] slotItems = { Items.water_bucket, Items.lava_bucket, EnderIO.itemBucketNutrientDistillation,
-      EnderIO.itemBucketHootch, EnderIO.itemBucketRocketFuel, EnderIO.itemBucketFireWater };
+  static private final Item[] slotItems = { Items.water_bucket, Items.lava_bucket, Buckets.itemBucketNutrientDistillation,
+      Buckets.itemBucketHootch, Buckets.itemBucketRocketFuel, Buckets.itemBucketFireWater };
   static private final Random rand = new Random();
 
   public ContainerTank(InventoryPlayer playerInv, TileTank te) {

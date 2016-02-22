@@ -45,7 +45,7 @@ public class ItemAlloy extends Item {
   }
 
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
 
     List<ResourceLocation> names = Alloy.resources();
     if (useNuggets) {

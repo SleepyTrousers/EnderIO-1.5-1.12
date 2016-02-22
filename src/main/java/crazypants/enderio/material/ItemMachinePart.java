@@ -35,7 +35,7 @@ public class ItemMachinePart extends Item {
   }
 
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
     List<ResourceLocation> names = MachinePart.resources();    
     ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
     for (MachinePart c : MachinePart.values()) {

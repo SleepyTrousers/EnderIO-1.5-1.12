@@ -397,6 +397,4 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
   }
 
-
-
 }

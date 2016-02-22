@@ -1,6 +1,5 @@
 package crazypants.enderio.item;
 
-import java.text.NumberFormat;
 import java.util.Collection;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -24,8 +23,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades {
-
-  private static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
   public static ItemConduitProbe create() {
 
@@ -84,7 +81,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     if(!(te instanceof IConduitBundle)) {
       return false;
     }
-    IConduitBundle cb = (IConduitBundle)te;    
+        
     if(itemStack.getItemDamage() == 0) {      
       if(PacketConduitProbe.canCreatePacket(world, pos.getX(), pos.getY(), pos.getZ())) {
         if(world.isRemote) {

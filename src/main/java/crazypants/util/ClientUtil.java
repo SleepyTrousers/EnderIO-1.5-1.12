@@ -110,7 +110,7 @@ public class ClientUtil {
     renderItem.getItemModelMesher().register(item, meta, new ModelResourceLocation(loc, "inventory"));
   }
 
-  public static void regRenderer(Item item, String name) {
+  public static void registerRenderer(Item item, String name) {
     regRenderer(item, 0, name);
   }
   

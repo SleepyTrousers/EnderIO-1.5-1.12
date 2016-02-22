@@ -19,6 +19,7 @@ import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
@@ -229,15 +230,27 @@ public class ClientProxy extends CommonProxy {
     new ConduitProbeOverlayRenderer();
     
     //Items    
-    ClientUtil.regRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);       
-    EnderIO.itemAlloy.addRenderers();
-    EnderIO.itemBasicCapacitor.addRenderers();
-    EnderIO.itemPowderIngot.addRenderers();
-    EnderIO.itemFrankenSkull.addRenderers();
-    EnderIO.itemMachinePart.addRenderers();
-    EnderIO.itemMaterial.addRenderers();
-    EnderIO.itemEnderFood.addRenderers();
-    DarkSteelItems.registerItemRenderer();
+    ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);       
+    EnderIO.itemAlloy.registerRenderers();
+    EnderIO.itemBasicCapacitor.registerRenderers();
+    EnderIO.itemPowderIngot.registerRenderers();
+    EnderIO.itemFrankenSkull.registerRenderers();
+    EnderIO.itemMachinePart.registerRenderers();
+    EnderIO.itemMaterial.registerRenderers();
+    EnderIO.itemEnderFood.registerRenderers();
+    EnderIO.itemBasicFilterUpgrade.registerRenderers();
+    EnderIO.itemExtractSpeedUpgrade.registerRenderers();
+    EnderIO.itemFunctionUpgrade.registerRenderers();    
+    ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);       
+    ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemExistingItemFilter, ModObject.itemExistingItemFilter.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.unlocalisedName);        
+    DarkSteelItems.registerItemRenderers();
+    Buckets.registerRenderers();
     
     //Entities
     RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, SoundRenderer.FACTORY);

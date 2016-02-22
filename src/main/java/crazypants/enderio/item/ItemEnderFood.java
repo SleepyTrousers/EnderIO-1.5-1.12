@@ -146,7 +146,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
   }
 
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
     List<ResourceLocation> names = EnderFood.resources();    
     ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
     for (EnderFood c : EnderFood.values()) {

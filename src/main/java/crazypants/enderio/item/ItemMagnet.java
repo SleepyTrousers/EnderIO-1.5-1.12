@@ -22,7 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -68,8 +68,8 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   public static ItemMagnet create() {
     ItemMagnet result = new ItemMagnet();
-    result.init();
-    FMLCommonHandler.instance().bus().register(controller);
+    result.init();    
+    MinecraftForge.EVENT_BUS.register(controller);
     return result;
   }
 
@@ -85,12 +85,6 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemMagnet.unlocalisedName);
   }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    itemIcon = IIconRegister.registerIcon("enderio:magnet");
-//  }
 
   @Override
   @SideOnly(Side.CLIENT)

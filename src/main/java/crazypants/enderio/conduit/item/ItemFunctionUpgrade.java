@@ -6,10 +6,13 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,8 +20,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvider {
 
   private static final FunctionUpgrade UPGRADES[] = FunctionUpgrade.values();
-
-//  private final IIcon[] icons;
 
   public static ItemFunctionUpgrade create() {
     ItemFunctionUpgrade result = new ItemFunctionUpgrade();
@@ -33,13 +34,21 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
     setMaxDamage(0);
     setMaxStackSize(64);
 
-//    icons = new IIcon[UPGRADES.length];
   }
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemFunctionUpgrade.unlocalisedName);
   }
 
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    List<ResourceLocation> names = FunctionUpgrade.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (FunctionUpgrade c : FunctionUpgrade.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
+    }     
+  }
+  
 //  @Override
 //  @SideOnly(Side.CLIENT)
 //  public IIcon getIconFromDamage(int damage) {

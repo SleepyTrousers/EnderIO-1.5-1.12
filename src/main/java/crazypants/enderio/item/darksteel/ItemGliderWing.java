@@ -7,10 +7,13 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.power.Capacitors;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,12 +38,12 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
     GameRegistry.registerItem(this, ModObject.itemGliderWing.unlocalisedName);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister register) {
-//    itemIcon = register.registerIcon("enderio:itemGliderWing");
-//    wingsIcon = register.registerIcon("enderio:itemGliderWings");
-//  }
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {       
+    ModelBakery.registerItemVariants(this, new ResourceLocation("enderio:itemGliderWing"),new ResourceLocation("enderio:itemGliderWings"));        
+    ClientUtil.regRenderer(this, 0,"itemGliderWing");
+    ClientUtil.regRenderer(this, 1 ,"itemGliderWings");    
+  }  
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

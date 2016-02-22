@@ -36,7 +36,7 @@ public class ItemPowderIngot extends Item {
   }
   
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {
+  public void registerRenderers() {
     List<ResourceLocation> names = PowderIngot.resources();    
     ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
     for (PowderIngot c : PowderIngot.values()) {

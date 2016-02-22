@@ -1,5 +1,6 @@
 package crazypants.enderio.block;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -103,8 +104,12 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-    TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) world.getTileEntity(pos);
+  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {    
+    TileEntity te = world.getTileEntity(pos);
+    if(! (te instanceof TileEntityDarkSteelPressurePlate)) {
+      return Collections.emptyList();
+    }    
+    TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate)te;
     ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
     if (tepb.getSourceBlock() != null) {
       PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());

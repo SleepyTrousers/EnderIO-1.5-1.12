@@ -1,12 +1,9 @@
 package crazypants.enderio.item.darksteel;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.item.Item;
+import crazypants.util.ClientUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -64,25 +61,20 @@ public class DarkSteelItems {
   }
 
   @SideOnly(Side.CLIENT)
-  public static void registerItemRenderer() {    
-    regRenderer(DarkSteelItems.itemDarkSteelBoots, DarkSteelItems.itemDarkSteelBoots.getItemName());
-    regRenderer(DarkSteelItems.itemDarkSteelLeggings, DarkSteelItems.itemDarkSteelLeggings.getItemName());
-    regRenderer(DarkSteelItems.itemDarkSteelChestplate, DarkSteelItems.itemDarkSteelChestplate.getItemName());
-    regRenderer(DarkSteelItems.itemDarkSteelHelmet, DarkSteelItems.itemDarkSteelHelmet.getItemName());
+  public static void registerItemRenderers() {  
+    itemGliderWing.registerRenderers();
     
-    regRenderer(DarkSteelItems.itemDarkSteelAxe, DarkSteelItems.itemDarkSteelAxe.getItemName());
-    regRenderer(DarkSteelItems.itemDarkSteelSword, DarkSteelItems.itemDarkSteelSword.getItemName());
-    regRenderer(DarkSteelItems.itemDarkSteelShears, DarkSteelItems.itemDarkSteelShears.getItemName());
-    regRenderer(DarkSteelItems.itemDarkSteelPickaxe, DarkSteelItems.itemDarkSteelPickaxe.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelBoots, DarkSteelItems.itemDarkSteelBoots.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelLeggings, DarkSteelItems.itemDarkSteelLeggings.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelChestplate, DarkSteelItems.itemDarkSteelChestplate.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelHelmet, DarkSteelItems.itemDarkSteelHelmet.getItemName());
+    
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelAxe, DarkSteelItems.itemDarkSteelAxe.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelSword, DarkSteelItems.itemDarkSteelSword.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelShears, DarkSteelItems.itemDarkSteelShears.getItemName());
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelPickaxe, DarkSteelItems.itemDarkSteelPickaxe.getItemName());
+    
+    ClientUtil.registerRenderer(itemMagnet, ModObject.itemMagnet.unlocalisedName);
   }
-  
-  private static void regRenderer(Item item, String name) {
-    regRenderer(item, 0, name);
-  }
-
-  private static void regRenderer(Item item, int meta, String name) {    
-    String resourceName = EnderIO.MODID.toLowerCase() + ":" + name;
-    RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-    renderItem.getItemModelMesher().register(item, meta, new ModelResourceLocation(resourceName, "inventory"));
-  }
+    
 }

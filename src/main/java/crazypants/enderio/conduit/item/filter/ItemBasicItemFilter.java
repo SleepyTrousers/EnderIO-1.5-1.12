@@ -8,12 +8,15 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,16 +29,12 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     return result;
   }
 
-//  private final IIcon[] icons;
-
   protected ItemBasicItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemBasicFilterUpgrade.unlocalisedName);
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
-
-//    icons = new IIcon[2];
   }
 
   protected void init() {
@@ -57,21 +56,12 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     return filter;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIconFromDamage(int damage) {
-//    damage = MathHelper.clamp_int(damage, 0, 1);
-//    return icons[damage];
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//
-//    icons[0] = IIconRegister.registerIcon("enderio:filterUpgradeBasic");
-//    icons[1] = IIconRegister.registerIcon("enderio:filterUpgradeAdvanced");
-//
-//  }
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {       
+    ModelBakery.registerItemVariants(this, new ResourceLocation("enderio:filterUpgradeBasic"),new ResourceLocation("enderio:filterUpgradeAdvanced"));        
+    ClientUtil.regRenderer(this, 0,"filterUpgradeBasic");
+    ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");    
+  }  
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
@@ -80,9 +70,8 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
   }
 
   @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (int j = 0; j < 2; ++j) {
       par3List.add(new ItemStack(this, 1, j));
     }
