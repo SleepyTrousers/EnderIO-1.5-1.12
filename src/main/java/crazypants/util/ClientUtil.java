@@ -2,6 +2,7 @@ package crazypants.util;
 
 import java.util.Random;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -11,10 +12,14 @@ import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 
 public class ClientUtil {
 
@@ -84,4 +89,29 @@ public class ClientUtil {
     tile.burnTime = message.burnTime;
     tile.totalBurnTime = message.totalBurnTime;
   }
+  
+  
+  public static void regRenderer(Item item, int meta, String name) {
+    regRenderer(item, meta, EnderIO.MODID, name);
+  }
+
+  public static void regRenderer(Item item, int meta, String modId, String name) {
+    String resourceName;
+    if (modId != null) {
+      resourceName = modId + ":" + name;
+    } else {
+      resourceName = name;
+    }
+    regRenderer(item, meta, new ResourceLocation(resourceName));
+  }
+  
+  public static void regRenderer(Item item, int meta, ResourceLocation loc) {
+    RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+    renderItem.getItemModelMesher().register(item, meta, new ModelResourceLocation(loc, "inventory"));
+  }
+
+  public static void regRenderer(Item item, String name) {
+    regRenderer(item, 0, name);
+  }
+  
 }

@@ -10,11 +10,14 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.ICapacitorItem;
+import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,14 +44,15 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
     GameRegistry.registerItem(this, ModObject.itemBasicCapacitor.unlocalisedName);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    for (int i = 0; i < Capacitors.values().length; i++) {
-//      icons[i] = IIconRegister.registerIcon(Capacitors.values()[i].iconKey);
-//    }
-//  }
-
+  @SideOnly(Side.CLIENT)
+  public void addRenderers() {
+    List<ResourceLocation> names = Capacitors.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (Capacitors c : Capacitors.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
+    }     
+  }
+  
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length - 1);
@@ -82,7 +86,5 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
     }
 
   }
-
-
 
 }

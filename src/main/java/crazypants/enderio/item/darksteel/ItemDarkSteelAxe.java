@@ -38,6 +38,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
+  public static final String NAME = "darkSteel_axe";
+  
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
       return false;
@@ -72,9 +74,13 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   
   protected ItemDarkSteelAxe() {
     super(ItemDarkSteelSword.MATERIAL);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-    String str = "darkSteel_axe";
-    setUnlocalizedName(str);    
+    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setUnlocalizedName(NAME);    
+  }
+
+  @Override
+  public String getItemName() {  
+    return NAME;
   }
 
   @Override
@@ -222,7 +228,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, getUnlocalizedName());
+    GameRegistry.registerItem(this, NAME);
   }
 
   @Override

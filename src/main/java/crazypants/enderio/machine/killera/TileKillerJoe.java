@@ -228,7 +228,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           }
           useNutrient();
           swingWeapon();
-          if (getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
+          if (getStackInSlot(0) == null || getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
             setInventorySlotContents(0, null);
           }
           return false;

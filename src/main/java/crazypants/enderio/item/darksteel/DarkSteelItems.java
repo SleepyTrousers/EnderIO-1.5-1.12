@@ -64,20 +64,21 @@ public class DarkSteelItems {
   }
 
   @SideOnly(Side.CLIENT)
-  public static void registerItemRenderer() {
+  public static void registerItemRenderer() {    
+    regRenderer(DarkSteelItems.itemDarkSteelBoots, DarkSteelItems.itemDarkSteelBoots.getItemName());
+    regRenderer(DarkSteelItems.itemDarkSteelLeggings, DarkSteelItems.itemDarkSteelLeggings.getItemName());
+    regRenderer(DarkSteelItems.itemDarkSteelChestplate, DarkSteelItems.itemDarkSteelChestplate.getItemName());
+    regRenderer(DarkSteelItems.itemDarkSteelHelmet, DarkSteelItems.itemDarkSteelHelmet.getItemName());
     
-    regRenderer(itemDarkSteelBoots, 0, itemDarkSteelBoots.getUnlocalizedName());
-//    PoweredItemRenderer dsr = new PoweredItemRenderer();
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelBoots, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelLeggings, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelChestplate, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelHelmet, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelSword, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
-//    MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
+    regRenderer(DarkSteelItems.itemDarkSteelAxe, DarkSteelItems.itemDarkSteelAxe.getItemName());
+    regRenderer(DarkSteelItems.itemDarkSteelSword, DarkSteelItems.itemDarkSteelSword.getItemName());
+    regRenderer(DarkSteelItems.itemDarkSteelShears, DarkSteelItems.itemDarkSteelShears.getItemName());
+    regRenderer(DarkSteelItems.itemDarkSteelPickaxe, DarkSteelItems.itemDarkSteelPickaxe.getItemName());
   }
   
+  private static void regRenderer(Item item, String name) {
+    regRenderer(item, 0, name);
+  }
 
   private static void regRenderer(Item item, int meta, String name) {    
     String resourceName = EnderIO.MODID.toLowerCase() + ":" + name;

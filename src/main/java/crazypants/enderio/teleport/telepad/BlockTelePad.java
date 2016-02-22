@@ -30,8 +30,6 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
 //  private IIcon model;
 //  @SideOnly(Side.CLIENT)
 //  private IIcon highlightIcon;
-  
-  public static int renderId;
 
   public static BlockTelePad createTelepad() {
     
@@ -88,12 +86,6 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
 //  public IIcon getHighlightIcon() {
 //    return highlightIcon;
 //  }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
-  }
-
 
   @Override
   public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {

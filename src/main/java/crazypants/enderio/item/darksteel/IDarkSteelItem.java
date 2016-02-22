@@ -4,4 +4,6 @@ public interface IDarkSteelItem {
 
   int getIngotsRequiredForFullRepair();
   
+  String getItemName();
+  
 }

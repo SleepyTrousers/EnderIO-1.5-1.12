@@ -1,5 +1,6 @@
 package crazypants.enderio.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -11,8 +12,10 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -81,13 +84,21 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
   public enum EnderFood {
     ENDERIOS("itemEnderios", 10, 0.8f);
 
+    public static List<ResourceLocation> resources() {
+      List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
+      for(EnderFood c : values()) {
+        res.add(new ResourceLocation(EnderIO.MODID, c.unlocalisedName));
+      }
+      return res;
+    }
+        
     public final String unlocalisedName;
     public final int hunger;
     public final float saturation;
 
     public static final EnderFood[] VALUES = values();
 
-    private EnderFood(String name, int hunger, float saturation) {
+    private EnderFood(String name, int hunger, float saturation) {    
       this.unlocalisedName = name;
       this.hunger = hunger;
       this.saturation = saturation;
@@ -121,27 +132,27 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List list) {
+  public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
     for (EnderFood f : EnderFood.VALUES) {
       list.add(f.getStack());
     }
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack p_77667_1_) {
-    return "enderio." + EnderFood.get(p_77667_1_).unlocalisedName;
+  public String getUnlocalizedName(ItemStack itemStack) {
+    return "enderio." + EnderFood.get(itemStack).unlocalisedName;
   }
 
-  // @Override
-  // public void registerIcons(IIconRegister register) {
-  // icons = new IIcon[EnderFood.VALUES.length];
-  // for (EnderFood f : EnderFood.VALUES) {
-  // icons[f.ordinal()] = register.registerIcon("enderio:" + f.unlocalisedName);
-  // }
-  // }
+  @SideOnly(Side.CLIENT)
+  public void addRenderers() {
+    List<ResourceLocation> names = EnderFood.resources();    
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+    for (EnderFood c : EnderFood.values()) {
+      ClientUtil.regRenderer(this, c.ordinal(), c.unlocalisedName);
+    }     
+  }
 
   @Override
   public int getHealAmount(ItemStack stack) {
