@@ -92,7 +92,7 @@ public class ClientUtil {
   
   
   public static void regRenderer(Item item, int meta, String name) {
-    regRenderer(item, meta, EnderIO.MODID, name);
+    regRenderer(item, meta, EnderIO.DOMAIN, name);
   }
 
   public static void regRenderer(Item item, int meta, String modId, String name) {
