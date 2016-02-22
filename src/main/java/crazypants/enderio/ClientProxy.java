@@ -169,6 +169,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     EnderIO.blockIngotStorage.registerRenderers();
+    EnderIO.blockDarkSteelAnvil.registerRenderers();
     
     // Tile Renderers
 

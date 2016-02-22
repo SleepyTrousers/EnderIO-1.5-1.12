@@ -1,0 +1,8 @@
+{
+    "parent": "block/anvil",
+    "textures": {
+        "particle": "enderio:blocks/anvil_base",
+        "body": "enderio:blocks/anvil_base",
+        "top": "enderio:blocks/anvil_1"
+    }
+}

@@ -6,24 +6,25 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiRepair;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAnvilBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider {
-
-//  private static final String[] anvilIconNames = new String[] { "anvil_0", "anvil_1", "anvil_2" };
-
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] anvilIcons;
 
   public static BlockDarkSteelAnvil create() {
     BlockDarkSteelAnvil res = new BlockDarkSteelAnvil();
@@ -62,38 +63,21 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return this.getUnlocalizedName();
   }
-  
+
   @Override
-  public boolean onBlockActivated(World w, BlockPos pos, IBlockState state, EntityPlayer p, EnumFacing side, float hitX, float hitY, float hitZ) {   
+  public boolean onBlockActivated(World w, BlockPos pos, IBlockState state, EntityPlayer p, EnumFacing side, float hitX, float hitY, float hitZ) {
     p.openGui(EnderIO.instance, GuiHandler.GUI_ID_ANVIL, w, pos.getX(), pos.getY(), pos.getZ());
     return true;
   }
-  
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-//  {
-//    if(this.anvilRenderSide == 3 && p_149691_1_ == 1)
-//    {
-//      int k = (p_149691_2_ >> 2) % this.anvilIcons.length;
-//      return this.anvilIcons[k];
-//    }
-//    else
-//    {
-//      return this.blockIcon;
-//    }
-//  }
-//
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister register)
-//  {
-//    this.blockIcon = register.registerIcon(EnderIO.DOMAIN + ":anvil_base");
-//    this.anvilIcons = new IIcon[anvilIconNames.length];
-//
-//    for (int i = 0; i < this.anvilIcons.length; ++i)
-//    {
-//      this.anvilIcons[i] = register.registerIcon(EnderIO.DOMAIN + ":" + anvilIconNames[i]);
-//    }
-//  }
 
-  
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+
+    Item item = Item.getItemFromBlock(this);
+    ModelBakery.registerItemVariants(item, new ResourceLocation("enderio:anvil_undamaged"),new ResourceLocation("enderio:anvil_slightly_damaged"),new ResourceLocation("enderio:anvil_very_damaged"));        
+    ClientUtil.regRenderer(item, 0,"anvil_undamaged");
+    ClientUtil.regRenderer(item, 1,"anvil_slightly_damaged");
+    ClientUtil.regRenderer(item, 2 ,"anvil_very_damaged");
+  }
+
 }
