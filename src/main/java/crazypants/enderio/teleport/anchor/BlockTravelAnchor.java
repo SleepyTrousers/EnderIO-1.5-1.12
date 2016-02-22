@@ -38,16 +38,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
-
-  public static int renderId = -1;
-
+  
   public static BlockTravelAnchor<TileTravelAnchor> create() {
 
     PacketHandler.INSTANCE.registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -60,15 +62,15 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(TileTravelAnchor.class);
     result.init();
 
+    MinecraftForge.EVENT_BUS.register(result);
+    
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, result);
     //TODO: 1.8
 //    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
-
     return result;
   }
 
-  //TODO: 1.8
   @SideOnly(Side.CLIENT)
   TextureAtlasSprite selectedOverlayIcon;
   @SideOnly(Side.CLIENT)
@@ -85,34 +87,18 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public BlockTravelAnchor(String unlocalisedName, Class<T> teClass) {
     super(unlocalisedName, teClass);
   }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//    super.registerBlockIcons(iIconRegister);
-//    highlightOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorHighlight");
-//    selectedOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorSelected");
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-//    TileEntity te = world.getTileEntity(x, y, z);
-//    if (te instanceof IPaintableTileEntity) {
-//      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
-//      if (sourceBlock != null && sourceBlock != this) {
-//        return sourceBlock.getIcon(blockSide, ((IPaintableTileEntity) te).getSourceBlockMetadata());
-//      }
-//    }
-//    return super.getIcon(world, x, y, z, blockSide);
-//  }
+  
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Pre event) {    
+    selectedOverlayIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/blockTravelAnchorSelected")); 
+    highlightOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/blockTravelAnchorHighlight"));
+  }
 
   @Override
   public TileEntity createNewTileEntity(World var1, int var2) {
     return new TileTravelAnchor();
   }
-  
-  
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
@@ -182,8 +168,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return null;
   }
 
-  
-  
   @Override
   protected void processDrop(IBlockAccess world, BlockPos pos, TileTravelAnchor anchor, ItemStack drop) {       
     if (anchor == null) {
@@ -214,11 +198,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       }
     }
     return super.colorMultiplier(world, pos);
-  }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
   }
 
   @Override

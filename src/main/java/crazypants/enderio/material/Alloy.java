@@ -7,9 +7,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import crazypants.enderio.EnderIO;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
-public enum Alloy {
+public enum Alloy implements IStringSerializable {
 
   ELECTRICAL_STEEL("electricalSteel", 6.0f),
   ENERGETIC_ALLOY("energeticAlloy", 7.0f),
@@ -90,5 +91,10 @@ public enum Alloy {
 
   public List<String> getOreBlocks() {
     return oreBlocks;
+  }
+
+  @Override
+  public String getName() {
+    return baseName;
   }
 }

@@ -153,6 +153,7 @@ public class ClientProxy extends CommonProxy {
   public void load() {
     super.load();
 
+    //Blocks
     Minecraft
         .getMinecraft()
         .getRenderItem()
@@ -167,6 +168,8 @@ public class ClientProxy extends CommonProxy {
       tt.addCallback(new TooltipHandlerFluid());
     }
 
+    EnderIO.blockIngotStorage.registerRenderers();
+    
     // Tile Renderers
 
     if (EnderIO.blockEnchanter != null) {
