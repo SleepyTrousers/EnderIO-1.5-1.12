@@ -2,13 +2,19 @@ package crazypants.enderio.machine.generator.stirling;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.IPowerContainer;
 import crazypants.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
+public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage>, Runnable {
 
   public int burnTime;
   public int totalBurnTime;
@@ -38,7 +44,19 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   
   @Override
   public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
-    ClientUtil.setStirlingBurnTime(message, message.x, message.y, message.z);
+    Minecraft.getMinecraft().addScheduledTask(message);
     return null;
+  }
+
+  @Override
+  public void run() {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    if (player != null && player.worldObj != null) {
+      TileEntityStirlingGenerator tile = getTileEntity(player.worldObj);
+      if (tile != null) {
+        tile.burnTime = burnTime;
+        tile.totalBurnTime = totalBurnTime;
+      }
+    }
   }
 }

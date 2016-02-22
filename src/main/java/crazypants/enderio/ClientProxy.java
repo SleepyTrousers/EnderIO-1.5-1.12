@@ -48,6 +48,7 @@ import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TileTank;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
+import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
@@ -144,11 +145,19 @@ public class ClientProxy extends CommonProxy {
     // if (OCUtil.isOCEnabled()) {
     // OCConduit.initIcons();
     // }
+    SmartModelAttacher.create();
   }
 
   @Override
   public void load() {
     super.load();
+
+    Minecraft
+        .getMinecraft()
+        .getRenderItem()
+        .getItemModelMesher()
+        .register(Item.getItemFromBlock(EnderIO.blockAlloySmelter), 0,
+            new ModelResourceLocation(EnderIO.DOMAIN + ":" + EnderIO.blockAlloySmelter.name(), "inventory"));
 
     SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
     tt.addCallback(new TooltipHandlerGrinding());

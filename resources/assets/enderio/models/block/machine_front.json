@@ -1,0 +1,25 @@
+{
+    "textures":{
+        "front":"enderio:blocks/machineSide"
+    },
+    "elements":[
+        {
+            "from":[
+                0.25,
+                0.25,
+                0.25
+            ],
+            "to":[
+                15.75,
+                15.75,
+                15.75
+            ],
+            "faces":{
+                "south":{
+                    "texture":"#front",
+                    "cullface":"south"
+                }
+            }
+        }
+    ]
+}

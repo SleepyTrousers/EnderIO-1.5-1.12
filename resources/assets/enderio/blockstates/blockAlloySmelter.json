@@ -1,0 +1,51 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/machineBottom"
+        }
+    },
+    "variants":{
+        "inventory":{
+            "model":"enderio:machine_body",
+            "submodel":{
+                "front":{
+                    "model":"enderio:machine_front"
+                }
+            },
+            "textures":{
+                "front":"enderio:blocks/alloySmelterFront"
+            },
+            "transform":{
+		        "thirdperson":{
+		            "rotation":[ {"x":10}, {"y":135}, {"z":170} ],
+		            "translation":[ 0, 0.09375, -0.171875 ],
+		            "scale":[ 0.375, 0.375, 0.375 ]
+		        },
+		        "firstperson":{
+		            "rotation":[ {"x":0}, {"y":-90}, {"z":0} ],
+		            "translation":[ 0, 0, 0 ],
+		            "scale":[ 1, 1, 1 ]
+		        },
+		        "gui":{
+		            "rotation":[ {"x":0}, {"y":90}, {"z":0} ],
+		            "translation":[ 0, 0, 0 ],
+		            "scale":[ 1, 1, 1 ]
+		        },
+		        "fixed":{
+		            "rotation":[ {"x":0}, {"y":180}, {"z":0} ],
+		            "translation":[ 0, 0, 0 ],
+		            "scale":[ 1, 1, 1 ]
+		        }
+		    }
+        },
+        "render":{
+            "defaults":{
+                
+            },
+            "auto":{
+                
+            }
+        }
+    }
+}

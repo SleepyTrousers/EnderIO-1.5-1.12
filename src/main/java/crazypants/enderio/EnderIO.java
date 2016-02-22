@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableList;
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
-
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
@@ -111,6 +110,8 @@ import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
+import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
@@ -297,6 +298,11 @@ public class EnderIO {
     Config.load(event);
     
     proxy.loadIcons();
+
+    // Dummy blocks that contain the models for all the other blocks
+    BlockMachineBase.create();
+    BlockMachineIO.create();
+    // TODO: find some block that can take those models as extra
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 

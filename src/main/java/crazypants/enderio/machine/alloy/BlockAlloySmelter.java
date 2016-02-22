@@ -5,11 +5,22 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.MachineSmartModel;
+import crazypants.enderio.render.SmartModelAttacher;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,7 +28,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
+public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> implements ISmartRenderAwareBlock {
 
   public static BlockAlloySmelter create() {
 
@@ -29,6 +40,10 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     return res;
   }
 
+  public String name() {
+    return name;
+  }
+
   @SideOnly(Side.CLIENT)
   TextureAtlasSprite vanillaSmeltingOn;
   @SideOnly(Side.CLIENT)
@@ -38,6 +53,43 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
+    SmartModelAttacher.register(name);
+    this.setDefaultState(this.blockState.getBaseState().withProperty(MachineSmartModel.RENDER, EnumRenderMode.AUTO));
+  }
+
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { MachineSmartModel.RENDER });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState();
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return 0;
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return getDefaultState();
+  }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return new BlockStateWrapper(state, world, pos);
+  }
+
+  @SideOnly(Side.CLIENT)
+  public EnumWorldBlockLayer getBlockLayer() {
+    return EnumWorldBlockLayer.CUTOUT;
+  }
+
+  @Override
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return new RenderMapperAlloySmelter();
   }
 
 //  @Override
