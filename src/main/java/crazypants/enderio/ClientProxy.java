@@ -153,13 +153,15 @@ public class ClientProxy extends CommonProxy {
   public void load() {
     super.load();
 
-    //Blocks
-    Minecraft
-        .getMinecraft()
-        .getRenderItem()
-        .getItemModelMesher()
-        .register(Item.getItemFromBlock(EnderIO.blockAlloySmelter), 0,
-            new ModelResourceLocation(EnderIO.DOMAIN + ":" + EnderIO.blockAlloySmelter.name(), "inventory"));
+    // Blocks
+    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(EnderIO.blockAlloySmelter), 0,
+        new ModelResourceLocation(EnderIO.DOMAIN + ":" + EnderIO.blockAlloySmelter.name(), "inventory"));
+
+    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(EnderIO.blockDarkIronBars), 0,
+        new ModelResourceLocation(EnderIO.DOMAIN + ":" + ModObject.blockDarkIronBars.name(), "inventory"));
+
+    EnderIO.blockIngotStorage.registerRenderers();
+    EnderIO.blockDarkSteelAnvil.registerRenderers();
 
     SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
     tt.addCallback(new TooltipHandlerGrinding());
@@ -168,9 +170,6 @@ public class ClientProxy extends CommonProxy {
       tt.addCallback(new TooltipHandlerFluid());
     }
 
-    EnderIO.blockIngotStorage.registerRenderers();
-    EnderIO.blockDarkSteelAnvil.registerRenderers();
-    
     // Tile Renderers
 
     if (EnderIO.blockEnchanter != null) {
@@ -192,7 +191,7 @@ public class ClientProxy extends CommonProxy {
       CapBankRenderer newCbr = new CapBankRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
     }
-    
+
     if (EnderIO.blockEnderIo != null) {
       EnderIoRenderer eior = new EnderIoRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
@@ -229,12 +228,12 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new PowerConduitRenderer());
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
 
-    //Overlays
+    // Overlays
     new YetaWrenchOverlayRenderer();
     new ConduitProbeOverlayRenderer();
-    
-    //Items    
-    ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);       
+
+    // Items
+    ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);
     EnderIO.itemAlloy.registerRenderers();
     EnderIO.itemBasicCapacitor.registerRenderers();
     EnderIO.itemPowderIngot.registerRenderers();
@@ -244,23 +243,23 @@ public class ClientProxy extends CommonProxy {
     EnderIO.itemEnderFood.registerRenderers();
     EnderIO.itemBasicFilterUpgrade.registerRenderers();
     EnderIO.itemExtractSpeedUpgrade.registerRenderers();
-    EnderIO.itemFunctionUpgrade.registerRenderers();    
-    ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);       
+    EnderIO.itemFunctionUpgrade.registerRenderers();
+    ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemExistingItemFilter, ModObject.itemExistingItemFilter.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.unlocalisedName);        
+    ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.unlocalisedName);
     DarkSteelItems.registerItemRenderers();
     Buckets.registerRenderers();
-    
-    //Entities
+
+    // Entities
     RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, SoundRenderer.FACTORY);
     RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, RangeRenerer.FACTORY);
-    
-    //Listeners    
+
+    // Listeners
     if (Config.useSneakMouseWheelYetaWrench) {
       ToolTickHandler th = new ToolTickHandler();
       MinecraftForge.EVENT_BUS.register(th);
@@ -268,10 +267,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-   
-  }
 
-  
+  }
 
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {

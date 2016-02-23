@@ -72,7 +72,6 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-
     Item item = Item.getItemFromBlock(this);
     ModelBakery.registerItemVariants(item, new ResourceLocation("enderio:anvil_undamaged"),new ResourceLocation("enderio:anvil_slightly_damaged"),new ResourceLocation("enderio:anvil_very_damaged"));        
     ClientUtil.regRenderer(item, 0,"anvil_undamaged");
