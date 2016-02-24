@@ -3,6 +3,7 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
@@ -12,6 +13,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.teleport.TravelController;
@@ -42,7 +44,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
+public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_sword";
   
@@ -107,11 +109,6 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     return 3;
   }
 
-  @Override
-  public boolean isDamaged(ItemStack stack) {
-    return false;
-  }
-
   @SubscribeEvent
   public void onEnderTeleport(EnderTeleportEvent evt) {
     if(evt.entityLiving.getEntityData().getBoolean("hitByDarkSteelSword")) {
@@ -119,8 +116,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     }
   }
 
-  //Set priorty to lowest in the hope any other mod adding head drops will have already added them 
-  //by the time this is called to prevent multiple head drops
+  // Set priority to lowest in the hope any other mod adding head drops will have already added them
+  // by the time this is called to prevent multiple head drops
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void onEntityDrop(LivingDropsEvent evt) {
 
@@ -142,7 +139,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       dropSkull(evt, player);
     }
 
-    //Special handling for ender pear drops
+    // Special handling for ender pearl drops
     if(isEquipped(player)) {
       String name = EntityList.getEntityString(evt.entityLiving);
       if(evt.entityLiving instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
@@ -408,6 +405,11 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     }
 
     return super.onItemRightClick(stack, world, player);
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
 }

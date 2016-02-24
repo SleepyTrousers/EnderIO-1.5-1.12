@@ -6,12 +6,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
@@ -36,7 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
+public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_axe";
   
@@ -100,11 +102,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     par3List.add(is);
   }
   
-  @Override
-  public boolean isDamaged(ItemStack stack) {
-    return false;
-  }
-
   @Override
   public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     if (!player.worldObj.isRemote && player.isSneaking()) {
@@ -304,6 +301,11 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
 
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
 }

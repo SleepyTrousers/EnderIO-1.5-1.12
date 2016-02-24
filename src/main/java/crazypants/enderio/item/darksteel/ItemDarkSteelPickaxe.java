@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Sets;
 
@@ -13,6 +14,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
@@ -38,7 +40,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel,
+    IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_pickaxe";
   
@@ -97,11 +100,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 3;
-  }
-
-  @Override
-  public boolean isDamaged(ItemStack stack) {
-    return false;
   }
 
   @Override
@@ -340,6 +338,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
 
     return super.onItemRightClick(stack, world, player);
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
 }

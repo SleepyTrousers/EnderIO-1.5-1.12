@@ -4,12 +4,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
@@ -44,7 +46,7 @@ import thaumcraft.api.items.IVisDiscountGear;
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles,
-    IRevealer, IVisDiscountGear {
+    IRevealer, IVisDiscountGear, IOverlayRenderAware {
 
   //TODO: 1.8
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
@@ -188,11 +190,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   @Override
-  public boolean isDamaged(ItemStack stack) {
-    return false;
-  }
-
-  @Override
   public String getArmorTexture(ItemStack itemStack, Entity entity, int slot, String layer) {
     if(armorType == 2) {
       return "enderio:textures/models/armor/darkSteel_layer_2.png";
@@ -300,4 +297,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     this.gogglesUgradeActive = gogglesUgradeActive;
   }
   
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
+  }
+
 }

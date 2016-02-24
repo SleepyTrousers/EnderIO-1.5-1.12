@@ -1,14 +1,17 @@
 package crazypants.enderio.machine.capbank;
 
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem {
+public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
     ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
@@ -37,19 +40,6 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     return CapBankType.getTypeFromMeta(par1ItemStack.getItemDamage()).getUnlocalizedName();
-  }
-
-  @Override
-  public boolean showDurabilityBar(ItemStack itemStack) {
-    return !CapBankType.getTypeFromMeta(itemStack.getItemDamage()).isCreative();
-  }
-
-  @Override
-  public double getDurabilityForDisplay(ItemStack itemStack) {
-    int maxStored = CapBankType.getTypeFromMeta(itemStack.getItemDamage()).getMaxEnergyStored();
-    double stored = maxStored - getEnergyStored(itemStack) + 1;
-    double max = maxStored + 1;
-    return stored / max;
   }
 
   @Override
@@ -96,6 +86,11 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
     return CapBankType.getTypeFromMeta(container.getItemDamage()).getMaxEnergyStored();
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
   }
 
 }
