@@ -296,14 +296,6 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:poweredSpawnerFrontActive";
-    }
-    return "enderio:poweredSpawnerFront";
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }

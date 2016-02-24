@@ -36,11 +36,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   }
 
   @Override
-  protected String getModelIconKey(boolean active) {
-    return "enderio:vatModel";
-  }
-
-  @Override
   public int getLightOpacity() {
     return 0;
   }
@@ -51,7 +46,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 //    super.registerOverlayIcons(iIconRegister);
 //
 //    overlays = new IIcon[2][IoMode.values().length];
-//
+  // TODO
 //    overlays[0][IoMode.PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pullSides");
 //    overlays[0][IoMode.PUSH.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushSides");
 //    overlays[0][IoMode.PUSH_PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushPullSides");
@@ -111,12 +106,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     return true;
   }
-
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    return getBackIconKey(active);
-  }
-
 
   @Override
   @SideOnly(Side.CLIENT)

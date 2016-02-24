@@ -68,16 +68,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     return false;
   }
 
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:stirlingGenFrontOn";
-    }
-    return "enderio:stirlingGenFrontOff";
-  }
-
-  
-  
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {

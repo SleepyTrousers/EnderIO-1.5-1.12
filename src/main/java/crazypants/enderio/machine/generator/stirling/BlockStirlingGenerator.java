@@ -46,14 +46,6 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if (active) {
-      return "enderio:stirlingGenFrontOn";
-    }
-    return "enderio:stirlingGenFrontOff";
-  }
-
-  @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
     TileEntityStirlingGenerator te = (TileEntityStirlingGenerator) world.getTileEntity(pos);

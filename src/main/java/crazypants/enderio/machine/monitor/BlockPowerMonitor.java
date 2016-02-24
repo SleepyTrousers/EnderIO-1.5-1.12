@@ -63,13 +63,6 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    return "enderio:powerMonitor";
-  }
-
-  
-  
-  @Override
   public int getWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
     TileEntity te = world.getTileEntity(pos);
     if(te instanceof TilePowerMonitor) {

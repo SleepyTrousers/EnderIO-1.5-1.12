@@ -69,11 +69,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    return "enderio:blankMachinePanel";
-  }
-  
-  @Override
   public int getRenderType() {
     return -1;
   }

@@ -70,11 +70,6 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return GuiHandler.GUI_ID_BUFFER;
   }
 
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    return getSideIconKey(active);
-  }
-
 //  @Override
 //  @SideOnly(Side.CLIENT)
 //  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {

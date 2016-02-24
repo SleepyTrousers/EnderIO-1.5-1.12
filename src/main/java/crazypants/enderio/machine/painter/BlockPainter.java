@@ -63,12 +63,4 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 //    invisibleIcon = iIconRegister.registerIcon("enderio:invisblePaint");
 //  }
 
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:painterFrontOn";
-    }
-    return "enderio:painterFrontOff";
-  }
-
 }

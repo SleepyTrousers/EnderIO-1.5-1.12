@@ -69,32 +69,12 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 //  @SideOnly(Side.CLIENT)
 //  public void registerBlockIcons(IIconRegister iIconRegister) {    
 //    super.registerBlockIcons(iIconRegister);
-//    zombieSkullIcon = iIconRegister.registerIcon("enderio:skullZombie");
+  // TODO zombieSkullIcon = iIconRegister.registerIcon("enderio:skullZombie");
 //    creeperSkullIcon = iIconRegister.registerIcon("enderio:skullCreeper");
 //    skeletonSkullIcon = iIconRegister.registerIcon("enderio:skullSkeleton");
 //    endermanSkullIcon = iIconRegister.registerIcon("enderio:endermanSkullFront");
 //    endermanSkullIconOn= iIconRegister.registerIcon("enderio:endermanSkullFrontEyes");
 //  }
-
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {   
-    return "enderio:blockSoulMachineBlank";
-  }
-
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return "enderio:blockSoulMachineBlank";
-  }
-  
-  @Override
-  protected String getTopIconKey(boolean active) {
-    return "enderio:blockSoulMachineTop";
-  }
-
-  @Override
-  protected String getBottomIconKey(boolean active) {
-    return "enderio:blockSoulMachineBottom";
-  }
 
   @Override
   public int getRenderType() {    

@@ -20,34 +20,6 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:blockAttractorSideOn";
-    }
-    return "enderio:blockAttractorSide";
-  }
-
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
-  @Override
-  protected String getBackIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
-  @Override
-  protected String getTopIconKey(boolean active) {
-    return "enderio:blockSoulMachineTop";
-  }
-
-  @Override
-  protected String getBottomIconKey(boolean active) {
-    return "enderio:obeliskBottom";
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }

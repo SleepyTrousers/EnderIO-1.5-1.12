@@ -153,10 +153,10 @@ public class ClientProxy extends CommonProxy {
   public void load() {
     super.load();
 
-    // Blocks
-    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(EnderIO.blockAlloySmelter), 0,
-        new ModelResourceLocation(EnderIO.DOMAIN + ":" + EnderIO.blockAlloySmelter.name(), "inventory"));
+    // Items of blocks that use smart rendering
+    SmartModelAttacher.registerBlockItemModels();
 
+    // Blocks
     Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(EnderIO.blockDarkIronBars), 0,
         new ModelResourceLocation(EnderIO.DOMAIN + ":" + ModObject.blockDarkIronBars.name(), "inventory"));
 

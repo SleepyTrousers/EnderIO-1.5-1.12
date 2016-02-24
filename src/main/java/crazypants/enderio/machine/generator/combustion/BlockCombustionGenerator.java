@@ -76,7 +76,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 //  @Override
 //  protected void registerOverlayIcons(IIconRegister iIconRegister) {
 //    super.registerOverlayIcons(iIconRegister);
-//    overlayPullSides = iIconRegister.registerIcon("enderio:overlays/pullSides");
+  // TODO overlayPullSides = iIconRegister.registerIcon("enderio:overlays/pullSides");
 //    overlayPullTopBottom = iIconRegister.registerIcon("enderio:overlays/pullTopBottom");
 //    overlayDisabledNoCenter = iIconRegister.registerIcon("enderio:overlays/disabledNoCenter");
 //  }
@@ -88,18 +88,6 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 //    }
 //    return mode == IoMode.PULL ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom : overlayDisabledNoCenter;
 //  }
-
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    return getBackIconKey(active);
-  }
-
-  @Override
-  protected String getModelIconKey(boolean active) {
-    return "enderio:combustionGenModel";
-  }
-  
-  
 
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {

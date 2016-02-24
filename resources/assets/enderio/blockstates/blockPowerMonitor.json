@@ -3,8 +3,8 @@
     "defaults":{
         "textures":{
             "particle":"enderio:blocks/machineBottom",
-            "front":"enderio:blocks/alloySmelterFront",
-            "fronton":"enderio:blocks/alloySmelterFrontOn"
+            "front":"enderio:blocks/powerMonitor",
+            "fronton":"enderio:blocks/powerMonitor"
         }
     },
     "variants":{

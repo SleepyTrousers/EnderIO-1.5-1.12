@@ -4,6 +4,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * An interface for blocks to allow them to be involved in the rendering process.
@@ -30,11 +32,13 @@ public interface ISmartRenderAwareBlock {
    * <p>
    * This is called in a render thread.
    */
+  @SideOnly(Side.CLIENT)
   IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos);
 
   /**
    * Return a render mapper for the given item stack.
    */
+  @SideOnly(Side.CLIENT)
   IRenderMapper getRenderMapper(ItemStack stack);
 
 }

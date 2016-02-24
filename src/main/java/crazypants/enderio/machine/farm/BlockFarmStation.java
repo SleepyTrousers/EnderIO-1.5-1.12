@@ -78,21 +78,6 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   // }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    return getBackIconKey(active);
-  }
-
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return super.getBackIconKey(active);
-  }
-
-  @Override
-  protected String getModelIconKey(boolean active) {
-    return "enderio:farmModel";
-  }
-
-  @Override
   public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     return true;
   }

@@ -55,16 +55,6 @@ public class BlockCrusher extends AbstractMachineBlock<TileCrusher> {
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:crusherFrontOn";
-    }
-    return "enderio:crusherFront";
-  }
-
-  
-  
-  @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
   
     TileCrusher te = (TileCrusher) world.getTileEntity(pos);

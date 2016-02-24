@@ -11,10 +11,19 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,6 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -37,14 +47,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
-    IWailaInfoProvider {
+    IWailaInfoProvider, ISmartRenderAwareBlock {
 
-//  public IIcon overlayIconPull;
-//  public IIcon overlayIconPush;
-//  public IIcon overlayIconPushPull;
-//  public IIcon overlayIconDisabled;
-//  public IIcon overlayIconNone;
-//  public IIcon overlayIconDirty;
+  @SideOnly(Side.CLIENT)
+  private static final MachineRenderMapper MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.BODY);
 
   @SideOnly(Side.CLIENT)
   public static TextureAtlasSprite selectedFaceIcon;
@@ -66,6 +72,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setStepSound(soundTypeMetal);
     setHarvestLevel("pickaxe", 0);
     random = new Random();
+    SmartModelAttacher.register(this);
+    this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
@@ -77,9 +85,39 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
-    MinecraftForge.EVENT_BUS.register(this);
+    MinecraftForge.EVENT_BUS.register(this); // TODO
   }
   
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState();
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return 0;
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return getDefaultState();
+  }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return new BlockStateWrapper(state, world, pos);
+  }
+
+  @SideOnly(Side.CLIENT)
+  public EnumWorldBlockLayer getBlockLayer() {
+    return EnumWorldBlockLayer.CUTOUT;
+  }
+
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onIconLoad(TextureStitchEvent.Pre event) {    
@@ -99,104 +137,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return false;
   }  
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//
-//    iconBuffer = new IIcon[2][12];
-//    String side = getSideIconKey(false);
-//    // first the 6 sides in OFF state
-//    iconBuffer[0][0] = iIconRegister.registerIcon(getBottomIconKey(false));
-//    iconBuffer[0][1] = iIconRegister.registerIcon(getTopIconKey(false));
-//    iconBuffer[0][2] = iIconRegister.registerIcon(getBackIconKey(false));
-//    iconBuffer[0][3] = iIconRegister.registerIcon(getMachineFrontIconKey(false));
-//    iconBuffer[0][4] = iIconRegister.registerIcon(side);
-//    iconBuffer[0][5] = iIconRegister.registerIcon(side);
-//
-//    side = getSideIconKey(true);
-//    iconBuffer[0][6] = iIconRegister.registerIcon(getBottomIconKey(true));
-//    iconBuffer[0][7] = iIconRegister.registerIcon(getTopIconKey(true));
-//    iconBuffer[0][8] = iIconRegister.registerIcon(getBackIconKey(true));
-//    iconBuffer[0][9] = iIconRegister.registerIcon(getMachineFrontIconKey(true));
-//    iconBuffer[0][10] = iIconRegister.registerIcon(side);
-//    iconBuffer[0][11] = iIconRegister.registerIcon(side);
-//    
-//    iconBuffer[1][0] = iIconRegister.registerIcon(getModelIconKey(false));
-//    iconBuffer[1][1] = iIconRegister.registerIcon(getModelIconKey(true));
-//
-//    registerOverlayIcons(iIconRegister);
-//
-//  }
-//
-//  @SideOnly(Side.CLIENT)
-//  protected void registerOverlayIcons(IIconRegister iIconRegister) {
-//    overlayIconPull = iIconRegister.registerIcon("enderio:overlays/pull");
-//    overlayIconPush = iIconRegister.registerIcon("enderio:overlays/push");
-//    overlayIconPushPull = iIconRegister.registerIcon("enderio:overlays/pushPull");
-//    overlayIconDisabled = iIconRegister.registerIcon("enderio:overlays/disabled");
-//    overlayIconNone = iIconRegister.registerIcon("enderio:overlays/none");
-//    selectedFaceIcon = iIconRegister.registerIcon("enderio:overlays/selectedFace");
-//    overlayIconDirty = iIconRegister.registerIcon("enderio:overlays/dirt");
-//  }
-
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getOverlayIconForMode(T tile, ForgeDirection face, IoMode mode) {
-//    if(mode == null) {
-//      return null;
-//    }
-//    switch (mode) {
-//    case DISABLED:
-//      return overlayIconDisabled;
-//    case PULL:
-//      return overlayIconPull;
-//    case PUSH:
-//      return overlayIconPush;
-//    case PUSH_PULL:
-//      return overlayIconPushPull;
-//    default:
-//      return tile.isDirty ? overlayIconDirty : null;
-//    }
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-//
-//    // used to render the block in the world
-//    TileEntity te = world.getTileEntity(x, y, z);
-//    int facing = 3;
-//    if(te instanceof AbstractMachineEntity) {
-//      AbstractMachineEntity me = (AbstractMachineEntity) te;
-//      facing = me.facing;
-//    }
-//    if(isActive(world, x, y, z)) {
-//      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
-//    } else {
-//      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
-//    }
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int blockSide, int blockMeta) {
-//    // This is used to render the block as an item
-//    return iconBuffer[0][blockSide];
-//  }
-//
-//  public IIcon getModelIcon(IBlockAccess world, int x, int y, int z) {
-//    return getModelIcon(((AbstractMachineEntity) world.getTileEntity(x, y, z)).isActive());
-//  }
-//
-//  public IIcon getModelIcon() {
-//    return getModelIcon(false);
-//  }
-//
-//  private IIcon getModelIcon(boolean active) {
-//    return active ? iconBuffer[1][1] : iconBuffer[1][0];
-//  }
-
- 
-  
   @Override
   public boolean doNormalDrops(IBlockAccess world, BlockPos pos) { 
     return false;
@@ -278,28 +218,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected abstract int getGuiId();
 
-  protected abstract String getMachineFrontIconKey(boolean active);
-
-  protected String getSideIconKey(boolean active) {
-    return "enderio:machineSide";
-  }
-
-  protected String getBackIconKey(boolean active) {
-    return "enderio:machineBack";
-  }
-
-  protected String getTopIconKey(boolean active) {
-    return "enderio:machineTop";
-  }
-
-  protected String getBottomIconKey(boolean active) {
-    return "enderio:machineBottom";
-  }
-
-  protected String getModelIconKey(boolean active) {
-    return getSideIconKey(active);
-  }
-
   protected boolean isActive(IBlockAccess blockAccess, BlockPos pos) {
     TileEntity te = blockAccess.getTileEntity(pos);
     if(te instanceof AbstractMachineEntity) {
@@ -325,4 +243,34 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
   }
+
+  @SideOnly(Side.CLIENT)
+  public IOMode.EnumIOMode mapIOMode(IoMode mode) {
+    switch (mode) {
+    case NONE:
+      return IOMode.EnumIOMode.NONE;
+    case PULL:
+      return IOMode.EnumIOMode.PULL;
+    case PUSH:
+      return IOMode.EnumIOMode.PUSH;
+    case PUSH_PULL:
+      return IOMode.EnumIOMode.PUSHPULL;
+    case DISABLED:
+      return IOMode.EnumIOMode.DISABLED;
+    }
+    throw new RuntimeException("Hey, leave our enums alone!");
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return MACHINE_RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    return MACHINE_RENDER_MAPPER;
+  }
+
 }

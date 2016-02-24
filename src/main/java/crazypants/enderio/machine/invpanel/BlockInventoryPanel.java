@@ -160,13 +160,13 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     return GuiHandler.GUI_ID_INVENTORY_PANEL;
   }
 
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:invPanelFrontOn";
-    }
-    return "enderio:invPanelFrontOff";
-  }
+  // @Override
+  // protected String getMachineFrontIconKey(boolean active) {
+  // if(active) {
+  // return "enderio:invPanelFrontOn";
+  // }
+  // return "enderio:invPanelFrontOff";
+  // }
 
   //  @Override
   //  protected String getTopIconKey(boolean active) {

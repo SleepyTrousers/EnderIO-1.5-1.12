@@ -113,14 +113,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 //  }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:alloySmelterFrontOn";
-    }
-    return "enderio:alloySmelterFront";
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }

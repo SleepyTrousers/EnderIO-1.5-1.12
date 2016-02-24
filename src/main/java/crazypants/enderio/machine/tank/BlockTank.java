@@ -137,31 +137,22 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return super.getLightValue(world, pos);
   }
 
-  @Override
-  protected String getMachineFrontIconKey(boolean pressurized) {
-    if(pressurized) {
-      return "enderio:blockTankAdvanced";
-    }
-    return "enderio:blockTank";
-  }
-
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
-  @Override
-  protected String getBackIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
-  @Override
-  protected String getTopIconKey(boolean pressurized) {
-    if(pressurized) {
-      return "enderio:blockTankTopAdvanced";
-    }
-    return "enderio:machineTop";
-  }
+  // TODO
+  // @Override
+  // protected String getMachineFrontIconKey(boolean pressurized) {
+  // if(pressurized) {
+  // return "enderio:blockTankAdvanced";
+  // }
+  // return "enderio:blockTank";
+  // }
+  //
+  // @Override
+  // protected String getTopIconKey(boolean pressurized) {
+  // if(pressurized) {
+  // return "enderio:blockTankTopAdvanced";
+  // }
+  // return "enderio:machineTop";
+  // }
 
   @Override
   @SideOnly(Side.CLIENT)

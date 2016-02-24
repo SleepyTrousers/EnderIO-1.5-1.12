@@ -8,52 +8,52 @@
     "variants":{
         "sub":{
             "defaults":{
+                "textures":{ "front":"enderio:blocks/machineSide" },
+                "submodel":{
+                    "body":{ "model":"enderio:machine_body", "y":180 },
+                    "front":{ "model":"enderio:machine_front", "y":180 }
+                }
+            },
+            "body":{       "submodel":{ "body":{ "model":"enderio:machine_body", "y":180 } } },
+            "body_east":{  "submodel":{ "body":{ "model":"enderio:machine_body", "y":270 } } },
+            "body_south":{ "submodel":{ "body":{ "model":"enderio:machine_body", "y":0 } } },
+            "body_west":{  "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } },
+            "soul":{           
                 "textures":{
-                    "front":"enderio:blocks/machineSide"
+			        "top":"enderio:blocks/blockSoulMachineTop",
+			        "bottom":"enderio:blocks/blockSoulMachineBottom",
+			        "side":"enderio:blocks/blockSoulMachineSide",
+			        "back":"enderio:blocks/blockSoulMachineBack",
+			        "frontframe":"enderio:blocks/blockSoulMachineSide"
+			    },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":180 } } },
+            "soul_east":{           
+                "textures":{
+                    "top":"enderio:blocks/blockSoulMachineTop",
+                    "bottom":"enderio:blocks/blockSoulMachineBottom",
+                    "side":"enderio:blocks/blockSoulMachineSide",
+                    "back":"enderio:blocks/blockSoulMachineBack",
+                    "frontframe":"enderio:blocks/blockSoulMachineSide"
                 },
-                "submodel":{
-                    "body":{
-                        "model":"enderio:machine_body",
-                        "y":180
-                    },
-                    "front":{
-                        "model":"enderio:machine_front",
-                        "y":180
-                    }
-                }
-            },
-            "body":{
-                "submodel":{
-                    "body":{
-                        "model":"enderio:machine_body",
-                        "y":180
-                    }
-                }
-            },
-            "body_east":{
-                "submodel":{
-                    "body":{
-                        "model":"enderio:machine_body",
-                        "y":270
-                    }
-                }
-            },
-            "body_south":{
-                "submodel":{
-                    "body":{
-                        "model":"enderio:machine_body",
-                        "y":0
-                    }
-                }
-            },
-            "body_west":{
-                "submodel":{
-                    "body":{
-                        "model":"enderio:machine_body",
-                        "y":90
-                    }
-                }
-            }
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":270 } } },
+            "soul_south":{           
+                "textures":{
+                    "top":"enderio:blocks/blockSoulMachineTop",
+                    "bottom":"enderio:blocks/blockSoulMachineBottom",
+                    "side":"enderio:blocks/blockSoulMachineSide",
+                    "back":"enderio:blocks/blockSoulMachineBack",
+                    "frontframe":"enderio:blocks/blockSoulMachineSide"
+                },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":0 } } },
+            "soul_west":{           
+                "textures":{
+                    "top":"enderio:blocks/blockSoulMachineTop",
+                    "bottom":"enderio:blocks/blockSoulMachineBottom",
+                    "side":"enderio:blocks/blockSoulMachineSide",
+                    "back":"enderio:blocks/blockSoulMachineBack",
+                    "frontframe":"enderio:blocks/blockSoulMachineSide"
+                },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } }
         }
     }
 }

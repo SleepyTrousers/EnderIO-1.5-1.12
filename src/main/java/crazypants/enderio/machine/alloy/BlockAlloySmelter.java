@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> implements ISmartRenderAwareBlock {
+public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   public static BlockAlloySmelter create() {
 
@@ -54,49 +54,8 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
-    SmartModelAttacher.register(this);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
-  @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
-  }
-
-  @Override
-  public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState();
-  }
-
-  @Override
-  public int getMetaFromState(IBlockState state) {
-    return 0;
-  }
-
-  @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-    return getDefaultState();
-  }
-
-  @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new BlockStateWrapper(state, world, pos);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.CUTOUT;
-  }
-
-  @Override
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new RenderMapperAlloySmelter();
-  }
-
-  @Override
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    return new RenderMapperAlloySmelter();
-  }
 
 //  @Override
 //  @SideOnly(Side.CLIENT)
@@ -135,14 +94,6 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_ALLOY_SMELTER;
-  }
-
-  @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:alloySmelterFrontOn";
-    }
-    return "enderio:alloySmelterFront";
   }
 
 }
