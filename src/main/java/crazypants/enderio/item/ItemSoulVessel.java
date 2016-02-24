@@ -11,9 +11,12 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -64,51 +67,44 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     blackList.add(entityName);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    itemIcon = IIconRegister.registerIcon("enderio:soulVessel");
-//    filledIcon = IIconRegister.registerIcon("enderio:soulVesselFilled");
-//  }
-//
-//  @Override
-//  public IIcon getIcon(ItemStack item, int arg1, EntityPlayer arg2, ItemStack arg3, int arg4) {
-//     if(containsSoul(item)) {
-//       return filledIcon;
-//     }
-//     return itemIcon;
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIconIndex(ItemStack item) {
-//    if(containsSoul(item)) {
-//      return filledIcon;
-//    }
-//    return itemIcon;
-//  }
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ModelResourceLocation emptyRL = new ModelResourceLocation("enderio:itemSoulVessel", "inventory");
+    ModelResourceLocation fullRL = new ModelResourceLocation("enderio:itemSoulVesselFull", "inventory");
+    ModelBakery.registerItemVariants(this, emptyRL, fullRL);
+    ClientUtil.regRenderer(this, 0, "itemSoulVessel");
+    ClientUtil.regRenderer(this, 1, "itemSoulVesselFull");
+  }
+
+  @Override
+  public int getMetadata(ItemStack stack) {
+    if (containsSoul(stack)) {
+      return 1;
+    }
+    return 0;
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean hasEffect(ItemStack item) {    
+  public boolean hasEffect(ItemStack item) {
     return containsSoul(item);
   }
 
   @Override
   public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-    if(world.isRemote) {
+    if (world.isRemote) {
       return true;
     }
-    if(!containsSoul(itemstack)) {
+    if (!containsSoul(itemstack)) {
       return false;
     }
-    if(player == null) {
+    if (player == null) {
       return false;
     }
 
     Entity mob;
     NBTTagCompound root = itemstack.getTagCompound();
-    if(root.hasKey("isStub")) {
+    if (root.hasKey("isStub")) {
       String entityId = root.getString("id");
       mob = EntityList.createEntityByName(entityId, world);
     } else {
@@ -120,47 +116,51 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     mob.readFromNBT(root);
 
     int x = pos.getX();
-    int y = pos.getX();
-    int z = pos.getX();
-    
+    int y = pos.getY();
+    int z = pos.getZ();
+
     Block blk = world.getBlockState(pos).getBlock();
     double spawnX = x + side.getFrontOffsetX() + 0.5;
     double spawnY = y + side.getFrontOffsetY();
     double spawnZ = z + side.getFrontOffsetZ() + 0.5;
-    if(side == EnumFacing.UP && (blk instanceof BlockFence || blk instanceof BlockWall)) {
+    if (side == EnumFacing.UP && (blk instanceof BlockFence || blk instanceof BlockWall)) {
       spawnY += 0.5;
     }
     mob.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
 
-    boolean spaceClear = world.checkNoEntityCollision(mob.getEntityBoundingBox())
-        && world.getCollidingBoundingBoxes(mob, mob.getEntityBoundingBox()).isEmpty();
-    if(!spaceClear) {
+    boolean spaceClear = world.checkNoEntityCollision(mob.getEntityBoundingBox()) && world.getCollidingBoundingBoxes(mob, mob.getEntityBoundingBox()).isEmpty();
+    if (!spaceClear) {
       return false;
     }
 
-    if(itemstack.hasDisplayName() && mob instanceof EntityLiving) {
-      ((EntityLiving)mob).setCustomNameTag(itemstack.getDisplayName());
+    if (itemstack.hasDisplayName() && mob instanceof EntityLiving) {
+      ((EntityLiving) mob).setCustomNameTag(itemstack.getDisplayName());
     }
 
     world.spawnEntityInWorld(mob);
-    if(mob instanceof EntityLiving) {
-      ((EntityLiving)mob).playLivingSound();
+    if (mob instanceof EntityLiving) {
+      ((EntityLiving) mob).playLivingSound();
     }
 
     Entity riddenByEntity = mob.riddenByEntity;
-    while(riddenByEntity != null) {
+    while (riddenByEntity != null) {
       riddenByEntity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
       world.spawnEntityInWorld(riddenByEntity);
-      if(riddenByEntity instanceof EntityLiving) {
-        ((EntityLiving)riddenByEntity).playLivingSound();
+      if (riddenByEntity instanceof EntityLiving) {
+        ((EntityLiving) riddenByEntity).playLivingSound();
       }
       riddenByEntity = riddenByEntity.riddenByEntity;
     }
 
     if (!player.capabilities.isCreativeMode) {
-      if(itemstack.stackSize > 1) {
+      if (itemstack.stackSize > 1) {
         itemstack.stackSize--;
-        player.inventory.addItemStackToInventory(new ItemStack(this));
+        if (itemstack.stackSize == 0) {
+          System.out.println("ItemSoulVessel.onItemUse: !!!!!!!!!");
+          player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(this));
+        } else if (!player.inventory.addItemStackToInventory(new ItemStack(this))) {
+          player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, new ItemStack(this)));
+        }
         player.inventoryContainer.detectAndSendChanges();
       } else {
         itemstack.setTagCompound(null);
@@ -173,23 +173,23 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   @Override
   public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity) {
 
-    if(entity.worldObj.isRemote) {
+    if (entity.worldObj.isRemote) {
       return false;
     }
     boolean isCreative = player != null && player.capabilities.isCreativeMode;
-    if(containsSoul(item) && !isCreative) {
+    if (containsSoul(item) && !isCreative) {
       return false;
     }
-    if(entity instanceof EntityPlayer) {
+    if (entity instanceof EntityPlayer) {
       return false;
     }
 
     String entityId = EntityList.getEntityString(entity);
-    if(isBlackListed(entityId)) {
+    if (isBlackListed(entityId)) {
       return false;
     }
 
-    if(!Config.soulVesselCapturesBosses && entity instanceof IBossDisplayData) {
+    if (!Config.soulVesselCapturesBosses && entity instanceof IBossDisplayData) {
       return false;
     }
 
@@ -202,22 +202,21 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     setDisplayNameFromEntityNameTag(capturedMobVessel, entity);
 
     player.swingItem();
-    if(!isCreative) {
+    if (!isCreative) {
       entity.setDead();
-      if(entity.isDead) {
+      if (entity.isDead) {
         item.stackSize--;
-        if (!player.inventory.addItemStackToInventory(capturedMobVessel))
-        {
-        	entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj,entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
+          entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
         }
         player.setCurrentItemOrArmor(0, item);
         ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         return true;
       }
     } else {
-      if (!player.inventory.addItemStackToInventory(capturedMobVessel)) //Inventory full, drop it in the world!
-      {
-      	entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj,entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+      //Inventory full, drop it in the world!
+      if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
+        entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
       }
       ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
       return true;
@@ -250,11 +249,11 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   }
 
   private void setDisplayNameFromEntityNameTag(ItemStack item, Entity ent) {
-    if(ent instanceof EntityLiving) {
-      EntityLiving entLiv = (EntityLiving)ent;
-      if(entLiv.hasCustomName()) {
+    if (ent instanceof EntityLiving) {
+      EntityLiving entLiv = (EntityLiving) ent;
+      if (entLiv.hasCustomName()) {
         String name = entLiv.getCustomNameTag();
-        if(name.length() > 0) {
+        if (name.length() > 0) {
           item.setStackDisplayName(name);
         }
       }
@@ -262,20 +261,20 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   }
 
   public boolean containsSoul(ItemStack item) {
-    if(item == null) {
+    if (item == null) {
       return false;
     }
-    if(item.getItem() != this) {
+    if (item.getItem() != this) {
       return false;
     }
     return item.getTagCompound() != null && item.getTagCompound().hasKey("id");
   }
 
   public String getMobTypeFromStack(ItemStack item) {
-    if(!containsSoul(item)) {
+    if (!containsSoul(item)) {
       return null;
     }
-    if(item.getTagCompound() == null || !item.getTagCompound().hasKey("id")) {
+    if (item.getTagCompound() == null || !item.getTagCompound().hasKey("id")) {
       return null;
     }
     return item.getTagCompound().getString("id");
@@ -283,49 +282,49 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
   /** Support for displaying fluid name of captured Moo Fluids cow */
   private String getFluidNameFromStack(ItemStack item) {
-    if(!containsSoul(item)) {
+    if (!containsSoul(item)) {
       return null;
     }
-    if(!item.getTagCompound().hasKey("FluidName")) {
+    if (!item.getTagCompound().hasKey("FluidName")) {
       return null;
     }
     return item.getTagCompound().getString("FluidName");
   }
 
   private DyeColor getColorFromStack(ItemStack item) {
-    if(!containsSoul(item)) {
+    if (!containsSoul(item)) {
       return null;
     }
-    if(!item.getTagCompound().hasKey("Color")) {
+    if (!item.getTagCompound().hasKey("Color")) {
       return null;
     }
     int colorIdx = item.getTagCompound().getInteger("Color");
-    if(colorIdx < 0 || colorIdx > 15) {
+    if (colorIdx < 0 || colorIdx > 15) {
       return null;
     }
-    return DyeColor.values()[15-colorIdx];
+    return DyeColor.values()[15 - colorIdx];
   }
 
   private float getHealthFromStack(ItemStack item) {
-    if(!containsSoul(item)) {
+    if (!containsSoul(item)) {
       return Float.NaN;
     }
-    if(!item.getTagCompound().hasKey("HealF")) {
+    if (!item.getTagCompound().hasKey("HealF")) {
       return Float.NaN;
     }
     return item.getTagCompound().getFloat("HealF");
   }
 
   private NBTTagCompound getAttributeFromStack(ItemStack item, String name) {
-    if(!containsSoul(item)) {
+    if (!containsSoul(item)) {
       return null;
     }
     NBTBase tag = item.getTagCompound().getTag("Attributes");
-    if(tag instanceof NBTTagList) {
-      NBTTagList attributes = (NBTTagList)tag;
-      for(int i=0 ; i<attributes.tagCount() ; i++) {
+    if (tag instanceof NBTTagList) {
+      NBTTagList attributes = (NBTTagList) tag;
+      for (int i = 0; i < attributes.tagCount(); i++) {
         NBTTagCompound attrib = attributes.getCompoundTagAt(i);
-        if(attrib.hasKey("Name") && name.equals(attrib.getString("Name"))) {
+        if (attrib.hasKey("Name") && name.equals(attrib.getString("Name"))) {
           return attrib;
         }
       }
@@ -335,10 +334,10 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
   private float getMaxHealthFromStack(ItemStack item) {
     NBTTagCompound maxHealthAttrib = getAttributeFromStack(item, "generic.maxHealth");
-    if(maxHealthAttrib == null) {
+    if (maxHealthAttrib == null) {
       return Float.NaN;
     }
-    if(!maxHealthAttrib.hasKey("Base")) {
+    if (!maxHealthAttrib.hasKey("Base")) {
       return Float.NaN;
     }
     return maxHealthAttrib.getFloat("Base");
@@ -346,7 +345,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
   private boolean isBlackListed(String entityId) {
     for (String str : blackList) {
-      if(str != null && str.equals(entityId)) {
+      if (str != null && str.equals(entityId)) {
         return true;
       }
     }
@@ -361,19 +360,19 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-    if(par1ItemStack != null) {
+    if (par1ItemStack != null) {
       String mobName = getMobTypeFromStack(par1ItemStack);
-      if(mobName != null) {
+      if (mobName != null) {
         par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
       } else {
         par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
       }
 
       float health = getHealthFromStack(par1ItemStack);
-      if(health >= 0) {
+      if (health >= 0) {
         float maxHealth = getMaxHealthFromStack(par1ItemStack);
         String msg = EnderIO.lang.localize("item.itemSoulVessel.tooltip.health");
-        if(maxHealth >= 0) {
+        if (maxHealth >= 0) {
           par3List.add(String.format("%s %3.1f/%3.1f", msg, health, maxHealth));
         } else {
           par3List.add(String.format("%s %3.1f", msg, health));
@@ -381,17 +380,18 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       }
 
       String fluidName = getFluidNameFromStack(par1ItemStack);
-      if(fluidName != null) {
+      if (fluidName != null) {
         Fluid fluid = FluidRegistry.getFluid(fluidName);
-        if(fluid != null) {
-          //TODO: 1.8
+        if (fluid != null) {
+          // TODO: 1.8
           par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + fluidName);
-          //par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + fluid.getLocalizedName());
+          // par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname")
+          // + " " + fluid.getLocalizedName());
         }
       }
 
       DyeColor color = getColorFromStack(par1ItemStack);
-      if(color != null) {
+      if (color != null) {
         par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.color") + " " + color.getLocalisedName());
       }
     }

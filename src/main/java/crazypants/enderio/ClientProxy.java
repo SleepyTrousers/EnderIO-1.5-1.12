@@ -244,6 +244,7 @@ public class ClientProxy extends CommonProxy {
     EnderIO.itemBasicFilterUpgrade.registerRenderers();
     EnderIO.itemExtractSpeedUpgrade.registerRenderers();
     EnderIO.itemFunctionUpgrade.registerRenderers();
+    EnderIO.itemSoulVessel.registerRenderers();
     ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.unlocalisedName);
