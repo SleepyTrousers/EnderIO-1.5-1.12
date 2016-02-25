@@ -55,14 +55,12 @@ import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -147,27 +145,12 @@ public class ClientProxy extends CommonProxy {
     // if (OCUtil.isOCEnabled()) {
     // OCConduit.initIcons();
     // }
-    SmartModelAttacher.create();    
+    SmartModelAttacher.create();
   }
 
   @Override
-  public void preInit() {   
+  public void preInit() {
     super.preInit();
-    EnderIO.fluids.registerRenderers();
-
-    // Items of blocks that use smart rendering
-    SmartModelAttacher.registerBlockItemModels();
-
-    // Blocks
-    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(EnderIO.blockDarkIronBars), 0,
-        new ModelResourceLocation(EnderIO.DOMAIN + ":" + ModObject.blockDarkIronBars.name(), "inventory"));
-
-    if(EnderIO.blockIngotStorage != null) {
-      EnderIO.blockIngotStorage.registerRenderers();
-    }
-    if(EnderIO.blockDarkSteelAnvil != null) {
-      EnderIO.blockDarkSteelAnvil.registerRenderers();
-    }
 
     SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
     tt.addCallback(new TooltipHandlerGrinding());
@@ -176,6 +159,32 @@ public class ClientProxy extends CommonProxy {
       tt.addCallback(new TooltipHandlerFluid());
     }
     
+    //Fluids
+    EnderIO.fluids.registerRenderers();
+
+    // Items of blocks that use smart rendering
+    SmartModelAttacher.registerBlockItemModels();
+
+    // Blocks
+    if (EnderIO.blockDarkIronBars != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.unlocalisedName);
+    }
+    if (EnderIO.blockDarkSteelAnvil != null) {
+      EnderIO.blockDarkSteelAnvil.registerRenderers();
+    }
+    if (EnderIO.blockDarkSteelLadder != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.unlocalisedName);
+    }
+    if (EnderIO.blockReinforcedObsidian != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockReinforcedObsidian), ModObject.blockReinforcedObsidian.unlocalisedName);
+    }    
+    if(EnderIO.blockDarkSteelPressurePlate != null) {      
+      EnderIO.blockDarkSteelPressurePlate.registerRenderers();
+    }
+    if (EnderIO.blockIngotStorage != null) {
+      EnderIO.blockIngotStorage.registerRenderers();
+    }
+
     // Tile Renderers
 
     if (EnderIO.blockEnchanter != null) {
@@ -243,7 +252,7 @@ public class ClientProxy extends CommonProxy {
     EnderIO.itemAlloy.registerRenderers();
     EnderIO.itemBasicCapacitor.registerRenderers();
     EnderIO.itemPowderIngot.registerRenderers();
-    if(EnderIO.itemFrankenSkull != null) {
+    if (EnderIO.itemFrankenSkull != null) {
       EnderIO.itemFrankenSkull.registerRenderers();
     }
     EnderIO.itemMachinePart.registerRenderers();

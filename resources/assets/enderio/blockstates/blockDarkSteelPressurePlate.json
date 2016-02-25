@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "enderio:blockDarkSteelPressurePlate_up" },
+        "powered=true": { "model": "enderio:blockDarkSteelPressurePlate_down" }
+    }
+}

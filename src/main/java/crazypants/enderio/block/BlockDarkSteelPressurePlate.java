@@ -17,6 +17,7 @@ import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
@@ -59,13 +60,6 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public void registerBlockIcons(IIconRegister iIconRegister) {
-  // blockIcon = iIconRegister.registerIcon("enderio:" +
-  // ModObject.blockDarkSteelPressurePlate.unlocalisedName);
-  // }
-
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     if (itemStack != null && itemStack.getItemDamage() == 1) {
@@ -73,21 +67,6 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }
     return getUnlocalizedName();
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IIcon getIcon(IBlockAccess world, int x, int y, int z, int
-  // blockSide) {
-  // TileEntity te = world.getTileEntity(x, y, z);
-  // if(te instanceof TileEntityPaintedBlock) {
-  // TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-  // if(tef.getSourceBlock() != null) {
-  // return tef.getSourceBlock().getIcon(blockSide,
-  // tef.getSourceBlockMetadata());
-  // }
-  // }
-  // return super.getIcon(world, x, y, z, blockSide);
-  // }
 
   @Override
   public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
@@ -244,6 +223,12 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       PainterUtil.setSourceBlock(result, block, damage);
       return result;
     }
+  }
+
+   @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+      ClientUtil.regRenderer(Item.getItemFromBlock(this), 0, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
+      ClientUtil.regRenderer(Item.getItemFromBlock(this), 1, ModObject.blockDarkSteelPressurePlate.unlocalisedName); 
   }
 
 }

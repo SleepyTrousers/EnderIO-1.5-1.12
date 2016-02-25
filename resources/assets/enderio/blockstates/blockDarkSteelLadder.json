@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "enderio:blockDarkSteelLadder" },
+        "facing=east":  { "model": "enderio:blockDarkSteelLadder", "y": 90 },
+        "facing=south": { "model": "enderio:blockDarkSteelLadder", "y": 180 },
+        "facing=west":  { "model": "enderio:blockDarkSteelLadder", "y": 270 }
+    }
+}

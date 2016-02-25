@@ -1,0 +1,7 @@
+{
+    "parent": "block/ladder",
+    "textures": {
+        "particle": "enderio:blocks/blockDarkSteelLadder",
+        "texture": "enderio:blocks/blockDarkSteelLadder"
+    }
+}

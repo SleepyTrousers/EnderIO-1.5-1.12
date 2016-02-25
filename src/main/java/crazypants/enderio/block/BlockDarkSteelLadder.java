@@ -23,11 +23,8 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     return res;
   }
 
-  protected BlockDarkSteelLadder() {
-    super();
-    
+  protected BlockDarkSteelLadder() {       
     setUnlocalizedName(ModObject.blockDarkSteelLadder.unlocalisedName);
-//    setBlockTextureName(EnderIO.DOMAIN + ":" + ModObject.blockDarkSteelLadder.unlocalisedName);
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);
@@ -42,7 +39,6 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     return Material.iron;
   }
   
-
   @Override
   public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
     if (entity.onGround || entity.isCollidedVertically) {
