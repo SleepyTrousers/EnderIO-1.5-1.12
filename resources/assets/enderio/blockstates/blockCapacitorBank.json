@@ -1,0 +1,133 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "textures": {
+        "particle": "blocks/capacitorBank",
+        "side": "blocks/capacitorBank",
+        "border": "blocks/capacitorBankBorders"
+    },
+  },
+  "variants":{
+    "render":{
+      "auto":{},
+      
+      "defaults":{
+        "model":"enderio:null", "transform":{
+          "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+          "firstperson":{ "rotation":[ {"x":0},  {"y":90},  {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+          "gui":{         "rotation":[ {"x":0},  {"y":-90}, {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+          "fixed":{       "rotation":[ {"x":0},  {"y":0},   {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+        }
+      },
+
+      "sides":{
+        "submodel":{
+          "down_up":{ "model":"enderio:capbank_faces", "x":90 },
+          "north_south":{ "model":"enderio:capbank_faces" },
+          "west_east":{ "model":"enderio:capbank_faces", "y":90 },
+        }
+      },
+      
+      "north_west_up_0":{ "model":"enderio:capbank_north_west_up_0" },
+      "north_west_up_1":{ "model":"enderio:capbank_north_west_up_1" },
+      "north_west_up_2":{ "model":"enderio:capbank_north_west_up_2" },
+      "north_west_up_3":{ "model":"enderio:capbank_north_west_up_3" },
+
+      "north_east_up_0":{ "model":"enderio:capbank_north_west_up_0", "y":90 },
+      "north_east_up_1":{ "model":"enderio:capbank_north_west_up_1", "y":90 },
+      "north_east_up_2":{ "model":"enderio:capbank_north_west_up_2", "y":90 },
+      "north_east_up_3":{ "model":"enderio:capbank_north_west_up_3", "y":90 },
+
+      "south_east_up_0":{ "model":"enderio:capbank_north_west_up_0", "y":180 },
+      "south_east_up_1":{ "model":"enderio:capbank_north_west_up_1", "y":180 },
+      "south_east_up_2":{ "model":"enderio:capbank_north_west_up_2", "y":180 },
+      "south_east_up_3":{ "model":"enderio:capbank_north_west_up_3", "y":180 },
+
+      "south_west_up_0":{ "model":"enderio:capbank_north_west_up_0", "y":270 },
+      "south_west_up_1":{ "model":"enderio:capbank_north_west_up_1", "y":270 },
+      "south_west_up_2":{ "model":"enderio:capbank_north_west_up_2", "y":270 },
+      "south_west_up_3":{ "model":"enderio:capbank_north_west_up_3", "y":270 },
+
+      "north_west_down_0":{ "model":"enderio:capbank_north_west_down_0" },
+      "north_west_down_1":{ "model":"enderio:capbank_north_west_down_1" },
+      "north_west_down_2":{ "model":"enderio:capbank_north_west_down_2" },
+      "north_west_down_3":{ "model":"enderio:capbank_north_west_down_3" },
+
+      "north_east_down_0":{ "model":"enderio:capbank_north_west_down_0", "y":90 },
+      "north_east_down_1":{ "model":"enderio:capbank_north_west_down_1", "y":90 },
+      "north_east_down_2":{ "model":"enderio:capbank_north_west_down_2", "y":90 },
+      "north_east_down_3":{ "model":"enderio:capbank_north_west_down_3", "y":90 },
+
+      "south_east_down_0":{ "model":"enderio:capbank_north_west_down_0", "y":180 },
+      "south_east_down_1":{ "model":"enderio:capbank_north_west_down_1", "y":180 },
+      "south_east_down_2":{ "model":"enderio:capbank_north_west_down_2", "y":180 },
+      "south_east_down_3":{ "model":"enderio:capbank_north_west_down_3", "y":180 },
+
+      "south_west_down_0":{ "model":"enderio:capbank_north_west_down_0", "y":270 },
+      "south_west_down_1":{ "model":"enderio:capbank_north_west_down_1", "y":270 },
+      "south_west_down_2":{ "model":"enderio:capbank_north_west_down_2", "y":270 },
+      "south_west_down_3":{ "model":"enderio:capbank_north_west_down_3", "y":270 },
+
+      "north_west_0":{ "model":"enderio:capbank_north_west_0" },
+      "north_west_1":{ "model":"enderio:capbank_north_west_1" },
+      "north_west_2":{ "model":"enderio:capbank_north_west_2" },
+      "north_west_3":{ "model":"enderio:capbank_north_west_3" },
+
+      "north_east_0":{ "model":"enderio:capbank_north_west_0", "y":90 },
+      "north_east_1":{ "model":"enderio:capbank_north_west_1", "y":90 },
+      "north_east_2":{ "model":"enderio:capbank_north_west_2", "y":90 },
+      "north_east_3":{ "model":"enderio:capbank_north_west_3", "y":90 },
+
+      "south_east_0":{ "model":"enderio:capbank_north_west_0", "y":180 },
+      "south_east_1":{ "model":"enderio:capbank_north_west_1", "y":180 },
+      "south_east_2":{ "model":"enderio:capbank_north_west_2", "y":180 },
+      "south_east_3":{ "model":"enderio:capbank_north_west_3", "y":180 },
+
+      "south_west_0":{ "model":"enderio:capbank_north_west_0", "y":270 },
+      "south_west_1":{ "model":"enderio:capbank_north_west_1", "y":270 },
+      "south_west_2":{ "model":"enderio:capbank_north_west_2", "y":270 },
+      "south_west_3":{ "model":"enderio:capbank_north_west_3", "y":270 },
+
+      "north_up_0":{ "model":"enderio:capbank_north_up_0" },
+      "north_up_1":{ "model":"enderio:capbank_north_up_1" },
+      "north_up_2":{ "model":"enderio:capbank_north_up_2" },
+      "north_up_3":{ "model":"enderio:capbank_north_up_3" },
+
+      "east_up_0":{ "model":"enderio:capbank_north_up_0", "y":90 },
+      "east_up_1":{ "model":"enderio:capbank_north_up_1", "y":90 },
+      "east_up_2":{ "model":"enderio:capbank_north_up_2", "y":90 },
+      "east_up_3":{ "model":"enderio:capbank_north_up_3", "y":90 },
+
+      "west_up_0":{ "model":"enderio:capbank_north_up_0", "y":180 },
+      "west_up_1":{ "model":"enderio:capbank_north_up_1", "y":180 },
+      "west_up_2":{ "model":"enderio:capbank_north_up_2", "y":180 },
+      "west_up_3":{ "model":"enderio:capbank_north_up_3", "y":180 },
+
+      "south_up_0":{ "model":"enderio:capbank_north_up_0", "y":270 },
+      "south_up_1":{ "model":"enderio:capbank_north_up_1", "y":270 },
+      "south_up_2":{ "model":"enderio:capbank_north_up_2", "y":270 },
+      "south_up_3":{ "model":"enderio:capbank_north_up_3", "y":270 },
+
+      "north_down_0":{ "model":"enderio:capbank_north_down_0" },
+      "north_down_1":{ "model":"enderio:capbank_north_down_1" },
+      "north_down_2":{ "model":"enderio:capbank_north_down_2" },
+      "north_down_3":{ "model":"enderio:capbank_north_down_3" },
+
+      "east_down_0":{ "model":"enderio:capbank_north_down_0", "y":90 },
+      "east_down_1":{ "model":"enderio:capbank_north_down_1", "y":90 },
+      "east_down_2":{ "model":"enderio:capbank_north_down_2", "y":90 },
+      "east_down_3":{ "model":"enderio:capbank_north_down_3", "y":90 },
+
+      "west_down_0":{ "model":"enderio:capbank_north_down_0", "y":180 },
+      "west_down_1":{ "model":"enderio:capbank_north_down_1", "y":180 },
+      "west_down_2":{ "model":"enderio:capbank_north_down_2", "y":180 },
+      "west_down_3":{ "model":"enderio:capbank_north_down_3", "y":180 },
+
+      "south_down_0":{ "model":"enderio:capbank_north_down_0", "y":270 },
+      "south_down_1":{ "model":"enderio:capbank_north_down_1", "y":270 },
+      "south_down_2":{ "model":"enderio:capbank_north_down_2", "y":270 },
+      "south_down_3":{ "model":"enderio:capbank_north_down_3", "y":270 }
+
+    }
+  }
+}
