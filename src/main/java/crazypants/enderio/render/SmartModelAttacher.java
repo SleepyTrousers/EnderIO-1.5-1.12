@@ -20,6 +20,8 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SmartModelAttacher {
 
@@ -39,6 +41,7 @@ public class SmartModelAttacher {
    * For items that have subtypes, all subtypes that are exposed to the creative inventory are registered. All subtypes are registered to the same model, as the
    * smart model can be damage-aware.
    */
+  @SideOnly(Side.CLIENT)
   public static void registerBlockItemModels() {
     for (Block block : blocks) {
       Item item = Item.getItemFromBlock(block);
@@ -64,6 +67,7 @@ public class SmartModelAttacher {
   }
 
   @SubscribeEvent()
+  @SideOnly(Side.CLIENT)
   public void bakeModels(ModelBakeEvent event) {
     for (Block block : blocks) {
       Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(block);

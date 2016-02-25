@@ -39,7 +39,9 @@ public class MachineRenderMapper implements IRenderMapper {
         EnumFacing facing = ((AbstractMachineEntity) tileEntity).getFacing();
         boolean active = ((AbstractMachineEntity) tileEntity).isActive();
 
-        states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
+        if (body != null) {
+          states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
+        }
 
         if (active) {
           states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON.rotate(facing)));
@@ -64,7 +66,9 @@ public class MachineRenderMapper implements IRenderMapper {
   @Override
   public List<IBlockState> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
-    states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body));
+    if (body != null) {
+      states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body));
+    }
     states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     return states;
   }
