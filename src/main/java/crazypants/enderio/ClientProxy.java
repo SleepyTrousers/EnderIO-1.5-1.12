@@ -62,6 +62,7 @@ import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -153,17 +154,12 @@ public class ClientProxy extends CommonProxy {
   public void preInit() {   
     super.preInit();
     EnderIO.fluids.registerRenderers();
-  }
-  
-  @Override
-  public void init() {
-    super.init();
 
     // Items of blocks that use smart rendering
     SmartModelAttacher.registerBlockItemModels();
 
     // Blocks
-    Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(EnderIO.blockDarkIronBars), 0,
+    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(EnderIO.blockDarkIronBars), 0,
         new ModelResourceLocation(EnderIO.DOMAIN + ":" + ModObject.blockDarkIronBars.name(), "inventory"));
 
     if(EnderIO.blockIngotStorage != null) {

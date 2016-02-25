@@ -37,24 +37,6 @@ public class BlockFluidEio extends BlockFluidClassic {
     GameRegistry.registerBlock(this, "block" + StringUtils.capitalize(fluidName));
   }
 
-//  @SideOnly(Side.CLIENT)
-//  protected IIcon[] icons;
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int side, int meta) {
-//    return side != 0 && side != 1 ? this.icons[1] : this.icons[0];
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iconRegister) {
-//    icons = new IIcon[] { iconRegister.registerIcon("enderio:" + fluidName + "_still"),
-//        iconRegister.registerIcon("enderio:" + fluidName + "_flow") };
-//
-//    fluid.setIcons(icons[0], icons[1]);
-//  }
-  
   @Override
   public boolean canDisplace(IBlockAccess world, BlockPos pos) {
     if(world.getBlockState(pos).getBlock().getMaterial().isLiquid()) {
@@ -70,9 +52,6 @@ public class BlockFluidEio extends BlockFluidClassic {
     }
     return super.displaceIfPossible(world, pos);
   }
-  
-  
-  
 
   @Override
   public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {

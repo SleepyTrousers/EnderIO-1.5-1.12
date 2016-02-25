@@ -12,7 +12,6 @@ import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 
 public class ClientUtil {
 
@@ -106,8 +106,7 @@ public class ClientUtil {
   }
   
   public static void regRenderer(Item item, int meta, ResourceLocation loc) {
-    RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-    renderItem.getItemModelMesher().register(item, meta, new ModelResourceLocation(loc, "inventory"));
+    ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(loc, "inventory"));
   }
 
   public static void registerRenderer(Item item, String name) {

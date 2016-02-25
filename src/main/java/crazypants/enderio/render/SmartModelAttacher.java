@@ -5,17 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,18 +47,10 @@ public class SmartModelAttacher {
         List<ItemStack> list = new ArrayList<ItemStack>();
         block.getSubBlocks(item, EnderIOTab.tabEnderIO, list);
         for (ItemStack itemStack : list) {
-          // This works but I should not use it:
-          Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, itemStack.getItemDamage(), location);
-          // This doesn't work:
           ModelLoader.setCustomModelResourceLocation(item, itemStack.getItemDamage(), location);
-          // TODO: Fix it if you want.
         }
-      } else {
-        // This works but I should not use it:
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, location);
-        // This doesn't work:
-        ModelLoader.setCustomModelResourceLocation(item, 0, location);
-        // TODO: Fix it if you want.
+      } else {        
+        ModelLoader.setCustomModelResourceLocation(item, 0, location);        
       }
     }
   }

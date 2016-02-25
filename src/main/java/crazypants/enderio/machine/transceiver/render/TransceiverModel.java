@@ -1,38 +1,33 @@
 package crazypants.enderio.machine.transceiver.render;
 
-import java.io.IOException;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 
 public class TransceiverModel extends ModelBase implements IModelTrans {
   
   public static final float SCALE = 1 / 16f;
 
   private static final String TEXTURE = "enderio:models/transceiver.png";
-  private static final String MODEL = "enderio:models/transceiver.obj";
-
-  private IModel model;
+//  private static final String MODEL = "enderio:models/transceiver.obj";
+//
+//  private IModel model;
 
   public TransceiverModel() {
 //    model = AdvancedModelLoader.loadModel(new ResourceLocation(MODEL));
     
-    model = ModelLoaderRegistry.getMissingModel();
-    try
-    {
-        model = ModelLoaderRegistry.getModel(new ResourceLocation(MODEL));
-    }
-    catch (IOException e)
-    {
-        model = ModelLoaderRegistry.getMissingModel();
-    }
+//    model = ModelLoaderRegistry.getMissingModel();
+//    try
+//    {
+//        model = ModelLoaderRegistry.getModel(new ResourceLocation(MODEL));
+//    }
+//    catch (IOException e)
+//    {
+//        model = ModelLoaderRegistry.getMissingModel();
+//    }
   }
 
   @Override
