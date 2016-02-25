@@ -27,15 +27,18 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener {
+public class FillGauge implements IInfoRenderer {
 
   enum Type {
     SINGLE,
@@ -53,8 +56,8 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
   private Map<GaugeKey, List<Vertex>> levelVertexCache;
   private float barMinV;
 
-  FillGauge() {
-    RenderUtil.registerReloadListener(this);
+  FillGauge() {    
+    MinecraftForge.EVENT_BUS.register(this);
   }
 
   @Override
@@ -84,6 +87,10 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
   }
 
   public void doRender(CapBankClientNetwork nw, int brightness, GaugeInfo info, GaugeKey key) {
+//    if(isFirst) {
+//      createVertexCache();
+//      isFirst = false;
+//    }
     if (gaugeVertexCache == null) {
       createVertexCache();
     }
@@ -139,8 +146,7 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
         }
       }
       
-      RenderUtil.addVerticesToTessellator(newVerts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);
-//      RenderUtil.addVerticesToTessellator(newVerts, null, DefaultVertexFormats.POSITION_TEX, false);      
+      RenderUtil.addVerticesToTessellator(newVerts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);      
     }
 
   }
@@ -188,13 +194,15 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
     }
     return false;
   }
-
-  @Override
-  public void onResourceManagerReload(IResourceManager p_110549_1_) {
+  
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Post event) {
     createVertexCache();
   }
 
   private void createVertexCache() {
+    
     barIcon = EnderIO.blockCapBank.getFillBarIcon();
     if (barIcon == null) {
       barMinV = 0;

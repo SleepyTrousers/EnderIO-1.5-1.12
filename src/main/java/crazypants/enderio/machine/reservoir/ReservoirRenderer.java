@@ -16,16 +16,17 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> implements IResourceManagerReloadListener {
+public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir>  {
 
   private ResourceLocation texName = null;
   private TextureAtlasSprite tex = null;
@@ -34,11 +35,12 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
   public ReservoirRenderer(BlockReservoir res) {
     block = res;
-    RenderUtil.registerReloadListener(this);
+    MinecraftForge.EVENT_BUS.register(this);;
   }
 
-  @Override
-  public void onResourceManagerReload(IResourceManager p_110549_1_) {
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public void onIconLoad(TextureStitchEvent.Post event) {
     tex = null;
   }
 

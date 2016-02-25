@@ -24,10 +24,10 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
+import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.RenderPassHelper;
@@ -51,7 +51,7 @@ import net.minecraft.world.World;
 
 public class IoConfigRenderer {
 
-//  protected static final RenderBlocks RB = new RenderBlocks();
+  // protected static final RenderBlocks RB = new RenderBlocks();
 
   private boolean dragging = false;
   private float pitch = 0;
@@ -125,7 +125,7 @@ public class IoConfigRenderer {
     }
 
     world = mc.thePlayer.worldObj;
-//    RB.blockAccess = new InnerBA();
+    // RB.blockAccess = new InnerBA();
   }
 
   public void init() {
@@ -247,7 +247,7 @@ public class IoConfigRenderer {
 
     BoundingBox bb = new BoundingBox(selection.config.getLocation());
 
-    TextureAtlasSprite icon = EnderIO.blockAlloySmelter.selectedFaceIcon;
+    TextureAtlasSprite icon = BlockAlloySmelter.selectedFaceIcon;
     List<Vertex> corners = bb.getCornersWithUvForFace(selection.face, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV());
 
     GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -255,7 +255,7 @@ public class IoConfigRenderer {
     RenderUtil.bindBlockTexture();
     GL11.glColor3f(1, 1, 1);
     WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-    
+
     GlStateManager.color(1, 1, 1);
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
     tes.setTranslation(trans.x, trans.y, trans.z);
@@ -378,24 +378,25 @@ public class IoConfigRenderer {
     for (BlockCoord bc : blocks) {
       TileEntity tile = world.getTileEntity(bc.getBlockPos());
       if (tile != null) {
-        Vector3d at = new Vector3d(eye.x, eye.y, eye.z);
-        at.x += bc.x - origin.x;
-        at.y += bc.y - origin.y;
-        at.z += bc.z - origin.z;
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
-        GL11.glPopAttrib();
+        if (tile.shouldRenderInPass(pass)) {
+          Vector3d at = new Vector3d(eye.x, eye.y, eye.z);
+          at.x += bc.x - origin.x;
+          at.y += bc.y - origin.y;
+          at.z += bc.z - origin.z;
+          GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+          TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+          GL11.glPopAttrib();
+        }
       }
     }
     RenderPassHelper.clearEntityRenderPass();
   }
 
   private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, int pass) {
-    //TODO 1.8: Not sure I am doing this render pass stuff correctly anymore
+    // TODO 1.8: Not sure I am doing this render pass stuff correctly anymore
     RenderPassHelper.setBlockRenderPass(pass);
 
-
-//    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
+    // Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
     RenderPassHelper.setBlockRenderPass(pass);
 
     WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
@@ -407,20 +408,20 @@ public class IoConfigRenderer {
       IBlockState bs = world.getBlockState(bc.getBlockPos());
       Block block = bs.getBlock();
       if (block != null) {
-//        if (block.canRenderInPass(pass)) {
-//          RB.renderAllFaces = true;
-//          RB.setRenderAllFaces(true);
-//          RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-          try {
-//            RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
-            BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();              
-            blockrendererdispatcher.renderBlock(bs, bc.getBlockPos(),world, Tessellator.getInstance().getWorldRenderer());
-          } catch (Exception e) {
-            // Ignore, things might blow up in rendering due to the modified
-            // block access
-            // but this is about as good as we can do
-          }
-//        }
+        // if (block.canRenderInPass(pass)) {
+        // RB.renderAllFaces = true;
+        // RB.setRenderAllFaces(true);
+        // RB.setRenderBounds(0, 0, 0, 1, 1, 1);
+        try {
+          // RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
+          blockrendererdispatcher.renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
+        } catch (Exception e) {
+          // Ignore, things might blow up in rendering due to the modified
+          // block access
+          // but this is about as good as we can do
+        }
+        // }
       }
     }
 
@@ -509,33 +510,34 @@ public class IoConfigRenderer {
 
   }
 
-//  private class InnerBA extends IBlockAccessWrapper {
-//
-//    InnerBA() {
-//      super(world);
-//    }
-//
-//    @Override
-//    public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
-//      return false;
-//    }
-//
-//    @Override
-//    public boolean isAirBlock(BlockPos pos) {
-//      if (!configurables.contains(new BlockCoord(pos))) {
-//        return false;
-//      }
-//      return super.isAirBlock(pos);
-//    }
-//
-//    @Override
-//    public IBlockState getBlockState(BlockPos pos) {
-//      if (!configurables.contains(new BlockCoord(pos))) {
-//        return Blocks.air.getDefaultState();
-//      }
-//      return super.getBlockState(pos);
-//    }
-//
-//  }
+  // private class InnerBA extends IBlockAccessWrapper {
+  //
+  // InnerBA() {
+  // super(world);
+  // }
+  //
+  // @Override
+  // public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default)
+  // {
+  // return false;
+  // }
+  //
+  // @Override
+  // public boolean isAirBlock(BlockPos pos) {
+  // if (!configurables.contains(new BlockCoord(pos))) {
+  // return false;
+  // }
+  // return super.isAirBlock(pos);
+  // }
+  //
+  // @Override
+  // public IBlockState getBlockState(BlockPos pos) {
+  // if (!configurables.contains(new BlockCoord(pos))) {
+  // return Blocks.air.getDefaultState();
+  // }
+  // return super.getBlockState(pos);
+  // }
+  //
+  // }
 
 }
