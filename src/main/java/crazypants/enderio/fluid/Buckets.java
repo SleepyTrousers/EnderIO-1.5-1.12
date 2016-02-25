@@ -1,6 +1,5 @@
 package crazypants.enderio.fluid;
 
-import crazypants.enderio.EnderIO;
 import crazypants.util.ClientUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,13 +13,13 @@ public class Buckets {
   public static ItemBucketEio itemBucketXpJuice;
   
   public static void createBuckets() {
-    if(EnderIO.fluidXpJuice != null) {
-      itemBucketXpJuice = ItemBucketEio.create(EnderIO.fluidXpJuice);
+    if(Fluids.fluidXpJuice != null) {
+      itemBucketXpJuice = ItemBucketEio.create(Fluids.fluidXpJuice);
     } 
-    itemBucketNutrientDistillation = ItemBucketEio.create(EnderIO.fluidNutrientDistillation);
-    itemBucketHootch = ItemBucketEio.create(EnderIO.fluidHootch);
-    itemBucketRocketFuel = ItemBucketEio.create(EnderIO.fluidRocketFuel);
-    itemBucketFireWater = ItemBucketEio.create(EnderIO.fluidFireWater);
+    itemBucketNutrientDistillation = ItemBucketEio.create(Fluids.fluidNutrientDistillation);
+    itemBucketHootch = ItemBucketEio.create(Fluids.fluidHootch);
+    itemBucketRocketFuel = ItemBucketEio.create(Fluids.fluidRocketFuel);
+    itemBucketFireWater = ItemBucketEio.create(Fluids.fluidFireWater);
   }
   
   @SideOnly(Side.CLIENT)

@@ -1,7 +1,5 @@
 package crazypants.enderio;
 
-import java.text.DecimalFormat;
-
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.render.ConduitRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class CommonProxy {
 
-  private static final DecimalFormat FORMAT = new DecimalFormat("########0.000");
 
   protected long serverTickCount = 0;
   protected long clientTickCount = 0;
@@ -42,10 +39,12 @@ public class CommonProxy {
   }
 
   public void loadIcons() {
-    ;
   }
   
-  public void load() {
+  public void preInit() {       
+  }
+  
+  public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);
   }
 
@@ -84,4 +83,5 @@ public class CommonProxy {
       }
     }
   }
+
 }

@@ -4,9 +4,9 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.XpUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,7 +80,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       return false;
     }
     IFluidHandler fh = (IFluidHandler) te;
-    if (!fh.canDrain(side, EnderIO.fluidXpJuice)) {
+    if (!fh.canDrain(side, Fluids.fluidXpJuice)) {
       return false;
     }
     int currentXP = XpUtil.getPlayerXP(player);
@@ -88,7 +88,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     int requiredXP = nextLevelXP - currentXP;
 
     int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
-    FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
+    FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
     FluidStack res = fh.drain(side, fs, true);
     if (res == null || res.amount <= 0) {
       return false;
@@ -111,12 +111,12 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     }
     IFluidHandler fh = (IFluidHandler) te;
 
-    if (!fh.canFill(side, EnderIO.fluidXpJuice)) {
+    if (!fh.canFill(side, Fluids.fluidXpJuice)) {
       return false;
     }
 
     int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
-    FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
+    FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
     int takenVolume = fh.fill(side, fs, true);
     if (takenVolume <= 0) {
       return false;

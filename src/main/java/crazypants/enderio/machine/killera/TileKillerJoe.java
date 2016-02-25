@@ -14,9 +14,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
@@ -82,7 +82,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   protected WirelessChargedLocation chargedLocation;
 
-  final SmartTank fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+  final SmartTank fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   int lastFluidLevelUpdate;
 
@@ -570,7 +570,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == EnderIO.fluidNutrientDistillation) {
+    if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
       return fuelTank;
     }
     /*

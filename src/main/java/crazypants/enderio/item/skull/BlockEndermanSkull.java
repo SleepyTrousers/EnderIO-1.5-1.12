@@ -14,9 +14,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import thaumcraft.api.crafting.IInfusionStabiliser;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser {
-
-  public static int renderId = -1;
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IInfusionStabiliser {
 
   public enum SkullType {
 

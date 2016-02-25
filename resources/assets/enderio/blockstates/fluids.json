@@ -1,0 +1,21 @@
+{
+    "forge_marker": 1,
+	"variants": {
+        "nutrient_distillation": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "nutrient_distillation" }
+        },
+        "hootch": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "hootch" }
+        },
+        "rocket_fuel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "rocket_fuel" }
+        },
+        "fire_water": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "fire_water" }
+        }
+    }
+}

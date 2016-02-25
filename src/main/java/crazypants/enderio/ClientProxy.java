@@ -146,12 +146,18 @@ public class ClientProxy extends CommonProxy {
     // if (OCUtil.isOCEnabled()) {
     // OCConduit.initIcons();
     // }
-    SmartModelAttacher.create();
+    SmartModelAttacher.create();    
   }
 
   @Override
-  public void load() {
-    super.load();
+  public void preInit() {   
+    super.preInit();
+    EnderIO.fluids.registerRenderers();
+  }
+  
+  @Override
+  public void init() {
+    super.init();
 
     // Items of blocks that use smart rendering
     SmartModelAttacher.registerBlockItemModels();
@@ -160,8 +166,12 @@ public class ClientProxy extends CommonProxy {
     Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(EnderIO.blockDarkIronBars), 0,
         new ModelResourceLocation(EnderIO.DOMAIN + ":" + ModObject.blockDarkIronBars.name(), "inventory"));
 
-    EnderIO.blockIngotStorage.registerRenderers();
-    EnderIO.blockDarkSteelAnvil.registerRenderers();
+    if(EnderIO.blockIngotStorage != null) {
+      EnderIO.blockIngotStorage.registerRenderers();
+    }
+    if(EnderIO.blockDarkSteelAnvil != null) {
+      EnderIO.blockDarkSteelAnvil.registerRenderers();
+    }
 
     SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
     tt.addCallback(new TooltipHandlerGrinding());
@@ -169,7 +179,7 @@ public class ClientProxy extends CommonProxy {
     if (Config.addFuelTooltipsToAllFluidContainers) {
       tt.addCallback(new TooltipHandlerFluid());
     }
-
+    
     // Tile Renderers
 
     if (EnderIO.blockEnchanter != null) {
@@ -237,7 +247,9 @@ public class ClientProxy extends CommonProxy {
     EnderIO.itemAlloy.registerRenderers();
     EnderIO.itemBasicCapacitor.registerRenderers();
     EnderIO.itemPowderIngot.registerRenderers();
-    EnderIO.itemFrankenSkull.registerRenderers();
+    if(EnderIO.itemFrankenSkull != null) {
+      EnderIO.itemFrankenSkull.registerRenderers();
+    }
     EnderIO.itemMachinePart.registerRenderers();
     EnderIO.itemMaterial.registerRenderers();
     EnderIO.itemEnderFood.registerRenderers();

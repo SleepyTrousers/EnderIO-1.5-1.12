@@ -2,7 +2,7 @@ package crazypants.enderio.xp;
 
 import java.security.InvalidParameterException;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.fluid.Fluids;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -141,7 +141,7 @@ public class ExperienceContainer extends FluidTank {
 
   
   public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    if(EnderIO.fluidXpJuice == null) {
+    if(Fluids.fluidXpJuice == null) {
       return null;
     }
     int available = getFluidAmount();
@@ -158,11 +158,11 @@ public class ExperienceContainer extends FluidTank {
       experienceTotal = 0;
       addExperience(newXp);
     }
-    return new FluidStack(EnderIO.fluidXpJuice, fluidToExtract);
+    return new FluidStack(Fluids.fluidXpJuice, fluidToExtract);
   }
 
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return fluid != null && Fluids.fluidXpJuice != null && fluid.getID() == Fluids.fluidXpJuice.getID();
   }
   
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
@@ -189,15 +189,15 @@ public class ExperienceContainer extends FluidTank {
   }
   
   public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return fluid != null && Fluids.fluidXpJuice != null && fluid.getID() == Fluids.fluidXpJuice.getID();
   }
   
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if(EnderIO.fluidXpJuice == null) {
+    if(Fluids.fluidXpJuice == null) {
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] {
- new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getCapacity())
+ new FluidTankInfo(new FluidStack(Fluids.fluidXpJuice, getFluidAmount()), getCapacity())
     };
   }
 
@@ -246,7 +246,7 @@ public class ExperienceContainer extends FluidTank {
 
   @Override
   public FluidStack getFluid() {
-    return new FluidStack(EnderIO.fluidXpJuice, getFluidAmount());
+    return new FluidStack(Fluids.fluidXpJuice, getFluidAmount());
   }
 
   @Override
@@ -270,7 +270,7 @@ public class ExperienceContainer extends FluidTank {
     experienceLevel = 0;
     experienceTotal = 0;
     if (fluid != null && fluid.getFluid() != null) {
-      if (EnderIO.fluidXpJuice == fluid.getFluid()) {
+      if (Fluids.fluidXpJuice == fluid.getFluid()) {
         addExperience(XpUtil.liquidToExperience(fluid.amount));
       } else {
         throw new InvalidParameterException(fluid.getFluid() + " is no XP juice");

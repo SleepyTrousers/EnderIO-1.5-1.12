@@ -4,9 +4,9 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
@@ -28,7 +28,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   private static int IO_MB_TICK = 250;
 
-  final SmartTank fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+  final SmartTank fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   int outputPerTick = Config.zombieGeneratorRfPerTick;
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
@@ -256,7 +256,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == EnderIO.fluidNutrientDistillation) {
+    if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
       return fuelTank;
     }
     return null;

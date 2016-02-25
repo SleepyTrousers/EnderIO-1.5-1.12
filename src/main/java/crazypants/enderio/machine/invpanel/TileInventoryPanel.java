@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.enderio.core.api.common.util.ITankAccess;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -12,6 +11,7 @@ import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -63,7 +63,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
-    this.fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, Config.inventoryPanelFree ? 0 : 2000);
+    this.fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, Config.inventoryPanelFree ? 0 : 2000);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 

@@ -3,7 +3,6 @@ package crazypants.enderio;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,8 +41,6 @@ import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.entity.SkeletonHandler;
-import crazypants.enderio.fluid.BlockFluidEio;
-import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.ItemConduitProbe;
@@ -67,7 +64,6 @@ import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
@@ -121,14 +117,11 @@ import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -260,22 +253,7 @@ public class EnderIO {
   public static BlockReinforcedObsidian blockReinforcedObsidian;
   public static BlockEnderRail blockEnderRail;
 
-  //Fluids
-  public static Fluid fluidNutrientDistillation;
-  public static BlockFluidEio blockNutrientDistillation;
-  
-  public static Fluid fluidHootch;
-  public static BlockFluidEio blockHootch;
-
-  public static Fluid fluidRocketFuel;
-  public static BlockFluidEio blockRocketFuel;
-    
-  public static Fluid fluidFireWater;
-  public static BlockFluidEio blockFireWater;
-
-  //Open block compatable liquid XP
-  public static Fluid fluidXpJuice;
-  
+  public static Fluids fluids;  
 
   // Items
   public static ItemYetaWrench itemYetaWench;
@@ -400,7 +378,8 @@ public class EnderIO {
     itemAlloy = ItemAlloy.create();
     itemPowderIngot = ItemPowderIngot.create();
 
-    registerFluids();
+    fluids = new Fluids();
+    fluids.registerFluids();
 
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
@@ -429,49 +408,8 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
     MaterialRecipes.registerOresInDictionary();
-  }
-
-  private void registerFluids() {
-    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME, Fluids.getStill(Fluids.NUTRIENT_DISTILLATION_NAME),Fluids.getFlowing(Fluids.NUTRIENT_DISTILLATION_NAME)).setDensity(1500).setViscosity(3000);
-    FluidRegistry.registerFluid(f);
-    fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
-    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water);
-
-    PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
-
-    f = new Fluid(Fluids.HOOTCH_NAME, Fluids.getStill(Fluids.HOOTCH_NAME),Fluids.getFlowing(Fluids.HOOTCH_NAME)).setDensity(900).setViscosity(1000);
-    FluidRegistry.registerFluid(f);
-    fluidHootch = FluidRegistry.getFluid(f.getName());
-    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
-    FluidFuelRegister.instance.addFuel(f, Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@"
-        + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
-
-    f = new Fluid(Fluids.ROCKET_FUEL_NAME, Fluids.getStill(Fluids.ROCKET_FUEL_NAME),Fluids.getFlowing(Fluids.ROCKET_FUEL_NAME)).setDensity(900).setViscosity(1000);
-    FluidRegistry.registerFluid(f);
-    fluidRocketFuel = FluidRegistry.getFluid(f.getName());
-    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
-    FluidFuelRegister.instance.addFuel(f, Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
-        + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
-
-    f = new Fluid(Fluids.FIRE_WATER_NAME, Fluids.getStill(Fluids.FIRE_WATER_NAME),Fluids.getFlowing(Fluids.FIRE_WATER_NAME)).setDensity(900).setViscosity(1000);
-    FluidRegistry.registerFluid(f);
-    fluidFireWater = FluidRegistry.getFluid(f.getName());
-    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
-    FluidFuelRegister.instance.addFuel(f, Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
-        + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
-
-    if(!Loader.isModLoaded("OpenBlocks")) {
-      Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getStill(Fluids.FIRE_WATER_NAME),Fluids.getFlowing(Fluids.FIRE_WATER_NAME)).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
-      FluidRegistry.registerFluid(fluidXpJuice);
-    } else {
-      Log.info("XP Juice regististration left to Open Blocks.");
-    }
     
-    Buckets.createBuckets();
+    proxy.preInit();
   }
 
   @EventHandler
@@ -560,7 +498,7 @@ public class EnderIO {
 //    ItemRecipes.addRecipes();
 //    TeleportRecipes.addRecipes();    
     
-    proxy.load();
+    proxy.init();
   }
 
   @EventHandler
@@ -583,11 +521,9 @@ public class EnderIO {
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
 //    PaintSourceValidator.instance.loadConfig();
 
-    if(fluidXpJuice == null) { //should have been registered by open blocks 
-      fluidXpJuice = FluidRegistry.getFluid(getXPJuiceName());
-      if(fluidXpJuice == null) {
-        Log.error("Liquid XP Juice registration left to open blocks but could not be found.");
-      }
+    if(Fluids.fluidXpJuice == null) { //should have been registered by open blocks
+      fluids.forgeRegisterXPJuice();
+      
     }
 
     if(Config.dumpMobNames) {
@@ -620,24 +556,6 @@ public class EnderIO {
     processImc(FMLInterModComms.fetchRuntimeMessages(this)); //Some mods send IMCs during PostInit, so we catch them here.
   }
 
-  private static String getXPJuiceName() {
-    String openBlocksXPJuiceName = null;
-
-    try {
-      Field getField = Class.forName("openblocks.Config").getField("xpFluidId");
-      openBlocksXPJuiceName = (String) getField.get(null);
-    } catch (Exception e) {
-    }
-
-    if(openBlocksXPJuiceName != null && !Config.xpJuiceName.equals(openBlocksXPJuiceName)) {
-      Log.info("Overwriting XP Juice name with '" + openBlocksXPJuiceName + "' taken from OpenBlocks' config");
-      return openBlocksXPJuiceName;
-    }
-
-    return Config.xpJuiceName;
-  }
-
-  @SuppressWarnings("unchecked")
   private void addModIntegration() {
 
 //    if(Loader.isModLoaded("TConstruct")) {
