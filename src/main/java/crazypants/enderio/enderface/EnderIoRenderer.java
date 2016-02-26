@@ -36,14 +36,22 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f, int breakingStage) {
 
-
-    EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
-    Matrix4d lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
-
-    int brightness = RenderUtil.getTesselatorBrightness(entityPlayer.worldObj, te.getPos());    
+    Matrix4d lookMat = null;
+    int brightness = 255;
+    if(te != null) {
+      EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
+      lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
+      brightness = RenderUtil.getTesselatorBrightness(entityPlayer.worldObj, te.getPos());
+    } else {
+      lookMat = new Matrix4d();
+      lookMat.setIdentity();
+    }
+        
     render(x, y, z, lookMat, brightness);
 
-    selectionRenderer.renderTileEntityAt(te, x, y, z, f, breakingStage);
+    if(te != null) {
+      selectionRenderer.renderTileEntityAt(te, x, y, z, f, breakingStage);
+    }
   }
 
   public void render(double x, double y, double z, Matrix4d lookMat, int brightness) {

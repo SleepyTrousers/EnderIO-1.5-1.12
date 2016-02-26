@@ -48,12 +48,12 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
     if (world.isRemote) {
       return;
     }
-    world.markBlockForUpdate(pos);
+    world.markBlockForUpdate(pos);    
   }
 
   @Override
   public int getRenderType() { 
-    return -1;
+    return 2;
   }
 
   protected EnumFacing getFacingForHeading(int heading) {

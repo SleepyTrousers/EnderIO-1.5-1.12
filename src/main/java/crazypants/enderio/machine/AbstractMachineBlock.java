@@ -71,9 +71,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setHardness(2.0F);
     setStepSound(soundTypeMetal);
     setHarvestLevel("pickaxe", 0);
-    random = new Random();
-    SmartModelAttacher.register(this);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
+    random = new Random();    
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
@@ -86,6 +85,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
     MinecraftForge.EVENT_BUS.register(this); // TODO
+    registerInSmartModelAttacher();
+  }
+  
+  protected void registerInSmartModelAttacher() {
+    SmartModelAttacher.register(this);
   }
   
   @Override
@@ -113,6 +117,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return new BlockStateWrapper(state, world, pos);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public EnumWorldBlockLayer getBlockLayer() {
     return EnumWorldBlockLayer.CUTOUT;

@@ -18,11 +18,17 @@ public class EnchanterModelRenderer extends TileEntitySpecialRenderer<TileEnchan
   private EnchanterModel model = new EnchanterModel();
 
   @Override
-  public void renderTileEntityAt(TileEnchanter te, double x, double y, double z, float tick, int b) {    
-    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+  public void renderTileEntityAt(TileEnchanter te, double x, double y, double z, float tick, int b) {
+    if (te != null) {
+      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+    }
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    renderModel(te.getFacing());
+    EnumFacing facing = EnumFacing.WEST;
+    if (te != null) {
+      facing = te.getFacing();
+    }
+    renderModel(facing);
     GL11.glPopMatrix();
   }
 

@@ -63,6 +63,7 @@ import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -194,7 +195,9 @@ public class ClientProxy extends CommonProxy {
 
     if (EnderIO.blockEnchanter != null) {
       EnchanterModelRenderer emr = new EnchanterModelRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);      
+      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnchanter), 0, TileEnchanter.class);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), ModObject.blockEnchanter.unlocalisedName);
     }
     if (EnderIO.blockFarmStation != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
@@ -202,10 +205,14 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockZombieGenerator != null) {
       ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
+      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockZombieGenerator), 0, TileZombieGenerator.class);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), ModObject.blockZombieGenerator.unlocalisedName);            
     }
     if (EnderIO.blockKillerJoe != null) {
       KillerJoeRenderer kjr = new KillerJoeRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
+      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockKillerJoe), 0, TileKillerJoe.class);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), ModObject.blockKillerJoe.unlocalisedName);
     }
     if (EnderIO.blockCapBank != null) {
       CapBankRenderer newCbr = new CapBankRenderer();
@@ -214,6 +221,8 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockEnderIo != null) {
       EnderIoRenderer eior = new EnderIoRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
+      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnderIo), 0, TileEnderIO.class);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), ModObject.blockEnderIo.unlocalisedName);
     }
     if (EnderIO.blockReservoir != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));

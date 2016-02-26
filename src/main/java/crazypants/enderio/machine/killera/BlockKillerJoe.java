@@ -70,7 +70,11 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   @Override
   public int getRenderType() {
-    return -1;
+    return 2;
+  }
+  
+  @Override
+  protected void registerInSmartModelAttacher() {   
   }
 
 

@@ -34,12 +34,20 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
   @Override
   public void renderTileEntityAt(TileKillerJoe te, double x, double y, double z, float tick, int b) {
 
-    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+    if(te != null) {
+      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+    }
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    renderModel(te.facing);
-    renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(tick));
-    renderFluid(te);
+    EnumFacing facing = EnumFacing.WEST;
+    if (te != null) {
+      facing = te.facing;
+    }
+    renderModel(facing);
+    if(te != null) {
+      renderSword(facing, te.getStackInSlot(0), te.getSwingProgress(tick));
+      renderFluid(te);
+    }
     GL11.glPopMatrix();
 
   }
@@ -108,7 +116,6 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
       }
 //      tes.setBrightness(brightness);      
             
-
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

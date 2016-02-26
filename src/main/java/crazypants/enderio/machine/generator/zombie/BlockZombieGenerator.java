@@ -68,6 +68,15 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     return false;
   }
 
+  @Override
+  public int getRenderType() {
+    return 2;
+  }
+  
+  @Override
+  protected void registerInSmartModelAttacher() {   
+  }
+
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {

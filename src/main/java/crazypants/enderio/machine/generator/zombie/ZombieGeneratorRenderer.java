@@ -26,13 +26,19 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
   @Override
   public void renderTileEntityAt(TileZombieGenerator te, double x, double y, double z, float tick, int b) {
 
-    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+    if (te != null) {
+      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+    }
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    if (RenderPassHelper.getEntityRenderPass() == 0) {
-      renderModel(te.facing);
-    } else if (RenderPassHelper.getEntityRenderPass() == 1) {
+    if (RenderPassHelper.getEntityRenderPass() == 0 || te == null) {
+      EnumFacing facing = EnumFacing.EAST;
+      if (te != null) {
+        facing = te.facing;
+      }
+      renderModel(facing);
+    } else if (RenderPassHelper.getEntityRenderPass() == 1 && te != null) {
       renderFluid(te);
     }
     GL11.glPopMatrix();
@@ -40,11 +46,11 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
 
   protected void renderFluid(TileZombieGenerator gen) {
     FluidTank tank = gen.fuelTank;
-    if(tank.getFluidAmount() <= 0) {
+    if (tank.getFluidAmount() <= 0) {
       return;
     }
     TextureAtlasSprite icon = RenderUtil.getStillTexture(tank.getFluid());
-    if(icon != null) {
+    if (icon != null) {
       RenderUtil.bindBlockTexture();
 
       double facingOffset = 0.075;
@@ -54,7 +60,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
       Vector3d absFac = ForgeDirectionOffsets.absolueOffset(gen.facing);
 
       double scaleX = absFac.x == 0 ? 0.95 : 1 - facingOffset / 2;
-//      double scaleY = 0.85 * fullness;
+      // double scaleY = 0.85 * fullness;
       double scaleZ = absFac.z == 0 ? 0.95 : 1 - facingOffset / 2;
 
       bb = bb.scale(scaleX, 0.85 * fullness, scaleZ);
@@ -63,21 +69,22 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
       Vector3d transOffset = ForgeDirectionOffsets.offsetScaled(gen.facing, -facingOffset);
       bb = bb.translate((float) transOffset.x, ty, (float) transOffset.z);
 
-//      int brightness;
-//      if(gen.getWorld() == null) {
-//        brightness = 15 << 20 | 15 << 4;
-//      } else {
-//        brightness = gen.getWorld().getLightFor(EnumSkyBlock.SKY, gen.getPos());
-//      }
-      
+      // int brightness;
+      // if(gen.getWorld() == null) {
+      // brightness = 15 << 20 | 15 << 4;
+      // } else {
+      // brightness = gen.getWorld().getLightFor(EnumSkyBlock.SKY,
+      // gen.getPos());
+      // }
+
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_CULL_FACE);
       GL11.glDepthMask(false);
-      
-//      tes.setBrightness(brightness);
+
+      // tes.setBrightness(brightness);
       RenderUtil.renderBoundingBox(bb, icon);
 
       GL11.glDepthMask(true);
