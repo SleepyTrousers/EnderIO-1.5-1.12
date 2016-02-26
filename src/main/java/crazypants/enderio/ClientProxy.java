@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -102,6 +103,7 @@ import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
+import crazypants.enderio.machine.obelisk.weather.WeatherObeliskSpecialRenderer;
 import crazypants.enderio.machine.obelisk.xp.TileExperienceObelisk;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
@@ -282,8 +284,7 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceObelisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
-    ObeliskSpecialRenderer<TileWeatherObelisk> twr = new ObeliskSpecialRenderer<TileWeatherObelisk>(new ItemStack(EnderIO.itemMaterial, 1,
-        Material.WEATHER_CRYSTAL.ordinal()), defaultObeliskRenderer);
+    ObeliskSpecialRenderer<TileWeatherObelisk> twr = new WeatherObeliskSpecialRenderer(new ItemStack(Items.fireworks), defaultObeliskRenderer);
     ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
 

@@ -18,6 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +30,7 @@ import com.enderio.core.common.util.ItemUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
@@ -399,6 +401,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       }
 
       ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.meta);
+      
+      Log.info("Loading item from ID " + entry.itemID + ". Result: "  + Item.itemRegistry.getNameForObject(tmpStack.getItem()) + "  side: " + FMLCommonHandler.instance().getEffectiveSide());
+      
       tmpStack.stackTagCompound = entry.nbt;
       maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
 

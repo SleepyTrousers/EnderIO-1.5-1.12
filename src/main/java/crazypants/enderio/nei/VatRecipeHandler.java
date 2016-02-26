@@ -168,7 +168,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     Fluid outputFluid = rec.result.getFluid();
     List<PositionedStack> stacks = rec.getIngredients();
     for (PositionedStack ps : stacks) {
-      float mult = VatRecipeManager.getInstance().getMultiplierForInput(ps.item, outputFluid);
+      float mult = VatRecipeManager.getInstance().getMultiplierForInput(rec.inFluid.getFluid(), ps.item, outputFluid);
       String str = "x" + mult;
       GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }

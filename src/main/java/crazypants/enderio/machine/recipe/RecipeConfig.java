@@ -289,6 +289,7 @@ public class RecipeConfig {
 
     private String name;
 
+    private boolean allowMissing = false;
     private boolean invalidated = false;
 
     private RecipeElement(String name) {
@@ -342,6 +343,14 @@ public class RecipeConfig {
 
     public void setBonusType(RecipeBonusType bonusType) {
       this.bonusType = bonusType;
+    }
+
+    public void setAllowMissing(boolean allowMissing) {
+      this.allowMissing = allowMissing;
+    }
+
+    public boolean allowMissing() {
+      return allowMissing;
     }
 
     public void invalidate() {

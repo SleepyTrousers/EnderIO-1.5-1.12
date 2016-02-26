@@ -1,33 +1,49 @@
 package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
+import java.awt.Rectangle;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
-
-  private static final NumberFormat fmt = NumberFormat.getNumberInstance();
+  
+  private IconButton buttonStart;
   
   public GuiWeatherObelisk(InventoryPlayer inventory, TileWeatherObelisk tileEntity) {
     super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity), "weatherObelisk");
     
     addProgressTooltip(79, 29, 18, 31);
+    
+    addToolTip(new GuiToolTip(new Rectangle(22, 11, 16, 63), "") {
+
+      @Override
+      protected void updateText() {
+        text.clear();
+        FluidTank tank = getTileEntity().getInputTank();
+        String heading = EnderIO.lang.localize("tank.tank");
+        if (tank.getFluid() != null) {
+          heading += ": " + tank.getFluid().getLocalizedName();
+        }
+        text.add(heading);
+        text.add(Fluids.toCapactityString(getTileEntity().getInputTank()));
+      }
+    });
   }
 
   @Override
@@ -35,22 +51,14 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     super.initGui();
 
     int x = (xSize / 2) - (BUTTON_SIZE / 2);
-    int y = 8;
+    int y = 58;
 
-    addButton(new IconButton(this, 0, x - 30, y, IconEIO.SUN), WeatherTask.CLEAR);
-    addButton(new IconButton(this, 1, x, y, IconEIO.RAIN), WeatherTask.RAIN);
-    addButton(new IconButton(this, 2, x + 30, y, IconEIO.THUNDER), WeatherTask.STORM);
+    addButton(buttonStart = new IconButton(this, 0, x, y, IconEIO.TICK));
+    buttonStart.onGuiInit();
+    
     refreshButtons();
   }
-
-  private void addButton(IconButton button, WeatherTask task) {
-    String tt1 = EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.weather.task." + task.name().toLowerCase(Locale.US));
-    String tt2 = EnumChatFormatting.AQUA + String.format(EnderIO.lang.localize("gui.weather.requireditem"), EnumChatFormatting.WHITE + task.requiredItem().getDisplayName());
-    String tt3 = String.format("%s%s %s%s", EnumChatFormatting.GREEN, fmt.format(task.power), EnumChatFormatting.WHITE, EnderIO.lang.localize("power.rf"));
-    button.setToolTip(tt1, tt2, tt3);
-    button.onGuiInit();
-  }
-
+  
   @Override
   public void updateScreen() {
     super.updateScreen();
@@ -59,19 +67,14 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     }
   }
   
-  @SuppressWarnings("unchecked")
   private void refreshButtons() {
-    for (GuiButton button : (List<GuiButton>) buttonList) {
-      WeatherTask[] tasks = WeatherTask.values();
-      if(button.id >= 0 && button.id < tasks.length) {
-        WeatherTask task = WeatherTask.values()[button.id];
-        if(WeatherTask.worldIsState(task, getTileEntity().getWorldObj().getWorldInfo())) {
-          button.enabled = false;
-        } else {
-          button.enabled = true;
-        }
-      }
+    FluidStack fs = getTileEntity().getInputTank().getFluid();
+    if (fs == null) {
+      buttonStart.enabled = false;
+      return;
     }
+    WeatherTask task = WeatherTask.fromFluid(fs.getFluid());
+    buttonStart.enabled = getTileEntity().canStartTask(task);
   }
 
   @Override
@@ -84,11 +87,19 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     bindGuiTexture();
 
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
+    
+    int x = getGuiLeft() + 22;
+    int y = getGuiTop() + 11;
+    RenderUtil.renderGuiTank(getTileEntity().getInputTank(), x, y, 0, 16, 63);
 
-    if(shouldRenderProgress() && getTileEntity().activeTask != null) {
+    bindGuiTexture();
+    
+    drawTexturedModalRect(x, y, 186, 33, 16, 63);
+
+    if(shouldRenderProgress() && getTileEntity().getActiveTask() != null) {
       // TODO test
       int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
-      Color color = getTileEntity().activeTask.color;
+      Color color = getTileEntity().getActiveTask().color;
       GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     }
@@ -97,7 +108,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
 
   @Override
   protected int getPowerHeight() {
-    return super.getPowerHeight() + 20;
+    return 63;
   }
 
   @Override
@@ -107,25 +118,25 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   
   @Override
   protected int getPowerV() {
-    return 34;
+    return 33;
   }
   
   @Override
   protected int getPowerX() {
-    return super.getPowerX();
+    return super.getPowerX() - 7;
   }
   
   @Override
   protected int getPowerY() {
-    return super.getPowerY();
+    return super.getPowerY() - 3;
   }
   
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if (b.id >= 0 && b.id <= 2) {
-      getTileEntity().startTask(b.id);
-      PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity(), WeatherTask.values()[b.id]));
+      getTileEntity().startTask();
+      PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity()));
     }
   }
 }

@@ -61,6 +61,7 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_SLOT = "slot";
   public static final String AT_CHANCE = "chance";
   public static final String AT_EXP = "exp";
+  public static final String AT_ALLOW_MISSING = "allowMissing";
 
   // Log prefix
   private static final String LP = "RecipeParser: ";
@@ -255,6 +256,7 @@ public class RecipeConfigParser extends DefaultHandler {
       recipe = recipeGroup.createRecipe(name);
       recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
       recipe.setBonusType(getEnumValue(AT_BONUS_TYPE, attributes, RecipeBonusType.class, RecipeBonusType.MULTIPLY_OUTPUT));
+      recipe.setAllowMissing(getBooleanValue(AT_ALLOW_MISSING, attributes, false));
       return;
     }
 
@@ -341,8 +343,10 @@ public class RecipeConfigParser extends DefaultHandler {
 
   private void addInputStack(Attributes attributes) {
     RecipeInput stack = getItemStack(attributes);
-    if(stack == null) {
-      recipe.invalidate();
+    if (stack == null) {
+      if (!recipe.allowMissing()) {
+        recipe.invalidate();
+      }
       return;
     }
     recipe.addInput(stack);

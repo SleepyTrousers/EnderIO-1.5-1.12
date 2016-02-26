@@ -98,7 +98,7 @@ public class VatRecipe implements IRecipe {
       }
 
       if (inputFluidStack == null) {
-        Log.warn("Ignoring invalid VAT recipe without input fluid");
+        Log.warn("Ignoring invalid VAT recipe without input fluid/stacks");
       }
     }
 

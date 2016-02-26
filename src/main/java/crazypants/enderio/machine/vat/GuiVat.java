@@ -134,11 +134,18 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     } else {
       outputFluid = vat.currentTaskOutputFluid;
     }
+    
+    Fluid inputFluid;
+    if (vat.inputTank.getFluidAmount() > 0) {
+      inputFluid = vat.inputTank.getFluid().getFluid();
+    } else {
+      inputFluid = vat.currentTaskInputFluid;
+    }
 
     float mult;
     ItemStack inStack = vat.getStackInSlot(0);
     if (inStack != null) {
-      mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+      mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
         x = guiLeft + 63 - fontRendererObj.getStringWidth(str) / 2;
@@ -147,7 +154,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     }
     inStack = vat.getStackInSlot(1);
     if (inStack != null) {
-      mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+      mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
         x = guiLeft + 113 - fontRendererObj.getStringWidth(str) / 2;

@@ -14,7 +14,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemEnderFood.EnderFood;
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
+
 import static com.enderio.core.common.util.OreDictionaryHelper.*;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.*;
@@ -187,8 +187,7 @@ public class MaterialRecipes {
 
     // Weather Crystal
     ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
-    GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main, WeatherTask.CLEAR
-        .requiredItem(), WeatherTask.RAIN.requiredItem(), WeatherTask.STORM.requiredItem()));
+    GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main /* TODO figure out new weather crystal recipe */));
 
     if (Config.reinforcedObsidianEnabled) {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);

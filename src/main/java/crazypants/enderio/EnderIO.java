@@ -299,7 +299,19 @@ public class EnderIO {
   public static Fluid fluidFireWater;
   public static BlockFluidEio blockFireWater;
   public static ItemBucketEio itemBucketFireWater;
+  
+  public static Fluid fluidLiquidSunshine;
+  public static Fluid fluidCloudSeed;
+  public static Fluid fluidCloudSeedConcentrated;
+  
+  public static BlockFluidEio blockLiquidSunshine;
+  public static BlockFluidEio blockCloudSeed;
+  public static BlockFluidEio blockCloudSeedConcentrated;
 
+  public static ItemBucketEio itemBucketLiquidSunshine;
+  public static ItemBucketEio itemBucketCloudSeed;
+  public static ItemBucketEio itemBucketCloudSeedConcentrated;
+  
   //Open block compatable liquid XP
   public static Fluid fluidXpJuice;
   public static ItemBucketEio itemBucketXpJuice;
@@ -478,7 +490,7 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
         + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
 
-    f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
+    f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000).setTemperature(FluidRegistry.LAVA.getTemperature() * 2);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
     blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
@@ -486,7 +498,22 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
         + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
 
-    if(!Loader.isModLoaded("OpenBlocks")) {
+    f = new Fluid(Fluids.LIQUID_SUNSHINE_NAME).setDensity(200).setViscosity(400);
+    FluidRegistry.registerFluid(f);
+    fluidLiquidSunshine = FluidRegistry.getFluid(f.getName());
+    blockLiquidSunshine = BlockFluidEio.create(fluidLiquidSunshine, Material.water);
+
+    f = new Fluid(Fluids.CLOUD_SEED_NAME).setDensity(500).setViscosity(800);
+    FluidRegistry.registerFluid(f);
+    fluidCloudSeed = FluidRegistry.getFluid(f.getName());
+    blockCloudSeed = BlockFluidEio.create(fluidCloudSeed, Material.water);
+    
+    f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME).setDensity(1000).setViscosity(1200);
+    FluidRegistry.registerFluid(f);
+    fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
+    blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.water);
+    
+    if (!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
       fluidXpJuice = new Fluid(Config.xpJuiceName).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
@@ -499,6 +526,9 @@ public class EnderIO {
     itemBucketHootch = ItemBucketEio.create(fluidHootch);
     itemBucketRocketFuel = ItemBucketEio.create(fluidRocketFuel);
     itemBucketFireWater = ItemBucketEio.create(fluidFireWater);
+    itemBucketLiquidSunshine = ItemBucketEio.create(fluidLiquidSunshine);
+    itemBucketCloudSeed = ItemBucketEio.create(fluidCloudSeed);
+    itemBucketCloudSeedConcentrated = ItemBucketEio.create(fluidCloudSeedConcentrated);
   }
 
   @EventHandler

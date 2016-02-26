@@ -12,6 +12,10 @@ public class Fluids {
   public static final String ROCKET_FUEL_NAME = "rocket_fuel";
 
   public static final String FIRE_WATER_NAME = "fire_water";
+  
+  public static final String LIQUID_SUNSHINE_NAME = "liquid_sunshine";
+  public static final String CLOUD_SEED_NAME = "cloud_seed";
+  public static final String CLOUD_SEED_CONCENTRATED_NAME = "cloud_seed_concentrated";
 
   public static String toCapactityString(IFluidTank tank) {
     if(tank == null) {

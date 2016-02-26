@@ -21,7 +21,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
 
 public final class Config {
@@ -451,12 +450,9 @@ public final class Config {
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
 
-  public static String weatherObeliskClearItem = "minecraft:cake";
-  public static String weatherObeliskRainItem = "minecraft:water_bucket";
-  public static String weatherObeliskThunderItem = "minecraft:lava_bucket";
-  public static int weatherObeliskClearPower = 1000000;
-  public static int weatherObeliskRainPower = 250000;
-  public static int weatherObeliskThunderPower = 500000;
+  public static int weatherObeliskClearFluid = 2000;
+  public static int weatherObeliskRainFluid = 500;
+  public static int weatherObeliskThunderFluid = 1000;
 
   //Loot Defaults
   public static boolean lootDarkSteel = true;
@@ -1284,18 +1280,12 @@ public final class Config {
     spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttractor.name, spawnGuardStopAllSquidSpawning,
         "When true no squid will be spawned.");
 
-    weatherObeliskClearItem = config.get(sectionWeather.name, "weatherObeliskClearItem", weatherObeliskClearItem,
-        "The item required to set the world to clear weather.").getString();
-    weatherObeliskRainItem = config.get(sectionWeather.name, "weatherObeliskRainItem", weatherObeliskRainItem,
-        "The item required to set the world to rainy weather.").getString();
-    weatherObeliskThunderItem = config.get(sectionWeather.name, "weatherObeliskThunderItem", weatherObeliskThunderItem,
-        "The item required to set the world to thundering weather.").getString();
-    weatherObeliskClearPower = config.get(sectionWeather.name, "weatherObeliskClearPower", weatherObeliskClearPower,
-        "The power required to set the world to clear weather").getInt();
-    weatherObeliskRainPower = config.get(sectionWeather.name, "weatherObeliskRainPower", weatherObeliskRainPower,
-        "The power required to set the world to rainy weather").getInt();
-    weatherObeliskThunderPower = config.get(sectionWeather.name, "weatherObeliskThunderPower", weatherObeliskThunderPower,
-        "The power required to set the world to thundering weather").getInt();
+    weatherObeliskClearFluid = config.get(sectionWeather.name, "weatherObeliskClearFluid", weatherObeliskClearFluid,
+        "The fluid required (in mB) to set the world to clear weather").getInt();
+    weatherObeliskRainFluid = config.get(sectionWeather.name, "weatherObeliskRainFluid", weatherObeliskRainFluid,
+        "The fluid required (in mB) to set the world to rainy weather").getInt();
+    weatherObeliskThunderFluid = config.get(sectionWeather.name, "weatherObeliskThunderFluid", weatherObeliskThunderFluid,
+        "The fluid required (in mB) to set the world to thundering weather").getInt();
 
     // Loot Config
     lootDarkSteel = config.getBoolean("lootDarkSteel", sectionLootConfig.name, lootDarkSteel, "Adds Darksteel Ingots to loot tables");
@@ -1374,9 +1364,6 @@ public final class Config {
   }
 
   public static void init() {
-    WeatherTask.CLEAR.setRequiredItem(getStackForString(weatherObeliskClearItem));
-    WeatherTask.RAIN.setRequiredItem(getStackForString(weatherObeliskRainItem));
-    WeatherTask.STORM.setRequiredItem(getStackForString(weatherObeliskThunderItem));
   }
 
   public static void postInit() {

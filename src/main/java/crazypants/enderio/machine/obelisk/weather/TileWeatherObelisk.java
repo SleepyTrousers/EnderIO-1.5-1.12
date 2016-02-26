@@ -2,98 +2,106 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntitySmokeFX;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.storage.WorldInfo;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.api.common.util.ITankAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 
-public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile {
+public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
 
   public enum WeatherTask {
-    CLEAR(Config.weatherObeliskClearPower, Color.YELLOW) {
+    CLEAR(Color.YELLOW) {
       @Override
-      void complete(TileEntity te) {
-        rain(te, false);
-        thunder(te, false);
+      void complete(World world) {
+        rain(world, false);
+        thunder(world, false);
       }
     },
-    RAIN(Config.weatherObeliskRainPower, new Color(120, 120, 255)) {
+    RAIN(new Color(120, 120, 255)) {
       @Override
-      void complete(TileEntity te) {
-        rain(te, true);
-        thunder(te, false);
+      void complete(World world) {
+        rain(world, true);
+        thunder(world, false);
       }
     },
-    STORM(Config.weatherObeliskThunderPower, Color.DARK_GRAY) {
+    STORM(Color.DARK_GRAY) {
       @Override
-      void complete(TileEntity te) {
-        rain(te, true);
-        thunder(te, true);
+      void complete(World world) {
+        rain(world, true);
+        thunder(world, true);
       }
     };
 
-    final int power;
-    private ItemStack requiredItem;
     final Color color;
 
-    WeatherTask(int power, Color color) {
-      this.power = power;
+    WeatherTask(Color color) {
       this.color = color;
     }
 
-    abstract void complete(TileEntity te);
+    abstract void complete(World world);
 
-    void rain(TileEntity te, boolean state) {
-      te.getWorldObj().getWorldInfo().setRaining(state);
+    protected void rain(World world, boolean state) {
+      world.getWorldInfo().setRaining(state);
     }
 
-    void thunder(TileEntity te, boolean state) {
-      te.getWorldObj().getWorldInfo().setThundering(state);
+    protected void thunder(World world, boolean state) {
+      world.getWorldInfo().setThundering(state);
     }
 
-    public boolean isValid(ItemStack item) {
-      return item != null && ItemStack.areItemStacksEqual(item, this.requiredItem);
-    }
-
-    public ItemStack requiredItem() {
-      return requiredItem;
-    }
-
-    public void setRequiredItem(ItemStack item) {
-      this.requiredItem = item;
-    }
-
-    public static boolean worldIsState(WeatherTask task, WorldInfo world) {
-      if(world.isRaining()) {
+    public static boolean worldIsState(WeatherTask task, World world) {
+      if (world.isRaining()) {
         return world.isThundering() ? task == STORM : task == RAIN;
       }
       return task == CLEAR;
     }
+    
+    public static WeatherTask fromFluid(Fluid f) {
+      if (f == EnderIO.fluidLiquidSunshine) {
+        return CLEAR; 
+      } else if (f == EnderIO.fluidCloudSeed) {
+        return RAIN;
+      } else if (f == EnderIO.fluidCloudSeedConcentrated) {
+        return STORM;
+      }
+      return null;
+    }
   }
 
-  int powerUsed = 0;
-  private float progress = 0; // client only
-  WeatherTask activeTask = null;
+  private int fluidUsed = 0;
+  private WeatherTask activeTask = null;
 
-  private Color particleColor;
   private boolean canBeActive = true;
+  private boolean tanksDirty;
 
-  private static int biggestPowerReq = Math.max(Math.max(Config.weatherObeliskClearPower, Config.weatherObeliskThunderPower), Config.weatherObeliskRainPower);
-  private static final BasicCapacitor cap = new BasicCapacitor(biggestPowerReq / 200, biggestPowerReq);
+  private static final ICapacitor cap = Capacitors.BASIC_CAPACITOR.capacitor;
+  
+  private FluidTank inputTank = new FluidTank(8000);
+  
+  /* client fields */
+  private float progress = 0; // client only
+  private boolean playedFuse = false;
 
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0));
@@ -104,24 +112,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
-  public void doUpdate() {
-    super.doUpdate();
-    if(worldObj.isRemote) {
-      if(activeParticleTicks > 0) {
-        spawnParticle();
-      }
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  private void spawnParticle() {
-    EntitySmokeFX fx = new EntitySmokeFX(getWorldObj(), xCoord + 0.5, yCoord + 0.3, zCoord + 0.5, 0, 0, 0);
-    fx.setRBGColorF((float) particleColor.getRed() / 255f, (float) particleColor.getGreen() / 255f, (float) particleColor.getBlue() / 255f);
-    fx.setVelocity(worldObj.rand.nextDouble() * 0.1 - 0.05, 0.35, worldObj.rand.nextDouble() * 0.1 - 0.05);
-    Minecraft.getMinecraft().effectRenderer.addEffect(fx);
-    activeParticleTicks--;
-  }
-
   @Override
   public String getMachineName() {
     return ModObject.blockWeatherObelisk.unlocalisedName;
@@ -129,22 +119,17 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    for (WeatherTask task : WeatherTask.values()) {
-      if(task.isValid(itemstack)) {
-        return true;
-      }
-    }
-    return false;
+    return i == 0 && itemstack != null && itemstack.getItem() == Items.fireworks;
   }
 
   @Override
   public boolean isActive() {
-    return canBeActive && activeTask != null;
+    return canBeActive && getActiveTask() != null;
   }
 
   @Override
   public float getProgress() {
-    return isActive() ? worldObj.isRemote ? progress : (float) powerUsed / (float) activeTask.power : 0;
+    return isActive() ? worldObj.isRemote ? progress : (float) fluidUsed / 1000 : 0;
   }
   
   @Override
@@ -154,7 +139,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   
   @Override
   protected int getProgressUpdateFreq() {
-    return 5;
+    return 3;
   }
 
   @Override
@@ -166,7 +151,40 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   public ICapacitor getCapacitor() {
     return cap;
   }
+  
+  public WeatherTask getActiveTask() {
+    return activeTask;
+  }
 
+  @Override
+  public void doUpdate() {
+    super.doUpdate();
+    if (worldObj.isRemote && isActive() && worldObj.getTotalWorldTime() % 2 == 0) {
+      doLoadingParticles();
+    }
+  }
+  
+  @SideOnly(Side.CLIENT)
+  private void doLoadingParticles() {
+    if (progress < 0.9f) {
+      Color c = getActiveTask().color;
+      double correction = 0.1;
+      double xf = xCoord + 0.5 + correction;
+      double yf = yCoord + 0.8;
+      double zf = zCoord + 0.5 + correction;
+      Block b = getBlockType();
+      double yi = yCoord + b.getBlockBoundsMaxY() - 0.1;
+      double offset = 0.3;
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, xCoord + offset + correction, yi, zCoord + offset + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, xCoord + (1 - offset) + correction, yi, zCoord + offset + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, xCoord + (1 - offset) + correction, yi, zCoord + (1 - offset) + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, xCoord + offset + correction, yi, zCoord + (1 - offset) + correction, xf, yf, zf, c));
+    } else if (!playedFuse) {
+      worldObj.playSound(xCoord, yCoord, zCoord, "game.tnt.primed", 1, 1, true);
+      playedFuse = true;
+    }
+  }
+  
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean res = false;
@@ -181,21 +199,29 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       canBeActive = true;
 
       if(isActive()) {
-        if(getEnergyStored() > getPowerUsePerTick()) {
-          int remaining = activeTask.power - powerUsed;
-          int toUse = Math.min(remaining, getPowerUsePerTick());
-          setEnergyStored(getEnergyStored() - toUse);
-          powerUsed += toUse;
+        if(getEnergyStored() > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
+          setEnergyStored(getEnergyStored() - getPowerUsePerTick());
+
+          int toUse = 4;
+          inputTank.drain(toUse, true);
+          fluidUsed += toUse;
+          tanksDirty = true;
           res = true;
         }
 
-        if(powerUsed >= activeTask.power) {
-          activeTask.complete(this);
-          PacketHandler.INSTANCE.sendToDimension(new PacketFinishWeather(this, activeTask), worldObj.provider.dimensionId);
-          startTask(-1);
+        if (fluidUsed >= 1000) {
+          EntityWeatherRocket e = new EntityWeatherRocket(worldObj, activeTask);
+          e.setPosition(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
+          worldObj.spawnEntityInWorld(e);
+          stopTask();
           res = true;
         }
       }
+    }
+    
+    if(tanksDirty) {
+      PacketHandler.sendToAllAround(new PacketWeatherTank(this), this);
+      tanksDirty = false;
     }
 
     return res;
@@ -210,39 +236,103 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
    * @return True if the task can be started with the item in the inventory.
    */
   public boolean canStartTask(WeatherTask task) {
-    return activeTask == null && task.isValid(inventory[getSlotDefinition().minInputSlot]);
+    return getActiveTask() == null && !WeatherTask.worldIsState(task, worldObj) && getStackInSlot(0) != null && inputTank.getFluidAmount() >= 1000;
   }
 
   /**
-   * @param taskid
-   *          Ordinal value of the {@link WeatherTask} to start. -1 to stop the
-   *          current task.
    * @return If the operation was successful.
    */
-  public boolean startTask(int taskid) {
-    if(activeTask == null && taskid >= 0) {
-      powerUsed = 0;
-      WeatherTask task = WeatherTask.values()[taskid];
+  public boolean startTask() {
+    if(getActiveTask() == null && inputTank.getFluidAmount() > 0) {
+      fluidUsed = 0;
+      WeatherTask task = WeatherTask.fromFluid(inputTank.getFluid().getFluid());
       if(canStartTask(task)) {
+        decrStackSize(0, 1);
         activeTask = task;
-        decrStackSize(slotDefinition.minInputSlot, 1);
         return true;
       }
-    } else if(activeTask != null && taskid == -1) {
-      activeTask = null;
-      powerUsed = 0;
-      if(!worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this, null), worldObj.provider.dimensionId);
-      }
-      return true;
     }
     return false;
   }
 
-  private int activeParticleTicks = 0;
+  public void stopTask() {
+    if (getActiveTask() != null) {
+      activeTask = null;
+      fluidUsed = 0;
+      if (!worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this), worldObj.provider.dimensionId);
+      } else {
+        playedFuse = false;
+      }
+    }
+  }
 
-  public void activateClientParticles(WeatherTask task) {
-    activeParticleTicks = 20;
-    particleColor = task.color;
+  @Override
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
+    nbtRoot.setTag("tank", inputTank.writeToNBT(new NBTTagCompound()));
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    inputTank.readFromNBT(nbtRoot.getCompoundTag("tank"));
+  }
+
+  private boolean isValidFluid(Fluid f) {
+    return f == EnderIO.fluidLiquidSunshine || f == EnderIO.fluidCloudSeed || f == EnderIO.fluidCloudSeedConcentrated;
+  }
+  
+  @Override
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    return forFluidType != null && forFluidType.getFluid() != null && isValidFluid(forFluidType.getFluid()) ? inputTank : null;
+  }
+
+  FluidTank getInputTank() {
+    return inputTank;
+  }
+  
+  @Override
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[0];
+  }
+
+  @Override
+  public void setTanksDirty() {
+    tanksDirty = true;
+  }
+
+  @Override
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    int res = inputTank.fill(resource, doFill);
+    if(res > 0 && doFill) {
+      tanksDirty = true;
+    }
+    return res;
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    return null;
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    return null;
+  }
+
+  @Override
+  public boolean canFill(ForgeDirection from, Fluid fluid) {
+    return isValidFluid(fluid);
+  }
+
+  @Override
+  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    return false;
+  }
+
+  @Override
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    return new FluidTankInfo[] { inputTank.getInfo() };
   }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -125,11 +126,12 @@ public class VatRecipeManager {
     return false;
   }
   
-  public float getMultiplierForInput(ItemStack input, Fluid output) {
-    if (output != null) {
+  public float getMultiplierForInput(Fluid inputFluid, ItemStack input, Fluid output) {
+    if (input != null || output != null) {
       for (IRecipe recipe : recipes) {
         RecipeOutput out = recipe.getOutputs()[0];
-        if (out.getFluidOutput().getFluid().getID() == output.getID()) {
+        RecipeInput in = recipe.getInputs()[recipe.getInputs().length - 1];
+        if ((inputFluid == null || in.getFluidInput().getFluid().getID() == inputFluid.getID()) && (output == null || out.getFluidOutput().getFluid().getID() == output.getID())) {
           for (RecipeInput ri : recipe.getInputs()) {
             if (ri.isInput(input)) {
               return ri.getMulitplier();
