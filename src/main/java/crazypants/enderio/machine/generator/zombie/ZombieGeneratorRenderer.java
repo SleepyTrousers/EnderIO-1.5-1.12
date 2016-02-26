@@ -3,11 +3,11 @@ package crazypants.enderio.machine.generator.zombie;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderPassHelper;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.util.RenderPassHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;

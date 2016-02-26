@@ -121,6 +121,11 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
+  public int getRenderType() {
+    return 2;
+  }
+
+  @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
     float facingYaw = -22.5f * inc;

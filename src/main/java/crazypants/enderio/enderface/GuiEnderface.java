@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.enderio.core.client.render.RenderPassHelper;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Camera;
@@ -22,7 +23,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.util.RenderPassHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -211,9 +211,6 @@ public class GuiEnderface extends GuiScreen {
     MovingObjectPosition hit = player.worldObj.rayTraceBlocks(new Vec3(start.x, start.y, start.z), new Vec3(end.x, end.y, end.z), false);
 
     if (hit != null) {
-      IBlockState bs = world.getBlockState(hit.getBlockPos());
-      Block block = bs.getBlock();
-
       BlockPos p = hit.getBlockPos();
       openInterface(p.getX(), p.getY(), p.getZ(), hit.sideHit, hit.hitVec);
     }
@@ -315,7 +312,7 @@ public class GuiEnderface extends GuiScreen {
 
           for (ViewableBlocks ug : blocks) {
             TileEntity tile = world.getTileEntity(ug.bc.getBlockPos());
-            if (tile != null) {
+            if (tile != null && tile.shouldRenderInPass(pass)) {
               Vector3d at = new Vector3d(eye.x - 0.5, eye.y - 0.5, eye.z - 0.5);
               at.x += ug.bc.x - ioX;
               at.y += ug.bc.y - ioY;
@@ -540,19 +537,19 @@ public class GuiEnderface extends GuiScreen {
     w -= 2;
     h -= 2;
 
-    // border
-    int topH = 0xFFFFFFFF;
-    int botH = 0xFF555555;
-    int rightH = 0xFF555555;
-    int leftH = 0xFFFFFFFF;
-    if (animateInX) {
-      leftH = 0xFF555555;
-      rightH = 0xFFFFFFFF;
-    }
-    if (animateInY) {
-      topH = 0xFF555555;
-      botH = 0xFFFFFFFF;
-    }
+//    // border
+//    int topH = 0xFFFFFFFF;
+//    int botH = 0xFF555555;
+//    int rightH = 0xFF555555;
+//    int leftH = 0xFFFFFFFF;
+//    if (animateInX) {
+//      leftH = 0xFF555555;
+//      rightH = 0xFFFFFFFF;
+//    }
+//    if (animateInY) {
+//      topH = 0xFF555555;
+//      botH = 0xFFFFFFFF;
+//    }
 
     left += 1;
     top += 1;

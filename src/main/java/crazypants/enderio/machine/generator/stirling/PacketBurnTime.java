@@ -3,13 +3,9 @@ package crazypants.enderio.machine.generator.stirling;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.power.IPowerContainer;
-import crazypants.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;

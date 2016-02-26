@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL14;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderPassHelper;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Camera;
@@ -30,7 +31,6 @@ import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.util.RenderPassHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
