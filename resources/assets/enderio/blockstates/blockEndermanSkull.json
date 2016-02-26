@@ -1,0 +1,8 @@
+{
+    "variants": {         
+         "variant=base": { "model": "enderio:blockEndermanSkull_base"},
+         "variant=reanimated": { "model": "enderio:blockEndermanSkull_reanimated"},         
+         "variant=tormented": { "model": "enderio:blockEndermanSkull_tormented"},
+         "variant=reanimatedtormented": { "model": "enderio:blockEndermanSkull_reanimatedTormented"}                            
+    }
+}

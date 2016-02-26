@@ -184,6 +184,9 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockIngotStorage != null) {
       EnderIO.blockIngotStorage.registerRenderers();
     }
+    if(EnderIO.blockEndermanSkull != null) {
+      EnderIO.blockEndermanSkull.registerRenderers();
+    }
 
     // Tile Renderers
 

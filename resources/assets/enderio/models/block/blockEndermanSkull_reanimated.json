@@ -1,0 +1,6 @@
+{
+    "parent": "enderio:block/blockEndermanSkull_base",
+    "textures": {
+        "front": "enderio:blocks/endermanSkullFrontEyes"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "parent": "enderio:block/blockEndermanSkull_reanimatedTormented",
+    "display": {
+        "thirdperson": {
+            "rotation": [ 10, -45, 170 ],
+            "translation": [ 0, 1.5, -2.75 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "gui": {
+          "translation": [ 0, 2, 0 ],
+          "scale": [ 1.4, 1.4, 1.4 ]
+        }
+    }
+}
