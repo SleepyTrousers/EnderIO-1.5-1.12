@@ -2,13 +2,16 @@ package crazypants.enderio.conduit;
 
 public class ItemConduitSubtype {
 
+  public final String baseName;
+  
   public final String unlocalisedName;
 
-  public final String iconKey;
+  public final String modelLocation;
 
-  public ItemConduitSubtype(String unlocalisedName, String iconKey) {
-    this.unlocalisedName = "enderio." + unlocalisedName;
-    this.iconKey = iconKey;
+  public ItemConduitSubtype(String baseName, String iconKey) {
+    this.baseName = baseName;
+    this.unlocalisedName = "enderio." + baseName;
+    this.modelLocation = iconKey;
   }
 
 }

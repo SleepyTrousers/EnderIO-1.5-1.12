@@ -160,8 +160,8 @@ public class ClientProxy extends CommonProxy {
     if (Config.addFuelTooltipsToAllFluidContainers) {
       tt.addCallback(new TooltipHandlerFluid());
     }
-    
-    //Fluids
+
+    // Fluids
     EnderIO.fluids.registerRenderers();
 
     // Items of blocks that use smart rendering
@@ -179,14 +179,14 @@ public class ClientProxy extends CommonProxy {
     }
     if (EnderIO.blockReinforcedObsidian != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockReinforcedObsidian), ModObject.blockReinforcedObsidian.unlocalisedName);
-    }    
-    if(EnderIO.blockDarkSteelPressurePlate != null) {      
+    }
+    if (EnderIO.blockDarkSteelPressurePlate != null) {
       EnderIO.blockDarkSteelPressurePlate.registerRenderers();
     }
     if (EnderIO.blockIngotStorage != null) {
       EnderIO.blockIngotStorage.registerRenderers();
     }
-    if(EnderIO.blockEndermanSkull != null) {
+    if (EnderIO.blockEndermanSkull != null) {
       EnderIO.blockEndermanSkull.registerRenderers();
     }
 
@@ -221,7 +221,7 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockTank != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
     }
-    if(EnderIO.blockEndermanSkull != null) {
+    if (EnderIO.blockEndermanSkull != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEndermanSkull.class, new EndermanSkullRenderer());
     }
 
@@ -256,6 +256,7 @@ public class ClientProxy extends CommonProxy {
 
     // Items
     ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemEnderface, ModObject.itemEnderface.unlocalisedName);
     EnderIO.itemAlloy.registerRenderers();
     EnderIO.itemBasicCapacitor.registerRenderers();
     EnderIO.itemPowderIngot.registerRenderers();
@@ -267,8 +268,24 @@ public class ClientProxy extends CommonProxy {
     EnderIO.itemEnderFood.registerRenderers();
     EnderIO.itemBasicFilterUpgrade.registerRenderers();
     EnderIO.itemExtractSpeedUpgrade.registerRenderers();
-    EnderIO.itemFunctionUpgrade.registerRenderers();
-    EnderIO.itemSoulVessel.registerRenderers();
+    if (EnderIO.itemFunctionUpgrade != null) {
+      EnderIO.itemFunctionUpgrade.registerRenderers();
+    }
+    if (EnderIO.itemSoulVessel != null) {
+      EnderIO.itemSoulVessel.registerRenderers();
+    }
+    if (EnderIO.itemPowerConduit != null) {
+      EnderIO.itemPowerConduit.registerRenderers();
+    }
+    if (EnderIO.itemLiquidConduit != null) {
+      EnderIO.itemLiquidConduit.registerRenderers();
+    }
+    if (EnderIO.itemItemConduit != null) {
+      EnderIO.itemItemConduit.registerRenderers();
+    }
+    if (EnderIO.itemRedstoneConduit != null) {
+      EnderIO.itemRedstoneConduit.registerRenderers();
+    }
     ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.unlocalisedName);

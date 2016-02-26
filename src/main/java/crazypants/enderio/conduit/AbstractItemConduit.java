@@ -9,6 +9,7 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,8 +30,6 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   protected ModObject modObj;
 
   protected ItemConduitSubtype[] subtypes;
-
-//  protected IIcon[] icons;
 
   protected AbstractItemConduit(ModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
@@ -44,17 +44,13 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     GameRegistry.registerItem(this, modObj.unlocalisedName);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    icons = new IIcon[subtypes.length];
-//    int index = 0;
-//    for (ItemConduitSubtype subtype : subtypes) {
-//      icons[index] = IIconRegister.registerIcon(subtype.iconKey);
-//      index++;
-//    }
-//  }
-
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {    
+    for(int i=0;i<subtypes.length;i++) {
+      ClientUtil.regRenderer(this, i, new ResourceLocation(subtypes[i].modelLocation));
+    }    
+  }
+  
   @Override
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
  
@@ -156,12 +152,6 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     return false;
   }
   
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIconFromDamage(int damage) {
-//    damage = MathHelper.clamp_int(damage, 0, subtypes.length - 1);
-//    return icons[damage];
-//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

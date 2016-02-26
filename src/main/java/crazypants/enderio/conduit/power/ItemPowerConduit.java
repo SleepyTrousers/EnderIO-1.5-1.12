@@ -19,7 +19,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   private static String PREFIX;
   private static String POSTFIX;
 
-  static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
+  static ItemConduitSubtype[] SUBTYPES = new ItemConduitSubtype[] {
       new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder")
@@ -32,7 +32,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   }
 
   protected ItemPowerConduit() {
-    super(ModObject.itemPowerConduit, subtypes);
+    super(ModObject.itemPowerConduit, SUBTYPES);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     if(PREFIX == null) {
       POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
       PREFIX = EnderIO.lang.localize("power.maxOutput") + " ";
