@@ -1,18 +1,5 @@
 package crazypants.enderio.machine.obelisk.render;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
-import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
-import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
-import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
-import crazypants.enderio.machine.obelisk.inhibitor.TileInhibitorObelisk;
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
-import crazypants.enderio.machine.obelisk.xp.TileExperienceObelisk;
-import crazypants.enderio.material.Material;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
-import crazypants.util.ClientUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -23,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -31,6 +19,20 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
+import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
+import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
+import crazypants.enderio.machine.obelisk.inhibitor.TileInhibitorObelisk;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
+import crazypants.enderio.machine.obelisk.weather.WeatherObeliskSpecialRenderer;
+import crazypants.enderio.machine.obelisk.xp.TileExperienceObelisk;
+import crazypants.enderio.material.Material;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.util.ClientUtil;
 
 @SideOnly(Side.CLIENT)
 public class ObeliskRenderManager {
@@ -85,10 +87,10 @@ public class ObeliskRenderManager {
 
     block = EnderIO.blockWeatherObelisk;
     if (block != null) {
-      ObeliskSpecialRenderer<TileWeatherObelisk> eor = new ObeliskSpecialRenderer<TileWeatherObelisk>(block,
-          new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()));
+      ObeliskSpecialRenderer<TileWeatherObelisk> eor = new WeatherObeliskSpecialRenderer(new ItemStack(Items.fireworks));
       registerRenderer(block, TileWeatherObelisk.class, eor, ignoreState);
     }
+    
     block = EnderIO.blockInhibitorObelisk;
     if (block != null) {
       ObeliskSpecialRenderer<TileInhibitorObelisk> eor = new ObeliskSpecialRenderer<TileInhibitorObelisk>(block, new ItemStack(Items.ender_pearl));

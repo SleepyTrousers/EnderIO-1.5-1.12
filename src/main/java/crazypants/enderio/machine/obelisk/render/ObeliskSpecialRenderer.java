@@ -67,7 +67,7 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
     renderItemStack((T) te, world, x, y, z, tick);
   }
 
-  private void renderItemStack(T te, World world, double x, double y, double z, float tick) {
+  protected void renderItemStack(T te, World world, double x, double y, double z, float tick) {
     if (ei == null) {
       ei = new EntityItem(world, 0, 0, 0, getFloatingItem(te));
     }

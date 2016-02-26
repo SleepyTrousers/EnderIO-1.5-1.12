@@ -153,6 +153,7 @@ public class DatabaseView {
       }
       Collections.sort(filteredItems, cmp);
       changed = true;
+      needsSorting = false;
     }
 
     return changed;

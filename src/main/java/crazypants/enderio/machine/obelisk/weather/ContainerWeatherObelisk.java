@@ -15,10 +15,10 @@ public class ContainerWeatherObelisk extends AbstractMachineContainer<TileWeathe
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(getInv(), 0, 80, 62) {
+    addSlotToContainer(new Slot(getInv(), 0, 80, 11) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
-        return getInv().isItemValidForSlot(0, itemStack);
+      public boolean isItemValid(ItemStack p_75214_1_) {
+        return getInv().isItemValidForSlot(0, p_75214_1_);
       }
     });
   }

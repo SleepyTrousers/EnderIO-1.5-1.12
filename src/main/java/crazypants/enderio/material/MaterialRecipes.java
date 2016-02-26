@@ -2,30 +2,25 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import com.enderio.core.common.util.OreDictionaryHelper;
-
-import static com.enderio.core.common.util.OreDictionaryHelper.hasCopper;
-import static com.enderio.core.common.util.OreDictionaryHelper.hasTin;
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-import static crazypants.enderio.material.Alloy.DARK_STEEL;
-import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.PHASED_GOLD;
-import static crazypants.enderio.material.Alloy.PHASED_IRON;
-import static crazypants.enderio.material.Material.BINDER_COMPOSITE;
-import static crazypants.enderio.material.Material.CONDUIT_BINDER;
-import static crazypants.util.RecipeUtil.addShaped;
-import static crazypants.util.RecipeUtil.addShapeless;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.ItemEnderFood.EnderFood;
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import com.enderio.core.common.util.OreDictionaryHelper;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.ItemEnderFood.EnderFood;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
+
+import static com.enderio.core.common.util.OreDictionaryHelper.*;
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+import static crazypants.enderio.material.Alloy.*;
+import static crazypants.enderio.material.Material.*;
+import static crazypants.util.RecipeUtil.*;
 
 public class MaterialRecipes {
 
@@ -194,8 +189,7 @@ public class MaterialRecipes {
 
     // Weather Crystal
     ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
-    GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main, WeatherTask.CLEAR
-        .requiredItem(), WeatherTask.RAIN.requiredItem(), WeatherTask.STORM.requiredItem()));
+    GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main /* TODO figure out new weather crystal recipe */));
 
     if (Config.reinforcedObsidianEnabled) {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);

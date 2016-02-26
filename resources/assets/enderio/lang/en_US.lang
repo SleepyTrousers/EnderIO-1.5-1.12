@@ -152,12 +152,27 @@ item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 fluid.hootch=Hootch
 tile.fluid.hootch.name=Hootch
 item.bucketHootch.name=Hootch Bucket
+
 fluid.fire_water=Fire Water
 tile.fluid.fire_water.name=Fire Water
 item.bucketFire_water.name=Fire Water Bucket
+
 fluid.rocket_fuel=Rocket Fuel
 tile.fluid.rocket_fuel.name=Rocket Fuel
 item.bucketRocket_fuel.name=Rocket Fuel Bucket
+
+fluid.liquid_sunshine=Liquid Sunshine
+tile.fluid.liquid_sunshine=Liquid Sunshine
+item.bucketLiquid_sunshine.name=Liquid Sunshine Bucket
+
+fluid.cloud_seed=Cloud Seed
+tile.fluid.cloud_seed=Cloud Seed
+item.bucketCloud_seed=Cloud Seed Bucket
+
+fluid.cloud_seed_concentrated=Concentrated Cloud Seed
+tile.fluid.cloud_seed_concentrated=Concentrated Cloud Seed
+item.bucketCloud_seed_concentrated=Concentrated Cloud Seed Bucket
+
 fluid.eio.xpjuice=Liquid XP
 tile.fluid.eio.xpjuice.name=Liquid XP
 item.bucketXpjuice.name=XP Bucket
@@ -1054,7 +1069,8 @@ enderio.gui.conduit.gas.autoExtract=Auto Extract
 enderio.gui.weather.task.clear=Clear Weather
 enderio.gui.weather.task.rain=Rainy Weather
 enderio.gui.weather.task.storm=Thunderstorm
-enderio.gui.weather.requireditem=Required Item: %s
+enderio.gui.weather.requiredfluid=Required Fluid: %s mB
+enderio.weatherObelisk.fuelTank=Barometric Flux Tank
 
 //Enchants
 enchantment.enderio.soulBound=Soulbound

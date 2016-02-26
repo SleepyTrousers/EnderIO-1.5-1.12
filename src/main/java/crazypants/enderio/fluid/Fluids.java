@@ -2,11 +2,6 @@ package crazypants.enderio.fluid;
 
 import java.lang.reflect.Field;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -27,6 +22,11 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.network.PacketHandler;
 
 public class Fluids {
 
@@ -34,6 +34,10 @@ public class Fluids {
   public static final String HOOTCH_NAME = "hootch";
   public static final String ROCKET_FUEL_NAME = "rocket_fuel";
   public static final String FIRE_WATER_NAME = "fire_water";
+  
+  public static final String LIQUID_SUNSHINE_NAME = "liquid_sunshine";
+  public static final String CLOUD_SEED_NAME = "cloud_seed";
+  public static final String CLOUD_SEED_CONCENTRATED_NAME = "cloud_seed_concentrated";
 
   public static Fluid fluidNutrientDistillation;
   public static BlockFluidEio blockNutrientDistillation;
@@ -46,6 +50,14 @@ public class Fluids {
 
   public static Fluid fluidFireWater;
   public static BlockFluidEio blockFireWater;
+  
+  public static Fluid fluidLiquidSunshine;
+  public static Fluid fluidCloudSeed;
+  public static Fluid fluidCloudSeedConcentrated;
+  
+  public static BlockFluidEio blockLiquidSunshine;
+  public static BlockFluidEio blockCloudSeed;
+  public static BlockFluidEio blockCloudSeedConcentrated;
 
   // Open block compatable liquid XP
   public static Fluid fluidXpJuice;
@@ -104,6 +116,21 @@ public class Fluids {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid",
         Fluids.FIRE_WATER_NAME + "@" + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
 
+    f = new Fluid(Fluids.LIQUID_SUNSHINE_NAME, getStill(LIQUID_SUNSHINE_NAME), getFlowing(LIQUID_SUNSHINE_NAME)).setDensity(200).setViscosity(400);
+    FluidRegistry.registerFluid(f);
+    fluidLiquidSunshine = FluidRegistry.getFluid(f.getName());
+    blockLiquidSunshine = BlockFluidEio.create(fluidLiquidSunshine, Material.water);
+
+    f = new Fluid(Fluids.CLOUD_SEED_NAME, getStill(CLOUD_SEED_NAME), getFlowing(CLOUD_SEED_NAME)).setDensity(500).setViscosity(800);
+    FluidRegistry.registerFluid(f);
+    fluidCloudSeed = FluidRegistry.getFluid(f.getName());
+    blockCloudSeed = BlockFluidEio.create(fluidCloudSeed, Material.water);
+    
+    f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME, getStill(CLOUD_SEED_CONCENTRATED_NAME), getFlowing(CLOUD_SEED_CONCENTRATED_NAME)).setDensity(1000).setViscosity(1200);
+    FluidRegistry.registerFluid(f);
+    fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
+    blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.water);
+    
     if (!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
       fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getStill(Fluids.FIRE_WATER_NAME), Fluids.getFlowing(Fluids.FIRE_WATER_NAME)).setLuminosity(10)
@@ -130,6 +157,9 @@ public class Fluids {
     registerFluidBlockRendering(fluidHootch, HOOTCH_NAME);
     registerFluidBlockRendering(fluidFireWater, FIRE_WATER_NAME);
     registerFluidBlockRendering(fluidRocketFuel, ROCKET_FUEL_NAME);
+    registerFluidBlockRendering(fluidLiquidSunshine, LIQUID_SUNSHINE_NAME);
+    registerFluidBlockRendering(fluidCloudSeed, CLOUD_SEED_NAME);
+    registerFluidBlockRendering(fluidCloudSeedConcentrated, CLOUD_SEED_CONCENTRATED_NAME);
   }
 
   @SideOnly(Side.CLIENT)

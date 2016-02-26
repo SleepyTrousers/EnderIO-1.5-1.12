@@ -11,6 +11,9 @@ public class Buckets {
   public static ItemBucketEio itemBucketRocketFuel;
   public static ItemBucketEio itemBucketFireWater;
   public static ItemBucketEio itemBucketXpJuice;
+  public static ItemBucketEio itemBucketLiquidSunshine;
+  public static ItemBucketEio itemBucketCloudSeed;
+  public static ItemBucketEio itemBucketCloudSeedCompressed;
   
   public static void createBuckets() {
     if(Fluids.fluidXpJuice != null) {
@@ -20,6 +23,9 @@ public class Buckets {
     itemBucketHootch = ItemBucketEio.create(Fluids.fluidHootch);
     itemBucketRocketFuel = ItemBucketEio.create(Fluids.fluidRocketFuel);
     itemBucketFireWater = ItemBucketEio.create(Fluids.fluidFireWater);
+    itemBucketLiquidSunshine = ItemBucketEio.create(Fluids.fluidLiquidSunshine);
+    itemBucketCloudSeed = ItemBucketEio.create(Fluids.fluidCloudSeed);
+    itemBucketCloudSeedCompressed = ItemBucketEio.create(Fluids.fluidCloudSeedConcentrated);
   }
   
   @SideOnly(Side.CLIENT)
@@ -28,6 +34,9 @@ public class Buckets {
     ClientUtil.registerRenderer(itemBucketHootch, itemBucketHootch.getItemName());
     ClientUtil.registerRenderer(itemBucketRocketFuel, itemBucketRocketFuel.getItemName());
     ClientUtil.registerRenderer(itemBucketFireWater, itemBucketFireWater.getItemName());
+    ClientUtil.registerRenderer(itemBucketLiquidSunshine, itemBucketLiquidSunshine.getItemName());
+    ClientUtil.registerRenderer(itemBucketCloudSeed, itemBucketCloudSeed.getItemName());
+    ClientUtil.registerRenderer(itemBucketCloudSeedCompressed, itemBucketCloudSeedCompressed.getItemName());
     if(itemBucketXpJuice != null) {
       ClientUtil.registerRenderer(itemBucketXpJuice, itemBucketXpJuice.getItemName());
     }    
