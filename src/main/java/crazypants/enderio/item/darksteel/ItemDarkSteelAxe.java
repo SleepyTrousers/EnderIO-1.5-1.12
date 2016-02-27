@@ -8,6 +8,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,6 +20,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import cofh.api.energy.IEnergyContainerItem;
@@ -135,20 +138,27 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
     int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
+    ItemStack held = player.getCurrentEquippedItem();
     
     ArrayList<ItemStack> itemDrops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, 0);
+    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, worldObj, refBlock, bc.x, bc.y, bc.z, refMeta, 
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, held), 1,
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, held) != 0, player);
+    
     worldObj.setBlockToAir(bc.x, bc.y, bc.z);
     boolean usedPower = false;
-    if(itemDrops != null) {
-      for (ItemStack stack : itemDrops) {                
-        worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));                
-        if(TreeHarvestUtil.canDropApples(block, meta)) {
-          if(worldObj.rand.nextInt(200) == 0) {            
-            worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+    if (itemDrops != null) {
+      for (ItemStack stack : itemDrops) {
+        if (worldObj.rand.nextFloat() <= chance) {
+          worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
+          if (TreeHarvestUtil.canDropApples(block, meta)) {
+            if (worldObj.rand.nextInt(200) == 0) {
+              worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+            }
+          } else if (block == refBlock) { // other wise leaves
+            extractEnergy(held, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+            usedPower = true;
           }
-        } else if(block == refBlock) { //other wise leaves
-          extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
-          usedPower = true;
         }
       }
     }
