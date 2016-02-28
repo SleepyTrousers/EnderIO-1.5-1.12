@@ -197,7 +197,7 @@ public class DarkSteelController {
     if(upgrade == null) {
       return;
     }
-    if(player.isInWater()) {
+    if(player.isInWater() && !player.capabilities.isFlying) {
       player.motionX *= 1.1;
       player.motionZ *= 1.1;
     }
