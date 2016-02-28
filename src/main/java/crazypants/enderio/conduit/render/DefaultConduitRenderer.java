@@ -8,6 +8,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import static net.minecraft.util.EnumFacing.DOWN;
@@ -21,6 +22,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -56,24 +58,25 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
-      for (CollidableComponent component : components) {
-        if(renderComponent(component)) {
-          float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
-          if(isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
-            TextureAtlasSprite tex = conduit.getTransmitionTextureForState(component);
-            if(tex == null) {
-              tex = IconUtil.instance.errorTexture;
-            }
-            addTransmissionQuads(tex, conduit, component, selfIllum, quads);
+    for (CollidableComponent component : components) {
+      if (renderComponent(component)) {
+        float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
+        if (isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
+          TextureAtlasSprite tex = conduit.getTransmitionTextureForState(component);
+          if (tex == null) {
+            tex = IconUtil.instance.errorTexture;
           }
-          TextureAtlasSprite tex = conduit.getTextureForState(component);          
-          addConduitQuads(tex, conduit, component, selfIllum, quads);
+          addTransmissionQuads(tex, conduit, component, selfIllum, quads);
         }
-      }    
+        TextureAtlasSprite tex = conduit.getTextureForState(component);
+        addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+      }
+    }
   }
 
-  private void addConduitQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
-    if(isNSEWUD(component.dir)) {
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+  
+    if (isNSEWUD(component.dir)) {
 
       float scaleFactor = 0.75f;
       float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
@@ -82,32 +85,77 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
-      RenderUtil.addBakedQuads(bb, tex, quads);
-      if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);        
+      addQuadsForSection(bb, tex, component.dir, quads);
+      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+        tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
         RenderUtil.addBakedQuadForFace(quads, bb, tex, component.dir);
       }
-
     } else {
       RenderUtil.addBakedQuads(component.bound, tex, quads);
     }
-    
   }
 
-  private void addTransmissionQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
-    // TODO Auto-generated method stub
-    
+  protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads) {
+    addQuadsForSection(bb, tex, dir, quads, null);
+  }
+
+  protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads, Vector4f color) {
+
+    boolean rotateSides = dir == UP || dir == DOWN;
+    boolean rotateTopBottom = dir == DOWN || dir == EAST || dir == EnumFacing.SOUTH;
+
+    boolean doRotSides = rotateSides;
+    for (EnumFacing face : EnumFacing.VALUES) {
+      if (face != dir && face.getOpposite() != dir) {
+        if (face == UP || face == DOWN) {
+          doRotSides = dir == SOUTH || dir == NORTH;
+        } else {
+          doRotSides = rotateSides;
+        }
+        RenderUtil.addBakedQuadForFace(quads, bb, tex, face, doRotSides, rotateTopBottom, color);
+      }
+    }
+  }
+
+  protected void addTransmissionQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+        
+    float scaleFactor = 0.6f;
+    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+
+    BoundingBox cube = component.bound;
+    BoundingBox bb = cube.scale(xLen, yLen, zLen);
+    addQuadsForSection(bb, tex, component.dir, quads);
   }
 
   // ------------ Dynamic ---------------------------------------------
 
   @Override
-  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick,
+  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
       float worldLight) {
+        
+    Collection<CollidableComponent> components = conduit.getCollidableComponents();
+    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
+    for (CollidableComponent component : components) {
+      if (renderComponent(component)) {
+        float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
+        TextureAtlasSprite tex;
+        if (isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
+          tex = conduit.getTransmitionTextureForState(component);
+          if (tex == null) {
+            tex = IconUtil.instance.errorTexture;
+          }          
+          renderTransmissionDynamic(conduit, tex, component, selfIllum);
+        } 
+        tex = conduit.getTextureForState(component);        
+        renderConduitDynamic(tex, conduit, component, selfIllum);
+      }
+    }
   }
 
   protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
-
+    GlStateManager.color(1, 1, 1);
     if (isNSEWUD(component.dir)) {
       float scaleFactor = 0.75f;
       float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
@@ -134,6 +182,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
     float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
 
+    GlStateManager.color(1, 1, 1);
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
     drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
@@ -165,11 +214,11 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     boolean rotateSides = dir == UP || dir == DOWN;
     boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
-//    float cm;
+    // float cm;
     if (dir != NORTH && dir != SOUTH) {
       // tessellator.setNormal(0, 0, -1);
       if (!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
+        // cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
         // tessellator.setColorOpaque_F(cm, cm, cm);
       }
       if (rotateSides) {
@@ -190,7 +239,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
       // tessellator.setNormal(0, 0, 1);
       if (!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
+        // cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
         // tessellator.setColorOpaque_F(cm, cm, cm);
       }
       if (rotateSides) {
@@ -215,7 +264,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       // tessellator.setNormal(0, 1, 0);
       if (!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
+        // cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
         // tessellator.setColorOpaque_F(cm, cm, cm);
       }
       if (rotateTopBottom) {
@@ -232,7 +281,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       // tessellator.setNormal(0, -1, 0);
       if (!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
+        // cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
         // tessellator.setColorOpaque_F(cm, cm, cm);
       }
       if (rotateTopBottom) {
@@ -252,7 +301,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       // tessellator.setNormal(1, 0, 0);
       if (!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
+        // cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
         // tessellator.setColorOpaque_F(cm, cm, cm);
       }
       if (rotateSides) {
@@ -269,7 +318,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       // tessellator.setNormal(-1, 0, 0);
       if (!isTransmission) {
-//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
+        // cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
         // tessellator.setColorOpaque_F(cm, cm, cm);
       }
       if (rotateSides) {

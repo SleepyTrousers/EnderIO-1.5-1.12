@@ -23,6 +23,7 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.item.ItemConduitRenderer;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
@@ -31,6 +32,7 @@ import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -54,12 +56,15 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     conduitRenderers.add(LiquidConduitRenderer.create());
     conduitRenderers.add(new PowerConduitRenderer());
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
+    conduitRenderers.add(new ItemConduitRenderer());
   }
 
   // TESR rendering
 
   @Override
   public void renderTileEntityAt(TileConduitBundle te, double x, double y, double z, float partialTick, int b) {
+    
+
     IConduitBundle bundle = te;
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     if (bundle.hasFacade() && bundle.getFacadeId().isOpaqueCube() && !ConduitUtil.isFacadeHidden(bundle, player)) {
@@ -89,6 +94,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer tes = tessellator.getWorldRenderer();
             tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            
           }
           renderer.renderDynamicEntity(this, bundle, con, x, y, z, partialTick, brightness);
 
@@ -99,6 +105,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     if (brightness != -1) {
       Tessellator.getInstance().draw();
 
+      GlStateManager.enableCull();
       GL11.glShadeModel(GL11.GL_FLAT);
       GL11.glPopMatrix();
       GL11.glPopAttrib();
@@ -180,10 +187,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       }
     }
     
-//    // render these after the 'normal' conduits so help with proper blending
-//    for (BoundingBox wireBound : wireBounds) {
-//      CubeRenderer.render(wireBound, EnderIO.blockConduitFacade.getIcon(0, 0));
-//    }
+    // render these after the 'normal' conduits so help with proper blending
+    for (BoundingBox wireBound : wireBounds) {
+      RenderUtil.addBakedQuads(wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon(), quads);
+    }
 
     // External connection terminations
     for (EnumFacing dir : externals) {

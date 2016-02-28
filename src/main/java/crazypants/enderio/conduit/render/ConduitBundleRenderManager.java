@@ -3,6 +3,8 @@ package crazypants.enderio.conduit.render;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.item.ItemConduit;
+import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.power.PowerConduit;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -31,16 +33,18 @@ public class ConduitBundleRenderManager {
 
   private TextureAtlasSprite connectorIcon;
   
+  private TextureAtlasSprite wireFrameIcon;
+  
   public void registerRenderers() { 
     
     // RedstoneConduit.initIcons();
     // InsulatedRedstoneConduit.initIcons();
     // RedstoneSwitch.initIcons();
-     PowerConduit.initIcons();
-    // LiquidConduit.initIcons();
+    PowerConduit.initIcons();
+    LiquidConduit.initIcons();
     // AdvancedLiquidConduit.initIcons();
     // EnderLiquidConduit.initIcons();
-    // ItemConduit.initIcons();
+    ItemConduit.initIcons();
     // if(GasUtil.isGasConduitEnabled()) {
     // GasConduit.initIcons();
     // }
@@ -76,16 +80,20 @@ public class ConduitBundleRenderManager {
   public void onIconLoad(TextureStitchEvent.Pre event) {        
     connectorIconExternal= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitConnector"));
     connectorIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitConnectorExternal"));        
+    wireFrameIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitFacade"));
   }
   
   public TextureAtlasSprite getConnectorIcon(Object data) {
     return data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon;
   }
   
+  public TextureAtlasSprite getWireFrameIcon() {
+    return wireFrameIcon;
+  }
+  
   public ConduitBundleRenderer getConduitBundleRenderer() {
     return cbr;
   }
- 
- 
+
 }
 

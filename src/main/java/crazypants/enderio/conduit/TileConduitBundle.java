@@ -472,6 +472,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return result;
   }
 
+  
+  @SuppressWarnings("unchecked")
   private void addConnectors(List<CollidableComponent> result) {
 
     if(conduits.isEmpty()) {
@@ -510,7 +512,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     for (CollidableComponent conCC : conduitsBounds) {
       for (CollidableComponent innerCC : conduitsBounds) {
         if(!InsulatedRedstoneConduit.COLOR_CONTROLLER_ID.equals(innerCC.data) && !InsulatedRedstoneConduit.COLOR_CONTROLLER_ID.equals(conCC.data)
-            && conCC != innerCC && conCC.bound.intersects(innerCC.bound)) {
+            && conCC != innerCC && conCC.bound.intersects(innerCC.bound)) {          
           collidingTypes.add((Class<IConduit>) conCC.conduitType);
         }
       }

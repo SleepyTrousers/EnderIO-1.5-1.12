@@ -18,6 +18,8 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -51,38 +53,47 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     return false;
   }
  
-  
+  @Override
+  protected void addTransmissionQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+    //Handled in dynamic render
+  }
   
   @Override
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {  
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {    
     if (isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       if (fluid != null) {
         renderFluidOutline(component, fluid);
-      }
+      } 
+    }
+  }
+
+  @Override
+  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
+      float partialTick, float worldLight) {
+    calculateRatios((LiquidConduit) conduit);
+    super.renderDynamicEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
+  }
+
+  @Override
+  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {  
+
+    if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
+      return;
+    }
+    
+    if (isNSEWUD(component.dir)) {          
       BoundingBox[] cubes = toCubes(component.bound);
       for (BoundingBox cube : cubes) {        
-        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
+        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
       }
 
     } else {
       drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
-    }
-
-//    if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-//      tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-//      List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-//      for (Vertex c : corners) {
-//        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-//      }
-//      //back face
-//      for (int i = corners.size() - 1; i >= 0; i--) {
-//        Vertex c = corners.get(i);
-//        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-//      }
-//    }
+    }    
   }
+  
 
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
     renderFluidOutline(component, fluid, 1, 13f / 16f);
@@ -178,7 +189,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
       @Override
       public void execute() {
-//        Tessellator.instance.setNormal(x, y, z);
+        Tessellator.getInstance().getWorldRenderer().normal(x, y, z);
       }
     }
 
@@ -195,7 +206,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
       @Override
       public void execute() {
-//        Tessellator.instance.addVertexWithUV(x, y, z, u, v);
+        Tessellator.getInstance().getWorldRenderer().pos(x, y, z).tex(u, v).endVertex();
       }
     }
   }
@@ -206,51 +217,19 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
-      float partialTick, float worldLight) {
-
-    if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
-      return;
-    }
-
-//    Collection<CollidableComponent> components = conduit.getCollidableComponents();
-//    Tessellator tessellator = Tessellator.instance;
-//
-//    calculateRatios((LiquidConduit) conduit);
-//    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
-//
-//    TextureAtlasSprite tex;
-//    for (CollidableComponent component : components) {
-//      if (renderComponent(component)) {
-//        if (isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
-//
-//          tessellator.setColorOpaque_F(1, 1, 1);
-//          tex = conduit.getTransmitionTextureForState(component);
-//
-//          BoundingBox[] cubes = toCubes(component.bound);
-//          for (BoundingBox cube : cubes) {
-//            drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
-//          }
-//        }
-//      }
-//    }
-  }
-
-  @Override
   protected void setVerticesForTransmission(BoundingBox bound, EnumFacing id) {
 
     float yScale = getRatioForConnection(id);
-
-    float xs = id.getFrontOffsetX() == 0 ? 0.9f : 1;
-    float ys = id.getFrontOffsetY() == 0 ? Math.min(yScale, 0.9f) : yScale;
-    float zs = id.getFrontOffsetZ() == 0 ? 0.9f : 1;
+    float scale = 0.7f;
+    float xs = id.getFrontOffsetX() == 0 ? scale : 1;
+    float ys = id.getFrontOffsetY() == 0 ? Math.min(yScale, scale) : yScale;
+    float zs = id.getFrontOffsetZ() == 0 ? scale : 1;
 
     float sizeY = bound.sizeY();
     bound = bound.scale(xs, ys, zs);
     float transY = (bound.sizeY() - sizeY) / 2;
-
-    Vector3d translation = new Vector3d(0, transY, 0);
-//    setupVertices(bound.translate(translation));
+    Vector3d translation = new Vector3d(0, transY + 0.025, 0);
+    setupVertices(bound.translate(translation));
   }
 
   private void calculateRatios(LiquidConduit conduit) {

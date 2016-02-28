@@ -6,14 +6,17 @@ import java.util.List;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 
@@ -95,44 +98,20 @@ public class ConnectionModeGeometry {
     return result;
   }
 
-  public static void renderModeConnector(EnumFacing dir, Offset offset, TextureAtlasSprite tex, boolean tintSides) {
+
+  public static void addModeConnectorQuads(EnumFacing dir, Offset offset, TextureAtlasSprite tex, Vector4f color, List<BakedQuad> quads) {
     List<Vertex> verts = VERTS.get(dir);
     if (verts == null) {
       return;
     }
-
     Vector3d trans = ConduitGeometryUtil.instance.getTranslation(dir, offset);
-
-    float uWidth = tex.getMaxU() - tex.getMinU();
-    float uScale = uWidth * 0.64f;
-    float minU = tex.getMinU() + (uWidth - uScale);
-    float vScale = tex.getMaxV() - tex.getMinV();
-
-    //TODO: 1.8
-//    Tessellator tes = Tessellator.instance;
-//    for (Vertex v : verts) {
-//      if (tintSides) {
-//        float cm = 1;
-//        if (v.ny() > 0.1) {
-//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
-//        } else if (v.ny() < -0.1) {
-//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
-//        } else if (v.nx() > 0.1) {
-//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
-//        } else if (v.nx() < -0.1) {
-//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
-//        } else if (v.nz() > 0.1) {
-//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
-//        } else if (v.nz() < -0.1) {
-//          cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
-//        }
-//        tes.setColorOpaque_F(cm, cm, cm);
-//      }
-//
-//      tes.setNormal(v.nx(), v.ny(), v.nz());
-//      tes.addVertexWithUV(v.x() + trans.x, v.y() + trans.y, v.z() + trans.z, minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
-//    }
-
+    List<Vertex> xFormed = new ArrayList<Vertex>(verts.size());
+    for (Vertex v : verts) {
+      Vertex xf = new Vertex(v);
+      xf.xyz.add(trans);
+      xFormed.add(xf);
+    }
+    RenderUtil.addBakedQuads(quads, xFormed, tex, color);
   }
 
 }

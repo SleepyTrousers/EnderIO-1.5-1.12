@@ -12,6 +12,7 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
 
+@SuppressWarnings("deprecation")
 public class ConduitBundleBakedModel implements ISmartBlockModel {
 
   private IBakedModel defaultModel;
@@ -46,21 +47,11 @@ public class ConduitBundleBakedModel implements ISmartBlockModel {
   }
 
   @Override
-  public List<BakedQuad> getGeneralQuads() {
-    
+  public List<BakedQuad> getGeneralQuads() {    
     if(state == null) {
       return getDefaults().getGeneralQuads();      
     }
-    System.out.println("ConduitBundleBakedModel.getGeneralQuads: " + state);
-    return ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state);
-//    List<CollidableComponent> cols = state.getCollidables();
-//    
-//    for(CollidableComponent comp : cols) {
-//      
-//    }
-    
-//    return Collections.emptyList();
-    
+    return ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state);    
   }
 
   @Override

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
@@ -25,6 +26,7 @@ import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -33,55 +35,48 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
-  public static final String ICON_KEY = "enderio:itemConduit";
+  public static final String ICON_KEY = "enderio:blocks/itemConduit";
 
-  public static final String ICON_KEY_CORE = "enderio:itemConduitCore";
+  public static final String ICON_KEY_CORE = "enderio:blocks/itemConduitCore";
 
-  public static final String ICON_KEY_CORE_ADV = "enderio:itemConduitCoreAdvanced";
+  public static final String ICON_KEY_INPUT = "enderio:blocks/itemConduitInput";
 
-  public static final String ICON_KEY_INPUT = "enderio:itemConduitInput";
+  public static final String ICON_KEY_OUTPUT = "enderio:blocks/itemConduitOutput";
 
-  public static final String ICON_KEY_OUTPUT = "enderio:itemConduitOutput";
+  public static final String ICON_KEY_IN_OUT_OUT = "enderio:blocks/itemConduitInOut_Out";
 
-  public static final String ICON_KEY_IN_OUT_OUT = "enderio:itemConduitInOut_Out";
+  public static final String ICON_KEY_IN_OUT_IN = "enderio:blocks/itemConduitInOut_In";
 
-  public static final String ICON_KEY_IN_OUT_IN = "enderio:itemConduitInOut_In";
+  public static final String ICON_KEY_IN_OUT_BG = "enderio:blocks/itemConduitIoConnector";
 
-  public static final String ICON_KEY_IN_OUT_BG = "enderio:itemConduitIoConnector";
-
-  public static final String ICON_KEY_ENDER = "enderio:ender_still";
+  public static final String ICON_KEY_ENDER = "enderio:blocks/ender_still";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-//  public static void initIcons() {
-//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//      @Override
-//      public void registerIcons(IIconRegister register) {
-//        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-//        ICONS.put(ICON_KEY_CORE, register.registerIcon(ICON_KEY_CORE));
-//        ICONS.put(ICON_KEY_CORE_ADV, register.registerIcon(ICON_KEY_CORE_ADV));
-//        ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
-//        ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
-//        ICONS.put(ICON_KEY_IN_OUT_OUT, register.registerIcon(ICON_KEY_IN_OUT_OUT));
-//        ICONS.put(ICON_KEY_IN_OUT_IN, register.registerIcon(ICON_KEY_IN_OUT_IN));
-//        ICONS.put(ICON_KEY_IN_OUT_BG, register.registerIcon(ICON_KEY_IN_OUT_BG));
-//        ICONS.put(ICON_KEY_ENDER, register.registerIcon(ICON_KEY_ENDER));
-//      }
-//
-//      @Override
-//      public int getTextureType() {
-//        return 0;
-//      }
-//
-//    });
-//  }
+  public static void initIcons() {
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+      @Override
+      public void registerIcons(TextureMap register) {
+        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
+        ICONS.put(ICON_KEY_CORE, register.registerSprite(new ResourceLocation(ICON_KEY_CORE)));
+        ICONS.put(ICON_KEY_INPUT, register.registerSprite(new ResourceLocation(ICON_KEY_INPUT)));
+        ICONS.put(ICON_KEY_OUTPUT, register.registerSprite(new ResourceLocation(ICON_KEY_OUTPUT)));
+        ICONS.put(ICON_KEY_IN_OUT_OUT, register.registerSprite(new ResourceLocation(ICON_KEY_IN_OUT_OUT)));
+        ICONS.put(ICON_KEY_IN_OUT_IN, register.registerSprite(new ResourceLocation(ICON_KEY_IN_OUT_IN)));
+        ICONS.put(ICON_KEY_IN_OUT_BG, register.registerSprite(new ResourceLocation(ICON_KEY_IN_OUT_BG)));
+        ICONS.put(ICON_KEY_ENDER, register.registerSprite(new ResourceLocation(ICON_KEY_ENDER)));
+      }
+
+    });
+  }
 
   ItemConduitNetwork network;
 
@@ -244,26 +239,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     }
     return false;
   }
-  
-  
-//   IItemDuct COFH API
-//  @Override
-//  public ItemStack insertItem(EnumFacing from, ItemStack item) {
-//    if(!externalConnections.contains(from)) {
-//      return item;
-//    } else if(!getConnectionMode(from).acceptsInput()) {
-//      return item;
-//    } else if(network == null) {
-//      return item;
-//    } else {
-//      IItemFilter filter = inputFilters.get(from);
-//      ItemConduitNetwork network = (ItemConduitNetwork) getNetwork();
-//      if(filter != null && !filter.doesItemPassFilter(network.getInventory(this, from.getOpposite()), item)) {
-//        return item;
-//      }
-//    }
-//    return network.sendItems(this, item, from);
-//  }
 
   @Override
   public void setInputFilter(EnumFacing dir, IItemFilter filter) {
@@ -637,7 +612,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   public TextureAtlasSprite getCoreIcon() {
-    return metaData == 1 ? ICONS.get(ICON_KEY_CORE_ADV) : ICONS.get(ICON_KEY_CORE);
+    return ICONS.get(ICON_KEY_CORE);
   }
 
   @Override

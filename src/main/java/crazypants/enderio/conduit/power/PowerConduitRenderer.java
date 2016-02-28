@@ -1,7 +1,21 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.List;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.enderio.machine.RedstoneControlMode;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public class PowerConduitRenderer extends DefaultConduitRenderer {
 
@@ -10,28 +24,30 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     return conduit instanceof IPowerConduit;
   }
 
-//  @Override
-//  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum) {
-//    if(IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
-//      IPowerConduit pc = (IPowerConduit) conduit;
-//      ConnectionMode conMode = pc.getConnectionMode(component.dir);
-//      if(conduit.containsExternalConnection(component.dir) && pc.getExtractionRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
-//          && conMode != ConnectionMode.DISABLED) {
-//        int c = ((IPowerConduit) conduit).getExtractionSignalColor(component.dir).getColor();
-////        Tessellator tessellator = Tessellator.instance;
-////        tessellator.setColorOpaque_I(c);
-////
-////        Offset offset = conduit.getBundle().getOffset(IPowerConduit.class, component.dir);
-////        BoundingBox bound = component.bound;
-////        if(conMode != ConnectionMode.IN_OUT) {
-////          Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);
-////          bound = bound.translate(trans);
-////        }
-////        CubeRenderer.render(bound, tex);
-////        tessellator.setColorOpaque(255, 255, 255);
-//      }
-//    } else {
-//      super.renderConduit(tex, conduit, component, selfIllum);
-//    }
-//  }
+  @Override
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+
+    if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
+      IPowerConduit pc = (IPowerConduit) conduit;
+      ConnectionMode conMode = pc.getConnectionMode(component.dir);
+      
+      if (conduit.containsExternalConnection(component.dir) && pc.getExtractionRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
+          && conMode != ConnectionMode.DISABLED) {
+        
+        int cInt = ((IPowerConduit) conduit).getExtractionSignalColor(component.dir).getColor();
+        Vector4f col = ColorUtil.toFloat4(cInt);               
+
+        BoundingBox bound = component.bound;
+        if (conMode != ConnectionMode.IN_OUT) {
+          Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);
+          bound = bound.translate(trans);
+        }
+        addQuadsForSection(bound,tex,component.dir, quads, col); 
+
+      }
+    } else {
+      super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+    }
+
+  }
 }

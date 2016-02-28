@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -16,9 +18,11 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -26,43 +30,40 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LiquidConduit extends AbstractTankConduit {
 
   static final int VOLUME_PER_CONNECTION = FluidContainerRegistry.BUCKET_VOLUME / 4;
 
-  public static final String ICON_KEY = "enderio:liquidConduit";
-  public static final String ICON_KEY_LOCKED = "enderio:liquidConduitLocked";
-  public static final String ICON_CORE_KEY = "enderio:liquidConduitCore";
-  public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitExtract";
-  public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:emptyLiquidConduitExtract";
-  public static final String ICON_INSERT_KEY = "enderio:liquidConduitInsert";
-  public static final String ICON_EMPTY_INSERT_KEY = "enderio:emptyLiquidConduitInsert";
+  public static final String ICON_KEY = "enderio:blocks/liquidConduit";
+  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitLocked";
+  public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCore";
+  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquidConduitExtract";
+  public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:blocks/emptyLiquidConduitExtract";
+  public static final String ICON_INSERT_KEY = "enderio:blocks/liquidConduitInsert";
+  public static final String ICON_EMPTY_INSERT_KEY = "enderio:blocks/emptyLiquidConduitInsert";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-//  @SideOnly(Side.CLIENT)
-//  public static void initIcons() {
-//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//      @Override
-//      public void registerIcons(IIconRegister register) {
-//        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-//        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-//        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
-//        ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerIcon(ICON_EMPTY_EXTRACT_KEY));
-//        ICONS.put(ICON_EMPTY_INSERT_KEY, register.registerIcon(ICON_EMPTY_INSERT_KEY));
-//        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
-//        ICONS.put(ICON_KEY_LOCKED, register.registerIcon(ICON_KEY_LOCKED));
-//      }
-//
-//      @Override
-//      public int getTextureType() {
-//        return 0;
-//      }
-//
-//    });
-//  }
+  @SideOnly(Side.CLIENT)
+  public static void initIcons() {
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+      @Override
+      public void registerIcons(TextureMap register) {
+        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
+        ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
+        ICONS.put(ICON_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EXTRACT_KEY)));
+        ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EMPTY_EXTRACT_KEY)));
+        ICONS.put(ICON_EMPTY_INSERT_KEY, register.registerSprite(new ResourceLocation(ICON_EMPTY_INSERT_KEY)));
+        ICONS.put(ICON_INSERT_KEY, register.registerSprite(new ResourceLocation(ICON_INSERT_KEY)));
+        ICONS.put(ICON_KEY_LOCKED, register.registerSprite(new ResourceLocation(ICON_KEY_LOCKED)));
+      }
+
+    });
+  }
 
   private LiquidConduitNetwork network;
 
@@ -403,8 +404,7 @@ public class LiquidConduit extends AbstractTankConduit {
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
-      //TODO: 1.8
-//      return tank.getFluid().getFluid().getStillIcon();
+      return RenderUtil.getStillTexture(tank.getFluid());
     }
     return null;
   }
