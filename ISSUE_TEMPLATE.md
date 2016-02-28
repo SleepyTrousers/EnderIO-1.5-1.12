@@ -24,3 +24,7 @@ ____
 - EnderCore:
 - Minecraft: 1.7.10
 - Forge:
+
+#### Your most recent log file where the issue was present: 
+
+[pastebin/gist/etc link here]
