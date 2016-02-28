@@ -34,6 +34,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,6 +42,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
@@ -67,27 +69,22 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return result;
   }
 
-//  public static void initIcons() {
-//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//      @Override
-//      public void registerIcons(IIconRegister register) {
-//        for (String pf : POSTFIX) {
-//          ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
-//          ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT + pf));
-//          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT + pf));
-//          ICONS.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
-//        }
-//        ICONS.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
-//      }
-//
-//      @Override
-//      public int getTextureType() {
-//        return 0;
-//      }
-//
-//    });
-//  }
+  public static void initIcons() {
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+      @Override
+      public void registerIcons(TextureMap register) {
+        
+        for (String pf : POSTFIX) {
+          ICONS.put(ICON_KEY + pf, register.registerSprite(new ResourceLocation(ICON_KEY + pf)));
+          ICONS.put(ICON_KEY_INPUT + pf, register.registerSprite(new ResourceLocation(ICON_KEY_INPUT + pf)));
+          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerSprite(new ResourceLocation(ICON_KEY_OUTPUT + pf)));
+          ICONS.put(ICON_CORE_KEY + pf, register.registerSprite(new ResourceLocation(ICON_CORE_KEY + pf)));
+        }
+        ICONS.put(ICON_TRANSMISSION_KEY, register.registerSprite(new ResourceLocation(ICON_TRANSMISSION_KEY)));
+      }
+    });
+  }
 
   public static final float WIDTH = 0.075f;
   public static final float HEIGHT = 0.075f;
@@ -129,7 +126,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
     if(ConduitUtil.isProbeEquipped(player)) {
       if(!player.worldObj.isRemote) {
-        new PacketConduitProbe().sendInfoMessage(player, this);
+        PacketConduitProbe.sendInfoMessage(player, this);
       }
       return true;
     } else if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {
@@ -277,7 +274,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
  
   private boolean isRedstoneEnabled(EnumFacing dir) {
-    boolean result;
+    
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
     if(mode == RedstoneControlMode.NEVER) {
       return false;
@@ -292,10 +289,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     boolean res;
     if(mode == RedstoneControlMode.OFF) {
       //if checking for no signal, must be no signal from both
-      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || mode.isConditionMet(mode, exSig));     
+      res = RedstoneControlMode.isConditionMet(mode, signal) && (col != DyeColor.RED || RedstoneControlMode.isConditionMet(mode, exSig));     
     } else {      
       //if checking for a signal, either is fine
-      res = mode.isConditionMet(mode, signal) || (col == DyeColor.RED && mode.isConditionMet(mode, exSig));
+      res = RedstoneControlMode.isConditionMet(mode, signal) || (col == DyeColor.RED && RedstoneControlMode.isConditionMet(mode, exSig));
     }
     return res;
   }
@@ -490,7 +487,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       return ICONS.get(ICON_CORE_KEY + POSTFIX[subtype]);
     }
     if(COLOR_CONTROLLER_ID.equals(component.data)) {
-      return IconUtil.whiteTexture;
+      return IconUtil.instance.whiteTexture;
     }
     return ICONS.get(ICON_KEY + POSTFIX[subtype]);
   }

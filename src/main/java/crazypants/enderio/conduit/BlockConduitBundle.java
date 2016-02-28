@@ -37,6 +37,7 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.render.ConduitRenderState;
 import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -80,9 +81,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 })
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IFacade, IRotatableFacade {
 
-  private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
-  private static final String KEY_CONNECTOR_ICON_EXTERNAL = "enderIO:conduitConnectorExternal";
-
   public static BlockConduitBundle create() {
 
     MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);    
@@ -99,7 +97,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class,PacketHandler.nextID(), Side.SERVER);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
@@ -107,8 +104,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return result;
   }
 
-//  private IIcon connectorIcon, connectorIconExternal;
-//
   private TextureAtlasSprite lastRemovedComponetIcon = null;
 
   private final Random rand = new Random();
@@ -130,6 +125,32 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         return "EnderIO:" + soundName + ".step";
       }
     };
+    
+    setDefaultState(blockState.getBaseState());
+  }
+  
+  @Override
+  protected void init() {
+    super.init();
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
+    }
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+      return 0;
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+      return getDefaultState();
+  }
+  
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {    
+    return new ConduitRenderState(state,world,pos,getTileEntity(world, pos));
   }
 
   @SideOnly(Side.CLIENT)
@@ -151,7 +172,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
     if(tex == null) {
-      tex = IconUtil.whiteTexture;
+      tex = IconUtil.instance.whiteTexture;
     }
     lastRemovedComponetIcon = tex;
     BlockPos p = target.getBlockPos();
@@ -171,9 +192,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         for (int l1 = 0; l1 < b0; ++l1) {
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
-          double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = rand.nextInt(6);
-          
+          double d2 = z + (l1 + 0.5D) / b0;          
           EntityDiggingFX fx = (EntityDiggingFX)Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0, d1, d2, d0 - x - 0.5D, d1 - y - 0.5D, d2 - z - 0.5D, 0);          
           fx.func_174845_l();
           fx.setParticleIcon(tex);
@@ -247,16 +266,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  protected void init() {
-    super.init();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
-    }
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
-  }
-
-  
-  @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
     ItemStack ret = null;
     
@@ -294,18 +303,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public int quantityDropped(Random r) {
     return 0;
   }
-
-//  public IIcon getConnectorIcon(Object data) {
-//    return data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon;
-//  }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister IIconRegister) {
-//    connectorIcon = IIconRegister.registerIcon(KEY_CONNECTOR_ICON);
-//    connectorIconExternal = IIconRegister.registerIcon(KEY_CONNECTOR_ICON_EXTERNAL);
-//    blockIcon = connectorIcon;
-//  }
 
   @Override
   public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
@@ -1002,10 +999,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     IConduitBundle bundle = (IConduitBundle) te;
     return bundle.getConduit(IRedstoneConduit.class);
-  }
-  
-  private static IRedstoneConduit getRedstoneConduit(IBlockAccess world, int x, int y, int z) {    
-    return getRedstoneConduit(world, new BlockPos(x, y, z));
   }
   
 }

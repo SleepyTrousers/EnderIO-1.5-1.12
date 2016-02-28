@@ -51,8 +51,10 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     return false;
   }
  
+  
+  
   @Override
-  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {  
     if (isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
@@ -60,12 +62,12 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
         renderFluidOutline(component, fluid);
       }
       BoundingBox[] cubes = toCubes(component.bound);
-      for (BoundingBox cube : cubes) {
-        drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
+      for (BoundingBox cube : cubes) {        
+        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
       }
 
     } else {
-      drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+      drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
     }
 
 //    if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
@@ -196,11 +198,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 //        Tessellator.instance.addVertexWithUV(x, y, z, u, v);
       }
     }
-  }
-
-  @Override
-  protected void renderTransmission(IConduit con, TextureAtlasSprite tex, CollidableComponent component, float brightness) {
-    //done in the dynamic section
   }
 
   @Override

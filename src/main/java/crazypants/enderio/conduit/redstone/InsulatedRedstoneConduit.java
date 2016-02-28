@@ -479,7 +479,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
     }
     if(COLOR_CONTROLLER_ID.equals(component.data)) {
-      return IconUtil.whiteTexture;
+      return IconUtil.instance.whiteTexture;
     }
     return ICONS.get(KEY_INS_CONDUIT_ICON);
   }

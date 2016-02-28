@@ -1,9 +1,14 @@
 package crazypants.enderio.conduit.render;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vertex;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
@@ -16,18 +21,23 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
   static final Vector3d[] verts = new Vector3d[8];
+
   static {
     for (int i = 0; i < verts.length; i++) {
       verts[i] = new Vector3d();
     }
   }
-  
+
   protected float transmissionScaleFactor;
 
   @Override
@@ -35,14 +45,34 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     return true;
   }
 
-  @Override
-  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z,
-      float partialTick, float worldLight) {
-
+  protected boolean renderComponent(CollidableComponent component) {
+    return true;
   }
 
-  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
+  // ------------ Static Model ---------------------------------------------
 
+  @Override
+  public void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, List<BakedQuad> quads) {
+
+    Collection<CollidableComponent> components = conduit.getCollidableComponents();
+    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
+      for (CollidableComponent component : components) {
+        if(renderComponent(component)) {
+          float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
+          if(isNSEWUD(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
+            TextureAtlasSprite tex = conduit.getTransmitionTextureForState(component);
+            if(tex == null) {
+              tex = IconUtil.instance.errorTexture;
+            }
+            addTransmissionQuads(tex, conduit, component, selfIllum, quads);
+          }
+          TextureAtlasSprite tex = conduit.getTextureForState(component);          
+          addConduitQuads(tex, conduit, component, selfIllum, quads);
+        }
+      }    
+  }
+
+  private void addConduitQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
     if(isNSEWUD(component.dir)) {
 
       float scaleFactor = 0.75f;
@@ -52,27 +82,53 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
-      drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false, conduit.shouldMirrorTexture());
-
+      RenderUtil.addBakedQuads(bb, tex, quads);
       if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-//        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-//        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-//        Tessellator tessellator = Tessellator.instance;
-//        for (Vertex c : corners) {
-//          CubeRenderer.addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-//        }
+        tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);        
+        RenderUtil.addBakedQuadForFace(quads, bb, tex, component.dir);
       }
 
     } else {
-      drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+      RenderUtil.addBakedQuads(component.bound, tex, quads);
+    }
+    
+  }
+
+  private void addTransmissionQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  // ------------ Dynamic ---------------------------------------------
+
+  @Override
+  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick,
+      float worldLight) {
+  }
+
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
+
+    if (isNSEWUD(component.dir)) {
+      float scaleFactor = 0.75f;
+      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+
+      BoundingBox cube = component.bound;
+      BoundingBox bb = cube.scale(xLen, yLen, zLen);
+      drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false, conduit.shouldMirrorTexture());
+      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+        tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
+        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+        RenderUtil.addVerticesToTessellator(corners, DefaultVertexFormats.POSITION_TEX, false);
+      }
+    } else {
+      drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
     }
 
   }
 
-  protected void renderTransmission(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
-    //    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
-    //        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
-
+  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
     float scaleFactor = 0.6f;
     float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
     float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
@@ -80,27 +136,21 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
-    drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
-  }
-
-  protected boolean renderComponent(CollidableComponent component) {
-    return true;
+    drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
   }
 
   protected boolean isNSEWUD(EnumFacing dir) {
-    return dir == EnumFacing.NORTH || dir == EnumFacing.SOUTH || dir == EnumFacing.EAST || dir == EnumFacing.WEST || dir == EnumFacing.UP || dir == EnumFacing.DOWN;
+    return dir != null;
   }
 
-  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir, boolean isTransmission) {
-    drawSection(bound, minU, maxU, minV, maxV, dir, isTransmission, true);
+  protected void drawDynamicSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir, boolean isTransmission) {
+    drawDynamicSection(bound, minU, maxU, minV, maxV, dir, isTransmission, true);
   }
 
-  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir,
-      boolean isTransmission, boolean mirrorTexture) {
+  protected void drawDynamicSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir, boolean isTransmission,
+      boolean mirrorTexture) {
 
-//    Tessellator tessellator = Tessellator.instance;
-
-    if(isTransmission) {
+    if (isTransmission) {
       setVerticesForTransmission(bound, dir);
     } else {
       setupVertices(bound);
@@ -115,14 +165,14 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     boolean rotateSides = dir == UP || dir == DOWN;
     boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
-    float cm;
-    if(dir != NORTH && dir != SOUTH) {
-//      tessellator.setNormal(0, 0, -1);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
+//    float cm;
+    if (dir != NORTH && dir != SOUTH) {
+      // tessellator.setNormal(0, 0, -1);
+      if (!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.NORTH);
+        // tessellator.setColorOpaque_F(cm, cm, cm);
       }
-      if(rotateSides) {
+      if (rotateSides) {
         addVecWithUV(verts[1], maxU, maxV);
         addVecWithUV(verts[0], maxU, minV);
         addVecWithUV(verts[3], minU, minV);
@@ -133,17 +183,17 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[3], maxU, maxV);
         addVecWithUV(verts[2], minU, maxV);
       }
-      if(dir == WEST || dir == EAST) {
+      if (dir == WEST || dir == EAST) {
         float tmp = minU;
         minU = maxU;
         maxU = tmp;
       }
-//      tessellator.setNormal(0, 0, 1);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
+      // tessellator.setNormal(0, 0, 1);
+      if (!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.SOUTH);
+        // tessellator.setColorOpaque_F(cm, cm, cm);
       }
-      if(rotateSides) {
+      if (rotateSides) {
         addVecWithUV(verts[4], maxU, maxV);
         addVecWithUV(verts[5], maxU, minV);
         addVecWithUV(verts[6], minU, minV);
@@ -154,21 +204,21 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[6], maxU, maxV);
         addVecWithUV(verts[7], minU, maxV);
       }
-      if(dir == WEST || dir == EAST) {
+      if (dir == WEST || dir == EAST) {
         float tmp = minU;
         minU = maxU;
         maxU = tmp;
       }
     }
 
-    if(dir != UP && dir != DOWN) {
+    if (dir != UP && dir != DOWN) {
 
-//      tessellator.setNormal(0, 1, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
+      // tessellator.setNormal(0, 1, 0);
+      if (!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.UP);
+        // tessellator.setColorOpaque_F(cm, cm, cm);
       }
-      if(rotateTopBottom) {
+      if (rotateTopBottom) {
         addVecWithUV(verts[6], maxU, maxV);
         addVecWithUV(verts[2], minU, maxV);
         addVecWithUV(verts[3], minU, minV);
@@ -180,12 +230,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[7], maxU, minV);
       }
 
-//      tessellator.setNormal(0, -1, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
+      // tessellator.setNormal(0, -1, 0);
+      if (!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.DOWN);
+        // tessellator.setColorOpaque_F(cm, cm, cm);
       }
-      if(rotateTopBottom) {
+      if (rotateTopBottom) {
         addVecWithUV(verts[0], minU, minV);
         addVecWithUV(verts[1], minU, maxV);
         addVecWithUV(verts[5], maxU, maxV);
@@ -198,14 +248,14 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
     }
 
-    if(dir != EAST && dir != WEST) {
+    if (dir != EAST && dir != WEST) {
 
-//      tessellator.setNormal(1, 0, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
+      // tessellator.setNormal(1, 0, 0);
+      if (!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.EAST);
+        // tessellator.setColorOpaque_F(cm, cm, cm);
       }
-      if(rotateSides) {
+      if (rotateSides) {
         addVecWithUV(verts[2], minU, maxV);
         addVecWithUV(verts[6], minU, minV);
         addVecWithUV(verts[5], maxU, minV);
@@ -217,12 +267,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[1], minU, minV);
       }
 
-//      tessellator.setNormal(-1, 0, 0);
-      if(!isTransmission) {
-        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
-//        tessellator.setColorOpaque_F(cm, cm, cm);
+      // tessellator.setNormal(-1, 0, 0);
+      if (!isTransmission) {
+//        cm = RenderUtil.getColorMultiplierForFace(EnumFacing.WEST);
+        // tessellator.setColorOpaque_F(cm, cm, cm);
       }
-      if(rotateSides) {
+      if (rotateSides) {
         addVecWithUV(verts[0], maxU, maxV);
         addVecWithUV(verts[4], maxU, minV);
         addVecWithUV(verts[7], minU, minV);
@@ -234,7 +284,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[3], minU, maxV);
       }
     }
-//    tessellator.setColorOpaque_F(1, 1, 1);
+    // tessellator.setColorOpaque_F(1, 1, 1);
   }
 
   // TODO: This is a really hacky, imprecise and slow way to do this
@@ -246,10 +296,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     float height = bb.maxY - bb.minY;
     float depth = bb.maxZ - bb.minZ;
 
-    if(width > 0 && height > 0 && depth > 0) {
-      if(width / depth > 1.5f || depth / width > 1.5f) {
+    if (width > 0 && height > 0 && depth > 0) {
+      if (width / depth > 1.5f || depth / width > 1.5f) {
         // split horizontally
-        if(width > depth) {
+        if (width > depth) {
           int numSplits = Math.round(width / depth);
           float newWidth = width / numSplits;
           BoundingBox[] result = new BoundingBox[numSplits];
@@ -276,7 +326,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
         }
 
-      } else if(height / width > 1.5) {
+      } else if (height / width > 1.5) {
 
         int numSplits = Math.round(height / width);
         float newWidth = height / numSplits;
@@ -299,18 +349,19 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   public boolean isDynamic() {
     return false;
   }
-  
+
   protected void setVerticesForTransmission(BoundingBox bound, EnumFacing dir) {
     float xs = dir.getFrontOffsetX() == 0 ? transmissionScaleFactor : 1;
     float ys = dir.getFrontOffsetY() == 0 ? transmissionScaleFactor : 1;
     float zs = dir.getFrontOffsetZ() == 0 ? transmissionScaleFactor : 1;
     setupVertices(bound.scale(xs, ys, zs));
   }
-  
+
   protected void addVecWithUV(Vector3d vec, double u, double v) {
-    
+    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+    tes.pos(vec.x, vec.y, vec.z).tex(u, v).endVertex();
   }
-  
+
   protected void setupVertices(BoundingBox bound) {
     setupVertices(bound, null);
   }

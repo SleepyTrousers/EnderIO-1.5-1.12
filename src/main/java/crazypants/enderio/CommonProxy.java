@@ -1,7 +1,5 @@
 package crazypants.enderio;
 
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.render.ConduitRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -27,10 +25,6 @@ public class CommonProxy {
   }
 
   public EntityPlayer getClientPlayer() {
-    return null;
-  }
-
-  public ConduitRenderer getRendererForConduit(IConduit conduit) {
     return null;
   }
 

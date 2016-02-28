@@ -2,18 +2,12 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.List;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.FluidStack;
 
 public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
@@ -22,86 +16,84 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     return conduit instanceof AdvancedLiquidConduit;
   }
 
-  @Override
-  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
-    super.renderConduit(tex, conduit, component, brightness);
-
-    if (!isNSEWUD(component.dir)) {
-      return;
-    }
-    
-      AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
-
-      FluidStack fluid = lc.getFluidType();
-      TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);      
-      if (texture == null) {
-        texture = lc.getNotSetEdgeTexture();
-      }
-
-      float scaleFactor = 0.75f;
-      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
-
-      BoundingBox cube = component.bound;
-      BoundingBox bb = cube.scale(xLen, yLen, zLen);
-
-      for (EnumFacing d : EnumFacing.VALUES) {
-        if (d != component.dir && d != component.dir.getOpposite()) {
-
-          EnumFacing vDir = RenderUtil.getVDirForFace(d);
-          if (component.dir == EnumFacing.UP || component.dir == EnumFacing.DOWN) {
-            vDir = RenderUtil.getUDirForFace(d);
-          } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.getFrontOffsetY() != 0) {
-            vDir = RenderUtil.getUDirForFace(d);
-          }
-
-          float minU = texture.getMinU();
-          float maxU = texture.getMaxU();
-          float minV = texture.getMinV();
-          float maxV = texture.getMaxV();
-
-          float sideScale = Math.max(bb.sizeX(), bb.sizeY()) * 2 / 16f;
-          sideScale = Math.max(sideScale, bb.sizeZ() * 2 / 16f);
-          float width = Math.min(bb.sizeX(), bb.sizeY()) * 15f / 16f;
-
-          List<Vertex> corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
-          moveEdgeCorners(corners, vDir, width);
-          moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
-          for (Vertex c : corners) {
-            addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-          }
-
-          corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
-          moveEdgeCorners(corners, vDir.getOpposite(), width);
-          moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
-          for (Vertex c : corners) {
-            addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-          }
-
-        }
-      }
-
-      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
-//        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-//        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-//        Tessellator tessellator = Tessellator.instance;
-//        for (Vertex c : corners) {
-//          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+  
+  
+//  @Override
+//  protected void renderConduit(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
+//    super.renderConduit(tex, conduit, component, brightness);
+//
+//    if (!isNSEWUD(component.dir)) {
+//      return;
+//    }
+//    
+//      AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
+//
+//      FluidStack fluid = lc.getFluidType();
+//      TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);      
+//      if (texture == null) {
+//        texture = lc.getNotSetEdgeTexture();
+//      }
+//
+//      float scaleFactor = 0.75f;
+//      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+//      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+//      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+//
+//      BoundingBox cube = component.bound;
+//      BoundingBox bb = cube.scale(xLen, yLen, zLen);
+//
+//      for (EnumFacing d : EnumFacing.VALUES) {
+//        if (d != component.dir && d != component.dir.getOpposite()) {
+//
+//          EnumFacing vDir = RenderUtil.getVDirForFace(d);
+//          if (component.dir == EnumFacing.UP || component.dir == EnumFacing.DOWN) {
+//            vDir = RenderUtil.getUDirForFace(d);
+//          } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.getFrontOffsetY() != 0) {
+//            vDir = RenderUtil.getUDirForFace(d);
+//          }
+//
+//          float minU = texture.getMinU();
+//          float maxU = texture.getMaxU();
+//          float minV = texture.getMinV();
+//          float maxV = texture.getMaxV();
+//
+//          float sideScale = Math.max(bb.sizeX(), bb.sizeY()) * 2 / 16f;
+//          sideScale = Math.max(sideScale, bb.sizeZ() * 2 / 16f);
+//          float width = Math.min(bb.sizeX(), bb.sizeY()) * 15f / 16f;
+//
+//          List<Vertex> corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
+//          moveEdgeCorners(corners, vDir, width);
+//          moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
+//          for (Vertex c : corners) {
+//            addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//          }
+//
+//          corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
+//          moveEdgeCorners(corners, vDir.getOpposite(), width);
+//          moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
+//          for (Vertex c : corners) {
+//            addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+//          }
+//
 //        }
-//        //back face
-//        for (int i = corners.size() - 1; i >= 0; i--) {
-//          Vertex c = corners.get(i);
-//          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
-//        }
-      }
+//      }
+//
+//      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+////        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
+////        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+////        Tessellator tessellator = Tessellator.instance;
+////        for (Vertex c : corners) {
+////          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+////        }
+////        //back face
+////        for (int i = corners.size() - 1; i >= 0; i--) {
+////          Vertex c = corners.get(i);
+////          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+////        }
+//      }
+//
+//  }
 
-  }
-
-  @Override
-  protected void renderTransmission(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
-    super.renderTransmission(conduit, tex, component, selfIllum);
-  }
 
   private void moveEdgeCorners(List<Vertex> vertices, EnumFacing edge, float scaleFactor) {
     int[] indices = getClosest(edge, vertices);

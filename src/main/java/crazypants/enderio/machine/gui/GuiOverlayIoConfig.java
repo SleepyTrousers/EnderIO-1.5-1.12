@@ -123,4 +123,8 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   public SelectedFace getSelection() {
     return visible ? renderer.getSelection() : null;
   }
+  
+  @Override
+  public void guiClosed() {            
+  }
 }

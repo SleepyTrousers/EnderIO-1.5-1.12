@@ -1,7 +1,10 @@
 package crazypants.enderio.conduit.render;
 
+import java.util.List;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 
 public interface ConduitRenderer {
 
@@ -11,5 +14,7 @@ public interface ConduitRenderer {
 
   void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick,
       float worldLight);
+
+  void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit con, float brightness, List<BakedQuad> quads);
 
 }

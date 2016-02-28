@@ -300,6 +300,10 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     public boolean isMouseInBounds(int mouseX, int mouseY) {      
       return getBounds().contains(mouseX, mouseY);
     }
+
+    @Override
+    public void guiClosed() {            
+    }
     
   }
 }

@@ -1,21 +1,8 @@
 package crazypants.enderio;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.client.render.IconUtil;
 
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
-import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
-import crazypants.enderio.conduit.power.PowerConduitRenderer;
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
-import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer;
-import crazypants.enderio.conduit.render.ConduitRenderer;
-import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
@@ -85,12 +72,6 @@ public class ClientProxy extends CommonProxy {
   };
   // @formatter:on
 
-  private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
-
-  private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
-
-  private ConduitBundleRenderer cbr;
-
   private boolean checkedNei = false;
   private boolean neiInstalled = false;
 
@@ -119,35 +100,8 @@ public class ClientProxy extends CommonProxy {
     return Minecraft.getMinecraft().thePlayer;
   }
 
-  public ConduitBundleRenderer getConduitBundleRenderer() {
-    return cbr;
-  }
-
-  public void setCbr(ConduitBundleRenderer cbr) {
-    this.cbr = cbr;
-  }
-
   @Override
-  public void loadIcons() {
-    // Hack to get the static init to run and load our textures
-    IconUtil.class.getName();
-    // RedstoneConduit.initIcons();
-    // InsulatedRedstoneConduit.initIcons();
-    // RedstoneSwitch.initIcons();
-    // PowerConduit.initIcons();
-    // LiquidConduit.initIcons();
-    // AdvancedLiquidConduit.initIcons();
-    // EnderLiquidConduit.initIcons();
-    // ItemConduit.initIcons();
-    // if(GasUtil.isGasConduitEnabled()) {
-    // GasConduit.initIcons();
-    // }
-    // if(MEUtil.isMEEnabled()) {
-    // MEConduit.initIcons();
-    // }
-    // if (OCUtil.isOCEnabled()) {
-    // OCConduit.initIcons();
-    // }
+  public void loadIcons() {    
     SmartModelAttacher.create();
   }
 
@@ -161,6 +115,9 @@ public class ClientProxy extends CommonProxy {
     if (Config.addFuelTooltipsToAllFluidContainers) {
       tt.addCallback(new TooltipHandlerFluid());
     }
+    
+    //conduits
+    ConduitBundleRenderManager.instance.registerRenderers();
 
     // Fluids
     EnderIO.fluids.registerRenderers();
@@ -251,13 +208,7 @@ public class ClientProxy extends CommonProxy {
     // ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new
     // TelePadSpecialRenderer(telePadRenderer));
 
-    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
-    ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
-    conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
-    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
-    conduitRenderers.add(LiquidConduitRenderer.create());
-    conduitRenderers.add(new PowerConduitRenderer());
-    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
+    
 
     // Overlays
     new YetaWrenchOverlayRenderer();
@@ -319,16 +270,6 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
 
-  }
-
-  @Override
-  public ConduitRenderer getRendererForConduit(IConduit conduit) {
-    for (ConduitRenderer renderer : conduitRenderers) {
-      if (renderer.isRendererForConduit(conduit)) {
-        return renderer;
-      }
-    }
-    return dcr;
   }
 
   @Override

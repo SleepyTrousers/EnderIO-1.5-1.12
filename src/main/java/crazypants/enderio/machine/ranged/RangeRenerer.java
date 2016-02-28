@@ -51,7 +51,7 @@ public class RangeRenerer extends RenderEntity {
     RenderUtil.bindBlockTexture();
     
     //Tessellator.instance.setBrightness(15 << 20 | 15 << 4);   
-    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, IconUtil.whiteTexture);
+    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, IconUtil.instance.whiteTexture);
 
     GL11.glDepthMask(true);
     GL11.glPopAttrib();

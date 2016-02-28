@@ -113,20 +113,23 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
     selectedOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOSelected"));
     highlightOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOHighlight"));
     enderEyeTex= event.map.registerSprite(new ResourceLocation("minecraft", "items/ender_eye"));
-    frameIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOFrame"));
-    
+    frameIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOFrame"));    
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getSelectedOverlayIcon() {
+    return selectedOverlayIcon;
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public void registerBlockIcons(IIconRegister iIconRegister) {
-  // super.registerBlockIcons(iIconRegister);
-  // frameIcon = iIconRegister.registerIcon("enderio:enderIOFrame");
-  // highlightOverlayIcon =
-  // iIconRegister.registerIcon("enderio:enderIOHighlight");
-  // selectedOverlayIcon =
-  // iIconRegister.registerIcon("enderio:enderIOSelected");
-  // }
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getHighlightOverlayIcon() {
+    return highlightOverlayIcon;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getFrameIcon() {
+    return frameIcon;
+  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
