@@ -66,7 +66,7 @@ public class WailaCompat implements IWailaDataProvider {
       IBlockState bs = wrapped.getBlockState(pos);
       Block block = bs.getBlock();
       if(block instanceof IFacade) {
-        return ((IFacade) block).getFacade(wrapped, pos.getX(), pos.getY(), pos.getZ(), -1).getDefaultState();
+        return ((IFacade) block).getFacade(wrapped, pos, null);
       }
       return bs;
     }
@@ -129,9 +129,9 @@ public class WailaCompat implements IWailaDataProvider {
           return null;
         }
         IFacade bundle = (IFacade) accessor.getBlock();
-        Block facade = bundle.getFacade(accessor.getWorld(), pos.getX(), pos.getY(), pos.getZ(), accessor.getSide().ordinal());
-        if(facade != accessor.getBlock()) {
-          ItemStack ret = facade.getPickBlock(accessor.getMOP(), new WailaWorldWrapper(accessor.getWorld()), pos, accessor.getPlayer());
+        IBlockState facade = bundle.getFacade(accessor.getWorld(), pos, accessor.getSide());
+        if(facade != null && facade.getBlock() != accessor.getBlock()) {
+          ItemStack ret = facade.getBlock().getPickBlock(accessor.getMOP(), new WailaWorldWrapper(accessor.getWorld()), pos, accessor.getPlayer());
           return ret;
         }
       }

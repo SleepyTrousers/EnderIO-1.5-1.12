@@ -174,9 +174,9 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       return;
     }
     ItemStack itemStack = new ItemStack(this);
-    Block srcBlk = anchor.getSourceBlock();
+    IBlockState srcBlk = anchor.getSourceBlock();
     if (srcBlk != null) {
-      itemStack = createItemStackForSourceBlock(anchor.getSourceBlock(), anchor.getSourceBlockMetadata());
+      itemStack = createItemStackForSourceBlock(anchor.getSourceBlock());
       drop.setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
     }
   }
@@ -192,9 +192,9 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintableTileEntity) {
-      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
-      if (sourceBlock != null && sourceBlock != this) {
-        return sourceBlock.colorMultiplier(world, pos);
+      IBlockState sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null && sourceBlock.getBlock() != this) {
+        return sourceBlock.getBlock().colorMultiplier(world, pos);
       }
     }
     return super.colorMultiplier(world, pos);
@@ -205,12 +205,18 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return getUnlocalizedName();
   }
 
-  public ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    if (block == this) {
+  public ItemStack createItemStackForSourceBlock(IBlockState bs) {
+    if (bs.getBlock() == this) {
       return new ItemStack(this);
     }
-    ItemStack result = new ItemStack(this, 1, damage);
-    PainterUtil.setSourceBlock(result, block, damage);
+    ItemStack result = new ItemStack(this, 1, bs.getBlock().getMetaFromState(bs));
+    PainterUtil.setSourceBlock(result, bs);
+    return result;
+  }
+  
+  private ItemStack createItemStackForSourceBlock(Block sourceBlock, int itemDamage) {
+    ItemStack result = new ItemStack(this, 1, itemDamage);
+    PainterUtil.setSourceBlock(result, sourceBlock, itemDamage);
     return result;
   }
 
@@ -233,27 +239,17 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
+
+   
   }
 
   @Override
-  public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileTravelAnchor) {
-      return ((TileTravelAnchor) te).getSourceBlockMetadata();
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    TileTravelAnchor te = getTileEntity(world, pos);
+    if(te == null) {
+      return null;
     }
-    return 0;
+    return te.getSourceBlock();
   }
 
-  @Override
-  public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof IPaintableTileEntity) {
-      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
-      if (sourceBlock != null) {
-        return sourceBlock;
-      }
-    }
-    return this;
-  }
-  
 }

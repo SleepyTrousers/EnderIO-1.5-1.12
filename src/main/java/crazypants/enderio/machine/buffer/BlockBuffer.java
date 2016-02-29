@@ -7,7 +7,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
-import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.IFacade;
@@ -18,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -130,24 +130,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
-  public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileBuffer) {
-      return ((TileBuffer) te).getSourceBlockMetadata();
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    TileBuffer te = getTileEntity(world, pos);
+    if(te == null){ 
+      return null;
     }
-    return 0;
-  }
-
-  @Override
-  public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof IPaintableTileEntity) {
-      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
-      if (sourceBlock != null) {
-        return sourceBlock;
-      }
-    }
-    return this;
+    return te.getSourceBlock();
   }
 
 }

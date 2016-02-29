@@ -54,8 +54,7 @@ public class ItemFusedQuartzFrame extends Item {
       if(tecb == null) {
         return false;
       }
-      tecb.setSourceBlock(PainterUtil.getSourceBlock(itemStack));
-      tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
+      tecb.setSourceBlock(PainterUtil.getSourceBlockState(itemStack));      
       world.markBlockForUpdate(pos);      
       if(!world.isRemote) {
         if(!player.capabilities.isCreativeMode) {

@@ -20,6 +20,7 @@ import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -124,13 +125,10 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       if (world.isAirBlock(placeAt)) {
         world.setBlockState(placeAt, EnderIO.blockConduitBundle.getDefaultState());
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeAt);
-        Block facadeID = PainterUtil.getSourceBlock(itemStack);
-        int facadeMeta = PainterUtil.getSourceBlockMetadata(itemStack);
-        facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
-        bundle.setFacadeId(facadeID);
-        bundle.setFacadeMetadata(facadeMeta);
+        IBlockState bs = PainterUtil.getSourceBlockState(itemStack);
+        bundle.setFacade(bs);
         bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
-        ConduitUtil.playPlaceSound(facadeID.stepSound, world, pos.getX(), pos.getY(), pos.getZ());
+        ConduitUtil.playPlaceSound(bs.getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
         if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
@@ -163,10 +161,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     return result;
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+  public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     super.addInformation(item, par2EntityPlayer, list, par4);
   }
 
@@ -175,17 +172,15 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     return getUnlocalizedName();
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
 
   }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     if(PainterUtil.getSourceBlock(itemstack) == null) {
       list.add(EnderIO.lang.localize("item.itemConduitFacade.tooltip.notpainted"));
     } else {

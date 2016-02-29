@@ -1,15 +1,11 @@
 package crazypants.enderio.machine.painter;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 public interface IPaintableTileEntity {
 
-  void setSourceBlockMetadata(int sourceBlockMetadata);
+  void setSourceBlock(IBlockState sourceBlock);
 
-  int getSourceBlockMetadata();
-
-  void setSourceBlock(Block sourceBlock);
-
-  Block getSourceBlock();
+  IBlockState getSourceBlock();
 
 }

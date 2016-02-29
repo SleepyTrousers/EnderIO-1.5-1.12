@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,14 @@ public final class PainterUtil {
   public static Block getSourceBlock(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
     return getSourceBlock(tag);
+  }
+  
+  public static IBlockState getSourceBlockState(ItemStack item) {
+    Block blk = getSourceBlock(item);
+    if(blk == null) {
+      return null;
+    }
+    return blk.getStateFromMeta(getSourceBlockMetadata(item));
   }
 
   public static Block getSourceBlock(NBTTagCompound tag) {
@@ -80,6 +89,10 @@ public final class PainterUtil {
     }
   }
   
+  public static void setSourceBlock(ItemStack fac, IBlockState facade) {
+    setSourceBlock(fac, facade.getBlock(), facade.getBlock().getMetaFromState(facade));    
+  }
+  
   public static void setSourceBlock(NBTTagCompound tag, Block source, int meta) {
     if (tag == null) {
       return;
@@ -104,8 +117,9 @@ public final class PainterUtil {
     return facadeMeta;
   }
 
+//TODO: 1.8
   public static int adjustFacadeMetadata(Block facadeID, int facadeMeta, EnumFacing side) {
-    //TODO: 1.8
+    
 //    if(facadeID instanceof BlockRotatedPillar) {
 //      int dir = facadeMeta & 0xC;
 //      switch (side) {
@@ -145,4 +159,8 @@ public final class PainterUtil {
     }
     return facadeMeta;
   }
+
+ 
+
+  
 }

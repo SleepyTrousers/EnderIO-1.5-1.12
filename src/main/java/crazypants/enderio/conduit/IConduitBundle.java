@@ -11,6 +11,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -96,17 +97,13 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler {
 
   boolean hasFacade();
 
-  void setFacadeId(Block block);
+  void setFacade(IBlockState block);
 
-  void setFacadeId(Block block, boolean triggerUpdate);
-
-  void setFacadeMetadata(int meta);
+  void setFacade(IBlockState block, boolean triggerUpdate);  
 
   void setFacadeType(FacadeType type);
 
-  Block getFacadeId();
-
-  int getFacadeMetadata();
+  IBlockState getFacade();
 
   FacadeType getFacadeType();
 

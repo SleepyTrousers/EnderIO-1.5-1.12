@@ -3,8 +3,10 @@ package crazypants.enderio.conduit.render;
 import java.util.Collections;
 import java.util.List;
 
+import jline.internal.Log;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -16,9 +18,9 @@ import net.minecraftforge.client.model.ISmartBlockModel;
 public class ConduitBundleBakedModel implements ISmartBlockModel {
 
   private IBakedModel defaultModel;
-  
+
   private ConduitRenderState state;
-   
+
   public ConduitBundleBakedModel(IBakedModel defaultBakedModel) {
     defaultModel = defaultBakedModel;
   }
@@ -29,29 +31,56 @@ public class ConduitBundleBakedModel implements ISmartBlockModel {
   }
 
   @Override
-  public IBakedModel handleBlockState(IBlockState state) {    
-    if (state instanceof ConduitRenderState) {      
-      ConduitRenderState iExtendedBlockState = (ConduitRenderState) state;
-      return new ConduitBundleBakedModel(defaultModel, iExtendedBlockState);
-    }    
+  public IBakedModel handleBlockState(IBlockState state) {
+    if (state instanceof ConduitRenderState) {
+      ConduitRenderState crs = (ConduitRenderState) state;
+      if (crs.getRenderFacade()) {
+        try {
+          BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+          IBakedModel res = blockrendererdispatcher.getBlockModelShapes().getModelForState(crs.getBundle().getFacade());  
+          if(res != null) {
+            int quadCount = 0;
+            for(EnumFacing f : EnumFacing.values()) {
+              List<BakedQuad> quads = res.getFaceQuads(f);
+              if(quads != null) {
+                quadCount += quads.size();
+              }
+            }
+            if(quadCount > 3) {
+              return res;
+            }
+            List<BakedQuad> quads = res.getGeneralQuads();
+            if(quads != null && quadCount + quads.size() > 3) {
+              return res;
+            }
+            //TODO: This or nothing?
+            return getDefaults();
+            
+          }
+        } catch (Exception e) {
+          Log.warn("Could not get model for facade: " + crs.getBundle().getFacade());
+          e.printStackTrace();
+        }
+      } 
+      return new ConduitBundleBakedModel(defaultModel, crs);
+    }
     return new ConduitBundleBakedModel(defaultModel);
   }
-  
+
   @Override
   public List<BakedQuad> getFaceQuads(EnumFacing facing) {
-    if(state == null) {
+    if (state == null) {
       return getDefaults().getFaceQuads(facing);
     }
-    //TODO: Facades
     return Collections.emptyList();
   }
 
   @Override
-  public List<BakedQuad> getGeneralQuads() {    
-    if(state == null) {
-      return getDefaults().getGeneralQuads();      
+  public List<BakedQuad> getGeneralQuads() {
+    if (state == null) {
+      return getDefaults().getGeneralQuads();
     }
-    return ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state);    
+    return ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state);
   }
 
   @Override

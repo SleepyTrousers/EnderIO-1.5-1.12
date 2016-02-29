@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.facade;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import net.minecraft.block.Block;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
+public class BlockConduitFacade extends BlockEio<TileEntityEio> implements IPaintedBlock {
 
   public static BlockConduitFacade create() {
     BlockConduitFacade result = new BlockConduitFacade();
@@ -23,7 +24,7 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
     return result;
   }
 
-  private Block blockOverride;
+  private IBlockState blockOverride;
 
   private BlockConduitFacade() {
     super(ModObject.blockConduitFacade.unlocalisedName, null, new Material(MapColor.stoneColor));
@@ -31,36 +32,11 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
     setCreativeTab(null);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
-//    TileEntity te = ba.getTileEntity(x, y, z);
-//    if(!(te instanceof IConduitBundle)) {
-//      return blockIcon;
-//    }
-//    IConduitBundle cb = (IConduitBundle) te;
-//    Block block = cb.getFacadeId();
-//    if(block != null) {
-//      int meta = cb.getFacadeMetadata();
-//      return block.getIcon(side, meta);
-//    }
-//    return blockIcon;
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int par1, int par2) {
-//    if(blockOverride != null) {
-//      return blockOverride.getIcon(par1, par2);
-//    }
-//    return blockIcon;
-//  }
-
   @Override
   @SideOnly(Side.CLIENT)
   public int getBlockColor() {
     if(blockOverride != null) {
-      return blockOverride.getBlockColor();
+      return blockOverride.getBlock().getBlockColor();
     } else {
       return super.getBlockColor();
     }
@@ -71,14 +47,14 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
   public int colorMultiplier(IBlockAccess par1IBlockAccess, BlockPos pos, int renderPass) {
     if(blockOverride != null) {
       try { //work around for Issue #589
-        return blockOverride.colorMultiplier(par1IBlockAccess, pos, renderPass);
+        return blockOverride.getBlock().colorMultiplier(par1IBlockAccess, pos, renderPass);
       } catch (Exception e) {
       }
     }
     return super.colorMultiplier(par1IBlockAccess, pos, renderPass);
   }
 
-  public Block getIconOverrideBlock() {
+  public IBlockState getIconOverrideBlock() {
     return blockOverride;
   }
 
@@ -86,7 +62,7 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
   @SideOnly(Side.CLIENT)
   public int getRenderColor(IBlockState bs) {
     if(blockOverride != null) {
-      return blockOverride.getRenderColor(bs);
+      return blockOverride.getBlock().getRenderColor(bs);
     } else {
       return super.getRenderColor(bs);
     }
@@ -98,19 +74,18 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
       return;
     }
 
-    Block block = cb.getFacadeId();
-    int meta = cb.getFacadeMetadata();
-    if(block == null || block == this) {
+    IBlockState bs = cb.getFacade();    
+    if(bs == null || bs.getBlock() == this) {
       return;
     }
-    blockOverride = block;
+    blockOverride = bs;
   }
 
   @Override
   public int getDamageValue(World par1World, BlockPos pos) {
     Mimic m = getMimic(par1World, pos.getX(), pos.getY(), pos.getZ());
     if(m != null) {
-      return m.meta;
+      return m.getMeta();
     }
     return 0;
   }
@@ -121,24 +96,27 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
       return null;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    Block id = cb.getFacadeId();
-    int meta = cb.getFacadeMetadata();
-
-    if(id == null) {
+    IBlockState bs = cb.getFacade();
+    if(bs == null) {
       return null;
     }
 
-    return new Mimic(id, meta);
+    return new Mimic(bs);
   }
 
   class Mimic {
+    
+    IBlockState blockState;
 
-    int meta;
-    Block block;
-
-    private Mimic(Block block, int meta) {
-      this.block = block;
-      this.meta = meta;
+    private Mimic(IBlockState block) {
+      this.blockState = block;
+    }
+    
+    int getMeta() {
+      if(blockState == null) {
+        return 0;
+      }
+      return blockState.getBlock().getMetaFromState(blockState);
     }
 
   }

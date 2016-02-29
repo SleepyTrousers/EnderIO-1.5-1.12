@@ -24,6 +24,10 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.BlockPos;
@@ -41,8 +45,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   private final List<IConduit> conduits = new ArrayList<IConduit>();
 
-  private Block facadeId = null;
-  private int facadeMeta = 0;
+  private IBlockState facade = null;  
   private FacadeType facadeType = FacadeType.BASIC;
 
   private boolean facadeChanged;
@@ -79,7 +82,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
-    if(facadeId != null && facadeId.isOpaqueCube() && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+    if(facade != null && facade.getBlock().isOpaqueCube() && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
       return false;
     }
     return super.shouldRenderInPass(arg0);
@@ -94,13 +97,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       conduitTags.appendTag(conduitRoot);
     }
     nbtRoot.setTag("conduits", conduitTags);
-    if(facadeId != null) {
-      nbtRoot.setString("facadeId", Block.blockRegistry.getNameForObject(facadeId).toString());
+    if(facade != null) {
+      nbtRoot.setString("facadeId", Block.blockRegistry.getNameForObject(facade.getBlock()).toString());
+      nbtRoot.setInteger("facadeMeta", facade.getBlock().getMetaFromState(facade));
       nbtRoot.setString("facadeType", facadeType.name());
     } else {
       nbtRoot.setString("facadeId", "null");
     }
-    nbtRoot.setInteger("facadeMeta", facadeMeta);
+    
     nbtRoot.setShort("nbtVersion", NBT_VERSION);
     
 //    if (MicroblocksUtil.supportMicroblocks()) {
@@ -127,15 +131,22 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
     String fs = nbtRoot.getString("facadeId");
     if(fs == null || "null".equals(fs)) {
-      facadeId = null;
+      facade = null;
       facadeType = FacadeType.BASIC;
     } else {
-      facadeId = Block.getBlockFromName(fs);
-      if(nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
-        facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
+      Block facadeBlock = Block.getBlockFromName(fs);      
+      if(facadeBlock != null) {
+        int facadeMeta = nbtRoot.getInteger("facadeMeta");
+        facade = facadeBlock.getStateFromMeta(facadeMeta);
+        if(nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+          facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
+        }
+      } else {
+        facade = null;
+        facadeType = FacadeType.BASIC;
       }
     }
-    facadeMeta = nbtRoot.getInteger("facadeMeta");
+    
 
     if(worldObj != null && worldObj.isRemote) {
       clientUpdated = true;
@@ -148,30 +159,28 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public boolean hasFacade() {
-    return facadeId != null;
+    return getFacade() != null;
   }
 
   @Override
-  public void setFacadeId(Block blockID, boolean triggerUpdate) {
-    this.facadeId = blockID;
+  public void setFacade(IBlockState blockID, boolean triggerUpdate) {
+    this.facade = blockID;
     if(triggerUpdate) {
       facadeChanged = true;
     }
   }
 
   @Override
-  public void setFacadeId(Block blockID) {
-    setFacadeId(blockID, true);
+  public void setFacade(IBlockState blockID) {
+    setFacade(blockID, true);
   }
 
   @Override
-  public Block getFacadeId() {
-    return facadeId;
-  }
-
-  @Override
-  public void setFacadeMetadata(int meta) {
-    facadeMeta = meta;
+  public IBlockState getFacade() {
+//    return facade;
+//    return Blocks.cobblestone.getDefaultState();
+//    return Blocks.anvil.getDefaultState();
+    return Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.MAGENTA);
   }
   
   @Override
@@ -179,11 +188,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     facadeType = type;
   }
 
-  @Override
-  public int getFacadeMetadata() {
-    return facadeMeta;
-  }
-  
   @Override
   public FacadeType getFacadeType() {
     return facadeType;
@@ -207,7 +211,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return hasFacade() ? facadeId.getLightOpacity() : 0;
+      return hasFacade() ? getFacade().getBlock().getLightOpacity() : 0;
     }
     return lightOpacity;
   }

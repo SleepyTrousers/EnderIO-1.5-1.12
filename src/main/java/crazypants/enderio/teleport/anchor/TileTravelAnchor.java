@@ -15,6 +15,7 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.util.UserIdent;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,8 +29,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
   private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
   
-  private Block sourceBlock;
-  private int sourceBlockMetadata;
+  private IBlockState sourceBlock;  
 
   private AccessMode accessMode = AccessMode.PUBLIC;
 
@@ -177,23 +177,13 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
   
   @Override
-  public Block getSourceBlock() {
+  public IBlockState getSourceBlock() {
     return sourceBlock;
   }
 
   @Override
-  public void setSourceBlock(Block sourceBlock) {
+  public void setSourceBlock(IBlockState sourceBlock) {
     this.sourceBlock = sourceBlock;
-  }
-
-  @Override
-  public int getSourceBlockMetadata() {
-    return sourceBlockMetadata;
-  }
-
-  @Override
-  public void setSourceBlockMetadata(int sourceBlockMetadata) {
-    this.sourceBlockMetadata = sourceBlockMetadata;
   }
 
   @Override
@@ -246,8 +236,13 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     }
     
     String sourceBlockStr = root.getString(KEY_SOURCE_BLOCK_ID);
-    sourceBlock = Block.getBlockFromName(sourceBlockStr);
-    sourceBlockMetadata = root.getInteger(KEY_SOURCE_BLOCK_META);
+    Block block = Block.getBlockFromName(sourceBlockStr);
+    int sourceBlockMetadata = root.getInteger(KEY_SOURCE_BLOCK_META);
+    if(block != null) {
+      sourceBlock = block.getStateFromMeta(sourceBlockMetadata);
+    } else {
+      sourceBlock = null;
+    }
     
     label = root.getString("label");
     if(label == null || label.trim().length() == 0) {
@@ -281,9 +276,10 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     }
     
     if(sourceBlock != null) {
-      root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock).toString());
+      root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock.getBlock()).toString());
+      root.setInteger(KEY_SOURCE_BLOCK_META, sourceBlock.getBlock().getMetaFromState(sourceBlock));
     }
-    root.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
+    
     
     if(label != null && label.trim().length() > 0) {
       root.setString("label", label);

@@ -91,19 +91,18 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate)te;
     ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
     if (tepb.getSourceBlock() != null) {
-      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock());
     }
     return Lists.newArrayList(stack);
   }
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-    Block b = PainterUtil.getSourceBlock(stack);
+    IBlockState b = PainterUtil.getSourceBlockState(stack);
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof TileEntityDarkSteelPressurePlate) {
       TileEntityDarkSteelPressurePlate tef = (TileEntityDarkSteelPressurePlate) te;
-      tef.setSourceBlock(b);
-      tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
+      tef.setSourceBlock(b);      
       tef.setSilent(stack.getItemDamage() == 1);
     }
     world.markBlockForUpdate(pos);
@@ -122,7 +121,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     if (te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if (tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, pos);
+        return tef.getSourceBlock().getBlock().colorMultiplier(world, pos);
       }
     }
     return super.colorMultiplier(world, pos, renderPass);

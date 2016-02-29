@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter;
 
 import crazypants.enderio.TileEntityEio;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -39,23 +40,23 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
   }
 
   @Override
-  public Block getSourceBlock() {
-    return sourceBlock;
+  public void setSourceBlock(IBlockState source) {
+    if(source == null) {
+      sourceBlock = null;
+      sourceBlockMetadata = 0;
+    } else {
+      sourceBlock = source.getBlock();
+      sourceBlockMetadata = sourceBlock.getMetaFromState(source);
+    }
+    
   }
 
   @Override
-  public void setSourceBlock(Block sourceBlock) {
-    this.sourceBlock = sourceBlock;
-  }
-
-  @Override
-  public int getSourceBlockMetadata() {
-    return sourceBlockMetadata;
-  }
-
-  @Override
-  public void setSourceBlockMetadata(int sourceBlockMetadata) {
-    this.sourceBlockMetadata = sourceBlockMetadata;
+  public IBlockState getSourceBlock() {
+    if(sourceBlock == null) {
+      return null;
+    }
+    return sourceBlock.getStateFromMeta(sourceBlockMetadata);
   }
 
 }

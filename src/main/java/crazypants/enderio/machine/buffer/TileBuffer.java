@@ -11,6 +11,7 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -184,23 +185,23 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
-  public void setSourceBlockMetadata(int sourceBlockMetadata) {
-    this.sourceBlockMetadata = sourceBlockMetadata;
+  public void setSourceBlock(IBlockState source) {
+    if(source == null) {
+      sourceBlock = null;
+      sourceBlockMetadata = 0;
+    } else {
+      sourceBlock = source.getBlock();
+      sourceBlockMetadata = sourceBlock.getMetaFromState(source);
+    }
+    
   }
 
   @Override
-  public int getSourceBlockMetadata() {
-    return sourceBlockMetadata;
-  }
-
-  @Override
-  public void setSourceBlock(Block sourceBlock) {
-    this.sourceBlock = sourceBlock;
-  }
-
-  @Override
-  public Block getSourceBlock() {
-    return sourceBlock;
+  public IBlockState getSourceBlock() {
+    if(sourceBlock == null) {
+      return null;
+    }
+    return sourceBlock.getStateFromMeta(sourceBlockMetadata);
   }
 
   public boolean hasInventory() {
