@@ -14,12 +14,22 @@ import net.minecraft.util.EnumFacing;
 //I am using this class instead of RenderUtil directly in case I decide to cache the BakedQuads
 public class BakedQuadBuilder {
 
+  
+
+  public static void addBakedQuads(List<BakedQuad> quads, BoundingBox bound, TextureAtlasSprite tex) {
+    RenderUtil.addBakedQuads(quads, bound, tex);    
+  }
+  
+  public static void addBakedQuads(List<BakedQuad> quads, BoundingBox bound, TextureAtlasSprite tex, Vector4f color) {
+    RenderUtil.addBakedQuads(quads, bound, tex, color);    
+  }
+  
+  public static void addBakedQuads(List<BakedQuad> quads, List<Vertex> vertices, TextureAtlasSprite tex, Vector4f color) {
+    RenderUtil.addBakedQuads(quads, vertices, tex, color);   
+  }
+  
   public static void addBakedQuadForFace(List<BakedQuad> quads, BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir) {
     RenderUtil.addBakedQuadForFace(quads, bb, tex, dir);    
-  }
-
-  public static void addBakedQuads(BoundingBox bound, TextureAtlasSprite tex, List<BakedQuad> quads) {
-    RenderUtil.addBakedQuads(bound, tex, quads);    
   }
   
   public static void addBakedQuadForFace(List<BakedQuad> quads, BoundingBox bb, TextureAtlasSprite tex, EnumFacing face, boolean rotateUV, boolean flipU,
@@ -27,9 +37,6 @@ public class BakedQuadBuilder {
     RenderUtil.addBakedQuadForFace(quads, bb, tex, face, rotateUV, flipU, color);
   }
 
-  public static void addBakedQuads(List<BakedQuad> quads, List<Vertex> vertices, TextureAtlasSprite tex, Vector4f color) {
-    RenderUtil.addBakedQuads(quads, vertices, tex, color);
-    
-  }
+  
 
 }

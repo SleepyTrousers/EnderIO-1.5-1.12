@@ -361,9 +361,6 @@ public class EnderIO {
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
-//    itemGasConduit = ItemGasConduit.create();
-//    itemMEConduit = ItemMEConduit.create();
-//    itemOCConduit = ItemOCConduit.create();
 
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();

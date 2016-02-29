@@ -91,7 +91,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);        
       }
     } else {
-      BakedQuadBuilder.addBakedQuads(component.bound, tex, quads);
+      BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
     }
   }
 

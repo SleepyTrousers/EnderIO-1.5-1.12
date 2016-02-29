@@ -8,6 +8,7 @@ import crazypants.enderio.conduit.item.ItemConduitRenderer;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.EnderLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.power.PowerConduit;
@@ -62,7 +63,8 @@ public class ConduitBundleRenderManager {
     cbr.registerRenderer(LiquidConduitRenderer.create());
     cbr.registerRenderer(new PowerConduitRenderer());
     cbr.registerRenderer(new InsulatedRedstoneConduitRenderer());
-    cbr.registerRenderer(new ItemConduitRenderer());    
+    cbr.registerRenderer(new ItemConduitRenderer());  
+    cbr.registerRenderer(new EnderLiquidConduitRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
@@ -88,14 +90,14 @@ public class ConduitBundleRenderManager {
   public void onIconLoad(TextureStitchEvent.Pre event) {
     connectorIconExternal = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitConnector"));
     connectorIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitConnectorExternal"));
-    wireFrameIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitFacade"));
+    wireFrameIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/wireFrame"));
   }
 
   public TextureAtlasSprite getConnectorIcon(Object data) {
     return data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon;
   }
 
-  public TextureAtlasSprite getWireFrameIcon() {
+  public TextureAtlasSprite getWireFrameIcon() {    
     return wireFrameIcon;
   }
 

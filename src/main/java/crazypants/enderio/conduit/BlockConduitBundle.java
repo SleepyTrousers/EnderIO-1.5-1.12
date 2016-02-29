@@ -339,13 +339,23 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
+  public boolean isFullCube() {  
+    return false;
+  }
+
+  @Override
+  public int getLightOpacity() {
+    return 0;
+  }
+  
+  @Override
   public int getLightOpacity(IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
       return super.getLightOpacity(world, pos);
     }
     IConduitBundle con = (IConduitBundle) te;
-    return con.getLightOpacity();
+    return con.getLightOpacity();    
   }
 
   @Override

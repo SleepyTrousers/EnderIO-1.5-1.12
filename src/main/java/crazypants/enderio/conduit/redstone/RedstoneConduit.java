@@ -290,7 +290,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
-    return null;
+    return isActive() ? RedstoneConduit.ICONS.get(KEY_TRANSMISSION_ICON) : RedstoneConduit.ICONS.get(KEY_CONDUIT_ICON);
   }
 
   @Override

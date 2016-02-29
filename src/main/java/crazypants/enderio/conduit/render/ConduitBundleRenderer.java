@@ -155,7 +155,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       } else if (con != null) {
         Collection<CollidableComponent> components = con.getCollidableComponents();
         for (CollidableComponent component : components) {
-          wireBounds.add(component.bound);
+          addWireBounds(wireBounds, component);
         }
       }
     }
@@ -167,21 +167,21 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
         IConduit conduit = bundle.getConduit(component.conduitType);
         if (conduit != null) {
           if (ConduitUtil.renderConduit(player, component.conduitType)) {                   
-            BakedQuadBuilder.addBakedQuads(component.bound, conduit.getTextureForState(component), quads);
+            BakedQuadBuilder.addBakedQuads(quads, component.bound, conduit.getTextureForState(component));
           } else {
-            wireBounds.add(component.bound);
+            addWireBounds(wireBounds, component);
           }
         }
 
       } else if (ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
         TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        BakedQuadBuilder.addBakedQuads(component.bound, tex, quads);
+        BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
       }
     }
     
     // render these after the 'normal' conduits so help with proper blending
     for (BoundingBox wireBound : wireBounds) {
-      BakedQuadBuilder.addBakedQuads(wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon(), quads);
+      BakedQuadBuilder.addBakedQuads(quads, wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon());
     }
 
     // External connection terminations
@@ -191,11 +191,22 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   }
 
+  private void addWireBounds(List<BoundingBox> wireBounds, CollidableComponent component) {
+    if(component.dir != null) {              
+      double sx = component.dir.getFrontOffsetX() != 0 ? 1 : 0.7;
+      double sy = component.dir.getFrontOffsetY() != 0 ? 1 : 0.7;
+      double sz = component.dir.getFrontOffsetZ() != 0 ? 1 : 0.7;                            
+      wireBounds.add(component.bound.scale(sx, sy, sz));
+    } else {
+      wireBounds.add(component.bound);
+    }
+  }
+
   private void addQuadsForExternalConnection(EnumFacing dir, List<BakedQuad> quads) {
     TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
-      BakedQuadBuilder.addBakedQuads(bb, tex, quads);
+      BakedQuadBuilder.addBakedQuads(quads, bb, tex);
     }
   }
 
