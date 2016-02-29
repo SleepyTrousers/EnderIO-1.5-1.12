@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.machine.soul;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,31 +10,26 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.MinecraftForgeClient;
 
-public class FarmingStationRenderMapper extends MachineRenderMapper {
+public class SoulBinderRenderMapper extends MachineRenderMapper {
 
-  public FarmingStationRenderMapper() {
+  public SoulBinderRenderMapper() {
     super(null);
   }
 
   @Override
   protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
-    
+
+//    EnumFacing facing = ((AbstractMachineEntity) tileEntity).getFacing();
     boolean active = ((AbstractMachineEntity) tileEntity).isActive();
-    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
-      if (active) {
-        states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
-      } else {
-        states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_SOUTH));
-      }
+    if (active) {
+      states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
     } else {
       states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
-      renderIO(tileEntity, block, states);
     }
+    // renderIO(tileEntity, block, states);
 
     return states;
   }

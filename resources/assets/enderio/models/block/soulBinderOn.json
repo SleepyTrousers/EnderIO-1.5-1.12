@@ -1,0 +1,6 @@
+{
+    "parent": "enderio:block/soulBinder",
+    "textures": {
+        "2": "enderio:blocks/endermanSkullFrontEyes"
+    }
+}

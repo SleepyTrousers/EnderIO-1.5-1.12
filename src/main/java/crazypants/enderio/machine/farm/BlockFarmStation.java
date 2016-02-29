@@ -118,7 +118,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if(FARM_MACHINE_RENDER_MAPPER == null) {
+    if (FARM_MACHINE_RENDER_MAPPER == null) {
       FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
     }
     return FARM_MACHINE_RENDER_MAPPER;
@@ -127,8 +127,8 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
-if(FARM_MACHINE_RENDER_MAPPER == null) {
-  FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
+    if (FARM_MACHINE_RENDER_MAPPER == null) {
+      FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
     }
     return FARM_MACHINE_RENDER_MAPPER;
   }

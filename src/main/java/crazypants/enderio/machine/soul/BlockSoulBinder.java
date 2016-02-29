@@ -5,20 +5,24 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.farm.FarmingStationRenderMapper;
+import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
-  
-  public static int renderId;
   
   public static BlockSoulBinder create() {
     PacketDrainPlayerXP.register();
@@ -27,6 +31,9 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
     result.init();
     return result;
   }
+
+  @SideOnly(Side.CLIENT)
+  private static FarmingStationRenderMapper RENDER_MAPPER;
   
   protected BlockSoulBinder() {
     super(ModObject.blockSoulBinder, TileSoulBinder.class);
@@ -65,24 +72,6 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
     return 0;
   }
   
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {    
-//    super.registerBlockIcons(iIconRegister);
-  // TODO zombieSkullIcon = iIconRegister.registerIcon("enderio:skullZombie");
-//    creeperSkullIcon = iIconRegister.registerIcon("enderio:skullCreeper");
-//    skeletonSkullIcon = iIconRegister.registerIcon("enderio:skullSkeleton");
-//    endermanSkullIcon = iIconRegister.registerIcon("enderio:endermanSkullFront");
-//    endermanSkullIconOn= iIconRegister.registerIcon("enderio:endermanSkullFrontEyes");
-//  }
-
-  @Override
-  public int getRenderType() {    
-    return renderId;
-  }
-  
-  
-  
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
     int x = pos.getX();
@@ -107,6 +96,24 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 
       }
     }
-  }  
+  } 
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new FarmingStationRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new FarmingStationRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
 
 }
