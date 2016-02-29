@@ -103,7 +103,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return result;
   }
 
-  private TextureAtlasSprite lastRemovedComponetIcon = null;
+  @SideOnly(Side.CLIENT)
+  private TextureAtlasSprite lastRemovedComponetIcon;
 
   private final Random rand = new Random();
 
@@ -185,6 +186,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return true;
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer) {
     int x = pos.getX();

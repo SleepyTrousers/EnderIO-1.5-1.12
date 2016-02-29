@@ -3,7 +3,8 @@ package crazypants.enderio.conduit.liquid;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -13,48 +14,49 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.RedstoneControlMode;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   public static final int CONDUIT_VOLUME = FluidContainerRegistry.BUCKET_VOLUME;
 
-  public static final String ICON_KEY = "enderio:liquidConduitAdvanced";
-  public static final String ICON_KEY_LOCKED = "enderio:liquidConduitAdvancedLocked";
-  public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreAdvanced";
-  public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitAdvancedInput";
-  public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
-  public static final String ICON_EMPTY_EDGE = "enderio:liquidConduitAdvancedEdge";
+  public static final String ICON_KEY = "enderio:blocks/liquidConduitAdvanced";
+  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitAdvancedLocked";
+  public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCoreAdvanced";
+  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquidConduitAdvancedInput";
+  public static final String ICON_INSERT_KEY = "enderio:blocks/liquidConduitAdvancedOutput";
+
+  
+  public static final String ICON_EMPTY_EDGE = "enderio:blocks/liquidConduitAdvancedEdge";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-//  @SideOnly(Side.CLIENT)
-//  public static void initIcons() {
-//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//      @Override
-//      public void registerIcons(IIconRegister register) {
-//        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-//        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-//        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
-//        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
-//        ICONS.put(ICON_EMPTY_EDGE, register.registerIcon(ICON_EMPTY_EDGE));
-//        ICONS.put(ICON_KEY_LOCKED, register.registerIcon(ICON_KEY_LOCKED));
-//      }
-//
-//      @Override
-//      public int getTextureType() {
-//        return 0;
-//      }
-//
-//    });
-//  }
+  @SideOnly(Side.CLIENT)
+  public static void initIcons() {
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+      @Override
+      public void registerIcons(TextureMap register) {
+        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
+        ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
+        ICONS.put(ICON_EMPTY_EDGE, register.registerSprite(new ResourceLocation(ICON_EMPTY_EDGE)));
+        ICONS.put(ICON_KEY_LOCKED, register.registerSprite(new ResourceLocation(ICON_KEY_LOCKED)));
+        ICONS.put(ICON_INSERT_KEY, register.registerSprite(new ResourceLocation(ICON_INSERT_KEY)));        
+        ICONS.put(ICON_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EXTRACT_KEY)));        
+      }     
+
+    });
+  }
 
   private AdvancedLiquidConduitNetwork network;
 
@@ -81,8 +83,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     }
   }
 
-  private void doExtract() {
-    BlockCoord loc = getLocation();
+  private void doExtract() {    
     // Extraction can happen on extract mode or in/out mode
     if(!hasExtractableMode()) {
       return;
@@ -97,8 +98,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
       // after 25 ticks of failing, only check every 10 ticks
       return;
     }
-
-    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
+  
     for (EnumFacing dir : externalConnections) {
       if(autoExtractForDir(dir)) {
         if(network.extractFrom(this, dir, MAX_EXTRACT_PER_TICK)) {
@@ -199,6 +199,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     refreshInputs(fromDirection);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if(component.dir == null) {
@@ -207,14 +208,17 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
   }
 
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(ICON_EXTRACT_KEY);
+    return ICONS.get(ICON_EXTRACT_KEY);       
   }
 
-  public TextureAtlasSprite getTextureForOutputMode() {
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getTextureForOutputMode() {    
     return ICONS.get(ICON_INSERT_KEY);
   }
 
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getNotSetEdgeTexture() {
     return ICONS.get(ICON_EMPTY_EDGE);
   }
@@ -222,8 +226,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     if(isActive() && tank.containsValidLiquid()) {
-      //TODO: 1.8
-      //return tank.getFluid().getFluid().getStillIcon();
+      return RenderUtil.getStillTexture(tank.getFluid());
     }
     return null;
   }

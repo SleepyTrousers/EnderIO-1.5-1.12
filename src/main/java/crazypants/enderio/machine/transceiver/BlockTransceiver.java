@@ -59,6 +59,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     }    
   }
   
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getPortalIcon() {    
     return portalIcon;
   }

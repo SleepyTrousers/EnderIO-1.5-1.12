@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -14,37 +15,36 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RedstoneSwitch extends RedstoneConduit {
 
   static final String SWITCH_TAG = "switch";
-  public static final String SWITHC_ICON_OFF_KEY = "enderio:redstoneConduitSwitchOff";
-  public static final String SWITCH_ICON_ON_KEY = "enderio:redstoneConduitSwitchOn";
+  public static final String SWITHC_ICON_OFF_KEY = "enderio:blocks/redstoneConduitSwitchOff";
+  public static final String SWITCH_ICON_ON_KEY = "enderio:blocks/redstoneConduitSwitchOn";
 
   private boolean isOn;
 
-//  @SideOnly(Side.CLIENT)
-//  public static void initIcons() {
-//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//      @Override
-//      public void registerIcons(IIconRegister register) {
-//        ICONS.put(RedstoneSwitch.SWITHC_ICON_OFF_KEY, register.registerIcon(SWITHC_ICON_OFF_KEY));
-//        ICONS.put(RedstoneSwitch.SWITCH_ICON_ON_KEY, register.registerIcon(SWITCH_ICON_ON_KEY));
-//      }
-//
-//      @Override
-//      public int getTextureType() {
-//        return 0;
-//      }
-//
-//    });
-//  }
+  @SideOnly(Side.CLIENT)
+  public static void initIcons() {
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+      @Override
+      public void registerIcons(TextureMap register) {
+        ICONS.put(RedstoneSwitch.SWITHC_ICON_OFF_KEY, register.registerSprite(new ResourceLocation(SWITHC_ICON_OFF_KEY)));
+        ICONS.put(RedstoneSwitch.SWITCH_ICON_ON_KEY, register.registerSprite(new ResourceLocation(SWITCH_ICON_ON_KEY)));
+      }    
+
+    });
+  }
 
   @Override
   public ItemStack createItem() {

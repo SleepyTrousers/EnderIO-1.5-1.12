@@ -37,6 +37,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -60,6 +62,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
+  @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
@@ -586,35 +589,42 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return true;
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForInputMode() {
     return ICONS.get(ICON_KEY_INPUT);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForOutputMode() {
     return ICONS.get(ICON_KEY_OUTPUT);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForInOutMode(boolean input) {
     return input ? ICONS.get(ICON_KEY_IN_OUT_IN) : ICONS.get(ICON_KEY_IN_OUT_OUT);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForInOutBackground() {
     return ICONS.get(ICON_KEY_IN_OUT_BG);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getEnderIcon() {
     return ICONS.get(ICON_KEY_ENDER);
   }
 
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getCoreIcon() {
     return ICONS.get(ICON_KEY_CORE);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if(component.dir == null) {
@@ -626,6 +636,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return ICONS.get(ICON_KEY);
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return getEnderIcon();

@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.enderio.core.client.render.VertexTranslation;
@@ -16,6 +15,7 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 
+import crazypants.enderio.conduit.render.BakedQuadBuilder;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
@@ -111,7 +111,7 @@ public class ConnectionModeGeometry {
       xf.xyz.add(trans);
       xFormed.add(xf);
     }
-    RenderUtil.addBakedQuads(quads, xFormed, tex, color);
+    BakedQuadBuilder.addBakedQuads(quads, xFormed, tex, color);
   }
 
 }

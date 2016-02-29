@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -18,45 +19,40 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EnderLiquidConduit extends AbstractLiquidConduit {
 
-  public static final String ICON_KEY = "enderio:liquidConduitEnder";
-  public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreEnder";
-  public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitAdvancedInput";
-  public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
-  public static final String ICON_IN_OUT_KEY = "enderio:liquidConduitAdvancedInOut";
+  public static final String ICON_KEY = "enderio:blocks/liquidConduitEnder";
+  public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCoreEnder"; 
+  public static final String ICON_IN_OUT_KEY = "enderio:blocks/liquidConduitAdvancedInOut";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-//  @SideOnly(Side.CLIENT)
-//  public static void initIcons() {
-//    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-//
-//      @Override
-//      public void registerIcons(IIconRegister register) {
-//        ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-//        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-//        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
-//        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
-//        ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
-//      }
-//
-//      @Override
-//      public int getTextureType() {
-//        return 0;
-//      }
-//
-//    });
-//  }
+  @SideOnly(Side.CLIENT)
+  public static void initIcons() {
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+      @Override
+      public void registerIcons(TextureMap register) {
+        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
+        ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
+        ICONS.put(ICON_IN_OUT_KEY, register.registerSprite(new ResourceLocation(ICON_IN_OUT_KEY)));
+      }
+
+    });
+  }
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
@@ -151,6 +147,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     return true;
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if(component.dir ==null) {
@@ -159,14 +156,17 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     return ICONS.get(ICON_KEY);
   }
 
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(ICON_EXTRACT_KEY);
+    return AdvancedLiquidConduit.ICONS.get(AdvancedLiquidConduit.ICON_EXTRACT_KEY);
   }
 
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForOutputMode() {
-    return ICONS.get(ICON_INSERT_KEY);
+    return AdvancedLiquidConduit.ICONS.get(AdvancedLiquidConduit.ICON_INSERT_KEY);    
   }
 
+  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInOutMode() {
     return ICONS.get(ICON_IN_OUT_KEY);
   }
@@ -227,8 +227,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     doExtract();
   }
 
-  private void doExtract() {
-    BlockCoord loc = getLocation();
+  private void doExtract() {    
     if(!hasExtractableMode()) {
       return;
     }

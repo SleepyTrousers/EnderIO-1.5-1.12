@@ -88,10 +88,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       addQuadsForSection(bb, tex, component.dir, quads);
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        RenderUtil.addBakedQuadForFace(quads, bb, tex, component.dir);
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);        
       }
     } else {
-      RenderUtil.addBakedQuads(component.bound, tex, quads);
+      BakedQuadBuilder.addBakedQuads(component.bound, tex, quads);
     }
   }
 
@@ -112,7 +112,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         } else {
           doRotSides = rotateSides;
         }
-        RenderUtil.addBakedQuadForFace(quads, bb, tex, face, doRotSides, rotateTopBottom, color);
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, face, doRotSides, rotateTopBottom, color);
       }
     }
   }
@@ -128,6 +128,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
     addQuadsForSection(bb, tex, component.dir, quads);
   }
+  
+  
 
   // ------------ Dynamic ---------------------------------------------
 

@@ -10,10 +10,10 @@ import net.minecraft.world.World;
 
 public interface IRedstoneConduit extends IConduit {
 
-  public static final String KEY_CONDUIT_ICON = "enderio:redstoneConduit";
-  public static final String KEY_TRANSMISSION_ICON = "enderio:redstoneConduitTransmission";
-  public static final String KEY_CORE_OFF_ICON = "enderio:redstoneConduitCoreOff";
-  public static final String KEY_CORE_ON_ICON = "enderio:redstoneConduitCoreOn";
+  public static final String KEY_CONDUIT_ICON = "enderio:blocks/redstoneConduit";
+  public static final String KEY_TRANSMISSION_ICON = "enderio:blocks/redstoneConduitTransmission";
+  public static final String KEY_CORE_OFF_ICON = "enderio:blocks/redstoneConduitCoreOff";
+  public static final String KEY_CORE_ON_ICON = "enderio:blocks/redstoneConduitCoreOn";
 
   // External redstone interface
 

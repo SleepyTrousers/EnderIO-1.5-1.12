@@ -17,6 +17,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IConduit {
 
@@ -100,8 +102,10 @@ public interface IConduit {
 
   // rendering, only needed us default rendering is used
 
+  @SideOnly(Side.CLIENT)
   TextureAtlasSprite getTextureForState(CollidableComponent component);
 
+  @SideOnly(Side.CLIENT)
   TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component);
 
   float getTransmitionGeometryScale();

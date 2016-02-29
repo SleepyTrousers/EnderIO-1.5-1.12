@@ -23,12 +23,6 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.item.ItemConduitRenderer;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
-import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
-import crazypants.enderio.conduit.power.PowerConduitRenderer;
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
-import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -50,13 +44,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
   private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
   private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
-  public ConduitBundleRenderer() {
-    conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
-    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
-    conduitRenderers.add(LiquidConduitRenderer.create());
-    conduitRenderers.add(new PowerConduitRenderer());
-    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
-    conduitRenderers.add(new ItemConduitRenderer());
+  public ConduitBundleRenderer() {    
+  }
+  
+  public void registerRenderer(ConduitRenderer renderer) {
+    conduitRenderers.add(renderer);
   }
 
   // TESR rendering
@@ -175,7 +167,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
         IConduit conduit = bundle.getConduit(component.conduitType);
         if (conduit != null) {
           if (ConduitUtil.renderConduit(player, component.conduitType)) {                   
-            RenderUtil.addBakedQuads(component.bound, conduit.getTextureForState(component), quads);
+            BakedQuadBuilder.addBakedQuads(component.bound, conduit.getTextureForState(component), quads);
           } else {
             wireBounds.add(component.bound);
           }
@@ -183,13 +175,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
       } else if (ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
         TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        RenderUtil.addBakedQuads(component.bound, tex, quads);
+        BakedQuadBuilder.addBakedQuads(component.bound, tex, quads);
       }
     }
     
     // render these after the 'normal' conduits so help with proper blending
     for (BoundingBox wireBound : wireBounds) {
-      RenderUtil.addBakedQuads(wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon(), quads);
+      BakedQuadBuilder.addBakedQuads(wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon(), quads);
     }
 
     // External connection terminations
@@ -203,7 +195,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
-      RenderUtil.addBakedQuads(bb, tex, quads);
+      BakedQuadBuilder.addBakedQuads(bb, tex, quads);
     }
   }
 

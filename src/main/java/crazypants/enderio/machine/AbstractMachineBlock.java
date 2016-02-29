@@ -50,8 +50,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     IWailaInfoProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
-  private static final MachineRenderMapper MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.BODY);
-
+  private static MachineRenderMapper MACHINE_RENDER_MAPPER;
+  
   @SideOnly(Side.CLIENT)
   public static TextureAtlasSprite selectedFaceIcon;
 
@@ -269,12 +269,18 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if(MACHINE_RENDER_MAPPER == null) {
+      MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.BODY);
+    }
     return MACHINE_RENDER_MAPPER;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
+    if(MACHINE_RENDER_MAPPER == null) {
+      MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.BODY);
+    }
     return MACHINE_RENDER_MAPPER;
   }
 

@@ -7,9 +7,9 @@ import net.minecraft.util.EnumFacing;
 
 public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 
-  static final String KEY_INS_CONDUIT_ICON = "enderio:redstoneInsulatedConduit";
-  static final String KEY_INS_CORE_OFF_ICON = "enderio:redstoneInsulatedConduitCoreOff";
-  static final String KEY_INS_CORE_ON_ICON = "enderio:redstoneInsulatedConduitCoreOn";
+  static final String KEY_INS_CONDUIT_ICON = "enderio:blocks/redstoneInsulatedConduit";
+  static final String KEY_INS_CORE_OFF_ICON = "enderio:blocks/redstoneInsulatedConduitCoreOff";
+  static final String KEY_INS_CORE_ON_ICON = "enderio:blocks/redstoneInsulatedConduitCoreOn";
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 

@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
 
   @SideOnly(Side.CLIENT)
-  private static final MachineRenderMapper SOUL_MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
+  private static MachineRenderMapper SOUL_MACHINE_RENDER_MAPPER;
 
   public static BlockSliceAndSplice create() {
     BlockSliceAndSplice result = new BlockSliceAndSplice();
@@ -101,12 +101,18 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if(SOUL_MACHINE_RENDER_MAPPER == null) {
+      SOUL_MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
+    }
     return SOUL_MACHINE_RENDER_MAPPER;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
+if(SOUL_MACHINE_RENDER_MAPPER == null) {
+  SOUL_MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
+    }
     return SOUL_MACHINE_RENDER_MAPPER;
   }
 

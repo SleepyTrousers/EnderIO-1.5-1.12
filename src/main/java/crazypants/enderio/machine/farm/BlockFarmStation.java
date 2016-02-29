@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   @SideOnly(Side.CLIENT)
-  private static final MachineRenderMapper FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
+  private static MachineRenderMapper FARM_MACHINE_RENDER_MAPPER;
 
   public static BlockFarmStation create() {
     PacketHandler.INSTANCE.registerMessage(PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
@@ -63,6 +63,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
     return GuiHandler.GUI_ID_FARM_STATATION;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public IOMode.EnumIOMode mapIOMode(IoMode mode, EnumFacing side) {
     if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
@@ -117,12 +118,18 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if(FARM_MACHINE_RENDER_MAPPER == null) {
+      FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
+    }
     return FARM_MACHINE_RENDER_MAPPER;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
+if(FARM_MACHINE_RENDER_MAPPER == null) {
+  FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
+    }
     return FARM_MACHINE_RENDER_MAPPER;
   }
 

@@ -16,7 +16,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
@@ -32,11 +31,7 @@ import crazypants.enderio.machine.capbank.render.EnumCapbankRenderMode;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
@@ -76,7 +71,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
-  private static final CapBankRenderMapper CAPBANK_RENDER_MAPPER = new CapBankRenderMapper();
+  private static CapBankRenderMapper CAPBANK_RENDER_MAPPER;
 
   public static BlockCapBank create() {
 
@@ -143,7 +138,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return CAPBANK_RENDER_MAPPER.getExtendedState(state, world, pos);
+    return getMapper().getExtendedState(state, world, pos);
   }
 
   @Override
@@ -524,12 +519,20 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return CAPBANK_RENDER_MAPPER;
+    return getMapper();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
+    return getMapper();
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public CapBankRenderMapper getMapper() {
+    if(CAPBANK_RENDER_MAPPER == null) {
+      CAPBANK_RENDER_MAPPER = new CapBankRenderMapper();
+    }
     return CAPBANK_RENDER_MAPPER;
   }
 
