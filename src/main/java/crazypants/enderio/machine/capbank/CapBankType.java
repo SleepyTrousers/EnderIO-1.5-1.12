@@ -2,34 +2,28 @@ package crazypants.enderio.machine.capbank;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.capbank.render.EnumCapbankRenderMode;
 
-public class CapBankType {
+public enum CapBankType implements IStringSerializable {
 
-  public static final CapBankType CREATIVE = new CapBankType("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false,
-      true,
-      "enderio:capacitorBank", "enderio:capacitorBankCreativeBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
-      "enderio:capacitorBankLocked");
+  NONE("NONE", "tile.blockCapBank.none", 0, 0, false, true),
 
-  public static final CapBankType SIMPLE = new CapBankType("SIMPLE", "tile.blockCapBank.simple", Config.capacitorBankTierOneMaxIoRF,
-      Config.capacitorBankTierOneMaxStorageRF,
-      true,
-      false, "enderio:capacitorBank", "enderio:capacitorBankSimpleBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
-      "enderio:capacitorBankLocked");
+  CREATIVE("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false, true),
 
-  public static final CapBankType ACTIVATED = new CapBankType("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF,
-      Config.capacitorBankTierTwoMaxStorageRF,
-      true,
-      false, "enderio:capacitorBank", "enderio:capacitorBankActivatedBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
-      "enderio:capacitorBankLocked");
+  SIMPLE("SIMPLE", "tile.blockCapBank.simple", Config.capacitorBankTierOneMaxIoRF, Config.capacitorBankTierOneMaxStorageRF, true, false),
 
-  public static final CapBankType VIBRANT = new CapBankType("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF,
-      Config.capacitorBankTierThreeMaxStorageRF,
-      true, false, "enderio:capacitorBank", "enderio:capacitorBankVibrantBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
-      "enderio:capacitorBankLocked");
+  ACTIVATED("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF, Config.capacitorBankTierTwoMaxStorageRF, true, false),
+
+  VIBRANT("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF, Config.capacitorBankTierThreeMaxStorageRF, true, false);
+
+  public static final PropertyEnum<CapBankType> KIND = PropertyEnum.<CapBankType> create("kind", CapBankType.class);
 
   private static final List<CapBankType> TYPES = new ArrayList<CapBankType>();
 
@@ -73,25 +67,14 @@ public class CapBankType {
   private final int maxStored;
   private final boolean isMultiblock;
   private final boolean isCreative;
-  private final String icon;
-  private final String borderIcon;
-  private final String inputIcon;
-  private final String outputIcon;
-  private final String lockedIcon;
 
-  public CapBankType(String uid, String unlocalizedName, int maxIO, int maxStored, boolean isMultiblock, boolean isCreative, String icon, String borderIcon,
-      String inputIcon, String outputIcon, String lockedIcon) {
+  private CapBankType(String uid, String unlocalizedName, int maxIO, int maxStored, boolean isMultiblock, boolean isCreative) {
     this.uid = uid;
     this.unlocalizedName = unlocalizedName;
     this.maxIO = maxIO;
     this.maxStored = maxStored;
     this.isMultiblock = isMultiblock;
     this.isCreative = isCreative;
-    this.icon = icon;
-    this.borderIcon = borderIcon;
-    this.inputIcon = inputIcon;
-    this.outputIcon = outputIcon;
-    this.lockedIcon = lockedIcon;
   }
 
   public int getMaxIO() {
@@ -114,26 +97,6 @@ public class CapBankType {
     return unlocalizedName;
   }
 
-  public String getIcon() {
-    return icon;
-  }
-
-  public String getBorderIcon() {
-    return borderIcon;
-  }
-
-  public String getInputIcon() {
-    return inputIcon;
-  }
-
-  public String getOutputIcon() {
-    return outputIcon;
-  }
-
-  public String getLockedIcon() {
-    return lockedIcon;
-  }
-
   public String getUid() {
     return uid;
   }
@@ -147,6 +110,11 @@ public class CapBankType {
       return ACTIVATED;
     }
     return getTypeFromUID(nbtRoot.getString("type"));
+  }
+
+  @Override
+  public String getName() {
+    return name().toLowerCase(Locale.ENGLISH);
   }
 
 }

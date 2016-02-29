@@ -16,6 +16,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
@@ -26,12 +27,24 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.machine.capbank.render.CapBankRenderMapper;
+import crazypants.enderio.machine.capbank.render.EnumCapbankRenderMode;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,6 +59,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -58,7 +72,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable {
+public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable,
+    ISmartRenderAwareBlock {
+
+  @SideOnly(Side.CLIENT)
+  private static final CapBankRenderMapper CAPBANK_RENDER_MAPPER = new CapBankRenderMapper();
 
   public static BlockCapBank create() {
 
@@ -83,20 +101,11 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @SideOnly(Side.CLIENT)
   private TextureAtlasSprite infoPanelIcon;
 
-  // @SideOnly(Side.CLIENT)
-  // private IIcon[] blockIcons;
-  // @SideOnly(Side.CLIENT)
-  // private IIcon[] borderIcons;
-  // @SideOnly(Side.CLIENT)
-  // private IIcon[] inputIcons;
-  // @SideOnly(Side.CLIENT)
-  // private IIcon[] outputIcons;
-  // @SideOnly(Side.CLIENT)
-  // private IIcon[] lockedIcons;
-
   protected BlockCapBank() {
     super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class);
     setHardness(2.0F);
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.AUTO)
+        .withProperty(CapBankType.KIND, CapBankType.NONE));
   }
 
   @Override
@@ -108,6 +117,39 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAP_BANK, this);
     setLightOpacity(255);
+    SmartModelAttacher.register(this, EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.DEFAULTS, EnumCapbankRenderMode.AUTO);
+  }
+
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumCapbankRenderMode.RENDER, CapBankType.KIND });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState().withProperty(CapBankType.KIND, CapBankType.getTypeFromMeta(meta));
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return CapBankType.getMetaFromType(state.getValue(CapBankType.KIND));
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return state.withProperty(EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.AUTO);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return CAPBANK_RENDER_MAPPER.getExtendedState(state, world, pos);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public EnumWorldBlockLayer getBlockLayer() {
+    return EnumWorldBlockLayer.CUTOUT;
   }
 
   @Override
@@ -236,31 +278,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     return null;
   }
 
-  // @SideOnly(Side.CLIENT)
-  // @Override
-  // public void registerBlockIcons(IIconRegister IIconRegister) {
-  // blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
-  // gaugeIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
-  // fillBarIcon = IIconRegister.registerIcon("enderio:capacitorBankFillBar");
-  // infoPanelIcon = IIconRegister.registerIcon("enderio:capBankInfoPanel");
-  //
-  // blockIcons = new IIcon[CapBankType.types().size()];
-  // borderIcons = new IIcon[CapBankType.types().size()];
-  // inputIcons = new IIcon[CapBankType.types().size()];
-  // outputIcons = new IIcon[CapBankType.types().size()];
-  // lockedIcons = new IIcon[CapBankType.types().size()];
-  // int index = 0;
-  // for (CapBankType type : CapBankType.types()) {
-  // blockIcons[index] = IIconRegister.registerIcon(type.getIcon());
-  // borderIcons[index] = IIconRegister.registerIcon(type.getBorderIcon());
-  // inputIcons[index] = IIconRegister.registerIcon(type.getInputIcon());
-  // outputIcons[index] = IIconRegister.registerIcon(type.getOutputIcon());
-  // lockedIcons[index] = IIconRegister.registerIcon(type.getLockedIcon());
-  // ++index;
-  // }
-  //
-  // }
-
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onIconLoad(TextureStitchEvent.Pre event) {
@@ -285,51 +302,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     Block i1 = par1IBlockAccess.getBlockState(pos).getBlock();
     return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, pos, side);
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IIcon getIcon(int side, int meta) {
-  // meta = MathHelper.clamp_int(meta, 0, blockIcons.length - 1);
-  // return blockIcons[meta];
-  // }
-  //
-  // @SideOnly(Side.CLIENT)
-  // public IIcon getBorderIcon(int side, int meta) {
-  // meta = MathHelper.clamp_int(meta, 0, blockIcons.length - 1);
-  // return borderIcons[meta];
-  // }
-  //
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
-  // TileEntity te = ba.getTileEntity(x, y, z);
-  // if(!(te instanceof TileCapBank)) {
-  // return blockIcons[0];
-  // }
-  //
-  // // if(true) {
-  // // return IconUtil.blankTexture;
-  // // }
-  //
-  // TileCapBank cb = (TileCapBank) te;
-  // EnumFacing face = EnumFacing.values()[side];
-  //
-  // int meta = ba.getBlockMetadata(x, y, z);
-  // meta = MathHelper.clamp_int(meta, 0, CapBankType.types().size() - 1);
-  //
-  // IoMode mode = cb.getIoMode(face);
-  // if(mode == null || mode == IoMode.NONE || cb.getDisplayType(face) !=
-  // InfoDisplayType.NONE) {
-  // return blockIcons[meta];
-  // }
-  // if(mode == IoMode.PULL) {
-  // return inputIcons[meta];
-  // }
-  // if(mode == IoMode.PUSH) {
-  // return outputIcons[meta];
-  // }
-  // return lockedIcons[meta];
-  // }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getGaugeIcon() {
@@ -547,5 +519,52 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
     return true;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return CAPBANK_RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    return CAPBANK_RENDER_MAPPER;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IOMode.EnumIOMode mapIOMode(InfoDisplayType displayType, IoMode mode) {
+    switch (displayType) {
+    case IO:
+      return IOMode.EnumIOMode.CAPACITORBANK;
+    case LEVEL_BAR:
+      switch (mode) {
+      case NONE:
+        return IOMode.EnumIOMode.CAPACITORBANK;
+      case PULL:
+        return IOMode.EnumIOMode.CAPACITORBANKINPUTSMALL;
+      case PUSH:
+        return IOMode.EnumIOMode.CAPACITORBANKOUTPUTSMALL;
+      case PUSH_PULL:
+        return IOMode.EnumIOMode.CAPACITORBANK;
+      case DISABLED:
+        return IOMode.EnumIOMode.CAPACITORBANKLOCKEDSMALL;
+      }
+    case NONE:
+      switch (mode) {
+      case NONE:
+        return IOMode.EnumIOMode.CAPACITORBANK;
+      case PULL:
+        return IOMode.EnumIOMode.CAPACITORBANKINPUT;
+      case PUSH:
+        return IOMode.EnumIOMode.CAPACITORBANKOUTPUT;
+      case PUSH_PULL:
+        return IOMode.EnumIOMode.CAPACITORBANK;
+      case DISABLED:
+        return IOMode.EnumIOMode.CAPACITORBANKLOCKED;
+      }
+    }
+    throw new RuntimeException("Hey, leave our enums alone!");
   }
 }

@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -22,10 +23,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SmartModelAttacher {
 
-  private static final List<Block> blocks = new ArrayList<Block>();
+  private static class RegistrationHolder<T extends Comparable<T>, V extends T> {
+    Block block;
+    IProperty<T> property;
+    V defaultsValue;
+    V autoValue;
+
+    protected RegistrationHolder(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
+      this.block = block;
+      this.property = property;
+      this.defaultsValue = defaultsValue;
+      this.autoValue = autoValue;
+    }
+  }
+
+  private static final List<RegistrationHolder> blocks = new ArrayList<RegistrationHolder>();
 
   public static void register(Block block) {
-    blocks.add(block);
+    register(block, EnumRenderMode.RENDER, EnumRenderMode.DEFAULTS, EnumRenderMode.AUTO);
+  }
+
+  public static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
+    blocks.add(new RegistrationHolder(block, property, defaultsValue, autoValue));
   }
 
   public static void create() {
@@ -40,7 +59,8 @@ public class SmartModelAttacher {
    */
   @SideOnly(Side.CLIENT)
   public static void registerBlockItemModels() {
-    for (Block block : blocks) {
+    for (RegistrationHolder holder : blocks) {
+      Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
       ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
       if (item.getHasSubtypes()) {
@@ -58,11 +78,12 @@ public class SmartModelAttacher {
   @SubscribeEvent()
   @SideOnly(Side.CLIENT)
   public void bakeModels(ModelBakeEvent event) {
-    for (Block block : blocks) {
+    for (RegistrationHolder holder : blocks) {
+      Block block = holder.block;
       Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(block);
 
-      if (block.getDefaultState().getPropertyNames().contains(EnumRenderMode.RENDER)) {
-        IBlockState defaultState = block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.DEFAULTS);
+      if (holder.property != null && block.getDefaultState().getPropertyNames().contains(holder.property)) {
+        IBlockState defaultState = block.getDefaultState().withProperty(holder.property, holder.defaultsValue);
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         IBakedModel defaultBakedModel = event.modelRegistry.getObject(defaultMrl);
         MachineSmartModel model = new MachineSmartModel(defaultBakedModel);
@@ -71,7 +92,7 @@ public class SmartModelAttacher {
         event.modelRegistry.putObject(itemMrl, model);
 
         for (Entry<IBlockState, ModelResourceLocation> entry : locations.entrySet()) {
-          if (entry.getKey().getValue(EnumRenderMode.RENDER) == EnumRenderMode.AUTO) {
+          if (entry.getKey().getValue(holder.property) == holder.autoValue) {
             event.modelRegistry.putObject(entry.getValue(), model);
           }
         }
