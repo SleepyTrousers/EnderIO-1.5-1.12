@@ -5,6 +5,7 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.farm.FarmingStationRenderMapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
@@ -33,7 +34,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   }
 
   @SideOnly(Side.CLIENT)
-  private static FarmingStationRenderMapper RENDER_MAPPER;
+  private static MachineRenderMapper RENDER_MAPPER;
   
   protected BlockSoulBinder() {
     super(ModObject.blockSoulBinder, TileSoulBinder.class);
@@ -102,7 +103,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new FarmingStationRenderMapper();
+      RENDER_MAPPER = new SoulBinderRenderMapper();
     }
     return RENDER_MAPPER;
   }
@@ -111,7 +112,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new FarmingStationRenderMapper();
+      RENDER_MAPPER = new SoulBinderRenderMapper();
     }
     return RENDER_MAPPER;
   }
