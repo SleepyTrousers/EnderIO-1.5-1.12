@@ -250,7 +250,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @SideOnly(Side.CLIENT)
-  public IOMode.EnumIOMode mapIOMode(IoMode mode) {
+  public IOMode.EnumIOMode mapIOMode(IoMode mode, EnumFacing side) {
     switch (mode) {
     case NONE:
       return IOMode.EnumIOMode.NONE;

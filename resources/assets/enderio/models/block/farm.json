@@ -1,0 +1,95 @@
+{
+    "textures":{
+        "particle":"enderio:blocks/machineBottom",
+        "machineTop":"enderio:blocks/machineTop",
+        "farmBaseTop":"enderio:blocks/farmBaseTop",
+        "machineBottom":"enderio:blocks/machineBottom",
+        "farmSide":"enderio:blocks/farmSide",
+        "farmHatBottom":"enderio:blocks/farmHatBottom",
+        "farmCore":"enderio:blocks/farmCore"
+    },
+"__comment": "Designed by - with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "__comment": "base",
+    "from": [ 0.05, 0.05, 0.05 ],
+    "to": [ 15.95, 11, 15.95 ],
+    "faces": {
+        "down":  { "uv": [ 16, 16, 0, 0 ], "texture": "#machineBottom", "cullface": "down" },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#farmBaseTop" },
+        "north": { "uv": [ 0, 5, 16, 16 ], "texture": "#farmSide", "cullface": "north" },
+        "south": { "uv": [ 0, 5, 16, 16 ], "texture": "#farmSide", "cullface": "south" },
+        "west":  { "uv": [ 0, 5, 16, 16 ], "texture": "#farmSide", "cullface": "west" },
+        "east":  { "uv": [ 0, 5, 16, 16 ], "texture": "#farmSide", "cullface": "east" }
+    }
+},
+{
+    "__comment": "top",
+    "from": [ 0.05, 15, 0.05 ],
+    "to": [ 15.95, 15.95, 15.95 ],
+    "faces": {
+        "down":  { "uv": [ 16, 16, 0, 0 ], "texture": "#farmHatBottom" },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#machineTop", "cullface": "up" },
+        "north": { "uv": [ 0, 0, 16, 1 ], "texture": "#farmSide", "cullface": "north" },
+        "south": { "uv": [ 0, 0, 16, 1 ], "texture": "#farmSide", "cullface": "south" },
+        "west":  { "uv": [ 0, 0, 16, 1 ], "texture": "#farmSide", "cullface": "west" },
+        "east":  { "uv": [ 0, 0, 16, 1 ], "texture": "#farmSide", "cullface": "east" }
+    }
+},
+{
+    "__comment": "center",
+    "from": [ 3, 11, 3 ],
+    "to": [ 13, 15, 13 ],
+    "faces": {
+        "north": { "uv": [ 3, 1, 13, 5 ], "texture": "#farmCore" },
+        "south": { "uv": [ 3, 1, 13, 5 ], "texture": "#farmCore" },
+        "west":  { "uv": [ 3, 1, 13, 5 ], "texture": "#farmCore" },
+        "east":  { "uv": [ 3, 1, 13, 5 ], "texture": "#farmCore" }
+    }
+},
+{
+    "__comment": "rod1",
+    "from": [ 1, 11, 1 ],
+    "to": [ 2, 15, 2 ],
+    "faces": {
+        "north": { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" },
+        "south": { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" },
+        "west":  { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" },
+        "east":  { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" }
+    }
+},
+{
+    "__comment": "rod2",
+    "from": [ 14, 11, 1 ],
+    "to": [ 15, 15, 2 ],
+    "faces": {
+        "north": { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" },
+        "south": { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" },
+        "west":  { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" },
+        "east":  { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" }
+    }
+},
+{
+    "__comment": "rod3",
+    "from": [ 14, 11, 14 ],
+    "to": [ 15, 15, 15 ],
+    "faces": {
+        "north": { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" },
+        "south": { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" },
+        "west":  { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" },
+        "east":  { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" }
+    }
+},
+{
+    "__comment": "rod4",
+    "from": [ 1, 11, 14.4375 ],
+    "to": [ 2, 15, 15.4375 ],
+    "faces": {
+        "north": { "uv": [ 14, 1, 15, 5 ], "texture": "#farmSide" },
+        "south": { "uv": [ 1, 1, 2, 5 ], "texture": "#farmSide" },
+        "west":  { "uv": [ 14.4375, 1, 15.4375, 5 ], "texture": "#farmSide" },
+        "east":  { "uv": [ 0.5625, 1, 1.5625, 5 ], "texture": "#farmSide" }
+    }
+}
+]
+}

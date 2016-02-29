@@ -1,0 +1,18 @@
+{
+    "textures":{
+        "portal": "blocks/portal"
+    },
+	"elements": [ 
+		{
+		    "__comment": "center",
+		    "from": [ 2.5, 11, 2.5 ],
+		    "to": [ 13.5, 15, 13.5 ],
+		    "faces": {
+		        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#portal" },
+		        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#portal" },
+		        "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#portal" },
+		        "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#portal" }
+		    }
+		}
+	]
+}

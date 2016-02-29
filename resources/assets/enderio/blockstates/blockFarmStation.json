@@ -1,0 +1,29 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/machineBottom"
+        }
+    },
+    "variants":{
+        "render":{
+	        "defaults":{
+                "model":"enderio:null", "transform":{
+	                "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+	                "firstperson":{ "rotation":[ {"x":0},  {"y":90},  {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+	                "gui":{         "rotation":[ {"x":0},  {"y":-90}, {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+	                "fixed":{       "rotation":[ {"x":0},  {"y":0},   {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+	            }
+	        },
+            "auto":{ },
+            "front":{                                             "submodel":{ "front":{ "model":"enderio:farm" } } },
+            "front_east":{      },
+            "front_south":{     },
+            "front_west":{      },
+            "front_on":{                                          "submodel":{ "portal":{ "model":"enderio:farmPortal" } } },
+            "front_on_east":{   },
+            "front_on_south":{                                    "submodel":{ "portal":{ "model":"enderio:farmNoPortal" } } },
+            "front_on_west":{   }
+        }
+    }
+}

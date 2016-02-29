@@ -5,18 +5,27 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
+
+  @SideOnly(Side.CLIENT)
+  private static final MachineRenderMapper FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
 
   public static BlockFarmStation create() {
     PacketHandler.INSTANCE.registerMessage(PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
@@ -54,28 +63,37 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
     return GuiHandler.GUI_ID_FARM_STATATION;
   }
 
-  // @Override
-  // protected void registerOverlayIcons(IIconRegister iIconRegister) {
-  // super.registerOverlayIcons(iIconRegister);
-  // overlays = new IIcon[IoMode.values().length];
-  // overlays[IoMode.PULL.ordinal()] =
-  // iIconRegister.registerIcon("enderio:overlays/pullSides");
-  // overlays[IoMode.PUSH.ordinal()] =
-  // iIconRegister.registerIcon("enderio:overlays/pushSides");
-  // overlays[IoMode.PUSH_PULL.ordinal()] =
-  // iIconRegister.registerIcon("enderio:overlays/pushPullSides");
-  // overlays[IoMode.DISABLED.ordinal()] =
-  // iIconRegister.registerIcon("enderio:overlays/disabledSides");
-  // }
-  //
-  // @Override
-  // public IIcon getOverlayIconForMode(TileFarmStation tile, ForgeDirection
-  // face, IoMode mode) {
-  // if(face.offsetY != 0 || mode == IoMode.NONE) {
-  // return super.getOverlayIconForMode(tile, face, mode);
-  // }
-  // return overlays[mode.ordinal()];
-  // }
+  @SideOnly(Side.CLIENT)
+  public IOMode.EnumIOMode mapIOMode(IoMode mode, EnumFacing side) {
+    if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
+      switch (mode) {
+      case NONE:
+        return IOMode.EnumIOMode.NONE;
+      case PULL:
+        return IOMode.EnumIOMode.PULL;
+      case PUSH:
+        return IOMode.EnumIOMode.PUSH;
+      case PUSH_PULL:
+        return IOMode.EnumIOMode.PUSHPULL;
+      case DISABLED:
+        return IOMode.EnumIOMode.DISABLED;
+      }
+    } else {
+      switch (mode) {
+      case NONE:
+        return IOMode.EnumIOMode.NONE;
+      case PULL:
+        return IOMode.EnumIOMode.PULLSIDES;
+      case PUSH:
+        return IOMode.EnumIOMode.PUSHSIDES;
+      case PUSH_PULL:
+        return IOMode.EnumIOMode.PUSHPULLSIDES;
+      case DISABLED:
+        return IOMode.EnumIOMode.DISABLEDSIDES;
+      }
+    }
+    throw new RuntimeException("Hey, leave our enums alone!");
+  }
 
   @Override
   public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
@@ -94,6 +112,24 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return FARM_MACHINE_RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    return FARM_MACHINE_RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return EnumWorldBlockLayer.TRANSLUCENT == layer || EnumWorldBlockLayer.CUTOUT == layer;
   }
 
 }
