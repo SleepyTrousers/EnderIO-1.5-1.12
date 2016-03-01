@@ -2,9 +2,11 @@
     "forge_marker":1,
     "variants":{
         "inventory":{
-            "model":"enderio:itemBrokenSpawner",
+            "model":"enderio:hollowCube",
             "textures":{
-                "tex":"enderio:items/itemBrokenSpawner"
+	            "side": "enderio:items/itemBrokenSpawner",
+	            "top": "enderio:items/itemBrokenSpawner",
+	            "bottom": "enderio:items/itemBrokenSpawner"
             },
             "transform":{
                 "thirdperson":{

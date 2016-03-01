@@ -10,11 +10,16 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.capbank.CapBankType;
+import crazypants.enderio.machine.capbank.render.EnumCapbankRenderMode;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,8 +56,30 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     super(ModObject.blockTank, TileTank.class, BlockItemTank.class);
     setStepSound(Block.soundTypeGlass);
     setLightOpacity(0);
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)
+        .withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
   }
   
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER, EnumTankType.KIND });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState().withProperty(EnumTankType.KIND, EnumTankType.getTypeFromMeta(meta));
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return EnumTankType.getMetaFromType(state.getValue(EnumTankType.KIND));
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
+  }
+
   @Override
   public int damageDropped(IBlockState st) {
     return getMetaFromState(st);
@@ -181,7 +208,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SoulBinderRenderMapper();
+      RENDER_MAPPER = new MachineRenderMapper(null);
     }
     return RENDER_MAPPER;
   }
@@ -190,7 +217,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper(ItemStack stack) {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SoulBinderRenderMapper();
+      RENDER_MAPPER = new MachineRenderMapper(null);
     }
     return RENDER_MAPPER;
   }

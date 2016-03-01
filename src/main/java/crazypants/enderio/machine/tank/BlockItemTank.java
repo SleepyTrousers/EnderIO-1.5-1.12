@@ -37,6 +37,11 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
+  public int getMetadata(int damage) {
+    return damage;
+  }
+
+  @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
     String result = super.getUnlocalizedName(par1ItemStack);

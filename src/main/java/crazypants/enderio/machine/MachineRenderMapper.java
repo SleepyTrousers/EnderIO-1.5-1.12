@@ -30,11 +30,12 @@ public class MachineRenderMapper implements IRenderMapper {
   @Override
   public List<IBlockState> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state instanceof BlockStateWrapper) {
-      TileEntity tileEntity = ((BlockStateWrapper) state).getTileEntity();
-      Block block = state.getBlock();
+      BlockStateWrapper blockStateWrapper = (BlockStateWrapper) state;
+      TileEntity tileEntity = blockStateWrapper.getTileEntity();
+      Block block = blockStateWrapper.getBlock();
 
       if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
-        return render(state, world, pos, tileEntity, block);
+        return render(blockStateWrapper.getState(), world, pos, tileEntity, block);
       }
     }
     return null;
@@ -51,9 +52,9 @@ public class MachineRenderMapper implements IRenderMapper {
     }
 
     if (active) {
-      states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON.rotate(facing)));
+      states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON.rotate(facing)));
     } else {
-      states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT.rotate(facing)));
+      states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT.rotate(facing)));
     }
 
     renderIO(tileEntity, block, states);
@@ -78,7 +79,7 @@ public class MachineRenderMapper implements IRenderMapper {
     if (body != null) {
       states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body));
     }
-    states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+    states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     return states;
   }
 

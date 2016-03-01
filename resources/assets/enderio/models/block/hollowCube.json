@@ -5,27 +5,27 @@
             "to":[ 16, 16, 16 ],
             "faces":{
                 "down":{
-                    "texture":"#tex",
+                    "texture":"#bottom",
                     "cullface":"down"
                 },
                 "up":{
-                    "texture":"#tex",
+                    "texture":"#top",
                     "cullface":"up"
                 },
                 "north":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "cullface":"north"
                 },
                 "south":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "cullface":"south"
                 },
                 "west":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "cullface":"west"
                 },
                 "east":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "cullface":"east"
                 }
             }
@@ -35,7 +35,7 @@
             "to":[ 16, 16, 0 ],
             "faces":{
                 "south":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "uv":[16, 0, 0, 16]
                 }
             }
@@ -45,7 +45,7 @@
             "to":[ 16, 16, 16 ],
             "faces":{
                 "north":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "uv":[16, 0, 0, 16]
                 }
             }
@@ -55,7 +55,7 @@
             "to":[ 0, 16, 16 ],
             "faces":{
                 "east":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "uv":[16, 0, 0, 16]
                 }
             }
@@ -65,7 +65,7 @@
             "to":[ 16, 16, 16 ],
             "faces":{
                 "west":{
-                    "texture":"#tex",
+                    "texture":"#side",
                     "uv":[16, 0, 0, 16]
                 }
             }
@@ -75,7 +75,7 @@
             "to":[ 16, 0, 16 ],
             "faces":{
                 "up":{
-                    "texture":"#tex",
+                    "texture":"#bottom",
                     "uv":[16, 0, 0, 16]
                 }
             }
@@ -85,7 +85,7 @@
             "to":[ 16, 16, 16 ],
             "faces":{
                 "down":{
-                    "texture":"#tex",
+                    "texture":"#top",
                     "uv":[16, 0, 0, 16]
                 }
             }

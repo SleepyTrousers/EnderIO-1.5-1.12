@@ -72,4 +72,13 @@ public class BlockStateWrapper implements IBlockState {
   public IBlockAccess getWorld() {
     return world;
   }
+
+  public IBlockState getState() {
+    return state;
+  }
+
+  @Override
+  public String toString() {
+    return "BlockStateWrapper [" + state + "]";
+  }
 }
