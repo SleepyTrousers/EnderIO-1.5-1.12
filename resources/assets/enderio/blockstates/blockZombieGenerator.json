@@ -1,0 +1,25 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/machineBottom"
+        }
+    },
+    "variants":{
+        "render":{
+	        "defaults":{
+                "model":"enderio:null",                 
+                "transform": "forge:default-block"
+	        },
+            "auto":{ "submodel":{ "front":{ "model":"enderio:null" } }},
+            "front":{  "submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_east":{"submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_south":{"submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_west":{"submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_on":{"submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_on_east":{"submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_on_south":{"submodel":{ "front":{ "model":"enderio:null" } }},
+            "front_on_west":{"submodel":{ "front":{ "model":"enderio:null" } }}            
+        }
+    }
+}

@@ -74,7 +74,9 @@ public class ConduitBundleRenderManager {
         return modelLocation;
       }
     };
-    ModelLoader.setCustomStateMapper(EnderIO.blockConduitBundle, ignoreState);
+    if(EnderIO.blockConduitBundle != null) {
+      ModelLoader.setCustomStateMapper(EnderIO.blockConduitBundle, ignoreState);
+    }
     MinecraftForge.EVENT_BUS.register(this);
   }
 
