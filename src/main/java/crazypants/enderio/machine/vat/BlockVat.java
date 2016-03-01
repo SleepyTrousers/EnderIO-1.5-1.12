@@ -5,12 +5,16 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -31,6 +35,9 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     return res;
   }
 
+  @SideOnly(Side.CLIENT)
+  private static MachineRenderMapper RENDER_MAPPER;
+  
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
   }
@@ -39,37 +46,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public int getLightOpacity() {
     return 0;
   }
-
-//  @SideOnly(Side.CLIENT)
-//  @Override
-//  protected void registerOverlayIcons(IIconRegister iIconRegister) {
-//    super.registerOverlayIcons(iIconRegister);
-//
-//    overlays = new IIcon[2][IoMode.values().length];
-  // TODO
-//    overlays[0][IoMode.PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pullSides");
-//    overlays[0][IoMode.PUSH.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushSides");
-//    overlays[0][IoMode.PUSH_PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushPullSides");
-//    overlays[0][IoMode.DISABLED.ordinal()] = iIconRegister.registerIcon("enderio:overlays/disabledNoCenter");
-//
-//    overlays[1][IoMode.PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pullTopBottom");
-//    overlays[1][IoMode.PUSH.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushTopBottom");
-//    overlays[1][IoMode.PUSH_PULL.ordinal()] = iIconRegister.registerIcon("enderio:overlays/pushPullTopBottom");
-//    overlays[1][IoMode.DISABLED.ordinal()] = overlays[0][IoMode.DISABLED.ordinal()];
-//  }
-//
-//  @Override
-//  public IIcon getOverlayIconForMode(TileVat tile, ForgeDirection face, IoMode mode) {
-//    ForgeDirection side = tile.getFacingDir().getRotation(ForgeDirection.DOWN);
-//    if(mode == IoMode.DISABLED || face == side || face == side.getOpposite()) {
-//      return super.getOverlayIconForMode(tile, face, mode);
-//    } else {
-//      if(face == ForgeDirection.UP) {
-//        return overlays[1][mode.ordinal()];
-//      }
-//      return overlays[0][mode.ordinal()];
-//    }
-//  }
 
   @Override
   public boolean isOpaqueCube() {
@@ -132,5 +108,23 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
         fx.setVelocity(velX, -0.06, velZ);
       }
     }
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
   }
 }

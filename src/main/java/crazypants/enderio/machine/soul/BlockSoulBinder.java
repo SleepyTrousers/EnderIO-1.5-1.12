@@ -6,7 +6,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.machine.farm.FarmingStationRenderMapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
