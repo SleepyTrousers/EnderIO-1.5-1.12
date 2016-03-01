@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -94,7 +95,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
 
   @Override
   public int getRenderType() {
-    return -1;
+    return 3;
   }
 
   @Override
@@ -105,6 +106,12 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   @Override
   public int getLightOpacity() {
     return 100;
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public EnumWorldBlockLayer getBlockLayer() {
+    return EnumWorldBlockLayer.TRANSLUCENT;
   }
   
   @SideOnly(Side.CLIENT)

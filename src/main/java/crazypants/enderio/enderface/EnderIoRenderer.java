@@ -2,7 +2,6 @@ package crazypants.enderio.enderface;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Matrix4d;
 
@@ -55,18 +54,17 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
   }
 
   public void render(double x, double y, double z, Matrix4d lookMat, int brightness) {
-
+   
     GL11.glPushMatrix();
     GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-    TextureAtlasSprite tex = EnderIO.blockEnderIo.enderEyeTex;//Items.ender_eye.getIconFromDamage(0);    
+    TextureAtlasSprite tex = EnderIO.blockEnderIo.enderEyeTex;    
     float minU = tex.getMinU();
     float maxU = tex.getMaxU();
     float minV = tex.getMinV();
     float maxV = tex.getMaxV();
 
-    //GL11.glDisable(GL11.GL_CULL_FACE);
-    GL11.glDepthMask(false);
+    RenderUtil.bindBlockTexture();
     GL11.glColor3f(1, 1, 1);
     RenderUtil.renderBillboard(lookMat, minU, maxU, minV, maxV, 0.8, brightness);
 
@@ -105,26 +103,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
     GL11.glColor4f(1, 1, 1, 1.0F);
     GL11.glPopMatrix();
-
-    GL11.glPushMatrix();
-    GL11.glTranslated(x, y, z);
-
-    RenderUtil.bindBlockTexture();
-    
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-    GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-    GL11.glPolygonOffset(-1.0f, -1.0f);
-
-    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, EnderIO.blockEnderIo.frameIcon);    
-    
-    GL11.glPopMatrix();
-
-    GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-    GL11.glDisable(GL11.GL_BLEND);
-
-    GL11.glDepthMask(true);
 
   }
 

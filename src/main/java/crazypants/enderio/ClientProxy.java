@@ -180,8 +180,7 @@ public class ClientProxy extends CommonProxy {
     }
     if (EnderIO.blockEnderIo != null) {
       EnderIoRenderer eior = new EnderIoRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
-      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnderIo), 0, TileEnderIO.class);
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);      
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), ModObject.blockEnderIo.unlocalisedName);
     }
     if (EnderIO.blockReservoir != null) {

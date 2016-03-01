@@ -23,7 +23,7 @@ public class TileEnderIO extends TileTravelAnchor {
 
   @Override
   public boolean shouldRenderInPass(int passNo) {
-    return passNo == 1;
+    return passNo == 0;
   }
 
   @Override
