@@ -147,6 +147,9 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockEndermanSkull != null) {
       EnderIO.blockEndermanSkull.registerRenderers();
     }
+    if(EnderIO.blockTravelPlatform != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockTravelPlatform), ModObject.blockTravelAnchor.unlocalisedName);
+    }
 
     // Tile Renderers
 

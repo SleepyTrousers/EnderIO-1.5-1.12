@@ -6,6 +6,7 @@
         }
     },
     "variants":{
+        "inventory": [{}],
         "sub":{
             "defaults":{
                 "textures":{ "front":"enderio:blocks/machineSide" },

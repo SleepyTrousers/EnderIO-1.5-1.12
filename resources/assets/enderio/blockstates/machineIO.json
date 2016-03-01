@@ -1,6 +1,7 @@
 {
 	"forge_marker":1,
 	"variants":{
+	    "inventory": [{}],
 		"iomode":{
 			"down_none":{
 				"textures":{
