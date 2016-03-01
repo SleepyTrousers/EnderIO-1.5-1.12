@@ -4,22 +4,12 @@
     },
     "elements":[
         {
-            "from":[
-                0,
-                0,
-                0
-            ],
-            "to":[
-                16,
-                16,
-                16
-            ],
-            "faces":{
-                "north":{
-                    "texture":"#overlay",
-                    "cullface":"north"
-                }
-            }
-        }
+			    "from": [ 1, 1, -0.08 ],
+			    "to": [ 15, 15, -0.08 ],
+			    "faces": {
+			        "north": { "uv": [ 1, 1, 15, 15 ], "texture": "#overlay", "cullface": "north" },
+			        "south": { "uv": [ 15, 1, 1, 15 ], "texture": "#overlay" }
+			    }
+			}
     ]
 }

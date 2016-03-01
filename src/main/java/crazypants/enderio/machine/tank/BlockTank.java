@@ -28,6 +28,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -53,15 +54,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
   
   @Override
-  public int getRenderType() {  
-    return 2;
-  }
-
-  @Override
   protected void init() {
     GameRegistry.registerBlock(this, BlockItemTank.class, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    MinecraftForge.EVENT_BUS.register(this); // TODO
+    registerInSmartModelAttacher();
   }
 
   @Override
