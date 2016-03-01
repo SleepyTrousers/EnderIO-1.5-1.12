@@ -1,0 +1,5 @@
+telePad.tcn --- old techne model as used in 1.7.10
+telePad2.tcn -- old techne model edited for transfer
+(not included) --- json auto-generated from telePad2.tcn
+telepad.bdc3D --- edit of the auto-generated json
+(the actual model json) --- created from the bdc3D with some manual fixes (rotations changed to origin=center, split into submodel files)

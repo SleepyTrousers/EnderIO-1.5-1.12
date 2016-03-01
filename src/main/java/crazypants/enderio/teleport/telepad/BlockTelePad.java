@@ -1,15 +1,8 @@
 package crazypants.enderio.teleport.telepad;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.ContainerTravelAccessable;
-import crazypants.enderio.teleport.ContainerTravelAuth;
-import crazypants.enderio.teleport.GuiTravelAuth;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,18 +11,30 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.teleport.ContainerTravelAccessable;
+import crazypants.enderio.teleport.ContainerTravelAuth;
+import crazypants.enderio.teleport.GuiTravelAuth;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
-public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISmartRenderAwareBlock {
 
-//  @SideOnly(Side.CLIENT)
-//  private IIcon[] icons;
-//  @SideOnly(Side.CLIENT)
-//  private IIcon model;
-//  @SideOnly(Side.CLIENT)
-//  private IIcon highlightIcon;
+  @SideOnly(Side.CLIENT)
+  private static IRenderMapper RENDER_MAPPER;
 
   public static BlockTelePad createTelepad() {
     
@@ -46,6 +51,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
 
   protected BlockTelePad() {
     super(ModObject.blockTelePad.unlocalisedName, TileTelePad.class);
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   @Override
@@ -53,39 +59,47 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD_TRAVEL, this);
+    SmartModelAttacher.register(this);
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//    icons = new IIcon[3];
-//    icons[0] = iIconRegister.registerIcon("enderio:telePadBottom");
-//    icons[1] = iIconRegister.registerIcon("enderio:telePadTop");
-//    icons[2] = iIconRegister.registerIcon("enderio:telePadSide");
-//    model = iIconRegister.registerIcon("enderio:telePadModel");
-//    highlightIcon = iIconRegister.registerIcon("enderio:telePadHighlight");
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-//    TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
-//    if(te != null && te.inNetwork()) {
-//      return model;
-//    }
-//    return getIcon(blockSide, 0);
-//  }
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int side, int meta) {
-//    return icons[Math.min(side, 2)];
-//  }
-//
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getHighlightIcon() {
-//    return highlightIcon;
-//  }
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState();
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return 0;
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return getDefaultState();
+  }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return new BlockStateWrapper(state, world, pos);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return EnumWorldBlockLayer.TRANSLUCENT == layer || EnumWorldBlockLayer.CUTOUT == layer;
+  }
+
+  /*
+   * This makes us "air" for purposes of lighting. Otherwise our model would be much too dark, as it is always surrounded be 8 TelePad blocks.
+   */
+  @Override
+  public boolean isFullCube() {
+    return false;
+  }
 
   @Override
   public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
@@ -170,6 +184,26 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> {
       }
     }
     return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return getMapper();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    return getMapper();
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getMapper() {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new TelepadRenderMapper();
+    }
+    return RENDER_MAPPER;
   }
 
 }
