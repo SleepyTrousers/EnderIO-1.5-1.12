@@ -36,14 +36,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   
 
   private BlockBuffer() {
-    super(ModObject.blockBuffer, TileBuffer.class);
+    super(ModObject.blockBuffer, TileBuffer.class, BlockItemBuffer.class);
   }
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemBuffer.class, modObject.unlocalisedName);
-    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    super.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 

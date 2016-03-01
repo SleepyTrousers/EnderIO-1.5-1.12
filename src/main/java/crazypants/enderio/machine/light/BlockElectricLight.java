@@ -31,15 +31,9 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   public BlockElectricLight() {
-    super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class);
+    super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class, BlockItemElectricLight.class);
     setLightOpacity(0);
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
-  }
-
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, BlockItemElectricLight.class, ModObject.blockElectricLight.unlocalisedName);
-    GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
   }
 
   @Override

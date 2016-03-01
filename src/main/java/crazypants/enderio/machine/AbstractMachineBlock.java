@@ -28,6 +28,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -65,8 +66,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
-  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
-    super(mo.unlocalisedName, teClass, mat);
+  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass, Material mat) {
+    super(mo.unlocalisedName, teClass, itemBlockClass, mat);
     modObject = mo;
     setHardness(2.0F);
     setStepSound(soundTypeMetal);
@@ -75,14 +76,21 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
+  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
+    this(mo, teClass, null, mat);
+  }
+
+  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
+    this(mo, teClass, itemBlockClass, new Material(MapColor.ironColor));
+  }
+
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
-    this(mo, teClass, new Material(MapColor.ironColor));
+    this(mo, teClass, null, new Material(MapColor.ironColor));
   }
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, modObject.unlocalisedName);
-    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
+    super.init();
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
     MinecraftForge.EVENT_BUS.register(this); // TODO
     registerInSmartModelAttacher();

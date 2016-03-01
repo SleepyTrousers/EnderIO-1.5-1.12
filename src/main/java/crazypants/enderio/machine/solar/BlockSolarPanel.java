@@ -35,19 +35,11 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   private static final float BLOCK_HEIGHT = 0.15f;
   
   private BlockSolarPanel() {
-    super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class);
+    super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class, BlockItemSolarPanel.class);
     if(!Config.photovoltaicCellEnabled) {
       setCreativeTab(null);
     }
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
-  }
-
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, BlockItemSolarPanel.class, name);
-    if(teClass != null) {
-      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
-    }
   }
 
   @Override

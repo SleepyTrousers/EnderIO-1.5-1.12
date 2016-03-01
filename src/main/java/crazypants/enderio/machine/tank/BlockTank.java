@@ -48,20 +48,11 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   protected BlockTank() {
-    super(ModObject.blockTank, TileTank.class);
+    super(ModObject.blockTank, TileTank.class, BlockItemTank.class);
     setStepSound(Block.soundTypeGlass);
     setLightOpacity(0);
   }
   
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, BlockItemTank.class, modObject.unlocalisedName);
-    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
-    MinecraftForge.EVENT_BUS.register(this); // TODO
-    registerInSmartModelAttacher();
-  }
-
   @Override
   public int damageDropped(IBlockState st) {
     return getMetaFromState(st);

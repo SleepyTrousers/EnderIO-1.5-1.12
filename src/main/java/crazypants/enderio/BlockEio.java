@@ -8,6 +8,7 @@ import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -25,6 +26,15 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
   
+  protected BlockEio(String name, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
+    super(name, teClass, itemBlockClass);
+    setCreativeTab(EnderIOTab.tabEnderIO);
+  }
+
+  protected BlockEio(String name, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass, Material mat) {
+    super(name, teClass, itemBlockClass, mat);
+    setCreativeTab(EnderIOTab.tabEnderIO);
+  }
   
 
   @Override

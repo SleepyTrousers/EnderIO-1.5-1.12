@@ -61,14 +61,8 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   private BlockEndermanSkull() {
-    super(ModObject.blockEndermanSkull.unlocalisedName, TileEndermanSkull.class, Material.circuits);
+    super(ModObject.blockEndermanSkull.unlocalisedName, TileEndermanSkull.class, ItemEndermanSkull.class, Material.circuits);
     setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
-  }
-
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, ItemEndermanSkull.class, name);
-    GameRegistry.registerTileEntity(teClass, name + "TileEntity");
   }
 
   @Override

@@ -96,18 +96,9 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> {
 //  IIcon[] frameIcons;
 
   private BlockFusedQuartz() {
-    super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityPaintedBlock.class, Material.glass);
+    super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityPaintedBlock.class, ItemFusedQuartz.class, Material.glass);
     setStepSound(Block.soundTypeGlass);
   }
-
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, ItemFusedQuartz.class, name);
-    if(teClass != null) {
-      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
-    }
-  }
-  
 
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {   

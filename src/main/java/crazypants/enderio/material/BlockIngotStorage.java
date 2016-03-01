@@ -41,13 +41,8 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
   public static final PropertyEnum<Alloy> VARIANT = PropertyEnum.<Alloy>create("variant", Alloy.class);
   
   private BlockIngotStorage() {
-    super(ModObject.blockIngotStorage.unlocalisedName, null, Material.iron);
+    super(ModObject.blockIngotStorage.unlocalisedName, null, BlockItemIngotStorage.class, Material.iron);
     setStepSound(soundTypeMetal);
-  }
-  
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, BlockItemIngotStorage.class, ModObject.blockIngotStorage.unlocalisedName);
   }
   
   @SideOnly(Side.CLIENT)

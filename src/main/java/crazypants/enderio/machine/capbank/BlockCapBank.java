@@ -97,7 +97,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   private TextureAtlasSprite infoPanelIcon;
 
   protected BlockCapBank() {
-    super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class);
+    super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class, BlockItemCapBank.class);
     setHardness(2.0F);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
@@ -105,11 +105,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemCapBank.class, name);
-    if (teClass != null) {
-      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
-    }
-
+    super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAP_BANK, this);
     setLightOpacity(255);
     SmartModelAttacher.register(this, EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.DEFAULTS, EnumCapbankRenderMode.AUTO);

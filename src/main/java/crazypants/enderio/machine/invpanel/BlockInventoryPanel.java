@@ -43,14 +43,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   public BlockInventoryPanel() {
-    super(ModObject.blockInventoryPanel, TileInventoryPanel.class);
-  }
-
-  @Override
-  protected void init() {
-    GameRegistry.registerBlock(this, BlockItemInventoryPanel.class, modObject.unlocalisedName);
-    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    super(ModObject.blockInventoryPanel, TileInventoryPanel.class, BlockItemInventoryPanel.class);
   }
 
   @Override
