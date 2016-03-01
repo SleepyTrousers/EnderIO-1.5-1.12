@@ -24,10 +24,7 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.BlockPos;
@@ -177,10 +174,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public IBlockState getFacade() {
-//    return facade;
+    return facade;
 //    return Blocks.cobblestone.getDefaultState();
 //    return Blocks.anvil.getDefaultState();
-    return Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.MAGENTA);
+//    return Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.MAGENTA);
   }
   
   @Override

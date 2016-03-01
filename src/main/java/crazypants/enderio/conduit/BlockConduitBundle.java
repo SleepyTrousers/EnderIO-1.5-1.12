@@ -17,6 +17,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -378,8 +379,20 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
+  public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
+    IConduitBundle te = getTileEntity(worldIn, pos);
+    if(te != null &&  te.hasFacade() && te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
+      return 255;
+    }
+    return super.getMixedBrightnessForBlock(worldIn, pos);
+  }
+
+  @Override
   public float getBlockHardness(World world, BlockPos pos) {
-    IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
+    IConduitBundle te = getTileEntity(world, pos);
+    if(te == null) {
+      return super.getBlockHardness(world, pos);
+    }    
     return te != null && te.getFacadeType() == FacadeType.HARDENED ? blockHardness * 10 : blockHardness;
   }
 
