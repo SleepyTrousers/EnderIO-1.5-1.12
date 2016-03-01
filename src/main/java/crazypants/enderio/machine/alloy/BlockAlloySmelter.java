@@ -5,23 +5,11 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.MachineSmartModel;
-import crazypants.enderio.render.SmartModelAttacher;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -55,17 +43,8 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
   }
-
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//    super.registerBlockIcons(iIconRegister);
-//    vanillaSmeltingOn = iIconRegister.registerIcon("enderio:furnaceSmeltingOn");
-//    vanillaSmeltingOff = iIconRegister.registerIcon("enderio:furnaceSmeltingOff");
-//    vanillaSmeltingOnly = iIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
-//  }
   
+  @Override
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onIconLoad(TextureStitchEvent.Pre event) {    

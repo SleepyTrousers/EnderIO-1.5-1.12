@@ -9,19 +9,21 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -33,6 +35,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
+  @SideOnly(Side.CLIENT)
+  private static MachineRenderMapper RENDER_MAPPER;
+  
   public static BlockTank create() {
     PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -45,6 +50,11 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     super(ModObject.blockTank, TileTank.class);
     setStepSound(Block.soundTypeGlass);
     setLightOpacity(0);
+  }
+  
+  @Override
+  public int getRenderType() {  
+    return 2;
   }
 
   @Override
@@ -59,17 +69,15 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return getMetaFromState(st);
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list) {
-    list.add(new ItemStack(this, 1, 0));
-    list.add(new ItemStack(this, 1, 1));
-  }
-
   @Override
   public TileEntity createTileEntity(World world, IBlockState bs) {
     return new TileTank(getMetaFromState(bs));
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    return true;
   }
 
   @Override
@@ -100,33 +108,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return GuiHandler.GUI_ID_TANK;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-//
-//    // used to render the block in the world
-//    TileEntity te = world.getTileEntity(x, y, z);
-//    int facing = 0;
-//    if(te instanceof AbstractMachineEntity) {
-//      AbstractMachineEntity me = (AbstractMachineEntity) te;
-//      facing = me.facing;
-//    }
-//    int meta = world.getBlockMetadata(x, y, z);
-//    meta = MathHelper.clamp_int(meta, 0, 1);
-//    if(meta == 1) {
-//      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
-//    } else {
-//      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
-//    }
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int blockSide, int blockMeta) {
-//    int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
-//    return iconBuffer[0][blockSide + offset];
-//  }
-
   @Override
   public int getLightValue(IBlockAccess world, BlockPos pos) {
     TileEntity tank = world.getTileEntity(pos);
@@ -136,23 +117,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     }
     return super.getLightValue(world, pos);
   }
-
-  // TODO
-  // @Override
-  // protected String getMachineFrontIconKey(boolean pressurized) {
-  // if(pressurized) {
-  // return "enderio:blockTankAdvanced";
-  // }
-  // return "enderio:blockTank";
-  // }
-  //
-  // @Override
-  // protected String getTopIconKey(boolean pressurized) {
-  // if(pressurized) {
-  // return "enderio:blockTankTopAdvanced";
-  // }
-  // return "enderio:machineTop";
-  // }
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -208,7 +172,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    System.out.println("BlockTank.getUnlocalizedNameForTooltip: ");
     return stack.getUnlocalizedName();
   }
 
@@ -223,5 +186,23 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
       tooltip.add(String.format("%s%s : %s (%d %s)", EnumChatFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount, EnderIO.lang.localize("fluid.millibucket.abr")));
     }
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
   }
 }

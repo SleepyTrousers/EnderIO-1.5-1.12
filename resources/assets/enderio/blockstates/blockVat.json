@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/blockSoulMachineBottom"
+            "particle":"enderio:blocks/machineBottom"
         }
     },
     "variants":{
@@ -23,7 +23,7 @@
             "front_on":{       "submodel":{ "front":{ "model":"enderio:vat" } }, "y":0 },
             "front_on_east":{  "submodel":{ "front":{ "model":"enderio:vat" } }, "y":90 },
             "front_on_south":{ "submodel":{ "front":{ "model":"enderio:vat" } }, "y":180 },
-            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:vat" } }, "y":270 }
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:vat" } }, "y":270 }            
         }
     }
 }
