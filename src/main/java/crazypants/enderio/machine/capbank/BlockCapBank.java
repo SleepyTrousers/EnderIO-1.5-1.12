@@ -5,6 +5,31 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Util;
@@ -35,37 +60,10 @@ import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable,
     ISmartRenderAwareBlock {
@@ -85,16 +83,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
     BlockCapBank res = new BlockCapBank();
     res.init();
-    MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  @SideOnly(Side.CLIENT)
-  private TextureAtlasSprite gaugeIcon;
-  @SideOnly(Side.CLIENT)
-  private TextureAtlasSprite fillBarIcon;
-  @SideOnly(Side.CLIENT)
-  private TextureAtlasSprite infoPanelIcon;
+  public static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/capacitorBankOverlays");
+  public static final TextureSupplier fillBarIcon = TextureRegistry.registerTexture("blocks/capacitorBankFillBar");
+  public static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/capBankInfoPanel");
 
   protected BlockCapBank() {
     super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class, BlockItemCapBank.class);
@@ -269,14 +263,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     return null;
   }
 
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onIconLoad(TextureStitchEvent.Pre event) {
-    gaugeIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/capacitorBankOverlays"));
-    fillBarIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/capacitorBankFillBar"));
-    infoPanelIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/capBankInfoPanel"));
-  }
-
   @Override
   public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
     return true;
@@ -296,17 +282,17 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getGaugeIcon() {
-    return gaugeIcon;
+    return gaugeIcon.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getFillBarIcon() {
-    return fillBarIcon;
+    return fillBarIcon.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getInfoPanelIcon() {
-    return infoPanelIcon;
+    return infoPanelIcon.get(TextureAtlasSprite.class);
   }
 
   @Override

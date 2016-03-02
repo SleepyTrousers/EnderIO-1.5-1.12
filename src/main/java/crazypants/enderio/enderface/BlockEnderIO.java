@@ -1,14 +1,5 @@
 package crazypants.enderio.enderface;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,14 +9,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
 public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider {
 
@@ -36,21 +35,14 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
 
     BlockEnderIO result = new BlockEnderIO();    
     result.init();
-    
-    MinecraftForge.EVENT_BUS.register(result);
-    
     return result;
   }
 
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite selectedOverlayIcon;
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite highlightOverlayIcon;
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite enderEyeTex;
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite frameIcon;
-  
+  public static final TextureSupplier selectedOverlayIcon = TextureRegistry.registerTexture("blocks/enderIOSelected");
+  public static final TextureSupplier highlightOverlayIcon = TextureRegistry.registerTexture("blocks/enderIOHighlight");
+  public static final TextureSupplier enderEyeTex = TextureRegistry.registerTexture("items/ender_eye");
+  public static final TextureSupplier frameIcon = TextureRegistry.registerTexture("blocks/enderIOFrame");
+
   static int pass;
 
   private BlockEnderIO() {
@@ -115,27 +107,18 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   }
   
   @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onIconLoad(TextureStitchEvent.Pre event) {        
-    selectedOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOSelected"));
-    highlightOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOHighlight"));
-    enderEyeTex= event.map.registerSprite(new ResourceLocation("minecraft", "items/ender_eye"));
-    frameIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/enderIOFrame"));    
-  }
-  
-  @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getSelectedOverlayIcon() {
-    return selectedOverlayIcon;
+    return selectedOverlayIcon.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getHighlightOverlayIcon() {
-    return highlightOverlayIcon;
+    return highlightOverlayIcon.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getFrameIcon() {
-    return frameIcon;
+    return frameIcon.get(TextureAtlasSprite.class);
   }
 
   @Override

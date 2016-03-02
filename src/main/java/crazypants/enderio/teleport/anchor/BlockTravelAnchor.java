@@ -1,5 +1,22 @@
 package crazypants.enderio.teleport.anchor;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
@@ -14,6 +31,8 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAccessable;
@@ -26,27 +45,6 @@ import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.IFacade;
 import crazypants.util.UserIdent;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
   
@@ -62,8 +60,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(TileTravelAnchor.class);
     result.init();
 
-    MinecraftForge.EVENT_BUS.register(result);
-    
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, result);
     //TODO: 1.8
@@ -71,11 +67,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return result;
   }
 
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite selectedOverlayIcon;
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite highlightOverlayIcon;
-
+  public static final TextureSupplier selectedOverlayIcon = TextureRegistry.registerTexture("blocks/blockTravelAnchorSelected");
+  public static final TextureSupplier highlightOverlayIcon = TextureRegistry.registerTexture("blocks/blockTravelAnchorHighlight");
 
   private BlockTravelAnchor(Class<T> clz) {
     super(ModObject.blockTravelAnchor.unlocalisedName, clz);
@@ -88,13 +81,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     super(unlocalisedName, teClass);
   }
   
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onIconLoad(TextureStitchEvent.Pre event) {    
-    selectedOverlayIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/blockTravelAnchorSelected")); 
-    highlightOverlayIcon= event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/blockTravelAnchorHighlight"));
-  }
-
   @Override
   public TileEntity createNewTileEntity(World var1, int var2) {
     return new TileTravelAnchor();

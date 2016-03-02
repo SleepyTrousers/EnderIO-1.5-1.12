@@ -3,6 +3,10 @@ package crazypants.enderio.machine.alloy;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IIconButton;
@@ -14,9 +18,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
@@ -71,13 +72,13 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   private void updateVanillaFurnaceButton() {
-    TextureAtlasSprite icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
+    TextureAtlasSprite icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn.get(TextureAtlasSprite.class);
     String unlocText = "gui.alloy.mode.all";
     if(getTileEntity().getMode() == Mode.ALLOY) {
-      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
+      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff.get(TextureAtlasSprite.class);
       unlocText = "gui.alloy.mode.alloy";
     } else if(getTileEntity().getMode() == Mode.FURNACE) {
-      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly;
+      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly.get(TextureAtlasSprite.class);
       unlocText = "gui.alloy.mode.furnace";
     }
     vanillaFurnaceButton.setIcon(icon);

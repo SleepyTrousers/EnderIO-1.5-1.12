@@ -1,21 +1,16 @@
 package crazypants.enderio.machine.alloy;
 
-import crazypants.enderio.EnderIO;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
@@ -25,7 +20,6 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
     BlockAlloySmelter res = new BlockAlloySmelter();
     res.init();    
-    MinecraftForge.EVENT_BUS.register(res);    
     return res;
   }
 
@@ -33,26 +27,14 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     return name;
   }
 
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite vanillaSmeltingOn;
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite vanillaSmeltingOff;
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite vanillaSmeltingOnly;
+  public static final TextureSupplier vanillaSmeltingOn = TextureRegistry.registerTexture("blocks/furnaceSmeltingOn");
+  public static final TextureSupplier vanillaSmeltingOff = TextureRegistry.registerTexture("blocks/furnaceSmeltingOff");
+  public static final TextureSupplier vanillaSmeltingOnly = TextureRegistry.registerTexture("blocks/furnaceSmeltingOnly");
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
   }
   
-  @Override
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onIconLoad(TextureStitchEvent.Pre event) {    
-    vanillaSmeltingOn = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/furnaceSmeltingOn"));
-    vanillaSmeltingOff = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/furnaceSmeltingOff"));
-    vanillaSmeltingOnly = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/furnaceSmeltingOnly"));          
-  }
-
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     // The server needs the container as it manages the adding and removing of
