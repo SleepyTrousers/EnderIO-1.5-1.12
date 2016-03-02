@@ -1,0 +1,21 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_all",
+        "textures": {
+            "all": "enderio:blocks/blockWirelessChargerOff"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "active": {
+            "false": {},
+            "true": {
+                "textures": {
+                    "all": "enderio:blocks/blockWirelessChargerOn"
+                }
+            }
+        },
+        "inventory": [{}] 
+    }
+}    

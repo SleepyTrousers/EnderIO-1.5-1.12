@@ -5,6 +5,8 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -26,50 +28,12 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
     return res;
   }
 
-  public static int renderId = 0;
-
+  public static final PropertyBool RENDER_ACTIVE = PropertyBool.create("active");
+  
   protected BlockWirelessCharger() {
     super(ModObject.blockWirelessCharger.unlocalisedName, TileWirelessCharger.class);
     setLightOpacity(1);
-  }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//    centerOn = iIconRegister.registerIcon("enderio:blockWirelessChargerOn");
-//    centerOff = iIconRegister.registerIcon("enderio:blockWirelessChargerOff");
-//  }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int p_149673_5_) {
-//    TileEntity te = world.getTileEntity(x, y, z);
-//    if(te instanceof TileWirelessCharger) {
-//      TileWirelessCharger twc = (TileWirelessCharger) te;
-//      if(twc.isActive()) {
-//        return centerOn;
-//      }
-//    }
-//    return centerOff;
-//  }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-//    return centerOff;
-//  }
-//
-//  public IIcon getCenterOn() {
-//    return centerOn;
-//  }
-//
-//  public IIcon getCenterOff() {
-//    return centerOff;
-//  }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
+    setDefaultState(blockState.getBaseState().withProperty(RENDER_ACTIVE, false)); 
   }
 
   @Override
@@ -77,24 +41,27 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
     return false;
   }
 
-  //  @Override
-  //  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-  //    TileEntity te = world.getTileEntity(x, y, z);
-  //    if(te instanceof TileWire) {
-  //      return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
-  //    }
-  //    return null;
-  //  }
-  //
-  //  @Override
-  //  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-  //    TileEntity te = world.getTileEntity(x, y, z);
-  //    if(te instanceof TileVacuumChest) {
-  //      return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
-  //    }
-  //    return null;
-  //  }
+  @Override
+  public BlockState createBlockState() {
+      return new BlockState(this,  RENDER_ACTIVE); 
+  }
 
+  @Override
+  public int getMetaFromState(IBlockState state) {
+      return 0;
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+      return getDefaultState();
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    TileWirelessCharger te = getTileEntity(world, pos);    
+    return state.withProperty(RENDER_ACTIVE, te != null && te.isActive());
+  } 
+  
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();

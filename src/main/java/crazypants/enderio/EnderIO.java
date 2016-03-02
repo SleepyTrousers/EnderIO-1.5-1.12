@@ -309,7 +309,7 @@ public class EnderIO {
     blockPowerMonitor = BlockPowerMonitor.create();
     blockFarmStation = BlockFarmStation.create();
 
-//    blockWirelessCharger = BlockWirelessCharger.create();
+    blockWirelessCharger = BlockWirelessCharger.create();
     
     blockTank = BlockTank.create();
     
