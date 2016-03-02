@@ -507,8 +507,8 @@ public final class Config {
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
-  
-
+  public static int soundEntityID = 1490324;
+  public static int rangeEntityID = 1490325;
   
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
@@ -1368,6 +1368,12 @@ public final class Config {
         "Internal power used per item extracted (not a stack of items)");
     inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
         10000.0f, "Internal power used per extract operation (independent of stack size)");
+    
+    soundEntityID = config.get(sectionMisc.name, "soundEntityID", soundEntityID,
+        "The ID used to register the entity used to display sound (via dark steel helmet)").getInt(soundEntityID);
+    rangeEntityID = config.get(sectionMisc.name, "rangeEntityID", rangeEntityID,
+        "The ID used to register the entity used to display ranges of blocks").getInt(rangeEntityID);
+    
   }
 
   public static void checkYetaAccess() {

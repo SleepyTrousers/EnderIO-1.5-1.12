@@ -402,13 +402,8 @@ public class EnderIO {
 
     DarkSteelItems.createDarkSteelArmorItems();
 
-    int entityID = EntityRegistry.findGlobalUniqueEntityId();
-    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
-    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
-
-    entityID = EntityRegistry.findGlobalUniqueEntityId();
-    EntityRegistry.registerGlobalEntityID(RangeEntity.class, "rangeEntity", entityID);
-    EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", entityID, this, 0, 0, false);
+    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", Config.soundEntityID, this, 0, 0, false);
+    EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", Config.rangeEntityID, this, 0, 0, false);
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
