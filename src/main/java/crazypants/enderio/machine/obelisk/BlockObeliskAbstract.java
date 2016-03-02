@@ -8,11 +8,17 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
 public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> {
+
+  public BlockObeliskAbstract(ModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
+    super(mo, teClass, itemBlockClass);
+    setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
+  }
 
   protected BlockObeliskAbstract(ModObject mo, Class<T> teClass) {
     super(mo, teClass);
@@ -23,7 +29,12 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
   public boolean isOpaqueCube() {
     return false;
   }
-
+  
+  @Override
+  public boolean isFullBlock() {
+    return false;
+  }  
+  
   @Override
   public int getLightOpacity() {
     return 0;

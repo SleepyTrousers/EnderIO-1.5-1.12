@@ -33,14 +33,12 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   @Override
   protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
-    return true; // always render as active
+    return true; 
   }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int blockSide, int blockMeta) {
-//    return super.getIcon(blockSide + 6, blockMeta); // always render as active
-//  }
+  
+  @Override
+  protected void registerInSmartModelAttacher() {
+  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
@@ -64,7 +62,6 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
     }
     return null;
   }
-
 
   @Override
   protected int getGuiId() {

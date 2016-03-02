@@ -202,9 +202,7 @@ public class EnderIO {
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
-//  public static ItemGasConduit itemGasConduit;
-//  public static ItemMEConduit itemMEConduit;
-//  public static ItemOCConduit itemOCConduit;
+
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
   public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemModItemFilter itemModItemFilter;
@@ -335,7 +333,7 @@ public class EnderIO {
     blockKillerJoe = BlockKillerJoe.create();
 //    blockAttractor = BlockAttractor.create();
 //    blockSpawnGuard = BlockAversionObelisk.create();
-//    blockExperianceOblisk = BlockExperienceObelisk.create();
+    blockExperianceOblisk = BlockExperienceObelisk.create();
 //    blockWeatherObelisk = BlockWeatherObelisk.create();
 //    blockInhibitorObelisk = BlockInhibitorObelisk.create();
     blockEnchanter = BlockEnchanter.create();
