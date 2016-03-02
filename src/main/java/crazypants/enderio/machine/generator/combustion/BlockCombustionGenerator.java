@@ -6,22 +6,25 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
-  public static int renderId = -1;
-
-  //private IIcon overlayPullSides, overlayPullTopBottom, overlayDisabledNoCenter;
-
+  
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -29,6 +32,9 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     gen.init();
     return gen;
   }
+  
+  @SideOnly(Side.CLIENT)
+  private static MachineRenderMapper RENDER_MAPPER;
 
   protected BlockCombustionGenerator() {
     super(ModObject.blockCombustionGenerator, TileCombustionGenerator.class);
@@ -63,31 +69,9 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  public int getRenderType() {
-    return renderId;
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }
-
-//  @SideOnly(Side.CLIENT)
-//  @Override
-//  protected void registerOverlayIcons(IIconRegister iIconRegister) {
-//    super.registerOverlayIcons(iIconRegister);
-  // TODO overlayPullSides = iIconRegister.registerIcon("enderio:overlays/pullSides");
-//    overlayPullTopBottom = iIconRegister.registerIcon("enderio:overlays/pullTopBottom");
-//    overlayDisabledNoCenter = iIconRegister.registerIcon("enderio:overlays/disabledNoCenter");
-//  }
-//
-//  @Override
-//  public IIcon getOverlayIconForMode(TileCombustionGenerator tile, ForgeDirection face, IoMode mode) {
-//    if(face.offsetY == 0 || mode == IoMode.NONE) {
-//      return super.getOverlayIconForMode(tile, face, mode);
-//    }
-//    return mode == IoMode.PULL ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom : overlayDisabledNoCenter;
-//  }
 
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
@@ -118,5 +102,23 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
         world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
       }
     }
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
   }
 }

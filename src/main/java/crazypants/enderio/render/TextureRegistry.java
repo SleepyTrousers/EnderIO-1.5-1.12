@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import crazypants.enderio.EnderIO;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -11,7 +12,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 
 public class TextureRegistry {
 
@@ -33,9 +33,10 @@ public class TextureRegistry {
     protected void init() {
     }
 
-    public TextureSupplier registerTexture(final String location) {
+    public TextureSupplier registerTexture(final String location, boolean prependDomain) {
       return noSupplier;
     }
+        
   }
 
   private static class TextureRegistryClient extends TextureRegistryServer {
@@ -58,21 +59,27 @@ public class TextureRegistry {
     @SubscribeEvent
     public void onIconLoad(TextureStitchEvent.Pre event) {
       for (Entry<String, TextureAtlasSprite> entry : sprites.entrySet()) {
-        entry.setValue(event.map.registerSprite(new ResourceLocation(EnderIO.DOMAIN, entry.getKey())));
+        entry.setValue(event.map.registerSprite(new ResourceLocation(entry.getKey())));
       }
     }
-
+    
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureSupplier registerTexture(final String location) {
-      if (!sprites.containsKey(location)) {
-        sprites.put(location, null);
+    public TextureSupplier registerTexture(final String location, boolean prependModID) {
+      String key = location;
+      if(prependModID) {
+        key = EnderIO.DOMAIN + ":" + location;
+      }
+      final String keyF = key;
+      if (!sprites.containsKey(keyF)) {
+        sprites.put(keyF, null);
       }
       return new TextureSupplier() {
+        @SuppressWarnings("unchecked")
         @Override
         public <T> T get(Class<T> clazz) {
           if (clazz == TextureAtlasSprite.class) {
-            return (T) sprites.get(location);
+            return (T) sprites.get(keyF);
           } else {
             return null;
           }
@@ -84,11 +91,15 @@ public class TextureRegistry {
   private static TextureRegistryServer instance;
 
   public static TextureSupplier registerTexture(final String location) {
+    return registerTexture(location, true);
+  }
+  
+  public static TextureSupplier registerTexture(final String location, boolean prependDomain) {    
     if (instance == null) {
       instance = new TextureRegistryClient();
       instance.init();
     }
-    return instance.registerTexture(location);
+    return instance.registerTexture(location, prependDomain);
   }
 
   private TextureRegistry() {

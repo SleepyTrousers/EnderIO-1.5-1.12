@@ -17,9 +17,13 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.BlockMobSpawner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -31,23 +35,26 @@ import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
 
+  @SideOnly(Side.CLIENT)
+  private static MachineRenderMapper RENDER_MAPPER;
+  
   public static void writeMobTypeToNBT(NBTTagCompound nbt, String type) {
     if(nbt == null) {
       return;
@@ -87,13 +94,12 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     PoweredSpawnerConfig.getInstance();
 
     BlockPoweredSpawner res = new BlockPoweredSpawner();
-    MinecraftForge.EVENT_BUS.register(res);
-    FMLCommonHandler.instance().bus().register(res);
+    MinecraftForge.EVENT_BUS.register(res);    
     res.init();
     return res;
   }
 
-  private final List<UniqueIdentifier> toolBlackList = new ArrayList<UniqueIdentifier>();
+  private final List<ResourceLocation> toolBlackList = new ArrayList<ResourceLocation>();
 
   private Field fieldpersistenceRequired; 
   private Field entNameField;
@@ -103,7 +109,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
     String[] blackListNames = Config.brokenSpawnerToolBlacklist;
     for (String name : blackListNames) {
-      toolBlackList.add(new UniqueIdentifier(name));
+      toolBlackList.add(new ResourceLocation(name));
     }
 
     try {
@@ -133,8 +139,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           
           ItemStack equipped = evt.getPlayer().getCurrentEquippedItem();
           if(equipped != null) {
-            for (UniqueIdentifier uid : toolBlackList) {
-              Item blackListItem = GameRegistry.findItem(uid.modId, uid.name);
+            for (ResourceLocation uid : toolBlackList) {
+              Item blackListItem = GameRegistry.findItem(uid.getResourceDomain(), uid.getResourcePath());
               if(blackListItem == equipped.getItem()) {
                 return;
               }
@@ -350,25 +356,23 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     writeMobTypeToNBT(stack.getTagCompound(), mob);
     return stack;
   }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
 
-//  private static class DropInfo {
-//
-//    BlockEvent.BreakEvent evt;
-//    ItemStack drop;
-//
-//    DropInfo(BreakEvent evt, ItemStack stack) {
-//      super();
-//      this.evt = evt;
-//      drop = stack;
-//    }
-//
-//    void doDrop() {
-//      if(evt.isCanceled()) {
-//        return;
-//      }
-//
-//      Util.dropItems(evt.getPlayer().worldObj, drop, evt.pos, true);
-//    }
-//
-//  }
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SoulBinderRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
+
 }

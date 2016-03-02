@@ -1,0 +1,94 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "textures": {
+        "0": "enderio:blocks/combustionGenFront",
+        "1": "enderio:blocks/machineTemplate",
+        "2": "enderio:blocks/machineTop",
+        "3": "enderio:blocks/combustionGenTop"
+    },
+    "elements": [
+        {
+            "name": "center",
+            "from": [ 0.0, 2.0, 0.0 ], 
+            "to": [ 16.0, 14.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 2.0, 16.0, 14.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 2.0, 16.0, 14.0 ] },
+                "south": { "texture": "#1", "uv": [ 0.0, 2.0, 16.0, 14.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 2.0, 16.0, 14.0 ] },
+                "up": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "rightLeg",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 6.0, 2.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 10.0, 14.0, 16.0, 16.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 14.0, 16.0, 16.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 14.0, 6.0, 16.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 14.0, 16.0, 16.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 6.0, 16.0 ] },
+                "down": { "texture": "#1", "uv": [ 5.0, 0.0, 6.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "leftLeg",
+            "from": [ 10.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 2.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 10.0, 14.0, 16.0, 16.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 14.0, 16.0, 16.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 14.0, 6.0, 16.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 14.0, 16.0, 16.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 6.0, 16.0 ] },
+                "down": { "texture": "#1", "uv": [ 11.0, 0.0, 6.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "leftTop",
+            "from": [ 10.0, 14.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 10.0, 0.0, 16.0, 2.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 2.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "up": { "texture": "#3", "uv": [ 0.0, 0.0, 6.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "rightTop",
+            "from": [ 0.0, 14.0, 0.0 ], 
+            "to": [ 6.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 10.0, 0.0, 16.0, 2.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 2.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 2.0 ] },
+                "up": { "texture": "#3", "uv": [ 0.0, 0.0, 6.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "bar1",
+            "from": [ 6.0, 14.0, 2.0 ], 
+            "to": [ 10.0, 15.0, 6.0 ], 
+            "faces": {
+                "north": { "texture": "#3", "uv": [ 6.0, 0.0, 10.0, 1.0 ] },
+                "south": { "texture": "#3", "uv": [ 6.0, 1.0, 10.0, 0.0 ] },
+                "up": { "texture": "#3", "uv": [ 6.0, 2.0, 10.0, 6.0 ] }
+            }
+        },
+        {
+            "name": "bar2",
+            "from": [ 6.0, 14.0, 10.0 ], 
+            "to": [ 10.0, 15.0, 14.0 ], 
+            "faces": {
+                "north": { "texture": "#3", "uv": [ 6.0, 0.0, 10.0, 1.0 ] },
+                "south": { "texture": "#3", "uv": [ 6.0, 1.0, 10.0, 0.0 ] },
+                "up": { "texture": "#3", "uv": [ 6.0, 2.0, 10.0, 6.0 ] }
+            }
+        }
+    ]
+}

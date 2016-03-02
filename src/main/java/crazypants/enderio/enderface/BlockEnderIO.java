@@ -1,5 +1,16 @@
 package crazypants.enderio.enderface;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,18 +24,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
 public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider {
 
@@ -40,7 +39,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
 
   public static final TextureSupplier selectedOverlayIcon = TextureRegistry.registerTexture("blocks/enderIOSelected");
   public static final TextureSupplier highlightOverlayIcon = TextureRegistry.registerTexture("blocks/enderIOHighlight");
-  public static final TextureSupplier enderEyeTex = TextureRegistry.registerTexture("items/ender_eye");
+  public static final TextureSupplier enderEyeTex = TextureRegistry.registerTexture("items/ender_eye", false);
   public static final TextureSupplier frameIcon = TextureRegistry.registerTexture("blocks/enderIOFrame");
 
   static int pass;

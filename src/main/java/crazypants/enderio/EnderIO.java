@@ -61,6 +61,7 @@ import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
+import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
@@ -103,7 +104,6 @@ import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
-import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
@@ -282,14 +282,15 @@ public class EnderIO {
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     blockStirlingGenerator = BlockStirlingGenerator.create();
+        
     blockCombustionGenerator = BlockCombustionGenerator.create();
     blockZombieGenerator = BlockZombieGenerator.create();
-    blockSolarPanel = BlockSolarPanel.create();
+//    blockSolarPanel = BlockSolarPanel.create();
 
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();
     blockCapBank = BlockCapBank.create();
-
+    
 //    blockPainter = BlockPainter.create();
 //    blockPaintedFence = BlockPaintedFence.create();
 //    blockPaintedFenceGate = BlockPaintedFenceGate.create();
@@ -302,55 +303,61 @@ public class EnderIO {
 //    blockPaintedGlowstone = BlockPaintedGlowstone.create();
 //    blockPaintedCarpet = BlockPaintedCarpet.create();
 
-    blockCrafter = BlockCrafter.create();
-    
+
+    blockCrafter = BlockCrafter.create();    
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
     blockFarmStation = BlockFarmStation.create();
 
-    blockWirelessCharger = BlockWirelessCharger.create();
+//    blockWirelessCharger = BlockWirelessCharger.create();
     
     blockTank = BlockTank.create();
-    blockReservoir = BlockReservoir.create();
-    blockVacuumChest = BlockVacuumChest.create();
+    
+//    blockReservoir = BlockReservoir.create();
+//    blockVacuumChest = BlockVacuumChest.create();
 
-    blockTransceiver = BlockTransceiver.create();
+//    blockTransceiver = BlockTransceiver.create();
 
-    blockBuffer = BlockBuffer.create();
-    blockInventoryPanel = BlockInventoryPanel.create();
+//    blockBuffer = BlockBuffer.create();
+//    blockInventoryPanel = BlockInventoryPanel.create();
 
     blockEnderIo = BlockEnderIO.create();
+    
     blockTravelPlatform = BlockTravelAnchor.create();
-    blockTelePad = BlockTelePad.createTelepad();
     itemCoordSelector = ItemCoordSelector.create();
+    
+    blockTelePad = BlockTelePad.createTelepad();    
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();
     blockPoweredSpawner = BlockPoweredSpawner.create();
     blockKillerJoe = BlockKillerJoe.create();
-    blockAttractor = BlockAttractor.create();
-    blockSpawnGuard = BlockAversionObelisk.create();
-    blockExperianceOblisk = BlockExperienceObelisk.create();
-    blockWeatherObelisk = BlockWeatherObelisk.create();
-    blockInhibitorObelisk = BlockInhibitorObelisk.create();
+//    blockAttractor = BlockAttractor.create();
+//    blockSpawnGuard = BlockAversionObelisk.create();
+//    blockExperianceOblisk = BlockExperienceObelisk.create();
+//    blockWeatherObelisk = BlockWeatherObelisk.create();
+//    blockInhibitorObelisk = BlockInhibitorObelisk.create();
     blockEnchanter = BlockEnchanter.create();
+
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockDarkSteelLadder = BlockDarkSteelLadder.create();
-    blockElectricLight = BlockElectricLight.create();
-    blockLightNode = BlockLightNode.create();
+        
+//    blockElectricLight = BlockElectricLight.create();
+//    blockLightNode = BlockLightNode.create();
 
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
 
-    blockFusedQuartz = BlockFusedQuartz.create();
-    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+//    blockFusedQuartz = BlockFusedQuartz.create();
+//    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
-    blockEnderRail = BlockEnderRail.create();
+//    blockEnderRail = BlockEnderRail.create();
 
     blockConduitBundle = BlockConduitBundle.create();
-    blockConduitFacade = BlockConduitFacade.create();
-    itemConduitFacade = ItemConduitFacade.create();
+    
+//    blockConduitFacade = BlockConduitFacade.create();
+//    itemConduitFacade = ItemConduitFacade.create();
 
     itemBrokenSpawner = ItemBrokenSpawner.create();
 
@@ -404,7 +411,7 @@ public class EnderIO {
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
-    MaterialRecipes.registerOresInDictionary();
+//    MaterialRecipes.registerOresInDictionary();
     
     proxy.preInit();
   }
@@ -486,10 +493,10 @@ public class EnderIO {
       SkeletonHandler.registerSkeleton(this);
     }
 
-    MaterialRecipes.registerDependantOresInDictionary();
+//    MaterialRecipes.registerDependantOresInDictionary();
 
 //    EnderfaceRecipes.addRecipes();
-    MaterialRecipes.addRecipes();
+//    MaterialRecipes.addRecipes();
 //    ConduitRecipes.addRecipes();
 //    MachineRecipes.addRecipes();
 //    ItemRecipes.addRecipes();
@@ -514,7 +521,7 @@ public class EnderIO {
     SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
-//    FarmersRegistry.addFarmers();
+    FarmersRegistry.addFarmers();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
 //    PaintSourceValidator.instance.loadConfig();
 

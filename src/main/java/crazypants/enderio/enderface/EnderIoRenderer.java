@@ -1,5 +1,11 @@
 package crazypants.enderio.enderface;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Matrix4d;
+
+import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -8,14 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Matrix4d;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
-
 @SideOnly(Side.CLIENT)
 public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
@@ -23,12 +21,12 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
     @Override
     public TextureAtlasSprite getSelectedIcon() {
-      return EnderIO.blockEnderIo.selectedOverlayIcon.get(TextureAtlasSprite.class);
+      return BlockEnderIO.selectedOverlayIcon.get(TextureAtlasSprite.class);
     }
 
     @Override
     public TextureAtlasSprite getHighlightIcon() {
-      return EnderIO.blockEnderIo.highlightOverlayIcon.get(TextureAtlasSprite.class);
+      return BlockEnderIO.highlightOverlayIcon.get(TextureAtlasSprite.class);
     }
 
   };
@@ -59,7 +57,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     GL11.glPushMatrix();
     GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-    TextureAtlasSprite tex = EnderIO.blockEnderIo.enderEyeTex.get(TextureAtlasSprite.class);
+    TextureAtlasSprite tex = BlockEnderIO.enderEyeTex.get(TextureAtlasSprite.class);
     float minU = tex.getMinU();
     float maxU = tex.getMaxU();
     float minV = tex.getMinV();
