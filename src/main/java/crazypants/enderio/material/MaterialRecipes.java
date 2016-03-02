@@ -15,11 +15,11 @@ import static crazypants.enderio.material.Material.BINDER_COMPOSITE;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.util.RecipeUtil.addShaped;
 import static crazypants.util.RecipeUtil.addShapeless;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemEnderFood.EnderFood;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -82,10 +82,10 @@ public class MaterialRecipes {
     OreDictionary.registerOre("ingotIron", Items.iron_ingot);
     OreDictionary.registerOre("ingotGold", Items.gold_ingot);
 
-    ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
+    ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("blockGlass", pureGlass);
-    OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
+    OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_QUARTZ.ordinal()));
 
     //Skulls
     ItemStack skull = new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE);

@@ -3,7 +3,6 @@ package crazypants.enderio.render;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -95,7 +94,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       if (block instanceof ISmartRenderAwareBlock) {
         IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos);
         List<IBlockState> states = renderMapper.mapBlockRender(state, world, pos);
-        CombinedBakedModel bakedModel = CombinedBakedModel.buildFromStates(null, states);
+        IBakedModel bakedModel = CombinedBakedModel.buildFromStates(null, states);
         if (rc != null) {
           rc.cacheModel(bakedModel);
         }
@@ -115,7 +114,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
         if (block instanceof ISmartRenderAwareBlock) {
           IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(stack);
           List<IBlockState> states = renderMapper.mapBlockRender(block, stack);
-          CombinedBakedModel bakedModel = CombinedBakedModel.buildFromStates(getDefaults(), states);
+          IBakedModel bakedModel = CombinedBakedModel.buildFromStates(getDefaults(), states);
           return bakedModel;
         }
       }

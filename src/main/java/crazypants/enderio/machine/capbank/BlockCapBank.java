@@ -52,10 +52,10 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
 import crazypants.enderio.machine.capbank.render.CapBankRenderMapper;
-import crazypants.enderio.machine.capbank.render.EnumCapbankRenderMode;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -93,7 +93,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   protected BlockCapBank() {
     super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class, BlockItemCapBank.class);
     setHardness(2.0F);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.AUTO)
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
   }
 
@@ -102,12 +102,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAP_BANK, this);
     setLightOpacity(255);
-    SmartModelAttacher.register(this, EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.DEFAULTS, EnumCapbankRenderMode.AUTO);
+    SmartModelAttacher.register(this, EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.DEFAULTS, EnumMergingBlockRenderMode.AUTO);
   }
 
   @Override
   protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumCapbankRenderMode.RENDER, CapBankType.KIND });
+    return new BlockState(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, CapBankType.KIND });
   }
 
   @Override
@@ -122,7 +122,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-    return state.withProperty(EnumCapbankRenderMode.RENDER, EnumCapbankRenderMode.AUTO);
+    return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO);
   }
 
   @Override

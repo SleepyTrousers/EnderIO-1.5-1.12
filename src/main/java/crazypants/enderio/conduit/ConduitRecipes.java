@@ -9,15 +9,14 @@ import static crazypants.enderio.material.Alloy.REDSTONE_ALLOY;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.PHASED_IRON_NUGGET;
 import static crazypants.util.RecipeUtil.addShaped;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -33,7 +32,7 @@ public class ConduitRecipes {
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
 
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
-    ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
+    ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_GLASS.ordinal());
 
     String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
     String phasedGold = PHASED_GOLD.getOreIngot();

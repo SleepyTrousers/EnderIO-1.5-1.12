@@ -6,9 +6,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
 import crazypants.enderio.material.Alloy;
-import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import crazypants.enderio.power.Capacitors;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -118,19 +118,19 @@ public class ThaumcraftCompat {
         .add(Aspect.MAN, 3)
         .add(getAspects(new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()))));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_QUARTZ.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.quartz, 4)))
         .add(Aspect.CRYSTAL, 1));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_GLASS.ordinal()), new AspectList()
         .add(Aspect.CRYSTAL, 2));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.ENLIGHTENED_FUSED_QUARTZ.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.quartz, 4)))
         .add(Aspect.LIGHT, 8)
         .add(Aspect.SENSES, 2));
 
-    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_GLASS.ordinal()), new AspectList()
+    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.ENLIGHTENED_FUSED_GLASS.ordinal()), new AspectList()
         .add(Aspect.CRYSTAL, 2)
         .add(Aspect.LIGHT, 8)
         .add(Aspect.SENSES, 2));

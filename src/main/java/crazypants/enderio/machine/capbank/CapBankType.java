@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.capbank.render.EnumCapbankRenderMode;
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
 
 public enum CapBankType implements IStringSerializable {
 

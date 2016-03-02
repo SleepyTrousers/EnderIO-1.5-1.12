@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.capbank.render;
+package crazypants.enderio.material.fusedQuartz;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +9,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.MergingBlockStateWrapper;
 
 import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
-public class CapBankRenderMapper implements IRenderMapper {
+public class FusedQuartzRenderMapper implements IRenderMapper {
 
-  public CapBankRenderMapper() {
+  public FusedQuartzRenderMapper() {
   }
 
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new CapBankStateWrapper(state, world, pos);
+    return new FusedQuartzStateWrapper(state, world, pos);
   }
 
   @Override
@@ -37,9 +36,11 @@ public class CapBankRenderMapper implements IRenderMapper {
   public List<IBlockState> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     IBlockState defaultState = block.getDefaultState();
-    states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides).withProperty(CapBankType.KIND, CapBankType.NONE));
-    CapBankType bankType = CapBankType.getTypeFromMeta(stack.getItemDamage());
-    defaultState = defaultState.withProperty(CapBankType.KIND, bankType);
+    FusedQuartzType bankType = FusedQuartzType.getTypeFromMeta(stack.getItemDamage());
+    defaultState = defaultState.withProperty(FusedQuartzType.KIND, bankType);
+
+    states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides));
+
     for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
       states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.UP)));
       states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.DOWN)));

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.capbank.render;
+package crazypants.enderio.render;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
@@ -15,7 +15,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 
-public enum EnumCapbankRenderMode implements IStringSerializable {
+public enum EnumMergingBlockRenderMode implements IStringSerializable {
   DEFAULTS,
   AUTO,
 
@@ -63,28 +63,28 @@ public enum EnumCapbankRenderMode implements IStringSerializable {
 
   ;
 
-  public static final PropertyEnum<EnumCapbankRenderMode> RENDER = PropertyEnum.<EnumCapbankRenderMode> create("render", EnumCapbankRenderMode.class);
+  public static final PropertyEnum<EnumMergingBlockRenderMode> RENDER = PropertyEnum.<EnumMergingBlockRenderMode> create("render", EnumMergingBlockRenderMode.class);
 
-  private EnumCapbankRenderMode(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
+  private EnumMergingBlockRenderMode(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal()) | (1 << dir3.ordinal());
     Mapping.mapping.put(id, this);
   }
 
-  private EnumCapbankRenderMode(EnumFacing dir1, EnumFacing dir2) {
+  private EnumMergingBlockRenderMode(EnumFacing dir1, EnumFacing dir2) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal());
     Mapping.mapping.put(id, this);
   }
 
-  private EnumCapbankRenderMode() {
+  private EnumMergingBlockRenderMode() {
 
   }
 
-  public static EnumCapbankRenderMode get(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
+  public static EnumMergingBlockRenderMode get(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal()) | (1 << dir3.ordinal());
     return Mapping.mapping.get(id);
   }
 
-  public static EnumCapbankRenderMode get(EnumFacing dir1, EnumFacing dir2) {
+  public static EnumMergingBlockRenderMode get(EnumFacing dir1, EnumFacing dir2) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal());
     return Mapping.mapping.get(id);
   }
@@ -95,6 +95,6 @@ public enum EnumCapbankRenderMode implements IStringSerializable {
   }
 
   private static class Mapping {
-    private static Map<Integer, EnumCapbankRenderMode> mapping = new HashMap<Integer, EnumCapbankRenderMode>();
+    private static Map<Integer, EnumMergingBlockRenderMode> mapping = new HashMap<Integer, EnumMergingBlockRenderMode>();
   }
 }

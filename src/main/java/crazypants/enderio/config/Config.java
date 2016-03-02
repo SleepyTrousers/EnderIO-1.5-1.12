@@ -5,13 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.enderio.core.common.event.ConfigFileChangedEvent;
-import com.enderio.core.common.vecmath.VecmathUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +16,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import com.enderio.core.common.event.ConfigFileChangedEvent;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
+import crazypants.enderio.network.PacketHandler;
 
 public final class Config {
 
@@ -484,8 +485,8 @@ public final class Config {
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
   public static String xpJuiceName = "xpjuice";
 
-  public static boolean clearGlassSameTexture = false;
   public static boolean clearGlassConnectToFusedQuartz = false;
+  public static boolean glassConnectToTheirVariants = true;
 
   public static int enchantmentSoulBoundId = 172;
   public static int enchantmentSoulBoundWeight = 1;
@@ -1330,7 +1331,8 @@ public final class Config {
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
     xpJuiceName = config.getString("xpJuiceName", sectionMisc.name, xpJuiceName, "Id of liquid XP fluid (WARNING: only for users who know what they are doing - changing this id can break worlds) - this should match with OpenBlocks when installed");
 
-    clearGlassSameTexture = config.getBoolean("clearGlassSameTexture", sectionMisc.name, clearGlassSameTexture, "If true, quite clear glass will use the fused quartz border texture for the block instead of the white border.");
+    glassConnectToTheirVariants = config.getBoolean("glassConnectToTheirVariants", sectionMisc.name, glassConnectToTheirVariants,
+        "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
     clearGlassConnectToFusedQuartz = config.getBoolean("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.");
 
     enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,

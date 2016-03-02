@@ -3,8 +3,8 @@ package crazypants.enderio.teleport;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.Alloy;
-import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.Material;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import net.minecraft.init.Items;
@@ -41,7 +41,7 @@ public class TeleportRecipes {
       ItemStack telepad = new ItemStack(EnderIO.blockTelePad);
       ItemStack octadic = new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
       ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, OreDictionary.WILDCARD_VALUE);
-      ItemStack fq = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal());
+      ItemStack fq = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_QUARTZ.ordinal());
       GameRegistry.addRecipe(new ShapedOreRecipe(telepad, "gSg", "dAd", "dod", 'g', fq, 'S', staff, 'd', "ingotDarkSteel", 'A', travelBlock, 'o', octadic));
     }
     
