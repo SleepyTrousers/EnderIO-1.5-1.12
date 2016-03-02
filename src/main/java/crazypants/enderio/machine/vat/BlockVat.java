@@ -5,8 +5,7 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -35,9 +33,6 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     return res;
   }
 
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper RENDER_MAPPER;
-  
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
   }
@@ -112,19 +107,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SoulBinderRenderMapper();
-    }
-    return RENDER_MAPPER;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SoulBinderRenderMapper();
-    }
-    return RENDER_MAPPER;
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
   }
 }

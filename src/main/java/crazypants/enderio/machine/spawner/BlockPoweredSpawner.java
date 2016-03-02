@@ -17,13 +17,11 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.machine.soul.SoulBinderRenderMapper;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.BlockMobSpawner;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -37,7 +35,6 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -51,10 +48,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
-
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper RENDER_MAPPER;
-  
+ 
   public static void writeMobTypeToNBT(NBTTagCompound nbt, String type) {
     if(nbt == null) {
       return;
@@ -359,20 +353,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SoulBinderRenderMapper();
-    }
-    return RENDER_MAPPER;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SoulBinderRenderMapper();
-    }
-    return RENDER_MAPPER;
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
   }
 
 }

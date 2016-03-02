@@ -2,7 +2,7 @@ package crazypants.enderio.machine.obelisk.aversion;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.machine.obelisk.ObeliskSpecialRenderer;
+import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

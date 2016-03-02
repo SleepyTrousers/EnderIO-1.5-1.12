@@ -5,7 +5,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
@@ -34,10 +34,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     BlockBuffer res = new BlockBuffer();
     res.init();
     return res;
-  }
-  
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper RENDER_MAPPER;
+  } 
 
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class, BlockItemBuffer.class);
@@ -148,20 +145,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new MachineRenderMapper(null);
-    }
-    return RENDER_MAPPER;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new MachineRenderMapper(null);
-    }
-    return RENDER_MAPPER;
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
   }
 
 }

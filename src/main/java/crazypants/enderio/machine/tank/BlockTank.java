@@ -9,7 +9,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.EnumRenderMode;
@@ -36,9 +36,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper RENDER_MAPPER;
-  
   public static BlockTank create() {
     PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -201,19 +198,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new MachineRenderMapper(null);
-    }
-    return RENDER_MAPPER;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new MachineRenderMapper(null);
-    }
-    return RENDER_MAPPER;
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
   }
 }

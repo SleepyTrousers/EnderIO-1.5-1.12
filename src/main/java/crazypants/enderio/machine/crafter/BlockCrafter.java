@@ -3,24 +3,18 @@ package crazypants.enderio.machine.crafter;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IRenderMapper;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
-
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper CRAFTER_MACHINE_RENDER_MAPPER;
-
+  
   public static BlockCrafter create() {
     PacketHandler.INSTANCE.registerMessage(PacketCrafter.class,PacketCrafter.class,PacketHandler.nextID(), Side.SERVER);
     BlockCrafter res = new BlockCrafter();
@@ -57,20 +51,8 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if(CRAFTER_MACHINE_RENDER_MAPPER == null) {
-      CRAFTER_MACHINE_RENDER_MAPPER = new MachineRenderMapper(null);
-    }
-    return CRAFTER_MACHINE_RENDER_MAPPER;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-if(CRAFTER_MACHINE_RENDER_MAPPER == null) {
-  CRAFTER_MACHINE_RENDER_MAPPER = new MachineRenderMapper(null);
-    }
-    return CRAFTER_MACHINE_RENDER_MAPPER;
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
   }
 
 }

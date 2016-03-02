@@ -30,6 +30,7 @@ import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.ZombieGeneratorRenderer;
 import crazypants.enderio.machine.killera.KillerJoeRenderer;
 import crazypants.enderio.machine.killera.TileKillerJoe;
+import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.ranged.RangeRenerer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
@@ -156,6 +157,7 @@ public class ClientProxy extends CommonProxy {
     if(EnderIO.blockVacuumChest != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), ModObject.blockVacuumChest.unlocalisedName);
     }
+    ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Tile Renderers
 
@@ -198,12 +200,10 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockEndermanSkull != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEndermanSkull.class, new EndermanSkullRenderer());
     }
-
     if (Config.transceiverEnabled) {
       TransceiverRenderer tr = new TransceiverRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
     }
-
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
 
     // OBJLoader.instance.addDomain(EnderIO.MODID.toLowerCase());

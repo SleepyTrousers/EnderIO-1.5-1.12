@@ -5,7 +5,9 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.ContainerNoInv;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -73,6 +75,12 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
     ; // Has no particles
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper() {    
+    return RenderMappers.FRONT_MAPPER;
   }
 
 }

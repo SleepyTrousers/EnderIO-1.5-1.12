@@ -5,27 +5,21 @@ import java.util.Random;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
-
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper SOUL_MACHINE_RENDER_MAPPER;
 
   public static BlockSliceAndSplice create() {
     BlockSliceAndSplice result = new BlockSliceAndSplice();
@@ -100,20 +94,8 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if(SOUL_MACHINE_RENDER_MAPPER == null) {
-      SOUL_MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
-    }
-    return SOUL_MACHINE_RENDER_MAPPER;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-if(SOUL_MACHINE_RENDER_MAPPER == null) {
-  SOUL_MACHINE_RENDER_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
-    }
-    return SOUL_MACHINE_RENDER_MAPPER;
+  public IRenderMapper getRenderMapper() {    
+    return RenderMappers.SOUL_MAPPER;
   }
 
 }
