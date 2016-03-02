@@ -17,10 +17,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
 
@@ -30,8 +32,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
     res.init();
     return res;
   }
-
-  public static int renderId;
 
   protected BlockVacuumChest() {
     super(ModObject.blockVacuumChest.unlocalisedName, TileVacuumChest.class);
@@ -62,7 +62,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     if(!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, pos.getX(), pos.getX(), pos.getZ());
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, pos.getX(), pos.getY(), pos.getZ());
     }
     return true;
   }
@@ -90,12 +90,13 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
       }
     }
   }
-
+  
   @Override
-  public int getRenderType() {
-    return renderId;
+  @SideOnly(Side.CLIENT)
+  public EnumWorldBlockLayer getBlockLayer() {
+    return EnumWorldBlockLayer.CUTOUT;
   }
-
+  
   @Override
   public boolean isOpaqueCube() {
     return false;

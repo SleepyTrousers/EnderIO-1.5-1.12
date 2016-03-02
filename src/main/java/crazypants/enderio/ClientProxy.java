@@ -153,6 +153,9 @@ public class ClientProxy extends CommonProxy {
     if(EnderIO.blockWirelessCharger != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockWirelessCharger), ModObject.blockWirelessCharger.unlocalisedName);
     }
+    if(EnderIO.blockVacuumChest != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), ModObject.blockVacuumChest.unlocalisedName);
+    }
 
     // Tile Renderers
 
