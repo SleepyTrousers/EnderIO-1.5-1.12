@@ -35,7 +35,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   @Override
   public String getMachineName() {
-    return BlockItemBuffer.Type.get(this).getUnlocalizedName();
+    return BufferType.get(this).getUnlocalizedName();
   }
 
   @Override
@@ -82,7 +82,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   @Override
   public void writeToItemStack(ItemStack stack) {
       super.writeToItemStack(stack);
-      stack.setItemDamage(BlockItemBuffer.Type.get(this).ordinal());
+      stack.setItemDamage(BufferType.get(this).ordinal());
   }
 
   @Override

@@ -319,7 +319,7 @@ public class EnderIO {
 
 //    blockTransceiver = BlockTransceiver.create();
 
-//    blockBuffer = BlockBuffer.create();
+    blockBuffer = BlockBuffer.create();
 //    blockInventoryPanel = BlockInventoryPanel.create();
 
     blockEnderIo = BlockEnderIO.create();

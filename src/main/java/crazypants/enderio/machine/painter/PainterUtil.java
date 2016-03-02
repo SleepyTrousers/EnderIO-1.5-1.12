@@ -94,7 +94,7 @@ public final class PainterUtil {
   }
   
   public static void setSourceBlock(NBTTagCompound tag, Block source, int meta) {
-    if (tag == null) {
+    if (tag == null || source == null) {
       return;
     }
     String name = Block.blockRegistry.getNameForObject(source).toString();

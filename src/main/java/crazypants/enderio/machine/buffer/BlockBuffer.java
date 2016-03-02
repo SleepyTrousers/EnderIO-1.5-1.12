@@ -1,16 +1,20 @@
 package crazypants.enderio.machine.buffer;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
 import crazypants.util.IFacade;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,8 +24,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
 
@@ -31,14 +35,40 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     res.init();
     return res;
   }
-
-//  private static final String[] textureNames = new String[] { "blockBufferItem", "blockBufferPower", "blockBufferOmni", "blockBufferCreative" };
   
+  @SideOnly(Side.CLIENT)
+  private static MachineRenderMapper RENDER_MAPPER;
 
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class, BlockItemBuffer.class);
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)
+        .withProperty(BufferType.TYPE, BufferType.ITEM));
+  }
+  
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER, BufferType.TYPE });
   }
 
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState().withProperty(BufferType.TYPE, BufferType.getTypeFromMeta(meta));
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return BufferType.getMetaFromType(state.getValue(BufferType.TYPE));
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
+  }
+
+  @Override
+  public int damageDropped(IBlockState st) {
+    return getMetaFromState(st);
+  }
   @Override
   protected void init() {
     super.init();
@@ -68,21 +98,6 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return GuiHandler.GUI_ID_BUFFER;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-//    TileEntity te = world.getTileEntity(x, y, z);
-//    if(te instanceof TileBuffer) {
-//      TileBuffer tef = (TileBuffer) te;
-//      if(tef.getSourceBlock() != null) {
-//        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
-//      } else if(blockSide > 1) {
-//        return textures[world.getBlockMetadata(x, y, z)];
-//      }
-//    }
-//    return super.getIcon(world, x, y, z, blockSide);
-//  }
-
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
     if(entity instanceof EntityPlayer) {
@@ -96,12 +111,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       }
     }
   }
-
-  @Override
-  public int damageDropped(IBlockState bs) {
-    return getMetaFromState(bs);
-  }
-
+ 
   public ItemStack createItemStackForSourceBlock(ItemStack machine, Block block, int sourceMeta) {
     PainterUtil.setSourceBlock(machine, block, sourceMeta);
     return machine;
@@ -134,6 +144,24 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       return null;
     }
     return te.getSourceBlock();
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new MachineRenderMapper(null);
+    }
+    return RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new MachineRenderMapper(null);
+    }
+    return RENDER_MAPPER;
   }
 
 }

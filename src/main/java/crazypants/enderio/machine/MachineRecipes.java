@@ -19,7 +19,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.machine.buffer.BlockItemBuffer.Type;
+import crazypants.enderio.machine.buffer.BufferType;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.light.BlockItemElectricLight;
@@ -300,9 +300,9 @@ public class MachineRecipes {
     addShaped(sns, "iki", "ams", "iii", 'i', soularium, 'm', machineChassis, 'k', "itemSkull", 'a', Items.iron_axe, 's', Items.shears);
 
     //Buffer
-    ItemStack itemBuffer = Type.getStack(Type.ITEM);
-    ItemStack powerBuffer = Type.getStack(Type.POWER);
-    ItemStack omniBuffer = Type.getStack(Type.OMNI);
+    ItemStack itemBuffer = BufferType.getStack(BufferType.ITEM);
+    ItemStack powerBuffer = BufferType.getStack(BufferType.POWER);
+    ItemStack omniBuffer = BufferType.getStack(BufferType.OMNI);
     addShaped(itemBuffer, "isi", "scs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'c', "chestWood");
     addShaped(powerBuffer, "isi", "sfs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'f', machineChassis);
     addShapeless(omniBuffer, itemBuffer, powerBuffer);

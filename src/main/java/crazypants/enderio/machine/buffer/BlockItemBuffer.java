@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
 import java.util.List;
-import java.util.Locale;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,53 +18,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemBuffer extends ItemBlock {
 
-  public enum Type {
-    ITEM(true, false, false),
-    POWER(false, true, false),
-    OMNI(true, true, false),
-    CREATIVE(true, true, true);
-
-    final boolean hasInventory;
-    final boolean hasPower;
-    final boolean isCreative;
-
-    private Type(boolean hasInventory, boolean hasPower, boolean isCreative) {
-      this.hasInventory = hasInventory;
-      this.hasPower = hasPower;
-      this.isCreative = isCreative;
-    }
-
-    public static Type get(TileBuffer buffer) {
-      return !buffer.hasPower() ? ITEM : !buffer.hasInventory() ? POWER : !buffer.isCreative() ? OMNI : CREATIVE;
-    }
-
-    public String getUnlocalizedName() {
-      return "tile." + ModObject.blockBuffer.unlocalisedName + "." + name().toLowerCase(Locale.US);
-    }
-
-    public static ItemStack getStack(Type type) {
-      return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
-    }
-  }
-
   public BlockItemBuffer(Block block) {
     super(block);
-    setHasSubtypes(false);
+    setHasSubtypes(true);
     setMaxDamage(0);
   }
 
+  @Override
+  public int getMetadata(int damage) {
+    return damage;
+  }
+  
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs tab, List list) {
-    for (Type type : Type.values()) {
+    for (BufferType type : BufferType.values()) {
       list.add(new ItemStack(item, 1, type.ordinal()));
     }
   }
 
   @Override
   public String getUnlocalizedName(ItemStack stack) {
-    return Type.values()[stack.getItemDamage()].getUnlocalizedName();
+    return BufferType.values()[stack.getItemDamage()].getUnlocalizedName();
   }
 
   @Override
@@ -79,7 +52,8 @@ public class BlockItemBuffer extends ItemBlock {
       TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileBuffer) {
         TileBuffer buffer = ((TileBuffer) te);        
-        Type t = Type.values()[block.getMetaFromState(newState)];
+        BufferType t = BufferType.values()[block.getMetaFromState(newState)];
+        System.out.println("BlockItemBuffer.placeBlockAt: " + t);
         buffer.setHasInventory(t.hasInventory);
         buffer.setHasPower(t.hasPower);
         buffer.setCreative(t.isCreative);
