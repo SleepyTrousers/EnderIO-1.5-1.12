@@ -127,7 +127,7 @@ public class ClientProxy extends CommonProxy {
     SmartModelAttacher.registerBlockItemModels();
 
     // Blocks
-    if (EnderIO.blockDarkIronBars != null) {
+    if (EnderIO.blockDarkIronBars != null) {      
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.unlocalisedName);
     }
     if (EnderIO.blockDarkSteelAnvil != null) {
@@ -135,10 +135,7 @@ public class ClientProxy extends CommonProxy {
     }
     if (EnderIO.blockDarkSteelLadder != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.unlocalisedName);
-    }
-    if (EnderIO.blockReinforcedObsidian != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockReinforcedObsidian), ModObject.blockReinforcedObsidian.unlocalisedName);
-    }
+    }   
     if (EnderIO.blockDarkSteelPressurePlate != null) {
       EnderIO.blockDarkSteelPressurePlate.registerRenderers();
     }
@@ -148,15 +145,10 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockEndermanSkull != null) {
       EnderIO.blockEndermanSkull.registerRenderers();
     }
-    if(EnderIO.blockTravelPlatform != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockTravelPlatform), ModObject.blockTravelAnchor.unlocalisedName);
-    }
-    if(EnderIO.blockWirelessCharger != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockWirelessCharger), ModObject.blockWirelessCharger.unlocalisedName);
-    }
-    if(EnderIO.blockVacuumChest != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), ModObject.blockVacuumChest.unlocalisedName);
-    }
+    ClientUtil.registerDefaultItemRenderer(EnderIO.blockTravelPlatform);
+    ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
+    ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);  
+    ClientUtil.registerDefaultItemRenderer(EnderIO.blockReinforcedObsidian);
     ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Tile Renderers

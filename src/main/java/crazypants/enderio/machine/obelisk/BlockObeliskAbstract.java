@@ -39,6 +39,10 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
   public int getLightOpacity() {
     return 0;
   }
+  
+  @Override
+  protected void registerInSmartModelAttacher() {
+  }
 
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {  
