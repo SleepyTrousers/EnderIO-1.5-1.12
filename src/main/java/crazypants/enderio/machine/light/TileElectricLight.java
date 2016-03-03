@@ -17,6 +17,7 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -110,8 +111,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       return;
     }
 
-    boolean isActivated = init ? isPoweredRedstone() ^ isInvereted : lastActive;
-
+    boolean isActivated = init ? worldObj.isBlockPowered(pos) ^ isInvereted : lastActive;    
     if(requiresPower) {
       if(isActivated) {
         if(!hasPower()) {
@@ -122,27 +122,32 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       }
 
       if(init) {
-        updateLightNodes();
+        //TODO: 1.8
+//        updateLightNodes();
       }
     }
 
     if(isActivated != lastActive || init) {
-      
-      worldObj.setBlockState(pos, getBlockType().getStateFromMeta(isActivated ? 1 : 0), 2);
+
+      IBlockState bs = worldObj.getBlockState(pos);
+      bs = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
+      worldObj.setBlockState(pos, bs, 2);      
 
       if(requiresPower) {
-        for (TileLightNode ln : lightNodes) {
-          if(ln != null) {
-            worldObj.setBlockState(ln.getPos(), getBlockType().getStateFromMeta(isActivated ? 1 : 0), 2);            
-            worldObj.markBlockForUpdate(ln.getPos());
-            worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln.getPos());            
-          }
-        }
+        //TODO: 1.8
+//        for (TileLightNode ln : lightNodes) {
+//          if(ln != null) {
+//            worldObj.setBlockState(ln.getPos(), EnderIO.blockLightNode.getStateFromMeta(isActivated ? 1 : 0), 2);            
+//            worldObj.markBlockForUpdate(ln.getPos());
+//            worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln.getPos());            
+//          }
+//        }
       }
       worldObj.markBlockForUpdate(pos);
       worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);      
       init = false;
       lastActive = isActivated;
+      
     }
     
     if (chargedLocation != null) {
@@ -282,8 +287,8 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   private boolean isLightNode(Vector3d offset) {
-    return worldObj.getBlockState(
-        new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ()  + (int) offset.z)).getBlock() == EnderIO.blockLightNode;
+    BlockPos bp = new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ()  + (int) offset.z);
+    return worldObj.getBlockState(bp).getBlock() == EnderIO.blockLightNode && worldObj.getTileEntity(bp) instanceof TileLightNode;
   }
 
   private void clearLightNodes() {

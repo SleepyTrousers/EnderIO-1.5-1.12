@@ -22,28 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemElectricLight extends ItemBlock implements IResourceTooltipProvider {
 
-  public enum Type {
-    ELECTRIC("item.itemElectricLight", false, true, false),
-    ELECTRIC_INV("item.itemElectricLightInverted", true, true, false),
-    BASIC("item.itemLight", false, false, false),
-    BASIC_INV("item.itemLightInverted", true, false, false),
-    WIRELESS("item.itemWirelessLight", false, true, true),
-    WIRELESS_INV("item.itemWirelessLightInverted", true, true, true);
-
-    final String unlocName;
-    final boolean isInverted;
-    final boolean isPowered;
-    final boolean isWireless;
-
-    private Type(String unlocName, boolean isInverted, boolean isPowered, boolean isWireless) {
-      this.unlocName = unlocName;
-      this.isInverted = isInverted;
-      this.isPowered = isPowered;
-      this.isWireless = isWireless;
-    }
-
-  }
-
   public BlockItemElectricLight(Block block) {
     super(block);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -54,14 +32,14 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
-    return Type.values()[meta].unlocName;
+    meta = MathHelper.clamp_int(meta, 0, LightType.values().length - 1);
+    return LightType.values()[meta].unlocName;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-    for(Type type : Type.values()) {
+    for(LightType type : LightType.values()) {
       par3List.add(new ItemStack(this,1,type.ordinal()));
     }
   }
@@ -69,9 +47,12 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
   @Override
   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
     
-    if (!world.setBlockState(pos, newState, 3)) return false;
-
-    IBlockState state = world.getBlockState(pos);
+    LightType type = LightType.fromMetadata(stack.getItemDamage());    
+    IBlockState state = newState.withProperty(BlockElectricLight.TYPE, type);      
+    if (!world.setBlockState(pos, state, 3)) {
+      return false;
+    }
+    state = world.getBlockState(pos);    
     if (state.getBlock() == block) {
       setTileEntityNBT(world, player, pos, stack);
       block.onBlockPlacedBy(world, pos, state, player, stack);
@@ -83,11 +64,10 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
       TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileElectricLight) {
         TileElectricLight el = ((TileElectricLight) te);
-        el.setFace(onFace);
-        Type t= Type.values()[block.getMetaFromState(bs)];
-        el.setInverted(t.isInverted);
-        el.setRequiresPower(t.isPowered);
-        el.setWireless(t.isWireless);
+        el.setFace(onFace.getOpposite());        
+        el.setInverted(type.isInverted);
+        el.setRequiresPower(type.isPowered);
+        el.setWireless(type.isWireless);
       }
     }
     return true;

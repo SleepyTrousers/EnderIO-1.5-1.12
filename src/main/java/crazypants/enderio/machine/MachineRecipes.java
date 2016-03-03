@@ -1,25 +1,5 @@
 package crazypants.enderio.machine;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.FunctionUpgrade;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.machine.buffer.BufferType;
-import crazypants.enderio.machine.capbank.BlockItemCapBank;
-import crazypants.enderio.machine.capbank.CapBankType;
-import crazypants.enderio.machine.light.BlockItemElectricLight;
-import crazypants.enderio.machine.solar.SolarType;
-import crazypants.enderio.material.FrankenSkull;
-import crazypants.enderio.material.MachinePart;
-import crazypants.enderio.material.Material;
-import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
-import crazypants.enderio.power.Capacitors;
-
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
@@ -34,6 +14,26 @@ import static crazypants.enderio.material.Material.SILICON;
 import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
 import static crazypants.util.RecipeUtil.addShaped;
 import static crazypants.util.RecipeUtil.addShapeless;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.item.FunctionUpgrade;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.buffer.BufferType;
+import crazypants.enderio.machine.capbank.BlockItemCapBank;
+import crazypants.enderio.machine.capbank.CapBankType;
+import crazypants.enderio.machine.light.LightType;
+import crazypants.enderio.machine.solar.SolarType;
+import crazypants.enderio.material.FrankenSkull;
+import crazypants.enderio.material.MachinePart;
+import crazypants.enderio.material.Material;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
+import crazypants.enderio.power.Capacitors;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class MachineRecipes {
 
@@ -262,10 +262,10 @@ public class MachineRecipes {
     GameRegistry.addRecipe(inst);
 
     //wireless light
-    ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC.ordinal());
-    ItemStack poweredLampInv = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC_INV.ordinal());
-    ItemStack wirelessLamp = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS.ordinal());
-    ItemStack wirelessLampInv = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS_INV.ordinal());
+    ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, LightType.ELECTRIC.ordinal());
+    ItemStack poweredLampInv = new ItemStack(EnderIO.blockElectricLight, 1, LightType.ELECTRIC_INV.ordinal());
+    ItemStack wirelessLamp = new ItemStack(EnderIO.blockElectricLight, 1, LightType.WIRELESS.ordinal());
+    ItemStack wirelessLampInv = new ItemStack(EnderIO.blockElectricLight, 1, LightType.WIRELESS_INV.ordinal());
     addShapeless(wirelessLamp, poweredLamp, enderRes);
     addShapeless(wirelessLamp, wirelessLampInv, Blocks.redstone_torch);
     addShapeless(wirelessLampInv, poweredLampInv, enderRes);

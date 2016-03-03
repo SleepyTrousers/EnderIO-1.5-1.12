@@ -5,16 +5,21 @@ import com.enderio.core.common.vecmath.Vector3f;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable {
 
@@ -24,6 +29,10 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   static final float BLOCK_EDGE_MAX = 0.5f + (BLOCK_WIDTH / 2);
   static final float BLOCK_EDGE_MIN = 0.5f - (BLOCK_WIDTH / 2);
 
+  public static final PropertyEnum<LightType> TYPE = PropertyEnum.<LightType> create("type", LightType.class);
+  public static final PropertyBool ACTIVE = PropertyBool.create("active");
+  public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing> create("face", EnumFacing.class);  
+  
   public static BlockElectricLight create() {
     BlockElectricLight result = new BlockElectricLight();
     result.init();
@@ -34,12 +43,64 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
     super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class, BlockItemElectricLight.class);
     setLightOpacity(0);
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+    setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }
 
   @Override
+  public BlockState createBlockState() {
+      return new BlockState(this, TYPE, ACTIVE, FACING); 
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    boolean active = state.getValue(ACTIVE).booleanValue();
+    int type = state.getValue(TYPE).getMetadata();
+    if(active) {
+      type |= 8;
+    }
+    return type;
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    LightType type = LightType.fromMetadata(meta);
+    return getDefaultState().withProperty(TYPE, type).withProperty(ACTIVE, meta > 7);
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    TileElectricLight te = getTileEntity(world, pos);    
+    return state.withProperty(FACING, te == null ? EnumFacing.DOWN : te.getFace());    
+  }
+
+  @Override
+  public int damageDropped(IBlockState state) {
+    return state.getValue(TYPE).ordinal();
+  }
+
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {    
+    Item item = Item.getItemFromBlock(this);    
+    int numTypes = LightType.values().length;
+    for (int i = 0; i < numTypes; i++) {     
+      ClientUtil.regRenderer(item, i, name);
+    }
+  }
+  
+  
+  @Override
+  public int getLightValue(IBlockAccess world, BlockPos pos) {
+    IBlockState bs = world.getBlockState(pos);
+    Block block = bs.getBlock();
+    if (block != null && block != this) {
+      return block.getLightValue(world, pos);
+    } 
+    return bs.getValue(ACTIVE) ? 15 : 0;
+  }
+  
+  @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
@@ -47,28 +108,9 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
     return null;
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public void registerBlockIcons(IIconRegister iIconRegister) {
-  // blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
-  // blockIconOff =
-  // iIconRegister.registerIcon("enderio:blockElectricLightFaceOff");
-  // blockIconSide = iIconRegister.registerIcon("enderio:conduitConnector");
-  // }
-
-  @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
-    IBlockState bs = world.getBlockState(pos);
-    Block block = bs.getBlock();
-    if (block != null && block != this) {
-      return block.getLightValue(world, pos);
-    }
-    int meta = block.getMetaFromState(bs);
-    return meta > 0 ? 15 : 0;
-  }
-
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos) {
+        
     EnumFacing onFace = EnumFacing.DOWN;
     TileEntity te = blockAccess.getTileEntity(pos);
     if (te instanceof TileElectricLight) {
@@ -113,11 +155,16 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   public void setBlockBoundsForItemRender() {
-    setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+//    setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
   @Override
   public boolean isOpaqueCube() {
+    return false;
+  }
+  
+  @Override
+  public boolean isFullCube() {
     return false;
   }
 
@@ -138,22 +185,8 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileElectricLight light, ItemStack drop) {
-    if (light == null) {
-      return;
-    }
-    int meta = light.isInvereted() ? 1 : 0;
-    if (!light.isRequiresPower()) {
-      meta += 2;
-    } else if (light.isWireless()) {
-      meta += 4;
-    }
-    drop.setItemDamage(meta);
-  }
-
-  @Override
   public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
+    return true;
   }
 
 }
