@@ -35,10 +35,6 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
     return true; 
   }
-  
-  @Override
-  protected void registerInSmartModelAttacher() {
-  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {

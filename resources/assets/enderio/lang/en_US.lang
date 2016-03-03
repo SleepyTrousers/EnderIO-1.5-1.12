@@ -498,6 +498,10 @@ tile.blockWeatherObelisk.tooltip.detailed.line1=Changes the current weather
 tile.blockWeatherObelisk.tooltip.detailed.line2=Requires a lot of power and
 tile.blockWeatherObelisk.tooltip.detailed.line3=a catalyst item
 
+tile.blockInhibitorObelisk.name=Inhibitor Obelisk
+tile.blockInhibitorObelisk.tooltip.detailed.line1=Prevents teleporting within 
+tile.blockInhibitorObelisk.tooltip.detailed.line2=its area of effect
+
 tile.blockBuffer.item.name=Item Buffer
 tile.blockBuffer.power.name=Power Buffer
 tile.blockBuffer.omni.name=Omni Buffer

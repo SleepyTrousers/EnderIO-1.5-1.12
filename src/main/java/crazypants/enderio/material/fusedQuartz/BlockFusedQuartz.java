@@ -2,6 +2,13 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.List;
 
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -20,13 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
 
 public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implements ISmartRenderAwareBlock {
   
@@ -120,7 +120,11 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implement
 
   @Override
   public int getLightOpacity(IBlockAccess world, BlockPos pos) {
-    return world.getBlockState(pos).getValue(FusedQuartzType.KIND).getLightOpacity();
+    IBlockState bs = world.getBlockState(pos);
+    if(bs.getBlock() != this) {
+      return super.getLightOpacity(world, pos);
+    }
+    return bs.getValue(FusedQuartzType.KIND).getLightOpacity();
   }
   
   @Override
@@ -178,6 +182,7 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implement
     return false;
   }
 
+  @Override
   public boolean isFullCube() {
     return false;
   }
