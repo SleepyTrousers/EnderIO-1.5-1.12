@@ -101,15 +101,12 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implement
   @Override
   @SideOnly(Side.CLIENT)
   public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.CUTOUT;
+    return EnumWorldBlockLayer.SOLID;
   }
 
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {   
-    IBlockState bs = world.getBlockState(pos);
-    int meta = bs.getBlock().getMetaFromState(bs);
-    FusedQuartzType type = FusedQuartzType.getTypeFromMeta(meta);
-    if (type.isBlastResistant()) {
+    if (world.getBlockState(pos).getValue(FusedQuartzType.KIND).isBlastResistant()) {
       return 2000;
     } else {
       return super.getExplosionResistance(par1Entity);
@@ -123,31 +120,19 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implement
 
   @Override
   public int getLightOpacity(IBlockAccess world, BlockPos pos) {
-    IBlockState bs = world.getBlockState(pos);
-    int meta = bs.getBlock().getMetaFromState(bs);
-    FusedQuartzType type = FusedQuartzType.getTypeFromMeta(meta);
-    return type.getLightOpacity();
+    return world.getBlockState(pos).getValue(FusedQuartzType.KIND).getLightOpacity();
   }
   
   @Override
   public int getLightValue(IBlockAccess world, BlockPos pos) {
-    IBlockState bs = world.getBlockState(pos);
-    Block block = bs.getBlock();
-    if(block != this) {
-      return super.getLightValue(world, pos);
-    }
-    int meta = block.getMetaFromState(bs);
-    FusedQuartzType type = FusedQuartzType.getTypeFromMeta(meta);
-    return type.isEnlightened() ? 15 : super.getLightValue(world, pos);
+    return world.getBlockState(pos).getValue(FusedQuartzType.KIND).isEnlightened() ? 15 : super.getLightValue(world, pos);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (FusedQuartzType fqt : FusedQuartzType.values()) {
-      if (fqt.getUnlocalisedName() != null) {
-        par3List.add(new ItemStack(par1, 1, fqt.ordinal()));
-      }
+      par3List.add(new ItemStack(par1, 1, fqt.ordinal()));
     }
   }
 
@@ -190,6 +175,10 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implement
 
   @Override
   protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+    return false;
+  }
+
+  public boolean isFullCube() {
     return false;
   }
 

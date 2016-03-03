@@ -4,15 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import cofh.api.energy.EnergyStorage;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.power.IInternalPowerProvider;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.waila.IWailaNBTProvider;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -22,6 +13,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import cofh.api.energy.EnergyStorage;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.power.IInternalPowerProvider;
+import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.waila.IWailaNBTProvider;
 
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
   
@@ -145,11 +145,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   private int getEnergyPerTick() {
-    int meta = getBlockMetadata();
-    if(meta == 0) {
-      return Config.maxPhotovoltaicOutputRF;
-    }
-    return Config.maxPhotovoltaicAdvancedOutputRF;
+    return this.worldObj.getBlockState(this.pos).getValue(SolarType.KIND).getRfperTick();
   }
 
   float calculateLightRatio() {
@@ -157,11 +153,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
   
   boolean canSeeSun() {
-    return worldObj.canBlockSeeSky(pos);
+    return worldObj.canBlockSeeSky(pos) || worldObj.canBlockSeeSky(pos.up());
   }
 
   public static float calculateLightRatio(World world, BlockPos pos) {    
-    int lightValue = world.getLightFor(EnumSkyBlock.SKY, pos) - world.getSkylightSubtracted();
+    int lightValue = Math.max(world.getLightFor(EnumSkyBlock.SKY, pos), world.getLightFor(EnumSkyBlock.SKY, pos.up())) - world.getSkylightSubtracted();
     float sunAngle = world.getCelestialAngleRadians(1.0F);
 
     if(sunAngle < (float) Math.PI) {

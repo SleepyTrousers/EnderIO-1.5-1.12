@@ -285,7 +285,7 @@ public class EnderIO {
         
     blockCombustionGenerator = BlockCombustionGenerator.create();
     blockZombieGenerator = BlockZombieGenerator.create();
-//    blockSolarPanel = BlockSolarPanel.create();
+    blockSolarPanel = BlockSolarPanel.create();
 
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();

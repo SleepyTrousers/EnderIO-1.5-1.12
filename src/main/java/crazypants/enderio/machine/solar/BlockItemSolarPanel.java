@@ -2,22 +2,18 @@ package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -36,22 +32,14 @@ public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipPr
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int meta = par1ItemStack.getItemDamage();
-    String result = super.getUnlocalizedName(par1ItemStack);
-    if(meta == 1) {
-      result += ".advanced";
-    }
-    return result;
+    int meta = par1ItemStack.getMetadata();
+    SolarType type = SolarType.getTypeFromMeta(meta);
+    return super.getUnlocalizedName(par1ItemStack) + type.getUnlocalisedName();
   }
 
   @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-    ItemStack stack = new ItemStack(this, 1,0);
-    par3List.add(stack);
-    stack = new ItemStack(this, 1,1);
-    par3List.add(stack);
+  public int getMetadata(int damage) {
+    return damage;
   }
 
   @Override
@@ -67,10 +55,7 @@ public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipPr
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String>  list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
-    int prod = Config.maxPhotovoltaicOutputRF;
-    if(itemstack.getItemDamage() == 1) {
-      prod = Config.maxPhotovoltaicAdvancedOutputRF;
-    }
+    int prod = SolarType.getTypeFromMeta(itemstack.getMetadata()).getRfperTick();
     list.add(EnderIO.lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
   }
 

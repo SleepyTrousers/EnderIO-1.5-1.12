@@ -52,6 +52,8 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
   protected BlockTelePad() {
     super(ModObject.blockTelePad.unlocalisedName, TileTelePad.class);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
+    setLightOpacity(255);
+    useNeighborBrightness = true;
   }
 
   @Override

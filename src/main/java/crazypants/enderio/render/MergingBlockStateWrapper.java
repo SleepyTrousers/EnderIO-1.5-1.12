@@ -13,6 +13,8 @@ import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
 public abstract class MergingBlockStateWrapper extends BlockStateWrapper {
 
+  protected boolean skip_top = false, skip_bottom = false, skip_side = false, skip_top_side = false, skip_bottom_side = false;
+
   protected final List<IBlockState> states = new ArrayList<IBlockState>();
 
   protected abstract boolean isSameKind(IBlockState other);
@@ -25,8 +27,11 @@ public abstract class MergingBlockStateWrapper extends BlockStateWrapper {
 
   public MergingBlockStateWrapper(IBlockState state, IBlockAccess world, BlockPos pos) {
     super(state, world, pos);
-
+    setSkipFlags();
     render(pos);
+  }
+
+  protected void setSkipFlags() {
   }
 
   protected void render(BlockPos pos) {
@@ -58,9 +63,9 @@ public abstract class MergingBlockStateWrapper extends BlockStateWrapper {
       boolean lower_edge = hasEdge(block_down, block_facing);
       boolean right_edge = hasEdge(block_right, block_facing);
   
-      add(upper_edge, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.UP));
-      add(lower_edge, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.DOWN));
-      add(right_edge, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW()));
+      add(skip_top, upper_edge, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.UP));
+      add(skip_bottom, lower_edge, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.DOWN));
+      add(skip_side, right_edge, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW()));
   
       // Our Corners //
       // /////////// //
@@ -101,14 +106,16 @@ public abstract class MergingBlockStateWrapper extends BlockStateWrapper {
       boolean lower_right_corner = lower_edge || right_edge || lower_edge_around_right_corner || right_edge_below || bottom_facing_edge_right
           || facing_bottom_edge_right || checker_bottom_a || checker_bottom_b || checker_bottom_c;
   
-      add(upper_right_corner, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.UP));
-      add(lower_right_corner, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.DOWN));
+      add(skip_top_side, upper_right_corner, stateBordered, stateMerged, RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.UP));
+      add(skip_bottom_side, lower_right_corner, stateBordered, stateMerged, RENDER,
+          EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.DOWN));
     }
   }
 
-  protected <T extends Comparable<T>, V extends T> void add(boolean border, IBlockState stateBordered, IBlockState stateMerged, IProperty<T> property, V value) {
+  protected <T extends Comparable<T>, V extends T> void add(boolean skip, boolean border, IBlockState stateBordered, IBlockState stateMerged,
+      IProperty<T> property, V value) {
     IBlockState state = border ? stateBordered : stateMerged;
-    if (state != null) {
+    if (!skip && state != null) {
       states.add(state.withProperty(property, value));
     }
   }

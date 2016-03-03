@@ -1,5 +1,25 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.item.FunctionUpgrade;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.buffer.BufferType;
+import crazypants.enderio.machine.capbank.BlockItemCapBank;
+import crazypants.enderio.machine.capbank.CapBankType;
+import crazypants.enderio.machine.light.BlockItemElectricLight;
+import crazypants.enderio.machine.solar.SolarType;
+import crazypants.enderio.material.FrankenSkull;
+import crazypants.enderio.material.MachinePart;
+import crazypants.enderio.material.Material;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
+import crazypants.enderio.power.Capacitors;
+
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
@@ -14,24 +34,6 @@ import static crazypants.enderio.material.Material.SILICON;
 import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
 import static crazypants.util.RecipeUtil.addShaped;
 import static crazypants.util.RecipeUtil.addShapeless;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.FunctionUpgrade;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.machine.buffer.BufferType;
-import crazypants.enderio.machine.capbank.BlockItemCapBank;
-import crazypants.enderio.machine.capbank.CapBankType;
-import crazypants.enderio.machine.light.BlockItemElectricLight;
-import crazypants.enderio.material.FrankenSkull;
-import crazypants.enderio.material.MachinePart;
-import crazypants.enderio.material.Material;
-import crazypants.enderio.power.Capacitors;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class MachineRecipes {
 
@@ -189,16 +191,20 @@ public class MachineRecipes {
     //solar panel
     if (Config.photovoltaicCellEnabled) {
 
-      ItemStack solarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 0);
-      ItemStack advSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 1);
+      ItemStack solarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, SolarType.getMetaFromType(SolarType.SIMPLE));
+      ItemStack advSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, SolarType.getMetaFromType(SolarType.ADVANCED));
+      ItemStack vibSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, SolarType.getMetaFromType(SolarType.VIBRANT));
+      ItemStack darkQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.getMetaFromType(FusedQuartzType.DARK_FUSED_QUARTZ));
       if (Config.useHardRecipes) {
         addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'c', capacitor, 'e', energeticAlloy, 'p',
             phasedGold);
         addShaped(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e', phasedIron, 'p', phasedGold);
+        addShaped(vibSolarPanel, "ede", "cpc", "ddd", 'd', advSolarPanel, 'f', darkQuartz, 'p', endCry, 'e', soularium, 'c', capacitor3);
       } else {
         addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'p', silicon, 'e', energeticAlloy, 'c',
             electricalSteel);
         addShaped(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vibCry, 'e', phasedGold, 'c', phasedIron);
+        addShaped(vibSolarPanel, "cfc", "efe", "ddd", 'd', advSolarPanel, 'f', darkQuartz, 'e', soularium, 'c', darkSteel);
       }
     }
 

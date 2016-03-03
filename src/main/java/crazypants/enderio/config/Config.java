@@ -268,6 +268,7 @@ public final class Config {
 
   public static int maxPhotovoltaicOutputRF = 10;
   public static int maxPhotovoltaicAdvancedOutputRF = 40;
+  public static int maxPhotovoltaicVibrantOutputRF = 160;
 
   public static int zombieGeneratorRfPerTick = 80;
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
@@ -658,6 +659,8 @@ public final class Config {
         "Maximum output in RF/t of the Photovoltaic Panels.").getInt(maxPhotovoltaicOutputRF);
     maxPhotovoltaicAdvancedOutputRF = config.get(sectionPower.name, "maxPhotovoltaicAdvancedOutputRF", maxPhotovoltaicAdvancedOutputRF,
         "Maximum output in RF/t of the Advanced Photovoltaic Panels.").getInt(maxPhotovoltaicAdvancedOutputRF);
+    maxPhotovoltaicVibrantOutputRF = config.get(sectionPower.name, "maxPhotovoltaicVibrantOutputRF", maxPhotovoltaicVibrantOutputRF,
+        "Maximum output in RF/t of the Vibrant Photovoltaic Panels.").getInt(maxPhotovoltaicVibrantOutputRF);
 
     useAlternateBinderRecipe = config.get(sectionRecipe.name, "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);

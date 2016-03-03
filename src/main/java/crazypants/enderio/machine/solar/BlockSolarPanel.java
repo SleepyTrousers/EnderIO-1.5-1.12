@@ -1,6 +1,28 @@
 package crazypants.enderio.machine.solar;
 
 import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
@@ -8,23 +30,16 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
+public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
 
-  public static int renderId;
+  @SideOnly(Side.CLIENT)
+  private static SolarRenderMapper RENDER_MAPPER;
 
   public static BlockSolarPanel create() {
     BlockSolarPanel result = new BlockSolarPanel();
@@ -32,7 +47,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     return result;
   }
 
-  private static final float BLOCK_HEIGHT = 0.15f;
+  private static final float BLOCK_HEIGHT = 2.5f / 16f;
   
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class, BlockItemSolarPanel.class);
@@ -40,34 +55,73 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
       setCreativeTab(null);
     }
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
+    setLightOpacity(255);
+    useNeighborBrightness = true;
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
+        .withProperty(SolarType.KIND, SolarType.SIMPLE));
+  }
+
+  @Override
+  protected void init() {
+    super.init();
+    SmartModelAttacher.register(this, EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.DEFAULTS, EnumMergingBlockRenderMode.AUTO);
+  }
+
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, SolarType.KIND });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState().withProperty(SolarType.KIND, SolarType.getTypeFromMeta(meta));
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return SolarType.getMetaFromType(state.getValue(SolarType.KIND));
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return getMapper().getExtendedState(state, world, pos);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return getMapper();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper getRenderMapper(ItemStack stack) {
+    return getMapper();
+  }
+
+  @SideOnly(Side.CLIENT)
+  public SolarRenderMapper getMapper() {
+    if (RENDER_MAPPER == null) {
+      RENDER_MAPPER = new SolarRenderMapper();
+    }
+    return RENDER_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public EnumWorldBlockLayer getBlockLayer() {
+    return EnumWorldBlockLayer.SOLID;
   }
 
   @Override
   public int damageDropped(IBlockState bs) {
     return getMetaFromState(bs);
-  }
-
-  @Override
-  public boolean isOpaqueCube() {
-    return false;
-  }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int side, int meta) {
-//    if(side == ForgeDirection.UP.ordinal()) {
-//      return meta == 0 ? blockIcon : advancedIcon;
-//    }
-//    return meta == 0 ? sideIcon : advancedSideIcon;
-//  }
-//
-//  public IIcon getBorderIcon(int i, int meta) {
-//    return meta == 0 ? borderIcon : advancedBorderIcon;
-//  }
-
-  @Override
-  public int getRenderType() {
-    return renderId;
   }
 
   @Override
@@ -78,19 +132,6 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     }
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister register) {
-//    blockIcon = register.registerIcon("enderio:solarPanelTop");
-//    advancedIcon = register.registerIcon("enderio:solarPanelAdvancedTop");
-//    sideIcon = register.registerIcon("enderio:solarPanelSide");
-//    advancedSideIcon = register.registerIcon("enderio:solarPanelAdvancedSide");
-//    borderIcon = register.registerIcon("enderio:solarPanelBorder");
-//    advancedBorderIcon = register.registerIcon("enderio:solarPanelAdvancedBorder");
-//  }
-
-  
-  
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos) {
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
@@ -114,7 +155,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+    TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
@@ -131,4 +172,45 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return 0;
   }
+
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+
+  @Override
+  public boolean isFullCube() {
+    return false;
+  }
+
+  @Override
+  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return face == EnumFacing.UP;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    for (SolarType solarType : SolarType.KIND.getAllowedValues()) {
+      list.add(new ItemStack(this, 1, damageDropped(getDefaultState().withProperty(SolarType.KIND, solarType))));
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+    if (state.getValue(SolarType.KIND) == SolarType.VIBRANT) {
+      TileEntity te = getTileEntity(world, pos);
+      if (te instanceof TileEntitySolarPanel) {
+        TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
+        float efficiency = solar.calculateLightRatio();
+        if (solar.canSeeSun() && solar.calculateLightRatio() / 3 > rand.nextFloat()) {
+          double d0 = (double) pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+          double d1 = (double) ((float) pos.getY() + BLOCK_HEIGHT);
+          double d2 = (double) pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+          world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d, new int[0]);
+        }
+      }
+    }
+  }
+
 }
