@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.FluidUtil;
@@ -16,12 +23,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -118,7 +119,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     if(ext instanceof TileReservoir) { // dont push to an auto ejecting
       // resevoir or we loop
       TileReservoir tr = (TileReservoir) ext;
-      return !tr.isMultiblock() || !tr.isAutoEject();
+      return !tr.isAutoEject();
     }
     return true;
   }

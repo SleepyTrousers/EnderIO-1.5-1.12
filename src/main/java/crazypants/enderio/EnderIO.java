@@ -313,7 +313,7 @@ public class EnderIO {
     
     blockTank = BlockTank.create();
     
-//    blockReservoir = BlockReservoir.create();
+    blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
 
 //    blockTransceiver = BlockTransceiver.create();

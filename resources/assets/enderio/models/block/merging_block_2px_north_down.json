@@ -1,0 +1,13 @@
+{
+  "elements": [
+	{
+	    "__comment": "north_down",
+	    "from": [ 2, 0, 0 ],
+	    "to": [ 14, 2, 2 ],
+	    "faces": {
+	        "down":  { "uv": [ 14, 1.99, 2, 0.01 ], "texture": "#side", "cullface": "down" },
+	        "north": { "uv": [ 2, 14.01, 14, 15.99 ], "texture": "#side", "cullface": "north" }
+	    }
+	}
+  ]
+}
