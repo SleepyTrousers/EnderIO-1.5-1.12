@@ -2,12 +2,6 @@ package crazypants.enderio.machine.invpanel;
 
 import java.util.Random;
 
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,13 +11,19 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IRenderMapper;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
-  private static final float BLOCK_SIZE = 3f / 16f;
+  private static final float BLOCK_SIZE = 4f / 16f;
 
   public static BlockInventoryPanel create() {
     PacketHandler.INSTANCE.registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
@@ -46,13 +46,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     super(ModObject.blockInventoryPanel, TileInventoryPanel.class, BlockItemInventoryPanel.class);
   }
 
-  @Override
-  public int getRenderType() {
-    return 0;
-  }
-
-
-  
   @SideOnly(Side.CLIENT)
   @Override
   public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
@@ -68,6 +61,11 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   public boolean isBlockNormalCube() {
+    return false;
+  }
+
+  @Override
+  public boolean isFullCube() {
     return false;
   }
 
@@ -153,31 +151,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     return GuiHandler.GUI_ID_INVENTORY_PANEL;
   }
 
-  // @Override
-  // protected String getMachineFrontIconKey(boolean active) {
-  // if(active) {
-  // return "enderio:invPanelFrontOn";
-  // }
-  // return "enderio:invPanelFrontOff";
-  // }
-
-  //  @Override
-  //  protected String getTopIconKey(boolean active) {
-  //    return "enderio:invPanelSide";
-  //  }
-  //
-  //  @Override
-  //  protected String getSideIconKey(boolean active) {
-  //    return "enderio:invPanelSide";
-  //  }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIcon(int blockSide, int blockMeta) {
-//    // This is used to render the block as an item
-//    return iconBuffer[0][blockSide + 6];
-//  }
-
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     // The server needs the container as it manages the adding and removing of
@@ -194,4 +167,10 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     TileInventoryPanel te = (TileInventoryPanel) world.getTileEntity(new BlockPos(x, y, z));
     return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
   }
+
+  @Override
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
+  }
+
 }

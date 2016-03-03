@@ -13,10 +13,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.BlockEio;
@@ -25,7 +28,10 @@ import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.tool.SmartTank;
 import crazypants.enderio.tool.ToolUtil;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 public class BlockReservoir extends BlockEio implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
@@ -113,7 +119,9 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
         world.markBlockForUpdate(pos);
         return true;
       }
-      if (FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, tank)) {
+      if (tank.tank.getAvailableSpace() >= BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, tank)) {
+        return true;
+      } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, new TankWrapper(tank))) {
         return true;
       }
       if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, tank)) {
@@ -121,6 +129,37 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
       }
     }
     return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
+  }
+
+  private static class TankWrapper implements ITankAccess {
+
+    private final ITankAccess parent;
+    FluidTank parentTank;
+    private SmartTank tank;
+
+    private TankWrapper(ITankAccess parent) {
+      this.parent = parent;
+    }
+
+    @Override
+    public FluidTank getInputTank(FluidStack forFluidType) {
+      parentTank = parent.getInputTank(forFluidType);
+      tank = new SmartTank(parentTank.getFluid(), parentTank.getCapacity() + BUCKET_VOLUME);
+      return tank;
+    }
+
+    @Override
+    public FluidTank[] getOutputTanks() {
+      return parent.getOutputTanks();
+    }
+
+    @Override
+    public void setTanksDirty() {
+      tank.setCapacity(parentTank.getCapacity());
+      parentTank.setFluid(tank.getFluid());
+      parent.setTanksDirty();
+    }
+
   }
 
   @Override

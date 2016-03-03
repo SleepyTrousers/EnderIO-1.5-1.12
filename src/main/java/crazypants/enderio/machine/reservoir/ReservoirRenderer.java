@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,34 +49,40 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
     float fullness = res.getFilledRatio();
 
     if (res.tank.getFluidAmount() > 0 || res.isAutoEject()) {
+      Minecraft.getMinecraft().entityRenderer.disableLightmap();
       GlStateManager.pushMatrix();
       GlStateManager.pushAttrib();
       GlStateManager.enableCull();
+      GlStateManager.enableLighting();
       GlStateManager.disableLighting();
+      GlStateManager.disableBlend();
       GlStateManager.enableBlend();
       GlStateManager.enableAlpha();
       GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.resetColor();
 
       GlStateManager.translate(x, y, z);
       RenderUtil.bindBlockTexture();
 
       Tessellator tessellator = Tessellator.getInstance();
       WorldRenderer tes = tessellator.getWorldRenderer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+
+      Set<EnumFacing> mergers = getMergers(tileentity.getWorld(), tileentity.getPos());
 
       if (res.tank.getFluidAmount() > 0) {
-        renderTankFluid(res.tank, x, y, z, getMergers(tileentity.getWorld(), tileentity.getPos()), tileentity.getWorld(), tileentity.getPos());
+        renderTankFluid(res.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
       }
 
       if (res.isAutoEject()) {
         float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.getWorld(), tileentity.getPos());
-
-        BoundingBox bb = BoundingBox.UNIT_CUBE;
-
-        GlStateManager.color(val, val, val, 1);
+        GlStateManager.color(val, val, val, 0.875f);
         for (EnumFacing dir : EnumFacing.VALUES) {
-          drawSwitch(dir, bb);
+          if (!mergers.contains(dir)) {
+            drawSwitch(dir, BoundingBox.UNIT_CUBE);
+          }
         }
+        GlStateManager.resetColor();
       }
 
       tessellator.draw();
@@ -219,30 +226,16 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   }
 
   private void renderTankFluid(SmartTank tank, double x, double y, double z, Set<EnumFacing> mergers, World world, BlockPos pos) {
-    if (tank == null || tank.getFluid() == null || tank.getFluidAmount() == 0) {
-      return;
-    }
     TextureAtlasSprite icon = RenderUtil.getStillTexture(tank.getFluid());
     if (icon != null) {
+      int color = tank.getFluid().getFluid().getColor(tank.getFluid());
       float fullness = tank.getFilledRatio();
 
       boolean[][][] merge = getMergers9(world, pos);
 
-      // BoundingBox cube = new BoundingBox(//
-      // mergers.contains(EnumFacing.WEST) ? -0.001 : 0.001,//
-      // mergers.contains(EnumFacing.DOWN) ? -0.001 : 0.001,//
-      // mergers.contains(EnumFacing.NORTH) ? -0.001 : 0.001,//
-      // mergers.contains(EnumFacing.EAST) ? 1.001 : 0.999,//
-      // (mergers.contains(EnumFacing.UP) ? 1.001 : 0.999) * fullness,//
-      // mergers.contains(EnumFacing.SOUTH) ? 1.001 : 0.999//
-      // );
-
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
 
-      float minU = icon.getMinU();
-      float maxU = icon.getMaxU();
-      float minV = icon.getMinV();
-      float maxV = icon.getMaxV();
+      float minU = icon.getMinU(), maxU = icon.getMaxU(), minV = icon.getMinV(), maxV = icon.getMaxV();
 
       for (EnumFacing dir : EnumFacing.VALUES) {
         float fullness2 = 0;
@@ -261,53 +254,20 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
             minVx = icon.getInterpolatedV((1 - fullness) * 16);
             maxVx = icon.getInterpolatedV((1 - fullness2) * 16);
           }
-          renderFace(tes, bb, dir, minU, maxU, minVx, maxVx);
+
+          renderFace(tes, bb, dir, minU, maxU, minVx, maxVx, color);
         }
       }
-
-      // for (EnumFacing dir : EnumFacing.Plane.VERTICAL) {
-      // if (!mergers.contains(dir)) {
-      // renderFace(tes, cube, dir, minU, maxU, minV, maxV);
-      // } else {
-      // BlockPos pos2 = pos.offset(dir);
-      // TileEntity tileEntity = world.getTileEntity(pos2);
-      // if (tileEntity instanceof TileReservoir) {
-      // TileReservoir res2 = (TileReservoir) tileEntity;
-      // if (dir == EnumFacing.DOWN ? !res2.tank.isFull() : (fullness < 1f || res2.tank.getFluidAmount() == 0)) {
-      // renderFace(tes, cube, dir, minU, maxU, minV, maxV);
-      // }
-      // } else {
-      // renderFace(tes, cube, dir, minU, maxU, minV, maxV);
-      // }
-      // }
-      // }
-      //
-      // for (EnumFacing dir : EnumFacing.Plane.HORIZONTAL) {
-      // if (!mergers.contains(dir)) {
-      // renderFace(tes, cube, dir, minU, maxU, icon.getInterpolatedV((1 - fullness) * 16), maxV);
-      // } else {
-      // BlockPos pos2 = pos.offset(dir);
-      // TileEntity tileEntity = world.getTileEntity(pos2);
-      // if (tileEntity instanceof TileReservoir) {
-      // TileReservoir res2 = (TileReservoir) tileEntity;
-      // float fullness2 = res2.tank.getFilledRatio();
-      // if (fullness2 < fullness) {
-      // BoundingBox cube2 = new BoundingBox(cube.minX, fullness2, cube.minZ, cube.maxX, cube.maxY, cube.maxZ);
-      // renderFace(tes, cube, dir, minU, maxU, icon.getInterpolatedV((1 - fullness) * 16), icon.getInterpolatedV((1 - fullness2) * 16));
-      // }
-      // } else {
-      // renderFace(tes, cube, dir, minU, maxU, icon.getInterpolatedV((1 - fullness) * 16), maxV);
-      // }
-      // }
-      // }
-
     }
   }
 
-  public static void renderFace(WorldRenderer tes, BoundingBox bb, EnumFacing face, float minU, float maxU, float minV, float maxV) {
+  public static void renderFace(WorldRenderer tes, BoundingBox bb, EnumFacing face, float minU, float maxU, float minV, float maxV, int color) {
+    float d = LightUtil.diffuseLight(face);
+    float r = d * ((color >> 16) & 0xFF) / 255f, g = d * ((color >> 8) & 0xFF) / 255f, b = d * (color & 0xFF) / 255f, a = ((color >> 24) & 0xFF) / 255f;
+
     List<Vertex> corners = bb.getCornersWithUvForFace(face, minU, maxU, minV, maxV);
     for (Vertex v : corners) {
-      tes.pos(v.x(), v.y(), v.z()).tex(v.u(), v.v()).endVertex();
+      tes.pos(v.x(), v.y(), v.z()).tex(v.u(), v.v()).color(r, g, b, a).endVertex();
     }
   }
 
@@ -354,12 +314,15 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
     TextureAtlasSprite icon = switchIcon.get(TextureAtlasSprite.class);
     if (icon != null) {
-
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-      tes.pos(offset.x + left.x - up.x, offset.y + left.y - up.y, offset.z + left.z - up.z).tex(icon.getMinU(), icon.getMaxV()).endVertex();
-      tes.pos(offset.x - left.x - up.x, offset.y - left.y - up.y, offset.z - left.z - up.z).tex(icon.getMaxU(), icon.getMaxV()).endVertex();
-      tes.pos(offset.x - left.x + up.x, offset.y - left.y + up.y, offset.z - left.z + up.z).tex(icon.getMaxU(), icon.getMinV()).endVertex();
-      tes.pos(offset.x + left.x + up.x, offset.y + left.y + up.y, offset.z + left.z + up.z).tex(icon.getMinU(), icon.getMinV()).endVertex();
+      tes.pos(offset.x + left.x - up.x, offset.y + left.y - up.y, offset.z + left.z - up.z).tex(icon.getMinU(), icon.getMaxV()).color(255, 255, 255, 255)
+          .endVertex();
+      tes.pos(offset.x - left.x - up.x, offset.y - left.y - up.y, offset.z - left.z - up.z).tex(icon.getMaxU(), icon.getMaxV()).color(255, 255, 255, 255)
+          .endVertex();
+      tes.pos(offset.x - left.x + up.x, offset.y - left.y + up.y, offset.z - left.z + up.z).tex(icon.getMaxU(), icon.getMinV()).color(255, 255, 255, 255)
+          .endVertex();
+      tes.pos(offset.x + left.x + up.x, offset.y + left.y + up.y, offset.z + left.z + up.z).tex(icon.getMinU(), icon.getMinV()).color(255, 255, 255, 255)
+          .endVertex();
     }
 
   }
