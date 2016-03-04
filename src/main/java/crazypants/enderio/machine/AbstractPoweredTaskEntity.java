@@ -222,15 +222,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected int mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
 
-    int res = 0;
-
     ItemStack copy = item.copy();
     //try to add it to existing stacks first
     for (ItemStack outStack : outputStacks) {
       if(outStack != null && copy != null) {
         int num = getNumCanMerge(outStack, copy);
         outStack.stackSize += num;
-        res += num;
         copy.stackSize -= num;
         if(copy.stackSize <= 0) {
           return item.stackSize;

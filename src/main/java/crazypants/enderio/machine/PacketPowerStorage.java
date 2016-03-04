@@ -1,7 +1,5 @@
 package crazypants.enderio.machine;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.IPowerContainer;
 import io.netty.buffer.ByteBuf;

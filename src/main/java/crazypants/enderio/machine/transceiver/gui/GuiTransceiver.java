@@ -221,13 +221,13 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
     Tessellator.getInstance().draw();
-
+    
     if(tabs.size() > 0) {
       IWidgetIcon icon = tabs.get(activeTab).getIcon();
-      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);      
+      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4, true);      
       tabs.get(activeTab).render(par1, par2, par3);
     } 
-    Tessellator.getInstance().draw();
+    
   }
   
   public TileTransceiver getTransciever() {

@@ -13,15 +13,20 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,12 +50,8 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     res.init();
     return res;
   }
-
-  //TODO: 1.8
-  @SideOnly(Side.CLIENT)
-  private TextureAtlasSprite portalIcon;
-
-//  private ExtendedBlockState state = new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[]{OBJModel.OBJProperty.instance});
+  
+  private TextureSupplier portalIcon = TextureRegistry.registerTexture("blocks/ender_still");
   
   private BlockTransceiver() {
     super(ModObject.blockTransceiver, TileTransceiver.class);
@@ -58,19 +59,11 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
       setCreativeTab(null);
     }    
   }
-  
+
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getPortalIcon() {    
-    return portalIcon;
+    return portalIcon.get(TextureAtlasSprite.class);
   }
-  
-//  @Override
-//  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-////      TileTransceiver tileEntity = (TileTransceiver) world.getTileEntity(pos);
-//      OBJModel.OBJState retState = new OBJModel.OBJState(Lists.newArrayList(OBJModel.Group.ALL),true);
-//      return ((IExtendedBlockState) this.state.getBaseState()).withProperty(OBJModel.OBJProperty.instance, retState);
-//  }
-
 
   @Override  
     public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
@@ -123,7 +116,12 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
   }
-
+  
+  @Override
+  public EnumWorldBlockLayer getBlockLayer() {
+    //return EnumWorldBlockLayer.TRANSLUCENT;
+    return EnumWorldBlockLayer.SOLID;
+  }
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
@@ -172,5 +170,9 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     return sb.toString();
   }
 
+  @Override
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
+  }
 
 }
