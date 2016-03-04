@@ -235,7 +235,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
     if(isSideDisabled(from)) {
       return false;
     }
-    if(fluid == null || (inputTank.getFluid() != null && inputTank.getFluid().getFluid().getID() != fluid.getID())) {
+
+    if(fluid == null || (inputTank.getFluid() != null && !FluidUtil.areFluidsTheSame(inputTank.getFluid().getFluid(), fluid))) {
       return false;
     }
 
@@ -252,7 +253,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
     if(isSideDisabled(from)) {
       return false;
     }
-    return outputTank.getFluid() != null && outputTank.getFluid().getFluid().getID() == fluid.getID();
+    return outputTank.getFluid() != null && FluidUtil.areFluidsTheSame(outputTank.getFluid().getFluid(), fluid);
   }
 
   @Override

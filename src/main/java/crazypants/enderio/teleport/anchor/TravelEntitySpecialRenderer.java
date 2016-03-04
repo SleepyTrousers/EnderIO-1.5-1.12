@@ -12,7 +12,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.teleport.TravelController;
@@ -198,7 +197,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileE
   }
 
   public TextureAtlasSprite getSelectedIcon() {
-    return EnderIO.blockTravelPlatform.selectedOverlayIcon.get(TextureAtlasSprite.class);
+    return BlockTravelAnchor.selectedOverlayIcon.get(TextureAtlasSprite.class);
   }
 
   public Vector4f getHighlightColor() {
@@ -206,7 +205,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileE
   }
 
   public TextureAtlasSprite getHighlightIcon() {
-    return EnderIO.blockTravelPlatform.highlightOverlayIcon.get(TextureAtlasSprite.class);
+    return BlockTravelAnchor.highlightOverlayIcon.get(TextureAtlasSprite.class);
   }
 
 }

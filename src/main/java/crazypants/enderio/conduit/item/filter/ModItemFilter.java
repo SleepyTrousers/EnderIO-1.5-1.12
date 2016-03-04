@@ -11,10 +11,11 @@ import crazypants.enderio.conduit.gui.item.ModItemFilterGui;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,12 +33,15 @@ public class ModItemFilter implements IItemFilter {
       setMod(index, (String) null);
       return null;
     }
-    UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(itemStack.getItem());
+    Item.itemRegistry.getNameForObject(itemStack.getItem());
+    //i.getRegistryName()
+    
+    ResourceLocation ui = GameData.getItemRegistry().getNameForObject(itemStack.getItem());    
     if(ui == null) {
       setMod(index, (String) null);
       return null;
     }
-    String targetMod = ui.modId;
+    String targetMod = ui.getResourceDomain();
     if(targetMod == null) {
       setMod(index, (String) null);
       return null;
@@ -73,11 +77,12 @@ public class ModItemFilter implements IItemFilter {
     if(item == null || item.getItem() == null) {
       return false;
     }
-    UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(item.getItem());
+    
+    ResourceLocation ui = GameData.getItemRegistry().getNameForObject(item.getItem());
     if(ui == null) {
       return false;
     }
-    String targetMod = ui.modId;
+    String targetMod = ui.getResourceDomain();
     if (targetMod != null) {
       for (String mod : mods) {
         if (targetMod.equals(mod)) {

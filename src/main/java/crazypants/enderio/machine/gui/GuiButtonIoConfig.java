@@ -19,7 +19,6 @@ public class GuiButtonIoConfig extends ToggleButton {
   private final IIoConfigurable config;
   private final GuiOverlayIoConfig configOverlay;
 
-  @SuppressWarnings("LeakingThisInConstructor")
   public GuiButtonIoConfig(IGuiScreen gui, int id, int x, int y, IIoConfigurable config, GuiOverlayIoConfig configOverlay) {
     super(gui, id, x, y, IconEIO.IO_CONFIG_UP, IconEIO.IO_CONFIG_DOWN);
     this.config = config;

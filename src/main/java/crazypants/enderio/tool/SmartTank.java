@@ -1,5 +1,6 @@
 package crazypants.enderio.tool;
 
+import com.enderio.core.common.util.FluidUtil;
 import com.google.common.base.Strings;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,7 +54,8 @@ public class SmartTank extends FluidTank {
     if(fl == null || fluid == null) {
       return false;
     }    
-    return fl.getID() == fluid.getFluid().getID();
+    
+    return FluidUtil.areFluidsTheSame(fl, fluid.getFluid());
   }
 
   public FluidStack drain(FluidStack resource, boolean doDrain) {
@@ -67,7 +69,7 @@ public class SmartTank extends FluidTank {
     if (fluid != null) {
       return fluid.isFluidEqual(resource);
     } else if (restriction != null) {
-      return resource.getFluid() != null && restriction.getID() == resource.getFluid().getID();
+      return resource.getFluid() != null && FluidUtil.areFluidsTheSame(restriction, resource.getFluid());
     } else {
       return true;
     }
@@ -75,9 +77,9 @@ public class SmartTank extends FluidTank {
 
   public boolean canFill(Fluid fl) {
     if (fluid != null) {
-      return fluid.getFluid().getID() == fl.getID();
+      return FluidUtil.areFluidsTheSame(fluid.getFluid(), fl);
     } else if (restriction != null) {
-      return restriction.getID() == fl.getID();
+      return FluidUtil.areFluidsTheSame(restriction, fl);
     } else {
       return true;
     }

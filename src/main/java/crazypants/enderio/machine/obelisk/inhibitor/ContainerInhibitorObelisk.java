@@ -4,7 +4,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class ContainerInhibitorObelisk extends AbstractMachineContainer {
+public class ContainerInhibitorObelisk extends AbstractMachineContainer<AbstractMachineEntity> {
 
   public ContainerInhibitorObelisk(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);

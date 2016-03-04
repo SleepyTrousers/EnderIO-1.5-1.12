@@ -80,8 +80,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     }
     return false;
   }
-
-  @SuppressWarnings("unchecked")
+  
   private void doHoover() {
 
     int rangeSqr = range * range;

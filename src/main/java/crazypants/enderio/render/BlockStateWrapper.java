@@ -31,6 +31,8 @@ public class BlockStateWrapper implements IBlockState {
     this.pos = pos;
   }
 
+  
+  @SuppressWarnings("rawtypes")
   @Override
   public Collection<IProperty> getPropertyNames() {
     return state.getPropertyNames();
@@ -51,6 +53,7 @@ public class BlockStateWrapper implements IBlockState {
     return new BlockStateWrapper(state.cycleProperty(property), world, pos);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public ImmutableMap<IProperty, Comparable> getProperties() {
     return state.getProperties();

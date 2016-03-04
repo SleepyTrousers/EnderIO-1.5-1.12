@@ -47,7 +47,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   private static final String UPGRADE_NAME = "energyUpgrade";
   private static final String KEY_CAPACITY = "capacity";
   private static final String KEY_ENERGY = "energy";
-  private static final String KEY_ABS_WITH_POWER = "absDamWithPower";
+  
   private static final String KEY_MAX_IN = "maxInput";
   private static final String KEY_MAX_OUT = "maxOuput";
 

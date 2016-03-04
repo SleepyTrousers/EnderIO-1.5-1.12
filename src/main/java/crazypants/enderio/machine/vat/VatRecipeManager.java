@@ -3,6 +3,8 @@ package crazypants.enderio.machine.vat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -130,7 +132,8 @@ public class VatRecipeManager {
       for (IRecipe recipe : recipes) {
         RecipeOutput out = recipe.getOutputs()[0];
         RecipeInput in = recipe.getInputs()[recipe.getInputs().length - 1];
-        if ((inputFluid == null || in.getFluidInput().getFluid().getID() == inputFluid.getID()) && (output == null || out.getFluidOutput().getFluid().getID() == output.getID())) {
+        
+        if ((inputFluid == null || FluidUtil.areFluidsTheSame(in.getFluidInput().getFluid(), inputFluid) && (output == null || FluidUtil.areFluidsTheSame(out.getFluidOutput().getFluid(), output)))) {
           for (RecipeInput ri : recipe.getInputs()) {
             if (ri.isInput(input)) {
               return ri.getMulitplier();

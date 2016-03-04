@@ -159,11 +159,9 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
     Set<EntityLiving> trackingThisTick = new HashSet<EntityLiving>();
     List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, attractorBounds);
-
-    int candidates = 0;
+    
     for (EntityLiving ent : entsInBounds) {
-      if (!ent.isDead && isMobInFilter(ent)) {
-        candidates++;
+      if (!ent.isDead && isMobInFilter(ent)) {    
         if (tracking.contains(ent)) {
           trackingThisTick.add(ent);
           onEntityTick(ent);

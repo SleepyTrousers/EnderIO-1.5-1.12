@@ -180,8 +180,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   public boolean canFill(EnumFacing from, Fluid fluid) {
+    
     return canFill(from) && fluid != null
-        && (tank.getFluidAmount() > 0 && tank.getFluid().getFluid().getID() == fluid.getID() || tank.getFluidAmount() == 0);
+        && (tank.getFluidAmount() > 0 && FluidUtil.areFluidsTheSame(tank.getFluid().getFluid(), fluid) || tank.getFluidAmount() == 0);
   }
 
   private boolean canFill(EnumFacing from) {

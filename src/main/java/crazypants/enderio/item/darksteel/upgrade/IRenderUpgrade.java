@@ -1,8 +1,7 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -24,11 +23,11 @@ public interface IRenderUpgrade {
     }
 
     public static void applySneakingRotation() {
-      GL11.glRotatef(28.64789F, 1.0F, 0.0F, 0.0F);
+      GlStateManager.rotate(28.64789F, 1.0F, 0.0F, 0.0F);
     }
 
     public static void translateToHeadLevel(EntityPlayer player) {
-      GL11.glTranslated(0, (player != Minecraft.getMinecraft().thePlayer ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
+      GlStateManager.translate(0, (player != Minecraft.getMinecraft().thePlayer ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
     }
   }
 }

@@ -78,11 +78,11 @@ public class ConduitTank implements IFluidTank {
 
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    if (resource == null || resource.getFluid().getID() <= 0) {
+    if (resource == null || resource.getFluid() == null) {
       return 0;
     }
 
-    if (fluid == null || fluid.getFluid().getID() <= 0) {
+    if (fluid == null || fluid.getFluid() == null) {
       if(resource.amount <= capacity) {
         if(doFill) {
           setLiquid(resource.copy());
@@ -118,7 +118,7 @@ public class ConduitTank implements IFluidTank {
 
   @Override
   public FluidStack drain(int maxDrain, boolean doDrain) {
-    if (fluid == null || fluid.getFluid().getID() <= 0) {
+    if (fluid == null || fluid.getFluid() == null) {
       return null;
     }
     if(fluid.amount <= 0) {

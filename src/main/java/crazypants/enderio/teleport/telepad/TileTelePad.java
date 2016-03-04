@@ -303,9 +303,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     redstoneActivePrev = root.getBoolean("redstoneActive");
     autoUpdate = true;
   }
-
+  
   @Override
-  public Packet getDescriptionPacket() {
+  public Packet<?> getDescriptionPacket() {
     S35PacketUpdateTileEntity pkt = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
 //    pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
     return pkt;
@@ -564,7 +564,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
   }
 
-  @SuppressWarnings("unchecked")
   private List<Entity> getEntitiesInRange() {
     return worldObj.getEntitiesWithinAABB(Entity.class, getRange());
   }

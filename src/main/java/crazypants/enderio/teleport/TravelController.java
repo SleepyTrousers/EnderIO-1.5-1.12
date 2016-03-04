@@ -41,6 +41,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -48,8 +49,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
+import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -87,17 +87,17 @@ public class TravelController {
 
   private double tanFovRad;
 
-  private final List<UniqueIdentifier> blackList = new ArrayList<GameRegistry.UniqueIdentifier>();
+  private final List<ResourceLocation> blackList = new ArrayList<ResourceLocation>();
 
   private TravelController() {
     String[] blackListNames = Config.travelStaffBlinkBlackList;
     for (String name : blackListNames) {
-      blackList.add(new UniqueIdentifier(name));
+      blackList.add(new ResourceLocation(name));
     }
   }
 
   public void addBlockToBlinkBlackList(String blockName) {
-    blackList.add(new UniqueIdentifier(blockName));
+    blackList.add(new ResourceLocation(blockName));
   }
 
   public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
@@ -206,7 +206,8 @@ public class TravelController {
   }
 
   private boolean isBlackListedBlock(EntityPlayer player, MovingObjectPosition pos, Block hitBlock) {
-    UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(hitBlock);
+    
+    ResourceLocation ui = GameData.getBlockRegistry().getNameForObject(hitBlock);
     if(ui == null) {
       return false;
     }
@@ -263,7 +264,7 @@ public class TravelController {
     if(selectedCoord == null) {
       return false;
     }
-    return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlockState(selectedCoord.getBlockPos()).getBlock() == EnderIO.blockEnderIo;
+    return EnderIO.proxy.getClientPlayer().worldObj.getBlockState(selectedCoord.getBlockPos()).getBlock() == EnderIO.blockEnderIo;
   }
 
   @SubscribeEvent

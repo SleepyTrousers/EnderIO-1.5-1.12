@@ -8,6 +8,7 @@ import java.util.Set;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -308,9 +309,8 @@ public class LiquidConduit extends AbstractTankConduit {
     }
     if(tank.getFluid() == null) {
       return true;
-    }
-    
-    if (fluid != null && fluid.getID() == tank.getFluid().getFluid().getID()) {
+    }    
+    if (fluid != null && FluidUtil.areFluidsTheSame(fluid, tank.getFluid().getFluid())) {
       return true;
     }
     return false;
@@ -322,7 +322,7 @@ public class LiquidConduit extends AbstractTankConduit {
         || tank.getFluid() == null || fluid == null) {
       return false;
     }
-    return tank.getFluid().getFluid().getID() == fluid.getID();
+    return FluidUtil.areFluidsTheSame(tank.getFluid().getFluid(), fluid);
   }
 
   @Override
@@ -358,7 +358,7 @@ public class LiquidConduit extends AbstractTankConduit {
       return false;
     }
 
-    AbstractTankConduitNetwork n = (AbstractTankConduitNetwork) network;
+    AbstractTankConduitNetwork<?> n = (AbstractTankConduitNetwork<?>) network;
     if(tank.getFluid() == null) {
       tank.setLiquid(n.getFluidType() == null ? null : n.getFluidType().copy());
     } else if(n.getFluidType() == null) {

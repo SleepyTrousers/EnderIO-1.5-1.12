@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit.geom;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,8 +103,6 @@ public class ConduitGeometryUtil {
   }
 
   private Map<GeometryKey, BoundingBox> boundsCache = new HashMap<GeometryKey, BoundingBox>();
-
-  private EnumMap<ConduitConnectorType, BoundingBox> connectorBounds = new EnumMap<ConduitConnectorType, BoundingBox>(ConduitConnectorType.class);
 
   private ConduitGeometryUtil() {
   }

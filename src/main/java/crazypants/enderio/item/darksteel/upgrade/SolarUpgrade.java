@@ -1,9 +1,12 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -112,16 +115,18 @@ public class SolarUpgrade extends AbstractUpgrade {
     public void render(RenderPlayerEvent event, ItemStack stack, boolean head) {
       if (head) {
         //TODO: 1.8
-//        RenderUtil.bindItemTexture();
-//        glDepthMask(true);
-//        item.hoverStart = 0;
-//        Helper.translateToHeadLevel(event.entityPlayer);
-//        GL11.glTranslated(0, -0.155, 0);
-//        GL11.glRotated(180, 1, 0, 0);
-//        GL11.glScalef(2.1f, 2.1f, 2.1f);
-//        byte level = loadFromItem(stack).level;
-//        item.setEntityItemStack(level == 0 ? panel1 : panel2);
-//        RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
+        RenderUtil.bindBlockTexture();
+        GlStateManager.depthMask(true);        
+        item.hoverStart = 0;
+        Helper.translateToHeadLevel(event.entityPlayer);
+        GlStateManager.translate(0, -0.155, 0);
+        GlStateManager.rotate(180, 1, 0, 0);
+        GlStateManager.scale(2.1f, 2.1f, 2.1f);
+        byte level = loadFromItem(stack).level;
+        item.setEntityItemStack(level == 0 ? panel1 : panel2);        
+        Minecraft.getMinecraft().getRenderManager().renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
+        
+        GlStateManager.depthMask(false);
       }
     }
   }

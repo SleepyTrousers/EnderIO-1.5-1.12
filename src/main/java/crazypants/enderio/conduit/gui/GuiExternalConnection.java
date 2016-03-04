@@ -97,7 +97,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
 
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
-        @SuppressWarnings("LeakingThisInConstructor")
         ITabPanel tab = TabFactory.instance.createPanelForConduit(this, con);
         if(tab != null) {
           conduits.add(con);

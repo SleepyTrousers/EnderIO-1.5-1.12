@@ -32,8 +32,7 @@ public class UserIdent {
   public UUID getUUID() {
     return uuid != null ? uuid : uuid_offline;
   }
-
-  @SuppressWarnings("null")
+  
   // it's final(!), eclipse...
   public String getUUIDString() {
     return uuid != null ? uuid.toString() : NONE_MARKER;
@@ -127,8 +126,7 @@ public class UserIdent {
     this.playerName = playerName != null ? playerName : "[" + uuid + "]";
   }
 
-  @SuppressWarnings("null")
-  // it's final(!), eclipse...
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -142,8 +140,6 @@ public class UserIdent {
    * Please note that a UserIdent will successfully equal against GameProfiles
    * and UUIDs.
    */
-  @SuppressWarnings("null")
-  // it's final(!), eclipse...
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -168,9 +164,7 @@ public class UserIdent {
     }
     return false;
   }
-
-  @SuppressWarnings("null")
-  // it's final(!), eclipse...
+  
   public void saveToNbt(NBTTagCompound nbt, String prefix) {
     if (uuid != null) {
       nbt.setString(prefix + ".uuid", uuid.toString());

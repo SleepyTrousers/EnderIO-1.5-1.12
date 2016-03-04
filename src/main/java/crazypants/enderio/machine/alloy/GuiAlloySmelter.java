@@ -71,13 +71,13 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   private void updateVanillaFurnaceButton() {
-    TextureAtlasSprite icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn.get(TextureAtlasSprite.class);
+    TextureAtlasSprite icon = BlockAlloySmelter.vanillaSmeltingOn.get(TextureAtlasSprite.class);
     String unlocText = "gui.alloy.mode.all";
     if(getTileEntity().getMode() == Mode.ALLOY) {
-      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff.get(TextureAtlasSprite.class);
+      icon = BlockAlloySmelter.vanillaSmeltingOff.get(TextureAtlasSprite.class);
       unlocText = "gui.alloy.mode.alloy";
     } else if(getTileEntity().getMode() == Mode.FURNACE) {
-      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly.get(TextureAtlasSprite.class);
+      icon = BlockAlloySmelter.vanillaSmeltingOnly.get(TextureAtlasSprite.class);
       unlocText = "gui.alloy.mode.furnace";
     }
     vanillaFurnaceButton.setIcon(icon);

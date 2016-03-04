@@ -35,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
+public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
   private static SolarRenderMapper RENDER_MAPPER;
@@ -195,17 +195,17 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     }
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
     if (state.getValue(SolarType.KIND) == SolarType.VIBRANT) {
       TileEntity te = getTileEntity(world, pos);
       if (te instanceof TileEntitySolarPanel) {
-        TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
-        float efficiency = solar.calculateLightRatio();
+        TileEntitySolarPanel solar = (TileEntitySolarPanel) te;        
         if (solar.canSeeSun() && solar.calculateLightRatio() / 3 > rand.nextFloat()) {
-          double d0 = (double) pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-          double d1 = (double) ((float) pos.getY() + BLOCK_HEIGHT);
-          double d2 = (double) pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+          double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+          double d1 = pos.getY() + BLOCK_HEIGHT;
+          double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
           world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d, new int[0]);
         }
       }

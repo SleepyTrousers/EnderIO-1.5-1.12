@@ -2,6 +2,8 @@ package crazypants.enderio.xp;
 
 import java.security.InvalidParameterException;
 
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.fluid.Fluids;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -162,7 +164,7 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    return fluid != null && Fluids.fluidXpJuice != null && fluid.getID() == Fluids.fluidXpJuice.getID();
+    return fluid != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluid, Fluids.fluidXpJuice);
   }
   
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
@@ -189,7 +191,7 @@ public class ExperienceContainer extends FluidTank {
   }
   
   public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return fluid != null && Fluids.fluidXpJuice != null && fluid.getID() == Fluids.fluidXpJuice.getID();
+    return fluid != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluid, Fluids.fluidXpJuice);
   }
   
   public FluidTankInfo[] getTankInfo(EnumFacing from) {

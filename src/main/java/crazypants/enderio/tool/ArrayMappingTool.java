@@ -25,6 +25,7 @@ public class ArrayMappingTool<T extends Object> {
 
   public T[] map(T[] in) {
     T[] in_tmp = in.clone();
+    @SuppressWarnings("unchecked")
     T[] out = (T[]) Array.newInstance(in.getClass().getComponentType(), to_mapping.length);
     for (int i = 0; i < to_mapping.length; i++) {
       out[i] = getNextT(in_tmp, to_mapping[i]);

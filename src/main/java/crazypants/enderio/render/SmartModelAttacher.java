@@ -37,6 +37,7 @@ public class SmartModelAttacher {
     }
   }
 
+  @SuppressWarnings("rawtypes")
   private static final List<RegistrationHolder> blocks = new ArrayList<RegistrationHolder>();
 
   public static void register(Block block) {
@@ -44,7 +45,7 @@ public class SmartModelAttacher {
   }
 
   public static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
-    blocks.add(new RegistrationHolder(block, property, defaultsValue, autoValue));
+    blocks.add(new RegistrationHolder<T, V>(block, property, defaultsValue, autoValue));
   }
 
   public static void create() {
@@ -59,7 +60,7 @@ public class SmartModelAttacher {
    */
   @SideOnly(Side.CLIENT)
   public static void registerBlockItemModels() {
-    for (RegistrationHolder holder : blocks) {
+    for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
       ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
@@ -75,6 +76,7 @@ public class SmartModelAttacher {
     }
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @SubscribeEvent()
   @SideOnly(Side.CLIENT)
   public void bakeModels(ModelBakeEvent event) {

@@ -45,8 +45,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
 
     TileReservoir res = tileentity;
-    float fullness = res.getFilledRatio();
-
     if (res.tank.getFluidAmount() > 0 || res.isAutoEject()) {
       Minecraft.getMinecraft().entityRenderer.disableLightmap();
       GlStateManager.pushMatrix();

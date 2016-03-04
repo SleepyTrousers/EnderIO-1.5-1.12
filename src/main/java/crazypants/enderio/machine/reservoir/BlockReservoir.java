@@ -32,7 +32,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReservoir extends BlockEio implements IResourceTooltipProvider, ISmartRenderAwareBlock {
+public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
   private static ReservoirRenderMapper RENDER_MAPPER;

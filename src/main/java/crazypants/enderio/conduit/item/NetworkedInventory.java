@@ -119,13 +119,6 @@ public class NetworkedInventory {
     }
   }
 
-  private boolean canExtractThisTick(long tick) {
-    if(!con.isExtractionRedstoneConditionMet(conDir)) {
-      return false;
-    }
-    return true;
-  }
-
   private int nextSlot(int numSlots) {
     ++extractFromSlot;
     if(extractFromSlot >= numSlots || extractFromSlot < 0) {

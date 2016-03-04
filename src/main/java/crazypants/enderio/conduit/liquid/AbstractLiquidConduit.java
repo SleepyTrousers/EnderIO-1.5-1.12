@@ -145,10 +145,10 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     boolean res;
     if(mode == RedstoneControlMode.OFF) {
       //if checking for no signal, must be no signal from both
-      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || isConditionMetByExternalSignal(dir, mode, col));     
+      res = RedstoneControlMode.isConditionMet(mode, signal) && (col != DyeColor.RED || isConditionMetByExternalSignal(dir, mode, col));     
     } else {
       //if checking for a signal, either is fine
-      res = mode.isConditionMet(mode, signal) || (col == DyeColor.RED && isConditionMetByExternalSignal(dir, mode, col));
+      res = RedstoneControlMode.isConditionMet(mode, signal) || (col == DyeColor.RED && isConditionMetByExternalSignal(dir, mode, col));
     }
     return res;
   }
@@ -166,7 +166,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
       }
     }
 
-    return mode.isConditionMet(mode, externalSignal);
+    return RedstoneControlMode.isConditionMet(mode, externalSignal);
   }
 
   @Override

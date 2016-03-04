@@ -407,7 +407,7 @@ public class DarkSteelController {
 
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
-  public void onPlayerRender(RenderPlayerEvent.Specials.Post event) {
+  public void onPlayerRender(RenderPlayerEvent.Post event) {
     if (event.entityLiving.getActivePotionEffect(Potion.invisibility) != null) {
       return;
     }
