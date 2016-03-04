@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -38,7 +39,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider, IPaintedBlock {
+public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider, IPaintedBlock, IHaveRenderers {
 
   public static BlockDarkSteelPressurePlate create() {
     BlockDarkSteelPressurePlate res = new BlockDarkSteelPressurePlate();
@@ -224,7 +225,8 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }
   }
 
-   @SideOnly(Side.CLIENT)
+   @Override
+  @SideOnly(Side.CLIENT)
   public void registerRenderers() {
       ClientUtil.regRenderer(Item.getItemFromBlock(this), 0, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
       ClientUtil.regRenderer(Item.getItemFromBlock(this), 1, ModObject.blockDarkSteelPressurePlate.unlocalisedName); 

@@ -5,19 +5,18 @@ import java.util.List;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipProvider {
+public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipProvider, IHaveRenderers  {
 
   private static final SpeedUpgrade UPGRADES[] = SpeedUpgrade.values();
 
@@ -39,10 +38,9 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
     GameRegistry.registerItem(this, ModObject.itemExtractSpeedUpgrade.unlocalisedName);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    List<ResourceLocation> names = SpeedUpgrade.resources();    
-    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+  public void registerRenderers() {       
     for (SpeedUpgrade c : SpeedUpgrade.values()) {
       ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
     }     

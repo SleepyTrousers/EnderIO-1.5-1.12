@@ -6,22 +6,21 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.util.ClientUtil;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
+public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers  {
 
   public static ItemBasicItemFilter create() {
     ItemBasicItemFilter result = new ItemBasicItemFilter();
@@ -56,9 +55,9 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     return filter;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {       
-    ModelBakery.registerItemVariants(this, new ResourceLocation("enderio:filterUpgradeBasic"),new ResourceLocation("enderio:filterUpgradeAdvanced"));        
+  public void registerRenderers() {                  
     ClientUtil.regRenderer(this, 0,"filterUpgradeBasic");
     ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");    
   }  

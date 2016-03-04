@@ -8,6 +8,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
@@ -25,7 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractItemConduit extends Item implements IConduitItem {
+public abstract class AbstractItemConduit extends Item implements IConduitItem,IHaveRenderers {
 
   protected ModObject modObj;
 
@@ -44,6 +45,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     GameRegistry.registerItem(this, modObj.unlocalisedName);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {    
     for(int i=0;i<subtypes.length;i++) {

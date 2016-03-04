@@ -3,19 +3,18 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemMachinePart extends Item {
+public class ItemMachinePart extends Item implements IHaveRenderers  {
 
     public static ItemMachinePart create() {
     ItemMachinePart mp = new ItemMachinePart();
@@ -34,10 +33,9 @@ public class ItemMachinePart extends Item {
     GameRegistry.registerItem(this, ModObject.itemMachinePart.unlocalisedName);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    List<ResourceLocation> names = MachinePart.resources();    
-    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
+  public void registerRenderers() {       
     for (MachinePart c : MachinePart.values()) {
       ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
     }     
@@ -50,9 +48,8 @@ public class ItemMachinePart extends Item {
   }
 
   @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (int j = 0; j < MachinePart.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }

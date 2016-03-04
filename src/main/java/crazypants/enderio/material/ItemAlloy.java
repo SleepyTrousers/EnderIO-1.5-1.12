@@ -1,17 +1,14 @@
 package crazypants.enderio.material;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -46,17 +43,6 @@ public class ItemAlloy extends Item {
 
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-
-    List<ResourceLocation> names = Alloy.resources();
-    if (useNuggets) {
-      List<ResourceLocation> newNames = new ArrayList<ResourceLocation>(names);
-      for (ResourceLocation loc : names) {
-        newNames.add(new ResourceLocation(loc.toString() + "Nugget"));
-      }
-      names = newNames;
-    }
-    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));
-
     int numAlloys = Alloy.values().length;
     for (int i = 0; i < numAlloys; i++) {
       ClientUtil.regRenderer(this, i, Alloy.values()[i].baseName);
@@ -66,7 +52,6 @@ public class ItemAlloy extends Item {
         ClientUtil.regRenderer(this, numAlloys + i, Alloy.values()[i].baseName + "Nugget");
       }
     }
-
   }
 
 

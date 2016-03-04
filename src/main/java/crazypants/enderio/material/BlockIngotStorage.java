@@ -1,12 +1,12 @@
 package crazypants.enderio.material;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.util.ClientUtil;
@@ -15,21 +15,19 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvancedTooltipProvider {
+public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvancedTooltipProvider, IHaveRenderers {
   
   public static BlockIngotStorage create() {
     BlockIngotStorage res = new BlockIngotStorage();
@@ -44,17 +42,10 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
     setStepSound(soundTypeMetal);
   }
   
+  @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    List<ResourceLocation> variants = new ArrayList<ResourceLocation>();
-    for(Alloy alloy : Alloy.values()) {        
-      variants.add(new ResourceLocation(EnderIO.MODID, alloy.baseName + "Block"));
-    }
-    
-    Item item = Item.getItemFromBlock(this);
-    // need to add the variants to the bakery so it knows what models are available for rendering the different subtypes
-    ModelBakery.registerItemVariants(item, variants.toArray(new ResourceLocation[variants.size()]));
-    
+  public void registerRenderers() {   
+    Item item = Item.getItemFromBlock(this);   
     int numAlloys = Alloy.values().length;
     for (int i = 0; i < numAlloys; i++) {
       ClientUtil.regRenderer(item, i, Alloy.values()[i].baseName + "Block");

@@ -1,10 +1,7 @@
 package crazypants.enderio.item.skull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.material.Material;
@@ -12,7 +9,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +16,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.crafting.IInfusionStabiliser;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IInfusionStabiliser {
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IInfusionStabiliser, IHaveRenderers {
 
   public enum SkullType implements IStringSerializable {
 
@@ -70,14 +65,10 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     return EnumWorldBlockLayer.CUTOUT;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    Item item = Item.getItemFromBlock(this);
-    List<ResourceLocation> variants = new ArrayList<ResourceLocation>();
-    for (SkullType st : SkullType.values()) {
-      variants.add(new ResourceLocation(EnderIO.MODID.toLowerCase(), ModObject.blockEndermanSkull.unlocalisedName + "_" + st.name));
-    }
-    ModelBakery.registerItemVariants(item, variants.toArray(new ResourceLocation[variants.size()]));
+    Item item = Item.getItemFromBlock(this);    
     int num = SkullType.values().length;
     for (int i = 0; i < num; i++) {
       SkullType st = SkullType.values()[i];

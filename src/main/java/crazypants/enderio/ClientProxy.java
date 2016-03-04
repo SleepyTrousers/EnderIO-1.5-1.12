@@ -130,24 +130,14 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockDarkIronBars != null) {      
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.unlocalisedName);
     }
-    if (EnderIO.blockDarkSteelAnvil != null) {
-      EnderIO.blockDarkSteelAnvil.registerRenderers();
-    }
+    registerRenderers(EnderIO.blockDarkSteelAnvil);
     if (EnderIO.blockDarkSteelLadder != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.unlocalisedName);
     }   
-    if (EnderIO.blockDarkSteelPressurePlate != null) {
-      EnderIO.blockDarkSteelPressurePlate.registerRenderers();
-    }
-    if (EnderIO.blockIngotStorage != null) {
-      EnderIO.blockIngotStorage.registerRenderers();
-    }
-    if (EnderIO.blockEndermanSkull != null) {
-      EnderIO.blockEndermanSkull.registerRenderers();
-    }
-    if (EnderIO.blockElectricLight != null) {
-      EnderIO.blockElectricLight.registerRenderers();
-    }
+    registerRenderers(EnderIO.blockDarkSteelPressurePlate);
+    registerRenderers(EnderIO.blockIngotStorage);
+    registerRenderers(EnderIO.blockEndermanSkull);
+    registerRenderers(EnderIO.blockElectricLight);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockTravelPlatform);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);  
@@ -155,7 +145,6 @@ public class ClientProxy extends CommonProxy {
     ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Tile Renderers
-
     if (EnderIO.blockEnchanter != null) {
       EnchanterModelRenderer emr = new EnchanterModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);      
@@ -200,19 +189,7 @@ public class ClientProxy extends CommonProxy {
       ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
     }
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
-
-    // OBJLoader.instance.addDomain(EnderIO.MODID.toLowerCase());
-    // Item item = Item.getItemFromBlock(EnderIO.blockTransceiver);
-    // ModelLoader.setCustomModelResourceLocation(item, 0, new
-    // ModelResourceLocation(EnderIO.MODID.toLowerCase() + ":" +
-    // "models/transceiver.obj", "inventory"));
-
-    // TelePadRenderer telePadRenderer = new TelePadRenderer();
-    // ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new
-    // TelePadSpecialRenderer(telePadRenderer));
-
-    
-
+  
     // Overlays
     new YetaWrenchOverlayRenderer();
     new ConduitProbeOverlayRenderer();
@@ -226,29 +203,19 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.itemFrankenSkull != null) {
       EnderIO.itemFrankenSkull.registerRenderers();
     }
-    EnderIO.itemMachinePart.registerRenderers();
-    EnderIO.itemMaterial.registerRenderers();
-    EnderIO.itemEnderFood.registerRenderers();
-    EnderIO.itemBasicFilterUpgrade.registerRenderers();
-    EnderIO.itemExtractSpeedUpgrade.registerRenderers();
-    if (EnderIO.itemFunctionUpgrade != null) {
-      EnderIO.itemFunctionUpgrade.registerRenderers();
-    }
-    if (EnderIO.itemSoulVessel != null) {
-      EnderIO.itemSoulVessel.registerRenderers();
-    }
-    if (EnderIO.itemPowerConduit != null) {
-      EnderIO.itemPowerConduit.registerRenderers();
-    }
-    if (EnderIO.itemLiquidConduit != null) {
-      EnderIO.itemLiquidConduit.registerRenderers();
-    }
-    if (EnderIO.itemItemConduit != null) {
-      EnderIO.itemItemConduit.registerRenderers();
-    }
-    if (EnderIO.itemRedstoneConduit != null) {
-      EnderIO.itemRedstoneConduit.registerRenderers();
-    }
+    registerRenderers(EnderIO.itemMachinePart);
+    registerRenderers(EnderIO.itemMaterial);
+    registerRenderers(EnderIO.itemEnderFood);
+    registerRenderers(EnderIO.itemBasicFilterUpgrade);
+    registerRenderers(EnderIO.itemExtractSpeedUpgrade);
+    registerRenderers(EnderIO.itemFunctionUpgrade);
+    registerRenderers(EnderIO.itemFunctionUpgrade);
+    registerRenderers(EnderIO.itemSoulVessel);
+    registerRenderers(EnderIO.itemPowerConduit);
+    registerRenderers(EnderIO.itemLiquidConduit);
+    registerRenderers(EnderIO.itemItemConduit);
+    registerRenderers(EnderIO.itemRedstoneConduit);
+    registerRenderers(EnderIO.itemConduitFacade); 
     ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.unlocalisedName);
     ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.unlocalisedName);
@@ -273,6 +240,12 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
 
+  }
+
+  private void registerRenderers(IHaveRenderers bob) {
+    if (bob != null) {
+      bob.registerRenderers();
+    }    
   }
 
   @Override

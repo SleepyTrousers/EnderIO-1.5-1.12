@@ -9,6 +9,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -19,6 +20,7 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,7 +34,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider {
+public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider,IHaveRenderers {
 
   public static enum FacadeType {
     BASIC,
@@ -80,6 +82,14 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @Override
   public String getUnlocalizedName() {
     return "item.enderio." + ModObject.itemConduitFacade.name();
+  }
+  
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void registerRenderers() {
+    ClientUtil.regRenderer(this, 0, ModObject.itemConduitFacade.unlocalisedName);
+    ClientUtil.regRenderer(this, 1, ModObject.itemConduitFacade.unlocalisedName);    
   }
 
 //  @Override
@@ -239,5 +249,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       return res;
     }
   }
+
 
 }

@@ -3,6 +3,7 @@ package crazypants.enderio.machine.light;
 import com.enderio.core.common.vecmath.Vector3f;
 
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.util.ClientUtil;
@@ -21,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable {
+public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable, IHaveRenderers {
 
   static final float BLOCK_HEIGHT = 0.05f;
   static final float BLOCK_WIDTH = 0.3f;

@@ -9,14 +9,13 @@ import com.enderio.core.common.util.EntityUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -39,7 +38,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
+public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHaveRenderers {
 
   public static ItemSoulVessel create() {
     ItemSoulVessel result = new ItemSoulVessel();
@@ -67,11 +66,9 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     blackList.add(entityName);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    ModelResourceLocation emptyRL = new ModelResourceLocation("enderio:itemSoulVessel", "inventory");
-    ModelResourceLocation fullRL = new ModelResourceLocation("enderio:itemSoulVesselFull", "inventory");
-    ModelBakery.registerItemVariants(this, emptyRL, fullRL);
+  public void registerRenderers() {    
     ClientUtil.regRenderer(this, 0, "itemSoulVessel");
     ClientUtil.regRenderer(this, 1, "itemSoulVesselFull");
   }

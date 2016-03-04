@@ -5,26 +5,25 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiRepair;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAnvilBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider {
+public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDarkSteelAnvil create() {
     BlockDarkSteelAnvil res = new BlockDarkSteelAnvil();
@@ -70,10 +69,10 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     return true;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    Item item = Item.getItemFromBlock(this);
-    ModelBakery.registerItemVariants(item, new ResourceLocation("enderio:anvil_undamaged"),new ResourceLocation("enderio:anvil_slightly_damaged"),new ResourceLocation("enderio:anvil_very_damaged"));        
+    Item item = Item.getItemFromBlock(this);           
     ClientUtil.regRenderer(item, 0,"anvil_undamaged");
     ClientUtil.regRenderer(item, 1,"anvil_slightly_damaged");
     ClientUtil.regRenderer(item, 2 ,"anvil_very_damaged");

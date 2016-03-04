@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider {
+public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider, IHaveRenderers {
 
   @SideOnly(Side.CLIENT)
   public class SpecialFont extends FontRenderer {

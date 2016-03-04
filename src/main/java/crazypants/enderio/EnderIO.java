@@ -356,7 +356,7 @@ public class EnderIO {
     blockConduitBundle = BlockConduitBundle.create();
     
 //    blockConduitFacade = BlockConduitFacade.create();
-//    itemConduitFacade = ItemConduitFacade.create();
+    itemConduitFacade = ItemConduitFacade.create();
 
     itemBrokenSpawner = ItemBrokenSpawner.create();
 
