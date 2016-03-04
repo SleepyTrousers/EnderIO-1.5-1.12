@@ -7,24 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -49,6 +31,26 @@ import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class IoConfigRenderer {
 
@@ -409,26 +411,32 @@ public class IoConfigRenderer {
       IBlockState bs = world.getBlockState(bc.getBlockPos());
       Block block = bs.getBlock();
       if (block != null) {
-        // if (block.canRenderInPass(pass)) {
-        // RB.renderAllFaces = true;
-        // RB.setRenderAllFaces(true);
-        // RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-        try {
-          // RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
-          BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
-          blockrendererdispatcher.renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
-        } catch (Exception e) {
-          // Ignore, things might blow up in rendering due to the modified
-          // block access
-          // but this is about as good as we can do
-        }
-        // }
+        renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
       }
     }
 
     Tessellator.getInstance().draw();
     Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);
     RenderPassHelper.clearBlockRenderPass();
+  }
+
+  public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, WorldRenderer worldRendererIn) {
+
+    try {
+      BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
+      int type = state.getBlock().getRenderType();
+      if (type != 3) {
+        blockrendererdispatcher.renderBlock(state, pos, blockAccess, worldRendererIn);
+        return;
+      }
+
+      // We only want to change one param here, the check sides
+      IBakedModel ibakedmodel = blockrendererdispatcher.getModelFromBlockState(state, blockAccess, pos);
+      blockrendererdispatcher.getBlockModelRenderer().renderModel(blockAccess, ibakedmodel, state, pos, worldRendererIn, false);
+      
+    } catch (Throwable throwable) {
+      // Just bury a render issue here, it is only the IO screen
+    }
   }
 
   private void setGlStateForPass(int pass, boolean isNeighbour) {
