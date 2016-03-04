@@ -21,6 +21,7 @@ import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
@@ -39,17 +40,20 @@ import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.BlockEnderIO;
+import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.entity.SkeletonHandler;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
+import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
@@ -77,6 +81,7 @@ import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.painter.BlockPainter;
+import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
@@ -104,6 +109,7 @@ import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
+import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
@@ -111,6 +117,7 @@ import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
+import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
@@ -405,7 +412,7 @@ public class EnderIO {
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
-//    MaterialRecipes.registerOresInDictionary();
+    MaterialRecipes.registerOresInDictionary();
     
     proxy.preInit();
   }
@@ -482,19 +489,18 @@ public class EnderIO {
       ConduitBundledRedstoneProvider.register();
     }
 
-    if(Config.replaceWitherSkeletons)
-    {
+    if(Config.replaceWitherSkeletons) {
       SkeletonHandler.registerSkeleton(this);
     }
 
-//    MaterialRecipes.registerDependantOresInDictionary();
+    MaterialRecipes.registerDependantOresInDictionary();
 
-//    EnderfaceRecipes.addRecipes();
-//    MaterialRecipes.addRecipes();
-//    ConduitRecipes.addRecipes();
-//    MachineRecipes.addRecipes();
-//    ItemRecipes.addRecipes();
-//    TeleportRecipes.addRecipes();    
+    EnderfaceRecipes.addRecipes();
+    MaterialRecipes.addRecipes();
+    ConduitRecipes.addRecipes();
+    MachineRecipes.addRecipes();
+    ItemRecipes.addRecipes();
+    TeleportRecipes.addRecipes();    
     
     proxy.init();
   }
@@ -517,11 +523,10 @@ public class EnderIO {
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
-//    PaintSourceValidator.instance.loadConfig();
+    PaintSourceValidator.instance.loadConfig();
 
     if(Fluids.fluidXpJuice == null) { //should have been registered by open blocks
-      fluids.forgeRegisterXPJuice();
-      
+      fluids.forgeRegisterXPJuice();      
     }
 
     if(Config.dumpMobNames) {
@@ -617,12 +622,11 @@ public class EnderIO {
             InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if(msg.isItemStackMessage()) {
-          //TODO: 1.8
-//          if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {
-//            PaintSourceValidator.instance.addToWhitelist(msg.getItemStackValue());
-//          } else if(IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
-//            PaintSourceValidator.instance.addToBlacklist(msg.getItemStackValue());
-//          }
+          if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {
+            PaintSourceValidator.instance.addToWhitelist(msg.getItemStackValue());
+          } else if(IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
+            PaintSourceValidator.instance.addToBlacklist(msg.getItemStackValue());
+          }
         }
       } catch (Exception e) {
         Log.error("Error occured handling IMC message " + key + " from " + msg.getSender());

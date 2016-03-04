@@ -25,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -45,15 +46,11 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     }
   }
 
-//  private IIcon[] icons;
-
   public static ItemConduitFacade create() {
     ItemConduitFacade result = new ItemConduitFacade();
     result.init();
     return result;
   }
-
-//  protected IIcon overlayIcon;
 
   protected ItemConduitFacade() {
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -65,12 +62,14 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     GameRegistry.registerItem(this, ModObject.itemConduitFacade.unlocalisedName);
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
+  public void getSubItems(Item item, CreativeTabs p_150895_2_, List<ItemStack> list) {
     for (FacadeType t : FacadeType.values()) {
-      list.add(new ItemStack(item, 1, t.ordinal()));
+      ItemStack is = new ItemStack(item, 1, t.ordinal());
+      //TODO: Testing
+      PainterUtil.setSourceBlock(is, Blocks.cobblestone.getDefaultState());
+      list.add(is);
     }
   }
 
@@ -89,34 +88,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @Override
   public void registerRenderers() {
     ClientUtil.regRenderer(this, 0, ModObject.itemConduitFacade.unlocalisedName);
-    ClientUtil.regRenderer(this, 1, ModObject.itemConduitFacade.unlocalisedName);    
+    ClientUtil.regRenderer(this, 1, ModObject.itemConduitFacade.unlocalisedName + "Hardened");
+//  overlayIcon = IIconRegister.registerIcon("enderio:conduitFacadeOverlay");
   }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    icons = new IIcon[FacadeType.values().length];
-//    icons[0] = itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
-//    icons[1] = IIconRegister.registerIcon("enderio:conduitFacadeHardened");
-//    overlayIcon = IIconRegister.registerIcon("enderio:conduitFacadeOverlay");
-//  }
-//
-//  public IIcon getOverlayIcon() {
-//    return overlayIcon;
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IIcon getIconFromDamage(int damage) {
-//    return icons[damage % icons.length];
-//  }
-//
-//  @Override
-//  public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-//    return getIconFromDamage(stack.getItemDamage());
-//  }
-
-  
   
   @Override 
  public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -125,10 +99,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       return true;
     }
 
-//    EnumFacing dir = EnumFacing.values()[side];
-//    int placeX = x + dir.offsetX;
-//    int placeY = y + dir.offsetY;
-//    int placeZ = z + dir.offsetZ;
     BlockPos placeAt = pos.offset(side);
 
     if (player.canPlayerEdit(placeAt, side, itemStack) && PainterUtil.getSourceBlock(itemStack) != null) {
@@ -249,6 +219,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       return res;
     }
   }
+  
+  
 
 
 }

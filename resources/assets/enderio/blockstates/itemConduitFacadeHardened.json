@@ -3,7 +3,7 @@
     "defaults": {
         "model": "minecraft:cube_all",
         "textures": {
-            "all": "enderio:items/conduitFacade"
+            "all": "enderio:items/conduitFacadeHardened"
         },
         "transform": "forge:default-block"
     },

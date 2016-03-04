@@ -38,6 +38,10 @@ public class PaintSourceValidator {
       return false;
     }
 
+    if(!block.isFullCube()) {
+      return false;
+    }
+    
     return block.isOpaqueCube() || (block.getMaterial().isOpaque()) || block == Blocks.glass;
   }
 
