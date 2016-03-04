@@ -6,12 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.RenderUtil;
 
-import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
 import static org.lwjgl.opengl.GL11.glDepthMask;
-import static org.lwjgl.opengl.GL11.glPopAttrib;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushAttrib;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glScalef;
 import static org.lwjgl.opengl.GL11.glTranslated;
 
@@ -55,6 +50,7 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick, int b) {
 
+    
     World world = null;
     if (te != null) {
       world = te.getWorld();
@@ -76,11 +72,11 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
 
     RenderUtil.bindBlockTexture();
 
-    glPushMatrix();
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    GL11.glEnable(GL11.GL_ALPHA_TEST);
+    GlStateManager.pushMatrix();    
+
+    GlStateManager.enableBlend();
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    GlStateManager.enableAlpha();    
     RenderHelper.enableStandardItemLighting();
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
     glScalef(1.1f, 1.1f, 1.1f);
@@ -106,8 +102,7 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
     }
     rei.doRender(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
 
-    glPopAttrib();
-    glPopMatrix();
+    GlStateManager.popMatrix();
 
     if (te == null) {
       // Item
