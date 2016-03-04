@@ -7,6 +7,7 @@ import com.enderio.core.common.vecmath.Matrix4d;
 
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,7 +34,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f, int breakingStage) {
-
+    
     Matrix4d lookMat = null;
     int brightness = 255;
     if(te != null) {
@@ -68,16 +69,17 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     RenderUtil.renderBillboard(lookMat, minU, maxU, minV, maxV, 0.8, brightness);
 
     // Glint
-    float maxUV = 32;
-    GL11.glDepthFunc(GL11.GL_EQUAL);
-    GL11.glDisable(GL11.GL_LIGHTING);
     RenderUtil.bindGlintTexture();
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+    
+    float maxUV = 32;
+    GlStateManager.depthFunc(GL11.GL_EQUAL);        
+    GlStateManager.disableLighting();
+    GlStateManager.enableBlend();
+    GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);    
     float blendFactor = 1F;
-    GL11.glColor4f(0.5F * blendFactor, 0.25F * blendFactor, 0.8F * blendFactor, 1.0F);
-
-    GL11.glMatrixMode(GL11.GL_TEXTURE);
+    GlStateManager.color(0.5F * blendFactor, 0.25F * blendFactor, 0.8F * blendFactor, 1.0F);
+    
+    GlStateManager.matrixMode(GL11.GL_TEXTURE);
     GL11.glPushMatrix();
     float scale = 0.125F;
     GL11.glScalef(scale, scale, scale);
@@ -95,13 +97,13 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     RenderUtil.renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
     GL11.glPopMatrix();
 
-    GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    GL11.glDisable(GL11.GL_BLEND);
-    GL11.glEnable(GL11.GL_LIGHTING);
-    GL11.glDepthFunc(GL11.GL_LEQUAL);
+    GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+    GlStateManager.disableBlend();
+    GlStateManager.enableLighting();    
+    GlStateManager.depthFunc(GL11.GL_LEQUAL);
 
     GL11.glColor4f(1, 1, 1, 1.0F);
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
 
   }
 

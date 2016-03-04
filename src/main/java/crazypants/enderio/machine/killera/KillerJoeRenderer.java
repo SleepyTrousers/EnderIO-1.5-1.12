@@ -37,8 +37,8 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     if(te != null) {
       RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
     }
-    GL11.glPushMatrix();
-    GL11.glTranslatef((float) x, (float) y, (float) z);
+    GlStateManager.pushMatrix();    
+    GlStateManager.translate((float) x, (float) y, (float) z);
     EnumFacing facing = EnumFacing.WEST;
     if (te != null) {
       facing = te.facing;
@@ -48,7 +48,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
       renderSword(facing, te.getStackInSlot(0), te.getSwingProgress(tick));
       renderFluid(te);
     }
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
 
   }
 
@@ -59,34 +59,34 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     }
 
     //Sword
-    GL11.glPushMatrix();
+    GlStateManager.pushMatrix();
 
-    GL11.glTranslatef(0.5f, 0, 0.5f);
+    GlStateManager.translate(0.5f, 0, 0.5f);
     float offset = 270f;
     if(facing.getFrontOffsetX() != 0) {
       offset *= -1;
     }
+    GlStateManager.rotate((facing.getHorizontalIndex() * 90F) + offset, 0F, 1F, 0F);
+    GlStateManager.translate(-0.5f, 0, -0.5F);
 
-    GL11.glRotatef((facing.getHorizontalIndex() * 90F) + offset, 0F, 1F, 0F);
-    GL11.glTranslatef(-0.5f, 0, -0.5F);
-
-    GL11.glPushMatrix();
+    GlStateManager.pushMatrix();
     if(swingProgress > 0) {
       float f6 = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
       float f7 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI);
-      GL11.glRotatef(f6 * 5.0F, 1.0F, 0.0F, 0.0F);
-      GL11.glRotatef(-f7 * 30.0F, 0.0F, 0.0F, 1.0F);
+      GlStateManager.rotate(f6 * 5.0F, 1.0F, 0.0F, 0.0F);
+      GlStateManager.rotate(-f7 * 30.0F, 0.0F, 0.0F, 1.0F);
     }
-    GL11.glTranslatef(0.85f, 0.6f, 0.03f);
+    GlStateManager.translate(0.85f, 0.6f, 0.03f);
 
-    GL11.glPushMatrix();
-    float scale = 0.75f;
-    GL11.glScaled(scale, scale, scale);
+    GlStateManager.pushMatrix();
+    float scale = 0.75f;    
+    GlStateManager.scale(scale, scale, scale);
     Minecraft.getMinecraft().getRenderItem().renderItem(sword, TransformType.NONE);
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
     
-    GL11.glPopMatrix();
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
+    GlStateManager.popMatrix();
+    
 
   }
 
@@ -114,38 +114,34 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
       } else {
         brightness = gen.getWorld().getLightFor(EnumSkyBlock.SKY, gen.getPos());
       }
-//      tes.setBrightness(brightness);      
-            
-      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GL11.glDisable(GL11.GL_LIGHTING);
-      GL11.glDepthMask(false);
+
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.disableLighting();
+      GlStateManager.depthMask(false);      
       GlStateManager.color(1, 1, 1);
       
-      RenderUtil.renderBoundingBox(bb, icon);
+      RenderUtil.renderBoundingBox(bb, icon);      
+      GlStateManager.depthMask(true);
       
-      GL11.glDepthMask(true);
-      GL11.glPopAttrib();
     }
   }
 
   private void renderModel(EnumFacing facing) {
 
-    GL11.glPushMatrix();
+    GlStateManager.pushMatrix();
 
-    GL11.glTranslatef(0.5F, 0, 0.5F);
-    GL11.glRotatef(180F, 1F, 0F, 0F);
-    GL11.glScalef(1.2f, 0.9f, 1.2f);
-
+    GlStateManager.translate(0.5F, 0, 0.5F);
+    GlStateManager.rotate(180F, 1F, 0F, 0F);
+    GlStateManager.scale(1.2f, 0.9f, 1.2f);
    
-    GL11.glRotatef(facing.getHorizontalIndex() * 90F, 0F, 1F, 0F);
+    GlStateManager.rotate(facing.getHorizontalIndex() * 90F, 0F, 1F, 0F);
 
     RenderUtil.bindTexture(TEXTURE);
     model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-    GL11.glTranslatef(-0.5F, 0, -0.5F);
-    GL11.glPopMatrix();
+    GlStateManager.translate(-0.5F, 0, -0.5F);
+    GlStateManager.popMatrix();
 
   }
 
