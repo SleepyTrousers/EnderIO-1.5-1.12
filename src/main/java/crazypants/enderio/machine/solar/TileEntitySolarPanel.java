@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import cofh.api.energy.EnergyStorage;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.power.IInternalPowerProvider;
+import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.waila.IWailaNBTProvider;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -13,15 +21,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import cofh.api.energy.EnergyStorage;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.power.IInternalPowerProvider;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.waila.IWailaNBTProvider;
 
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
   

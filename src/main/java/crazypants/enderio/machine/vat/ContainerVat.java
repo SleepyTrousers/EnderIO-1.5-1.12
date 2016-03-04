@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.vat;
 
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerVat extends AbstractMachineContainer<TileVat> {
 

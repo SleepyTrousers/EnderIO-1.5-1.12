@@ -16,8 +16,6 @@ import java.util.ListIterator;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.minecraft.enchantment.Enchantment;
-
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -31,6 +29,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import net.minecraft.enchantment.Enchantment;
 
 public class EnchanterRecipeParser extends DefaultHandler {
 

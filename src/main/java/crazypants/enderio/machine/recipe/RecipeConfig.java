@@ -15,12 +15,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.item.ItemStack;
-
 import org.apache.commons.io.IOUtils;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
+import net.minecraft.item.ItemStack;
 
 public class RecipeConfig {
 

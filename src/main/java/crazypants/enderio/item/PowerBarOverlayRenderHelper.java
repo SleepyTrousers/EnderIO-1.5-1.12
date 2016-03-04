@@ -3,7 +3,6 @@ package crazypants.enderio.item;
 import org.lwjgl.opengl.GL11;
 
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.packet;
 
-import net.minecraft.tileentity.TileEntity;
-
 import com.enderio.core.common.network.MessageTileEntity;
+
+import net.minecraft.tileentity.TileEntity;
 
 public abstract class AbstractConduitBundlePacket extends MessageTileEntity<TileEntity> {
 

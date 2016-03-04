@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.capbank.render;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
+import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
@@ -12,10 +9,14 @@ import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.MergingBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.MergingBlockStateWrapper;
 import crazypants.enderio.render.dummy.BlockMachineIO;
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 
 public class CapBankStateWrapper extends MergingBlockStateWrapper {
 

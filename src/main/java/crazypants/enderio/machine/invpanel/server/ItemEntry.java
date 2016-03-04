@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import java.util.IdentityHashMap;
+
+import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemEntry extends ItemEntryBase {

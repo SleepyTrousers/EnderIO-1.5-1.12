@@ -1,13 +1,5 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.invpanel.InventoryDatabase;
-import crazypants.enderio.machine.invpanel.PacketDatabaseReset;
-import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.network.PacketHandler;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.enderio.core.common.network.CompressedDataInput;
 import com.enderio.core.common.network.CompressedDataOutput;
 
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.invpanel.InventoryDatabase;
+import crazypants.enderio.machine.invpanel.PacketDatabaseReset;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 

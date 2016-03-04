@@ -1,5 +1,19 @@
 package crazypants.enderio.teleport.telepad;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.teleport.ContainerTravelAccessable;
+import crazypants.enderio.teleport.ContainerTravelAuth;
+import crazypants.enderio.teleport.GuiTravelAuth;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -16,20 +30,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.teleport.ContainerTravelAccessable;
-import crazypants.enderio.teleport.ContainerTravelAuth;
-import crazypants.enderio.teleport.GuiTravelAuth;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
 public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISmartRenderAwareBlock {
 

@@ -2,9 +2,9 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.Locale;
 
+import crazypants.enderio.config.Config;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
-import crazypants.enderio.config.Config;
 
 public enum FusedQuartzType implements IStringSerializable {
 

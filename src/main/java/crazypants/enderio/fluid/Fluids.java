@@ -2,6 +2,11 @@ package crazypants.enderio.fluid;
 
 import java.lang.reflect.Field;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,11 +27,6 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.network.PacketHandler;
 
 public class Fluids {
 

@@ -3,11 +3,11 @@ package crazypants.enderio.machine;
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class PoweredTask implements IPoweredTask {
 

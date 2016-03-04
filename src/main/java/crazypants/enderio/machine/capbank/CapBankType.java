@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import crazypants.enderio.config.Config;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
 
 public enum CapBankType implements IStringSerializable {
 

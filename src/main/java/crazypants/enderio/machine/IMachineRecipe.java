@@ -2,9 +2,9 @@ package crazypants.enderio.machine;
 
 import java.util.List;
 
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 /**
  * A MachineRecipe implementation must be stateless, always returning the same

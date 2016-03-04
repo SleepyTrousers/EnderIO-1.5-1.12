@@ -1,15 +1,15 @@
 package crazypants.enderio.render;
 
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
 import static net.minecraft.util.EnumFacing.NORTH;
 import static net.minecraft.util.EnumFacing.SOUTH;
 import static net.minecraft.util.EnumFacing.UP;
 import static net.minecraft.util.EnumFacing.WEST;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;

@@ -2,9 +2,9 @@ package crazypants.enderio.machine;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
+import net.minecraft.nbt.NBTTagCompound;
 
 public interface IPoweredTask {
 

@@ -3,9 +3,9 @@ package crazypants.enderio.machine.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import net.minecraft.item.ItemStack;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 

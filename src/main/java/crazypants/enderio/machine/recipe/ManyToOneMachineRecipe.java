@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.recipe;
 
-import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.MachineRecipeInput;
+import net.minecraft.item.ItemStack;
 
 public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
 

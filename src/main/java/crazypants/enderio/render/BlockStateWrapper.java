@@ -2,14 +2,14 @@ package crazypants.enderio.render;
 
 import java.util.Collection;
 
+import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * This blockstate wrapper allows the block to give more information to the smart model. This allows it to talk to the block properly (with world and pos) and

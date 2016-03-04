@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.reservoir;
 
+import crazypants.enderio.render.MergingBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import crazypants.enderio.render.MergingBlockStateWrapper;
 
 public class ReservoirStateWrapper extends MergingBlockStateWrapper {
 

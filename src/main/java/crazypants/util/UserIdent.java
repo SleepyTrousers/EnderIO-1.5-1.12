@@ -5,14 +5,13 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.UsernameCache;
-
 import com.enderio.core.common.util.PlayerUtil;
 import com.google.common.base.Charsets;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.Log;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.UsernameCache;
 
 public class UserIdent {
   private static final String NONE_MARKER = "none";

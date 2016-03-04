@@ -2,14 +2,14 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.List;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 
 public class ItemFusedQuartz extends ItemBlock {
 

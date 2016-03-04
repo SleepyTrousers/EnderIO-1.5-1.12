@@ -2,6 +2,11 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import java.util.Random;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
@@ -9,11 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
-import crazypants.enderio.network.PacketHandler;
 
 public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk> {
 

@@ -2,9 +2,9 @@ package crazypants.enderio.machine.recipe;
 
 import java.util.List;
 
+import crazypants.enderio.machine.MachineRecipeInput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.machine.MachineRecipeInput;
 
 public interface IRecipe {
 

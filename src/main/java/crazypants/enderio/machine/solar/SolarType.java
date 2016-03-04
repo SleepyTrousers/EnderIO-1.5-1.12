@@ -2,9 +2,9 @@ package crazypants.enderio.machine.solar;
 
 import java.util.Locale;
 
+import crazypants.enderio.config.Config;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
-import crazypants.enderio.config.Config;
 
 public enum SolarType implements IStringSerializable {
 

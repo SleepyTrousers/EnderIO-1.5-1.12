@@ -2,6 +2,7 @@ package crazypants.enderio.machine.invpanel.server;
 
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawer;
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
+
 import net.minecraft.item.ItemStack;
 
 public class DrawerGroupInventory extends AbstractInventory {

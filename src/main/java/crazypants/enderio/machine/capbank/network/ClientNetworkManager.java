@@ -3,8 +3,8 @@ package crazypants.enderio.machine.capbank.network;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.world.World;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import net.minecraft.world.World;
 
 public class ClientNetworkManager {
 

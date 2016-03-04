@@ -3,6 +3,13 @@ package crazypants.enderio.machine.reservoir;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.FluidUtil;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.tool.SmartTank;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -13,14 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
-
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.tool.SmartTank;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 

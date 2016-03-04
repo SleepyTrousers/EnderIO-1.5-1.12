@@ -1,8 +1,8 @@
 package crazypants.enderio.machine;
 
-import net.minecraft.util.EnumChatFormatting;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
+import net.minecraft.util.EnumChatFormatting;
 
 public enum IoMode {
 

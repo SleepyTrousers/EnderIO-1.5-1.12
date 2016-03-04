@@ -2,14 +2,12 @@ package crazypants.enderio.machine.crusher;
 
 import java.awt.Rectangle;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
 

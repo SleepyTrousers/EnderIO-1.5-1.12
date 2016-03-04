@@ -9,6 +9,7 @@ import static crazypants.enderio.material.Alloy.REDSTONE_ALLOY;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.PHASED_IRON_NUGGET;
 import static crazypants.util.RecipeUtil.addShaped;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;

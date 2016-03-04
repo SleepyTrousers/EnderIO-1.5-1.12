@@ -1,6 +1,5 @@
 package crazypants.util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import crazypants.enderio.Log;

@@ -1,12 +1,11 @@
 package crazypants.util;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import crazypants.enderio.Log;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 
 /**
  * This is a near-verbatim copy of Galacticraft's API class 'AccessInventoryGC'.

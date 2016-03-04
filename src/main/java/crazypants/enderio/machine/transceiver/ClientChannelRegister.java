@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.transceiver;
 
 import crazypants.enderio.EnderIO;
-import crazypants.util.UserIdent;
 
 
 public class ClientChannelRegister extends ChannelRegister {

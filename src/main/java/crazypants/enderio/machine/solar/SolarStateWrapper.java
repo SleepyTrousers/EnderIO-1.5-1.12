@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.solar;
 
+import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.MergingBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.MergingBlockStateWrapper;
-
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
 public class SolarStateWrapper extends MergingBlockStateWrapper {
 

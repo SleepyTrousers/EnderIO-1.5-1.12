@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.gui.item;
 
-import net.minecraft.client.gui.GuiButton;
-
 import com.enderio.core.client.gui.button.ToggleButton;
 
 import crazypants.enderio.EnderIO;
@@ -11,6 +9,7 @@ import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
 
 public class PowerItemFilterGui implements IItemFilterGui {
 

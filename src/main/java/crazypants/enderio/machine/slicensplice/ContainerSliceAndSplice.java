@@ -7,13 +7,13 @@ import java.util.Random;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 

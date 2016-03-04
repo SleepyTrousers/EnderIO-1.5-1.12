@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAversionObelisk extends AbstractMachineContainer<TileAversionObelisk> {
 

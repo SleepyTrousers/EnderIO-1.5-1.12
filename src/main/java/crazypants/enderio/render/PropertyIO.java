@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.block.properties.PropertyHelper;
 import net.minecraft.util.EnumFacing;
-
-import com.google.common.collect.ImmutableSet;
 
 public class PropertyIO extends PropertyHelper<IOMode> {
 

@@ -3,15 +3,11 @@ package crazypants.enderio.machine.transceiver.gui;
 import java.awt.Color;
 import java.awt.Point;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
@@ -21,6 +17,8 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class FilterTab implements ITabPanel {
 

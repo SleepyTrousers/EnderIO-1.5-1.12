@@ -1,5 +1,6 @@
 package crazypants.enderio.render.dummy;
 
+import crazypants.enderio.render.EnumRenderPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -12,7 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import crazypants.enderio.render.EnumRenderPart;
 
 public class BlockMachineBase extends Block {
 

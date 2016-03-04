@@ -3,13 +3,13 @@ package crazypants.enderio.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
 public abstract class MergingBlockStateWrapper extends BlockStateWrapper {
 

@@ -3,8 +3,8 @@ package crazypants.enderio.machine.enchanter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import crazypants.enderio.Log;
+import net.minecraft.item.ItemStack;
 
 public class EnchanterRecipeManager {
 

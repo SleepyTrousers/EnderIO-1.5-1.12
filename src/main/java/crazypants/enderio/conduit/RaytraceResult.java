@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import crazypants.enderio.conduit.geom.CollidableComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 
 public class RaytraceResult {
 
