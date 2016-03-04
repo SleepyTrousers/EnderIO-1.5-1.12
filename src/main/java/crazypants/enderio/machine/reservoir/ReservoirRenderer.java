@@ -30,8 +30,13 @@ import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import crazypants.enderio.render.GlState;
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir>  {
+
+  private static final GlState state = GlState.create("color", 1.0f, 1.0f, 1.0f, 1.0f, "blend", true, GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA,
+      "lighting", false, "colormask", true, true, true, true, "depth", true, true, GL11.GL_LEQUAL, "cullface", true, GL11.GL_BACK, "alpha", true,
+      GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE, "normalize", false);
 
   public static final TextureSupplier switchIcon = TextureRegistry.registerTexture("blocks/reservoirSwitch");
 
@@ -45,18 +50,14 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
 
     TileReservoir res = tileentity;
+    float fullness = res.getFilledRatio();
+
     if (res.tank.getFluidAmount() > 0 || res.isAutoEject()) {
+      GlState before = GlState.create();
       Minecraft.getMinecraft().entityRenderer.disableLightmap();
       GlStateManager.pushMatrix();
-      GlStateManager.pushAttrib();
-      GlStateManager.enableCull();
-      GlStateManager.enableLighting();
-      GlStateManager.disableLighting();
-      GlStateManager.disableBlend();
-      GlStateManager.enableBlend();
-      GlStateManager.enableAlpha();
-      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GlStateManager.resetColor();
+
+      state.apply();
 
       GlStateManager.translate(x, y, z);
       RenderUtil.bindBlockTexture();
@@ -79,13 +80,12 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
             drawSwitch(dir, BoundingBox.UNIT_CUBE);
           }
         }
-        GlStateManager.resetColor();
       }
 
       tessellator.draw();
-      GlStateManager.popAttrib();
       GlStateManager.popMatrix();
       Minecraft.getMinecraft().entityRenderer.enableLightmap();
+      before.apply_filtered(state);
     }
 
 

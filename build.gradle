@@ -98,6 +98,13 @@ processResources {
 }
 
 jar {
+    manifest {
+        attributes 'FMLAT': 'enderio_AT.cfg'
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        include 'enderio_AT.cfg'
+        into('/META-INF/')
+    }
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
