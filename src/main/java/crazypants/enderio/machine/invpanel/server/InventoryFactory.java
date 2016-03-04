@@ -7,7 +7,6 @@ import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraftforge.fml.common.Loader;
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public abstract class InventoryFactory {
 
@@ -15,7 +14,7 @@ public abstract class InventoryFactory {
 
   static {
     factories = new ArrayList<InventoryFactory>();
-    factories.add(new DSUFactory());
+//    factories.add(new DSUFactory());
     if (Loader.isModLoaded("StorageDrawers")) {
       factories.add(new DrawerFactory());
     }
@@ -33,16 +32,16 @@ public abstract class InventoryFactory {
 
   abstract AbstractInventory create(NetworkedInventory ni);
 
-  static class DSUFactory extends InventoryFactory {
-    @Override
-    AbstractInventory create(NetworkedInventory ni) {
-      ISidedInventory inv = ni.getInventory();
-      if (inv instanceof IDeepStorageUnit) {
-        return new DSUInventory((IDeepStorageUnit) inv);
-      }
-      return null;
-    }
-  }
+//  static class DSUFactory extends InventoryFactory {
+//    @Override
+//    AbstractInventory create(NetworkedInventory ni) {
+//      ISidedInventory inv = ni.getInventory();
+//      if (inv instanceof IDeepStorageUnit) {
+//        return new DSUInventory((IDeepStorageUnit) inv);
+//      }
+//      return null;
+//    }
+//  }
 
   static class DrawerFactory extends InventoryFactory {
     @Override
