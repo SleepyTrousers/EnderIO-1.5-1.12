@@ -6,6 +6,8 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -21,11 +23,34 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
     return result;
   }
 
+  public static final PropertyBool ACTIVE = PropertyBool.create("active");
+  
   public BlockLightNode() {
     super(ModObject.blockLightNode.unlocalisedName, TileLightNode.class, Material.air);
     setCreativeTab(null);
     setBlockBounds(0, 0, 0, 0, 0, 0);
     setTickRandomly(true);
+    setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+  }
+  
+  @Override
+  public BlockState createBlockState() {
+    return new BlockState(this, ACTIVE);
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return state.getValue(ACTIVE).booleanValue() ? 1 : 0;
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {    
+    return getDefaultState().withProperty(ACTIVE, meta > 0);
+  }
+  
+  @Override
+  public boolean isFullCube() {
+    return false;
   }
 
   @Override
@@ -63,8 +88,11 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
 
   @Override
   public int getLightValue(IBlockAccess world, BlockPos pos) {
-  IBlockState bs = world.getBlockState(pos);  
-    return bs.getBlock().getMetaFromState(bs)  > 0 ? 15 : 0;
+    IBlockState bs = world.getBlockState(pos);
+    if(bs.getBlock() != this) {
+      return 0;
+    }
+    return bs.getValue(ACTIVE) ? 15 : 0;
   }
 
   @Override

@@ -122,8 +122,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       }
 
       if(init) {
-        //TODO: 1.8
-//        updateLightNodes();
+        updateLightNodes();
       }
     }
 
@@ -133,15 +132,18 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       bs = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
       worldObj.setBlockState(pos, bs, 2);      
 
-      if(requiresPower) {
-        //TODO: 1.8
-//        for (TileLightNode ln : lightNodes) {
-//          if(ln != null) {
-//            worldObj.setBlockState(ln.getPos(), EnderIO.blockLightNode.getStateFromMeta(isActivated ? 1 : 0), 2);            
-//            worldObj.markBlockForUpdate(ln.getPos());
-//            worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln.getPos());            
-//          }
-//        }
+      if(requiresPower) {        
+        for (TileLightNode ln : lightNodes) {
+          if(ln != null) {
+            bs = worldObj.getBlockState(ln.getPos());
+            if(bs.getBlock() == EnderIO.blockLightNode) {              
+              bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
+              worldObj.setBlockState(ln.getPos(), bs, 2);
+              worldObj.markBlockForUpdate(ln.getPos());
+              worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln.getPos());
+            }                                              
+          }
+        }
       }
       worldObj.markBlockForUpdate(pos);
       worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);      
@@ -205,14 +207,14 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       }
 
       for (EnumFacing dir : EnumFacing.VALUES) {
-        if(dir != face && dir != face.getOpposite()) { // don't project behind
+        if(dir != face && dir != face.getOpposite()) { // skip the way we are facing
           // us
           Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
           addNodeInDirection(new Vector3d(offset), after);
           addNodeInDirection(offset.add(ForgeDirectionOffsets.forDirCopy(face.getOpposite())), after);
         }
       }
-
+      //don't project behind, just in front
       addNodeInDirection(ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);
 
       Vector3d[] diags = new Vector3d[2];
@@ -237,7 +239,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
           TileEntity te = worldObj.getTileEntity(entry.getBlockPos());
           if(te instanceof TileLightNode) {
             TileLightNode ln = (TileLightNode) te;
-            ln.setPos(getPos());            
+            ln.setParentPos(getPos());
             lightNodes.add(ln);
           }
         }

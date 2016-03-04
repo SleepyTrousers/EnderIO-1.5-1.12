@@ -65,4 +65,11 @@ public class TileLightNode extends TileEntityEio {
     return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ",  pos=" + pos + ", tileEntityInvalid=" + tileEntityInvalid + "]";
   }
 
+  public void setParentPos(BlockPos pos) {
+    parentX = pos.getX();
+    parentY = pos.getY();
+    parentZ = pos.getZ();
+    
+  }
+
 }

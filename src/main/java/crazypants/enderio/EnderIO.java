@@ -470,11 +470,11 @@ public class EnderIO {
           new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
     }
 
-//    if(Config.lootTravelStaff) {
-//      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
-//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-//    }
+    if(Config.lootTravelStaff) {
+      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
+      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+    }
 
     DarkSteelItems.addLoot();
 
