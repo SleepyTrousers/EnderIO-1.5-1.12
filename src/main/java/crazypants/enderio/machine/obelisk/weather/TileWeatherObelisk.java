@@ -2,6 +2,16 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
 
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.api.common.util.ITankAccess;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
@@ -18,17 +28,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.api.common.util.ITankAccess;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
 
@@ -166,13 +165,13 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
   
   @SideOnly(Side.CLIENT)
-  private void doLoadingParticles() {
-    if (progress < 0.9f) {
+  private void doLoadingParticles() {    
+    if (progress < 0.9f) {      
       Color c = getActiveTask().color;
       double correction = 0.1;
       BlockPos pos = getPos();
       double xf = pos.getX() + 0.5 + correction;
-      double yf = pos.getX() + 0.8;
+      double yf = pos.getY() + 0.8;
       double zf = pos.getZ() + 0.5 + correction;
       Block b = getBlockType();
       double yi = pos.getY() + b.getBlockBoundsMaxY() - 0.1;
