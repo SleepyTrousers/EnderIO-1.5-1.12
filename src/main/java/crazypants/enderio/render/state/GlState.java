@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.state;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL12;
  * <p>
  * It allows you to:
  * <ul>
- * <li>Record the GlStateManager's state
+ * <li>Record the GlStateManager's state (using GlStateBuilder)
  * <li>Re-apply a recorded state
  * <li>convert the state into valid java code for inclusion into source code
  * <li>Recreate a state object from that code.
@@ -48,15 +48,17 @@ public class GlState {
 
     void store(List<Object> data);
 
-    State create();
-
     void apply();
   }
 
   private static final Map<String, State> allStates = new HashMap<String, State>();
   
-  protected static void addState(State state) {
+  private static void registerState(State state) {
     allStates.put(state.getName(), state);
+  }
+
+  void addState(State state) {
+    states.put(state.getName(), state);
   }
 
   private final Map<String, State> states = new HashMap<String, State>();
@@ -131,20 +133,6 @@ public class GlState {
   }
   
   /**
-   * Create a state object that reflects the current state of the GlStateMananger
-   */
-  public static GlState create() {
-    GlState glstate = new GlState();
-    for (State state : allStates.values()) {
-      State newState = state.create();
-      if (newState != null) {
-        glstate.states.put(newState.getName(), newState);
-      }
-    }
-    return glstate;
-  }
-  
-  /**
    * Applies the state to GlStateMananger
    */
   public void apply() {
@@ -164,10 +152,10 @@ public class GlState {
     }
   }
 
-  private static class GlConstant {
-    private final int constant;
+  protected static class GlConstant {
+    protected final int constant;
 
-    private GlConstant(int constant) {
+    protected GlConstant(int constant) {
       this.constant = constant;
     }
 
@@ -194,37 +182,53 @@ public class GlState {
   }
 
   static {
-    addState(new AlphaState(false, 0, 0f));
-    addState(new LightingState(false));
-    addState(new LightState(new boolean[8]));
-    addState(new ColorMaterialState(false, 0, 0));
-    addState(new BlendState(false, 0, 0));
-    addState(new DepthState(false, false, 0));
-    addState(new FogState(false, 0, 0f, 0f, 0f));
-    addState(new CullState(false, 0));
-    addState(new PolygonOffsetState(false, 0f, 0f));
-    addState(new ColorLogicState(false, 0));
-    addState(new ClearState(0, 0, 0, 0, 0));
-    addState(new NormalizeState(false));
-    addState(new ShadeModelState(0));
-    addState(new RescaleNormalState(false));
-    addState(new ColorMask(false, false, false, false));
-    addState(new ColorState(0, 0, 0, 0));
+    registerState(new AlphaState(false, 0, 0f));
+    registerState(new LightingState(false));
+    registerState(new LightState(new boolean[8]));
+    registerState(new ColorMaterialState(false, 0, 0));
+    registerState(new BlendState(false, 0, 0));
+    registerState(new DepthState(false, false, 0));
+    registerState(new FogState(false, 0, 0f, 0f, 0f));
+    registerState(new CullState(false, 0));
+    registerState(new PolygonOffsetState(false, 0f, 0f));
+    registerState(new ColorLogicState(false, 0));
+    registerState(new ClearState(0, 0, 0, 0, 0));
+    registerState(new NormalizeState(false));
+    registerState(new ShadeModelState(0));
+    registerState(new RescaleNormalState(false));
+    registerState(new ColorMask(false, false, false, false));
+    registerState(new ColorState(0, 0, 0, 0));
   }
+
+  /**
+   * A complete state as it is set by Minecraft when calling a TESR for TE rendering
+   */
+  public static final GlState CLEAN_TESR_STATE_COMPLETE = GlState.create("color", 1.0f, 1.0f, 1.0f, 1.0f, "shademodel", GL11.GL_FLAT, "rescalenormal", false,
+      "blend", true, GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, "colorlogic", false, "clear", 1.0, 0.704647362232f, 0.823216617107f, 0.998214125633f,
+      0.0f, "lighting", false, "colormask", true, true, true, true, "depth", true, true, GL11.GL_LEQUAL, "light", true, true, false, false, false, false,
+      false, false, "cullface", true, GL11.GL_BACK, "polygonoffset", false, "alpha", true, GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE, "normalize",
+      false, "fog", true, GL11.GL_LINEAR, 1.0f, 144.0f, 192.0f);
+
+  /**
+   * A state as it is set by Minecraft when calling a TESR for TE rendering with only the states we expect to change
+   */
+  public static final GlState CLEAN_TESR_STATE = GlState.create("color", 1.0f, 1.0f, 1.0f, 1.0f, "shademodel", GL11.GL_FLAT, "blend", true, GL11.GL_SRC_ALPHA,
+      GL11.GL_ONE_MINUS_SRC_ALPHA, "lighting", false, "depth", true, true, GL11.GL_LEQUAL, "cullface", true, GL11.GL_BACK, "alpha", true,
+      GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE);
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class AlphaState implements State {
-    private final boolean alphaTest;
-    private final int func;
-    private final float ref;
+  protected static class AlphaState implements State {
+    protected final boolean alphaTest;
+    protected final int func;
+    protected final float ref;
 
     @Override
     public String getName() {
       return "alpha";
     }
 
-    private AlphaState(boolean alphaTest, int func, float ref) {
+    AlphaState(boolean alphaTest, int func, float ref) {
       this.alphaTest = alphaTest;
       this.func = func;
       this.ref = ref;
@@ -247,11 +251,6 @@ public class GlState {
       } else {
         return new AlphaState(next, 0, 0f);
       }
-    }
-
-    @Override
-    public State create() {
-      return new AlphaState(GlStateManager.alphaState.alphaTest.currentState, GlStateManager.alphaState.func, GlStateManager.alphaState.ref);
     }
 
     @Override
@@ -282,15 +281,15 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class LightingState implements State {
-    private final boolean lighting;
+  protected static class LightingState implements State {
+    protected final boolean lighting;
 
     @Override
     public String getName() {
       return "lighting";
     }
 
-    private LightingState(boolean lighting) {
+    protected LightingState(boolean lighting) {
       this.lighting = lighting;
     }
 
@@ -302,11 +301,6 @@ public class GlState {
     @Override
     public State create(Iterator<Object> data) {
       return new LightingState((Boolean) data.next());
-    }
-
-    @Override
-    public State create() {
-      return new LightingState(GlStateManager.lightingState.currentState);
     }
 
     @Override
@@ -333,15 +327,15 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class LightState implements State {
-    private final boolean[] light;
+  protected static class LightState implements State {
+    protected final boolean[] light;
 
     @Override
     public String getName() {
       return "light";
     }
 
-    private LightState(boolean[] light) {
+    protected LightState(boolean[] light) {
       this.light = light;
     }
 
@@ -357,15 +351,6 @@ public class GlState {
       boolean[] b = new boolean[8];
       for (int i = 0; i < light.length; i++) {
         b[i] = (Boolean) data.next();
-      }
-      return new LightState(b);
-    }
-
-    @Override
-    public State create() {
-      boolean[] b = new boolean[8];
-      for (int i = 0; i < light.length; i++) {
-        b[i] = GlStateManager.lightState[i].currentState;
       }
       return new LightState(b);
     }
@@ -396,17 +381,17 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class ColorMaterialState implements State {
-    private final boolean colorMaterial;
-    private final int face;
-    private final int mode;
+  protected static class ColorMaterialState implements State {
+    protected final boolean colorMaterial;
+    protected final int face;
+    protected final int mode;
 
     @Override
     public String getName() {
       return "alpha";
     }
 
-    private ColorMaterialState(boolean colorMaterial, int face, int mode) {
+    protected ColorMaterialState(boolean colorMaterial, int face, int mode) {
       this.colorMaterial = colorMaterial;
       this.face = face;
       this.mode = mode;
@@ -429,12 +414,6 @@ public class GlState {
       } else {
         return new ColorMaterialState(next, 0, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new ColorMaterialState(GlStateManager.colorMaterialState.colorMaterial.currentState, GlStateManager.colorMaterialState.face,
-          GlStateManager.colorMaterialState.mode);
     }
 
     @Override
@@ -465,17 +444,17 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class BlendState implements State {
-    private final boolean blend;
-    private final int srcFactor;
-    private final int dstFactor;
+  protected static class BlendState implements State {
+    protected final boolean blend;
+    protected final int srcFactor;
+    protected final int dstFactor;
 
     @Override
     public String getName() {
       return "blend";
     }
 
-    private BlendState(boolean blend, int srcFactor, int dstFactor) {
+    protected BlendState(boolean blend, int srcFactor, int dstFactor) {
       this.blend = blend;
       this.srcFactor = srcFactor;
       this.dstFactor = dstFactor;
@@ -498,11 +477,6 @@ public class GlState {
       } else {
         return new BlendState(next, 0, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new BlendState(GlStateManager.blendState.blend.currentState, GlStateManager.blendState.srcFactor, GlStateManager.blendState.dstFactor);
     }
 
     @Override
@@ -533,17 +507,17 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class DepthState implements State {
-    private final boolean depthTest;
-    private final boolean maskEnabled;
-    private final int depthFunc;
+  protected static class DepthState implements State {
+    protected final boolean depthTest;
+    protected final boolean maskEnabled;
+    protected final int depthFunc;
 
     @Override
     public String getName() {
       return "depth";
     }
 
-    private DepthState(boolean depthTest, boolean maskEnabled, int depthFunc) {
+    protected DepthState(boolean depthTest, boolean maskEnabled, int depthFunc) {
       this.depthTest = depthTest;
       this.maskEnabled = maskEnabled;
       this.depthFunc = depthFunc;
@@ -573,11 +547,6 @@ public class GlState {
       } else {
         return new DepthState(next0, false, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new DepthState(GlStateManager.depthState.depthTest.currentState, GlStateManager.depthState.maskEnabled, GlStateManager.depthState.depthFunc);
     }
 
     @Override
@@ -614,19 +583,19 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class FogState implements State {
-    private final boolean fog;
-    private final int mode;
-    private final float density;
-    private final float start;
-    private final float end;
+  protected static class FogState implements State {
+    protected final boolean fog;
+    protected final int mode;
+    protected final float density;
+    protected final float start;
+    protected final float end;
 
     @Override
     public String getName() {
       return "fog";
     }
 
-    private FogState(boolean fog, int mode, float density, float start, float end) {
+    protected FogState(boolean fog, int mode, float density, float start, float end) {
       this.fog = fog;
       this.mode = mode;
       this.density = density;
@@ -653,12 +622,6 @@ public class GlState {
       } else {
         return new FogState(next, 0, 0, 0, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new FogState(GlStateManager.fogState.fog.currentState, GlStateManager.fogState.mode, GlStateManager.fogState.density,
-          GlStateManager.fogState.start, GlStateManager.fogState.end);
     }
 
     @Override
@@ -701,16 +664,16 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class CullState implements State {
-    private final boolean cullFace;
-    private final int mode;
+  protected static class CullState implements State {
+    protected final boolean cullFace;
+    protected final int mode;
 
     @Override
     public String getName() {
       return "cullface";
     }
 
-    private CullState(boolean cullFace, int mode) {
+    protected CullState(boolean cullFace, int mode) {
       this.cullFace = cullFace;
       this.mode = mode;
     }
@@ -731,11 +694,6 @@ public class GlState {
       } else {
         return new CullState(next, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new CullState(GlStateManager.cullState.cullFace.currentState, GlStateManager.cullState.mode);
     }
 
     @Override
@@ -766,17 +724,17 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class PolygonOffsetState implements State {
-    private final boolean polygonOffsetFill;
-    private final float factor;
-    private final float units;
+  protected static class PolygonOffsetState implements State {
+    protected final boolean polygonOffsetFill;
+    protected final float factor;
+    protected final float units;
 
     @Override
     public String getName() {
       return "polygonoffset";
     }
 
-    private PolygonOffsetState(boolean polygonOffsetFill, float factor, float units) {
+    protected PolygonOffsetState(boolean polygonOffsetFill, float factor, float units) {
       this.polygonOffsetFill = polygonOffsetFill;
       this.factor = factor;
       this.units = units;
@@ -799,12 +757,6 @@ public class GlState {
       } else {
         return new PolygonOffsetState(next, 0, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new PolygonOffsetState(GlStateManager.polygonOffsetState.polygonOffsetFill.currentState, GlStateManager.polygonOffsetState.factor,
-          GlStateManager.polygonOffsetState.units);
     }
 
     @Override
@@ -835,16 +787,16 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class ColorLogicState implements State {
-    private final boolean colorLogicOp;
-    private final int opcode;
+  protected static class ColorLogicState implements State {
+    protected final boolean colorLogicOp;
+    protected final int opcode;
 
     @Override
     public String getName() {
       return "colorlogic";
     }
 
-    private ColorLogicState(boolean colorLogicOp, int opcode) {
+    protected ColorLogicState(boolean colorLogicOp, int opcode) {
       this.colorLogicOp = colorLogicOp;
       this.opcode = opcode;
     }
@@ -865,11 +817,6 @@ public class GlState {
       } else {
         return new ColorLogicState(next, 0);
       }
-    }
-
-    @Override
-    public State create() {
-      return new ColorLogicState(GlStateManager.colorLogicState.colorLogicOp.currentState, GlStateManager.colorLogicState.opcode);
     }
 
     @Override
@@ -900,19 +847,19 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class ClearState implements State {
-    private final double depth;
-    private final float red;
-    private final float green;
-    private final float blue;
-    private final float alpha;
+  protected static class ClearState implements State {
+    protected final double depth;
+    protected final float red;
+    protected final float green;
+    protected final float blue;
+    protected final float alpha;
 
     @Override
     public String getName() {
       return "clear";
     }
 
-    private ClearState(double depth, float red, float green, float blue, float alpha) {
+    protected ClearState(double depth, float red, float green, float blue, float alpha) {
       this.depth = depth;
       this.red = red;
       this.green = green;
@@ -935,12 +882,6 @@ public class GlState {
     }
 
     @Override
-    public State create() {
-      return new ClearState(GlStateManager.clearState.depth, GlStateManager.clearState.color.red, GlStateManager.clearState.color.green,
-          GlStateManager.clearState.color.blue, GlStateManager.clearState.color.alpha);
-    }
-
-    @Override
     public void apply() {
       if (useDoubleAction) {
         GlStateManager.clearDepth(.5);
@@ -959,15 +900,15 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class NormalizeState implements State {
-    private final boolean normalize;
+  protected static class NormalizeState implements State {
+    protected final boolean normalize;
 
     @Override
     public String getName() {
       return "normalize";
     }
 
-    private NormalizeState(boolean normalize) {
+    protected NormalizeState(boolean normalize) {
       this.normalize = normalize;
     }
 
@@ -979,11 +920,6 @@ public class GlState {
     @Override
     public State create(Iterator<Object> data) {
       return new NormalizeState((Boolean) data.next());
-    }
-
-    @Override
-    public State create() {
-      return new NormalizeState(GlStateManager.normalizeState.currentState);
     }
 
     @Override
@@ -1010,15 +946,15 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class ShadeModelState implements State {
-    private final int activeShadeModel;
+  protected static class ShadeModelState implements State {
+    protected final int activeShadeModel;
 
     @Override
     public String getName() {
       return "shademodel";
     }
 
-    private ShadeModelState(int activeShadeModel) {
+    protected ShadeModelState(int activeShadeModel) {
       this.activeShadeModel = activeShadeModel;
     }
 
@@ -1030,11 +966,6 @@ public class GlState {
     @Override
     public State create(Iterator<Object> data) {
       return new ShadeModelState((Integer) data.next());
-    }
-
-    @Override
-    public State create() {
-      return new ShadeModelState(GlStateManager.activeShadeModel);
     }
 
     @Override
@@ -1051,15 +982,15 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class RescaleNormalState implements State {
-    private final boolean rescalenormal;
+  protected static class RescaleNormalState implements State {
+    protected final boolean rescalenormal;
 
     @Override
     public String getName() {
       return "rescalenormal";
     }
 
-    private RescaleNormalState(boolean rescalenormal) {
+    protected RescaleNormalState(boolean rescalenormal) {
       this.rescalenormal = rescalenormal;
     }
 
@@ -1071,11 +1002,6 @@ public class GlState {
     @Override
     public State create(Iterator<Object> data) {
       return new RescaleNormalState((Boolean) data.next());
-    }
-
-    @Override
-    public State create() {
-      return new RescaleNormalState(GlStateManager.rescaleNormalState.currentState);
     }
 
     @Override
@@ -1102,18 +1028,18 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class ColorMask implements State {
-    private final boolean red;
-    private final boolean green;
-    private final boolean blue;
-    private final boolean alpha;
+  protected static class ColorMask implements State {
+    protected final boolean red;
+    protected final boolean green;
+    protected final boolean blue;
+    protected final boolean alpha;
 
     @Override
     public String getName() {
       return "colormask";
     }
 
-    private ColorMask(boolean red, boolean green, boolean blue, boolean alpha) {
+    protected ColorMask(boolean red, boolean green, boolean blue, boolean alpha) {
       this.red = red;
       this.green = green;
       this.blue = blue;
@@ -1134,12 +1060,6 @@ public class GlState {
     }
 
     @Override
-    public State create() {
-      return new ColorMask(GlStateManager.colorMaskState.red, GlStateManager.colorMaskState.green, GlStateManager.colorMaskState.blue,
-          GlStateManager.colorMaskState.alpha);
-    }
-
-    @Override
     public void apply() {
       if (useDoubleAction) {
         GlStateManager.colorMask(!red, green, blue, alpha);
@@ -1153,18 +1073,18 @@ public class GlState {
 
   // ///////////////////////////////////////////////////////////////////////
 
-  private static class ColorState implements State {
-    private final float red;
-    private final float green;
-    private final float blue;
-    private final float alpha;
+  protected static class ColorState implements State {
+    protected final float red;
+    protected final float green;
+    protected final float blue;
+    protected final float alpha;
 
     @Override
     public String getName() {
       return "color";
     }
 
-    private ColorState(float red, float green, float blue, float alpha) {
+    protected ColorState(float red, float green, float blue, float alpha) {
       this.red = red;
       this.green = green;
       this.blue = blue;
@@ -1182,11 +1102,6 @@ public class GlState {
     @Override
     public State create(Iterator<Object> data) {
       return new ColorState((Float) data.next(), (Float) data.next(), (Float) data.next(), (Float) data.next());
-    }
-
-    @Override
-    public State create() {
-      return new ColorState(GlStateManager.colorState.red, GlStateManager.colorState.green, GlStateManager.colorState.blue, GlStateManager.colorState.alpha);
     }
 
     @Override

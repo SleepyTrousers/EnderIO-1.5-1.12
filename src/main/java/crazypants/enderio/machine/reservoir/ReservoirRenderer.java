@@ -30,7 +30,7 @@ import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import crazypants.enderio.render.GlState;
+import crazypants.enderio.render.state.GlState;
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir>  {
 
@@ -53,7 +53,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
     float fullness = res.getFilledRatio();
 
     if (res.tank.getFluidAmount() > 0 || res.isAutoEject()) {
-      GlState before = GlState.create();
       Minecraft.getMinecraft().entityRenderer.disableLightmap();
       GlStateManager.pushMatrix();
 
@@ -83,9 +82,9 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
       }
 
       tessellator.draw();
+      GlState.CLEAN_TESR_STATE.apply_filtered(state);
       GlStateManager.popMatrix();
       Minecraft.getMinecraft().entityRenderer.enableLightmap();
-      before.apply_filtered(state);
     }
 
 
