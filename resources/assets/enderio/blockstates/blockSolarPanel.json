@@ -3,15 +3,15 @@
   "defaults":{
     "textures": {
         "particle": "enderio:blocks/machineBottom",
-		    "bottom": "enderio:blocks/machineBottom"
+        "bottom": "enderio:blocks/machineBottom"
     }
   },
   "variants":{
-  	"kind":{
+    "kind":{
       "simple":   { "textures": { "side": "enderio:blocks/solarPanelSide", "top": "enderio:blocks/solarPanelTop" } },
       "advanced": { "textures": { "side": "enderio:blocks/solarPanelAdvancedSide", "top": "enderio:blocks/solarPanelAdvancedTop" } },
       "vibrant":  { "textures": { "side": "enderio:blocks/solarPanelVibrantSide", "top": "enderio:blocks/solarPanelVibrantTop" } }
-  		},
+      },
     "render":{
       "auto":{},
       

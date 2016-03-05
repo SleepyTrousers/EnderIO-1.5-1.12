@@ -64,6 +64,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setStepSound(soundTypeMetal);
     setHarvestLevel("pickaxe", 0);
     random = new Random();    
+    initDefaultState();
+  }
+
+  protected void initDefaultState() {
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
