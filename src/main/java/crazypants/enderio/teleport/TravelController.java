@@ -359,7 +359,7 @@ public class TravelController {
           PacketHandler.INSTANCE.sendToServer(p);
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
-            TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
+            target.y, target.z);
       }
     } else {
       player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));

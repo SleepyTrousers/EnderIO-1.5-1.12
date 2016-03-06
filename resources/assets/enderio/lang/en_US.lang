@@ -1074,7 +1074,7 @@ enderio.weatherObelisk.fuelTank=Barometric Flux Tank
 
 //Enchants
 enchantment.enderio.soulBound=Soulbound
-description.enchantment.enderio.soulBound=Prevents item from being lost on death
+description.enchantment.soulBound=Prevents item from being lost on death
 
 //Configuration
 enderio.config.title=Ender IO Configuration

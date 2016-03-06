@@ -36,23 +36,24 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer<TileTransceiv
   private void renderPower(World world, double x, double y, double z, boolean isActive) {
         
     GlStateManager.pushMatrix();
-    GL11.glTranslatef((float) x, (float) y, (float) z);
+    GlStateManager.translate((float) x, (float) y, (float) z);
 
     RenderUtil.bindBlockTexture();
     TextureAtlasSprite icon = EnderIO.blockTransceiver.getPortalIcon();
 
     GlStateManager.enableNormalize();
     GlStateManager.enableBlend();
+    GlStateManager.disableLighting();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     if(!isActive) {
-      GlStateManager.color(0, 1, 1, 0.5f);
+//      GlStateManager.color(0, 1, 1, 0.5f);
     } else {
       GlStateManager.color(1, 1, 1, 1f);
     }
     RenderUtil.renderBoundingBox(bb, icon);
 
     GlStateManager.popMatrix();
-    GlStateManager.enableTexture2D();
+    GlStateManager.enableLighting();
     GlStateManager.disableBlend();
     GlStateManager.disableRescaleNormal();
   }

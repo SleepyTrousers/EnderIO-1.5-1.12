@@ -37,9 +37,9 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   private final int id;
 
   private EnchantmentSoulBound(int id) {
-    super(id, new ResourceLocation("enderio.soulBound"), Config.enchantmentSoulBoundWeight, EnumEnchantmentType.ALL);
+    super(id, new ResourceLocation(EnderIO.MODID, "soulBound"), Config.enchantmentSoulBoundWeight, EnumEnchantmentType.ALL);
     this.id = id;
-    setName("enderio.soulBound");
+    setName("soulBound");
   }
 
   @Override

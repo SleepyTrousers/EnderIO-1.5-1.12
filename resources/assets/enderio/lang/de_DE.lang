@@ -1052,7 +1052,7 @@ enderio.gui.weather.task.storm=Gewitter
 enderio.gui.weather.requireditem=Benötigtes Item: %s
 
 //Enchants
-enchantment.enderio.soulBound=Seelengebunden
+enchantment.soulBound=Seelengebunden
 description.enchantment.enderio.soulBound=Verhindert das Verlieren des Item beim Sterben
 
 //Configuration
