@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ITransformation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -31,7 +30,7 @@ public class CapBankRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state instanceof MergingBlockStateWrapper) {
       return Pair.of(((MergingBlockStateWrapper) state).getStates(), null);
     }
@@ -39,7 +38,7 @@ public class CapBankRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     IBlockState defaultState = block.getDefaultState();
     states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides).withProperty(CapBankType.KIND, CapBankType.NONE));

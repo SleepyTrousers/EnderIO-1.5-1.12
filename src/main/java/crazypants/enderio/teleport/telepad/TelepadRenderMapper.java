@@ -12,7 +12,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.ITransformation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -31,7 +30,7 @@ public class TelepadRenderMapper implements IRenderMapper {
   public TelepadRenderMapper() {
   }
 
-  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos, TileTelePad tileEntity) {
+  protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos, TileTelePad tileEntity) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     
     if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
@@ -54,7 +53,7 @@ public class TelepadRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state instanceof BlockStateWrapper) {
       BlockStateWrapper blockStateWrapper = (BlockStateWrapper) state;
       TileEntity tileEntity = blockStateWrapper.getTileEntity();
@@ -67,7 +66,7 @@ public class TelepadRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY));
     return Pair.of(states, null);

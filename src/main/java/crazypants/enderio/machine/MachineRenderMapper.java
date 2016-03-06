@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ITransformation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -33,7 +32,7 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state instanceof BlockStateWrapper) {
       BlockStateWrapper blockStateWrapper = (BlockStateWrapper) state;
       TileEntity tileEntity = blockStateWrapper.getTileEntity();
@@ -46,7 +45,7 @@ public class MachineRenderMapper implements IRenderMapper {
     return null;
   }
 
-  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos,
+  protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos,
       TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
@@ -80,7 +79,7 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     if (body != null) {
       states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body));

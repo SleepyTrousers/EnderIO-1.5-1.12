@@ -11,7 +11,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.ITransformation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -26,7 +25,7 @@ public class FarmingStationRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos,
+  protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos,
       TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     

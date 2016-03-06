@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ITransformation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -32,7 +31,7 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
     super(null);
   }
 
-  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos,
+  protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos,
       TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
@@ -61,7 +60,7 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.FRONT_ON_NORTH));
     return Pair.of(states, null);
