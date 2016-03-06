@@ -30,6 +30,9 @@ public class PowerInterfaceRF implements IPowerInterface {
 
   @Override
   public boolean canConduitConnect(EnumFacing from) {
+    if(from != null) {
+      from = from.getOpposite();
+    }
     return con.canConnectEnergy(from);
   }
 
