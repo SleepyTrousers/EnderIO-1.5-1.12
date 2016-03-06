@@ -5,11 +5,16 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ITransformation;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -27,7 +32,8 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
     super(null);
   }
 
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, TileEntity tileEntity, Block block) {
+  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos,
+      TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = ((AbstractMachineEntity) tileEntity).getFacing();
@@ -41,7 +47,7 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
 
     renderIO(tileEntity, block, states);
 
-    return states;
+    return Pair.of(states, null);
   }
 
   protected void renderIO(TileEntity tileEntity, Block block, List<IBlockState> states) {
@@ -55,10 +61,10 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  public List<IBlockState> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.FRONT_ON_NORTH));
-    return states;
+    return Pair.of(states, null);
   }
 
 

@@ -1,16 +1,20 @@
 package crazypants.enderio.machine.alloy;
 
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
@@ -55,6 +59,16 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_ALLOY_SMELTER;
+  }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
+    TileEntity tileEntity = extendedState.getTileEntity();
+    if (tileEntity instanceof AbstractMachineEntity) {
+      extendedState.setCacheKey(((AbstractMachineEntity) tileEntity).getFacing(), ((AbstractMachineEntity) tileEntity).isActive());
+    }
+    return extendedState;
   }
 
 }

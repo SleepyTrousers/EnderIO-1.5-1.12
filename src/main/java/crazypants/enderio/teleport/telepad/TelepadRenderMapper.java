@@ -3,17 +3,22 @@ package crazypants.enderio.teleport.telepad;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.ITransformation;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
 
 public class TelepadRenderMapper implements IRenderMapper {
 
@@ -26,7 +31,7 @@ public class TelepadRenderMapper implements IRenderMapper {
   public TelepadRenderMapper() {
   }
 
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, TileTelePad tileEntity) {
+  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos, TileTelePad tileEntity) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     
     if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
@@ -45,11 +50,11 @@ public class TelepadRenderMapper implements IRenderMapper {
       }
     }
 
-    return states;
+    return Pair.of(states, null);
   }
 
   @Override
-  public List<IBlockState> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state instanceof BlockStateWrapper) {
       BlockStateWrapper blockStateWrapper = (BlockStateWrapper) state;
       TileEntity tileEntity = blockStateWrapper.getTileEntity();
@@ -62,10 +67,10 @@ public class TelepadRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public List<IBlockState> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> mapBlockRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY));
-    return states;
+    return Pair.of(states, null);
   }
 
 }

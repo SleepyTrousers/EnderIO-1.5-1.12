@@ -39,6 +39,7 @@ import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TileTank;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
+import crazypants.enderio.render.PaintRegistry;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
@@ -104,6 +105,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void loadIcons() {    
     SmartModelAttacher.create();
+    PaintRegistry.create();
   }
 
   @Override

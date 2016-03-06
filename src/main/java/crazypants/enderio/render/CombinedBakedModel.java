@@ -57,8 +57,11 @@ public class CombinedBakedModel implements IBakedModel {
    * perspective aware, a perspective aware baked model with the transform model's transforms will be created. The transform model will not be added to the
    * rendering list of the result model.
    */
-  public static IBakedModel buildFromLocations(IBakedModel transforms, List<ModelResourceLocation> modelLocations) {
+  public static IBakedModel buildFromLocations(IBakedModel transforms, List<ModelResourceLocation> modelLocations, List<IBakedModel> bakedModels) {
     List<IBakedModel> models = new ArrayList<IBakedModel>();
+    if (bakedModels != null) {
+      models.addAll(bakedModels);
+    }
     ModelManager modelManager = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager();
     IBakedModel missingModel = modelManager.getMissingModel();
     boolean hasMissings = false;
@@ -84,8 +87,11 @@ public class CombinedBakedModel implements IBakedModel {
    * If the state list is empty, nothing will be rendered. If it consists only of missingModels, the missingModel will be rendered. Otherwise missingModels will
    * be ignored---it is easier to see what is missing when you can actually see what is not missing.
    */
-  public static IBakedModel buildFromStates(IBakedModel transforms, List<IBlockState> states) {
+  public static IBakedModel buildFromStates(IBakedModel transforms, List<IBlockState> states, List<IBakedModel> bakedModels) {
     List<IBakedModel> models = new ArrayList<IBakedModel>();
+    if (bakedModels != null) {
+      models.addAll(bakedModels);
+    }
     BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
     IBakedModel missingModel = modelShapes.getModelManager().getMissingModel();
     boolean hasMissings = false;

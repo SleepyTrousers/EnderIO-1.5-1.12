@@ -61,7 +61,8 @@ public class PowerBarOverlayRenderHelper {
         if (shouldShowBar(maxEnergy, energy)) {
           double level = (double) energy / (double) maxEnergy;
           boolean up = stack.getItem().showDurabilityBar(stack);
-          render(level, xPosition, yPosition, up ? 2 : 0);
+          boolean top = stack.stackSize != 1;
+          render(level, xPosition, yPosition, top ? 12 : up ? 2 : 0);
           return;
         }
       }

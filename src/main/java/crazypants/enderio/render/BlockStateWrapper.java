@@ -24,11 +24,17 @@ public class BlockStateWrapper implements IBlockState {
   private final IBlockState state;
   private final IBlockAccess world;
   private final BlockPos pos;
+  private long cacheKey;
 
   public BlockStateWrapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+    this(state, world, pos, null);
+  }
+
+  public BlockStateWrapper(IBlockState state, IBlockAccess world, BlockPos pos, Object cacheKey) {
     this.world = world;
     this.state = state;
     this.pos = pos;
+    this.cacheKey = cacheKey == null ? 0 : cacheKey.hashCode();
   }
 
   
@@ -78,6 +84,22 @@ public class BlockStateWrapper implements IBlockState {
 
   public IBlockState getState() {
     return state;
+  }
+
+  public long getCacheKey() {
+    return cacheKey;
+  }
+
+  public void setCacheKey(Object cacheKey) {
+    this.cacheKey = this.cacheKey ^ cacheKey.hashCode();
+  }
+
+  public void setCacheKey(Object cacheKey, Object cacheKey2) {
+    this.cacheKey = this.cacheKey ^ cacheKey.hashCode() ^ cacheKey2.hashCode();
+  }
+
+  public void setCacheKey(Object cacheKey, Object cacheKey2, Object cacheKey3) {
+    this.cacheKey = this.cacheKey ^ cacheKey.hashCode() ^ cacheKey2.hashCode() ^ cacheKey3.hashCode();
   }
 
   @Override

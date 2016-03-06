@@ -3,16 +3,21 @@ package crazypants.enderio.machine.farm;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.render.EnumRenderMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.ITransformation;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.render.EnumRenderMode;
 
 public class FarmingStationRenderMapper extends MachineRenderMapper {
 
@@ -21,7 +26,8 @@ public class FarmingStationRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, TileEntity tileEntity, Block block) {
+  protected Pair<List<IBlockState>, List<Pair<IBakedModel, ITransformation>>> render(IBlockState state, IBlockAccess world, BlockPos pos,
+      TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     
     boolean active = ((AbstractMachineEntity) tileEntity).isActive();
@@ -36,7 +42,7 @@ public class FarmingStationRenderMapper extends MachineRenderMapper {
       renderIO(tileEntity, block, states);
     }
 
-    return states;
+    return Pair.of(states, null);
   }
 
 }
