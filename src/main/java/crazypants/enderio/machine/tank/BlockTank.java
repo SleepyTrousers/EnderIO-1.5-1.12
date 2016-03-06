@@ -2,18 +2,6 @@ package crazypants.enderio.machine.tank;
 
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -33,6 +21,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
@@ -201,4 +204,15 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   public IRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
+    TileEntity tileEntity = extendedState.getTileEntity();
+    if (tileEntity instanceof AbstractMachineEntity) {
+      extendedState.setCacheKey(((AbstractMachineEntity) tileEntity).getFacing(), state.getValue(EnumTankType.KIND));
+    }
+    return extendedState;
+  }
+
 }

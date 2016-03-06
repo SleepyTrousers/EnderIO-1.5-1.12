@@ -6,22 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.BlockMobSpawner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -35,6 +21,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -46,6 +33,24 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
  
@@ -355,6 +360,16 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
+  }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
+    TileEntity tileEntity = extendedState.getTileEntity();
+    if (tileEntity instanceof AbstractMachineEntity) {
+      extendedState.setCacheKey(((AbstractMachineEntity) tileEntity).getFacing(), ((AbstractMachineEntity) tileEntity).isActive());
+    }
+    return extendedState;
   }
 
 }

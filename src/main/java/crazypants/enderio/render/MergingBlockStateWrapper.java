@@ -139,4 +139,13 @@ public abstract class MergingBlockStateWrapper extends BlockStateWrapper {
     return states;
   }
 
+  @Override
+  public long getCacheKey() {
+    StringBuilder sb = new StringBuilder();
+    for (IBlockState state : states) {
+      sb.append(state.toString());
+    }
+    return sb.toString().hashCode();
+  }
+
 }

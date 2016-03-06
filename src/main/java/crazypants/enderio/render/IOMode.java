@@ -91,7 +91,7 @@ public class IOMode implements Comparable<IOMode> {
     if (d != 0) {
       return d;
     }
-    return Integer.compare(iomode.ordinal(), o.iomode.ordinal());
+    return iomode.ordinal() < o.iomode.ordinal() ? -1 : iomode.ordinal() > o.iomode.ordinal() ? 1 : 0;
   }
 
   @Override

@@ -12,14 +12,18 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.client.model.ISmartItemModel;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
+
+  private final Cache<Long, IBakedModel> cache = CacheBuilder.newBuilder().maximumSize(200).<Long, IBakedModel> build();
 
   private IBakedModel defaults;
 
@@ -75,29 +79,28 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
   @Override
   public IBakedModel handleBlockState(IBlockState state) {
+    long start = crazypants.util.Profiler.client.start();
     IRenderCache rc = null;
     if (state instanceof BlockStateWrapper) {
-      TileEntity tileEntity = ((BlockStateWrapper) state).getTileEntity();
-
-      if (tileEntity instanceof IRenderCache) {
-        rc = (IRenderCache) tileEntity;
-        IBakedModel cachedModel = rc.getCachedModel();
+      long cacheKey = ((BlockStateWrapper) state).getCacheKey();
+      if (cacheKey != 0) {
+        IBakedModel cachedModel = cache.getIfPresent(cacheKey);
         if (cachedModel != null) {
+          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (cached)");
           return cachedModel;
         }
       }
-
       Block block = state.getBlock();
       IBlockAccess world = ((BlockStateWrapper) state).getWorld();
       BlockPos pos = ((BlockStateWrapper) state).getPos();
 
       if (block instanceof ISmartRenderAwareBlock) {
         IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos);
-        List<IBlockState> states = renderMapper.mapBlockRender(state, world, pos);
-        IBakedModel bakedModel = CombinedBakedModel.buildFromStates(null, states);
-        if (rc != null) {
-          rc.cacheModel(bakedModel);
+        EnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos));
+        if (cacheKey != 0) {
+          cache.put(cacheKey, bakedModel);
         }
+        crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
         return bakedModel;
       }
     }
@@ -113,9 +116,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
         Block block = ((ItemBlock) item).getBlock();
         if (block instanceof ISmartRenderAwareBlock) {
           IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(stack);
-          List<IBlockState> states = renderMapper.mapBlockRender(block, stack);
-          IBakedModel bakedModel = CombinedBakedModel.buildFromStates(getDefaults(), states);
-          return bakedModel;
+          return new EnderBakedModel(getDefaults(), renderMapper.mapBlockRender(block, stack));
         }
       }
     }

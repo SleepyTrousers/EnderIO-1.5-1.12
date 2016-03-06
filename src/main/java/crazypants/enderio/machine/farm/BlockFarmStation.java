@@ -2,14 +2,6 @@ package crazypants.enderio.machine.farm;
 
 import java.util.Random;
 
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,8 +11,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IRenderMapper;
 
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
@@ -137,6 +140,16 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @SideOnly(Side.CLIENT)
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
     return EnumWorldBlockLayer.TRANSLUCENT == layer || EnumWorldBlockLayer.CUTOUT == layer;
+  }
+
+  @Override
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
+    TileEntity tileEntity = extendedState.getTileEntity();
+    if (tileEntity instanceof AbstractMachineEntity) {
+      extendedState.setCacheKey(MinecraftForgeClient.getRenderLayer(), ((AbstractMachineEntity) tileEntity).isActive());
+    }
+    return extendedState;
   }
 
 }
