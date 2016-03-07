@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.item.ItemYetaWrench;
 import net.minecraft.block.Block;
@@ -63,20 +62,20 @@ public class ToolUtil {
 
   private ToolUtil() {
 
-    try {
-      Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider").newInstance();
-      toolProviders.add((IToolProvider) obj);
-      toolImpls.add((IToolImpl) obj);
-    } catch (Exception e) {
-      Log.warn("Could not find Build Craft Wrench definition. Wrench integration with other mods may fail");
-    }
-    try {
-      Object obj = Class.forName("crazypants.enderio.tool.AEToolProvider").newInstance();
-      toolProviders.add((IToolProvider) obj);
-      toolImpls.add((IToolImpl) obj);
-    } catch (Exception e) {
-      Log.debug("Could not find AE Wrench definition. Wrench integration with AE may fail");
-    }
+//    try {
+//      Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider").newInstance();
+//      toolProviders.add((IToolProvider) obj);
+//      toolImpls.add((IToolImpl) obj);
+//    } catch (Exception e) {
+//      Log.warn("Could not find Build Craft Wrench definition. Wrench integration with other mods may fail");
+//    }
+//    try {
+//      Object obj = Class.forName("crazypants.enderio.tool.AEToolProvider").newInstance();
+//      toolProviders.add((IToolProvider) obj);
+//      toolImpls.add((IToolImpl) obj);
+//    } catch (Exception e) {
+//      Log.debug("Could not find AE Wrench definition. Wrench integration with AE may fail");
+//    }
 
 //    toolProviders.add(new TEToolProvider());
 //    toolImpls.add(new TEToolProvider());
@@ -123,15 +122,18 @@ public class ToolUtil {
     e.setCallback(proxy);
     e.setSuperclass(item.getClass());
     e.setInterceptDuringConstruction(false);
-    Class<?>[] interfaces = new Class<?>[toolImpls.size()];
-    int i = 0;
+    
+    List<Class<?>> interfaces = new ArrayList<Class<?>>();
     for (IToolImpl tool : toolImpls) {
-      interfaces[i] = tool.getInterface();
-      ++i;
+      Class<?> inf = tool.getInterface();
+      if(inf != null) {
+        interfaces.add(inf);
+      }      
     }
-    e.setInterfaces(interfaces);
+    if(!interfaces.isEmpty()) {
+      e.setInterfaces(interfaces.toArray(new Class<?>[interfaces.size()]));
+    }
     ItemYetaWrench proxifiedObj = (ItemYetaWrench) e.create();
-
     return proxifiedObj;
   }
 
