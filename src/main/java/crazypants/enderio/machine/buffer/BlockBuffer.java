@@ -18,6 +18,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -26,8 +27,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.painter.IPaintableBlock;
 
-public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
+public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade, IPaintableBlock.ISolidBlockPaintableBlock {
 
   public static BlockBuffer create() {
     PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
@@ -147,6 +149,72 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
+  }
+
+  @Override
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+    // TODO Auto-generated method stub
+    TileBuffer te = getTileEntity(world, pos);
+    if (te == null) {
+      return;
+    }
+    te.setSourceBlock(paintSource);
+  }
+
+  @Override
+  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+    // TODO Auto-generated method stub
+    PainterUtil.setSourceBlock(stack, paintSource);
+  }
+
+  @Override
+  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+    // TODO Auto-generated method stub
+    return getFacade(world, pos, null);
+  }
+
+  @Override
+  public IBlockState getPaintSource(Block block, ItemStack stack) {
+    // TODO Auto-generated method stub
+    return PainterUtil.getSourceBlockState(stack);
+  }
+
+  @Override
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {
+    if (entityPlayer.isSneaking() && !world.isRemote) {
+      world.markBlockForUpdate(pos);
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, null);
+        return true;
+      }
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, Blocks.noteblock.getDefaultState());
+        return true;
+      }
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, Blocks.bedrock.getDefaultState());
+        return true;
+      }
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, Blocks.sea_lantern.getDefaultState());
+        return true;
+      }
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, Blocks.stone_stairs.getDefaultState());
+        return true;
+      }
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, Blocks.torch.getDefaultState());
+        return true;
+      }
+      if (RANDOM.nextBoolean()) {
+        setPaintSource(state, world, pos, Blocks.mycelium.getDefaultState());
+        return true;
+      }
+      setPaintSource(state, world, pos, null);
+      return true;
+    }
+    return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
   }
 
 }
