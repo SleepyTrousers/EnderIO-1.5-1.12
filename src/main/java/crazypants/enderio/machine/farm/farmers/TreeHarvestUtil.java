@@ -4,7 +4,6 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -55,7 +54,7 @@ public class TreeHarvestUtil {
     }
     IBlockState bs = world.getBlockState(bc);
     Block blk = bs.getBlock();
-    boolean isLeaves = blk instanceof BlockLeaves;
+    boolean isLeaves = blk.getMaterial() == Material.leaves;    
     if(target.isTarget(bs) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -132,12 +131,12 @@ public class TreeHarvestUtil {
       if(variant == null) {
         return super.isTarget(bs);
       }
-      return variant == getVariant(bs);
+      return super.isTarget(bs) && variant == getVariant(bs);
     }
   }
 
-  private static class BaseHarvestTarget
-  {
+  private static class BaseHarvestTarget {
+    
     private final Block wood;
 
     BaseHarvestTarget(Block wood) {

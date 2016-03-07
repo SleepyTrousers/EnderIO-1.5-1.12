@@ -212,10 +212,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
       logOreId = OreDictionary.getOreID("logWood");      
     }
     int[] targetOreId = OreDictionary.getOreIDs(new ItemStack(bs.getBlock(), 1, bs.getBlock().getMetaFromState(bs)));
-    //TODO: 1.8
-//    //NB: Specifying the wildcard as meta is a work around for forge issue #1103
-//    int workAroundId = OreDictionary.getOreID(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE));
-//    return  targetOreId == logOreId || workAroundId == logOreId;
     for(int id : targetOreId) {
       if(logOreId == id) {
         return true;
