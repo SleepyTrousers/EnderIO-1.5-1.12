@@ -33,37 +33,128 @@ public class PaintRegistry {
     TAGGED_TEXTURES;
   }
 
-  private static final ConcurrentMap<String, Pair<ResourceLocation, PaintMode>> modelLocations = new ConcurrentHashMap<String, Pair<ResourceLocation, PaintMode>>();
+  private static class PaintRegistryServer {
+    private PaintRegistryServer() {
+    }
 
-  private static final ConcurrentMap<String, IModel> models = new ConcurrentHashMap<String, IModel>();
+    protected void init() {
+    }
 
-  private static final ConcurrentMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>> cache = new ConcurrentHashMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>>();
+    public void registerModel(String name, ResourceLocation location, PaintMode paintMode) {
+    }
 
-  static {
-    modelLocations.put("_missing", Pair.of((ResourceLocation) null, PaintMode.ALL_TEXTURES));
+    public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+      return null;
+    }
   }
+
+  private static class PaintRegistryClient extends PaintRegistryServer {
+    @SideOnly(Side.CLIENT)
+    private ConcurrentMap<String, Pair<ResourceLocation, PaintMode>> modelLocations;
+
+    @SideOnly(Side.CLIENT)
+    private ConcurrentMap<String, IModel> models;
+
+    @SideOnly(Side.CLIENT)
+    private ConcurrentMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>> cache;
+
+    private PaintRegistryClient() {
+      init();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected void init() {
+      modelLocations = new ConcurrentHashMap<String, Pair<ResourceLocation, PaintMode>>();
+      models = new ConcurrentHashMap<String, IModel>();
+      cache = new ConcurrentHashMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>>();
+      modelLocations.put("_missing", Pair.of((ResourceLocation) null, PaintMode.ALL_TEXTURES));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerModel(String name, ResourceLocation location, PaintMode paintMode) {
+      modelLocations.put(name, Pair.of(location, paintMode));
+      models.remove(name);
+      cache.remove(name);
+    }
+
+    @SubscribeEvent()
+    @SideOnly(Side.CLIENT)
+    public void bakeModels(ModelBakeEvent event) {
+      cache.clear();
+
+      for (Entry<String, Pair<ResourceLocation, PaintMode>> entry : modelLocations.entrySet()) {
+        try {
+          ResourceLocation resourceLocation = entry.getValue().getLeft();
+          if (resourceLocation != null) {
+            IModel model = event.modelLoader.getModel(resourceLocation);
+            models.put(entry.getKey(), model);
+          } else {
+            models.put(entry.getKey(), event.modelLoader.getMissingModel());
+          }
+        } catch (IOException e) {
+          Log.warn("Model '" + entry.getValue() + "' failed to load: " + e);
+        }
+      }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+      if (!cache.containsKey(name)) {
+        cache.put(name, new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
+      }
+      ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel> subcache = cache.get(name);
+      Pair<IBlockState, IModelState> key = Pair.of(paintSource, rotation);
+      IBakedModel bakedModel = subcache.get(key);
+      if (bakedModel == null) {
+        IModel sourceModel = models.get(name);
+        if (sourceModel == null) {
+          sourceModel = models.get("_missing");
+        }
+        if (sourceModel != null) {
+          bakedModel = paintModel(sourceModel, paintSource, rotation, getPaintMode(name));
+        }
+        if (bakedModel == null) {
+          bakedModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+        }
+        subcache.putIfAbsent(key, bakedModel);
+      }
+      return clazz == IBakedModel.class ? (T) bakedModel : null;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private PaintMode getPaintMode(String name) {
+      Pair<ResourceLocation, PaintMode> pair = modelLocations.get(name);
+      return pair == null ? null : pair.getRight();
+    }
+
+    @SideOnly(Side.CLIENT)
+    private IBakedModel paintModel(IModel sourceModel, final IBlockState paintSource, IModelState rotation, final PaintMode paintMode) {
+      IModelState state = sourceModel.getDefaultState();
+      state = rotation == null ? state : new ModelStateComposition(state, rotation);
+      return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
+        @Override
+        public TextureAtlasSprite apply(ResourceLocation location) {
+          String locationString = location.toString();
+          if (paintMode != PaintMode.TAGGED_TEXTURES || locationString.endsWith("PAINT")) {
+            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
+          } else {
+            return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(locationString);
+          }
+        }
+      });
+    }
+
+  }
+
+  private static PaintRegistryServer instance = null;
 
   public static void create() {
-    MinecraftForge.EVENT_BUS.register(new PaintRegistry());
-  }
-
-  @SubscribeEvent()
-  @SideOnly(Side.CLIENT)
-  public void bakeModels(ModelBakeEvent event) {
-    cache.clear();
-
-    for (Entry<String, Pair<ResourceLocation, PaintMode>> entry : modelLocations.entrySet()) {
-      try {
-        ResourceLocation resourceLocation = entry.getValue().getLeft();
-        if (resourceLocation != null) {
-          IModel model = event.modelLoader.getModel(resourceLocation);
-          models.put(entry.getKey(), model);
-        } else {
-          models.put(entry.getKey(), event.modelLoader.getMissingModel());
-        }
-      } catch (IOException e) {
-        Log.warn("Model '" + entry.getValue() + "' failed to load: " + e);
-      }
+    if (instance == null) {
+      instance = new PaintRegistryClient();
+      MinecraftForge.EVENT_BUS.register(instance);
     }
   }
 
@@ -72,53 +163,11 @@ public class PaintRegistry {
   }
 
   public static void registerModel(String name, ResourceLocation location, PaintMode paintMode) {
-    modelLocations.put(name, Pair.of(location, paintMode));
-    models.remove(name);
-    cache.remove(name);
+    create();
+    instance.registerModel(name, location, paintMode);
   }
 
-  public static IBakedModel getModel(String name, IBlockState paintSource, IModelState rotation) {
-    if (!cache.containsKey(name)) {
-      cache.put(name, new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
-    }
-    ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel> subcache = cache.get(name);
-    Pair<IBlockState, IModelState> key = Pair.of(paintSource, rotation);
-    IBakedModel bakedModel = subcache.get(key);
-    if (bakedModel == null) {
-      IModel sourceModel = models.get(name);
-      if (sourceModel == null) {
-        sourceModel = models.get("_missing");
-      }
-      if (sourceModel != null) {
-        bakedModel = paintModel(sourceModel, paintSource, rotation, getPaintMode(name));
-      }
-      if (bakedModel == null) {
-        bakedModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
-      }
-      subcache.putIfAbsent(key, bakedModel);
-    }
-    return bakedModel;
+  public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+    return instance.getModel(clazz, name, paintSource, rotation);
   }
-
-  private static PaintMode getPaintMode(String name) {
-    Pair<ResourceLocation, PaintMode> pair = modelLocations.get(name);
-    return pair == null ? null : pair.getRight();
-  }
-
-  private static IBakedModel paintModel(IModel sourceModel, final IBlockState paintSource, IModelState rotation, final PaintMode paintMode) {
-    IModelState state = sourceModel.getDefaultState();
-    state = rotation == null ? state : new ModelStateComposition(state, rotation);
-    return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
-      @Override
-      public TextureAtlasSprite apply(ResourceLocation location) {
-        String locationString = location.toString();
-        if (paintMode != PaintMode.TAGGED_TEXTURES || locationString.endsWith("PAINT")) {
-          return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
-        } else {
-          return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(locationString);
-        }
-      }
-    });
-  }
-
 }
