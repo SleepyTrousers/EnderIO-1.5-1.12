@@ -15,80 +15,43 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.Attributes;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-public class EnderBakedModel implements IEnderBakedModel {
+public class OverlayBakedModel implements IEnderBakedModel {
 
-  private final List<BakedQuad> generalQuads = new ArrayList<BakedQuad>();
+  private final List<BakedQuad> generalQuads;
   private final List<List<BakedQuad>> faceQuads = new ArrayList<List<BakedQuad>>();
   private final boolean ambientOcclusion;
   private final boolean gui3d;
   private final TextureAtlasSprite texture;
   private final ItemCameraTransforms cameraTransforms;
   private final VertexFormat format;
-  private final Matrix4f[] transformTypes = new Matrix4f[TransformType.values().length];
+  private final Matrix4f[] transformTypes;
 
-  public EnderBakedModel(IBakedModel transforms, Pair<List<IBlockState>, List<IBakedModel>> pair) {
-    this((IPerspectiveAwareModel) (transforms instanceof IPerspectiveAwareModel ? transforms : null), pair);
-  }
+  public OverlayBakedModel(IEnderBakedModel model, List<IBlockState> overlays) {
 
-  public EnderBakedModel(IPerspectiveAwareModel transforms, Pair<List<IBlockState>, List<IBakedModel>> data) {
-    this(transforms, data, null);
-  }
-
-  public EnderBakedModel(IPerspectiveAwareModel transforms, Pair<List<IBlockState>, List<IBakedModel>> data, List<IBlockState> overlays) {
+    generalQuads = new ArrayList<BakedQuad>(model.getGeneralQuads());
     for (EnumFacing face : EnumFacing.values()) {
-      faceQuads.add(new ArrayList<BakedQuad>());
-    }
-
-    List<IBakedModel> models = new ArrayList<IBakedModel>();
-    List<IBlockState> states = new ArrayList<IBlockState>();
-
-    if (data != null) {
-      if (data.getLeft() != null) {
-        states.addAll(data.getLeft());
-      }
-      if (data.getRight() != null) {
-        models.addAll(data.getRight());
-      }
-    }
-
-    if (overlays != null) {
-      states.addAll(overlays);
+      faceQuads.add(new ArrayList<BakedQuad>(model.getFaceQuads(face)));
     }
 
     BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
-    for (IBlockState state : states) {
-      models.add(modelShapes.getModelForState(state));
-    }
-
-    if (transforms != null) {
-      for (TransformType transformType : TransformType.values()) {
-        Pair<? extends IFlexibleBakedModel, Matrix4f> pair = transforms.handlePerspective(transformType);
-        this.transformTypes[transformType.ordinal()] = pair.getRight();
-      }
-    }
-
-    for (IBakedModel bakedModel : models) {
+    for (IBlockState state : overlays) {
+      IBakedModel bakedModel = modelShapes.getModelForState(state);
       generalQuads.addAll(bakedModel.getGeneralQuads());
       for (EnumFacing face : EnumFacing.values()) {
         faceQuads.get(face.ordinal()).addAll(bakedModel.getFaceQuads(face));
       }
     }
 
-    this.ambientOcclusion = !models.isEmpty() ? models.get(0).isAmbientOcclusion() : true;
-    this.gui3d = transforms != null ? transforms.isGui3d() : !models.isEmpty() ? models.get(0).isGui3d() : true;
-    this.texture = (!models.isEmpty() ? models.get(0) : getMissingModel()).getParticleTexture();
-    this.cameraTransforms = (transforms != null ? transforms : !models.isEmpty() ? models.get(0) : getMissingModel()).getItemCameraTransforms();
-    this.format = transforms != null ? transforms.getFormat() : Attributes.DEFAULT_BAKED_FORMAT;
-  }
-
-  private static IBakedModel getMissingModel() {
-    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+    ambientOcclusion = model.isAmbientOcclusion();
+    gui3d = model.isGui3d();
+    texture = model.getParticleTexture();
+    cameraTransforms = model.getItemCameraTransforms();
+    format = model.getFormat();
+    transformTypes = model.getTransformTypes();
   }
 
   @Override

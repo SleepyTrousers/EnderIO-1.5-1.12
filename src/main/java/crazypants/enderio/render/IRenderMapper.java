@@ -29,7 +29,18 @@ public interface IRenderMapper {
    * May return null. May return one or both of the lists as null.
    */
   @SideOnly(Side.CLIENT)
-  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos);
+  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos);
+
+  /**
+   * Get lists of blockstates to render as overlay layer for the given block. This layer will be rendered no matter what is rendered for the block itself, e.g.
+   * if it is painted.
+   * <p>
+   * Will be called in a render thread.
+   * <p>
+   * May return null.
+   */
+  @SideOnly(Side.CLIENT)
+  List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos);
 
   /**
    * Get lists of blockstates and pre-baked, pre-rotated models to render for the given item stack.

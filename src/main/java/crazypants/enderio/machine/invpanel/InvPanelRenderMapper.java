@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -31,6 +32,7 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
     super(null);
   }
 
+  @Override
   protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos,
       TileEntity tileEntity, Block block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
@@ -44,19 +46,19 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
       states.add(state.withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.FRONT.rotate(facing)));
     }
 
-    renderIO(tileEntity, block, states);
-
     return Pair.of(states, null);
   }
 
-  protected void renderIO(TileEntity tileEntity, Block block, List<IBlockState> states) {
+  @Override
+  protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {
     EnumFacing face = ((AbstractMachineEntity) tileEntity).getFacing().getOpposite();
     IoMode ioMode = ((AbstractMachineEntity) tileEntity).getIoMode(face);
     if (ioMode != IoMode.NONE) {
       @SuppressWarnings("rawtypes")
       EnumIOMode iOMode = ((AbstractMachineBlock) block).mapIOMode(ioMode, face);
-      states.add(BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode)));
+      return Collections.singletonList(BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode)));
     }
+    return null;
   }
 
   @Override

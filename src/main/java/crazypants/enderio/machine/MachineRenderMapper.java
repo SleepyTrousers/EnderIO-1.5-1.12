@@ -32,15 +32,12 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state instanceof BlockStateWrapper) {
-      BlockStateWrapper blockStateWrapper = (BlockStateWrapper) state;
-      TileEntity tileEntity = blockStateWrapper.getTileEntity();
-      Block block = blockStateWrapper.getBlock();
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    TileEntity tileEntity = state.getTileEntity();
+    Block block = state.getBlock();
 
-      if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
-        return render(blockStateWrapper.getState(), world, pos, tileEntity, block);
-      }
+    if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
+      return render(state.getState(), world, pos, tileEntity, block);
     }
     return null;
   }
@@ -62,12 +59,11 @@ public class MachineRenderMapper implements IRenderMapper {
       states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT.rotate(facing)));
     }
 
-    renderIO(tileEntity, block, states);
-
     return Pair.of(states, null);
   }
 
-  protected void renderIO(TileEntity tileEntity, Block block, List<IBlockState> states) {
+  protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {
+    List<IBlockState> states = new ArrayList<IBlockState>();
     for (EnumFacing face : EnumFacing.values()) {
       IoMode ioMode = ((AbstractMachineEntity) tileEntity).getIoMode(face);
       if (ioMode != IoMode.NONE) {
@@ -76,6 +72,7 @@ public class MachineRenderMapper implements IRenderMapper {
         states.add(BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode)));
       }
     }
+    return states;
   }
 
   @Override
@@ -86,6 +83,17 @@ public class MachineRenderMapper implements IRenderMapper {
     }
     states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     return Pair.of(states, null);
+  }
+
+  @Override
+  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    TileEntity tileEntity = state.getTileEntity();
+    Block block = state.getBlock();
+
+    if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
+      return renderIO(tileEntity, block);
+    }
+    return null;
   }
 
 }

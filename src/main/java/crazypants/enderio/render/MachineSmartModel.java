@@ -1,5 +1,6 @@
 package crazypants.enderio.render;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -18,12 +19,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.client.model.ISmartItemModel;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import crazypants.enderio.machine.painter.IPaintableBlock.ISolidBlockPaintableBlock;
+
 public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
-  private final Cache<Long, IBakedModel> cache = CacheBuilder.newBuilder().maximumSize(200).<Long, IBakedModel> build();
+  private final Cache<Long, IEnderBakedModel> cache = CacheBuilder.newBuilder().maximumSize(200).<Long, IEnderBakedModel> build();
 
   private IBakedModel defaults;
 
@@ -78,30 +83,51 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
   }
 
   @Override
-  public IBakedModel handleBlockState(IBlockState state) {
+  public IBakedModel handleBlockState(IBlockState stateIn) {
     long start = crazypants.util.Profiler.client.start();
     IRenderCache rc = null;
-    if (state instanceof BlockStateWrapper) {
-      long cacheKey = ((BlockStateWrapper) state).getCacheKey();
-      if (cacheKey != 0) {
-        IBakedModel cachedModel = cache.getIfPresent(cacheKey);
-        if (cachedModel != null) {
-          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (cached)");
-          return cachedModel;
+    if (stateIn instanceof BlockStateWrapper) {
+      final BlockStateWrapper state = (BlockStateWrapper) stateIn;
+      Block block = state.getBlock();
+      final IBlockAccess world = state.getWorld();
+      final BlockPos pos = state.getPos();
+
+      if (block instanceof ISolidBlockPaintableBlock) {
+        IBlockState paintSource = ((ISolidBlockPaintableBlock) block).getPaintSource(state, world, pos);
+        if (paintSource != null) {
+          List<IBlockState> overlayLayer = null;
+          if (block instanceof ISmartRenderAwareBlock) {
+            overlayLayer = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos).mapOverlayLayer(state, world, pos);
+          }
+          IEnderBakedModel bakedModel = new EnderBakedModel(null, Pair.of(Collections.singletonList(paintSource), (List<IBakedModel>) null), overlayLayer);
+          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
+          return bakedModel;
         }
       }
-      Block block = state.getBlock();
-      IBlockAccess world = ((BlockStateWrapper) state).getWorld();
-      BlockPos pos = ((BlockStateWrapper) state).getPos();
 
       if (block instanceof ISmartRenderAwareBlock) {
-        IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos);
-        EnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos));
+        final IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos);
+        final List<IBlockState> mapOverlayLayer = renderMapper.mapOverlayLayer(state, world, pos);
+
+        final long cacheKey = state.getCacheKey();
         if (cacheKey != 0) {
-          cache.put(cacheKey, bakedModel);
+          IEnderBakedModel bakedModel = cache.getIfPresent(cacheKey);
+          if (bakedModel == null) {
+            bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos));
+            if (cacheKey != 0) {
+              cache.put(cacheKey, bakedModel);
+            }
+          }
+          if (mapOverlayLayer != null) {
+            bakedModel = new OverlayBakedModel(bakedModel, mapOverlayLayer);
+          }
+          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (w/caching)");
+          return bakedModel;
+        } else {
+          IEnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos), mapOverlayLayer);
+          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
+          return bakedModel;
         }
-        crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
-        return bakedModel;
       }
     }
 

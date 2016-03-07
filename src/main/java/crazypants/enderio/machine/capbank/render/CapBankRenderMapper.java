@@ -14,6 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.machine.capbank.CapBankType;
+import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.MergingBlockStateWrapper;
@@ -30,7 +31,7 @@ public class CapBankRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     if (state instanceof MergingBlockStateWrapper) {
       return Pair.of(((MergingBlockStateWrapper) state).getStates(), null);
     }
@@ -51,7 +52,14 @@ public class CapBankRenderMapper implements IRenderMapper {
       states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.UP)));
       states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.DOWN)));
     }
+    // TODO: Create a fill level overlay here
     return Pair.of(states, null);
+  }
+
+  @Override
+  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    // TODO: If the capBank is painted, return a normal set of overlays here
+    return null;
   }
 
 }

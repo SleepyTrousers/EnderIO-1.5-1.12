@@ -38,10 +38,18 @@ public class FarmingStationRenderMapper extends MachineRenderMapper {
       }
     } else {
       states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
-      renderIO(tileEntity, block, states);
     }
 
     return Pair.of(states, null);
+  }
+
+  @Override
+  protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {
+    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
+      return null;
+    } else {
+      return super.renderIO(tileEntity, block);
+    }
   }
 
 }

@@ -53,14 +53,11 @@ public class TelepadRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state instanceof BlockStateWrapper) {
-      BlockStateWrapper blockStateWrapper = (BlockStateWrapper) state;
-      TileEntity tileEntity = blockStateWrapper.getTileEntity();
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    TileEntity tileEntity = state.getTileEntity();
 
-      if (tileEntity instanceof TileTelePad) {
-        return render(blockStateWrapper.getState(), world, pos, (TileTelePad) tileEntity);
-      }
+    if (tileEntity instanceof TileTelePad) {
+      return render(state.getState(), world, pos, (TileTelePad) tileEntity);
     }
     return null;
   }
@@ -70,6 +67,11 @@ public class TelepadRenderMapper implements IRenderMapper {
     List<IBlockState> states = new ArrayList<IBlockState>();
     states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY));
     return Pair.of(states, null);
+  }
+
+  @Override
+  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    return null;
   }
 
 }
