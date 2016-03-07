@@ -14,6 +14,7 @@ import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -183,9 +184,8 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
         broadcastSignal();
       }
     }
-    if(update) {
-      //TODO: 1.8 for some reason this packet is causing random crashes
-      //PacketHandler.sendToAllAround(new PacketPowerInfo(this), this);
+    if(update) {      
+      PacketHandler.sendToAllAround(new PacketPowerInfo(this), this);
     }    
     return false;
   }

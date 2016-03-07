@@ -3,11 +3,8 @@ package crazypants.enderio.machine.farm;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-
 import crazypants.enderio.config.Config;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,9 +19,9 @@ public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer<Til
       return;
     }
 
-    glDisable(GL_LIGHTING);
+    GlStateManager.disableLighting();    
     RenderUtil.drawBillboardedText(new Vector3f(x + 0.5, y + 1.5, z + 0.5), toRender, 0.25f);
-    glEnable(GL_LIGHTING);
+    GlStateManager.enableLighting();
 
   }
 

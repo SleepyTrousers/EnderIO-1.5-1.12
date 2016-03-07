@@ -3,12 +3,11 @@ package crazypants.enderio.machine.gui;
 import java.awt.Rectangle;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GuiToolTip;
 
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.StatCollector;
 
@@ -77,8 +76,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);    
     int k = (width - xSize) / 2;
     int l = (height - ySize) / 2;
     renderPowerBar(k, l);

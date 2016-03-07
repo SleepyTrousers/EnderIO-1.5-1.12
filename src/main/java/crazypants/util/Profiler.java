@@ -12,8 +12,8 @@ public class Profiler {
   public static final Profiler client = new Profiler();
   public static final Profiler server = new Profiler();
 
-  private Map<String, Long> profiler = new HashMap<>();
-  private Map<String, Long> profilerC = new HashMap<>();
+  private Map<String, Long> profiler = new HashMap<String, Long>();
+  private Map<String, Long> profilerC = new HashMap<String, Long>();
   private long lastProfiled = 0;
   private boolean on = false;
 

@@ -16,6 +16,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
@@ -28,7 +29,6 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     setYSize(ySize + 3);
   }
   
-  @SuppressWarnings("unchecked")
   @Override
   public void initGui() {
     super.initGui();
@@ -55,8 +55,12 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
       for(int i=TileFarmStation.minSupSlot ; i<=TileFarmStation.maxSupSlot ; i++) {
         if(getTileEntity().isSlotLocked(i)) {
           Slot slot = inventorySlots.getSlot(i);
-          GL11.glEnable(GL11.GL_BLEND);
-          RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
+          
+          GlStateManager.enableBlend();
+          GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+          RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.25));
+          
+          GlStateManager.disableBlend();
         }
       }
     }
@@ -64,24 +68,32 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    
+    
+    
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
+    GlStateManager.enableAlpha();
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
+    bindGuiTexture();
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    
     FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
     
-    GL11.glEnable(GL11.GL_BLEND);
+    GlStateManager.disableDepth();
+    GlStateManager.enableBlend();
     fr.drawString("SW", sx + 55, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);    
     fr.drawString("NW", sx + 55, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
     fr.drawString("SE", sx + 73, sy + 48, ColorUtil.getARGB(1f,1f,0.35f,1f), true);
     fr.drawString("NE", sx + 73, sy + 66, ColorUtil.getARGB(1f,1f,0.35f,1f), true);        
-    GL11.glDisable(GL11.GL_BLEND);
+    GlStateManager.disableBlend();
+    GlStateManager.enableDepth();
     
-    bindGuiTexture();
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+
   }
   
   @Override
