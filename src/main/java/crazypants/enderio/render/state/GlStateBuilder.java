@@ -4,7 +4,7 @@ package crazypants.enderio.render.state;
 /**
  * Create a GlState object that reflects the current state of the GlStateMananger.
  * <p>
- * Uncomment and enable the AT in build.gradle to use.
+ * Uncomment, enable the AT in build.gradle and rename the AT file to use.
  */
 public class GlStateBuilder {
 

@@ -98,7 +98,7 @@ processResources {
 }
 
 jar {
-// // uncomment and "setupDecompWorkspace" to use the GlStateBuilder
+// // rename the AT file, uncomment this and "setupDecompWorkspace" to use the GlStateBuilder
 //    manifest {
 //        attributes 'FMLAT': 'enderio_AT.cfg'
 //    }
