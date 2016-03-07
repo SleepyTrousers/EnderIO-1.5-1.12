@@ -39,11 +39,9 @@ import thaumcraft.api.items.IRevealer;
 import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({
-    @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft"),
-    @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "Forestry"),
-    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry")
+    @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
+    @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
+    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles,
     IRevealer, IVisDiscountGear, IOverlayRenderAware {
@@ -116,6 +114,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     GameRegistry.registerItem(this, getItemName());
   }
   
+  @Override
   public String getItemName() {
     String regName = getUnlocalizedName();
     regName = regName.substring(5, regName.length());
