@@ -30,6 +30,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -83,6 +84,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       return false;
     }
     return super.shouldRenderInPass(arg0);
+  }
+  
+  @Override
+  public World getBundleWorldObj() {
+    return getWorld();
   }
 
   @Override

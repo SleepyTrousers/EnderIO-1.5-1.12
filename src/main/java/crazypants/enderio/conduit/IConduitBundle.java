@@ -107,6 +107,7 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler {
 
   FacadeType getFacadeType();
 
-  World getWorld();
+  //NB: this has to be named differently to the TE method due to obf
+  World getBundleWorldObj();
 
 }

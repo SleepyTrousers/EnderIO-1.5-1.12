@@ -37,12 +37,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   public IFluidHandler getExternalHandler(EnumFacing direction) {
-    IFluidHandler con = getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
+    IFluidHandler con = getExternalFluidHandler(getBundle().getBundleWorldObj(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
   public IFluidHandler getTankContainer(BlockCoord bc) {
-    return FluidUtil.getFluidHandler(getBundle().getWorld(), bc);
+    return FluidUtil.getFluidHandler(getBundle().getBundleWorldObj(), bc);
   }
 
   @Override

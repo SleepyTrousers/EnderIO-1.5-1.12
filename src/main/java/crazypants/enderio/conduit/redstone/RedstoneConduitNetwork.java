@@ -224,7 +224,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     World world = null;
     for (IRedstoneConduit c : conduits) {
       if (world == null) {
-        world = c.getBundle().getWorld();
+        world = c.getBundle().getBundleWorldObj();
       }
       BlockCoord loc = c.getLocation();
       if (world.isBlockLoaded(loc.getBlockPos())) {

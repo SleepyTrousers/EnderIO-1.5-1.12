@@ -260,7 +260,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   @Method(modid = "ComputerCraft")
   protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
     BlockCoord loc = getLocation().getLocation(dir);
-    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getWorld(), loc.getBlockPos(), dir.getOpposite().ordinal());
+    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getBundleWorldObj(), loc.getBlockPos(), dir.getOpposite().ordinal());
   }
 
   @Override

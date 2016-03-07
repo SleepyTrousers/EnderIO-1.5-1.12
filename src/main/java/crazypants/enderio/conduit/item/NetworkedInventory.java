@@ -56,7 +56,7 @@ public class NetworkedInventory {
     this.con = con;
     this.conDir = conDir;
     this.location = location;
-    world = con.getBundle().getWorld();
+    world = con.getBundle().getBundleWorldObj();
 
     TileEntity te = world.getTileEntity(location.getBlockPos());
     if(te.getClass().getName().equals("tconstruct.tools.logic.CraftingStationLogic")) {

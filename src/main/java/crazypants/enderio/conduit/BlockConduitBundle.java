@@ -533,7 +533,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
 
     BlockCoord bc = te.getLocation();
-    ConduitUtil.playBreakSound(Block.soundTypeMetal, te.getWorld(), bc.x, bc.y, bc.z);
+    ConduitUtil.playBreakSound(Block.soundTypeMetal, te.getBundleWorldObj(), bc.x, bc.y, bc.z);
 
     return true;
   }
