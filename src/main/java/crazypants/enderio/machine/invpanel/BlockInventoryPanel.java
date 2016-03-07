@@ -2,6 +2,18 @@ package crazypants.enderio.machine.invpanel;
 
 import java.util.Random;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode6;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.SmartModelAttacher;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -11,26 +23,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode6;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.PaintRegistry;
-import crazypants.enderio.render.SmartModelAttacher;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
@@ -65,8 +61,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @Override
   protected void registerInSmartModelAttacher() {
     SmartModelAttacher.register(this, EnumRenderMode6.RENDER, EnumRenderMode6.DEFAULTS, EnumRenderMode6.AUTO);
-    PaintRegistry.registerModel("invPanel", new ResourceLocation(EnderIO.DOMAIN, "block/invPanel"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("invPanel_off", new ResourceLocation(EnderIO.DOMAIN, "block/invPanel_off"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("invPanel", new ResourceLocation(EnderIO.DOMAIN, "block/invPanel"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("invPanel_off", new ResourceLocation(EnderIO.DOMAIN, "block/invPanel_off"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
   @Override
