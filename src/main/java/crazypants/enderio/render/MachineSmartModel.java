@@ -101,7 +101,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       }
 
       if (block instanceof ISolidBlockPaintableBlock) {
-        IBakedModel paintModel = PaintWrangler.handlePaint(state, block, world, pos);
+        IBakedModel paintModel = PaintWrangler.handlePaint(state, (ISolidBlockPaintableBlock) block, world, pos);
         if (paintModel != null) {
           if (overlayLayer == null || overlayLayer.isEmpty()) {
             crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
@@ -146,10 +146,22 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       Item item = stack.getItem();
       if (item instanceof ItemBlock) {
         Block block = ((ItemBlock) item).getBlock();
-        // TODO: ISolidBlockPaintableBlock. Combine(!) it with the mapBlockRender() because that may want to add overlays to mark the block as "painted"
+        IBakedModel paint = null;
+        EnderBakedModel bakedModel = null;
+        // TODO: Combine(!) it with the mapBlockRender() because that may want to add overlays to mark the block as "painted"
+        if (block instanceof ISolidBlockPaintableBlock) {
+          paint = PaintWrangler.handlePaint(stack, (ISolidBlockPaintableBlock) block);
+        }
         if (block instanceof ISmartRenderAwareBlock) {
           IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
-          return new EnderBakedModel(getDefaults(), renderMapper.mapBlockRender(block, stack));
+          bakedModel = new EnderBakedModel(getDefaults(), renderMapper.mapBlockRender(block, stack));
+        }
+        if (bakedModel != null && paint != null) {
+          return new UnderlayBakedModel(bakedModel, paint);
+        } else if (bakedModel != null) {
+          return bakedModel;
+        } else if (paint != null) {
+          return paint;
         }
       }
     }

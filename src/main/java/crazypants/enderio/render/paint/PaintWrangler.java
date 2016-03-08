@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.WeightedBakedModel;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -92,12 +93,22 @@ public class PaintWrangler {
     return paintModel;
   }
 
-  public static IBakedModel handlePaint(final BlockStateWrapper state, Block block, final IBlockAccess world, final BlockPos pos) {
-    IBlockState paintSource = ((ISolidBlockPaintableBlock) block).getPaintSource(state, world, pos);
+  public static IBakedModel handlePaint(final BlockStateWrapper state, ISolidBlockPaintableBlock block, final IBlockAccess world, final BlockPos pos) {
+    IBlockState paintSource = block.getPaintSource(state, world, pos);
     if (paintSource != null) {
       return wrangleBakedModel(world, pos, paintSource);
     }
     return null;
   }
 
+  public static IBakedModel handlePaint(ItemStack stack, ISolidBlockPaintableBlock block) {
+    IBlockState paintSource = ((ISolidBlockPaintableBlock) block).getPaintSource((Block) block, stack);
+    if (paintSource != null) {
+      int damage = paintSource.getBlock().damageDropped(paintSource);
+      ItemStack paint = new ItemStack(paintSource.getBlock(), 1, damage);
+      return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(paint);
+    }
+    return null;
+
+  }
 }
