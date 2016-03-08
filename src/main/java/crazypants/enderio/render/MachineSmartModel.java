@@ -24,7 +24,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import crazypants.enderio.machine.painter.IPaintableBlock.ISolidBlockPaintableBlock;
+import crazypants.enderio.render.paint.IPaintableBlock.ISolidBlockPaintableBlock;
+import crazypants.enderio.render.paint.PaintWrangler;
 
 public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
@@ -92,23 +93,28 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       final IBlockAccess world = state.getWorld();
       final BlockPos pos = state.getPos();
 
+      IRenderMapper renderMapper = null;
+      List<IBlockState> overlayLayer = null;
+      if (block instanceof ISmartRenderAwareBlock) {
+        renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
+        overlayLayer = renderMapper.mapOverlayLayer(state, world, pos);
+      }
+
       if (block instanceof ISolidBlockPaintableBlock) {
-        IBlockState paintSource = ((ISolidBlockPaintableBlock) block).getPaintSource(state, world, pos);
-        if (paintSource != null) {
-          List<IBlockState> overlayLayer = null;
-          if (block instanceof ISmartRenderAwareBlock) {
-            overlayLayer = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos).mapOverlayLayer(state, world, pos);
+        IBakedModel paintModel = PaintWrangler.handlePaint(state, block, world, pos);
+        if (paintModel != null) {
+          if (overlayLayer == null || overlayLayer.isEmpty()) {
+            crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
+            return paintModel;
+          } else {
+            IBakedModel bakedModel = new EnderBakedModel(null, Pair.of((List<IBlockState>) null, Collections.singletonList(paintModel)), overlayLayer);
+            crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
+            return bakedModel;
           }
-          IEnderBakedModel bakedModel = new EnderBakedModel(null, Pair.of(Collections.singletonList(paintSource), (List<IBakedModel>) null), overlayLayer);
-          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
-          return bakedModel;
         }
       }
 
       if (block instanceof ISmartRenderAwareBlock) {
-        final IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(state, world, pos);
-        final List<IBlockState> mapOverlayLayer = renderMapper.mapOverlayLayer(state, world, pos);
-
         final long cacheKey = state.getCacheKey();
         if (cacheKey != 0) {
           IEnderBakedModel bakedModel = cache.getIfPresent(cacheKey);
@@ -118,13 +124,13 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
               cache.put(cacheKey, bakedModel);
             }
           }
-          if (mapOverlayLayer != null) {
-            bakedModel = new OverlayBakedModel(bakedModel, mapOverlayLayer);
+          if (overlayLayer != null) {
+            bakedModel = new OverlayBakedModel(bakedModel, overlayLayer);
           }
           crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (w/caching)");
           return bakedModel;
         } else {
-          IEnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos), mapOverlayLayer);
+          IEnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos), overlayLayer);
           crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
           return bakedModel;
         }
@@ -140,8 +146,9 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       Item item = stack.getItem();
       if (item instanceof ItemBlock) {
         Block block = ((ItemBlock) item).getBlock();
+        // TODO: ISolidBlockPaintableBlock. Combine(!) it with the mapBlockRender() because that may want to add overlays to mark the block as "painted"
         if (block instanceof ISmartRenderAwareBlock) {
-          IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper(stack);
+          IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
           return new EnderBakedModel(getDefaults(), renderMapper.mapBlockRender(block, stack));
         }
       }

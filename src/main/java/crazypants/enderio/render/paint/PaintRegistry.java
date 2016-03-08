@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.paint;
 
 import java.io.IOException;
 import java.util.Map.Entry;

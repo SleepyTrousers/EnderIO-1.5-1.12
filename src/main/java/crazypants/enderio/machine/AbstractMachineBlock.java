@@ -264,18 +264,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getRenderMapper();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-   return getRenderMapper();
-  }
-  
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {    
+  public IRenderMapper getRenderMapper() {
     return RenderMappers.BODY_MAPPER;
   }
 

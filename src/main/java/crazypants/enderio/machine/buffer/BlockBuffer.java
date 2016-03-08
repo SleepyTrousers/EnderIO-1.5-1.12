@@ -1,5 +1,22 @@
 package crazypants.enderio.machine.buffer;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -11,23 +28,8 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.paint.IPaintableBlock;
 import crazypants.util.IFacade;
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.painter.IPaintableBlock;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade, IPaintableBlock.ISolidBlockPaintableBlock {
 
@@ -106,6 +108,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
         if(stack.getTagCompound() != null) {
           ta.readCommon(stack.getTagCompound());
         }
+        int heading = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        ta.setFacing(getFacingForHeading(heading));
         world.markBlockForUpdate(pos);
       }
     }
@@ -170,7 +174,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
     // TODO Auto-generated method stub
-    return getFacade(world, pos, null);
+    IBlockState facade = getFacade(world, pos, null);
+    if (facade != null && facade.getBlock() instanceof BlockStairs) {
+      return facade.withProperty(net.minecraft.block.BlockStairs.FACING, getTileEntity(world, pos).getFacing().getOpposite());
+    }
+    return facade;
   }
 
   @Override
@@ -183,34 +191,34 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {
     if (entityPlayer.isSneaking() && !world.isRemote) {
       world.markBlockForUpdate(pos);
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, null);
-        return true;
-      }
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, Blocks.noteblock.getDefaultState());
-        return true;
-      }
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, Blocks.bedrock.getDefaultState());
-        return true;
-      }
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, Blocks.sea_lantern.getDefaultState());
-        return true;
-      }
+      // if (RANDOM.nextBoolean()) {
+      // setPaintSource(state, world, pos, null);
+      // return true;
+      // }
+      // if (RANDOM.nextBoolean()) {
+      // setPaintSource(state, world, pos, Blocks.noteblock.getDefaultState());
+      // return true;
+      // }
+      // if (RANDOM.nextBoolean()) {
+      // setPaintSource(state, world, pos, Blocks.bedrock.getDefaultState());
+      // return true;
+      // }
+      // if (RANDOM.nextBoolean()) {
+      // setPaintSource(state, world, pos, Blocks.sea_lantern.getDefaultState());
+      // return true;
+      // }
       if (RANDOM.nextBoolean()) {
         setPaintSource(state, world, pos, Blocks.stone_stairs.getDefaultState());
         return true;
       }
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, Blocks.torch.getDefaultState());
-        return true;
-      }
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, Blocks.mycelium.getDefaultState());
-        return true;
-      }
+      // if (RANDOM.nextBoolean()) {
+      // setPaintSource(state, world, pos, Blocks.torch.getDefaultState());
+      // return true;
+      // }
+      // if (RANDOM.nextBoolean()) {
+      // setPaintSource(state, world, pos, Blocks.mycelium.getDefaultState());
+      // return true;
+      // }
       setPaintSource(state, world, pos, null);
       return true;
     }

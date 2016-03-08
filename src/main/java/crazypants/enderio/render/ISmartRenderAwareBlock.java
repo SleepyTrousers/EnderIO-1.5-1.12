@@ -1,9 +1,5 @@
 package crazypants.enderio.render;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,17 +24,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface ISmartRenderAwareBlock {
 
   /**
-   * Return a render mapper for the block.
+   * Return a render mapper for the block or item stack.
    * <p>
    * This is called in a render thread.
    */
   @SideOnly(Side.CLIENT)
-  IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos);
-
-  /**
-   * Return a render mapper for the given item stack.
-   */
-  @SideOnly(Side.CLIENT)
-  IRenderMapper getRenderMapper(ItemStack stack);
+  IRenderMapper getRenderMapper();
 
 }
