@@ -5,6 +5,31 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Util;
@@ -32,37 +57,12 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable,
     ISmartRenderAwareBlock {
@@ -127,7 +127,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper().getExtendedState(state, world, pos);
+    return getRenderMapper().getExtendedState(state, world, pos);
   }
 
   @Override
@@ -499,18 +499,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    return getMapper();
-  }
-  
-  @SideOnly(Side.CLIENT)
-  public CapBankRenderMapper getMapper() {
+  public CapBankRenderMapper getRenderMapper() {
     if(CAPBANK_RENDER_MAPPER == null) {
       CAPBANK_RENDER_MAPPER = new CapBankRenderMapper();
     }

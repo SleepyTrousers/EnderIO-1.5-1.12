@@ -69,7 +69,7 @@ public class ConduitRecipes {
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     addShaped(itemConduit, "bbb", "###", "bbb", 'b', binder, '#', phasedIronNugget);
 
-    MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, EnderIO.itemConduitFacade.new FacadePainterRecipe());
+    // MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, EnderIO.itemConduitFacade.new FacadePainterRecipe());
 
     //Filter Recipes
     ItemStack basicFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 0);

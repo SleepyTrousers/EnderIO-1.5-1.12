@@ -58,7 +58,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   protected void init() {
     GameRegistry.registerBlock(this, BlockItemDarkSteelPressurePlate.class, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
     GameRegistry.registerTileEntity(TileEntityDarkSteelPressurePlate.class, ModObject.blockDarkSteelPressurePlate.unlocalisedName + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
+    // MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
   }
 
   @Override
@@ -185,45 +185,45 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
-
-    public PainterTemplate(Block dspp) {
-      super(dspp);
-    }
-
-    @Override
-    public boolean isValidPaintSource(ItemStack paintSource) {
-      if (PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
-        return true;
-      }
-      if (paintSource == null) {
-        return false;
-      }
-      Block block = Util.getBlockFromItemId(paintSource);
-      if (block == null) {
-        return false;
-      }
-      return Block.getBlockFromItem(paintSource.getItem()) == EnderIO.blockFusedQuartz;
-    }
-
-    @Override
-    public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-      ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-      if (paintSource == null) {
-        return new ResultStack[0];
-      }
-      ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);
-      ItemStack resultStack = createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage());
-      resultStack.setItemDamage(target.getItemDamage());
-      return new ResultStack[] { new ResultStack(resultStack) };
-    }
-
-    public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
-      ItemStack result = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, damage);
-      PainterUtil.setSourceBlock(result, block, damage);
-      return result;
-    }
-  }
+  // public static final class PainterTemplate extends BasicPainterTemplate {
+  //
+  // public PainterTemplate(Block dspp) {
+  // super(dspp);
+  // }
+  //
+  // @Override
+  // public boolean isValidPaintSource(ItemStack paintSource) {
+  // if (PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
+  // return true;
+  // }
+  // if (paintSource == null) {
+  // return false;
+  // }
+  // Block block = Util.getBlockFromItemId(paintSource);
+  // if (block == null) {
+  // return false;
+  // }
+  // return Block.getBlockFromItem(paintSource.getItem()) == EnderIO.blockFusedQuartz;
+  // }
+  //
+  // @Override
+  // public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  // ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
+  // if (paintSource == null) {
+  // return new ResultStack[0];
+  // }
+  // ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);
+  // ItemStack resultStack = createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage());
+  // resultStack.setItemDamage(target.getItemDamage());
+  // return new ResultStack[] { new ResultStack(resultStack) };
+  // }
+  //
+  // public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
+  // ItemStack result = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, damage);
+  // PainterUtil.setSourceBlock(result, block, damage);
+  // return result;
+  // }
+  // }
 
    @Override
   @SideOnly(Side.CLIENT)

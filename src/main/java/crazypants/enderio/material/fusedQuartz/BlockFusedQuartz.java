@@ -6,7 +6,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import net.minecraft.block.Block;
@@ -75,23 +74,12 @@ public class BlockFusedQuartz extends BlockEio<TileEntityPaintedBlock> implement
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper().getExtendedState(state, world, pos);
+    return getRenderMapper().getExtendedState(state, world, pos);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    return getMapper();
-  }
-
-  @SideOnly(Side.CLIENT)
-  public FusedQuartzRenderMapper getMapper() {
+  public FusedQuartzRenderMapper getRenderMapper() {
     if (RENDER_MAPPER == null) {
       RENDER_MAPPER = new FusedQuartzRenderMapper();
     }

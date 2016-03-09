@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.painter;
+package crazypants.enderio.render.paint;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

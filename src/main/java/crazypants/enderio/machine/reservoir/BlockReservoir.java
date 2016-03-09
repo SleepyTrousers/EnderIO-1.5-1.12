@@ -78,23 +78,12 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper().getExtendedState(state, world, pos);
+    return getRenderMapper().getExtendedState(state, world, pos);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    return getMapper();
-  }
-
-  @SideOnly(Side.CLIENT)
-  public ReservoirRenderMapper getMapper() {
+  public ReservoirRenderMapper getRenderMapper() {
     if (RENDER_MAPPER == null) {
       RENDER_MAPPER = new ReservoirRenderMapper();
     }

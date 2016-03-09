@@ -9,6 +9,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
@@ -23,6 +24,12 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
   private BlockPainter() {
     super(ModObject.blockPainter, TileEntityPainter.class);
+  }
+
+  @Override
+  protected void init() {
+    super.init();
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new EveryPaintableRecipe());
   }
 
   @Override

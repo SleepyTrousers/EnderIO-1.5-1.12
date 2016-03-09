@@ -190,18 +190,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getMapper();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper(ItemStack stack) {
-    return getMapper();
-  }
-
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper getMapper() {
+  public IRenderMapper getRenderMapper() {
     if (RENDER_MAPPER == null) {
       RENDER_MAPPER = new TelepadRenderMapper();
     }

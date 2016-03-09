@@ -36,7 +36,7 @@ public class ItemFusedQuartzFrame extends Item {
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemFusedQuartzFrame.unlocalisedName);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe(this));
+    // MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe(this));
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -80,18 +80,18 @@ public class ItemFusedQuartzFrame extends Item {
     list.add(PainterUtil.getTooltTipText(item));
   }
 
-  public final class FramePainterRecipe extends BasicPainterTemplate {
-
-    private ItemFusedQuartzFrame i;
-
-    public FramePainterRecipe(ItemFusedQuartzFrame itemFusedQuartzFrame) {
-      i = itemFusedQuartzFrame;
-    }
-
-    @Override
-    public boolean isValidTarget(ItemStack target) {
-      return target != null && target.getItem() == i;
-    }
-
-  }
+  // public final class FramePainterRecipe extends BasicPainterTemplate {
+  //
+  // private ItemFusedQuartzFrame i;
+  //
+  // public FramePainterRecipe(ItemFusedQuartzFrame itemFusedQuartzFrame) {
+  // i = itemFusedQuartzFrame;
+  // }
+  //
+  // @Override
+  // public boolean isValidTarget(ItemStack target) {
+  // return target != null && target.getItem() == i;
+  // }
+  //
+  // }
 }

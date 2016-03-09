@@ -179,48 +179,48 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     }
   }
 
-  public final class FacadePainterRecipe extends BasicPainterTemplate {
-
-    @Override
-    public boolean isValidPaintSource(ItemStack paintSource) {
-      if(paintSource == null) {
-        return false;
-      }
-      if (paintSource.getItem() == ItemConduitFacade.this) {
-        return true;
-      }
-      Block block = Util.getBlockFromItemId(paintSource);
-      if(block == null || block instanceof IPaintedBlock) {
-        return false;
-      }
-      if(PaintSourceValidator.instance.isBlacklisted(paintSource)) {
-        return false;
-      }
-      if(PaintSourceValidator.instance.isWhitelisted(paintSource)) {
-        return true;
-      }      
-      if (!Config.allowTileEntitiesAsPaintSource && block.hasTileEntity(block.getStateFromMeta(paintSource.getItemDamage()))) {
-        return false;
-      }
-      if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {
-        return true;
-      }
-      return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
-    }
-
-    @Override
-    public boolean isValidTarget(ItemStack target) {
-      return target != null && target.getItem() == ItemConduitFacade.this;
-    }
-
-    @Override
-    public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-      ResultStack[] res = super.getCompletedResult(chance, inputs);
-      return res;
-    }
-  }
-  
-  
+  // public final class FacadePainterRecipe extends BasicPainterTemplate {
+  //
+  // @Override
+  // public boolean isValidPaintSource(ItemStack paintSource) {
+  // if(paintSource == null) {
+  // return false;
+  // }
+  // if (paintSource.getItem() == ItemConduitFacade.this) {
+  // return true;
+  // }
+  // Block block = Util.getBlockFromItemId(paintSource);
+  // if(block == null || block instanceof IPaintedBlock) {
+  // return false;
+  // }
+  // if(PaintSourceValidator.instance.isBlacklisted(paintSource)) {
+  // return false;
+  // }
+  // if(PaintSourceValidator.instance.isWhitelisted(paintSource)) {
+  // return true;
+  // }
+  // if (!Config.allowTileEntitiesAsPaintSource && block.hasTileEntity(block.getStateFromMeta(paintSource.getItemDamage()))) {
+  // return false;
+  // }
+  // if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {
+  // return true;
+  // }
+  // return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
+  // }
+  //
+  // @Override
+  // public boolean isValidTarget(ItemStack target) {
+  // return target != null && target.getItem() == ItemConduitFacade.this;
+  // }
+  //
+  // @Override
+  // public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  // ResultStack[] res = super.getCompletedResult(chance, inputs);
+  // return res;
+  // }
+  // }
+  //
+  //
 
 
 }
