@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.FlowerPicker;
@@ -31,17 +30,17 @@ public final class FarmersRegistry {
   
   public static void addFarmers() {
 
-    addExtraUtilities();
-    addNatura();
-    addTiC();
-    addStillHungry();
-    addIC2();
-    addMFR();
-    addThaumcraft();
-    addFlowers();
-    addGrowableOres();
-    addImmersiveEngineering();
-
+//    addExtraUtilities();
+//    addNatura();
+//    addTiC();
+//    addStillHungry();
+//    addIC2();
+//    addMFR();
+//    addThaumcraft();
+//    addFlowers();
+//    addGrowableOres();
+//    addImmersiveEngineering();
+//
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
     FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
@@ -54,7 +53,7 @@ public final class FarmersRegistry {
     //'BlockNetherWart' is not an IGrowable
     FarmersCommune.joinCommune(new NetherWartFarmer());
     //Cocoa is odd
-    FarmersCommune.joinCommune(new CocoaFarmer());
+//    FarmersCommune.joinCommune(new CocoaFarmer());
     //Handles all 'vanilla' style crops
     FarmersCommune.joinCommune(DEFAULT_FARMER);
   }
