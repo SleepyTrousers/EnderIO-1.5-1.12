@@ -187,42 +187,43 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     return PainterUtil.getSourceBlockState(stack);
   }
 
-  @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {
-    if (entityPlayer.isSneaking() && !world.isRemote) {
-      world.markBlockForUpdate(pos);
-      // if (RANDOM.nextBoolean()) {
-      // setPaintSource(state, world, pos, null);
-      // return true;
-      // }
-      // if (RANDOM.nextBoolean()) {
-      // setPaintSource(state, world, pos, Blocks.noteblock.getDefaultState());
-      // return true;
-      // }
-      // if (RANDOM.nextBoolean()) {
-      // setPaintSource(state, world, pos, Blocks.bedrock.getDefaultState());
-      // return true;
-      // }
-      // if (RANDOM.nextBoolean()) {
-      // setPaintSource(state, world, pos, Blocks.sea_lantern.getDefaultState());
-      // return true;
-      // }
-      if (RANDOM.nextBoolean()) {
-        setPaintSource(state, world, pos, Blocks.stone_stairs.getDefaultState());
-        return true;
-      }
-      // if (RANDOM.nextBoolean()) {
-      // setPaintSource(state, world, pos, Blocks.torch.getDefaultState());
-      // return true;
-      // }
-      // if (RANDOM.nextBoolean()) {
-      // setPaintSource(state, world, pos, Blocks.mycelium.getDefaultState());
-      // return true;
-      // }
-      setPaintSource(state, world, pos, null);
-      return true;
-    }
-    return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
-  }
+  // @Override
+  // public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float
+  // hitZ) {
+  // // if (entityPlayer.isSneaking() && !world.isRemote) {
+  // // world.markBlockForUpdate(pos);
+  // // // if (RANDOM.nextBoolean()) {
+  // // // setPaintSource(state, world, pos, null);
+  // // // return true;
+  // // // }
+  // // // if (RANDOM.nextBoolean()) {
+  // // // setPaintSource(state, world, pos, Blocks.noteblock.getDefaultState());
+  // // // return true;
+  // // // }
+  // // // if (RANDOM.nextBoolean()) {
+  // // // setPaintSource(state, world, pos, Blocks.bedrock.getDefaultState());
+  // // // return true;
+  // // // }
+  // // // if (RANDOM.nextBoolean()) {
+  // // // setPaintSource(state, world, pos, Blocks.sea_lantern.getDefaultState());
+  // // // return true;
+  // // // }
+  // // if (RANDOM.nextBoolean()) {
+  // // setPaintSource(state, world, pos, Blocks.stone_stairs.getDefaultState());
+  // // return true;
+  // // }
+  // // // if (RANDOM.nextBoolean()) {
+  // // // setPaintSource(state, world, pos, Blocks.torch.getDefaultState());
+  // // // return true;
+  // // // }
+  // // // if (RANDOM.nextBoolean()) {
+  // // // setPaintSource(state, world, pos, Blocks.mycelium.getDefaultState());
+  // // // return true;
+  // // // }
+  // // setPaintSource(state, world, pos, null);
+  // // return true;
+  // // }
+  // return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
+  // }
 
 }

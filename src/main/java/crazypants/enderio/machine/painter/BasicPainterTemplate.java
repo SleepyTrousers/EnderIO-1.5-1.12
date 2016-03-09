@@ -3,26 +3,28 @@ package crazypants.enderio.machine.painter;
 import java.util.Collections;
 import java.util.List;
 
-import com.enderio.core.common.util.Util;
-
-import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
-
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import crazypants.enderio.render.paint.IPaintableBlock;
 
-public abstract class BasicPainterTemplate implements IMachineRecipe {
+import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
+
+public abstract class BasicPainterTemplate<T extends Block & IPaintableBlock> implements IMachineRecipe {
 
   public static int DEFAULT_ENERGY_PER_TASK = Config.painterEnergyPerTaskRF;
 
+  protected final T resultBlock;
   protected final Block[] validTargets;
 
-  protected BasicPainterTemplate(Block... validTargetBlocks) {
+  protected BasicPainterTemplate(T resultBlock, Block... validTargetBlocks) {
+    this.resultBlock = resultBlock;
     validTargets = validTargetBlocks;
   }
 
@@ -38,18 +40,39 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
 
   @Override
   public boolean isRecipe(MachineRecipeInput... inputs) {
-    return isValidTarget(getTarget(inputs)) && isValidPaintSource(getPaintSource(inputs));
+    return getPaintSource(inputs) != null && isValidTarget(getTarget(inputs))
+        && PainterUtil2.isValid(getPaintSource(inputs), getTargetBlock(getTarget(inputs)));
+  }
+
+  public boolean isPartialRecipe(ItemStack paintSource, ItemStack target) {
+    if (paintSource == null) {
+      return isValidTarget(target);
+    }
+    if (target == null) {
+      return PainterUtil2.isValid(paintSource, getTargetBlock(null));
+    }
+    return isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
   }
 
   @Override
   public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     ItemStack target = getTarget(inputs);
+    Block targetBlock = getTargetBlock(target);
     ItemStack paintSource = getPaintSource(inputs);
-    if(target == null || paintSource == null) {
-      return null;
+    if (target == null || paintSource == null || targetBlock == null) {
+      return new ResultStack[0];
     }
-    ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
-    PainterUtil.setSourceBlock(result, Util.getBlockFromItemId(paintSource), paintSource.getItemDamage());
+    Block paintBlock = Block.getBlockFromItem(paintSource.getItem());
+    if (paintBlock == null) {
+      return new ResultStack[0];
+    }
+    IBlockState paintState = paintBlock.getDefaultState();
+    if (paintState == null) {
+      return new ResultStack[0];
+    }
+
+    ItemStack result = new ItemStack(targetBlock, 1, target.getItemDamage());
+    ((IPaintableBlock) targetBlock).setPaintSource(targetBlock, result, paintState);
     return new ResultStack[] { new ResultStack(result) };
   }
 
@@ -70,7 +93,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return isValidTarget(input.item);
     }
     if(input.slotNumber == 1) {
-      return isValidPaintSource(input.item);
+      return PainterUtil2.isValid(input.item, resultBlock);
     }
     return false;
   }
@@ -80,8 +103,8 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     return ModObject.blockPainter.unlocalisedName;
   }
 
-  public boolean isValidPaintSource(ItemStack paintSource) {
-    return PaintSourceValidator.instance.isValidSourceDefault(paintSource);
+  protected T getTargetBlock(ItemStack target) {
+    return resultBlock;
   }
 
   public boolean isValidTarget(ItemStack target) {
@@ -93,6 +116,9 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     Block blk = Block.getBlockFromItem(target.getItem());
     if(blk == null) {
       return false;
+    }
+    if (blk == resultBlock) {
+      return true;
     }
 
     for (int i = 0; i < validTargets.length; i++) {
