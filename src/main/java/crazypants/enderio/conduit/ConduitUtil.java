@@ -250,7 +250,7 @@ public class ConduitUtil {
   }
 
   public static <T extends IConduit> Collection<T> getConnectedConduits(World world, int x, int y, int z, Class<T> type) {
-    return getConnectedConduits(world, new BlockPos(x, y, x), type);
+    return getConnectedConduits(world, new BlockPos(x, y, z), type);
   }
 
   public static <T extends IConduit> Collection<T> getConnectedConduits(World world, BlockPos pos, Class<T> type) {

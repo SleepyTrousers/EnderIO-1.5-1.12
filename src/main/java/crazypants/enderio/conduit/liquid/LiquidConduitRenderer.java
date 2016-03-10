@@ -109,7 +109,8 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
   public static List<CachableRenderStatement> computeFluidOutlineToCache(CollidableComponent component, Fluid fluid, double scaleFactor, float outlineWidth) {
 
-    Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
+    Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);    
+    
     if (cache0 == null) {
       cache0 = new HashMap<Fluid, List<CachableRenderStatement>>();
       cache.put(component, cache0);
@@ -133,15 +134,13 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       double xScale = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
       double yScale = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
       double zScale = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
-      bbb = component.bound.scale(xScale, yScale, zScale);
+      bbb = component.bound.scale(xScale, yScale, zScale);            
     }
 
     for (EnumFacing face : EnumFacing.VALUES) {
       if (face != component.dir && face != component.dir.getOpposite()) {
 
-        data.add(new CachableRenderStatement.SetNormal(face.getFrontOffsetX(), face.getFrontOffsetY(), face.getFrontOffsetZ()));
         Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, -0.005);
-
         Vector2f uv = new Vector2f();
         List<EnumFacing> edges = RenderUtil.getEdgesForFace(face);
         for (EnumFacing edge : edges) {
@@ -177,21 +176,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
   private interface CachableRenderStatement {
     void execute();
-
-    static class SetNormal implements CachableRenderStatement {
-      private final float x, y, z;
-
-      private SetNormal(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-      }
-
-      @Override
-      public void execute() {
-        Tessellator.getInstance().getWorldRenderer().normal(x, y, z);
-      }
-    }
 
     static class AddVertexWithUV implements CachableRenderStatement {
       private final double x, y, z, u, v;

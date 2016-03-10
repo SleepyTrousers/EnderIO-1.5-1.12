@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
@@ -63,25 +62,25 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       return;
     }
     float brightness = -1;
+    boolean hasDynamic = false;
     for (IConduit con : bundle.getConduits()) {
       if (ConduitUtil.renderConduit(player, con)) {
         ConduitRenderer renderer = getRendererForConduit(con);
         if (renderer.isDynamic()) {
-          if (brightness == -1) {
+          if (!hasDynamic) {
+            hasDynamic = true;
             BlockCoord loc = bundle.getLocation();
             brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, loc.getBlockPos());
 
+            RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());            
             RenderUtil.bindBlockTexture();
+            GlStateManager.enableNormalize();
+            GlStateManager.enableBlend();            
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
-            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-            GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-
-            GL11.glPushMatrix();
-            GL11.glTranslated(x, y, z);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y, z);
 
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer tes = tessellator.getWorldRenderer();
@@ -94,14 +93,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       }
     }
 
-    if (brightness != -1) {
+    if (hasDynamic) {
       Tessellator.getInstance().draw();
-
-      GlStateManager.enableCull();
-      GL11.glShadeModel(GL11.GL_FLAT);
-      GL11.glPopMatrix();
-      GL11.glPopAttrib();
-      GL11.glPopAttrib();
+      GlStateManager.disableNormalize();
+      GlStateManager.disableBlend();      
+      GlStateManager.shadeModel(GL11.GL_FLAT);
+      GlStateManager.popMatrix();
     }
   }
 
