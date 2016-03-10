@@ -1,26 +1,25 @@
 package crazypants.enderio.machine.buffer;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.painter.IPaintableTileEntity;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.power.IInternalPowerHandler;
-import crazypants.enderio.power.PowerDistributor;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
-public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintableTileEntity, IInternalPowerHandler {
+import com.enderio.core.common.util.BlockCoord;
 
-  private Block sourceBlock;
-  private int sourceBlockMetadata;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.render.paint.IPaintable;
+
+public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
+
+  private IBlockState paintSource;
 
   private boolean hasPower, hasInventory, isCreative;
 
@@ -49,8 +48,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
-    if(getEnergyStored() <= 0 || !redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
+    if(getEnergyStored() <= 0 || !redstoneCheck) {
       return false;
     }
     if(dist == null) {
@@ -162,7 +161,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
-    PainterUtil.setSourceBlock(nbtRoot, sourceBlock, sourceBlockMetadata);
+    PainterUtil2.writeNbt(nbtRoot, paintSource);
     nbtRoot.setInteger("maxIn", maxIn);
     nbtRoot.setInteger("maxOut", maxOut);
   }
@@ -178,30 +177,9 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-    this.sourceBlock = PainterUtil.getSourceBlock(nbtRoot);
-    this.sourceBlockMetadata = PainterUtil.getSourceBlockMetadata(nbtRoot);
+    this.paintSource = PainterUtil2.readNbt(nbtRoot);
     this.maxIn = nbtRoot.getInteger("maxIn");
     this.maxOut = nbtRoot.getInteger("maxOut");
-  }
-
-  @Override
-  public void setSourceBlock(IBlockState source) {
-    if(source == null) {
-      sourceBlock = null;
-      sourceBlockMetadata = 0;
-    } else {
-      sourceBlock = source.getBlock();
-      sourceBlockMetadata = sourceBlock.getMetaFromState(source);
-    }
-    
-  }
-
-  @Override
-  public IBlockState getSourceBlock() {
-    if(sourceBlock == null) {
-      return null;
-    }
-    return sourceBlock.getStateFromMeta(sourceBlockMetadata);
   }
 
   public boolean hasInventory() {
@@ -243,5 +221,15 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   public int getMaxOutput() {
     return maxOut;
+  }
+
+  @Override
+  public void setPaintSource(IBlockState paintSource) {
+    this.paintSource = paintSource;
+  }
+
+  @Override
+  public IBlockState getPaintSource() {
+    return paintSource;
   }
 }

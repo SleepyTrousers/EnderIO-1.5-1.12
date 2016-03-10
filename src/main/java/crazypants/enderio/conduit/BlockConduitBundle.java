@@ -42,6 +42,7 @@ import crazypants.enderio.conduit.render.ConduitRenderState;
 import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.IFacade;
@@ -704,7 +705,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return false;
     }
 
-    IBlockState facadeID = PainterUtil.getSourceBlockState(player.getCurrentEquippedItem());
+    IBlockState facadeID = PainterUtil2.getSourceBlock(player.getCurrentEquippedItem());
     if (facadeID == null) {
       return false;
     }

@@ -5,10 +5,19 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+
+import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 
 import static crazypants.enderio.gui.IconEIO.CROSS;
 import static crazypants.enderio.gui.IconEIO.TICK;
@@ -20,14 +29,6 @@ import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER;
 import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER_OFF;
 import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE;
 import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE_OFF;
-
-import crazypants.enderio.api.tool.IConduitControl;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ConduitDisplayMode {
 
@@ -209,8 +210,13 @@ public class ConduitDisplayMode {
   public static Iterable<ConduitDisplayMode> getRenderableModes() {
     return FluentIterable.from(registrar).filter(new Predicate<ConduitDisplayMode>() {
       @Override
-      public boolean apply(ConduitDisplayMode input) {
+      public boolean apply(@Nullable ConduitDisplayMode input) {
         return input != ALL && input != NONE;
+      }
+
+      @Override
+      public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
       }
     });
   }

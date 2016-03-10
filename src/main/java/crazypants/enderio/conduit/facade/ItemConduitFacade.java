@@ -20,6 +20,7 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -105,7 +106,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
       if (world.isAirBlock(placeAt)) {
         world.setBlockState(placeAt, EnderIO.blockConduitBundle.getDefaultState());
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeAt);
-        IBlockState bs = PainterUtil.getSourceBlockState(itemStack);
+        IBlockState bs = PainterUtil2.getSourceBlock(itemStack);
         bundle.setFacade(bs);
         bundle.setFacadeType(FacadeType.values()[itemStack.getItemDamage()]);
         ConduitUtil.playPlaceSound(bs.getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
@@ -164,7 +165,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     if(PainterUtil.getSourceBlock(itemstack) == null) {
       list.add(EnderIO.lang.localize("item.itemConduitFacade.tooltip.notpainted"));
     } else {
-      list.add(PainterUtil.getTooltTipText(itemstack));
+      list.add(PainterUtil2.getTooltTipText(itemstack));
     }
   }
 

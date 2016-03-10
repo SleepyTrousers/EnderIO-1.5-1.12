@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
@@ -73,7 +75,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileVacuumChest te, ItemStack drop) {
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileVacuumChest te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
     if(te != null) {
       te.writeContentsToNBT(drop.getTagCompound());

@@ -2,19 +2,8 @@ package crazypants.enderio.machine.vacuum;
 
 import java.util.List;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.ItemUtil;
-import com.google.common.base.Predicate;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IRedstoneModeControlable;
-import crazypants.enderio.machine.RedstoneControlMode;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
@@ -28,6 +17,20 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.ItemUtil;
+import com.google.common.base.Predicate;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.IRedstoneModeControlable;
+import crazypants.enderio.machine.RedstoneControlMode;
 
 public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable {
 
@@ -68,7 +71,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   }
 
   @Override
-  public boolean apply(EntityItem entity) {
+  public boolean apply(@Nullable EntityItem entity) {
     if (entity.isDead) {
       return false;
     }
@@ -397,4 +400,8 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     return 0;
   }
 
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    return super.equals(obj);
+  }
 }

@@ -1,17 +1,19 @@
 package crazypants.enderio.machine.buffer;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessage, IMessageHandler<PacketBufferIO, IMessage> {
+import com.enderio.core.common.network.MessageTileEntity;
+
+public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessageHandler<PacketBufferIO, IMessage>, Runnable {
 
   public PacketBufferIO() {}
   
   private int in, out;
+  private MessageContext _ctx;
   
   public PacketBufferIO(TileBuffer tile, int in, int out) {
     super(tile);
@@ -36,11 +38,17 @@ public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMe
 
   @Override
   public IMessage onMessage(PacketBufferIO message, MessageContext ctx) {
-    TileBuffer buf = message.getTileEntity(message.getWorld(ctx));
-    if (buf != null) {
-      buf.setIO(message.in, message.out);
-    }
+    message._ctx = ctx;
+    Minecraft.getMinecraft().addScheduledTask(message);
     return null;
+  }
+
+  @Override
+  public void run() {
+    TileBuffer buf = getTileEntity(getWorld(_ctx));
+    if (buf != null) {
+      buf.setIO(in, out);
+    }
   }
 
 }

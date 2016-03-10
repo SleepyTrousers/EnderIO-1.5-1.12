@@ -5,14 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.InventoryWrapper;
-import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -30,6 +22,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.render.paint.IPaintable;
 
 public abstract class AbstractMachineEntity extends TileEntityEio
     implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
@@ -485,10 +488,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       return;
     }
     NBTTagCompound root = stack.getTagCompound();
-    if (!root.hasKey("eio.abstractMachine")) {
-      return;
+    if (root.hasKey("eio.abstractMachine")) {
+      readCommon(root);
+    } else if (this instanceof IPaintable.IPaintableTileEntity) {
+      ((IPaintable.IPaintableTileEntity) this).setPaintSource(PainterUtil2.getSourceBlock(stack));
     }
-    readCommon(root);
+    return;
   }
 
   @Override

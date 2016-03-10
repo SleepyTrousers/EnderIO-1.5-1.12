@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.wireless;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
@@ -86,7 +88,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileWirelessCharger te, ItemStack drop) {
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileWirelessCharger te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());    
     te.writeCustomNBT(drop.getTagCompound());    
   }
