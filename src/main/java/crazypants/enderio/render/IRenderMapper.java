@@ -51,6 +51,18 @@ public interface IRenderMapper {
    * May return null. May return one or both of the lists as null.
    */
   @SideOnly(Side.CLIENT)
-  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack);
+  Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack);
+
+  /**
+   * Get lists of blockstates and pre-baked, pre-rotated models to render for the given item stack when it is painted. These are rendered in addition to the
+   * paint. If en empty result is returned, nothing is rendered. If null is returned, the generic, full-block "is painted" overlay is rendered.
+   * <p>
+   * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
+   * do it.
+   * <p>
+   * May return null. May return one or both of the lists as null.
+   */
+  @SideOnly(Side.CLIENT)
+  Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack);
 
 }

@@ -12,11 +12,11 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.enderio.render.paint.IPaintableBlock;
+import crazypants.enderio.render.paint.IPaintable;
 
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
-public abstract class BasicPainterTemplate<T extends Block & IPaintableBlock> implements IMachineRecipe {
+public abstract class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {
 
   public static int DEFAULT_ENERGY_PER_TASK = Config.painterEnergyPerTaskRF;
 
@@ -66,13 +66,18 @@ public abstract class BasicPainterTemplate<T extends Block & IPaintableBlock> im
     if (paintBlock == null) {
       return new ResultStack[0];
     }
-    IBlockState paintState = paintBlock.getDefaultState();
+    IBlockState paintState = paintBlock.getStateFromMeta(paintSource.getMetadata());
     if (paintState == null) {
       return new ResultStack[0];
     }
 
-    ItemStack result = new ItemStack(targetBlock, 1, target.getItemDamage());
-    ((IPaintableBlock) targetBlock).setPaintSource(targetBlock, result, paintState);
+    ItemStack result;
+    if ((targetBlock == paintBlock || Block.getBlockFromItem(target.getItem()) == paintBlock) && target.getItemDamage() == paintSource.getItemDamage()) {
+      result = new ItemStack(Block.getBlockFromItem(target.getItem()), 1, target.getItemDamage());
+    } else {
+      result = new ItemStack(targetBlock, 1, target.getItemDamage());
+      ((IPaintable) targetBlock).setPaintSource(targetBlock, result, paintState);
+    }
     return new ResultStack[] { new ResultStack(result) };
   }
 

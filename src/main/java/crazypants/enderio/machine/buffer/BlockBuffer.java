@@ -1,13 +1,11 @@
 package crazypants.enderio.machine.buffer;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -28,10 +26,10 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.paint.IPaintableBlock;
+import crazypants.enderio.render.paint.IPaintable;
 import crazypants.util.IFacade;
 
-public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade, IPaintableBlock.ISolidBlockPaintableBlock {
+public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade, IPaintable.ISolidBlockPaintableBlock {
 
   public static BlockBuffer create() {
     PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
@@ -174,11 +172,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
     // TODO Auto-generated method stub
-    IBlockState facade = getFacade(world, pos, null);
-    if (facade != null && facade.getBlock() instanceof BlockStairs) {
-      return facade.withProperty(net.minecraft.block.BlockStairs.FACING, getTileEntity(world, pos).getFacing().getOpposite());
-    }
-    return facade;
+    return getFacade(world, pos, null);
   }
 
   @Override

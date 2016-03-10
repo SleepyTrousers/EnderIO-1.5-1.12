@@ -2,9 +2,9 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.render.paint.IPaintableBlock;
+import crazypants.enderio.render.paint.IPaintable;
 
-public class EveryPaintableRecipe<T extends Block & IPaintableBlock> extends BasicPainterTemplate<T> {
+public class EveryPaintableRecipe<T extends Block & IPaintable> extends BasicPainterTemplate<T> {
 
   protected EveryPaintableRecipe() {
     super(null);
@@ -14,7 +14,7 @@ public class EveryPaintableRecipe<T extends Block & IPaintableBlock> extends Bas
   protected T getTargetBlock(ItemStack target) {
     if (target != null) {
       Block blk = Block.getBlockFromItem(target.getItem());
-      if (blk instanceof IPaintableBlock) {
+      if (blk instanceof IPaintable) {
         return (T) blk;
       }
     }
@@ -28,7 +28,7 @@ public class EveryPaintableRecipe<T extends Block & IPaintableBlock> extends Bas
     }
 
     Block blk = Block.getBlockFromItem(target.getItem());
-    return blk instanceof IPaintableBlock;
+    return blk instanceof IPaintable;
   }
 
 }

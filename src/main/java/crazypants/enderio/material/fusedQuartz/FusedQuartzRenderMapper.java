@@ -38,7 +38,7 @@ public class FusedQuartzRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     IBlockState defaultState = block.getDefaultState();
     FusedQuartzType bankType = FusedQuartzType.getTypeFromMeta(stack.getItemDamage());
@@ -58,6 +58,11 @@ public class FusedQuartzRenderMapper implements IRenderMapper {
 
   @Override
   public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    return null;
+  }
+
+  @Override
+  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
     return null;
   }
 

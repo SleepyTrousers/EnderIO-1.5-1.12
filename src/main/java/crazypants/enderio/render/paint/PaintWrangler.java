@@ -12,8 +12,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ISmartBlockModel;
+import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.paint.IPaintableBlock.ISolidBlockPaintableBlock;
+import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
 
 public class PaintWrangler {
 
@@ -93,16 +94,16 @@ public class PaintWrangler {
     return paintModel;
   }
 
-  public static IBakedModel handlePaint(final BlockStateWrapper state, ISolidBlockPaintableBlock block, final IBlockAccess world, final BlockPos pos) {
+  public static IBakedModel handlePaint(final BlockStateWrapper state, IBlockPaintableBlock block, final IBlockAccess world, final BlockPos pos) {
     IBlockState paintSource = block.getPaintSource(state, world, pos);
     if (paintSource != null) {
-      return wrangleBakedModel(world, pos, paintSource);
+      return wrangleBakedModel(world, pos, PainterUtil2.handleDynamicState(paintSource, state, world, pos));
     }
     return null;
   }
 
-  public static IBakedModel handlePaint(ItemStack stack, ISolidBlockPaintableBlock block) {
-    IBlockState paintSource = ((ISolidBlockPaintableBlock) block).getPaintSource((Block) block, stack);
+  public static IBakedModel handlePaint(ItemStack stack, IBlockPaintableBlock block) {
+    IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource((Block) block, stack);
     if (paintSource != null) {
       int damage = paintSource.getBlock().damageDropped(paintSource);
       ItemStack paint = new ItemStack(paintSource.getBlock(), 1, damage);

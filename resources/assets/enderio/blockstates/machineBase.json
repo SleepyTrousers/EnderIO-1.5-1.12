@@ -46,7 +46,7 @@
                     "frontframe":"enderio:blocks/blockSoulMachineSide"
                 },
                 "submodel":{ "body":{ "model":"enderio:machine_body", "y":0 } } },
-            "soul_west":{           
+            "soul_west":{
                 "textures":{
                     "top":"enderio:blocks/blockSoulMachineTop",
                     "bottom":"enderio:blocks/blockSoulMachineBottom",
@@ -54,7 +54,8 @@
                     "back":"enderio:blocks/blockSoulMachineBack",
                     "frontframe":"enderio:blocks/blockSoulMachineSide"
                 },
-                "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } }
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } },
+            "paint_overlay":{ "model":"enderio:paint_overlay" }
         }
     }
 }

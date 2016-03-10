@@ -24,7 +24,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import crazypants.enderio.render.paint.IPaintableBlock.ISolidBlockPaintableBlock;
+import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.render.paint.PaintWrangler;
 
 public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
@@ -100,8 +101,8 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
         overlayLayer = renderMapper.mapOverlayLayer(state, world, pos);
       }
 
-      if (block instanceof ISolidBlockPaintableBlock) {
-        IBakedModel paintModel = PaintWrangler.handlePaint(state, (ISolidBlockPaintableBlock) block, world, pos);
+      if (block instanceof IBlockPaintableBlock) {
+        IBakedModel paintModel = PaintWrangler.handlePaint(state, (IBlockPaintableBlock) block, world, pos);
         if (paintModel != null) {
           if (overlayLayer == null || overlayLayer.isEmpty()) {
             crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
@@ -146,22 +147,31 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       Item item = stack.getItem();
       if (item instanceof ItemBlock) {
         Block block = ((ItemBlock) item).getBlock();
-        IBakedModel paint = null;
-        EnderBakedModel bakedModel = null;
-        // TODO: Combine(!) it with the mapBlockRender() because that may want to add overlays to mark the block as "painted"
-        if (block instanceof ISolidBlockPaintableBlock) {
-          paint = PaintWrangler.handlePaint(stack, (ISolidBlockPaintableBlock) block);
+        if (block instanceof IBlockPaintableBlock) {
+          IBakedModel paint = PaintWrangler.handlePaint(stack, (IBlockPaintableBlock) block);
+          if (paint != null) {
+            if (block instanceof ISmartRenderAwareBlock) {
+              // Combine(!) it with the mapBlockRender() because that may want to add overlays to mark the block as "painted"
+              IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
+              Pair<List<IBlockState>, List<IBakedModel>> paintOverlay = renderMapper.mapItemPaintOverlayRender(block, stack);
+              if (paintOverlay == null) {
+                IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+                EnderBakedModel bakedModel = new EnderBakedModel(getDefaults(), null, Collections.singletonList(stdOverlay));
+                return new UnderlayBakedModel(bakedModel, paint);
+              } else if ((paintOverlay.getLeft() == null || paintOverlay.getLeft().isEmpty())
+                  && (paintOverlay.getRight() == null || paintOverlay.getRight().isEmpty())) {
+                return paint;
+              } else {
+                EnderBakedModel bakedModel = new EnderBakedModel(getDefaults(), paintOverlay);
+                return new UnderlayBakedModel(bakedModel, paint);
+              }
+            }
+            return paint;
+          }
         }
         if (block instanceof ISmartRenderAwareBlock) {
           IRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
-          bakedModel = new EnderBakedModel(getDefaults(), renderMapper.mapBlockRender(block, stack));
-        }
-        if (bakedModel != null && paint != null) {
-          return new UnderlayBakedModel(bakedModel, paint);
-        } else if (bakedModel != null) {
-          return bakedModel;
-        } else if (paint != null) {
-          return paint;
+          return new EnderBakedModel(getDefaults(), renderMapper.mapItemRender(block, stack));
         }
       }
     }

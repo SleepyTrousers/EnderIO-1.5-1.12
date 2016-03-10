@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockAccess;
  * Master interface for paintable things. Do not implement directly, use one of the sub-interfaces.
  *
  */
-public interface IPaintableBlock {
+public interface IPaintable {
 
   /**
    * (Re-)Paints a block that exists in the world. It's the caller's responsibility to check that the paint source is valid and appropriate, and to trigger a
@@ -42,21 +42,25 @@ public interface IPaintableBlock {
   /**
    * A block that can be painted with a texture. It keeps its model, but applies the texture from the paint source to it.
    */
-  public static interface ITexturePaintableBlock extends IPaintableBlock {
+  public static interface ITexturePaintableBlock extends IPaintable {
+
+  }
+
+  public static interface IBlockPaintableBlock extends IPaintable {
 
   }
 
   /**
    * A block that can be painted with a full block. It renders the paint source's model instead of its own. The paint source must be a full, solid block.
    */
-  public static interface ISolidBlockPaintableBlock extends IPaintableBlock {
+  public static interface ISolidBlockPaintableBlock extends IBlockPaintableBlock {
 
   }
 
   /**
    * A block that can be painted with any block. It renders the paint source's model instead of its own. The paint source can be any block.
    */
-  public static interface IAnyBlockPaintableBlock extends ISolidBlockPaintableBlock {
+  public static interface INonSolidBlockPaintableBlock extends IBlockPaintableBlock {
 
   }
 

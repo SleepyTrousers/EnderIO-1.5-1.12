@@ -76,7 +76,7 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(Block block, ItemStack stack) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     if (body != null) {
       states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body));
@@ -93,6 +93,11 @@ public class MachineRenderMapper implements IRenderMapper {
     if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
       return renderIO(tileEntity, block);
     }
+    return null;
+  }
+
+  @Override
+  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
     return null;
   }
 

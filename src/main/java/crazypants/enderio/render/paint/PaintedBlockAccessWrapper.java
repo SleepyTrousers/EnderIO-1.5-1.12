@@ -11,6 +11,8 @@ import net.minecraft.world.IBlockAccess;
 
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
+import crazypants.enderio.machine.painter.PainterUtil2;
+
 public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
   private static final ConcurrentHashMap<Block, Boolean> teBlackList = new ConcurrentHashMap<Block, Boolean>();
@@ -51,8 +53,8 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
   private IBlockState getPaintSource(BlockPos pos) {
     IBlockState state = super.getBlockState(pos);
-    if (state.getBlock() instanceof IPaintableBlock.ISolidBlockPaintableBlock) {
-      return ((IPaintableBlock.ISolidBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos);
+    if (state.getBlock() instanceof IPaintable.IBlockPaintableBlock) {
+      return PainterUtil2.handleDynamicState(((IPaintable.IBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos), state, wrapped, pos);
     }
     // TODO: Foreign painted blocks
     return null;

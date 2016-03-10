@@ -32,8 +32,12 @@ public class EnderBakedModel implements IEnderBakedModel {
   private final VertexFormat format;
   private final Matrix4f[] transformTypes = new Matrix4f[TransformType.values().length];
 
+  public EnderBakedModel(IBakedModel transforms, Pair<List<IBlockState>, List<IBakedModel>> pair, List<IBlockState> overlays) {
+    this((IPerspectiveAwareModel) (transforms instanceof IPerspectiveAwareModel ? transforms : null), pair, overlays);
+  }
+
   public EnderBakedModel(IBakedModel transforms, Pair<List<IBlockState>, List<IBakedModel>> pair) {
-    this((IPerspectiveAwareModel) (transforms instanceof IPerspectiveAwareModel ? transforms : null), pair);
+    this((IPerspectiveAwareModel) (transforms instanceof IPerspectiveAwareModel ? transforms : null), pair, null);
   }
 
   public EnderBakedModel(IPerspectiveAwareModel transforms, Pair<List<IBlockState>, List<IBakedModel>> data) {
