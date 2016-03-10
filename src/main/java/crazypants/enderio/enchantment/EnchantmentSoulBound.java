@@ -30,6 +30,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
   public static EnchantmentSoulBound create(int id) {
     EnchantmentSoulBound res = new EnchantmentSoulBound(id);
+    Enchantment.addToBookList(res);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
