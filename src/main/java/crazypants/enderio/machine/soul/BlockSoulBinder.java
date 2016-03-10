@@ -2,15 +2,6 @@ package crazypants.enderio.machine.soul;
 
 import java.util.Random;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -20,6 +11,15 @@ import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 
@@ -87,7 +87,6 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
             startZ + zOffset, 0.0D, 0.0D, 0.0D, 0);
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);
-          // fx.setRBGColorF(0.1f, 0.4f, 0.1f);
           fx.motionY *= 0.5f;
         }
 
@@ -97,7 +96,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 
   @Override
   public IRenderMapper getRenderMapper() {
-    return RenderMappers.FRONT_MAPPER;
+    return RenderMappers.FRONT_MAPPER_NO_IO;
   }
 
   @Override

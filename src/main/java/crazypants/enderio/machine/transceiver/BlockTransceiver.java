@@ -13,10 +13,12 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
@@ -26,7 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -96,16 +98,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     return GuiHandler.GUI_ID_TRANSCEIVER;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  protected void registerOverlayIcons(IIconRegister iIconRegister) {
-//    super.registerOverlayIcons(iIconRegister);
-//    overlayIconPull = iIconRegister.registerIcon("enderio:overlays/transcieverPull");
-//    overlayIconPush = iIconRegister.registerIcon("enderio:overlays/transcieverPush");
-//    overlayIconPushPull = iIconRegister.registerIcon("enderio:overlays/transcieverPushPull");
-//    overlayIconDisabled = iIconRegister.registerIcon("enderio:overlays/transcieverDisabled");
-//  }
-
   @Override
   public boolean isOpaqueCube() {
     return false;
@@ -116,13 +108,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
   }
-  
-  @Override
-  public EnumWorldBlockLayer getBlockLayer() {
-    //return EnumWorldBlockLayer.TRANSLUCENT;
-    return EnumWorldBlockLayer.SOLID;
-  }
-
+   
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
@@ -173,6 +159,24 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   @Override
   public IRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IOMode.EnumIOMode mapIOMode(IoMode mode, EnumFacing side) {
+    switch (mode) {
+    case NONE:
+      return IOMode.EnumIOMode.NONE;
+    case PULL:
+      return IOMode.EnumIOMode.TRANSCIEVERPULL;
+    case PUSH:
+      return IOMode.EnumIOMode.TRANSCIEVERPUSH;
+    case PUSH_PULL:
+      return IOMode.EnumIOMode.TRANSCIEVERPUSHPULL;
+    case DISABLED:
+      return IOMode.EnumIOMode.TRANSCIEVERDISABLED;
+    }
+    throw new RuntimeException("Hey, leave our enums alone!");
   }
 
 }
