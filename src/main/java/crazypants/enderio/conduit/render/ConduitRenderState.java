@@ -10,25 +10,29 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class ConduitRenderState extends BlockStateWrapper {
-  
+
   private final IConduitBundle bundle;
-  
+
   private final boolean renderFacade;
   private final boolean renderConduit;
-  
-  public ConduitRenderState(IBlockState state, IBlockAccess world, BlockPos pos, IConduitBundle bundle) {
-    super(state, world, pos);  
-    this.bundle = bundle;
-    
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
-    renderFacade = bundle.hasFacade() && !ConduitUtil.isFacadeHidden(bundle, player);
-    renderConduit = !renderFacade || !isFacadeOpaqueCube();
+  public ConduitRenderState(IBlockState state, IBlockAccess world, BlockPos pos, IConduitBundle bundle) {
+    super(state, world, pos);
+    this.bundle = bundle;
+
+    if (bundle == null) {
+      renderFacade = false;
+      renderConduit = false;
+    } else {
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      renderFacade = bundle.hasFacade() && !ConduitUtil.isFacadeHidden(bundle, player);
+      renderConduit = !renderFacade || !isFacadeOpaqueCube();
+    }
   }
 
-  private boolean isFacadeOpaqueCube() {
+  private boolean isFacadeOpaqueCube() {   
     IBlockState b = bundle.getFacade();
-    if(b != null) {
+    if (b != null) {
       return b.getBlock().isOpaqueCube();
     }
     return false;
