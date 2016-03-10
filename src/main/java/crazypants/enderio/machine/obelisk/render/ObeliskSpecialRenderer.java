@@ -2,11 +2,8 @@ package crazypants.enderio.machine.obelisk.render;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.render.RenderUtil;
 
-import static org.lwjgl.opengl.GL11.glDepthMask;
 import static org.lwjgl.opengl.GL11.glScalef;
 import static org.lwjgl.opengl.GL11.glTranslated;
 
@@ -14,29 +11,32 @@ import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
 public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
 
   private ItemStack floatingStack;
 
   private Random rand = new Random();
-  
+
   private RenderEntityItem rei;
-  
+
   private final Block block;
 
   public ObeliskSpecialRenderer(Block block, ItemStack itemStack) {
@@ -50,17 +50,28 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick, int b) {
 
-    
     World world = null;
     if (te != null) {
       world = te.getWorld();
       RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
     } else {
-      world = Minecraft.getMinecraft().theWorld;
-      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+      world = Minecraft.getMinecraft().theWorld;    
     }
 
     renderItemStack((T) te, world, x, y, z, tick);
+
+    if (te == null) {
+      // Being rendered as an Item
+      GlStateManager.pushMatrix();
+      GlStateManager.translate(0.5f, 0.5f, 0.5f);
+      GlStateManager.scale(2, 2, 2);
+      GlStateManager.color(1, 1, 1);
+      GlStateManager.disableLighting();
+      RenderUtil.renderBlockModelAsItem(world, new ItemStack(block), block.getDefaultState());
+      GlStateManager.enableLighting();
+      // RenderHelper.enableStandardItemLighting();
+      GlStateManager.popMatrix();
+    }
   }
 
   protected void renderItemStack(T te, World world, double x, double y, double z, float tick) {
@@ -72,15 +83,9 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
 
     RenderUtil.bindBlockTexture();
 
-    GlStateManager.pushMatrix();    
-
-    GlStateManager.enableBlend();
-    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    GlStateManager.enableAlpha();    
-    RenderHelper.enableStandardItemLighting();
+    GlStateManager.pushMatrix();
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
     glScalef(1.1f, 1.1f, 1.1f);
-    glDepthMask(true);
 
     BlockPos p;
     if (te != null) {
@@ -97,24 +102,13 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
     ei.hoverStart += rand.nextFloat();
 
     GlStateManager.translate(0, -0.15f, 0);
-    if(rei == null) {
+    if (rei == null) {
       rei = new InnerRenderEntityItem(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem());
     }
     rei.doRender(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
 
     GlStateManager.popMatrix();
 
-    if (te == null) {
-      // Item
-      GlStateManager.pushMatrix();
-      GlStateManager.translate(0.5f, 0.5f, 0.5f);
-      GlStateManager.scale(2, 2, 2);
-      GlStateManager.color(1, 1, 1);
-      GlStateManager.disableLighting();
-      RenderUtil.renderBlockModelAsItem(world, new ItemStack(block), block.getDefaultState());
-      RenderHelper.enableStandardItemLighting();
-      GlStateManager.popMatrix();
-    }
   }
 
   /**
@@ -125,15 +119,104 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
     return floatingStack;
   }
 
+  //Required to prevent bobbing
   private static class InnerRenderEntityItem extends RenderEntityItem {
 
+    private Random random = new Random();
+    private RenderItem itemRenderer;
+
     public InnerRenderEntityItem(RenderManager renderManagerIn, RenderItem renderItem) {
-      super(renderManagerIn, renderItem);      
+      super(renderManagerIn, renderItem);
+      itemRenderer = renderItem;
     }
-    
+
     @Override
     public boolean shouldBob() {
       return false;
+    }
+
+    //This method is copied straight from the parent, solely to disable 'setBlurMipmap' 
+    @Override
+    public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
+      ItemStack itemstack = entity.getEntityItem();
+      random.setSeed(187L);
+      boolean flag = false;
+
+      if (bindEntityTexture(entity)) {
+        //Must be removed to prevent strange rendering artifacts
+//        this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
+        flag = true;
+      }
+
+      GlStateManager.enableRescaleNormal();
+      GlStateManager.alphaFunc(516, 0.1F);
+      GlStateManager.enableBlend();
+       GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+      GlStateManager.pushMatrix();
+      IBakedModel ibakedmodel = this.itemRenderer.getItemModelMesher().getItemModel(itemstack);
+      int i = this.func_177077_a(entity, x, y, z, partialTicks, ibakedmodel);
+
+      for (int j = 0; j < i; ++j) {
+        {
+          GlStateManager.pushMatrix();
+
+          if (j > 0) {
+            float f = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+            float f1 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+            float f2 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.15F;
+            GlStateManager.translate(shouldSpreadItems() ? f : 0.0F, shouldSpreadItems() ? f1 : 0.0F, f2);
+          }
+
+          if (ibakedmodel.isGui3d()) {
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+          }
+          ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ibakedmodel, ItemCameraTransforms.TransformType.GROUND);
+          this.itemRenderer.renderItem(itemstack, ibakedmodel);
+          GlStateManager.popMatrix();
+        }
+      }
+
+      GlStateManager.popMatrix();
+      GlStateManager.disableRescaleNormal();
+      GlStateManager.disableBlend();
+      bindEntityTexture(entity);
+
+      if (flag) {
+      //Must be removed to prevent strange rendering artifacts
+//        this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
+      }
+      
+      
+    }
+
+    private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
+      ItemStack itemstack = itemIn.getEntityItem();
+      Item item = itemstack.getItem();
+
+      if (item == null) {
+        return 0;
+      } else {
+        boolean flag = p_177077_9_.isGui3d();
+        int i = this.func_177078_a(itemstack);        
+        float f1 = shouldBob() ? MathHelper.sin((itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F : 0;
+        float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
+        GlStateManager.translate((float) p_177077_2_, (float) p_177077_4_ + f1 + 0.25F * f2, (float) p_177077_6_);
+
+        if (flag || this.renderManager.options != null) {
+          float f3 = ((itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float) Math.PI);
+          GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+        }
+
+        if (!flag) {
+          float f6 = -0.0F * (i - 1) * 0.5F;
+          float f4 = -0.0F * (i - 1) * 0.5F;
+          float f5 = -0.046875F * (i - 1) * 0.5F;
+          GlStateManager.translate(f6, f4, f5);
+        }
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        return i;
+      }
     }
   }
 
