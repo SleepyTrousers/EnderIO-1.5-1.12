@@ -21,6 +21,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -31,6 +33,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -136,17 +139,23 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     IBlockState bs = worldObj.getBlockState(bc);
     Block block = bs.getBlock();
     bs = block.getActualState(bs, worldObj, bc);
-    
+    ItemStack held = player.getCurrentEquippedItem();
     
     List<ItemStack> itemDrops = block.getDrops(worldObj, bc, bs,0);
+    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, worldObj, bc, bs, 
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, held), 1,
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, held) != 0, player);
+    
     worldObj.setBlockToAir(bc);
     boolean usedPower = false;
     if(itemDrops != null) {
-      for (ItemStack stack : itemDrops) {                
-        worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));                
-        if(block == refBlock) { //other wise leaves
-          extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
-          usedPower = true;
+      for (ItemStack stack : itemDrops) {   
+        if (worldObj.rand.nextFloat() <= chance) {
+          worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
+          if (block == refBlock) { // other wise leaves
+            extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+            usedPower = true;
+          }
         }
       }
     }
