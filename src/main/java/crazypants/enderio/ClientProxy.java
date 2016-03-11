@@ -83,7 +83,7 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public boolean isNeiInstalled() {
+  public boolean isAnEiInstalled() {
     if (checkedNei) {
       return neiInstalled;
     }
@@ -92,9 +92,17 @@ public class ClientProxy extends CommonProxy {
       neiInstalled = true;
     } catch (Exception e) {
       neiInstalled = false;
-    }
+    }    
+    if(!neiInstalled) {
+      try {
+        Class.forName("crazypants.enderio.jei.AlloyRecipeCategory");
+        neiInstalled = true;
+      } catch (Exception e) {
+        neiInstalled = false;
+      }     
+    }    
     checkedNei = true;
-    return false;
+    return neiInstalled;
   }
 
   @Override

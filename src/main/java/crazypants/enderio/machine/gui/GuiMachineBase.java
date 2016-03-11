@@ -81,7 +81,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
   }
 
   protected boolean showRecipeButton() {
-    return EnderIO.proxy.isNeiInstalled();
+    return EnderIO.proxy.isAnEiInstalled();
   }
 
   @Override

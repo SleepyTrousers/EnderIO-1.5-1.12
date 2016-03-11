@@ -2,6 +2,7 @@ package crazypants.enderio.tool;
 
 import java.lang.reflect.Method;
 
+import buildcraft.api.tools.IToolWrench;
 import crazypants.enderio.api.tool.ITool;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraft.util.BlockPos;
 
 public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
 
-//  private BCWrench wrench = new BCWrench();
+  private BCWrench wrench = new BCWrench();
 
   public BuildCraftToolProvider() throws Exception {
     //Do a check for so we throw an exception in the constructor if we dont have the
@@ -22,16 +23,15 @@ public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
     if(MpsUtil.instance.isPowerFistEquiped(stack) && !MpsUtil.instance.isOmniToolActive(stack)) {
       return null;
     }
-//    if(stack.getItem() instanceof IToolWrench) {
-//      return wrench;
-//    }
+    if(stack.getItem() instanceof IToolWrench) {
+      return wrench;
+    }
     return null;
   }
 
   @Override
   public Class<?> getInterface() {
-//    return IToolWrench.class;
-    return null;
+    return IToolWrench.class;    
   }
 
   @Override
@@ -48,13 +48,12 @@ public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
 
     @Override
     public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {
-      //return ((IToolWrench) stack.getItem()).canWrench(player, pos);
-      return false;
+      return ((IToolWrench) stack.getItem()).canWrench(player, pos);      
     }
 
     @Override
     public void used(ItemStack stack, EntityPlayer player, BlockPos pos) {
-//      ((IToolWrench) stack.getItem()).wrenchUsed(player, pos);      
+      ((IToolWrench) stack.getItem()).wrenchUsed(player, pos);      
     }
     
     @Override
