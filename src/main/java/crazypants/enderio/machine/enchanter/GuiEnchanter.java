@@ -32,7 +32,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
     recipeButton.onGuiInit();
-    recipeButton.visible = EnderIO.proxy.isNeiInstalled();
+    recipeButton.visible = EnderIO.proxy.isAnEiInstalled();
     ((ContainerEnchanter) inventorySlots).createGhostSlots(getGhostSlots());
   }
   
@@ -44,7 +44,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     
-    if(EnderIO.proxy.isNeiInstalled()) {
+    if(EnderIO.proxy.isAnEiInstalled()) {
       IconEIO.map.render(IconEIO.RECIPE, sx + 155, sy + 8, 16, 16, 0, true);
     }
     

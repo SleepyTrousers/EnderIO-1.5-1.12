@@ -46,7 +46,7 @@ public class CommonProxy {
     return serverTickCount;
   }
 
-  public boolean isNeiInstalled() {
+  public boolean isAnEiInstalled() {
     return false;
   }
 
