@@ -55,6 +55,7 @@ repositories {
     maven { url = "http://mobiusstrip.eu/maven" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
     maven { url = "http://maven.tterrag.com" }        
+    maven { url = "http://dvs1.progwml6.com/files/maven" }
     mavenLocal()
 }
 
@@ -66,6 +67,9 @@ dependencies {
     }
 
     deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
+    deobfCompile "mezz.jei:jei_1.8.9:2.28.7.174"
+    
+    compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 sourceSets {

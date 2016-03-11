@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.item.ItemYetaWrench;
 import net.minecraft.block.Block;
@@ -62,13 +63,13 @@ public class ToolUtil {
 
   private ToolUtil() {
 
-//    try {
-//      Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider").newInstance();
-//      toolProviders.add((IToolProvider) obj);
-//      toolImpls.add((IToolImpl) obj);
-//    } catch (Exception e) {
-//      Log.warn("Could not find Build Craft Wrench definition. Wrench integration with other mods may fail");
-//    }
+    try {
+      Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider").newInstance();
+      toolProviders.add((IToolProvider) obj);
+      toolImpls.add((IToolImpl) obj);
+    } catch (Exception e) {
+      Log.warn("Could not find Build Craft Wrench definition. Wrench integration with other mods may fail");
+    }
 //    try {
 //      Object obj = Class.forName("crazypants.enderio.tool.AEToolProvider").newInstance();
 //      toolProviders.add((IToolProvider) obj);
