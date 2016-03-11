@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -383,7 +385,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileCapBank te, ItemStack drop) {
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileCapBank te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
     if (te != null) {
       te.writeCommonNBT(drop.getTagCompound());

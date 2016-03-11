@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import crazypants.util.IFacade;
 
 /**
  * Master interface for paintable things. Do not implement directly, use one of the sub-interfaces.
@@ -46,7 +47,7 @@ public interface IPaintable {
 
   }
 
-  public static interface IBlockPaintableBlock extends IPaintable {
+  public static interface IBlockPaintableBlock extends IPaintable, IFacade {
 
   }
 

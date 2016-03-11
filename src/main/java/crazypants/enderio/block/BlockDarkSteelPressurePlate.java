@@ -17,6 +17,7 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
@@ -99,7 +100,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-    IBlockState b = PainterUtil.getSourceBlockState(stack);
+    IBlockState b = PainterUtil2.getSourceBlock(stack);
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof TileEntityDarkSteelPressurePlate) {
       TileEntityDarkSteelPressurePlate tef = (TileEntityDarkSteelPressurePlate) te;

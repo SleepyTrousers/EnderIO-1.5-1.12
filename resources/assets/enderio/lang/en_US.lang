@@ -641,7 +641,7 @@ enderio.itemCoordSelector.chat.setDimension=Set Dimension: %s%s
 
 //Painter
 tile.blockPainter.name=Painting Machine
-enderio.blockPainter.paintedWith=Painted with:
+enderio.blockPainter.paintedWith=Painted with: %s
 tile.blockPaintedFence.name=Painted Fence
 tile.blockPaintedFenceGate.name=Painted Gate
 tile.blockPaintedWall.name=Painted Wall

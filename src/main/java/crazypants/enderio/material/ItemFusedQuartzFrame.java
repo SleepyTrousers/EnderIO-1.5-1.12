@@ -8,6 +8,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,7 +55,7 @@ public class ItemFusedQuartzFrame extends Item {
       if(tecb == null) {
         return false;
       }
-      tecb.setSourceBlock(PainterUtil.getSourceBlockState(itemStack));      
+      tecb.setSourceBlock(PainterUtil2.getSourceBlock(itemStack));      
       world.markBlockForUpdate(pos);      
       if(!world.isRemote) {
         if(!player.capabilities.isCreativeMode) {
@@ -77,7 +78,7 @@ public class ItemFusedQuartzFrame extends Item {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     super.addInformation(item, par2EntityPlayer, list, par4);
-    list.add(PainterUtil.getTooltTipText(item));
+    list.add(PainterUtil2.getTooltTipText(item));
   }
 
   // public final class FramePainterRecipe extends BasicPainterTemplate {

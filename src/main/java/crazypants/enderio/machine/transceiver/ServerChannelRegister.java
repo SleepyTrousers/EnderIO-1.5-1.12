@@ -15,6 +15,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import org.apache.commons.io.FileUtils;
 
 import com.enderio.core.common.util.ItemUtil;
@@ -28,11 +34,6 @@ import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.UserIdent;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -83,8 +84,10 @@ public class ServerChannelRegister extends ChannelRegister {
         if (name == null || ordinal == -1) {
           Log.warn("ServerChannelRegister: Incomplete channel in dimensionalTransceiver.json");
         } else {
-          if (uuid != null || playername != null) {
+          if (uuid != null) {
             ident = UserIdent.create(uuid, playername);
+          } else if (playername != null) {
+            ident = UserIdent.create(playername);
           } else if (legacyUser != null) {
             ident = UserIdent.create(legacyUser);
           }

@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport.anchor;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
@@ -13,6 +15,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
@@ -93,7 +96,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       if (te instanceof TileTravelAnchor) {
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);        
-        IBlockState bs = PainterUtil.getSourceBlockState(stack);
+        IBlockState bs = PainterUtil2.getSourceBlock(stack);
         ta.setSourceBlock(bs);
         world.markBlockForUpdate(pos);
       }
@@ -152,7 +155,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, TileTravelAnchor anchor, ItemStack drop) {       
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileTravelAnchor anchor, ItemStack drop) {       
     if (anchor == null) {
       return;
     }

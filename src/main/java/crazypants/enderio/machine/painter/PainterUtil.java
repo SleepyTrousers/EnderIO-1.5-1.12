@@ -1,24 +1,24 @@
 package crazypants.enderio.machine.painter;
 
-import com.google.common.base.Strings;
-
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
+import com.google.common.base.Strings;
+
+@Deprecated
 public final class PainterUtil {
 
   
   private PainterUtil() {
   }
 
+  @Deprecated
   public static boolean isMetadataEquivelent(ItemStack one, ItemStack two) {
     if(one == null || two == null) {
       return false;
@@ -27,19 +27,13 @@ public final class PainterUtil {
         && PainterUtil.getSourceBlockMetadata(one) == PainterUtil.getSourceBlockMetadata(two);
   }
 
+  @Deprecated
   public static Block getSourceBlock(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
     return getSourceBlock(tag);
   }
   
-  public static IBlockState getSourceBlockState(ItemStack item) {
-    Block blk = getSourceBlock(item);
-    if(blk == null) {
-      return null;
-    }
-    return blk.getStateFromMeta(getSourceBlockMetadata(item));
-  }
-
+  @Deprecated
   public static Block getSourceBlock(NBTTagCompound tag) {
     if(tag != null) {
       String blockId = tag.getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
@@ -51,11 +45,13 @@ public final class PainterUtil {
     return null;
   }
 
+  @Deprecated
   public static int getSourceBlockMetadata(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
     return getSourceBlockMetadata(tag);
   }
 
+  @Deprecated
   public static int getSourceBlockMetadata(NBTTagCompound tag) {
     if(tag != null) {
       return tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_META);
@@ -63,20 +59,7 @@ public final class PainterUtil {
     return 0;
   }
 
-  public static String getTooltTipText(ItemStack item) {
-    String sourceName = "";
-    Block sourceId = PainterUtil.getSourceBlock(item);
-    int meta = PainterUtil.getSourceBlockMetadata(item);    
-    if(sourceId != null) {
-      Item itemFromBlock = Item.getItemFromBlock(sourceId);
-      if (itemFromBlock != null) {
-        ItemStack is = new ItemStack(itemFromBlock, 1, meta);
-        sourceName = is.getDisplayName();
-      }
-    }
-    return EnderIO.lang.localize("blockPainter.paintedWith") + " " + sourceName;
-  }
-
+  @Deprecated
   public static void setSourceBlock(ItemStack item, Block source, int meta) {
     NBTTagCompound tag = item.getTagCompound();
     if (tag == null) {
@@ -93,6 +76,7 @@ public final class PainterUtil {
     setSourceBlock(fac, facade.getBlock(), facade.getBlock().getMetaFromState(facade));    
   }
   
+  @Deprecated
   public static void setSourceBlock(NBTTagCompound tag, Block source, int meta) {
     if (tag == null || source == null) {
       return;
@@ -110,6 +94,7 @@ public final class PainterUtil {
     return stack;
   }
 
+  @Deprecated
   public static int normalizeFacadeMetadata(Block facadeID, int facadeMeta) {
     if(facadeID instanceof BlockRotatedPillar) {
       return facadeMeta & 3;
@@ -118,6 +103,7 @@ public final class PainterUtil {
   }
 
 //TODO: 1.8
+  @Deprecated
   public static int adjustFacadeMetadata(Block facadeID, int facadeMeta, EnumFacing side) {
     
 //    if(facadeID instanceof BlockRotatedPillar) {
@@ -135,6 +121,7 @@ public final class PainterUtil {
     return facadeMeta;
   }
 
+  @Deprecated
   public static int rotateFacadeMetadata(Block facadeID, int facadeMeta, EnumFacing axis) {
     if(facadeID instanceof BlockRotatedPillar) {
       int dir = facadeMeta & 0xC;
@@ -159,8 +146,5 @@ public final class PainterUtil {
     }
     return facadeMeta;
   }
-
- 
-
   
 }

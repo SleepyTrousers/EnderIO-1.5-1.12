@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -59,7 +61,6 @@ public class PaintRegistry {
     private ConcurrentMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>> cache;
 
     private PaintRegistryClient() {
-      init();
     }
 
     @SideOnly(Side.CLIENT)
@@ -121,7 +122,7 @@ public class PaintRegistry {
         }
         subcache.putIfAbsent(key, bakedModel);
       }
-      return clazz == IBakedModel.class ? (T) bakedModel : null;
+      return clazz.isInstance(bakedModel) ? clazz.cast(bakedModel) : null;
     }
 
     @SideOnly(Side.CLIENT)
@@ -136,13 +137,18 @@ public class PaintRegistry {
       state = rotation == null ? state : new ModelStateComposition(state, rotation);
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
         @Override
-        public TextureAtlasSprite apply(ResourceLocation location) {
+        public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
           String locationString = location.toString();
           if (paintMode != PaintMode.TAGGED_TEXTURES || locationString.endsWith("PAINT")) {
             return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
           } else {
             return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(locationString);
           }
+        }
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+          return super.equals(obj);
         }
       });
     }
@@ -154,6 +160,7 @@ public class PaintRegistry {
   public static void create() {
     if (instance == null) {
       instance = new PaintRegistryClient();
+      instance.init();
       MinecraftForge.EVENT_BUS.register(instance);
     }
   }

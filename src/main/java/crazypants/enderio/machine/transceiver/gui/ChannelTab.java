@@ -4,6 +4,10 @@ import java.awt.Color;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
@@ -23,9 +27,6 @@ import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.UserIdent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 
 public class ChannelTab implements ITabPanel {
 
@@ -86,6 +87,11 @@ public class ChannelTab implements ITabPanel {
       public boolean apply(@Nullable Channel input) {
         return input != null
             && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile()) || input.getUser() == UserIdent.nobody);
+      }
+
+      @Override
+      public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
       }
     };
     
