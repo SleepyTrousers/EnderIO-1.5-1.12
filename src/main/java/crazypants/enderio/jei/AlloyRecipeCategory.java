@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class AlloyRecipeCategory extends BlankRecipeCategory {
 
-  public static final String UID = "AlloySmelter";
+  public static final @Nonnull String UID = "AlloySmelter";
 
   // ------------ Recipes
 
@@ -74,17 +74,18 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
   }
 
   @Override
-  public String getUid() {
+  public @Nonnull String getUid() {
     return UID;
   }
 
   @Override
-  public String getTitle() {
-    return EnderIO.blockAlloySmelter.getLocalizedName();
+  public @Nonnull String getTitle() {
+    String localizedName = EnderIO.blockAlloySmelter.getLocalizedName();
+    return localizedName != null ? localizedName : "ERROR";
   }
 
   @Override
-  public IDrawable getBackground() {
+  public @Nonnull IDrawable getBackground() {
     return background;
   }
 
@@ -105,7 +106,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
   }
   
   @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
     guiItemStacks.init(0, true, 53 - xOff, 16 - yOff);
@@ -115,9 +116,15 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
 
     List<?> inputs = recipeWrapper.getInputs();
     for (int index = 0; index < inputs.size(); index++) {
-      guiItemStacks.setFromRecipe(index, inputs.get(index));
+      Object ingredients = inputs.get(index);
+      if (ingredients != null) {
+        guiItemStacks.setFromRecipe(index, ingredients);
+      }
     }
-    guiItemStacks.setFromRecipe(3, recipeWrapper.getOutputs());
+    List outputs = recipeWrapper.getOutputs();
+    if (outputs != null) {
+      guiItemStacks.setFromRecipe(3, outputs);
+    }
     
     if(recipeWrapper instanceof AlloyRecipe) {
       currentRecipe = (AlloyRecipe)recipeWrapper;

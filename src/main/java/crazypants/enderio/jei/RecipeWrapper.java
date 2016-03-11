@@ -3,11 +3,13 @@ package crazypants.enderio.jei;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeOutput;
+import javax.annotation.Nonnull;
+
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeOutput;
 
 public class RecipeWrapper extends BlankRecipeWrapper {
 
@@ -18,12 +20,13 @@ public class RecipeWrapper extends BlankRecipeWrapper {
   }
 
   @Override
-  public List<?> getInputs() {
-    return recipe.getInputStacks();
+  public @Nonnull List<?> getInputs() {
+    List<ItemStack> inputStacks = recipe.getInputStacks();
+    return inputStacks != null ? inputStacks : new ArrayList<ItemStack>();
   }
 
   @Override
-  public List<?> getOutputs() {
+  public @Nonnull List<?> getOutputs() {
     List<ItemStack> outputs = new ArrayList<ItemStack>();
     for(RecipeOutput out : recipe.getOutputs()) {
       if(out.getOutput() != null) {
@@ -34,12 +37,13 @@ public class RecipeWrapper extends BlankRecipeWrapper {
   }
 
   @Override
-  public List<FluidStack> getFluidInputs() {
-    return recipe.getInputFluidStacks();
+  public @Nonnull List<FluidStack> getFluidInputs() {
+    List<FluidStack> inputFluidStacks = recipe.getInputFluidStacks();
+    return inputFluidStacks != null ? inputFluidStacks : new ArrayList<FluidStack>();
   }
 
   @Override
-  public List<FluidStack> getFluidOutputs() {
+  public @Nonnull List<FluidStack> getFluidOutputs() {
     List<FluidStack> outputs = new ArrayList<FluidStack>();
     for(RecipeOutput out : recipe.getOutputs()) {
       if(out.getFluidOutput() != null) {

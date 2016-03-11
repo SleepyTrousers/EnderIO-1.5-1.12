@@ -33,7 +33,7 @@ import net.minecraft.util.StatCollector;
 
 public class SagMillRecipeCategory extends BlankRecipeCategory implements ITooltipCallback<ItemStack> {
 
-  public static final String UID = "SagMill";
+  public static final @Nonnull String UID = "SagMill";
 
   // ------------ Recipes
 
@@ -82,17 +82,18 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
   }
 
   @Override
-  public String getUid() {
+  public @Nonnull String getUid() {
     return UID;
   }
 
   @Override
-  public String getTitle() {
-    return EnderIO.blockCrusher.getLocalizedName();
+  public @Nonnull String getTitle() {
+    String localizedName = EnderIO.blockCrusher.getLocalizedName();
+    return localizedName != null ? localizedName : "ERROR";
   }
 
   @Override
-  public IDrawable getBackground() {
+  public @Nonnull IDrawable getBackground() {
     return background;
   }
 
@@ -112,7 +113,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
   }
 
   @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
 
     if (recipeWrapper instanceof SagRecipe) {
       currentRecipe = (SagRecipe) recipeWrapper;
@@ -131,7 +132,10 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
     guiItemStacks.init(4, false, 111 - xOff, 58 - yOff);    
     guiItemStacks.init(5, true, 121 - xOff, 22 - yOff);
 
-    guiItemStacks.setFromRecipe(0, currentRecipe.getInputs().get(0));
+    Object ingredients = currentRecipe.getInputs().get(0);
+    if (ingredients != null) {
+      guiItemStacks.setFromRecipe(0, ingredients);
+    }
     int i = 1;
     for (Object output : currentRecipe.getOutputs()) {
       if (output != null) {
@@ -164,7 +168,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
     }    
   }
   
-  private List<ItemStack> getBalls() {
+  private @Nonnull List<ItemStack> getBalls() {
     List<GrindingBall> daBalls = CrusherRecipeManager.getInstance().getBalls();
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(null);
