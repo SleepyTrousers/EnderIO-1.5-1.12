@@ -34,9 +34,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
       super(recipe);
     }
   }
-
-  
-  
+ 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
     
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));

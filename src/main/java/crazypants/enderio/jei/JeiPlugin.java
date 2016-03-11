@@ -18,6 +18,7 @@ public class JeiPlugin extends BlankModPlugin {
     IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
         
     AlloyRecipeCategory.register(registry,guiHelper);
+    SagMillRecipeCategory.register(registry,guiHelper);
            
   }
 
