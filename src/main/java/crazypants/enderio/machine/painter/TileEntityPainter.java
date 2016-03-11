@@ -2,7 +2,6 @@ package crazypants.enderio.machine.painter;
 
 import java.util.Map;
 
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
@@ -11,11 +10,10 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 
-public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
+public class TileEntityPainter extends AbstractPoweredTaskEntity {
 
 //  private static final short MAX_POWER_USE_PER_TICK = 6;
 
@@ -62,14 +60,6 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   @Override
   public String getMachineName() {
     return ModObject.blockPainter.unlocalisedName;
-  }
-
-  private MachineRecipeInput targetInput() {
-    return MachineRecipeInput.create(0, inventory[0]);
-  }
-
-  private MachineRecipeInput paintSource() {
-    return MachineRecipeInput.create(1, inventory[1]);
   }
 
   @Override

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MachineRecipeRegistry {
 
@@ -24,6 +25,17 @@ public class MachineRecipeRegistry {
       machineRecipes.put(machineName, res);
     }
     return res;
+  }
+
+  public void enableRecipeSorting(String machineName) {
+    Map<String, IMachineRecipe> res = machineRecipes.get(machineName);
+    if (res == null) {
+      res = new TreeMap<String, IMachineRecipe>();
+      machineRecipes.put(machineName, res);
+    } else if (!(res instanceof TreeMap)) {
+      res = new TreeMap<String, IMachineRecipe>(res);
+      machineRecipes.put(machineName, res);
+    }
   }
 
   public IMachineRecipe getRecipeForUid(String uid) {

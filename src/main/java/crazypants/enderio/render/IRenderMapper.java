@@ -55,7 +55,7 @@ public interface IRenderMapper {
 
   /**
    * Get lists of blockstates and pre-baked, pre-rotated models to render for the given item stack when it is painted. These are rendered in addition to the
-   * paint. If en empty result is returned, nothing is rendered. If null is returned, the generic, full-block "is painted" overlay is rendered.
+   * paint. If an empty result is returned, nothing is rendered. If null is returned, the generic, full-block "is painted" overlay is rendered.
    * <p>
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.

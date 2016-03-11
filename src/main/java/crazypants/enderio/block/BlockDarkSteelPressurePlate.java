@@ -3,23 +3,6 @@ package crazypants.enderio.block;
 import java.util.Collections;
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.Util;
-import com.google.common.collect.Lists;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.BasicPainterTemplate;
-import crazypants.enderio.machine.painter.IPaintedBlock;
-import crazypants.enderio.machine.painter.PaintSourceValidator;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
@@ -39,6 +22,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.google.common.collect.Lists;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.painter.IPaintedBlock;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.util.ClientUtil;
 
 public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider, IPaintedBlock, IHaveRenderers {
 
@@ -92,9 +86,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }    
     TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate)te;
     ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
-    if (tepb.getSourceBlock() != null) {
-      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock());
-    }
+    // TODO if (tepb.getSourceBlock() != null) {
+    // PainterUtil.setSourceBlock(stack, tepb.getSourceBlock());
+    // }
     return Lists.newArrayList(stack);
   }
 
@@ -104,7 +98,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof TileEntityDarkSteelPressurePlate) {
       TileEntityDarkSteelPressurePlate tef = (TileEntityDarkSteelPressurePlate) te;
-      tef.setSourceBlock(b);      
+      // TODO tef.setSourceBlock(b);
       tef.setSilent(stack.getItemDamage() == 1);
     }
     world.markBlockForUpdate(pos);
@@ -122,9 +116,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if (tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getBlock().colorMultiplier(world, pos);
-      }
+      // TODO if (tef.getSourceBlock() != null) {
+      // return tef.getSourceBlock().getBlock().colorMultiplier(world, pos);
+      // }
     }
     return super.colorMultiplier(world, pos, renderPass);
   }

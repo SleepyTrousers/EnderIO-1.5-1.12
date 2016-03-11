@@ -1,36 +1,27 @@
 package crazypants.enderio.machine.painter;
 
-import crazypants.enderio.TileEntityEio;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.render.paint.IPaintable;
 
-public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableTileEntity {
+public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.IPaintableTileEntity {
 
-  private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
-  private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
-  private Block sourceBlock;
-  private int sourceBlockMetadata;
+  private IBlockState paintSource = null;
 
   public TileEntityPaintedBlock() {
-    this.sourceBlock = null;
   }
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    String sourceBlockStr = nbtRoot.getString(KEY_SOURCE_BLOCK_ID);
-    sourceBlock = Block.getBlockFromName(sourceBlockStr);
-    sourceBlockMetadata = nbtRoot.getInteger(KEY_SOURCE_BLOCK_META);
+    this.paintSource = PainterUtil2.readNbt(nbtRoot);
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    if(sourceBlock != null) {
-      nbtRoot.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock).toString());
-    }
-    nbtRoot.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
+    PainterUtil2.writeNbt(nbtRoot, paintSource);
   }
 
   @Override
@@ -40,23 +31,13 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableT
   }
 
   @Override
-  public void setSourceBlock(IBlockState source) {
-    if(source == null) {
-      sourceBlock = null;
-      sourceBlockMetadata = 0;
-    } else {
-      sourceBlock = source.getBlock();
-      sourceBlockMetadata = sourceBlock.getMetaFromState(source);
-    }
-    
+  public void setPaintSource(IBlockState paintSource) {
+    this.paintSource = paintSource;
   }
 
   @Override
-  public IBlockState getSourceBlock() {
-    if(sourceBlock == null) {
-      return null;
-    }
-    return sourceBlock.getStateFromMeta(sourceBlockMetadata);
+  public IBlockState getPaintSource() {
+    return paintSource;
   }
 
 }

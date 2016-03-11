@@ -11,6 +11,12 @@ public class EveryPaintableRecipe<T extends Block & IPaintable> extends BasicPai
   }
 
   @Override
+  public String getUid() {
+    return "\uFFFE" + super.getUid();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
   protected T getTargetBlock(ItemStack target) {
     if (target != null) {
       Block blk = Block.getBlockFromItem(target.getItem());

@@ -16,7 +16,7 @@ import crazypants.enderio.render.paint.IPaintable;
 
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
-public abstract class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {
+public class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {
 
   public static int DEFAULT_ENERGY_PER_TASK = Config.painterEnergyPerTaskRF;
 
@@ -71,10 +71,8 @@ public abstract class BasicPainterTemplate<T extends Block & IPaintable> impleme
       return new ResultStack[0];
     }
 
-    ItemStack result;
-    if ((targetBlock == paintBlock || Block.getBlockFromItem(target.getItem()) == paintBlock) && target.getItemDamage() == paintSource.getItemDamage()) {
-      result = new ItemStack(Block.getBlockFromItem(target.getItem()), 1, target.getItemDamage());
-    } else {
+    ItemStack result = isUnpaintingOp(paintSource, target);
+    if (result == null) {
       result = new ItemStack(targetBlock, 1, target.getItemDamage());
       ((IPaintable) targetBlock).setPaintSource(targetBlock, result, paintState);
     }
@@ -110,6 +108,42 @@ public abstract class BasicPainterTemplate<T extends Block & IPaintable> impleme
 
   protected T getTargetBlock(ItemStack target) {
     return resultBlock;
+  }
+
+  public ItemStack isUnpaintingOp(ItemStack paintSource, ItemStack target) {
+    if (paintSource == null || target == null) {
+      return null;
+    }
+
+    Block paintBlock = Block.getBlockFromItem(paintSource.getItem());
+    Block targetBlock = Block.getBlockFromItem(target.getItem());
+    if (paintBlock == null || targetBlock == null) {
+      return null;
+    }
+
+    // The paint source is the paintable block we produce with this recipe. We know it must be unpainted, as paint sources that are painted are rejected. So we
+    // user wants the input item but without its paint. The input item must be able to exist in the world unpainted because it does so as paint source. So we
+    // copy the input item without its paint information.
+    if (paintBlock == resultBlock) {
+      return new ItemStack(targetBlock, 1, target.getItemDamage());
+    }
+
+    // The paint source and the target are the same item, but maybe with different meta. This means that we can simplify the painting by doing an item
+    // conversion (e.g. blue carpet to red carpet).
+    if (paintBlock == targetBlock) {
+      return new ItemStack(targetBlock, 1, paintSource.getItemDamage());
+    }
+
+    // The target is paintable, so let's check if the paint source is what was used to create it. If yes, then we unpaint it into it's original form.
+    if (targetBlock == resultBlock) {
+      for (Block validTarget : validTargets) {
+        if (paintBlock == validTarget) {
+          return new ItemStack(paintBlock, 1, paintSource.getItemDamage());
+        }
+      }
+    }
+
+    return null;
   }
 
   public boolean isValidTarget(ItemStack target) {

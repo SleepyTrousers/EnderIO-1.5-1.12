@@ -2,14 +2,6 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.BasicPainterTemplate;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,6 +12,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 
 public class ItemFusedQuartzFrame extends Item {
 
@@ -55,7 +53,7 @@ public class ItemFusedQuartzFrame extends Item {
       if(tecb == null) {
         return false;
       }
-      tecb.setSourceBlock(PainterUtil2.getSourceBlock(itemStack));      
+      // TODO tecb.setSourceBlock(PainterUtil2.getSourceBlock(itemStack));
       world.markBlockForUpdate(pos);      
       if(!world.isRemote) {
         if(!player.capabilities.isCreativeMode) {

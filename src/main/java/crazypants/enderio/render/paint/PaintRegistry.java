@@ -174,7 +174,7 @@ public class PaintRegistry {
     instance.registerModel(name, location, paintMode);
   }
 
-  public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+  public static <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
     return instance.getModel(clazz, name, paintSource, rotation);
   }
 }

@@ -19,7 +19,7 @@ import crazypants.enderio.render.paint.IPaintable;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
-  private IBlockState paintSource;
+  private IBlockState paintSource = null;
 
   private boolean hasPower, hasInventory, isCreative;
 

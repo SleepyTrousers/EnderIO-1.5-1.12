@@ -29,6 +29,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   @Override
   protected void init() {
     super.init();
+    MachineRecipeRegistry.instance.enableRecipeSorting(ModObject.blockPainter.unlocalisedName);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new EveryPaintableRecipe());
   }
 

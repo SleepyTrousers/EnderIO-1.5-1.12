@@ -44,6 +44,14 @@ public class SmartModelAttacher {
     register(block, EnumRenderMode.RENDER, EnumRenderMode.DEFAULTS, EnumRenderMode.AUTO);
   }
 
+  /**
+   * Register a block that does not have one of our special rendering properties. All its blockstates will be rendered by our smart model, to the render mapper
+   * cannot reference them and must get its blockstates from elsewhere.
+   */
+  public static void registerNoProps(Block block) {
+    register(block, null, null, null);
+  }
+
   public static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
     blocks.add(new RegistrationHolder<T, V>(block, property, defaultsValue, autoValue));
   }
