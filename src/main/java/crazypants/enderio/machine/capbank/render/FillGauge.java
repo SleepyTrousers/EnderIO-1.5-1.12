@@ -72,7 +72,7 @@ public class FillGauge implements IInfoRenderer {
     BlockPos p = cb.getPos().offset(dir);
     int brightness = cb.getWorld().getLightFor(EnumSkyBlock.SKY, p);
     
-    boolean selfIlum = true;    
+    boolean selfIlum = false;    
     if(!selfIlum) {      
       BlockPos blockPos = cb.getPos().offset(dir);
       RenderUtil.setupLightmapCoords(blockPos, cb.getWorld());
@@ -87,10 +87,6 @@ public class FillGauge implements IInfoRenderer {
   }
 
   public void doRender(CapBankClientNetwork nw, int brightness, GaugeInfo info, GaugeKey key) {
-//    if(isFirst) {
-//      createVertexCache();
-//      isFirst = false;
-//    }
     if (gaugeVertexCache == null) {
       createVertexCache();
     }
@@ -102,7 +98,10 @@ public class FillGauge implements IInfoRenderer {
     RenderUtil.addVerticesToTessellator(verts, DefaultVertexFormats.POSITION_TEX, false);
     addFillBarVertices(key, nw, info);
     GlStateManager.color(1, 1, 1);
+    
+    GlStateManager.disableLighting();
     Tessellator.getInstance().draw();
+    GlStateManager.enableLighting();
   }
 
   private void addFillBarVertices(GaugeKey key, CapBankClientNetwork nw, GaugeInfo info) {
@@ -125,7 +124,6 @@ public class FillGauge implements IInfoRenderer {
     if (maxY >= info.yPosition + 1) {
       // full bar
       RenderUtil.addVerticesToTessellator(verts, new VertexTranslation(offset), DefaultVertexFormats.POSITION_TEX, false);
-//      RenderUtil.addVerticesToTessellator(verts, null, DefaultVertexFormats.POSITION_TEX, false);
 
     } else {
       // need to render partial bar

@@ -21,6 +21,7 @@ public class JeiPlugin extends BlankModPlugin {
     SagMillRecipeCategory.register(registry,guiHelper);
     EnchanterRecipeCategory.register(registry,guiHelper);
     SliceAndSpliceRecipeCategory.register(registry,guiHelper);
+    SoulBinderRecipeCategory.register(registry, guiHelper);
            
   }
 
