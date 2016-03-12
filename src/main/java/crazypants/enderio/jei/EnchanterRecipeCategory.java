@@ -72,13 +72,30 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
      currentIngredients = ings;      
     }
+    
+    @Override
+    public List<?> getInputs() {      
+      List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
+      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
+      getItemStacks(rec, itemInputs, itemOutputs);
+      itemInputs.add(new ItemStack(Items.writable_book));
+      return itemInputs;
+    }
+
+    @Override
+    public List<?> getOutputs() {      
+      List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
+      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
+      getItemStacks(rec, itemInputs, itemOutputs);
+      return itemOutputs;
+    }
 
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
-    registry.addRecipeHandlers(new AbstractRecipeHandler<EnchanterRecipeWrapper>(EnchanterRecipeWrapper.class, EnchanterRecipeCategory.UID) {
+    registry.addRecipeHandlers(new BaseRecipeHandler<EnchanterRecipeWrapper>(EnchanterRecipeWrapper.class, EnchanterRecipeCategory.UID) {
 
       @Override
       public boolean isRecipeValid(EnchanterRecipeWrapper recipe) {
@@ -149,12 +166,17 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     guiItemStacks.init(2, false, 133 - xOff, 34 - yOff);
 
     guiItemStacks.setFromRecipe(0, new ItemStack(Items.writable_book));
-
-    EnchanterRecipe rec = currentRecipe.rec;
-    ItemStack item = rec.getInput().getInput();    
     
+    EnchanterRecipe rec = currentRecipe.rec;
     List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
-    List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
+    List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
+    getItemStacks(rec, itemInputs, itemOutputs);
+    guiItemStacks.set(1, itemInputs);
+    guiItemStacks.set(2, itemOutputs);
+  }
+
+  private static void getItemStacks(EnchanterRecipe rec, List<ItemStack> itemInputs, List<ItemStack> itemOutputs) {
+    ItemStack item = rec.getInput().getInput();
     for (int level = 1; level <= rec.getEnchantment().getMaxLevel(); level++) {
       itemInputs.add(new ItemStack(item.getItem(), level  * rec.getItemsPerLevel() ,item.getMetadata()));      
       EnchantmentData enchantment = new EnchantmentData(rec.getEnchantment(), level);
@@ -162,8 +184,6 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
       Items.enchanted_book.addEnchantment(output, enchantment);
       itemOutputs.add(output);
     }
-    guiItemStacks.set(1, itemInputs);
-    guiItemStacks.set(2, itemOutputs);
   }
 
 }
