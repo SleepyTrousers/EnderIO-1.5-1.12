@@ -1,6 +1,5 @@
 package crazypants.enderio.render.dummy;
 
-import crazypants.enderio.render.EnumRenderPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -13,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import crazypants.enderio.render.EnumRenderPart;
 
 public class BlockMachineBase extends Block {
 
@@ -34,18 +34,22 @@ public class BlockMachineBase extends Block {
     disableStats();
   }
 
+  @Override
   protected BlockState createBlockState() {
     return new BlockState(this, new IProperty[] { EnumRenderPart.SUB });
   }
 
+  @Override
   public IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
+  @Override
   public int getMetaFromState(IBlockState state) {
     return 0;
   }
 
+  @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return getDefaultState();
   }

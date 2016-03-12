@@ -72,16 +72,13 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
 
   @Override
   public boolean apply(@Nullable EntityItem entity) {
-    if (entity.isDead) {
+    if (entity == null || entity.isDead) {
       return false;
     }
     if (entity instanceof IProjectile) {
       return entity.motionY < 0.01;
     }
-    if (entity instanceof EntityItem) {
-      return true;
-    }
-    return false;
+    return true;
   }
   
   private void doHoover() {
@@ -244,8 +241,8 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     return range;
   }
 
-  private int limitRange(int range) {
-    return Math.max(1, Math.min(Config.vacuumChestRange, range));
+  private int limitRange(int rangeIn) {
+    return Math.max(1, Math.min(Config.vacuumChestRange, rangeIn));
   }
 
   public void setRange(int range) {

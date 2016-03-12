@@ -1,6 +1,5 @@
 package crazypants.enderio.render.dummy;
 
-import crazypants.enderio.render.IOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -16,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.render.IOMode;
 
 public class BlockMachineIO extends Block {
 
@@ -37,22 +37,27 @@ public class BlockMachineIO extends Block {
     disableStats();
   }
 
+  @Override
   protected BlockState createBlockState() {
     return new BlockState(this, new IProperty[] { IOMode.IO });
   }
 
+  @Override
   public IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
+  @Override
   public int getMetaFromState(IBlockState state) {
     return 0;
   }
 
+  @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return getDefaultState();
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public EnumWorldBlockLayer getBlockLayer() {
     return EnumWorldBlockLayer.CUTOUT;

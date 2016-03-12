@@ -132,7 +132,8 @@ public class UserIdent {
     final int prime = 31;
     int result = 1;
     result = prime * result + playerName.hashCode();
-    result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+    final UUID uuidNullChecked = uuid;
+    result = prime * result + ((uuidNullChecked == null) ? 0 : uuidNullChecked.hashCode());
     return result;
   }
 
