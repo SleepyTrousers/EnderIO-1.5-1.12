@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIOTab;
 
 public class SmartModelAttacher {
 
@@ -104,6 +104,8 @@ public class SmartModelAttacher {
         for (Entry<IBlockState, ModelResourceLocation> entry : locations.entrySet()) {
           if (entry.getKey().getValue(holder.property) == holder.autoValue) {
             event.modelRegistry.putObject(entry.getValue(), model);
+          } else if (event.modelRegistry.getObject(entry.getValue()) == null) {
+            event.modelRegistry.putObject(entry.getValue(), defaultBakedModel);
           }
         }
       } else {
@@ -112,7 +114,8 @@ public class SmartModelAttacher {
         IBakedModel defaultBakedModel = event.modelRegistry.getObject(defaultMrl);
 
         for (ModelResourceLocation mrl : locations.values()) {
-          event.modelRegistry.putObject(mrl, new MachineSmartModel(event.modelRegistry.getObject(mrl)));
+          IBakedModel model = event.modelRegistry.getObject(mrl);
+          event.modelRegistry.putObject(mrl, new MachineSmartModel(model != null ? model : defaultBakedModel));
         }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");

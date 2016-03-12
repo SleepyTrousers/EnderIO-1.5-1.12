@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.Nullable;
+import javax.vecmath.Vector3f;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ import net.minecraftforge.client.model.Attributes;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelStateComposition;
+import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,6 +36,8 @@ public class PaintRegistry {
     ALL_TEXTURES,
     TAGGED_TEXTURES;
   }
+
+  public static IModelState OVERLAY_TRANSFORMATION;
 
   private static class PaintRegistryServer {
     private PaintRegistryServer() {
@@ -70,6 +74,7 @@ public class PaintRegistry {
       models = new ConcurrentHashMap<String, IModel>();
       cache = new ConcurrentHashMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>>();
       modelLocations.put("_missing", Pair.of((ResourceLocation) null, PaintMode.ALL_TEXTURES));
+      OVERLAY_TRANSFORMATION = new TRSRTransformation(new Vector3f(0.01f, 0.01f, 0.01f), null, null, null);
     }
 
     @SideOnly(Side.CLIENT)

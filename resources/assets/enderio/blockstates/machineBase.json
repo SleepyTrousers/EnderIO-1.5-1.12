@@ -55,7 +55,13 @@
                     "frontframe":"enderio:blocks/blockSoulMachineSide"
                 },
                 "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } },
-            "paint_overlay":{ "model":"enderio:paint_overlay" }
+            "paint_overlay":{
+                "textures":{
+                    "particle":"enderio:items/conduitFacadeOverlay",
+                    "overlay":"enderio:items/conduitFacadeOverlay"
+                },
+                "model":"enderio:paint_overlay"
+            }
         }
     }
 }

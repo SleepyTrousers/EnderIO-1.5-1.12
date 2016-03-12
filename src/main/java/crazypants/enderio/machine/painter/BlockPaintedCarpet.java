@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,9 +27,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.paint.IPaintable;
 import crazypants.enderio.render.paint.PaintRegistry;
 
@@ -56,7 +59,6 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.carpet));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
-
   }
 
   @Override
@@ -139,7 +141,6 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     if (paintSource != null) {
       return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null)));
     } else {
-      // TODO
       return null;
     }
   }
@@ -153,10 +154,14 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     if (paintSource != null) {
-      // TODO: "is painted" overlay
-      return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null)));
+      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null);
+      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "carpet", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
+      List<IBakedModel> list = new ArrayList<IBakedModel>();
+      list.add(model1);
+      list.add(model2);
+      return Pair.of(null, list);
     } else {
-      // TODO
       return null;
     }
   }

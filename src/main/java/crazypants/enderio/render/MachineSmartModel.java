@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.Item;
@@ -79,15 +78,15 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
     return getDefaults().getParticleTexture();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
-  public ItemCameraTransforms getItemCameraTransforms() {
-    return ItemCameraTransforms.DEFAULT;
+  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
+    return net.minecraft.client.renderer.block.model.ItemCameraTransforms.DEFAULT;
   }
 
   @Override
   public IBakedModel handleBlockState(IBlockState stateIn) {
     long start = crazypants.util.Profiler.client.start();
-    IRenderCache rc = null;
     if (stateIn instanceof BlockStateWrapper) {
       final BlockStateWrapper state = (BlockStateWrapper) stateIn;
       Block block = state.getBlock();
