@@ -143,7 +143,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
         i++;
       }
     }    
-    guiItemStacks.setFromRecipe(5, getBalls());       
+    guiItemStacks.set(5, getBalls());       
   }
   
   @Override

@@ -13,12 +13,6 @@ public class EnchanterRecipe {
   
   public static Enchantment getEnchantmentFromName(String enchantmentName) {   
     return Enchantment.getEnchantmentByLocation(enchantmentName);
-//    for(Enchantment ench : Enchantment.enchantmentsList) {
-//      if(ench != null && ench.getName() != null && ench.getName().equals(enchantmentName)) {        
-//        return ench;
-//      }
-//    }
-//    return null;
   }
   
   public EnchanterRecipe(RecipeInput curInput, String enchantmentName, int costPerLevel) {

@@ -19,6 +19,7 @@ public class JeiPlugin extends BlankModPlugin {
         
     AlloyRecipeCategory.register(registry,guiHelper);
     SagMillRecipeCategory.register(registry,guiHelper);
+    EnchanterRecipeCategory.register(registry,guiHelper);
            
   }
 
