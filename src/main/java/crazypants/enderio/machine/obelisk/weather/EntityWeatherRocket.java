@@ -6,6 +6,8 @@ import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 
 public class EntityWeatherRocket extends EntityFireworkRocket {
@@ -55,6 +57,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   public void handleHealthUpdate(byte p_70103_1_) {
   }
   
+  @SideOnly(Side.CLIENT)
   private void doEffect() {
     String s1 = "fireworks.largeBlast";
     if (ticksExisted > 40) {
