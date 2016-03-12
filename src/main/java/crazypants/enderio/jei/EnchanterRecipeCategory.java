@@ -146,7 +146,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     
     guiItemStacks.init(0, true, 25 - xOff, 34 - yOff);
     guiItemStacks.init(1, true, 75 - xOff, 34 - yOff);
-    guiItemStacks.init(2, true, 133 - xOff, 34 - yOff);
+    guiItemStacks.init(2, false, 133 - xOff, 34 - yOff);
 
     guiItemStacks.setFromRecipe(0, new ItemStack(Items.writable_book));
 

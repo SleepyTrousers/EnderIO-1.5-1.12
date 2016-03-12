@@ -177,15 +177,4 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     return false;
   }
 
-//  private boolean isItemAlreadyInASlot(ItemStack itemstack) {
-//    ItemStack currentStackType = null;
-//    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
-//      currentStackType = inventory[i];
-//      if(currentStackType != null && currentStackType.isItemEqual(itemstack)) {
-//        return true;
-//      }
-//    }
-//    return false;
-//  }
-
 }
