@@ -6,13 +6,14 @@ import java.util.List;
 import jline.internal.Log;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
+import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
+import crazypants.enderio.render.paint.PaintWrangler;
 
 @SuppressWarnings("deprecation")
 public class ConduitBundleBakedModel implements ISmartBlockModel {
@@ -31,34 +32,21 @@ public class ConduitBundleBakedModel implements ISmartBlockModel {
   }
 
   @Override
-  public IBakedModel handleBlockState(IBlockState state) {
-    if (state instanceof ConduitRenderState) {
-      ConduitRenderState crs = (ConduitRenderState) state;
+  public IBakedModel handleBlockState(IBlockState stateIn) {
+    if (stateIn instanceof ConduitRenderState) {
+      ConduitRenderState crs = (ConduitRenderState) stateIn;
       if (crs.getRenderFacade()) {
         try {
-          BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-          IBakedModel res = blockrendererdispatcher.getBlockModelShapes().getModelForState(crs.getBundle().getFacade());  
-          if(res != null) {
-            int quadCount = 0;
-            for(EnumFacing f : EnumFacing.values()) {
-              List<BakedQuad> quads = res.getFaceQuads(f);
-              if(quads != null) {
-                quadCount += quads.size();
-              }
-            }
-            if(quadCount > 3) {
-              return res;
-            }
-            List<BakedQuad> quads = res.getGeneralQuads();
-            if(quads != null && quadCount + quads.size() > 3) {
-              return res;
-            }
-            //TODO: This or nothing?
-            return getDefaults();
-            
+          IBakedModel res = PaintWrangler.handlePaint(crs, (IBlockPaintableBlock) crs.getBlock(), crs.getWorld(), crs.getPos());
+
+          if (crs.getBundle().getPaintSource().getBlock().isOpaqueCube()) {
+            return res;
+          } else {
+            // TODO render conduits, too. (Combine models with EnderBakedModel, OverlayBakedModel or UnderlayBakedModel)
+            return res;
           }
         } catch (Exception e) {
-          Log.warn("Could not get model for facade: " + crs.getBundle().getFacade());
+          Log.warn("Could not get model for facade: " + crs.getBundle().getPaintSource());
           e.printStackTrace();
         }
       } 

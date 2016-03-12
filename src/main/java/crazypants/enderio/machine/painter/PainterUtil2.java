@@ -31,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.render.paint.IPaintable;
 
@@ -70,11 +71,21 @@ public class PainterUtil2 {
       }
     }
 
-    return (target == null && paintSource != null) //
-        || (target instanceof IPaintable && paintSource == null) //
-        || (target instanceof IPaintable.ITexturePaintableBlock) //
-        || (target instanceof IPaintable.ISolidBlockPaintableBlock && solidPaint) //
-        || (target instanceof IPaintable.INonSolidBlockPaintableBlock && !solidPaint);
+    if (target == null) {
+      return paintSource != null;
+    } else if (paintSource == null) {
+      return target instanceof IPaintable;
+    } else if (target instanceof IPaintable.ITexturePaintableBlock) {
+      return true;
+    } else if (target instanceof IPaintable.ISolidBlockPaintableBlock) {
+      return solidPaint;
+    } else if (target instanceof IPaintable.INonSolidBlockPaintableBlock) {
+      return !solidPaint;
+    } else if (target instanceof IPaintable.IBlockPaintableBlock) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // TODO: Check the marked blocks if they need an getOpposite() to our facing value or not
@@ -161,6 +172,9 @@ public class PainterUtil2 {
     TileEntity tileEntity = world.getTileEntity(pos);
     if (tileEntity instanceof AbstractMachineEntity) {
       return ((AbstractMachineEntity) tileEntity).getFacing();
+    }
+    if (tileEntity instanceof IConduitBundle) {
+      return ((IConduitBundle) tileEntity).getFacing();
     }
     return EnumFacing.NORTH;
   }

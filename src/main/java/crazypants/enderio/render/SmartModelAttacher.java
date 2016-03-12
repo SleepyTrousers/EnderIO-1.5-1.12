@@ -13,6 +13,8 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IRegistry;
+import net.minecraft.util.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -96,6 +98,10 @@ public class SmartModelAttacher {
         IBlockState defaultState = block.getDefaultState().withProperty(holder.property, holder.defaultsValue);
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         IBakedModel defaultBakedModel = event.modelRegistry.getObject(defaultMrl);
+        if (defaultBakedModel == null) {
+          throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
+              + debugOutput(event.modelRegistry, defaultMrl));
+        }
         MachineSmartModel model = new MachineSmartModel(defaultBakedModel);
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
@@ -126,4 +132,26 @@ public class SmartModelAttacher {
     }
   }
 
+  private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl) {
+    String prefix = defaultMrl.getResourceDomain()+ ":" + defaultMrl.getResourcePath();
+    if (modelRegistry instanceof RegistrySimple) {
+      RegistrySimple rg = (RegistrySimple) modelRegistry;
+      StringBuilder sb = new StringBuilder();
+      for (Object key : rg.getKeys()) {
+        if (key.toString().startsWith(prefix)) {
+          sb.append(key + "; ");
+        }
+      }
+      if (sb.length() > 0) {
+        sb.setLength(sb.length() - 2);
+      } else {
+        sb.append("(none)");
+      }
+      return "Loaded states for " + prefix + " are: " + sb.toString();
+    } else {
+      return "Loaded states could not be determined because modelRegistry is not a RegistrySimple.";
+    }
+  }
+  
+  
 }

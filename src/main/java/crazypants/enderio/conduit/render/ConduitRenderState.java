@@ -1,13 +1,13 @@
 package crazypants.enderio.conduit.render;
 
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.render.BlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.render.BlockStateWrapper;
 
 public class ConduitRenderState extends BlockStateWrapper {
 
@@ -31,7 +31,7 @@ public class ConduitRenderState extends BlockStateWrapper {
   }
 
   private boolean isFacadeOpaqueCube() {   
-    IBlockState b = bundle.getFacade();
+    IBlockState b = bundle.getPaintSource();
     if (b != null) {
       return b.getBlock().isOpaqueCube();
     }

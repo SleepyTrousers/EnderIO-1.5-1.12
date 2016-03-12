@@ -103,7 +103,7 @@ public class PaintWrangler {
   }
 
   public static IBakedModel handlePaint(ItemStack stack, IBlockPaintableBlock block) {
-    IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource((Block) block, stack);
+    IBlockState paintSource = block.getPaintSource((Block) block, stack);
     if (paintSource != null) {
       int damage = paintSource.getBlock().damageDropped(paintSource);
       ItemStack paint = new ItemStack(paintSource.getBlock(), 1, damage);

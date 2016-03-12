@@ -7,22 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
-import crazypants.enderio.conduit.geom.CollidableCache;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.geom.Offsets;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +21,24 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.facade.EnumFacadeType;
+import crazypants.enderio.conduit.geom.CollidableCache;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.conduit.geom.Offsets;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.painter.PainterUtil2;
+
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   public static final short NBT_VERSION = 1;
@@ -44,7 +46,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   private final List<IConduit> conduits = new ArrayList<IConduit>();
 
   private IBlockState facade = null;  
-  private FacadeType facadeType = FacadeType.BASIC;
+  private EnumFacadeType facadeType = EnumFacadeType.BASIC;
+  private EnumFacing facadeFacing = EnumFacing.NORTH;
 
   private boolean facadeChanged;
 
@@ -101,11 +104,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
     nbtRoot.setTag("conduits", conduitTags);
     if(facade != null) {
-      nbtRoot.setString("facadeId", Block.blockRegistry.getNameForObject(facade.getBlock()).toString());
-      nbtRoot.setInteger("facadeMeta", facade.getBlock().getMetaFromState(facade));
+      PainterUtil2.writeNbt(nbtRoot, facade);
       nbtRoot.setString("facadeType", facadeType.name());
-    } else {
-      nbtRoot.setString("facadeId", "null");
+      nbtRoot.setInteger("facadeFacing", facadeFacing.ordinal());
     }
     
     nbtRoot.setShort("nbtVersion", NBT_VERSION);
@@ -132,24 +133,19 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         }
       }
     }
-    String fs = nbtRoot.getString("facadeId");
-    if(fs == null || "null".equals(fs)) {
-      facade = null;
-      facadeType = FacadeType.BASIC;
-    } else {
-      Block facadeBlock = Block.getBlockFromName(fs);      
-      if(facadeBlock != null) {
-        int facadeMeta = nbtRoot.getInteger("facadeMeta");
-        facade = facadeBlock.getStateFromMeta(facadeMeta);
-        if(nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
-          facadeType = FacadeType.valueOf(nbtRoot.getString("facadeType"));
-        }
+    facade = PainterUtil2.readNbt(nbtRoot);
+    if (facade != null) {
+      if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+        facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
       } else {
-        facade = null;
-        facadeType = FacadeType.BASIC;
+        facadeType = EnumFacadeType.BASIC;
       }
+      facadeFacing = EnumFacing.values()[nbtRoot.getInteger("facadeFacing")];
+    } else {
+      facade = null;
+      facadeType = EnumFacadeType.BASIC;
+      facadeFacing = EnumFacing.NORTH;
     }
-    
 
     if(worldObj != null && worldObj.isRemote) {
       clientUpdated = true;
@@ -162,38 +158,45 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public boolean hasFacade() {
-    return getFacade() != null;
+    return facade != null;
+  }
+
+  public void setFacadeNoUpdate(IBlockState paintSource) { // TODO: check if needed
+    facade = paintSource;
   }
 
   @Override
-  public void setFacade(IBlockState blockID, boolean triggerUpdate) {
-    this.facade = blockID;
-    if(triggerUpdate) {
-      facadeChanged = true;
-    }
+  public void setPaintSource(IBlockState paintSource) {
+    facade = paintSource;
+    facadeChanged = true;
+    markDirty();
   }
 
   @Override
-  public void setFacade(IBlockState blockID) {
-    setFacade(blockID, true);
-  }
-
-  @Override
-  public IBlockState getFacade() {
+  public IBlockState getPaintSource() {
     return facade;
-//    return Blocks.cobblestone.getDefaultState();
-//    return Blocks.anvil.getDefaultState();
-//    return Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.MAGENTA);
-  }
-  
-  @Override
-  public void setFacadeType(FacadeType type) {
-    facadeType = type;
   }
 
   @Override
-  public FacadeType getFacadeType() {
+  public void setFacadeType(EnumFacadeType type) {
+    facadeType = type;
+    markDirty();
+  }
+
+  @Override
+  public EnumFacadeType getFacadeType() {
     return facadeType;
+  }
+
+  @Override
+  public EnumFacing getFacing() {
+    return facadeFacing;
+  }
+
+  @Override
+  public void setFacing(EnumFacing facadeFacing) {
+    this.facadeFacing = facadeFacing;
+    markDirty();
   }
 
   @Override
@@ -214,7 +217,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return hasFacade() ? getFacade().getBlock().getLightOpacity() : 0;
+      return facade != null ? facade.getBlock().getLightOpacity() : 0;
     }
     return lightOpacity;
   }

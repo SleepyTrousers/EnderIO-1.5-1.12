@@ -1,6 +1,19 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.ModObject.blockPainter;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.facade.EnumFacadeType;
+import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
+import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.material.FrankenSkull;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
+
 import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
@@ -9,21 +22,6 @@ import static crazypants.enderio.material.Alloy.REDSTONE_ALLOY;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.PHASED_IRON_NUGGET;
 import static crazypants.util.RecipeUtil.addShaped;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
-import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
-import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.material.FrankenSkull;
-import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ConduitRecipes {
 
@@ -47,9 +45,9 @@ public class ConduitRecipes {
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
 
     //Recipes
-    addShaped(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.BASIC.ordinal()), "bbb", "b b", "bbb", 'b', binder);
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.HARDENED.ordinal()), " o ", "oFo", " o ", 'F',
-        EnderIO.itemConduitFacade, 'o', "dustObsidian"));
+    addShaped(new ItemStack(EnderIO.blockConduitFacade, 1, EnumFacadeType.BASIC.ordinal()), "bbb", "b b", "bbb", 'b', binder);
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockConduitFacade, 1, EnumFacadeType.HARDENED.ordinal()), " o ", "oFo", " o ", 'F',
+        new ItemStack(EnderIO.blockConduitFacade, 1, EnumFacadeType.BASIC.ordinal()), 'o', "dustObsidian"));
 
     int numConduits = Config.numConduitsPerRecipe;
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', fusedGlass);

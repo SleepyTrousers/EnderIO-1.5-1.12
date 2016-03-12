@@ -6,46 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
-import crazypants.enderio.conduit.gui.PacketFluidFilter;
-import crazypants.enderio.conduit.gui.PacketOpenConduitUI;
-import crazypants.enderio.conduit.gui.PacketSlotVisibility;
-import crazypants.enderio.conduit.gui.item.PacketExistingItemFilterSnapshot;
-import crazypants.enderio.conduit.gui.item.PacketModItemFilter;
-import crazypants.enderio.conduit.liquid.PacketFluidLevel;
-import crazypants.enderio.conduit.packet.PacketConnectionMode;
-import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
-import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.render.ConduitRenderState;
-import crazypants.enderio.item.IRotatableFacade;
-import crazypants.enderio.item.ItemConduitProbe;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.IFacade;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -78,9 +38,49 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.facade.EnumFacadeType;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
+import crazypants.enderio.conduit.gui.PacketFluidFilter;
+import crazypants.enderio.conduit.gui.PacketOpenConduitUI;
+import crazypants.enderio.conduit.gui.PacketSlotVisibility;
+import crazypants.enderio.conduit.gui.item.PacketExistingItemFilterSnapshot;
+import crazypants.enderio.conduit.gui.item.PacketModItemFilter;
+import crazypants.enderio.conduit.liquid.PacketFluidLevel;
+import crazypants.enderio.conduit.packet.PacketConnectionMode;
+import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
+import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
+import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.render.ConduitRenderState;
+import crazypants.enderio.item.IRotatableFacade;
+import crazypants.enderio.item.ItemConduitProbe;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.paint.IPaintable;
+import crazypants.enderio.tool.ToolUtil;
+
 @Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
     @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks") })
-public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IFacade, IRotatableFacade {
+public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IRotatableFacade {
 
   public static BlockConduitBundle create() {
 
@@ -169,8 +169,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
     TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.getBlockPos());
     if (ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
-      if (cb.getFacade() != null) {
-        tex = RenderUtil.getTexture(cb.getFacade());
+      IBlockState paintSource = cb.getPaintSource();
+      if (paintSource != null) {
+        tex = RenderUtil.getTexture(paintSource);
       }
     } else if (target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
@@ -251,7 +252,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       BlockCoord bc = new BlockCoord(snd.getXPosF(), snd.getYPosF(), snd.getZPosF());
       TileEntity te = bc.getTileEntity(world);
       if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
-        IBlockState facade = getFacade(world, bc.getBlockPos(), null);
+        IBlockState facade = ((TileConduitBundle) te).getPaintSource();
         ConduitUtil.playHitSound(facade.getBlock().stepSound, world, bc.x, bc.y, bc.z);
       } else {
         ConduitUtil.playHitSound(Block.soundTypeMetal, world, bc.x, bc.y, bc.z);
@@ -268,7 +269,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       BlockCoord bc = new BlockCoord(event.entity.posX, event.entity.posY - 2, event.entity.posZ);
       TileEntity te = bc.getTileEntity(world);
       if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
-        IBlockState facade = getFacade(world, bc.getBlockPos(), null);
+        IBlockState facade = ((TileConduitBundle) te).getPaintSource();
         ConduitUtil.playStepSound(facade.getBlock().stepSound, world, bc.x, bc.y, bc.z);
       } else {
         ConduitUtil.playStepSound(Block.soundTypeMetal, world, bc.x, bc.y, bc.z);
@@ -280,16 +281,16 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
     ItemStack ret = null;
 
-    if (ret == null && target != null && target.hitInfo instanceof CollidableComponent) {
+    if (target != null && target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       TileConduitBundle bundle = (TileConduitBundle) world.getTileEntity(pos);
       IConduit conduit = bundle.getConduit(cc.conduitType);
       if (conduit != null) {
         ret = conduit.createItem();
-      } else if (cc.conduitType == null && bundle.getFacade() != null) {
-        // use the facde
-        ret = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
-        PainterUtil.setSourceBlock(ret, bundle.getFacade());
+      } else if (cc.conduitType == null && bundle.hasFacade()) {
+        // use the facade
+        ret = new ItemStack(EnderIO.blockConduitFacade, 1, 0);
+        PainterUtil2.setSourceBlock(ret, bundle.getPaintSource());
       }
     }
     return ret;
@@ -302,12 +303,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public int getDamageValue(World world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
-    if (!(te instanceof IConduitBundle)) {
-      return 0;
-    }
-    IConduitBundle bun = (IConduitBundle) te;
-    IBlockState f = bun.getFacade();
+    IBlockState f = getPaintSource(null, world, pos);
     return f == null ? 0 : f.getBlock().getMetaFromState(f);
   }
 
@@ -368,15 +364,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return super.getLightValue(world, pos);
     }
     IConduitBundle con = (IConduitBundle) te;
-    if (con.getFacade() != null && con.getFacade().getBlock().isOpaqueCube()) {
-      return 0;
+    int result = 0;
+    if (con.hasFacade()) {
+      IBlockState paintSource = con.getPaintSource();
+      result = paintSource.getBlock().getLightValue();
+      if (paintSource.getBlock().isOpaqueCube()) {
+        return result;
+      }
     }
     Collection<IConduit> conduits = con.getConduits();
-    int result = 0;
     for (IConduit conduit : conduits) {
       result += conduit.getLightValue();
     }
-    return result;
+    return result > 15 ? 15 : result;
   }
 
   @Override
@@ -394,14 +394,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if(te == null) {
       return super.getBlockHardness(world, pos);
     }    
-    return te != null && te.getFacadeType() == FacadeType.HARDENED ? blockHardness * 10 : blockHardness;
+    return te.getFacadeType() == EnumFacadeType.HARDENED ? blockHardness * 10 : blockHardness;
   }
 
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
     float resist = getExplosionResistance(par1Entity);
     IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
-    return te != null && te.getFacadeType() == FacadeType.HARDENED ? resist * 10 : resist;
+    return te != null && te.getFacadeType() == EnumFacadeType.HARDENED ? resist * 10 : resist;
   }
 
   @SubscribeEvent
@@ -412,7 +412,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         event.newSpeed += 2;
       }
       IConduitBundle te = (IConduitBundle) event.entity.worldObj.getTileEntity(event.pos);
-      if (te != null && te.getFacadeType() == FacadeType.HARDENED) {
+      if (te != null && te.getFacadeType() == EnumFacadeType.HARDENED) {
         if (!ConduitUtil.isSolidFacadeRendered(te, event.entityPlayer)) {
           event.newSpeed *= 6;
         } else {
@@ -457,13 +457,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     List<ItemStack> drop = new ArrayList<ItemStack>();
     if (ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
-      ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
-      PainterUtil.setSourceBlock(fac, te.getFacade());
+      ItemStack fac = new ItemStack(EnderIO.blockConduitFacade, 1, te.getFacadeType().ordinal());
+      PainterUtil2.setSourceBlock(fac, te.getPaintSource());
       drop.add(fac);
 
-      ConduitUtil.playBreakSound(te.getFacade().getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
-      te.setFacade(null);      
-      te.setFacadeType(FacadeType.BASIC);
+      ConduitUtil.playBreakSound(te.getPaintSource().getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
+      te.setPaintSource(null);
+      te.setFacadeType(EnumFacadeType.BASIC);
     }
 
     if (breakBlock) {
@@ -505,7 +505,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
 
     if (type == null) {
-      // broke a conector so drop any conduits with no connections as there
+      // broke a connector so drop any conduits with no connections as there
       // is no other way to remove these
       List<IConduit> cons = new ArrayList<IConduit>(te.getConduits());
       boolean droppedUnconected = false;
@@ -572,7 +572,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
 
     ItemStack stack = player.getCurrentEquippedItem();
-    if (stack != null && stack.getItem() == EnderIO.itemConduitFacade) {
+    if (stack != null && Block.getBlockFromItem(stack.getItem()) == EnderIO.blockConduitFacade) {
       // add or replace facade
       return handleFacadeClick(world, pos, player, side, bundle, stack);
 
@@ -710,9 +710,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return false;
     }
 
-//    int facadeMeta = PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem());
-    //TODO: 1.8
-//    facadeMeta = PainterUtil.adjustFacadeMetadata(facadeID, facadeMeta, side);
     int facadeType = player.getCurrentEquippedItem().getItemDamage();
 
     if (bundle.hasFacade()) {
@@ -720,13 +717,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         return false;
       }
       if (!world.isRemote && !player.capabilities.isCreativeMode) {
-        ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, bundle.getFacadeType().ordinal());
-        PainterUtil.setSourceBlock(fac, bundle.getFacade());
+        ItemStack fac = new ItemStack(EnderIO.blockConduitFacade, 1, bundle.getFacadeType().ordinal());
+        PainterUtil2.setSourceBlock(fac, bundle.getPaintSource());
         Util.dropItems(world, fac, pos, false);
       }
     }
-    bundle.setFacade(facadeID);    
-    bundle.setFacadeType(FacadeType.values()[facadeType]);
+    bundle.setPaintSource(facadeID);
+    bundle.setFacadeType(EnumFacadeType.getTypeFromMeta(facadeType));
     if (!world.isRemote) {
       ConduitUtil.playPlaceSound(facadeID.getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
     }
@@ -739,7 +736,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   private boolean facadeEquals(IConduitBundle bundle, IBlockState b, int facadeType) {
-    IBlockState a = bundle.getFacade();
+    IBlockState a = bundle.getPaintSource();
     if(a == null) {
       return false;
     }
@@ -750,24 +747,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean tryRotateFacade(World world, int x, int y, int z, EnumFacing axis) {
+  public boolean tryRotateFacade(World world, int x, int y, int z, EnumFacing side) {
     IConduitBundle bundle = (IConduitBundle) world.getTileEntity(new BlockPos(x, y, z));
-    if (bundle == null) {
+    if (bundle == null || !bundle.hasFacade()) {
       return false;
     }
-//TODO: 1.8;
-//    int oldMeta = bundle.getFacadeMetadata();
-//    int newMeta = PainterUtil.rotateFacadeMetadata(bundle.getFacadeId(), oldMeta, axis);
-//    if (newMeta == oldMeta) {
-//      return false;
-//    }
-//
-//    bundle.setFacadeMetadata(newMeta);
-//    world.markBlockForUpdate(new BlockPos(x, y, z));
-//    bundle.getEntity().markDirty();
-//    return true;
-    
-    return false;
+    bundle.setFacing(side);
+    world.markBlockForUpdate(new BlockPos(x, y, z));
+    return true;
   }
 
   @Override
@@ -831,7 +818,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if (con.getFacade() != null) {
+    if (con.hasFacade()) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       super.addCollisionBoxesToList(world, pos, state, axisalignedbb, arraylist, par7Entity);
     } else {
@@ -1008,15 +995,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return hits;
   }
 
-  @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    TileConduitBundle te = getTileEntity(world, pos);
-    if(te == null) {
-      return null;
-    }
-    return te.getFacade();
-  }
-
   private static IRedstoneConduit getRedstoneConduit(IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
@@ -1024,6 +1002,38 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     IConduitBundle bundle = (IConduitBundle) te;
     return bundle.getConduit(IRedstoneConduit.class);
+  }
+
+  @Override
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+    TileEntity te = world.getTileEntity(pos);
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      ((IPaintableTileEntity) te).setPaintSource(paintSource);
+    }
+  }
+
+  @Override
+  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+    PainterUtil2.setSourceBlock(stack, paintSource);
+  }
+
+  @Override
+  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+    TileEntity te = world.getTileEntity(pos);
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      return ((IPaintableTileEntity) te).getPaintSource();
+    }
+    return null;
+  }
+
+  @Override
+  public IBlockState getPaintSource(Block block, ItemStack stack) {
+    return PainterUtil2.getSourceBlock(stack);
+  }
+
+  @Override
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return getPaintSource(getDefaultState(), world, pos);
   }
 
 }

@@ -23,7 +23,6 @@ import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
-import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
@@ -205,7 +204,6 @@ public class EnderIO {
 //  // Conduits
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
-  public static ItemConduitFacade itemConduitFacade;
   public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
@@ -363,8 +361,7 @@ public class EnderIO {
 
     blockConduitBundle = BlockConduitBundle.create();
     
-//    blockConduitFacade = BlockConduitFacade.create();
-    itemConduitFacade = ItemConduitFacade.create();
+    blockConduitFacade = BlockConduitFacade.create();
 
     itemBrokenSpawner = ItemBrokenSpawner.create();
 

@@ -4,14 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.power.IInternalPowerHandler;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -23,6 +16,14 @@ import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.facade.EnumFacadeType;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.render.paint.IPaintable;
+
 @InterfaceList({
     @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
     @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas"),
@@ -30,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network")
 })
-public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler {
+public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IPaintable.IPaintableTileEntity {
 
   TileEntity getEntity();
 
@@ -97,17 +98,15 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler {
 
   boolean hasFacade();
 
-  void setFacade(IBlockState block);
+  void setFacadeType(EnumFacadeType type);
 
-  void setFacade(IBlockState block, boolean triggerUpdate);  
-
-  void setFacadeType(FacadeType type);
-
-  IBlockState getFacade();
-
-  FacadeType getFacadeType();
+  EnumFacadeType getFacadeType();
 
   //NB: this has to be named differently to the TE method due to obf
   World getBundleWorldObj();
+
+  EnumFacing getFacing();
+
+  void setFacing(EnumFacing facadeFacing);
 
 }

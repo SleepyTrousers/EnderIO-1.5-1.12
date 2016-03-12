@@ -1,22 +1,36 @@
 package crazypants.enderio.conduit.facade;
 
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.painter.IPaintedBlock;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.paint.IPaintable;
 
-public class BlockConduitFacade extends BlockEio<TileEntityEio> implements IPaintedBlock {
+public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> implements IPaintable.IBlockPaintableBlock, ISmartRenderAwareBlock {
 
   public static BlockConduitFacade create() {
     BlockConduitFacade result = new BlockConduitFacade();
@@ -24,101 +38,97 @@ public class BlockConduitFacade extends BlockEio<TileEntityEio> implements IPain
     return result;
   }
 
-  private IBlockState blockOverride;
-
   private BlockConduitFacade() {
-    super(ModObject.blockConduitFacade.unlocalisedName, null, new Material(MapColor.stoneColor));
+    super(ModObject.blockConduitFacade.unlocalisedName, TileEntityPaintedBlock.class, ItemConduitFacade.class, new Material(MapColor.stoneColor));
     setStepSound(Block.soundTypeStone);
-    setCreativeTab(null);
+    setCreativeTab(EnderIOTab.tabEnderIO);
+    initDefaultState();
+  }
+
+  protected void initDefaultState() {
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)
+        .withProperty(EnumFacadeType.TYPE, EnumFacadeType.BASIC));
+  }
+
+  @Override
+  protected void init() {
+    super.init();
+    SmartModelAttacher.register(this);
+  }
+
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER, EnumFacadeType.TYPE });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState().withProperty(EnumFacadeType.TYPE, EnumFacadeType.getTypeFromMeta(meta));
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return EnumFacadeType.getMetaFromType(state.getValue(EnumFacadeType.TYPE));
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
+  }
+
+  @Override
+  public int damageDropped(IBlockState st) {
+    return getMetaFromState(st);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public int getBlockColor() {
-    if(blockOverride != null) {
-      return blockOverride.getBlock().getBlockColor();
-    } else {
-      return super.getBlockColor();
+  public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    for (EnumFacadeType type : EnumFacadeType.values()) {
+      list.add(new ItemStack(item, 1, type.ordinal()));
     }
-  }
-  
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess par1IBlockAccess, BlockPos pos, int renderPass) {
-    if(blockOverride != null) {
-      try { //work around for Issue #589
-        return blockOverride.getBlock().colorMultiplier(par1IBlockAccess, pos, renderPass);
-      } catch (Exception e) {
-      }
-    }
-    return super.colorMultiplier(par1IBlockAccess, pos, renderPass);
-  }
-
-  public IBlockState getIconOverrideBlock() {
-    return blockOverride;
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public int getRenderColor(IBlockState bs) {
-    if(blockOverride != null) {
-      return blockOverride.getBlock().getRenderColor(bs);
-    } else {
-      return super.getRenderColor(bs);
-    }
-  }
-
-  public void setBlockOverride(IConduitBundle cb) {
-    if(cb == null) {
-      blockOverride = null;
-      return;
-    }
-
-    IBlockState bs = cb.getFacade();    
-    if(bs == null || bs.getBlock() == this) {
-      return;
-    }
-    blockOverride = bs;
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return new BlockStateWrapper(state, world, pos);
   }
 
   @Override
-  public int getDamageValue(World par1World, BlockPos pos) {
-    Mimic m = getMimic(par1World, pos.getX(), pos.getY(), pos.getZ());
-    if(m != null) {
-      return m.getMeta();
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+    TileEntity te = world.getTileEntity(pos);
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      ((IPaintableTileEntity) te).setPaintSource(paintSource);
     }
-    return 0;
   }
 
-  private Mimic getMimic(IBlockAccess ba, int x, int y, int z) {
-    TileEntity te = ba.getTileEntity(new BlockPos(x, y, z));
-    if(!(te instanceof IConduitBundle)) {
-      return null;
-    }
-    IConduitBundle cb = (IConduitBundle) te;
-    IBlockState bs = cb.getFacade();
-    if(bs == null) {
-      return null;
-    }
-
-    return new Mimic(bs);
+  @Override
+  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+    PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
-  class Mimic {
-    
-    IBlockState blockState;
-
-    private Mimic(IBlockState block) {
-      this.blockState = block;
+  @Override
+  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+    TileEntity te = world.getTileEntity(pos);
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      return ((IPaintableTileEntity) te).getPaintSource();
     }
-    
-    int getMeta() {
-      if(blockState == null) {
-        return 0;
-      }
-      return blockState.getBlock().getMetaFromState(blockState);
-    }
+    return null;
+  }
 
+  @Override
+  public IBlockState getPaintSource(Block block, ItemStack stack) {
+    return PainterUtil2.getSourceBlock(stack);
+  }
+
+  @Override
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return getPaintSource(getDefaultState(), world, pos);
+  }
+
+  @Override
+  public IRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER_NO_IO;
   }
 
 }
