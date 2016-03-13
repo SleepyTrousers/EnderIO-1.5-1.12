@@ -6,38 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
@@ -77,6 +45,37 @@ import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.paint.IPaintable;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional.Interface;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
     @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks") })
@@ -386,6 +385,25 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return 255;
     }
     return super.getMixedBrightnessForBlock(worldIn, pos);
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+    IConduitBundle te = getTileEntity(worldIn, pos);
+    if(te == null) {
+      return super.colorMultiplier(worldIn, pos);
+    }
+    IBlockState ps = te.getPaintSource();
+    if(pos == null) {
+      return super.colorMultiplier(worldIn, pos);
+    }
+    try {
+      return ps.getBlock().colorMultiplier(worldIn, pos, renderPass);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+    return super.colorMultiplier(worldIn, pos);
   }
 
   @Override
@@ -995,6 +1013,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return hits;
   }
 
+  
+  
   private static IRedstoneConduit getRedstoneConduit(IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
