@@ -98,49 +98,49 @@ public class PainterUtil2 {
       if (block instanceof BlockStairs) {
         return paintSource.withProperty(BlockStairs.FACING, getFacing4(state, world, pos).getOpposite());
       }
-      if (paintSource.getBlock() instanceof BlockAnvil) {
+      if (block instanceof BlockAnvil) {
         return paintSource.withProperty(BlockAnvil.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockBanner) {
+      if (block instanceof BlockBanner) {
         return paintSource.withProperty(BlockBanner.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockChest) {
+      if (block instanceof BlockChest) {
         return paintSource.withProperty(BlockChest.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockDirectional) {
+      if (block instanceof BlockDirectional) {
         return paintSource.withProperty(BlockDirectional.FACING, getFacing4(state, world, pos));
       }
-      if (paintSource.getBlock() instanceof BlockDoor) {
+      if (block instanceof BlockDoor) {
         return paintSource.withProperty(BlockDoor.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockEnderChest) {
+      if (block instanceof BlockEnderChest) {
         return paintSource.withProperty(BlockEnderChest.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockEndPortalFrame) {
+      if (block instanceof BlockEndPortalFrame) {
         return paintSource.withProperty(BlockEndPortalFrame.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockFurnace) {
+      if (block instanceof BlockFurnace) {
         return paintSource.withProperty(BlockFurnace.FACING, getFacing4(state, world, pos));
       }
-      if (paintSource.getBlock() instanceof BlockHopper) {
+      if (block instanceof BlockHopper) {
         return paintSource.withProperty(BlockHopper.FACING, getFacing5(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockLadder) {
+      if (block instanceof BlockLadder) {
         return paintSource.withProperty(BlockLadder.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockStem) {
+      if (block instanceof BlockStem) {
         return paintSource.withProperty(BlockStem.FACING, getFacing5u(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockTorch) {
+      if (block instanceof BlockTorch) {
         return paintSource.withProperty(BlockTorch.FACING, getFacing5u(state, world, pos));
       }
-      if (paintSource.getBlock() instanceof BlockTrapDoor) {
+      if (block instanceof BlockTrapDoor) {
         return paintSource.withProperty(BlockTrapDoor.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockTripWireHook) {
+      if (block instanceof BlockTripWireHook) {
         return paintSource.withProperty(BlockTripWireHook.FACING, getFacing4(state, world, pos)); // opposite?
       }
-      if (paintSource.getBlock() instanceof BlockWallSign) {
+      if (block instanceof BlockWallSign) {
         return paintSource.withProperty(BlockWallSign.FACING, getFacing4(state, world, pos)); // opposite?
       }
     }
