@@ -1,12 +1,11 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCarpet;
+import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,12 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,39 +28,37 @@ import org.apache.commons.lang3.tuple.Pair;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.paint.IPaintable;
 import crazypants.enderio.render.paint.PaintRegistry;
 
-public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
-    IRenderMapper.IRenderLayerAware {
+public class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, ISmartRenderAwareBlock,
+    IRenderMapper {
 
-  public static BlockPaintedCarpet create() {
-    BlockPaintedCarpet result = new BlockPaintedCarpet();
+  public static BlockPaintedGlowstone create() {
+    BlockPaintedGlowstone result = new BlockPaintedGlowstone();
     result.init();
     return result;
   }
 
-  protected BlockPaintedCarpet() {
-    super();
+  protected BlockPaintedGlowstone() {
+    super(Material.glass);
+    setHardness(0.3F);
+    setStepSound(soundTypeGlass);
+    setLightLevel(1.0F);
     setCreativeTab(null);
-    setUnlocalizedName(ModObject.blockPaintedCarpet.unlocalisedName);
-    setHardness(0.1F);
-    setStepSound(soundTypeCloth);
-    setLightOpacity(0);
+    setUnlocalizedName(ModObject.blockPaintedGlowstone.unlocalisedName);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, ModObject.blockPaintedCarpet.unlocalisedName);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), ModObject.blockPaintedCarpet.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedCarpet.unlocalisedName + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.carpet));
+    GameRegistry.registerBlock(this, null, ModObject.blockPaintedGlowstone.unlocalisedName);
+    GameRegistry.registerItem(new BlockItemPaintedBlock(this), ModObject.blockPaintedGlowstone.unlocalisedName);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedGlowstone>(this,
+        Blocks.glowstone));
     SmartModelAttacher.registerNoProps(this);
-    PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
   @Override
@@ -77,29 +72,6 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     if (!world.isRemote) {
       world.markBlockForUpdate(pos);
     }
-  }
-
-  @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-    if (willHarvest) {
-      return true;
-    }
-    return super.removedByPlayer(world, pos, player, willHarvest);
-  }
-
-  @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
-  }
-
-  @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-    List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
-    for (ItemStack drop : drops) {
-      PainterUtil2.setSourceBlock(drop, getPaintSource(state, world, pos));
-      }
-    return drops;
   }
 
   @Override
@@ -149,12 +121,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    IBlockState paintSource = getPaintSource(state, world, pos);
-    if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
-      return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null)));
-    } else {
-      return null;
-    }
+    return null;
   }
 
   @Override
@@ -164,18 +131,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-    IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null);
-      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "carpet", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      list.add(model2);
-      return Pair.of(null, list);
-    } else {
-      return null;
-    }
+    return null;
   }
 
   @Override
@@ -184,14 +140,8 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
-    return true;
-  }
-
-  @Override
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    return super.shouldSideBeRendered(worldIn, pos, side)
-        && !(side.getAxis() != EnumFacing.Axis.Y && worldIn.getBlockState(pos).getBlock() instanceof BlockCarpet);
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return getPaintSource(getDefaultState(), world, pos);
   }
 
 }

@@ -9,8 +9,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -28,9 +26,11 @@ public class EnderBakedModel implements IEnderBakedModel {
   private final boolean ambientOcclusion;
   private final boolean gui3d;
   private final TextureAtlasSprite texture;
-  private final ItemCameraTransforms cameraTransforms;
+  @SuppressWarnings("deprecation")
+  private final net.minecraft.client.renderer.block.model.ItemCameraTransforms cameraTransforms;
   private final VertexFormat format;
-  private final Matrix4f[] transformTypes = new Matrix4f[TransformType.values().length];
+  @SuppressWarnings("deprecation")
+  private final Matrix4f[] transformTypes = new Matrix4f[net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.values().length];
 
   public EnderBakedModel(IBakedModel transforms, Pair<List<IBlockState>, List<IBakedModel>> pair, List<IBlockState> overlays) {
     this((IPerspectiveAwareModel) (transforms instanceof IPerspectiveAwareModel ? transforms : null), pair, overlays);
@@ -45,7 +45,8 @@ public class EnderBakedModel implements IEnderBakedModel {
   }
 
   public EnderBakedModel(IPerspectiveAwareModel transforms, Pair<List<IBlockState>, List<IBakedModel>> data, List<IBlockState> overlays) {
-    for (EnumFacing face : EnumFacing.values()) {
+    for (@SuppressWarnings("unused")
+    EnumFacing face : EnumFacing.values()) {
       faceQuads.add(new ArrayList<BakedQuad>());
     }
 
@@ -71,24 +72,33 @@ public class EnderBakedModel implements IEnderBakedModel {
     }
 
     if (transforms != null) {
-      for (TransformType transformType : TransformType.values()) {
+      for (@SuppressWarnings("deprecation")
+      net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType transformType : net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType
+          .values()) {
         Pair<? extends IFlexibleBakedModel, Matrix4f> pair = transforms.handlePerspective(transformType);
         this.transformTypes[transformType.ordinal()] = pair.getRight();
       }
     }
 
     for (IBakedModel bakedModel : models) {
-      generalQuads.addAll(bakedModel.getGeneralQuads());
+      generalQuads.addAll(nonNullList(bakedModel.getGeneralQuads()));
       for (EnumFacing face : EnumFacing.values()) {
-        faceQuads.get(face.ordinal()).addAll(bakedModel.getFaceQuads(face));
+        faceQuads.get(face.ordinal()).addAll(nonNullList(bakedModel.getFaceQuads(face)));
       }
     }
 
     this.ambientOcclusion = !models.isEmpty() ? models.get(0).isAmbientOcclusion() : true;
     this.gui3d = transforms != null ? transforms.isGui3d() : !models.isEmpty() ? models.get(0).isGui3d() : true;
     this.texture = (!models.isEmpty() ? models.get(0) : getMissingModel()).getParticleTexture();
-    this.cameraTransforms = (transforms != null ? transforms : !models.isEmpty() ? models.get(0) : getMissingModel()).getItemCameraTransforms();
+    @SuppressWarnings("deprecation")
+    final net.minecraft.client.renderer.block.model.ItemCameraTransforms itemCameraTransforms = (transforms != null ? transforms : !models.isEmpty() ? models
+        .get(0) : getMissingModel()).getItemCameraTransforms();
+    this.cameraTransforms = itemCameraTransforms;
     this.format = transforms != null ? transforms.getFormat() : Attributes.DEFAULT_BAKED_FORMAT;
+  }
+
+  private static List<BakedQuad> nonNullList(List<BakedQuad> list) {
+    return list != null ? list : new ArrayList<BakedQuad>();
   }
 
   private static IBakedModel getMissingModel() {
@@ -130,13 +140,15 @@ public class EnderBakedModel implements IEnderBakedModel {
     return texture;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
-  public ItemCameraTransforms getItemCameraTransforms() {
+  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
     return cameraTransforms;
   }
 
   @Override
-  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(
+      @SuppressWarnings("deprecation") net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
     return Pair.of(this, transformTypes[cameraTransformType.ordinal()]);
   }
 

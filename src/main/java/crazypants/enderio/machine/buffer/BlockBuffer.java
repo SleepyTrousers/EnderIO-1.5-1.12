@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -137,4 +138,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
     return PainterUtil2.getSourceBlock(stack);
   }
 
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
 }

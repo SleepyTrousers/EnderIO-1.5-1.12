@@ -171,7 +171,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
 
   @Override
   public String getUid() {
-    return getClass().getCanonicalName();
+    return getClass().getCanonicalName() + "@" + Integer.toHexString(hashCode());
   }
 
   protected Item getResultId(ItemStack target) {

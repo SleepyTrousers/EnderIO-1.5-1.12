@@ -11,7 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.ISmartBlockModel;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
@@ -94,12 +98,24 @@ public class PaintWrangler {
     return paintModel;
   }
 
-  public static IBakedModel handlePaint(final BlockStateWrapper state, IBlockPaintableBlock block, final IBlockAccess world, final BlockPos pos) {
+  /**
+   * pair.left = model to render; pair.right = has paint to render
+   * <p>
+   * (null, true) = has a paint to render but not in the current render pass<br />
+   * (null, false) = is not painted<br />
+   * (model, true) = render this model<br />
+   * (model, false) = invalid return value
+   */
+  public static Pair<IBakedModel, Boolean> handlePaint(final BlockStateWrapper state, IBlockPaintableBlock block, final IBlockAccess world, final BlockPos pos) {
     IBlockState paintSource = block.getPaintSource(state, world, pos);
     if (paintSource != null) {
-      return wrangleBakedModel(world, pos, PainterUtil2.handleDynamicState(paintSource, state, world, pos));
+      if (paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
+        return Pair.of(wrangleBakedModel(world, pos, PainterUtil2.handleDynamicState(paintSource, state, world, pos)), true);
+      } else {
+        return Pair.of(null, true);
+      }
     }
-    return null;
+    return Pair.of(null, false);
   }
 
   public static IBakedModel handlePaint(ItemStack stack, IBlockPaintableBlock block) {

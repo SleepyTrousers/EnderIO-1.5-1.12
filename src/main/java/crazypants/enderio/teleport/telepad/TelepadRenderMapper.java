@@ -19,7 +19,7 @@ import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 
-public class TelepadRenderMapper implements IRenderMapper {
+public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
 
   private static final EnumRenderMode GLASS_TOP_MODEL = EnumRenderMode.FRONT_ON;
   private static final EnumRenderMode FULL_MODEL = EnumRenderMode.FRONT_EAST;
@@ -39,7 +39,7 @@ public class TelepadRenderMapper implements IRenderMapper {
       } else {
         states.add(state.withProperty(EnumRenderMode.RENDER, GLASS_TOP_MODEL));
       }
-    } else {
+    } else if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID) {
       if (!tileEntity.inNetwork()) {
         states.add(state.withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
       } else if (tileEntity.isMaster()) {
@@ -47,6 +47,8 @@ public class TelepadRenderMapper implements IRenderMapper {
       } else {
         states.add(state.withProperty(EnumRenderMode.RENDER, NULL_MODEL));
       }
+    } else {
+      return null;
     }
 
     return Pair.of(states, null);
@@ -54,10 +56,12 @@ public class TelepadRenderMapper implements IRenderMapper {
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    TileEntity tileEntity = state.getTileEntity();
+    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.CUTOUT) {
+      TileEntity tileEntity = state.getTileEntity();
 
-    if (tileEntity instanceof TileTelePad) {
-      return render(state.getState(), world, pos, (TileTelePad) tileEntity);
+      if (tileEntity instanceof TileTelePad) {
+        return render(state.getState(), world, pos, (TileTelePad) tileEntity);
+      }
     }
     return null;
   }

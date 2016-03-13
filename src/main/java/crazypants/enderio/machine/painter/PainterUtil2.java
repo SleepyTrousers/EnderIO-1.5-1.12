@@ -27,6 +27,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.google.common.base.Strings;
 
@@ -59,7 +60,9 @@ public class PainterUtil2 {
       Item item = paintSource.getItem();
       if (item instanceof ItemBlock) {
         Block block = ((ItemBlock) item).getBlock();
-        if (block instanceof IPaintable) {
+        if (isBlacklisted(block)) {
+          return false;
+        } else if (block instanceof IPaintable) {
           IBlockState paintSource2 = ((IPaintable) block).getPaintSource(block, paintSource);
           if (paintSource2 != null) {
             return false;
@@ -235,6 +238,14 @@ public class PainterUtil2 {
       }
     }
     return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
+  }
+
+  // TODO: Find out what the replacement for findUniqueIdentifierFor() is. Extra points for getting the one who slapped the @Deprecated on to also add some
+  // documentation what to use instead.
+  public static boolean isBlacklisted(Block block) {
+    return block != null
+        && ((block.getRenderType() != 3 && "minecraft".equals(GameRegistry.findUniqueIdentifierFor(block).modId)) || block.getRenderType() == 1 || block
+            .getRenderType() == -1);
   }
 
 }

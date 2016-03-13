@@ -17,8 +17,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
 
-public class FarmingStationRenderMapper extends MachineRenderMapper {
+public class FarmingStationRenderMapper extends MachineRenderMapper implements IRenderMapper.IRenderLayerAware {
 
   public FarmingStationRenderMapper() {
     super(null);
@@ -36,8 +37,10 @@ public class FarmingStationRenderMapper extends MachineRenderMapper {
       } else {
         states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_SOUTH));
       }
-    } else {
+    } else if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID) {
       states.add(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+    } else {
+      return null;
     }
 
     return Pair.of(states, null);
@@ -45,10 +48,10 @@ public class FarmingStationRenderMapper extends MachineRenderMapper {
 
   @Override
   protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {
-    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
-      return null;
-    } else {
+    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.CUTOUT) {
       return super.renderIO(tileEntity, block);
+    } else {
+      return null;
     }
   }
 

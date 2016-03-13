@@ -1036,4 +1036,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return getPaintSource(getDefaultState(), world, pos);
   }
 
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
 }

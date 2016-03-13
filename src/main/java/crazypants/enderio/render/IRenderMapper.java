@@ -22,11 +22,25 @@ import org.apache.commons.lang3.tuple.Pair;
 public interface IRenderMapper {
 
   /**
+   * Render mappers that implement this sub-interface will be called each for block render layer. They are expected to check for the current render layer and
+   * decide what to return.
+   * <p>
+   * Without this interface, the mapper will only be called if the render layer matches the block's getBlockLayer(). This allows painted blocks to simply render
+   * in all layers without having to check layers themselves.
+   *
+   */
+  public static interface IRenderLayerAware extends IRenderMapper {
+
+  }
+
+  /**
    * Get lists of blockstates and pre-baked, pre-rotated models to render for the given block.
    * <p>
    * Will be called in a render thread.
    * <p>
    * May return null. May return one or both of the lists as null.
+   * <p>
+   * Note: This will only be called if the current render layer matches the block's getBlockLayer() or the render mapper is IRenderLayerAware.
    */
   @SideOnly(Side.CLIENT)
   Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos);
@@ -38,6 +52,8 @@ public interface IRenderMapper {
    * Will be called in a render thread.
    * <p>
    * May return null.
+   * <p>
+   * Note: This will only be called if the current render layer matches the block's getBlockLayer() or the render mapper is IRenderLayerAware.
    */
   @SideOnly(Side.CLIENT)
   List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos);

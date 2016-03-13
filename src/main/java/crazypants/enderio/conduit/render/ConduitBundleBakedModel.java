@@ -12,6 +12,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.render.paint.PaintWrangler;
 
@@ -37,13 +40,15 @@ public class ConduitBundleBakedModel implements ISmartBlockModel {
       ConduitRenderState crs = (ConduitRenderState) stateIn;
       if (crs.getRenderFacade()) {
         try {
-          IBakedModel res = PaintWrangler.handlePaint(crs, (IBlockPaintableBlock) crs.getBlock(), crs.getWorld(), crs.getPos());
+          Pair<IBakedModel, Boolean> res = PaintWrangler.handlePaint(crs, (IBlockPaintableBlock) crs.getBlock(), crs.getWorld(), crs.getPos());
 
-          if (crs.getBundle().getPaintSource().getBlock().isOpaqueCube()) {
-            return res;
-          } else {
-            // TODO render conduits, too. (Combine models with EnderBakedModel, OverlayBakedModel or UnderlayBakedModel)
-            return res;
+          if (res.getLeft() != null) {
+            if (crs.getBundle().getPaintSource().getBlock().isOpaqueCube()) {
+              return res.getLeft();
+            } else {
+              // TODO render conduits, too. (Combine models with EnderBakedModel, OverlayBakedModel or UnderlayBakedModel)
+              return res.getLeft();
+            }
           }
         } catch (Exception e) {
           Log.warn("Could not get model for facade: " + crs.getBundle().getPaintSource());
