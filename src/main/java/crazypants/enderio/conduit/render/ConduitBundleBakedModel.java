@@ -80,7 +80,11 @@ public class ConduitBundleBakedModel implements ISmartBlockModel {
     }
     List<BakedQuad> quads = ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state);
     if(facadeModel != null) {
-      quads.addAll(facadeModel.getGeneralQuads());
+      if(!quads.isEmpty()) {
+        quads.addAll(facadeModel.getGeneralQuads());
+      } else {
+        quads = facadeModel.getGeneralQuads();
+      }
     }    
     return quads; 
   }
