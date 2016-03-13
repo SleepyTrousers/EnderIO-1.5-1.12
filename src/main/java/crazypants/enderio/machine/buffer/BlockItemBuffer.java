@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +11,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.render.paint.IPaintable;
 
 public class BlockItemBuffer extends ItemBlock {
 
@@ -45,4 +51,28 @@ public class BlockItemBuffer extends ItemBlock {
     }
     return true;
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    super.addInformation(stack, playerIn, tooltip, advanced);
+    tooltip.add(PainterUtil2.getTooltTipText(stack));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int getColorFromItemStack(ItemStack stack, int renderPass) {
+    if (block instanceof IPaintable) {
+      IBlockState paintSource = ((IPaintable) block).getPaintSource(block, stack);
+      if (paintSource != null) {
+        final ItemStack paintStack = new ItemStack(paintSource.getBlock(), 1, paintSource.getBlock().getMetaFromState(paintSource));
+        return paintStack.getItem().getColorFromItemStack(paintStack, renderPass);
+
+        // faster but less compatible:
+        // return paintSource.getBlock().getRenderColor(paintSource);
+      }
+    }
+    return super.getColorFromItemStack(stack, renderPass);
+  }
+
 }

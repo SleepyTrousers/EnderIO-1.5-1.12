@@ -23,6 +23,7 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.render.paint.IPaintable;
 
 public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -119,4 +120,19 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
     }
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int getColorFromItemStack(ItemStack stack, int renderPass) {
+    if (block instanceof IPaintable) {
+      IBlockState paintSource = ((IPaintable) block).getPaintSource(block, stack);
+      if (paintSource != null) {
+        final ItemStack paintStack = new ItemStack(paintSource.getBlock(), 1, paintSource.getBlock().getMetaFromState(paintSource));
+        return paintStack.getItem().getColorFromItemStack(paintStack, renderPass);
+
+        // faster but less compatible:
+        // return paintSource.getBlock().getRenderColor(paintSource);
+      }
+    }
+    return super.getColorFromItemStack(stack, renderPass);
+  }
 }

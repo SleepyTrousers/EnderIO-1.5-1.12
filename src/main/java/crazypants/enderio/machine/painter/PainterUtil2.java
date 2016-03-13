@@ -236,6 +236,8 @@ public class PainterUtil2 {
         ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
         sourceName = is.getDisplayName();
       }
+    } else {
+      return EnderIO.lang.localize("blockPainter.unpainted");
     }
     return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
   }

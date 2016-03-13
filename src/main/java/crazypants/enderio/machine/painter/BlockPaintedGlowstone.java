@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -142,6 +143,24 @@ public class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntity
   @Override
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
     return getPaintSource(getDefaultState(), world, pos);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+    IBlockState paintSource = getPaintSource(null, worldIn, pos);
+    if (paintSource != null) {
+      try {
+        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+      } catch (Throwable e) {
+      }
+    }
+    return super.colorMultiplier(worldIn, pos);
+  }
+
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
   }
 
 }

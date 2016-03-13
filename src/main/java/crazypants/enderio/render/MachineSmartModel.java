@@ -125,7 +125,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
               return bakedModel;
             }
             crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted, wrong pass)");
-            return this;
+            return EmptyBakedModel.instance;
           }
         }
       }
@@ -151,6 +151,9 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
           return bakedModel;
         }
       }
+
+      // assume anything with a BlockStateWrapper will render something in at least one render pass
+      return EmptyBakedModel.instance;
     }
 
     return this;
