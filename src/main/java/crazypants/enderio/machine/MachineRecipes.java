@@ -1,20 +1,10 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-import static crazypants.enderio.material.Alloy.DARK_STEEL;
-import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
-import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.PHASED_GOLD;
-import static crazypants.enderio.material.Alloy.PHASED_IRON;
-import static crazypants.enderio.material.Alloy.SOULARIUM;
-import static crazypants.enderio.material.Material.CONDUIT_BINDER;
-import static crazypants.enderio.material.Material.ENDER_CRYSTAL;
-import static crazypants.enderio.material.Material.PULSATING_CYSTAL;
-import static crazypants.enderio.material.Material.SILICON;
-import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
-import static crazypants.util.RecipeUtil.addShaped;
-import static crazypants.util.RecipeUtil.addShapeless;
-
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.config.Config;
@@ -29,11 +19,21 @@ import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import crazypants.enderio.power.Capacitors;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+import static crazypants.enderio.material.Alloy.DARK_STEEL;
+import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
+import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.Alloy.PHASED_GOLD;
+import static crazypants.enderio.material.Alloy.PHASED_IRON;
+import static crazypants.enderio.material.Alloy.SOULARIUM;
+import static crazypants.enderio.material.Material.CONDUIT_BINDER;
+import static crazypants.enderio.material.Material.ENDER_CRYSTAL;
+import static crazypants.enderio.material.Material.PULSATING_CYSTAL;
+import static crazypants.enderio.material.Material.SILICON;
+import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
+import static crazypants.util.RecipeUtil.addShaped;
+import static crazypants.util.RecipeUtil.addShapeless;
 
 public class MachineRecipes {
 
@@ -159,14 +159,13 @@ public class MachineRecipes {
     GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
     GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
 
-    //TODO: 1.8
 //    //painter
-//    ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
-//    if (Config.useHardRecipes) {
-//      addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
-//    } else {
-//      addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
-//    }
+    ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
+    if (Config.useHardRecipes) {
+      addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
+    } else {
+      addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
+    }
 
     //Farm
     ItemStack farm = new ItemStack(EnderIO.blockFarmStation, 1, 0);
