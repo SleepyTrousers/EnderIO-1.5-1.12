@@ -46,6 +46,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.paint.IPaintable;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -337,7 +338,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean isFullCube() {  
+  public boolean isFullCube() {
     return false;
   }
 
@@ -345,7 +346,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public int getLightOpacity() {
     return 0;
   }
-  
+
   @Override
   public int getLightOpacity(IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
@@ -353,7 +354,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return super.getLightOpacity(world, pos);
     }
     IConduitBundle con = (IConduitBundle) te;
-    return con.getLightOpacity();    
+    return con.getLightOpacity();
   }
 
   @Override
@@ -379,28 +380,58 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
     IConduitBundle te = getTileEntity(worldIn, pos);
-    if(te != null &&  te.hasFacade() && te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
-      return 255;
+    if (te != null && te.hasFacade()) {
+      if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
+        return 255;
+      } else {
+        return getMixedBrightnessForFacade(worldIn, pos, te.getPaintSource().getBlock());
+      }
     }
     return super.getMixedBrightnessForBlock(worldIn, pos);
   }
-  
+
+  @SideOnly(Side.CLIENT)
+  public int getMixedBrightnessForFacade(IBlockAccess worldIn, BlockPos pos, Block facadeBlock) {
+    int i = worldIn.getCombinedLight(pos, getLightValue(worldIn, pos));
+    if (i == 0 && facadeBlock instanceof BlockSlab) {
+      pos = pos.down();
+      Block block = worldIn.getBlockState(pos).getBlock();
+      return worldIn.getCombinedLight(pos, block.getLightValue(worldIn, pos));
+    } else if (facadeBlock.getUseNeighborBrightness()) {
+      return getNeightbourBrightness(worldIn, pos);
+    } else {
+      return i;
+    }
+  }
+
+  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {    
+    int result = worldIn.getCombinedLight(pos.up(), 0);
+    for(EnumFacing dir : EnumFacing.HORIZONTALS) {
+      int val = worldIn.getCombinedLight(pos.offset(dir), 0);
+      if(val > result) {
+        result = val;
+      }
+    }    
+    return result;
+  }
+
   @Override
   @SideOnly(Side.CLIENT)
   public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
     IConduitBundle te = getTileEntity(worldIn, pos);
-    if(te == null) {
+    if (te == null) {
       return super.colorMultiplier(worldIn, pos);
     }
     IBlockState ps = te.getPaintSource();
-    if(pos == null) {
+    if (pos == null) {
       return super.colorMultiplier(worldIn, pos);
     }
     try {
       return ps.getBlock().colorMultiplier(worldIn, pos, renderPass);
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return super.colorMultiplier(worldIn, pos);
@@ -409,9 +440,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public float getBlockHardness(World world, BlockPos pos) {
     IConduitBundle te = getTileEntity(world, pos);
-    if(te == null) {
+    if (te == null) {
       return super.getBlockHardness(world, pos);
-    }    
+    }
     return te.getFacadeType() == EnumFacadeType.HARDENED ? blockHardness * 10 : blockHardness;
   }
 
@@ -755,10 +786,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   private boolean facadeEquals(IConduitBundle bundle, IBlockState b, int facadeType) {
     IBlockState a = bundle.getPaintSource();
-    if(a == null) {
+    if (a == null) {
       return false;
     }
-    if(a.getBlock() != b.getBlock()) {
+    if (a.getBlock() != b.getBlock()) {
       return false;
     }
     return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);
@@ -770,7 +801,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (bundle == null || !bundle.hasFacade()) {
       return false;
     }
-    bundle.setFacing(side);
+    bundle.setPaintSource(PainterUtil2.rotate(bundle.getPaintSource()));
     world.markBlockForUpdate(new BlockPos(x, y, z));
     return true;
   }
@@ -1013,8 +1044,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return hits;
   }
 
-  
-  
   private static IRedstoneConduit getRedstoneConduit(IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
