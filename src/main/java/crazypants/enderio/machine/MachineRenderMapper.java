@@ -14,6 +14,9 @@ import net.minecraft.world.IBlockAccess;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
+import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.EnumRenderPart;
@@ -75,6 +78,10 @@ public class MachineRenderMapper implements IRenderMapper {
     return states;
   }
 
+  protected List<IBlockState> renderPaintIO(TileEntity tileEntity, Block block) {
+    return null;
+  }
+
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
@@ -91,6 +98,12 @@ public class MachineRenderMapper implements IRenderMapper {
     Block block = state.getBlock();
 
     if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
+      if ((tileEntity instanceof IPaintableTileEntity) && (block instanceof IPaintable.IWrenchHideablePaint)) {
+        IPaintableTileEntity te = (IPaintableTileEntity) tileEntity;
+        if (te.getPaintSource() != null && !YetaUtil.shouldHeldItemHideFacades()) {
+          return renderPaintIO(tileEntity, block);
+        }
+      }
       return renderIO(tileEntity, block);
     }
     return null;

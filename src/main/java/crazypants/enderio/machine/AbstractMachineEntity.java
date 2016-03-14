@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -33,6 +34,7 @@ import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.YetaUtil;
 
 public abstract class AbstractMachineEntity extends TileEntityEio
     implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
@@ -298,6 +300,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (forceClientUpdate) {
       worldObj.markBlockForUpdate(pos);
       forceClientUpdate = false;
+    } else {
+      YetaUtil.refresh(this);
     }
   }
 
@@ -421,7 +425,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return false;
   }
 
-  protected abstract boolean processTasks(boolean redstoneCheckPassed);
+  protected abstract boolean processTasks(boolean redstoneCheck);
 
   // ---- Tile Entity
   // ------------------------------------------------------------------------------
@@ -476,6 +480,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       }
     }
 
+    if (this instanceof IPaintable.IPaintableTileEntity) {
+      paintSource = PainterUtil2.readNbt(nbtRoot);
+    }
+
   }
 
   public void readFromItemStack(ItemStack stack) {
@@ -486,7 +494,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (root.hasKey("eio.abstractMachine")) {
       readCommon(root);
     } else if (this instanceof IPaintable.IPaintableTileEntity) {
-      ((IPaintable.IPaintableTileEntity) this).setPaintSource(PainterUtil2.getSourceBlock(stack));
+      paintSource = PainterUtil2.readNbt(root);
     }
     return;
   }
@@ -528,6 +536,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
         nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
       }
     }
+
+    if (this instanceof IPaintable.IPaintableTileEntity) {
+      PainterUtil2.writeNbt(nbtRoot, paintSource);
+    }
+
   }
 
   public void writeToItemStack(ItemStack stack) {
@@ -728,4 +741,25 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   public BlockCoord getLocation() {    
     return new BlockCoord(pos);
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT START
+  // ///////////////////////////////////////////////////////////////////////
+
+  private IBlockState paintSource = null;
+
+  public void setPaintSource(IBlockState paintSource) {
+    this.paintSource = paintSource;
+    markDirty();
+    updateBlock();
+  }
+
+  public IBlockState getPaintSource() {
+    return paintSource;
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT END
+  // ///////////////////////////////////////////////////////////////////////
+
 }

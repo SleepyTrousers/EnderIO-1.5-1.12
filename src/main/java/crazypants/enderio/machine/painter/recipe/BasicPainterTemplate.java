@@ -14,23 +14,22 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {
 
-  public static int DEFAULT_ENERGY_PER_TASK = Config.painterEnergyPerTaskRF;
-
   protected final T resultBlock;
   protected final Block[] validTargets;
 
-  protected BasicPainterTemplate(T resultBlock, Block... validTargetBlocks) {
+  public BasicPainterTemplate(T resultBlock, Block... validTargetBlocks) {
     this.resultBlock = resultBlock;
     validTargets = validTargetBlocks;
   }
 
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
-    return DEFAULT_ENERGY_PER_TASK;
+    return Config.painterEnergyPerTaskRF;
   }
 
   @Override

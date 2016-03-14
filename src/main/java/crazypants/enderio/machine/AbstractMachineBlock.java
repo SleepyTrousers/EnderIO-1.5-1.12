@@ -5,21 +5,6 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -41,6 +26,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
     IWailaInfoProvider, ISmartRenderAwareBlock {
@@ -267,5 +270,69 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public IRenderMapper getRenderMapper() {
     return RenderMappers.BODY_MAPPER;
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT START
+  // ///////////////////////////////////////////////////////////////////////
+
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return getPaintSource(getDefaultState(), world, pos);
+  }
+
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+    if (this instanceof IPaintable) {
+      T te = getTileEntity(world, pos);
+      if (te instanceof IPaintable.IPaintableTileEntity) {
+        ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
+      }
+    }
+  }
+
+  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+    if (this instanceof IPaintable) {
+      PainterUtil2.setSourceBlock(stack, paintSource);
+    }
+  }
+
+  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (this instanceof IPaintable) {
+      T te = getTileEntity(world, pos);
+      if (te instanceof IPaintable.IPaintableTileEntity) {
+        return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
+      }
+    }
+    return null;
+  }
+
+  public IBlockState getPaintSource(Block block, ItemStack stack) {
+    if (this instanceof IPaintable) {
+      return PainterUtil2.getSourceBlock(stack);
+    }
+    return null;
+  }
+
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return this instanceof IPaintable ? true : super.canRenderInLayer(layer);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+    if (this instanceof IPaintable) {
+      IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
+      if (paintSource != null) {
+        try {
+          return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+        } catch (Throwable e) {
+        }
+      }
+    }
+    return super.colorMultiplier(worldIn, pos, renderPass);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT END
+  // ///////////////////////////////////////////////////////////////////////
 
 }

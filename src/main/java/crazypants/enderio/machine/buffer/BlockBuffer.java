@@ -2,7 +2,6 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -12,8 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,7 +21,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 
@@ -100,60 +96,9 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    return getPaintSource(getDefaultState(), world, pos);
-  }
-  
-  @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
-    return RenderMappers.FRONT_MAPPER_PAINTED;
-  }
-
-  @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
-    TileBuffer te = getTileEntity(world, pos);
-    if (te == null) {
-      return;
-    }
-    te.setPaintSource(paintSource);
-  }
-
-  @Override
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileBuffer te = getTileEntity(world, pos);
-    if (te == null) {
-      return null;
-    }
-    return te.getPaintSource();
-  }
-
-  @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
-  }
-
-  @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
-    return true;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(null, worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
-      }
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
+    return RenderMappers.FRONT_MAPPER;
   }
 
 }

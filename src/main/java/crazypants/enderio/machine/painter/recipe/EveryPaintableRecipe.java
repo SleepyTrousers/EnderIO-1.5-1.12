@@ -6,7 +6,7 @@ import crazypants.enderio.paint.IPaintable;
 
 public class EveryPaintableRecipe<T extends Block & IPaintable> extends BasicPainterTemplate<T> {
 
-  protected EveryPaintableRecipe() {
+  public EveryPaintableRecipe() {
     super(null);
   }
 

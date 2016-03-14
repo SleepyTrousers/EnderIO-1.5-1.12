@@ -1,17 +1,14 @@
 package crazypants.enderio.machine;
 
-import java.util.Collections;
 import java.util.List;
 
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IRenderMapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IRenderMapper;
 
 @SideOnly(Side.CLIENT)
 public final class RenderMappers {
@@ -22,26 +19,10 @@ public final class RenderMappers {
 
     @Override
     protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {      
-      return Collections.emptyList();
+      return null;
     }
     
   };
-  
-  
-  public static final IRenderMapper FRONT_MAPPER_PAINTED  = new MachineRenderMapper(null) {
-    @Override
-    protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {   
-      if(! (tileEntity instanceof IPaintableTileEntity)) {
-        return Collections.emptyList();  
-      }
-      IPaintableTileEntity te = (IPaintableTileEntity)tileEntity;
-      if(te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacades()) {
-        return super.renderIO(tileEntity, block);
-      }
-      return Collections.emptyList();      
-    }
-  };
-  
   
   public static final IRenderMapper BODY_MAPPER = new MachineRenderMapper(EnumRenderPart.BODY);
   
