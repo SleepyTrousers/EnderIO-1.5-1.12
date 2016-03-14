@@ -12,6 +12,8 @@ import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.PaintSourceValidator;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity {
 
@@ -42,6 +44,10 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity {
     }
     ItemStack paint = i == 0 ? inventory[1] : itemStack;
     ItemStack targt = i == 0 ? itemStack : inventory[0];
+
+    if (paint != null && !PaintSourceValidator.instance.isValidSourceDefault(paint)) {
+      return false;
+    }
 
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
     for (IMachineRecipe rec : recipes.values()) {

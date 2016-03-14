@@ -4,7 +4,7 @@ import java.util.List;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;

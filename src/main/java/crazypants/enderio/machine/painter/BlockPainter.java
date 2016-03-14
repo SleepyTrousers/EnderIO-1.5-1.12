@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.EveryPaintableRecipe;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 

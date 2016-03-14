@@ -21,7 +21,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.BlockStateWrapper;

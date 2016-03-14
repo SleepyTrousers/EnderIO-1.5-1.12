@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.painter;
+package crazypants.enderio.machine.painter.blocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

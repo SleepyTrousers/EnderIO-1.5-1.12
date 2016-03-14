@@ -1,9 +1,5 @@
 package crazypants.enderio.paint;
 
-import com.google.common.base.Strings;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.painter.BlockPainter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;
@@ -17,6 +13,11 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameData;
+
+import com.google.common.base.Strings;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.painter.BlockPainter;
 
 public class PainterUtil2 {
 
@@ -152,7 +153,7 @@ public class PainterUtil2 {
     return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
   }
 
-  // TODO: We are no longer using the whitelist and black list in PaintSourceValidator
+  // Note: Config-based white-/blacklisting is done by PaintSourceValidator and checked as part of the input slot validation of the Painter
   public static boolean isBlacklisted(Block block) {
     if(block == null) {
       return false;

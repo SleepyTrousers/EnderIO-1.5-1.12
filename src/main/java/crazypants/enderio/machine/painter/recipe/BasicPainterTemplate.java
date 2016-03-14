@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.painter;
+package crazypants.enderio.machine.painter.recipe;
 
 import java.util.Collections;
 import java.util.List;

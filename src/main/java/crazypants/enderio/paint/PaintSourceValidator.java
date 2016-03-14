@@ -1,11 +1,10 @@
-package crazypants.enderio.machine.painter;
+package crazypants.enderio.paint;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.common.util.ItemUtil;
@@ -38,12 +37,7 @@ public class PaintSourceValidator {
     if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
       return false;
     }
-
-    if(!block.isFullCube()) {
-      return false;
-    }
-    
-    return block.isOpaqueCube() || (block.getMaterial().isOpaque()) || block == Blocks.glass;
+    return true;
   }
 
   public boolean isWhitelisted(ItemStack paintSource) {

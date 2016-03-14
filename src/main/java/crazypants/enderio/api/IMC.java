@@ -6,11 +6,11 @@ import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.vat.VatRecipeManager;
+import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.teleport.TravelController;
 
 /**

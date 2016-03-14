@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.util.ClientUtil;
 

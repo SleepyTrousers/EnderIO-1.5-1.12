@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.painter;
+package crazypants.enderio.paint;
 
 import java.io.File;
 import java.io.IOException;
