@@ -434,7 +434,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return super.colorMultiplier(worldIn, pos);
+    return super.colorMultiplier(worldIn, pos, renderPass);
   }
 
   @Override

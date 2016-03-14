@@ -2,6 +2,15 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.List;
 
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.paint.IPaintable;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -18,15 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.paint.IPaintable;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock {
 
@@ -153,7 +153,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
       } catch (Throwable e) {
       }
     }
-    return super.colorMultiplier(worldIn, pos);
+    return super.colorMultiplier(worldIn, pos, renderPass);
   }
 
 }

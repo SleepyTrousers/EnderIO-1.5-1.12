@@ -4,6 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.paint.IPaintable;
+import crazypants.enderio.render.paint.PaintRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
@@ -25,19 +37,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.paint.IPaintable;
-import crazypants.enderio.render.paint.PaintRegistry;
 
 public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IRenderLayerAware {
@@ -208,7 +207,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
       } catch (Throwable e) {
       }
     }
-    return super.colorMultiplier(worldIn, pos);
+    return super.colorMultiplier(worldIn, pos, renderPass);
   }
 
 }

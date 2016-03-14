@@ -2,6 +2,16 @@ package crazypants.enderio.machine.painter;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.paint.IPaintable;
+import crazypants.enderio.render.paint.PaintRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
@@ -23,17 +33,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.paint.IPaintable;
-import crazypants.enderio.render.paint.PaintRegistry;
 
 public class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper {
@@ -159,7 +158,7 @@ public class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntity
       } catch (Throwable e) {
       }
     }
-    return super.colorMultiplier(worldIn, pos);
+    return super.colorMultiplier(worldIn, pos, renderPass);
   }
 
   @Override
