@@ -65,8 +65,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   private final ResourceLocation soundRes;
 
-  public boolean isDirty = false;
-
   public static ResourceLocation getSoundFor(String sound) {
     return sound == null ? null : new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
   }
@@ -298,9 +296,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
 
     if (forceClientUpdate) {
-      if (worldObj.rand.nextInt(1024) <= (isDirty ? 256 : 0)) {
-        isDirty = !isDirty;
-      }
       worldObj.markBlockForUpdate(pos);
       forceClientUpdate = false;
     }
