@@ -29,12 +29,11 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.IPaintedBlock;
-import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.paint.PainterUtil2;
 import crazypants.util.ClientUtil;
 
-public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider, IPaintedBlock, IHaveRenderers {
+public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider, IHaveRenderers {
 
   public static BlockDarkSteelPressurePlate create() {
     BlockDarkSteelPressurePlate res = new BlockDarkSteelPressurePlate();

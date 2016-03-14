@@ -37,7 +37,7 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.paint.PainterUtil2;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
@@ -47,7 +47,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   private IBlockState facade = null;  
   private EnumFacadeType facadeType = EnumFacadeType.BASIC;
-  private EnumFacing facadeFacing = EnumFacing.NORTH;
 
   private boolean facadeChanged;
 
@@ -106,7 +105,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(facade != null) {
       PainterUtil2.writeNbt(nbtRoot, facade);
       nbtRoot.setString("facadeType", facadeType.name());
-      nbtRoot.setInteger("facadeFacing", facadeFacing.ordinal());
     }
     
     nbtRoot.setShort("nbtVersion", NBT_VERSION);
@@ -140,11 +138,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       } else {
         facadeType = EnumFacadeType.BASIC;
       }
-      facadeFacing = EnumFacing.values()[nbtRoot.getInteger("facadeFacing")];
     } else {
       facade = null;
       facadeType = EnumFacadeType.BASIC;
-      facadeFacing = EnumFacing.NORTH;
     }
 
     if(worldObj != null && worldObj.isRemote) {
@@ -170,6 +166,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     facade = paintSource;
     facadeChanged = true;
     markDirty();
+    updateBlock();
   }
 
   @Override
@@ -186,17 +183,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public EnumFacadeType getFacadeType() {
     return facadeType;
-  }
-
-  @Override
-  public EnumFacing getFacing() {
-    return facadeFacing;
-  }
-
-  @Override
-  public void setFacing(EnumFacing facadeFacing) {
-    this.facadeFacing = facadeFacing;
-    markDirty();
   }
 
   @Override
@@ -323,10 +309,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
   
   @Override
-  public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+  public void onNeighborChange(IBlockAccess world, BlockPos posIn, BlockPos neighbor) {
     boolean needsUpdate = false;
     for (IConduit conduit : conduits) {
-      needsUpdate |= conduit.onNeighborChange(world, pos, neighbor);
+      needsUpdate |= conduit.onNeighborChange(world, posIn, neighbor);
     }
     if(needsUpdate) {
       dirty();

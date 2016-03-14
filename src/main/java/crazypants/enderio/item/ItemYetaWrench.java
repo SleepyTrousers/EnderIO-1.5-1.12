@@ -5,6 +5,25 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
@@ -16,27 +35,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.tool.ToolUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
@@ -60,11 +64,12 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override  
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-    IBlockState bs = world.getBlockState(pos);
+    final IBlockState blockState = world.getBlockState(pos);
+    IBlockState bs = blockState;
     Block block = bs.getBlock();
     boolean ret = false;
     if (block != null) {
-      PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pos, side, world);
+      PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pos, side, world, new Vec3(hitX, hitY, hitZ));
       if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.useBlock == Result.DENY || e.useItem == Result.DENY) {
         return false;
       }
@@ -86,8 +91,13 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
           }
         }
         ret = true;
-      } else if (block instanceof IRotatableFacade && !player.isSneaking() && !ConduitUtil.shouldHeldItemHideFacades(player)) {
-        if (((IRotatableFacade) block).tryRotateFacade(world, pos, side)) {
+      } else if (block instanceof IBlockPaintableBlock && !player.isSneaking() && !YetaUtil.shouldHeldItemHideFacades(player)) {
+        IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(blockState, world, pos);
+        if (paintSource != null) {
+          final IBlockState rotatedPaintSource = PainterUtil2.rotate(paintSource);
+          if (rotatedPaintSource != paintSource) {
+            ((IBlockPaintableBlock) block).setPaintSource(blockState, world, pos, rotatedPaintSource);
+          }
           ret = true;
         }
       }

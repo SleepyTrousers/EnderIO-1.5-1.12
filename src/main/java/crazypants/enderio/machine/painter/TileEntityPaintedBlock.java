@@ -5,7 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.render.paint.IPaintable;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
 
 public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.IPaintableTileEntity {
 
@@ -33,6 +34,8 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.
   @Override
   public void setPaintSource(IBlockState paintSource) {
     this.paintSource = paintSource;
+    markDirty();
+    updateBlock();
   }
 
   @Override

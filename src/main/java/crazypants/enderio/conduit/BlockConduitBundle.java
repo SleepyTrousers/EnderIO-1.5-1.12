@@ -6,45 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.conduit.facade.EnumFacadeType;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
-import crazypants.enderio.conduit.gui.PacketFluidFilter;
-import crazypants.enderio.conduit.gui.PacketOpenConduitUI;
-import crazypants.enderio.conduit.gui.PacketSlotVisibility;
-import crazypants.enderio.conduit.gui.item.PacketExistingItemFilterSnapshot;
-import crazypants.enderio.conduit.gui.item.PacketModItemFilter;
-import crazypants.enderio.conduit.liquid.PacketFluidLevel;
-import crazypants.enderio.conduit.packet.PacketConnectionMode;
-import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
-import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.render.ConduitRenderState;
-import crazypants.enderio.item.IRotatableFacade;
-import crazypants.enderio.item.ItemConduitProbe;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.paint.IPaintable;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
@@ -78,9 +39,48 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.facade.EnumFacadeType;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
+import crazypants.enderio.conduit.gui.PacketFluidFilter;
+import crazypants.enderio.conduit.gui.PacketOpenConduitUI;
+import crazypants.enderio.conduit.gui.PacketSlotVisibility;
+import crazypants.enderio.conduit.gui.item.PacketExistingItemFilterSnapshot;
+import crazypants.enderio.conduit.gui.item.PacketModItemFilter;
+import crazypants.enderio.conduit.liquid.PacketFluidLevel;
+import crazypants.enderio.conduit.packet.PacketConnectionMode;
+import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
+import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
+import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.render.ConduitRenderState;
+import crazypants.enderio.item.ItemConduitProbe;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.tool.ToolUtil;
+
 @Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
     @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks") })
-public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IRotatableFacade {
+public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockConduitBundle create() {
 
@@ -793,17 +793,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return false;
     }
     return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);
-  }
-
-  @Override
-  public boolean tryRotateFacade(World world, BlockPos pos, EnumFacing side) {    
-    IConduitBundle bundle = getTileEntity(world, pos);
-    if (bundle == null || !bundle.hasFacade()) {
-      return false;
-    }
-    bundle.setPaintSource(PainterUtil2.rotate(bundle.getPaintSource()));
-    world.markBlockForUpdate(pos);
-    return true;
   }
 
   @Override

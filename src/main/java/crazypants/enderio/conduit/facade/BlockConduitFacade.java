@@ -21,14 +21,14 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.paint.IPaintable;
 
 public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> implements IPaintable.IBlockPaintableBlock, ISmartRenderAwareBlock {
 

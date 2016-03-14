@@ -3,15 +3,16 @@ package crazypants.enderio.machine.painter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 
 public class PaintSourceValidator {
 
@@ -25,7 +26,7 @@ public class PaintSourceValidator {
       return false;
     }
     Block block = Util.getBlockFromItemId(paintSource);
-    if(block == null || block instanceof IPaintedBlock) {
+    if (block == null) {
       return false;
     }
     if(isBlacklisted(paintSource)) {

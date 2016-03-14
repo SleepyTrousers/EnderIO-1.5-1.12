@@ -22,8 +22,8 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.render.paint.IPaintable;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
 
 public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 

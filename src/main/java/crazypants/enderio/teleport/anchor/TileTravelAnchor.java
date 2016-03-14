@@ -6,14 +6,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.PlayerUtil;
-
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.machine.painter.IPaintableTileEntity;
-import crazypants.util.UserIdent;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +16,16 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.PlayerUtil;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.util.UserIdent;
+
+public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintable.IPaintableTileEntity {
 
   private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
   private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
@@ -177,12 +178,12 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
   
   @Override
-  public IBlockState getSourceBlock() {
+  public IBlockState getPaintSource() {
     return sourceBlock;
   }
 
   @Override
-  public void setSourceBlock(IBlockState sourceBlock) {
+  public void setPaintSource(IBlockState sourceBlock) {
     this.sourceBlock = sourceBlock;
   }
 

@@ -3,10 +3,10 @@ package crazypants.enderio.machine;
 import java.util.Collections;
 import java.util.List;
 
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.paint.IPaintable.IPaintableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -35,7 +35,7 @@ public final class RenderMappers {
         return Collections.emptyList();  
       }
       IPaintableTileEntity te = (IPaintableTileEntity)tileEntity;
-      if(te.getPaintSource() == null || ConduitUtil.shouldHeldItemHideFacades()) {
+      if(te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacades()) {
         return super.renderIO(tileEntity, block);
       }
       return Collections.emptyList();      

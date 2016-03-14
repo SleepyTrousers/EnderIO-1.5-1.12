@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.power.IInternalPowerHandler;
-import crazypants.enderio.power.PowerDistributor;
-import crazypants.enderio.render.paint.IPaintable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +7,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.power.PowerDistributor;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
@@ -228,6 +228,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @Override
   public void setPaintSource(IBlockState paintSource) {
     this.paintSource = paintSource;
+    markDirty();
+    updateBlock();
   }
 
   @Override
@@ -235,19 +237,11 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
     return paintSource;
   }
   
-  @SideOnly(Side.CLIENT)  
-  private boolean renderingPaintsource;
-  
   @Override
+  @SideOnly(Side.CLIENT)  
   public void updateEntityClient() {
     super.updateEntityClient();
-    
-    boolean renderPaint = getPaintSource() != null && !ConduitUtil.shouldHeldItemHideFacades();
-    if(renderPaint != renderingPaintsource) {
-      worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
-    }
-    renderingPaintsource = renderPaint;       
+    crazypants.enderio.paint.YetaUtil.refresh(this);
   }
-  
   
 }

@@ -1,4 +1,4 @@
-package crazypants.enderio.render.paint;
+package crazypants.enderio.paint.render;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,9 +16,9 @@ import net.minecraftforge.client.model.ISmartBlockModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
 
 public class PaintWrangler {
 

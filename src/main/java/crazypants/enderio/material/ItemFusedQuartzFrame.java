@@ -16,8 +16,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.paint.PainterUtil2;
 
 public class ItemFusedQuartzFrame extends Item {
 

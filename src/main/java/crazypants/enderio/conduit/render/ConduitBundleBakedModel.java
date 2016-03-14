@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
-import crazypants.enderio.render.paint.PaintWrangler;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
+import crazypants.enderio.paint.render.PaintWrangler;
 import jline.internal.Log;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

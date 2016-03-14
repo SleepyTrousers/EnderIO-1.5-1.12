@@ -12,8 +12,8 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.enderio.render.paint.IPaintable;
-
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {

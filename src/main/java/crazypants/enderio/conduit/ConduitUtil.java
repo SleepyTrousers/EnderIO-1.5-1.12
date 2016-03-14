@@ -14,14 +14,13 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
-import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.render.paint.IPaintable.IPaintableTileEntity;
-import crazypants.enderio.tool.ToolUtil;
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -158,7 +157,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IPaintableTileEntity bundle, EntityPlayer player) {
-    return bundle.getPaintSource() != null && shouldHeldItemHideFacades(player);
+    return bundle.getPaintSource() != null && YetaUtil.shouldHeldItemHideFacades(player);
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -191,24 +190,6 @@ public class ConduitUtil {
     }
     ConduitDisplayMode mode = getDisplayMode(player);
     return mode.renderConduit(conduitType);
-  }
-
-  //TODO: 1.8 move to paintable area as applies to machines as well
-  public static boolean shouldHeldItemHideFacades() {
-    return shouldHeldItemHideFacades(null);
-  }
-  
-  //TODO: 1.8 move to paintable area as applies to machines as well
-  public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
-    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if (player == null) {
-      return false;
-    }
-    ItemStack held = player.getCurrentEquippedItem();
-    if (held != null && held.getItem() instanceof IHideFacades) {
-      return ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
-    }
-    return ToolUtil.isToolEquipped(player);
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {

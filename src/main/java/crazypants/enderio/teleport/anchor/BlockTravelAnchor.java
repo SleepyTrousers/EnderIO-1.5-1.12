@@ -2,35 +2,6 @@ package crazypants.enderio.teleport.anchor;
 
 import javax.annotation.Nullable;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.ChatUtil;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.painter.BasicPainterTemplate;
-import crazypants.enderio.machine.painter.IPaintableTileEntity;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
-import crazypants.enderio.teleport.ContainerTravelAccessable;
-import crazypants.enderio.teleport.ContainerTravelAuth;
-import crazypants.enderio.teleport.GuiTravelAccessable;
-import crazypants.enderio.teleport.GuiTravelAuth;
-import crazypants.enderio.teleport.packet.PacketAccessMode;
-import crazypants.enderio.teleport.packet.PacketDrainStaff;
-import crazypants.enderio.teleport.packet.PacketLabel;
-import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
-import crazypants.enderio.teleport.packet.PacketPassword;
-import crazypants.enderio.teleport.packet.PacketTravelEvent;
-import crazypants.util.IFacade;
-import crazypants.util.UserIdent;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -47,6 +18,36 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.ChatUtil;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.teleport.ContainerTravelAccessable;
+import crazypants.enderio.teleport.ContainerTravelAuth;
+import crazypants.enderio.teleport.GuiTravelAccessable;
+import crazypants.enderio.teleport.GuiTravelAuth;
+import crazypants.enderio.teleport.packet.PacketAccessMode;
+import crazypants.enderio.teleport.packet.PacketDrainStaff;
+import crazypants.enderio.teleport.packet.PacketLabel;
+import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
+import crazypants.enderio.teleport.packet.PacketPassword;
+import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.util.IFacade;
+import crazypants.util.UserIdent;
 
 public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
   
@@ -97,7 +98,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);        
         IBlockState bs = PainterUtil2.getSourceBlock(stack);
-        ta.setSourceBlock(bs);
+        ta.setPaintSource(bs);
         world.markBlockForUpdate(pos);
       }
     }
@@ -160,9 +161,9 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       return;
     }
     ItemStack itemStack = new ItemStack(this);
-    IBlockState srcBlk = anchor.getSourceBlock();
+    IBlockState srcBlk = anchor.getPaintSource();
     if (srcBlk != null) {
-      itemStack = createItemStackForSourceBlock(anchor.getSourceBlock());
+      itemStack = createItemStackForSourceBlock(anchor.getPaintSource());
       drop.setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
     }
   }
@@ -177,8 +178,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   @Override
   public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
     TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IPaintableTileEntity) {
-      IBlockState sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      IBlockState sourceBlock = ((IPaintable.IPaintableTileEntity) te).getPaintSource();
       if (sourceBlock != null && sourceBlock.getBlock() != this) {
         return sourceBlock.getBlock().colorMultiplier(world, pos);
       }
@@ -235,7 +236,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     if(te == null) {
       return null;
     }
-    return te.getSourceBlock();
+    return te.getPaintSource();
   }
 
 }

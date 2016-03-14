@@ -1,4 +1,4 @@
-package crazypants.enderio.render.paint;
+package crazypants.enderio.paint.render;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,7 +11,8 @@ import net.minecraft.world.IBlockAccess;
 
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
-import crazypants.enderio.machine.painter.PainterUtil2;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
 
 public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 

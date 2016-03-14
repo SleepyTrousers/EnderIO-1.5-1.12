@@ -3,15 +3,6 @@ package crazypants.enderio.render;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.paint.IPaintable.IBlockPaintableBlock;
-import crazypants.enderio.render.paint.PaintWrangler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -27,6 +18,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.client.model.ISmartItemModel;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
+import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
+import crazypants.enderio.paint.render.PaintWrangler;
+import crazypants.enderio.render.dummy.BlockMachineBase;
 
 public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
@@ -105,7 +107,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
         }
       }
 
-      if (block instanceof IBlockPaintableBlock && !ConduitUtil.shouldHeldItemHideFacades()) {
+      if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
         Pair<IBakedModel, Boolean> paintModel = PaintWrangler.handlePaint(state, (IBlockPaintableBlock) block, world, pos);
         if (paintModel.getRight()) {
           if (paintModel.getLeft() != null) {

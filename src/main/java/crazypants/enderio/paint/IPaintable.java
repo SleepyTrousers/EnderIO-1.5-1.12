@@ -1,4 +1,4 @@
-package crazypants.enderio.render.paint;
+package crazypants.enderio.paint;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -73,6 +73,14 @@ public interface IPaintable {
     void setPaintSource(IBlockState paintSource);
 
     IBlockState getPaintSource();
+  }
+
+  /**
+   * Block marked with this interface won't have their paint rendered when paint is hidden by the wrench. Only valid for IBlockPaintableBlock and its
+   * sub-interfaces
+   */
+  public static interface IWrenchHideablePaint {
+
   }
 
 }

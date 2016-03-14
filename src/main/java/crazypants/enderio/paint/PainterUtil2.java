@@ -1,9 +1,9 @@
-package crazypants.enderio.machine.painter;
+package crazypants.enderio.paint;
 
 import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.render.paint.IPaintable;
+import crazypants.enderio.machine.painter.BlockPainter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;

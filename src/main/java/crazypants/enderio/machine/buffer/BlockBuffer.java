@@ -2,16 +2,6 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.List;
 
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.item.IRotatableFacade;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.painter.PainterUtil2;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.paint.IPaintable;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -28,8 +18,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IRenderMapper;
 
-public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IRotatableFacade {
+public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockBuffer create() {
     PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
@@ -139,17 +138,6 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
     return PainterUtil2.getSourceBlock(stack);
   }
 
-  @Override
-  public boolean tryRotateFacade(World world, BlockPos pos, EnumFacing axis) {
-    TileBuffer bundle = getTileEntity(world, pos);
-    if (bundle == null || bundle.getPaintSource() == null) {
-      return false;
-    }
-    bundle.setPaintSource(PainterUtil2.rotate(bundle.getPaintSource()));
-    world.markBlockForUpdate(pos);
-    return true;
-  }
-  
   @Override
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
     return true;
