@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.monitor;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
@@ -15,11 +19,9 @@ import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import crazypants.enderio.paint.IPaintable;
 
-public class TilePowerMonitor extends AbstractPowerConsumerEntity {
+public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPaintable.IPaintableTileEntity {
 
   int energyPerTick = 1;
 

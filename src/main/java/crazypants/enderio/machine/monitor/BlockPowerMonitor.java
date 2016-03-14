@@ -17,9 +17,10 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 
-public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
+public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockPowerMonitor create() {
 
