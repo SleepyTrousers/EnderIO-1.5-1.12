@@ -8,6 +8,20 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.IHideFacades;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.redstone.Signal;
+import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.render.paint.IPaintable.IPaintableTileEntity;
+import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,20 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.DyeColor;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
-import crazypants.enderio.api.tool.IHideFacades;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.Signal;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.tool.ToolUtil;
 
 public class ConduitUtil {
 
@@ -157,8 +157,8 @@ public class ConduitUtil {
     return bundle.hasFacade() && !isFacadeHidden(bundle, player);
   }
 
-  public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.hasFacade() && shouldHeldItemHideFacades(player);
+  public static boolean isFacadeHidden(IPaintableTileEntity bundle, EntityPlayer player) {
+    return bundle.getPaintSource() != null && shouldHeldItemHideFacades(player);
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -193,6 +193,12 @@ public class ConduitUtil {
     return mode.renderConduit(conduitType);
   }
 
+  //TODO: 1.8 move to paintable area as applies to machines as well
+  public static boolean shouldHeldItemHideFacades() {
+    return shouldHeldItemHideFacades(null);
+  }
+  
+  //TODO: 1.8 move to paintable area as applies to machines as well
   public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if (player == null) {

@@ -796,13 +796,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean tryRotateFacade(World world, int x, int y, int z, EnumFacing side) {
-    IConduitBundle bundle = (IConduitBundle) world.getTileEntity(new BlockPos(x, y, z));
+  public boolean tryRotateFacade(World world, BlockPos pos, EnumFacing side) {    
+    IConduitBundle bundle = getTileEntity(world, pos);
     if (bundle == null || !bundle.hasFacade()) {
       return false;
     }
     bundle.setPaintSource(PainterUtil2.rotate(bundle.getPaintSource()));
-    world.markBlockForUpdate(new BlockPos(x, y, z));
+    world.markBlockForUpdate(pos);
     return true;
   }
 

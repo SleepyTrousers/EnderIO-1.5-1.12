@@ -74,6 +74,8 @@ public class PainterUtil2 {
   }
   
   public static IBlockState rotate(IBlockState paintSource) {
+    //TODO: Need to handle cases like stairs and slabs that have 'upper' and 'lower' so they are included in the rotation
+    //cycle
     for(IProperty<?> prop : paintSource.getPropertyNames()) {
       if(prop instanceof PropertyDirection) {
         PropertyDirection pd = (PropertyDirection)prop;               

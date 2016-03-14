@@ -1,13 +1,8 @@
 package crazypants.enderio.machine.buffer;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
@@ -16,6 +11,13 @@ import crazypants.enderio.machine.painter.PainterUtil2;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.render.paint.IPaintable;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
@@ -232,4 +234,20 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   public IBlockState getPaintSource() {
     return paintSource;
   }
+  
+  @SideOnly(Side.CLIENT)  
+  private boolean renderingPaintsource;
+  
+  @Override
+  public void updateEntityClient() {
+    super.updateEntityClient();
+    
+    boolean renderPaint = getPaintSource() != null && !ConduitUtil.shouldHeldItemHideFacades();
+    if(renderPaint != renderingPaintsource) {
+      worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+    }
+    renderingPaintsource = renderPaint;       
+  }
+  
+  
 }

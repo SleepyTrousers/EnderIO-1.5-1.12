@@ -4,6 +4,7 @@ import java.util.List;
 
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.painter.PainterUtil2;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock {
+public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IRotatableFacade {
 
   public static BlockBuffer create() {
     PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
@@ -107,7 +108,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
-    return RenderMappers.FRONT_MAPPER;
+    return RenderMappers.FRONT_MAPPER_PAINTED;
   }
 
   @Override
@@ -138,6 +139,17 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
     return PainterUtil2.getSourceBlock(stack);
   }
 
+  @Override
+  public boolean tryRotateFacade(World world, BlockPos pos, EnumFacing axis) {
+    TileBuffer bundle = getTileEntity(world, pos);
+    if (bundle == null || bundle.getPaintSource() == null) {
+      return false;
+    }
+    bundle.setPaintSource(PainterUtil2.rotate(bundle.getPaintSource()));
+    world.markBlockForUpdate(pos);
+    return true;
+  }
+  
   @Override
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
     return true;

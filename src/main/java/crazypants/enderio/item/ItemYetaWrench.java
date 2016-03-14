@@ -16,6 +16,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
@@ -85,9 +86,8 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
           }
         }
         ret = true;
-      } else if (block instanceof IRotatableFacade && !player.isSneaking()
-          && (block != EnderIO.blockConduitBundle || ConduitDisplayMode.getDisplayMode(stack) == ConduitDisplayMode.NONE)) {
-        if (((IRotatableFacade) block).tryRotateFacade(world, pos.getX(), pos.getY(), pos.getZ(), side)) {
+      } else if (block instanceof IRotatableFacade && !player.isSneaking() && !ConduitUtil.shouldHeldItemHideFacades(player)) {
+        if (((IRotatableFacade) block).tryRotateFacade(world, pos, side)) {
           ret = true;
         }
       }
