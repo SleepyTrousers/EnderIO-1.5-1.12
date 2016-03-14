@@ -130,7 +130,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
-    return EnumWorldBlockLayer.TRANSLUCENT == layer || EnumWorldBlockLayer.CUTOUT == layer;
+    return true;
   }
 
   @Override
