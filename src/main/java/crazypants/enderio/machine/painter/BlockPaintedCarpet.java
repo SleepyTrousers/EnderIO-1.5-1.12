@@ -148,6 +148,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
@@ -158,11 +159,13 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     if (paintSource != null) {
@@ -179,6 +182,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
     return null;
   }

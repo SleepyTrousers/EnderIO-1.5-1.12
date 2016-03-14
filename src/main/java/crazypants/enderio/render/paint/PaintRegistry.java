@@ -12,11 +12,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelRotation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.Attributes;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IModelState;
+import net.minecraftforge.client.model.ModelLoader.UVLock;
 import net.minecraftforge.client.model.ModelStateComposition;
 import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,6 +40,7 @@ public class PaintRegistry {
   }
 
   public static IModelState OVERLAY_TRANSFORMATION;
+  public static IModelState OVERLAY_TRANSFORMATION2;
 
   private static class PaintRegistryServer {
     private PaintRegistryServer() {
@@ -75,6 +78,7 @@ public class PaintRegistry {
       cache = new ConcurrentHashMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>>();
       modelLocations.put("_missing", Pair.of((ResourceLocation) null, PaintMode.ALL_TEXTURES));
       OVERLAY_TRANSFORMATION = new TRSRTransformation(new Vector3f(0.01f, 0.01f, 0.01f), null, null, null);
+      OVERLAY_TRANSFORMATION2 = new TRSRTransformation(new Vector3f(-0.01f, -0.01f, -0.01f), null, new Vector3f(1.02f, 1.02f, 1.02f), null);
     }
 
     @SideOnly(Side.CLIENT)
@@ -139,7 +143,7 @@ public class PaintRegistry {
     @SideOnly(Side.CLIENT)
     private IBakedModel paintModel(IModel sourceModel, final IBlockState paintSource, IModelState rotation, final PaintMode paintMode) {
       IModelState state = sourceModel.getDefaultState();
-      state = rotation == null ? state : new ModelStateComposition(state, rotation);
+      state = combine(state, rotation);
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
         @Override
         public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
@@ -156,6 +160,34 @@ public class PaintRegistry {
           return super.equals(obj);
         }
       });
+    }
+
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    private IModelState combine(IModelState a, IModelState b) {
+      boolean isUVlocked = false;
+      if (a instanceof UVLock) {
+        isUVlocked = true;
+        a = ((UVLock) a).getParent();
+      }
+      if (b instanceof UVLock) {
+        isUVlocked = true;
+        b = ((UVLock) b).getParent();
+      }
+      IModelState result;
+      if (a == null && b == null) {
+        result = ModelRotation.X0_Y0;
+      } else if (a == null) {
+        result = b;
+      } else if (b == null) {
+        result = a;
+      } else {
+        result = new ModelStateComposition(a, b);
+      }
+      if (isUVlocked) {
+        result = new UVLock(result);
+      }
+      return result;
     }
 
   }

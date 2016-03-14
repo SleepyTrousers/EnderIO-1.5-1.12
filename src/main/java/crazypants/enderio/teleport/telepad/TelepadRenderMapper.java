@@ -1,6 +1,7 @@
 package crazypants.enderio.teleport.telepad;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -25,43 +26,34 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
   private static final EnumRenderMode FULL_MODEL = EnumRenderMode.FRONT_EAST;
   private static final EnumRenderMode SINGLE_MODEL = EnumRenderMode.FRONT;
   private static final EnumRenderMode SINGLE_MODEL_INVENTORY = EnumRenderMode.FRONT_SOUTH;
-  private static final EnumRenderMode NULL_MODEL = EnumRenderMode.FRONT_ON_SOUTH;
 
   public TelepadRenderMapper() {
   }
 
   protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos, TileTelePad tileEntity) {
-    List<IBlockState> states = new ArrayList<IBlockState>();
+    List<IBlockState> states = null;
     
     if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
-      if (!tileEntity.inNetwork() || !tileEntity.isMaster()) {
-        states.add(state.withProperty(EnumRenderMode.RENDER, NULL_MODEL));
-      } else {
-        states.add(state.withProperty(EnumRenderMode.RENDER, GLASS_TOP_MODEL));
+      if (tileEntity.inNetwork() && tileEntity.isMaster()) {
+        states = Collections.singletonList(state.withProperty(EnumRenderMode.RENDER, GLASS_TOP_MODEL));
       }
     } else if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID) {
       if (!tileEntity.inNetwork()) {
-        states.add(state.withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
+        states = Collections.singletonList(state.withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
       } else if (tileEntity.isMaster()) {
-        states.add(state.withProperty(EnumRenderMode.RENDER, FULL_MODEL));
-      } else {
-        states.add(state.withProperty(EnumRenderMode.RENDER, NULL_MODEL));
+        states = Collections.singletonList(state.withProperty(EnumRenderMode.RENDER, FULL_MODEL));
       }
-    } else {
-      return null;
     }
 
-    return Pair.of(states, null);
+    return states == null ? null : Pair.of(states, (List<IBakedModel>) null);
   }
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.CUTOUT) {
-      TileEntity tileEntity = state.getTileEntity();
+    TileEntity tileEntity = state.getTileEntity();
 
-      if (tileEntity instanceof TileTelePad) {
-        return render(state.getState(), world, pos, (TileTelePad) tileEntity);
-      }
+    if (tileEntity instanceof TileTelePad) {
+      return render(state.getState(), world, pos, (TileTelePad) tileEntity);
     }
     return null;
   }

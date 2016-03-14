@@ -86,6 +86,7 @@ public enum ModObject {
   // Painter
   blockPainter,
   blockPaintedFence,
+  blockPaintedStoneFence,
   blockPaintedFenceGate,
   blockPaintedWall,
   blockPaintedStair,

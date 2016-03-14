@@ -644,6 +644,7 @@ tile.blockPainter.name=Painting Machine
 enderio.blockPainter.paintedWith=Painted with: %s
 enderio.blockPainter.unpainted=Not painted
 tile.blockPaintedFence.name=Painted Fence
+tile.blockPaintedStoneFence.name=Painted Nether Brick Fence
 tile.blockPaintedFenceGate.name=Painted Gate
 tile.blockPaintedWall.name=Painted Wall
 tile.blockPaintedStair.name=Painted Stairs

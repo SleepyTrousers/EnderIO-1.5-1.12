@@ -80,6 +80,7 @@ import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.painter.BlockPaintedCarpet;
+import crazypants.enderio.machine.painter.BlockPaintedFence;
 import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
@@ -193,7 +194,7 @@ public class EnderIO {
 //
 //  // Painter
   public static BlockPainter blockPainter;
-//  public static BlockPaintedFence blockPaintedFence;
+  public static BlockPaintedFence blockPaintedFence;
 //  public static BlockPaintedFenceGate blockPaintedFenceGate;
 //  public static BlockPaintedWall blockPaintedWall;
 //  public static BlockPaintedStair blockPaintedStair;
@@ -298,7 +299,7 @@ public class EnderIO {
     blockCapBank = BlockCapBank.create();
     
     blockPainter = BlockPainter.create();
-//    blockPaintedFence = BlockPaintedFence.create();
+    blockPaintedFence = BlockPaintedFence.create();
 //    blockPaintedFenceGate = BlockPaintedFenceGate.create();
 //    blockPaintedWall = BlockPaintedWall.create();
 //    blockPaintedStair = BlockPaintedStair.create();

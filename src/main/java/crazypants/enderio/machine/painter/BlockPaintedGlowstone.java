@@ -121,21 +121,25 @@ public class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntity
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
     return null;
   }
