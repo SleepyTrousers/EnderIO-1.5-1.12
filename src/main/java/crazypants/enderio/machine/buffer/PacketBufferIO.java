@@ -8,12 +8,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessageHandler<PacketBufferIO, IMessage>, Runnable {
+public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessageHandler<PacketBufferIO, IMessage> {
 
   public PacketBufferIO() {}
   
   private int in, out;
-  private MessageContext _ctx;
   
   public PacketBufferIO(TileBuffer tile, int in, int out) {
     super(tile);
@@ -38,17 +37,11 @@ public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMe
 
   @Override
   public IMessage onMessage(PacketBufferIO message, MessageContext ctx) {
-    message._ctx = ctx;
-    Minecraft.getMinecraft().addScheduledTask(message);
-    return null;
-  }
-
-  @Override
-  public void run() {
-    TileBuffer buf = getTileEntity(getWorld(_ctx));
+    TileBuffer buf = getTileEntity(getWorld(ctx));
     if (buf != null) {
-      buf.setIO(in, out);
+      buf.setIO(message.in, message.out);
     }
+    return null;
   }
 
 }

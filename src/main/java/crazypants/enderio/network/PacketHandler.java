@@ -1,5 +1,9 @@
 package crazypants.enderio.network;
 
+import com.enderio.core.EnderCore;
+import com.enderio.core.common.network.ThreadedNetworkWrapper;
+
+import crazypants.enderio.EnderIO;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -10,7 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 public class PacketHandler {
 
-  public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("enderio");
+  public static final ThreadedNetworkWrapper INSTANCE = new ThreadedNetworkWrapper(EnderIO.DOMAIN);
 
   private static int ID = 0;
 

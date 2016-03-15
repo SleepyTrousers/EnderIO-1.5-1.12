@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage>, Runnable {
+public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
 
   public int burnTime;
   public int totalBurnTime;
@@ -40,19 +40,14 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   
   @Override
   public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
-    Minecraft.getMinecraft().addScheduledTask(message);
-    return null;
-  }
-
-  @Override
-  public void run() {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player != null && player.worldObj != null) {
       TileEntityStirlingGenerator tile = getTileEntity(player.worldObj);
       if (tile != null) {
-        tile.burnTime = burnTime;
-        tile.totalBurnTime = totalBurnTime;
+        tile.burnTime = message.burnTime;
+        tile.totalBurnTime = message.totalBurnTime;
       }
     }
+    return null;
   }
 }

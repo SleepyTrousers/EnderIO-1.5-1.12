@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage>, Runnable {
+public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
   private BlockPos pos;
   private int storedEnergy;
@@ -40,20 +40,15 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
 
   @Override
   public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
-    Minecraft.getMinecraft().addScheduledTask(message);
-    return null;
-  }
-
-  @Override
-  public void run() {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player != null && player.worldObj != null) {
-      TileEntity te = player.worldObj.getTileEntity(pos);
+      TileEntity te = player.worldObj.getTileEntity(message.pos);
       if (te instanceof IPowerContainer) {
         IPowerContainer me = (IPowerContainer) te;
-        me.setEnergyStored(storedEnergy);
+        me.setEnergyStored(message.storedEnergy);
       }
     }
+    return null;
   }
 
 }
