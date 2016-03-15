@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -12,19 +23,10 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDistributor;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
+public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
   private final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
   private final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);

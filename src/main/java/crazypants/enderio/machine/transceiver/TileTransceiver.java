@@ -8,6 +8,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Multimap;
@@ -24,22 +34,14 @@ import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
   //Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;

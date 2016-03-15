@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.spawner;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.PoweredTask;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -20,8 +9,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.PoweredTask;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 
-public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
+public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public static final int MIN_SPAWN_DELAY_BASE = Config.poweredSpawnerMinDelayTicks;
   public static final int MAX_SPAWN_DELAY_BASE = Config.poweredSpawnerMaxDelayTicks;

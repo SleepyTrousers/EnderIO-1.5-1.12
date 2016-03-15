@@ -1,18 +1,5 @@
 package crazypants.enderio.machine.tank;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
-import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.tank.GuiTank.VoidMode;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.ArrayMappingTool;
-import crazypants.enderio.tool.SmartTank;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +14,22 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.tank.GuiTank.VoidMode;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.tool.ArrayMappingTool;
+import crazypants.enderio.tool.SmartTank;
+
+public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
   private static int IO_MB_TICK = 100;
 
@@ -274,8 +276,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
   
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
-    boolean res = processItems(redstoneCheckPassed);
+  protected boolean processTasks(boolean redstoneCheck) {
+    boolean res = processItems(redstoneCheck);
     int filledLevel = getFilledLevel();
     if(lastUpdateLevel != filledLevel) {
       lastUpdateLevel = filledLevel;
@@ -304,8 +306,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     return info.fluid.amount == 0 ? 0 : (int) (1 + ((double) info.fluid.amount / (double) info.capacity) * 14);
   }
 
-  private boolean processItems(boolean redstoneCheckPassed) {
-    if(!redstoneCheckPassed) {
+  private boolean processItems(boolean redstoneCheck) {
+    if(!redstoneCheck) {
       return false;
     }
     if(!shouldDoWorkThisTick(20)) {

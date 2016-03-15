@@ -18,10 +18,12 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
+public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> implements IPaintable.INonSolidBlockPaintableBlock,
+    IPaintable.IWrenchHideablePaint {
 
   
   public static BlockCombustionGenerator create() {
@@ -75,7 +77,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     if(isActive(world, pos)) {
 
       TileEntity te = world.getTileEntity(pos);
-      EnumFacing facing = EnumFacing.SOUTH;;
+      EnumFacing facing = EnumFacing.SOUTH;
       if(te instanceof AbstractMachineEntity) {
         AbstractMachineEntity me = (AbstractMachineEntity) te;
         facing = me.facing;

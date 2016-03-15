@@ -48,11 +48,13 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
-public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
+public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
+    IPaintable.IWrenchHideablePaint {
  
   public static void writeMobTypeToNBT(NBTTagCompound nbt, String type) {
     if(nbt == null) {
@@ -107,8 +109,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);
 
     String[] blackListNames = Config.brokenSpawnerToolBlacklist;
-    for (String name : blackListNames) {
-      toolBlackList.add(new ResourceLocation(name));
+    for (String blackListName : blackListNames) {
+      toolBlackList.add(new ResourceLocation(blackListName));
     }
 
     try {
@@ -149,9 +151,9 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           TileEntityMobSpawner spawner = (TileEntityMobSpawner) tile;
           MobSpawnerBaseLogic logic = spawner.getSpawnerBaseLogic();
           if(logic != null) {
-            String name = getEntityName(logic);
-            if(name != null && !isBlackListed(name)) {
-              ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);
+            String entityName = getEntityName(logic);
+            if(entityName != null && !isBlackListed(entityName)) {
+              ItemStack drop = ItemBrokenSpawner.createStackForMobType(entityName);
               dropCache.put(new BlockCoord(evt.pos), drop);
 
               for (int i = (int) (Math.random() * 7); i > 0; i--) {
@@ -187,14 +189,13 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
             if (object instanceof TileEntityMobSpawner) {
               TileEntityMobSpawner spawner = (TileEntityMobSpawner) object;
               BlockPos p = spawner.getPos();
-              if (spawner.getWorld() == evt.world && p.getX() == evt.pos.getX() && p.getY() == evt.pos.getY()
-                  && p.getZ() == evt.pos.getZ()) {
+              if (spawner.getWorld() == evt.world && p.equals(evt.pos)) {
                 // Bingo!
                 MobSpawnerBaseLogic logic = spawner.getSpawnerBaseLogic();
                 if (logic != null) {
-                  String name = getEntityName(logic);
-                  if (name != null && !isBlackListed(name)) {
-                    evt.drops.add(ItemBrokenSpawner.createStackForMobType(name));
+                  String entityName = getEntityName(logic);
+                  if (entityName != null && !isBlackListed(entityName)) {
+                    evt.drops.add(ItemBrokenSpawner.createStackForMobType(entityName));
                   }
                 }
               }

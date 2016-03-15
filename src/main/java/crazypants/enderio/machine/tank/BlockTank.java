@@ -33,11 +33,13 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
+public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
+    IPaintable.IWrenchHideablePaint {
 
   public static BlockTank create() {
     PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);

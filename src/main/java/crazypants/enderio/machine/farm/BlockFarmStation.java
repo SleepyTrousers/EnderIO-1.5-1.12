@@ -21,11 +21,12 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
+public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   @SideOnly(Side.CLIENT)
   private static MachineRenderMapper FARM_MACHINE_RENDER_MAPPER;

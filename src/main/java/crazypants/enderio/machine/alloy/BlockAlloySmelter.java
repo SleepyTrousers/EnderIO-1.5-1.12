@@ -12,11 +12,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
-public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
+public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockAlloySmelter create() {
 

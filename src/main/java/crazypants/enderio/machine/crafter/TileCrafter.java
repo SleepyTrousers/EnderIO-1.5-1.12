@@ -5,18 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import com.enderio.core.common.util.ItemUtil;
-import com.mojang.authlib.GameProfile;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.IItemBuffer;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -28,7 +16,21 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
-public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer {
+import com.enderio.core.common.util.ItemUtil;
+import com.mojang.authlib.GameProfile;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
+import crazypants.enderio.machine.IItemBuffer;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
+
+public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer, IPaintable.IPaintableTileEntity {
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 
@@ -72,9 +74,9 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
     ticksSinceLastCraft++;
-    if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
+    if(!redstoneCheck || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
       return false;
     }
     int ticksPerCraft = getTicksPerCraft(getCapacitorType());

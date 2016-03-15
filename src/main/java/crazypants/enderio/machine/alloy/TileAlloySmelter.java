@@ -2,6 +2,8 @@ package crazypants.enderio.machine.alloy;
 
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -11,10 +13,9 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import crazypants.enderio.paint.IPaintable;
 
-public class TileAlloySmelter extends AbstractPoweredTaskEntity {
+public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public static enum Mode {
     ALL,

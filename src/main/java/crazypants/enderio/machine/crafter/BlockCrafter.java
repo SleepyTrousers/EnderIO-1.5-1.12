@@ -14,10 +14,11 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
+public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
   
   public static BlockCrafter create() {
     PacketHandler.INSTANCE.registerMessage(PacketCrafter.class,PacketCrafter.class,PacketHandler.nextID(), Side.SERVER);

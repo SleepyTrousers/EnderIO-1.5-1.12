@@ -21,10 +21,11 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockVat extends AbstractMachineBlock<TileVat> {
+public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockVat create() {
     PacketHandler.INSTANCE.registerMessage(PacketTanks.class,PacketTanks.class,PacketHandler.nextID(), Side.CLIENT);

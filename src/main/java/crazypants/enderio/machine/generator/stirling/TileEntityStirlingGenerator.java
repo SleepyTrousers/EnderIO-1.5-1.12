@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
+
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
@@ -8,17 +15,11 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerDistributor;
-import net.minecraft.block.Block;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
 
-public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
+public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
 
   // public for alloy smelter
   public static final String SOUND_NAME = "generator.stirling";
@@ -123,7 +124,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
     boolean needsUpdate = false;
     boolean sendBurnTimePacket = false;
     
@@ -137,7 +138,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
     transmitEnergy();
 
-    if(redstoneCheckPassed) {
+    if(redstoneCheck) {
 
       if(burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {

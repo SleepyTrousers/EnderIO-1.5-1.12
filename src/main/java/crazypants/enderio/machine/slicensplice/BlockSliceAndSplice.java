@@ -19,10 +19,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
+public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> implements IPaintable.ISolidBlockPaintableBlock,
+    IPaintable.IWrenchHideablePaint {
 
   public static BlockSliceAndSplice create() {
     BlockSliceAndSplice result = new BlockSliceAndSplice();

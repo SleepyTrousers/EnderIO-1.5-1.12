@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -73,7 +74,12 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     ItemStack result = isUnpaintingOp(paintSource, target);
     if (result == null) {
       result = new ItemStack(targetBlock, 1, target.getItemDamage());
+      if (targetBlock == Block.getBlockFromItem(target.getItem()) && target.hasTagCompound()) {
+        result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
+      }
       ((IPaintable) targetBlock).setPaintSource(targetBlock, result, paintState);
+    } else if (result.getItem() == target.getItem() && target.hasTagCompound()) {
+      result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
     }
     return new ResultStack[] { new ResultStack(result) };
   }

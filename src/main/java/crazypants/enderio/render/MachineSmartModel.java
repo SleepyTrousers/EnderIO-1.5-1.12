@@ -24,9 +24,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
+import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintWrangler;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 
@@ -167,7 +167,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       Item item = stack.getItem();
       if (item instanceof ItemBlock) {
         Block block = ((ItemBlock) item).getBlock();
-        if (block instanceof IBlockPaintableBlock) {
+        if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
           IBakedModel paint = PaintWrangler.handlePaint(stack, (IBlockPaintableBlock) block);
           if (paint != null) {
             if (block instanceof ISmartRenderAwareBlock) {

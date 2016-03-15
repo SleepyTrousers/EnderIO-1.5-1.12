@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.crusher;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -9,10 +11,9 @@ import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import crazypants.enderio.paint.IPaintable;
 
-public class TileCrusher extends AbstractPoweredTaskEntity {
+public class TileCrusher extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   protected IGrindingMultiplier gb;
   protected int currGbUse = 0;

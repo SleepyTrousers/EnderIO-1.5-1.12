@@ -1,5 +1,15 @@
 package crazypants.enderio.machine.vat;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -12,17 +22,9 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import crazypants.enderio.paint.IPaintable;
 
-public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess {
+public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
   final FluidTank inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);

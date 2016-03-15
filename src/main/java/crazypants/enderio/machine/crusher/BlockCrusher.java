@@ -16,9 +16,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 
-public class BlockCrusher extends AbstractMachineBlock<TileCrusher> {
+public class BlockCrusher extends AbstractMachineBlock<TileCrusher> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockCrusher create() {
     PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);

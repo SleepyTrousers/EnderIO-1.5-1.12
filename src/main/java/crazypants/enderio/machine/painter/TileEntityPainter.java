@@ -13,9 +13,10 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PaintSourceValidator;
 
-public class TileEntityPainter extends AbstractPoweredTaskEntity {
+public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot

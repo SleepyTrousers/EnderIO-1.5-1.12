@@ -2,22 +2,6 @@ package crazypants.enderio.machine.farm;
 
 import java.util.BitSet;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.ContinuousTask;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.IHarvestResult;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.tool.ArrayMappingTool;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -35,7 +19,25 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
-public class TileFarmStation extends AbstractPoweredTaskEntity {
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.farm.farmers.FarmersCommune;
+import crazypants.enderio.machine.farm.farmers.IHarvestResult;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.tool.ArrayMappingTool;
+
+public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   private static final int TICKS_PER_WORK = 20;
 
@@ -305,12 +307,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     return getBlock(new BlockPos(x, y, z));
   }
   
-  public Block getBlock(BlockPos pos) {
-    return getBlockState(pos).getBlock();
+  public Block getBlock(BlockPos posIn) {
+    return getBlockState(posIn).getBlock();
   }
   
-  public IBlockState getBlockState(BlockPos pos) {
-    return worldObj.getBlockState(pos);
+  public IBlockState getBlockState(BlockPos posIn) {
+    return worldObj.getBlockState(posIn);
   }
 
   public boolean isOpen(BlockCoord bc) {

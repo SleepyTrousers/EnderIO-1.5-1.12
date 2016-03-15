@@ -17,9 +17,11 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 
-public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> {
+public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> implements IPaintable.ISolidBlockPaintableBlock,
+    IPaintable.IWrenchHideablePaint {
 
   public static BlockStirlingGenerator create() {
 

@@ -6,22 +6,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
-import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +18,25 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
+import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+
+public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockTransceiver create() {
 
