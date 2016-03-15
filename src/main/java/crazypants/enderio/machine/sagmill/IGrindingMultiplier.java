@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 public interface IGrindingMultiplier {
 

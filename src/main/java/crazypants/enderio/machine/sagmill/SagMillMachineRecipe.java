@@ -1,11 +1,11 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.AbstractMachineRecipe;
 import crazypants.enderio.machine.recipe.IRecipe;
 
-public class CrusherMachineRecipe extends AbstractMachineRecipe {
+public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public String getUid() {
@@ -14,7 +14,7 @@ public class CrusherMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public IRecipe getRecipeForInputs(MachineRecipeInput[] inputs) {
-    return CrusherRecipeManager.instance.getRecipeForInput(inputs[0].item);
+    return SagMillRecipeManager.instance.getRecipeForInput(inputs[0].item);
   }
 
   @Override
@@ -22,7 +22,7 @@ public class CrusherMachineRecipe extends AbstractMachineRecipe {
     if(input == null) {
       return false;
     }
-    return CrusherRecipeManager.instance.isValidInput(input);
+    return SagMillRecipeManager.instance.isValidInput(input);
   }
 
   @Override

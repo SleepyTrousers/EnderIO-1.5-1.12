@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 import java.util.Random;
 
@@ -19,18 +19,18 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.BlockStateWrapper;
 
-public class BlockCrusher extends AbstractMachineBlock<TileCrusher> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockCrusher create() {
+  public static BlockSagMill create() {
     PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
 
-    BlockCrusher res = new BlockCrusher();
+    BlockSagMill res = new BlockSagMill();
     res.init();
     return res;
   }
 
-  private BlockCrusher() {
-    super(ModObject.blockSagMill, TileCrusher.class);
+  private BlockSagMill() {
+    super(ModObject.blockSagMill, TileSagMill.class);
   }
 
   @Override
@@ -38,8 +38,8 @@ public class BlockCrusher extends AbstractMachineBlock<TileCrusher> implements I
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCrusher) {
-      return new ContainerCrusher(player.inventory, (TileCrusher) te);
+    if (te instanceof TileSagMill) {
+      return new ContainerSagMill(player.inventory, (TileSagMill) te);
     }
     return null;
   }
@@ -47,8 +47,8 @@ public class BlockCrusher extends AbstractMachineBlock<TileCrusher> implements I
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCrusher) {
-      return new GuiCrusher(player.inventory, (TileCrusher) te);
+    if (te instanceof TileSagMill) {
+      return new GuiSagMill(player.inventory, (TileSagMill) te);
     }
     return null;
   }
@@ -61,7 +61,7 @@ public class BlockCrusher extends AbstractMachineBlock<TileCrusher> implements I
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
   
-    TileCrusher te = (TileCrusher) world.getTileEntity(pos);
+    TileSagMill te = (TileSagMill) world.getTileEntity(pos);
     if(te != null && te.isActive()) {
       EnumFacing front = te.facing;
 

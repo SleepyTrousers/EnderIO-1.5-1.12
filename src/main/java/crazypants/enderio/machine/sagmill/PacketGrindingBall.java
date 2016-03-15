@@ -1,6 +1,5 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
-import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -8,6 +7,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
 
 public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
 
@@ -21,7 +21,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   public PacketGrindingBall() {
   }
 
-  public PacketGrindingBall(TileCrusher ent) {
+  public PacketGrindingBall(TileSagMill ent) {
     x = ent.getPos().getX();
     y = ent.getPos().getY();
     z = ent.getPos().getZ();
@@ -51,8 +51,8 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
-    if(te instanceof TileCrusher) {
-      TileCrusher me = (TileCrusher) te;
+    if (te instanceof TileSagMill) {
+      TileSagMill me = (TileSagMill) te;
       me.currGbUse = message.currGbUse;
       me.maxGbUse = message.maxGbUse;
     }

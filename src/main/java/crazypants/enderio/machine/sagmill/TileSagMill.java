@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +13,7 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 
-public class TileCrusher extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   protected IGrindingMultiplier gb;
   protected int currGbUse = 0;
@@ -22,7 +22,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity implements IPaintable
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
   
-  public TileCrusher() {
+  public TileSagMill() {
     super(new SlotDefinition(2, 4));
   }
 
@@ -41,7 +41,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity implements IPaintable
     if(itemstack == null) {
       return false;
     }
-    return CrusherRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));
+    return SagMillRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));
   }
 
   public int getBallDurationScaled(int scale) {
@@ -69,7 +69,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity implements IPaintable
       }
     }
     if(gb == null) {
-      gb = CrusherRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
+      gb = SagMillRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
       if(gb != null) {
         maxGbUse = gb.getDurationMJ();
         decrStackSize(1, 1);
@@ -109,7 +109,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity implements IPaintable
     PoweredTask res;
     useGrindingBall = false;
     if(gb != null) {
-      useGrindingBall = !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
+      useGrindingBall = !SagMillRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
       if(useGrindingBall) {
         res = new PoweredTask(nextRecipe, chance / gb.getChanceMultiplier(), getRecipeInputs());
         res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());

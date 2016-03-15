@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 import net.minecraft.nbt.NBTTagCompound;
 

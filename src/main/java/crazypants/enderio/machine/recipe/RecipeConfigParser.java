@@ -9,6 +9,16 @@ import java.util.Locale;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -20,19 +30,10 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
+import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.material.OreDictionaryPreferences;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeConfigParser extends DefaultHandler {
 
@@ -253,7 +254,7 @@ public class RecipeConfigParser extends DefaultHandler {
         return;
       }
       recipe = recipeGroup.createRecipe(name);
-      recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
+      recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, SagMillRecipeManager.ORE_ENERGY_COST));
       recipe.setBonusType(getEnumValue(AT_BONUS_TYPE, attributes, RecipeBonusType.class, RecipeBonusType.MULTIPLY_OUTPUT));
       recipe.setAllowMissing(getBooleanValue(AT_ALLOW_MISSING, attributes, false));
       return;

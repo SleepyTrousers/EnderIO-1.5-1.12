@@ -1,13 +1,13 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerCrusher extends AbstractMachineContainer<TileCrusher> {
+public class ContainerSagMill extends AbstractMachineContainer<TileSagMill> {
 
-  public ContainerCrusher(InventoryPlayer playerInv, TileCrusher te) {
+  public ContainerSagMill(InventoryPlayer playerInv, TileSagMill te) {
     super(playerInv, te);
   }
 

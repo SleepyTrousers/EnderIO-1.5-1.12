@@ -1,18 +1,19 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 import java.awt.Rectangle;
+
+import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
+public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
 
-  public GuiCrusher(InventoryPlayer par1InventoryPlayer, TileCrusher inventory) {
-    super(inventory, new ContainerCrusher(par1InventoryPlayer, inventory), "crusher");
+  public GuiSagMill(InventoryPlayer par1InventoryPlayer, TileSagMill inventory) {
+    super(inventory, new ContainerSagMill(par1InventoryPlayer, inventory), "crusher");
     addToolTip(new GuiToolTip(new Rectangle(142, 23, 5, 17), "") {
 
       @Override

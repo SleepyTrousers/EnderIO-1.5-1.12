@@ -1,10 +1,13 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.sagmill;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.enderio.core.common.util.Util;
 
@@ -20,10 +23,8 @@ import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class CrusherRecipeManager {
+public class SagMillRecipeManager {
 
   public static final int ORE_ENERGY_COST = 400;
 
@@ -32,9 +33,9 @@ public class CrusherRecipeManager {
   private static final String CORE_FILE_NAME = "SAGMillRecipes_Core.xml";
   private static final String CUSTOM_FILE_NAME = "SAGMillRecipes_User.xml";
 
-  static final CrusherRecipeManager instance = new CrusherRecipeManager();
+  static final SagMillRecipeManager instance = new SagMillRecipeManager();
 
-  public static CrusherRecipeManager getInstance() {
+  public static SagMillRecipeManager getInstance() {
     return instance;
   }
 
@@ -46,7 +47,7 @@ public class CrusherRecipeManager {
 
   private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
 
-  public CrusherRecipeManager() {
+  public SagMillRecipeManager() {
   }
 
   public boolean isValidSagBall(ItemStack stack) {
@@ -127,7 +128,7 @@ public class CrusherRecipeManager {
     } else {
       Log.error("Could not load recipes for SAG Mill.");
     }
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.unlocalisedName, new CrusherMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.unlocalisedName, new SagMillMachineRecipe());
   }
 
   public void addCustomRecipes(String xmlDef) {

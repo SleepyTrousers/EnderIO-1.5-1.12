@@ -6,14 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.TooltipHandlerGrinding;
-import crazypants.enderio.machine.crusher.CrusherRecipeManager;
-import crazypants.enderio.machine.crusher.GrindingBall;
-import crazypants.enderio.machine.crusher.GuiCrusher;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeOutput;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -30,6 +22,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.TooltipHandlerGrinding;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.machine.sagmill.GrindingBall;
+import crazypants.enderio.machine.sagmill.GuiSagMill;
+import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 
 public class SagMillRecipeCategory extends BlankRecipeCategory implements ITooltipCallback<ItemStack> {
 
@@ -47,10 +47,10 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
 
     registry.addRecipeCategories(new SagMillRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new RecipeHandler<SagRecipe>(SagRecipe.class, SagMillRecipeCategory.UID));
-    registry.addRecipeClickArea(GuiCrusher.class, 155, 42, 16, 16, SagMillRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiSagMill.class, 155, 42, 16, 16, SagMillRecipeCategory.UID);
 
     List<SagRecipe> result = new ArrayList<SagRecipe>();
-    for (IRecipe rec : CrusherRecipeManager.getInstance().getRecipes()) {
+    for (IRecipe rec : SagMillRecipeManager.getInstance().getRecipes()) {
       result.add(new SagRecipe(rec));
     }
     registry.addRecipes(result);
@@ -169,7 +169,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
   }
   
   private @Nonnull List<ItemStack> getBalls() {
-    List<GrindingBall> daBalls = CrusherRecipeManager.getInstance().getBalls();
+    List<GrindingBall> daBalls = SagMillRecipeManager.getInstance().getBalls();
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(null);
     for (GrindingBall ball : daBalls) {

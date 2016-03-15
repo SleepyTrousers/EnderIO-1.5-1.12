@@ -4,7 +4,6 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
-import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;

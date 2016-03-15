@@ -2,16 +2,17 @@ package crazypants.enderio.gui;
 
 import java.util.List;
 
-import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.crusher.CrusherRecipeManager;
-import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.sagmill.IGrindingMultiplier;
+import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 
 public class TooltipHandlerGrinding implements ITooltipCallback {
 
@@ -29,7 +30,7 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    IGrindingMultiplier ball = CrusherRecipeManager.getInstance().getGrindballFromStack(itemstack);
+    IGrindingMultiplier ball = SagMillRecipeManager.getInstance().getGrindballFromStack(itemstack);
     list.add(EnumChatFormatting.BLUE + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line1"));
     list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
     list.add(EnumChatFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
@@ -44,6 +45,6 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
 
   @Override
   public boolean shouldHandleItem(ItemStack item) {
-    return CrusherRecipeManager.getInstance().getGrindballFromStack(item) != null;
+    return SagMillRecipeManager.getInstance().getGrindballFromStack(item) != null;
   }
 }
