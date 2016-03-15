@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.capbank.TileCapBank;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -10,58 +8,32 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMessage> implements IMessage, IMessageHandler<T, Q> {
 
-  private int x;
-  private int y;
-  private int z;
+  private long pos;
 
   public PacketCapBank() {
   }
 
   public PacketCapBank(TileCapBank capBank) {
-    x = capBank.getPos().getX();
-    y = capBank.getPos().getY();
-    z = capBank.getPos().getZ();
+    pos = capBank.getPos().toLong();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(x);
-    buf.writeInt(y);
-    buf.writeInt(z);
+    buf.writeLong(pos);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    x = buf.readInt();
-    y = buf.readInt();
-    z = buf.readInt();
+    pos = buf.readLong();
   }
 
-  public int getX() {
-    return x;
-  }
-
-  public void setX(int x) {
-    this.x = x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  public void setY(int y) {
-    this.y = y;
-  }
-
-  public int getZ() {
-    return z;
-  }
-
-  public void setZ(int z) {
-    this.z = z;
+  public BlockPos getPos() {
+    return BlockPos.fromLong(pos);
   }
 
   @Override
@@ -82,7 +54,7 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
     if(worldObj == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(new BlockPos(message.getX(), message.getY(), message.getZ()));
+    TileEntity te = worldObj.getTileEntity(message.getPos());
     if(te == null) {
       return null;
     }

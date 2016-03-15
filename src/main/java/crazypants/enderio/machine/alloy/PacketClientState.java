@@ -9,9 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage> {
 
-  private int x;
-  private int y;
-  private int z;
+  private long pos;
 
   private TileAlloySmelter.Mode mode;
 
@@ -20,37 +18,35 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   }
 
   public PacketClientState(TileAlloySmelter tile) {
-    x = tile.getPos().getX();
-    y = tile.getPos().getY();
-    z = tile.getPos().getZ();
+    pos = tile.getPos().toLong();
     mode = tile.getMode();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(x);
-    buf.writeInt(y);
-    buf.writeInt(z);
+    buf.writeLong(pos);
     buf.writeShort(mode.ordinal());
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    x = buf.readInt();
-    y = buf.readInt();
-    z = buf.readInt();
+    pos = buf.readLong();
     short ordinal = buf.readShort();
     mode = TileAlloySmelter.Mode.values()[ordinal];
 
   }
 
+  public BlockPos getPos() {
+    return BlockPos.fromLong(pos);
+  }
+
   @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
-    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(getPos());
     if(te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setMode(message.mode);
-      ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+      ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(getPos());
     }
     return null;
   }
