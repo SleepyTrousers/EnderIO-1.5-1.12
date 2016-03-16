@@ -3,6 +3,7 @@ package crazypants.enderio.render;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -40,9 +41,10 @@ public class EmptyBakedModel implements IBakedModel {
     return false;
   }
 
+  // Note: This is never called from anywhere where it will actually be used for rendering.
   @Override
   public TextureAtlasSprite getParticleTexture() {
-    return null;
+    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel().getParticleTexture();
   }
 
   @SuppressWarnings("deprecation")
