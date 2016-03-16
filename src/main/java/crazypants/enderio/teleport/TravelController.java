@@ -304,6 +304,9 @@ public class TravelController {
         selectedCoord = null;
       }
       MovementInput input = player.movementInput;
+      if(input == null) {
+        return;
+      }
       tempJump = input.jump;
       tempSneak = input.sneak;
 
