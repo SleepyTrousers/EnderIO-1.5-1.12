@@ -2,18 +2,6 @@ package crazypants.enderio.machine.painter.blocks;
 
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
@@ -36,27 +24,75 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, ISmartRenderAwareBlock,
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+
+public abstract class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper {
 
   public static BlockPaintedGlowstone create() {
-    BlockPaintedGlowstone result = new BlockPaintedGlowstone();
+    BlockPaintedGlowstone result = new BlockPaintedGlowstoneSolid(ModObject.blockPaintedGlowstone.unlocalisedName);
     result.init();
+
+    BlockPaintedGlowstone result2 = new BlockPaintedGlowstoneNonSolid(ModObject.blockPaintedGlowstone.unlocalisedName + "2");
+    result2.init();
     return result;
   }
 
-  protected BlockPaintedGlowstone() {
+  public static class BlockPaintedGlowstoneSolid extends BlockPaintedGlowstone implements IPaintable.ISolidBlockPaintableBlock {
+
+    protected BlockPaintedGlowstoneSolid(String name) {
+      super(name);
+    }
+
+  }
+
+  public static class BlockPaintedGlowstoneNonSolid extends BlockPaintedGlowstone implements IPaintable.INonSolidBlockPaintableBlock {
+
+    protected BlockPaintedGlowstoneNonSolid(String name) {
+      super(name);
+      useNeighborBrightness = true;
+      setLightOpacity(0);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getAmbientOcclusionLightValue() {
+      return 1;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+      return false;
+    }
+
+  }
+
+  private final String name;
+
+  protected BlockPaintedGlowstone(String name) {
     super(Material.glass);
+    this.name = name;
     setHardness(0.3F);
     setStepSound(soundTypeGlass);
     setLightLevel(1.0F);
     setCreativeTab(null);
-    setUnlocalizedName(ModObject.blockPaintedGlowstone.unlocalisedName);
+    setUnlocalizedName(name);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, ModObject.blockPaintedGlowstone.unlocalisedName);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), ModObject.blockPaintedGlowstone.unlocalisedName);
+    GameRegistry.registerBlock(this, null, name);
+    GameRegistry.registerItem(new BlockItemPaintedBlock(this), name);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedGlowstone>(this,
         Blocks.glowstone));
     SmartModelAttacher.registerNoProps(this);

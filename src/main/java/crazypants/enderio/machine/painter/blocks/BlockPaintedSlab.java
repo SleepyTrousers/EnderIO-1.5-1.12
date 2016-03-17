@@ -355,4 +355,38 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
+  @Override
+  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return false;
+  }
+
+  @Override
+  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos there, EnumFacing side) {
+    IBlockState blockState2 = worldIn.getBlockState(there);
+    Block block2 = blockState2.getBlock();
+    if (block2 instanceof BlockPaintedSlab) {
+      BlockPaintedSlab otherBlock = (BlockPaintedSlab) block2;
+      BlockPos here = there.offset(side.getOpposite());
+      IBlockState ourBlockState = worldIn.getBlockState(here);
+      if (isDouble()) {
+        if (!otherBlock.isDouble()) {
+          return true;
+        } else {
+          return getPaintSource(ourBlockState, worldIn, here) != getPaintSource(blockState2, worldIn, there)
+              || getPaintSource2(ourBlockState, worldIn, here) != getPaintSource2(blockState2, worldIn, there);
+        }
+      } else {
+        if (!otherBlock.isDouble() && blockState2.getValue(HALF) != ourBlockState.getValue(HALF)) {
+          return true;
+        }
+        IBlockState paintSource = getPaintSource(ourBlockState, worldIn, here);
+        if (otherBlock.isDouble() && ourBlockState.getValue(HALF) == EnumBlockHalf.TOP) {
+          return paintSource != getPaintSource2(blockState2, worldIn, there);
+        }
+        return paintSource != getPaintSource(blockState2, worldIn, there);
+      }
+    }
+    return super.shouldSideBeRendered(worldIn, there, side);
+  }
+
 }

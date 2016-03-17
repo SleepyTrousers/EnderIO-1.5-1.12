@@ -271,4 +271,18 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
+  @Override
+  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return false;
+  }
+
+  @Override
+  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    if (worldIn.getBlockState(pos).getBlock() instanceof BlockPaintedStairs
+        && getPaintSource(null, worldIn, pos) == getPaintSource(null, worldIn, pos.offset(side.getOpposite()))) {
+      return false;
+    }
+    return super.shouldSideBeRendered(worldIn, pos, side);
+  }
+
 }

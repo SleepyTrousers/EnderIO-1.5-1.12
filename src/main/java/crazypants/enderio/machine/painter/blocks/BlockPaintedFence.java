@@ -297,4 +297,16 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    if (side.getAxis() != EnumFacing.Axis.Y) {
+      IBlockState blockState2 = worldIn.getBlockState(pos);
+      if (blockState2.getBlock() instanceof BlockPaintedFence
+          && getPaintSource(blockState2, worldIn, pos) == getPaintSource(blockState2, worldIn, pos.offset(side.getOpposite()))) {
+        return false;
+      }
+    }
+    return super.shouldSideBeRendered(worldIn, pos, side);
+  }
 }

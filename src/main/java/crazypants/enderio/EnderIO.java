@@ -103,6 +103,7 @@ import crazypants.enderio.machine.painter.blocks.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedGlowstone;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
+import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
 import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
@@ -200,10 +201,9 @@ public class EnderIO {
   public static BlockPainter blockPainter;
   public static BlockPaintedFence blockPaintedFence;
   public static BlockPaintedFenceGate blockPaintedFenceGate;
-//  public static BlockPaintedWall blockPaintedWall;
+  public static BlockPaintedWall blockPaintedWall;
   public static BlockPaintedStairs blockPaintedStair;
   public static BlockPaintedSlab blockPaintedSlab;
-//  public static BlockPaintedSlab blockPaintedDoubleSlab;
   public static BlockPaintedGlowstone blockPaintedGlowstone;
   public static BlockPaintedCarpet blockPaintedCarpet;
 //
@@ -305,12 +305,9 @@ public class EnderIO {
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
     blockPaintedFenceGate = BlockPaintedFenceGate.create();
-//    blockPaintedWall = BlockPaintedWall.create();
+    blockPaintedWall = BlockPaintedWall.create();
     blockPaintedStair = BlockPaintedStairs.create();
     blockPaintedSlab = BlockPaintedSlab.create();
-//    blockPaintedDoubleSlab = new BlockPaintedSlab(true);
-//    blockPaintedSlab.init();
-//    blockPaintedDoubleSlab.init();    
     blockPaintedGlowstone = BlockPaintedGlowstone.create();
     blockPaintedCarpet = BlockPaintedCarpet.create();
 
