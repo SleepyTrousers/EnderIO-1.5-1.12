@@ -1,0 +1,32 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/cobblestone"
+        },
+        "model": "enderio:null",
+        "transform":{
+            "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+            "gui":{ "rotation":[ {"x":0}, {"y":180}, {"z":0} ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+        }
+    },
+    "variants": {
+        "facing":{
+            "east": { },
+            "west": { },
+            "south": { },
+            "north": { }
+        },
+        "half":{
+            "bottom":{},
+            "top":{}
+        },
+        "shape":{
+            "straight":{},
+            "outer_right":{},
+            "outer_left":{},
+            "inner_right":{},
+            "inner_left":{}
+        }
+    }
+}

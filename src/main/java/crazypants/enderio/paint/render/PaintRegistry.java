@@ -42,6 +42,7 @@ public class PaintRegistry {
   public static IModelState OVERLAY_TRANSFORMATION;
   public static IModelState OVERLAY_TRANSFORMATION2;
   public static IModelState OVERLAY_TRANSFORMATION3;
+  public static IModelState OVERLAY_TRANSFORMATION4;
 
   private static class PaintRegistryServer {
     private PaintRegistryServer() {
@@ -81,6 +82,7 @@ public class PaintRegistry {
       OVERLAY_TRANSFORMATION = new TRSRTransformation(new Vector3f(0.01f, 0.01f, 0.01f), null, null, null);
       OVERLAY_TRANSFORMATION2 = new TRSRTransformation(new Vector3f(-0.01f, -0.01f, -0.01f), null, new Vector3f(1.02f, 1.02f, 1.02f), null);
       OVERLAY_TRANSFORMATION3 = new TRSRTransformation(new Vector3f(-0.01f, -0.01f, -0.01f), null, new Vector3f(1.02f, 1.04f, 1.02f), null);
+      OVERLAY_TRANSFORMATION4 = new TRSRTransformation(new Vector3f(-0.0105f, -0.0095f, -0.01f), null, new Vector3f(1.02f, 1.02f, 1.02f), null);
     }
 
     @SideOnly(Side.CLIENT)
