@@ -9,7 +9,6 @@ import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.tool.SmartTank;
@@ -131,6 +130,11 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
     @Override
     public FluidTank getInputTank(FluidStack forFluidType) {
+      FluidTank pt = parent.getInputTank(forFluidType);
+      if(pt == null) {
+        return null;
+      }
+      parentTank = pt;
       parentTank = parent.getInputTank(forFluidType);
       tank = new SmartTank(parentTank.getFluid(), parentTank.getCapacity() + BUCKET_VOLUME);
       return tank;
