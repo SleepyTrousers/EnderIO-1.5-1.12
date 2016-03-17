@@ -73,7 +73,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
 
     ItemStack result = isUnpaintingOp(paintSource, target);
     if (result == null) {
-      result = new ItemStack(targetBlock, 1, target.getItemDamage());
+      result = mkItemStack(target, targetBlock);
       if (targetBlock == Block.getBlockFromItem(target.getItem()) && target.hasTagCompound()) {
         result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
       }
@@ -82,6 +82,15 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
       result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
     }
     return new ResultStack[] { new ResultStack(result) };
+  }
+
+  private ItemStack mkItemStack(ItemStack target, Block targetBlock) {
+    Item itemFromBlock = Item.getItemFromBlock(targetBlock);
+    if (itemFromBlock.isDamageable() || itemFromBlock.getHasSubtypes()) {
+      return new ItemStack(targetBlock, 1, target.getItemDamage());
+    } else {
+      return new ItemStack(targetBlock, 1, 0);
+    }
   }
 
   public ItemStack getTarget(MachineRecipeInput... inputs) {
@@ -130,20 +139,20 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     // user wants the input item but without its paint. The input item must be able to exist in the world unpainted because it does so as paint source. So we
     // copy the input item without its paint information.
     if (paintBlock == resultBlock) {
-      return new ItemStack(targetBlock, 1, target.getItemDamage());
+      return mkItemStack(target, targetBlock);
     }
 
     // The paint source and the target are the same item, but maybe with different meta. This means that we can simplify the painting by doing an item
     // conversion (e.g. blue carpet to red carpet).
     if (paintBlock == targetBlock) {
-      return new ItemStack(targetBlock, 1, paintSource.getItemDamage());
+      return mkItemStack(paintSource, targetBlock);
     }
 
     // The target is paintable, so let's check if the paint source is what was used to create it. If yes, then we unpaint it into it's original form.
     if (targetBlock == resultBlock) {
       for (Block validTarget : validTargets) {
         if (paintBlock == validTarget) {
-          return new ItemStack(paintBlock, 1, paintSource.getItemDamage());
+          return mkItemStack(paintSource, paintBlock);
         }
       }
     }

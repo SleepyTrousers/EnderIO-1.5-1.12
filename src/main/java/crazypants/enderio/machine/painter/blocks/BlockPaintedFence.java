@@ -4,20 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockPlanks;
@@ -33,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -43,6 +30,21 @@ import net.minecraftforge.client.model.ModelLoader.UVLock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.dummy.BlockMachineBase;
 
 @SuppressWarnings("deprecation")
 public class BlockPaintedFence extends BlockFence implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
@@ -283,6 +285,16 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
       }
     }
     return super.colorMultiplier(worldIn, pos, renderPass);
+  }
+
+  @Override
+  public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return getMaterial() == Material.wood ? 20 : super.getFlammability(world, pos, face);
+  }
+
+  @Override
+  public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
 }

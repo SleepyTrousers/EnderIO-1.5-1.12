@@ -4,20 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
@@ -39,6 +25,21 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.dummy.BlockMachineBase;
 
 public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IRenderLayerAware {
@@ -210,6 +211,16 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
       }
     }
     return super.colorMultiplier(worldIn, pos, renderPass);
+  }
+
+  @Override
+  public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return 20;
+  }
+
+  @Override
+  public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    return 60;
   }
 
 }

@@ -43,4 +43,34 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.
     return paintSource;
   }
 
+  public static class TileEntityTwicePaintedBlock extends TileEntityPaintedBlock {
+
+    private IBlockState paintSource2 = null;
+
+    @Override
+    public void readCustomNBT(NBTTagCompound nbtRoot) {
+      super.readCustomNBT(nbtRoot);
+      this.paintSource2 = PainterUtil2.readNbt(nbtRoot.getCompoundTag("2"));
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound nbtRoot) {
+      super.writeCustomNBT(nbtRoot);
+      NBTTagCompound subTag = new NBTTagCompound();
+      PainterUtil2.writeNbt(subTag, paintSource2);
+      nbtRoot.setTag("2", subTag);
+    }
+
+    public void setPaintSource2(IBlockState paintSource2) {
+      this.paintSource2 = paintSource2;
+      markDirty();
+      updateBlock();
+    }
+
+    public IBlockState getPaintSource2() {
+      return paintSource2;
+    }
+
+  }
+
 }

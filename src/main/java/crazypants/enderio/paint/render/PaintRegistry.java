@@ -41,6 +41,7 @@ public class PaintRegistry {
 
   public static IModelState OVERLAY_TRANSFORMATION;
   public static IModelState OVERLAY_TRANSFORMATION2;
+  public static IModelState OVERLAY_TRANSFORMATION3;
 
   private static class PaintRegistryServer {
     private PaintRegistryServer() {
@@ -79,6 +80,7 @@ public class PaintRegistry {
       modelLocations.put("_missing", Pair.of((ResourceLocation) null, PaintMode.ALL_TEXTURES));
       OVERLAY_TRANSFORMATION = new TRSRTransformation(new Vector3f(0.01f, 0.01f, 0.01f), null, null, null);
       OVERLAY_TRANSFORMATION2 = new TRSRTransformation(new Vector3f(-0.01f, -0.01f, -0.01f), null, new Vector3f(1.02f, 1.02f, 1.02f), null);
+      OVERLAY_TRANSFORMATION3 = new TRSRTransformation(new Vector3f(-0.01f, -0.01f, -0.01f), null, new Vector3f(1.02f, 1.04f, 1.02f), null);
     }
 
     @SideOnly(Side.CLIENT)

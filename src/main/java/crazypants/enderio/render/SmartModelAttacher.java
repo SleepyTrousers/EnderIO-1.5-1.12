@@ -73,15 +73,17 @@ public class SmartModelAttacher {
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
-      ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
-      if (item.getHasSubtypes()) {
-        List<ItemStack> list = new ArrayList<ItemStack>();
-        item.getSubItems(item, EnderIOTab.tabEnderIO, list);
-        for (ItemStack itemStack : list) {
-          ModelLoader.setCustomModelResourceLocation(item, itemStack.getItemDamage(), location);
+      if (item != null) {
+        ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
+        if (item.getHasSubtypes()) {
+          List<ItemStack> list = new ArrayList<ItemStack>();
+          item.getSubItems(item, EnderIOTab.tabEnderIO, list);
+          for (ItemStack itemStack : list) {
+            ModelLoader.setCustomModelResourceLocation(item, itemStack.getItemDamage(), location);
+          }
+        } else {
+          ModelLoader.setCustomModelResourceLocation(item, 0, location);
         }
-      } else {        
-        ModelLoader.setCustomModelResourceLocation(item, 0, location);        
       }
     }
   }
