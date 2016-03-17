@@ -145,8 +145,10 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
     @Override
     public void setTanksDirty() {
-      tank.setCapacity(parentTank.getCapacity());
-      parentTank.setFluid(tank.getFluid());
+      if (parentTank != null) {
+        tank.setCapacity(parentTank.getCapacity());
+        parentTank.setFluid(tank.getFluid());
+      }
       parent.setTanksDirty();
     }
 
