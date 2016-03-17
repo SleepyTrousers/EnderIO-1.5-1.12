@@ -649,7 +649,9 @@ tile.blockPaintedFenceGate.name=Painted Gate
 tile.blockPaintedWall.name=Painted Wall
 tile.blockPaintedStair.name=Painted Stairs
 tile.blockPaintedSlab.name=Painted Slab
+tile.blockPaintedSlab2.name=Painted Stone Slab
 tile.blockPaintedDoubleSlab.name=Painted Slab
+tile.blockPaintedDoubleSlab2.name=Painted Stone Slab
 tile.blockPaintedGlowstone.name=Painted Glowstone
 tile.blockPaintedCarpet.name=Painted Carpet
 enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
@@ -659,7 +661,7 @@ tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
 tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
 tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone, Carpet,
 tile.blockPainter.tooltip.detailed.line5=Dark Steel Pressure Plates,
-tile.blockPainter.tooltip.detailed.line6=Travel Anchors
+tile.blockPainter.tooltip.detailed.line6=and many machines
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench
