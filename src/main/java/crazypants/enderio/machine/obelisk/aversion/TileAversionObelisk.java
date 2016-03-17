@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,6 +33,11 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     super(new SlotDefinition(12, 0));
   }
   
+  @Override
+  public World getRangeWorldObj() {   
+    return getWorld();
+  }
+
   @Override
   @SideOnly(Side.CLIENT)
   public boolean isShowingRange() {

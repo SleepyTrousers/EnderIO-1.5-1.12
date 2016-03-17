@@ -86,8 +86,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   @Override
-  public World getWorld() {
-    return worldObj;
+  public World getRangeWorldObj() {
+    return getWorld();
   }
 
   @Override

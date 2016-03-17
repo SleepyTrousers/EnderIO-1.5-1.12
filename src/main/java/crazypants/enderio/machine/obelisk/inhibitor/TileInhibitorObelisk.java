@@ -36,8 +36,8 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
   }
 
   @Override
-  public World getWorld() {
-    return worldObj;
+  public World getRangeWorldObj() {   
+    return getWorld();
   }
 
   @Override
