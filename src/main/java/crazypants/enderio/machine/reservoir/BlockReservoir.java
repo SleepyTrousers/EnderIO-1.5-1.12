@@ -130,12 +130,10 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
     @Override
     public FluidTank getInputTank(FluidStack forFluidType) {
-      FluidTank pt = parent.getInputTank(forFluidType);
-      if(pt == null) {
+      parentTank = parent.getInputTank(forFluidType);
+      if (parentTank == null) {
         return null;
       }
-      parentTank = pt;
-      parentTank = parent.getInputTank(forFluidType);
       tank = new SmartTank(parentTank.getFluid(), parentTank.getCapacity() + BUCKET_VOLUME);
       return tank;
     }
