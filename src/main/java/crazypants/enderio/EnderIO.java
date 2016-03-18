@@ -37,7 +37,6 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
-import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
@@ -101,6 +100,7 @@ import crazypants.enderio.machine.painter.blocks.BlockPaintedCarpet;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedFence;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedGlowstone;
+import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
@@ -206,6 +206,7 @@ public class EnderIO {
   public static BlockPaintedSlab blockPaintedSlab;
   public static BlockPaintedGlowstone blockPaintedGlowstone;
   public static BlockPaintedCarpet blockPaintedCarpet;
+  public static BlockPaintedPressurePlate blockPaintedPressurePlate;
 //
 //  // Conduits
   public static BlockConduitBundle blockConduitBundle;
@@ -257,7 +258,6 @@ public class EnderIO {
   public static BlockLightNode blockLightNode;
 
   //Blocks
-  public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
   public static BlockDarkSteelAnvil blockDarkSteelAnvil;
   public static BlockDarkSteelLadder blockDarkSteelLadder;
   public static BlockEndermanSkull blockEndermanSkull;
@@ -310,7 +310,7 @@ public class EnderIO {
     blockPaintedSlab = BlockPaintedSlab.create();
     blockPaintedGlowstone = BlockPaintedGlowstone.create();
     blockPaintedCarpet = BlockPaintedCarpet.create();
-
+    blockPaintedPressurePlate = BlockPaintedPressurePlate.create();
 
     blockCrafter = BlockCrafter.create();    
     blockVat = BlockVat.create();
@@ -348,7 +348,6 @@ public class EnderIO {
     blockEnchanter = BlockEnchanter.create();
 
 
-    blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockDarkSteelLadder = BlockDarkSteelLadder.create();
         

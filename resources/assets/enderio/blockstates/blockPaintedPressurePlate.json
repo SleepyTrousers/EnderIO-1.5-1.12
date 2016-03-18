@@ -1,0 +1,33 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/blockDarkSteelPressurePlate"
+        },
+        "model": "enderio:null",
+        "transform":{
+            "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+            "gui":{ "rotation":[ {"x":0}, {"y":180}, {"z":0} ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+        }
+    },
+    "variants": {
+        "power":{
+            "0": { },
+            "1": { "textures":{ "particle":"enderio:blocks/blockDarkSteelPressurePlate" } },
+            "2": { "textures":{ "particle":"enderio:blocks/soulariumPressurePlate" } },
+            "3": { "textures":{ "particle":"enderio:blocks/soulariumPressurePlate" } },
+            "4": { },
+            "5": { },
+            "6": { },
+            "7": { },
+            "8": { },
+            "9": { },
+            "10": { },
+            "11": { },
+            "12": { },
+            "13": { },
+            "14": { },
+            "15": { }
+        }
+    }
+}

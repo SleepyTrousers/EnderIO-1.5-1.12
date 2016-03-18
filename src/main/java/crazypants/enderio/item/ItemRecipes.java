@@ -1,5 +1,15 @@
 package crazypants.enderio.item;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
+import crazypants.enderio.material.MachinePart;
+
 import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
@@ -7,15 +17,6 @@ import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
 import static crazypants.enderio.material.Alloy.SOULARIUM;
 import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
 import static crazypants.util.RecipeUtil.addShaped;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.material.MachinePart;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ItemRecipes {
 
@@ -49,11 +50,34 @@ public class ItemRecipes {
 
     addShaped(DarkSteelItems.itemDarkSteelShears.createItemStack(), " s", "s ", 's', darkSteel);
 
-    ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
-    addShaped(dspp, "ss", 's', darkSteel);
+    ItemStack pp1 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.WOOD.getMetaFromType(false));
+    ItemStack pp2 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.STONE.getMetaFromType(false));
+    ItemStack pp3 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.GOLD.getMetaFromType(false));
+    ItemStack pp4 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.IRON.getMetaFromType(false));
+    ItemStack pp5 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.DARKSTEEL.getMetaFromType(false));
+    ItemStack pp6 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(false));
 
-    ItemStack dsppSilent = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 1);
-    GameRegistry.addShapedRecipe(dsppSilent, "p", "w", 'p', dspp, 'w', Blocks.wool);
+    ItemStack pp1s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.WOOD.getMetaFromType(true));
+    ItemStack pp2s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.STONE.getMetaFromType(true));
+    ItemStack pp3s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.GOLD.getMetaFromType(true));
+    ItemStack pp4s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.IRON.getMetaFromType(true));
+    ItemStack pp5s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.DARKSTEEL.getMetaFromType(true));
+    ItemStack pp6s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(true));
+
+    addShaped(pp5, "ss", 's', darkSteel);
+    addShaped(pp6, "ss", 's', soularium);
+
+    GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', Blocks.wooden_pressure_plate, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', Blocks.stone_pressure_plate, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', Blocks.light_weighted_pressure_plate, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', Blocks.heavy_weighted_pressure_plate, 'w', Blocks.wool);
+
+    GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', pp1, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', pp2, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', pp3, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', pp4, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp5s, "p", "w", 'p', pp5, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp6s, "p", "w", 'p', pp6, 'w', Blocks.wool);
 
     //Soul Vessel
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemSoulVessel), " s ", "q q", " q ", 's', soularium, 'q', new ItemStack(

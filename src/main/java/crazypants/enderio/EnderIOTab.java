@@ -1,18 +1,27 @@
 package crazypants.enderio;
 
-import static crazypants.enderio.EnderIO.MODID;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.EnderIO.MODID;
+
 public class EnderIOTab extends CreativeTabs {
 
-  public static final CreativeTabs tabEnderIO = new EnderIOTab();
+  public static final CreativeTabs tabNoTab, tabEnderIO;
+
+  static {
+    tabNoTab = new EnderIOTab();
+    tabEnderIO = new EnderIOTab(CreativeTabs.creativeTabArray.length - 1);
+  }
 
   public EnderIOTab() {
     super(MODID);
+  }
+
+  public EnderIOTab(int index) {
+    super(index, MODID);
   }
 
   @Override

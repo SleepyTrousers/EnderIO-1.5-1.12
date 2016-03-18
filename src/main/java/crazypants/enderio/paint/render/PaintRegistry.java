@@ -67,6 +67,7 @@ public class PaintRegistry {
     private ConcurrentMap<String, IModel> models;
 
     @SideOnly(Side.CLIENT)
+    // TODO: Change to a real cache that actually throws things out, using a Triple as key
     private ConcurrentMap<String, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel>> cache;
 
     private PaintRegistryClient() {
@@ -115,7 +116,8 @@ public class PaintRegistry {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+    public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotationIn) {
+      IModelState rotation = EIOUVLock.rewrap(rotationIn);
       if (!cache.containsKey(name)) {
         cache.put(name, new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
       }
@@ -134,8 +136,16 @@ public class PaintRegistry {
           bakedModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
         }
         subcache.putIfAbsent(key, bakedModel);
+        checkCache(name, subcache);
       }
       return clazz.isInstance(bakedModel) ? clazz.cast(bakedModel) : null;
+    }
+
+    private void checkCache(String name, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel> cache1) {
+      if (cache1.size() > 200) {
+        crazypants.enderio.Log.warn("Cache for " + name + " is at " + cache1.size() + " objects. Cleaning it...");
+        cache1.clear();
+      }
     }
 
     @SideOnly(Side.CLIENT)
@@ -217,5 +227,48 @@ public class PaintRegistry {
 
   public static <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
     return instance.getModel(clazz, name, paintSource, rotation);
+  }
+
+  // TODO: Change all callers to use this instead of UVLock so we don't need to rewrap anymore
+  @SuppressWarnings("deprecation")
+  public static class EIOUVLock extends UVLock {
+
+    public EIOUVLock(IModelState parent) {
+      super(parent);
+    }
+
+    public static IModelState rewrap(IModelState state) {
+      if ((state instanceof UVLock) && !(state instanceof EIOUVLock)) {
+        return new EIOUVLock(((UVLock) state).getParent());
+      }
+      return state;
+    }
+
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + 1231;
+      result = prime * result + ((getParent() == null) ? 0 : getParent().hashCode());
+      return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      EIOUVLock other = (EIOUVLock) obj;
+      if (getParent() == null) {
+        if (other.getParent() != null)
+          return false;
+      } else if (!getParent().equals(other.getParent()))
+        return false;
+      return true;
+    }
+
   }
 }

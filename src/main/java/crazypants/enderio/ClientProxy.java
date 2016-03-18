@@ -1,5 +1,20 @@
 package crazypants.enderio;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
@@ -45,20 +60,6 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.util.ClientUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -144,7 +145,6 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockDarkSteelLadder != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.unlocalisedName);
     }   
-    registerRenderers(EnderIO.blockDarkSteelPressurePlate);
     registerRenderers(EnderIO.blockIngotStorage);
     registerRenderers(EnderIO.blockEndermanSkull);
     registerRenderers(EnderIO.blockElectricLight);

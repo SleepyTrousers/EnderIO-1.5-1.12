@@ -47,4 +47,18 @@ public class BlockItemPaintedBlock extends ItemBlock {
     return super.getColorFromItemStack(stack, renderPass);
   }
 
+  @Override
+  public String getUnlocalizedName(ItemStack stack) {
+    if (block instanceof INamedSubBlocks) {
+      return ((INamedSubBlocks) block).getUnlocalizedName(stack.getMetadata());
+    } else {
+      super.getUnlocalizedName(stack);
+    }
+    return this.block.getUnlocalizedName();
+  }
+
+  public static interface INamedSubBlocks {
+    String getUnlocalizedName(int meta);
+  }
+
 }

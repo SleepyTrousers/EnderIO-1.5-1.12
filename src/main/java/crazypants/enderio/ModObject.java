@@ -77,7 +77,6 @@ public enum ModObject {
   blockLight,
 
   //Blocks
-  blockDarkSteelPressurePlate,
   blockDarkSteelAnvil,
   blockDarkSteelLadder,
   blockReinforcedObsidian,
@@ -94,6 +93,7 @@ public enum ModObject {
   blockPaintedDoubleSlab,
   blockPaintedGlowstone,
   blockPaintedCarpet,
+  blockPaintedPressurePlate,
 
   itemConduitProbe,
   itemYetaWrench,

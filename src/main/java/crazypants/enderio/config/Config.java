@@ -5,12 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.enderio.core.common.event.ConfigFileChangedEvent;
-import com.enderio.core.common.vecmath.VecmathUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +16,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import com.enderio.core.common.event.ConfigFileChangedEvent;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.network.PacketHandler;
 
 public final class Config {
 
@@ -419,6 +420,8 @@ public final class Config {
   public static int soulBinderAttractorCystalLevels = 10;
   public static int soulBinderEnderRailRF = 100000;
   public static int soulBinderEnderRailLevels = 10;
+  public static int soulBinderTunedPressurePlateLevels = 3;
+  public static int soulBinderTunedPressurePlateRF = 250000;
   public static int soulBinderMaxXpLevel = 40;
 
   public static boolean powerConduitCanDifferentTiersConnect = false;
@@ -1227,6 +1230,9 @@ public final class Config {
     soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
         "The number of RF required to create an ender rail.").getInt(soulBinderEnderRailRF);
 
+    soulBinderTunedPressurePlateRF = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF,
+        "The number of RF required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateRF);
+
     soulBinderAttractorCystalLevels = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalLevels", soulBinderAttractorCystalLevels,
         "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
     soulBinderEnderCystalLevels = config.get(sectionSoulBinder.name, "soulBinderEnderCystalLevels", soulBinderEnderCystalLevels,
@@ -1237,6 +1243,8 @@ public final class Config {
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
     soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
         "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);
+    soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
+        "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
     soulBinderMaxXpLevel = config.get(sectionSoulBinder.name, "soulBinderMaxXPLevel", soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.").getInt();
 

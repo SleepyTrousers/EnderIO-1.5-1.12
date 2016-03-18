@@ -580,16 +580,93 @@ enderio.gui.inventorypanel.tooltip.sync=NEI Sync
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks
-tile.blockDarkSteelPressurePlate.name=Dark Pressure Plate
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Only activated by players
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=Clear Glass
-tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=Silent
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=Only activated by players
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=Clear Glass
+tile.blockPaintedPressurePlate.wood.name=Wooden Pressure Plate
+tile.blockPaintedPressurePlate.wood.tooltip.detailed.line1=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.wood.tooltip.detailed.line2=invisible when painted with Quite
+tile.blockPaintedPressurePlate.wood.tooltip.detailed.line3=Clear Glass
+
+tile.blockPaintedPressurePlate.wood.silent.name=Wooden Pressure Plate (Silent)
+tile.blockPaintedPressurePlate.wood.silent.tooltip.detailed.line1=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.wood.silent.tooltip.detailed.line2=invisible when painted with Quite
+tile.blockPaintedPressurePlate.wood.silent.tooltip.detailed.line3=Clear Glass
+
+tile.blockPaintedPressurePlate.stone.name=Stone Pressure Plate
+tile.blockPaintedPressurePlate.stone.tooltip.detailed.line1=Only activated by mobs and players.
+tile.blockPaintedPressurePlate.stone.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.stone.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.stone.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.stone.silent.name=Stone Pressure Plate (Silent)
+tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line1=Only activated by mobs and players.
+tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.iron.name=Weighted Pressure Plate (Heavy)
+tile.blockPaintedPressurePlate.iron.tooltip.detailed.line1=Variable Redstone Output: One per entity.
+tile.blockPaintedPressurePlate.iron.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.iron.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.iron.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.iron.silent.name=Weighted Pressure Plate (Heavy) (Silent)
+tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line1=Variable Redstone Output: One per entity.
+tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.gold.name=Weighted Pressure Plate (Light)
+tile.blockPaintedPressurePlate.gold.tooltip.detailed.line1=Variable Redstone Output: One per item.
+tile.blockPaintedPressurePlate.gold.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.gold.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.gold.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.gold.silent.name=Weighted Pressure Plate (Light) (Silent)
+tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line1=Variable Redstone Output: One per item.
+tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.darksteel.name=Dark Pressure Plate
+tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line1=Only activated by players.
+tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.darksteel.silent.name=Dark Pressure Plate (Silent)
+tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line1=Only activated by players.
+tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line4=Clear Glass
+
+tile.blockPaintedPressurePlate.soularium.name=Soularium Pressure Plate
+tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line1=Only activated by hostile mobs.
+tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line4=Clear Glass
+tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line5=Can be tuned in Soul Binder.
+
+tile.blockPaintedPressurePlate.soularium.silent.name=Soularium Pressure Plate (Silent)
+tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line1=Only activated by hostile mobs.
+tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line4=Clear Glass
+tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line5=Can be tuned in Soul Binder.
+
+tile.blockPaintedPressurePlate.tuned.name=Soularium Pressure Plate (Tuned)
+tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line1=Only activated by specific mobs.
+tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line4=Clear Glass
+tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line5=Can be tuned in Soul Binder.
+
+tile.blockPaintedPressurePlate.tuned.silent.name=Soularium Pressure Plate (Tuned) (Silent)
+tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line1=Only activated by specific mobs.
+tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line4=Clear Glass
+tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line5=Can be tuned in Soul Binder.
+
+enderio.tile.plockPaintedPressurePlate.tuned=Tuned to: %s
 
 tile.blockDarkSteelAnvil.intact.name=Dark Steel Anvil
 tile.blockDarkSteelAnvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil

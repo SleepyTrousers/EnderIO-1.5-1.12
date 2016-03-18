@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.soul;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class SoulBinderRecipeManager {
 
@@ -23,6 +23,7 @@ public class SoulBinderRecipeManager {
 
   public void addDefaultRecipes() {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderTunedPressurePlateRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderReanimationRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSentientRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderEnderCystalRecipe.instance);

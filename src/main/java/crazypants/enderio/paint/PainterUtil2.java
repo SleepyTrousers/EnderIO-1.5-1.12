@@ -94,7 +94,12 @@ public class PainterUtil2 {
   }
 
   public static void writeNbt(NBTTagCompound nbtRoot, IBlockState paintSource) {
-    if (nbtRoot == null || paintSource == null) {
+    if (nbtRoot == null) {
+      return;
+    }
+    if (paintSource == null) {
+      nbtRoot.removeTag(BlockPainter.KEY_SOURCE_BLOCK_ID);
+      nbtRoot.removeTag(BlockPainter.KEY_SOURCE_BLOCK_META);
       return;
     }
     Block block = paintSource.getBlock();

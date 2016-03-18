@@ -84,7 +84,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     return new ResultStack[] { new ResultStack(result) };
   }
 
-  private ItemStack mkItemStack(ItemStack target, Block targetBlock) {
+  protected ItemStack mkItemStack(ItemStack target, Block targetBlock) {
     Item itemFromBlock = Item.getItemFromBlock(targetBlock);
     if (itemFromBlock.isDamageable() || itemFromBlock.getHasSubtypes()) {
       return new ItemStack(targetBlock, 1, target.getItemDamage());
