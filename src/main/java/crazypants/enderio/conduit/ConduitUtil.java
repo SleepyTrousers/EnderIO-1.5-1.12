@@ -157,7 +157,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IPaintableTileEntity bundle, EntityPlayer player) {
-    return bundle.getPaintSource() != null && YetaUtil.shouldHeldItemHideFacades(player);
+    return bundle.getPaintSource() != null && YetaUtil.shouldHeldItemHideFacades();
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {

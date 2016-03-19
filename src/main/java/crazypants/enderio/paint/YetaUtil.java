@@ -9,53 +9,36 @@ import crazypants.enderio.tool.ToolUtil;
 
 public class YetaUtil {
 
-  private static YetaUtil instance = new YetaUtil();
+  private static volatile boolean lastCheckResult = false;
+  private static boolean toggled = false;
 
-  private long lastCheckTick = -1;
-  private boolean lastCheckResult = false;
-  private boolean toggled = false;
-
-  private boolean shouldHide(EntityPlayer player) {
-    long tickCount = EnderIO.proxy.getTickCount();
-    if (tickCount != lastCheckTick) {
-      if (player == null) {
-        return false;
-      }
-      ItemStack held = player.getCurrentEquippedItem();
-      boolean checkResult;
-      if (held != null && held.getItem() instanceof IHideFacades) {
-        checkResult = ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
-      } else {
-        checkResult = ToolUtil.isToolEquipped(player);
-      }
-      toggled = (lastCheckResult != checkResult) && (lastCheckTick != -1);
-      lastCheckResult = checkResult;
-      lastCheckTick = tickCount;
+  public static void onTick() {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    if (player == null) {
+      return;
     }
-    return lastCheckResult;
+    ItemStack held = player.getCurrentEquippedItem();
+    boolean checkResult;
+    if (held != null && held.getItem() instanceof IHideFacades) {
+      checkResult = ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
+    } else {
+      checkResult = ToolUtil.isToolEquipped(player);
+    }
+    toggled = lastCheckResult != checkResult;
+    lastCheckResult = checkResult;
   }
 
   public static boolean shouldHeldItemHideFacades() {
-    return instance.shouldHide(EnderIO.proxy.getClientPlayer());
-  }
-
-  public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
-    return instance.shouldHide(player == null ? EnderIO.proxy.getClientPlayer() : player);
+    return lastCheckResult;
   }
 
   public static boolean refresh() {
-    instance.shouldHide(EnderIO.proxy.getClientPlayer());
-    return instance.toggled;
+    return toggled;
   }
 
   public static void refresh(TileEntity te) {
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      if (((IPaintable.IPaintableTileEntity) te).getPaintSource() != null) {
-        instance.shouldHide(EnderIO.proxy.getClientPlayer());
-        if (instance.toggled) {
-          te.getWorld().markBlockForUpdate(te.getPos());
-        }
-      }
+    if (toggled && te instanceof IPaintable.IPaintableTileEntity && ((IPaintable.IPaintableTileEntity) te).getPaintSource() != null) {
+      te.getWorld().markBlockForUpdate(te.getPos());
     }
   }
 

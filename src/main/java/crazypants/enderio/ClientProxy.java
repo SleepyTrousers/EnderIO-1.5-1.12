@@ -54,6 +54,7 @@ import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TileTank;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
+import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
@@ -280,6 +281,7 @@ public class ClientProxy extends CommonProxy {
   protected void onClientTick() {
     if (!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
       ++clientTickCount;
+      YetaUtil.onTick();
     }
   }
 
