@@ -69,12 +69,9 @@ public class ExperienceContainer extends FluidTank {
       xpToAdd = j;
     }
 
-    experience += (float) xpToAdd / (float) getXpBarCapacity();
     experienceTotal += xpToAdd;
-    for (; experience >= 1.0F; experience /= getXpBarCapacity()) {
-      experience = (experience - 1.0F) * getXpBarCapacity();
-      experienceLevel++;
-    }
+    experienceLevel = XpUtil.getLevelForExperience(experienceTotal);    
+    experience = (experienceTotal - XpUtil.getExperienceForLevel(experienceLevel)) / (float)getXpBarCapacity();
     xpDirty = true;
     return xpToAdd;
   }
@@ -97,7 +94,7 @@ public class ExperienceContainer extends FluidTank {
 
   public void givePlayerXpLevel(EntityPlayer player) {
     int currentXP = XpUtil.getPlayerXP(player);
-    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1) + 1;
+    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
     int requiredXP = nextLevelXP - currentXP;
 
     requiredXP = Math.min(experienceTotal, requiredXP);
