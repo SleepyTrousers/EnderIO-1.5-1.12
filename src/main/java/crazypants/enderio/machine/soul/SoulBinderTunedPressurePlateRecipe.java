@@ -20,15 +20,20 @@ import crazypants.enderio.xp.XpUtil;
 
 public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
-  public static SoulBinderTunedPressurePlateRecipe instance = new SoulBinderTunedPressurePlateRecipe();
+  public static SoulBinderTunedPressurePlateRecipe instance1 = new SoulBinderTunedPressurePlateRecipe(false, "iTunesRecipe");
+  public static SoulBinderTunedPressurePlateRecipe instance2 = new SoulBinderTunedPressurePlateRecipe(true, "winampRecipe");
 
+  private final boolean silent;
+  private final String uid;
 
-  public SoulBinderTunedPressurePlateRecipe() {
+  public SoulBinderTunedPressurePlateRecipe(boolean silent, String uid) {
+    this.silent = silent;
+    this.uid = uid;
   }
 
   @Override
   public String getUid() {
-    return "SoulFuser:iTunesRecipe";
+    return "SoulFuser:" + uid;
   }
 
   @Override
@@ -67,18 +72,18 @@ public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoul
   @Override
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     String mobType = null;
-    Boolean silent = null;
+    Boolean issilent = null;
     NBTTagCompound tag = null;
     for(MachineRecipeInput input : inputs) {
       if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
         mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
       }
       if (input != null && Block.getBlockFromItem(input.item.getItem()) == EnderIO.blockPaintedPressurePlate) {
-        silent = EnumPressurePlateType.getSilentFromMeta(input.item.getMetadata());
+        issilent = EnumPressurePlateType.getSilentFromMeta(input.item.getMetadata());
         tag = input.item.getTagCompound();
       }
     }
-    if (mobType == null || silent == null) {
+    if (mobType == null || issilent == null) {
       return new ResultStack[0];
     }
     if (tag == null) {
@@ -88,7 +93,7 @@ public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoul
     }
     tag.setString("mobType", mobType);
 
-    ItemStack plate = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.TUNED.getMetaFromType(silent));
+    ItemStack plate = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.TUNED.getMetaFromType(issilent));
     plate.setTagCompound(tag);
 
     ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
@@ -114,7 +119,8 @@ public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoul
     if(slot == 1) {
       if (Block.getBlockFromItem(item.getItem()) == EnderIO.blockPaintedPressurePlate) {
         EnumPressurePlateType type = EnumPressurePlateType.getTypeFromMeta(item.getMetadata());
-        return type == EnumPressurePlateType.SOULARIUM || type == EnumPressurePlateType.TUNED;
+        boolean silentFromMeta = EnumPressurePlateType.getSilentFromMeta(item.getMetadata());
+        return (type == EnumPressurePlateType.SOULARIUM || type == EnumPressurePlateType.TUNED) && silentFromMeta == silent;
       }
     }
     return false;    
@@ -141,12 +147,12 @@ public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoul
 
   @Override
   public ItemStack getInputStack() {    
-    return new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType());
+    return new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(silent));
   }
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.TUNED.getMetaFromType());
+    return new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.TUNED.getMetaFromType(silent));
   }
 
   @Override

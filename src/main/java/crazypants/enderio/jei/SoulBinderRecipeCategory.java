@@ -7,14 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.soul.GuiSoulBinder;
-import crazypants.enderio.machine.soul.ISoulBinderRecipe;
-import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -31,6 +23,15 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.soul.GuiSoulBinder;
+import crazypants.enderio.machine.soul.ISoulBinderRecipe;
+import crazypants.enderio.machine.soul.SoulBinderTunedPressurePlateRecipe;
+import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 
 public class SoulBinderRecipeCategory extends BlankRecipeCategory {
 
@@ -156,6 +157,17 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
       for(String soul : currentRecipe.recipe.getSupportedSouls()) {
         outputs.add(ItemBrokenSpawner.createStackForMobType(soul));  
       }      
+      guiItemStacks.setFromRecipe(2, outputs);
+    } else if (currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
+      List<ItemStack> outputs = new ArrayList<ItemStack>();
+      for (String soul : currentRecipe.recipe.getSupportedSouls()) {
+        ItemStack copy = currentRecipe.recipe.getOutputStack().copy();
+        if (!copy.hasTagCompound()) {
+          copy.setTagCompound(new NBTTagCompound());
+        }
+        copy.getTagCompound().setString("mobType", soul);
+        outputs.add(copy);
+      }
       guiItemStacks.setFromRecipe(2, outputs);
     } else {
       guiItemStacks.setFromRecipe(2, currentRecipe.recipe.getOutputStack());

@@ -8,6 +8,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
+import crazypants.enderio.machine.painter.blocks.RecipePaintedPressurePlate;
 import crazypants.enderio.material.MachinePart;
 
 import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
@@ -72,6 +73,7 @@ public class ItemRecipes {
     GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', Blocks.light_weighted_pressure_plate, 'w', Blocks.wool);
     GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', Blocks.heavy_weighted_pressure_plate, 'w', Blocks.wool);
 
+    GameRegistry.addRecipe(new RecipePaintedPressurePlate()); // same as below, keeps NBT
     GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', pp1, 'w', Blocks.wool);
     GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', pp2, 'w', Blocks.wool);
     GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', pp3, 'w', Blocks.wool);
