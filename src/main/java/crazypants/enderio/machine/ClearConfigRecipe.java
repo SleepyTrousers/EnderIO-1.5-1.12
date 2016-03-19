@@ -71,8 +71,7 @@ public class ClearConfigRecipe implements IRecipe {
   }
 
   @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-    //TODO: 1.8
-    return null;
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {    
+    return new ItemStack[inv.getSizeInventory()];
   }
 }

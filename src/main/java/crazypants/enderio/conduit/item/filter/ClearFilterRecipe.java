@@ -69,7 +69,7 @@ public class ClearFilterRecipe implements IRecipe{
   
   @Override
   public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-    return new ItemStack[0];
+    return new ItemStack[inv.getSizeInventory()];
   }
 
 }
