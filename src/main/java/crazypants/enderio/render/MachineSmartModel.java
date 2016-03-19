@@ -138,9 +138,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
           IEnderBakedModel bakedModel = cache.getIfPresent(cacheKey);
           if (bakedModel == null) {
             bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos));
-            if (cacheKey != 0) {
-              cache.put(cacheKey, bakedModel);
-            }
+            cache.put(cacheKey, bakedModel);
           }
           if (overlayLayer != null) {
             bakedModel = new OverlayBakedModel(bakedModel, overlayLayer);
