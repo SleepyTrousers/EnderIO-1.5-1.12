@@ -51,35 +51,28 @@ public class ItemRecipes {
 
     addShaped(DarkSteelItems.itemDarkSteelShears.createItemStack(), " s", "s ", 's', darkSteel);
 
-    ItemStack pp1 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.WOOD.getMetaFromType(false));
-    ItemStack pp2 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.STONE.getMetaFromType(false));
-    ItemStack pp3 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.GOLD.getMetaFromType(false));
-    ItemStack pp4 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.IRON.getMetaFromType(false));
     ItemStack pp5 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.DARKSTEEL.getMetaFromType(false));
     ItemStack pp6 = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(false));
+
+    addShaped(pp5, "ss", 's', darkSteel);
+    addShaped(pp6, "ss", 's', soularium);
 
     ItemStack pp1s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.WOOD.getMetaFromType(true));
     ItemStack pp2s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.STONE.getMetaFromType(true));
     ItemStack pp3s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.GOLD.getMetaFromType(true));
     ItemStack pp4s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.IRON.getMetaFromType(true));
-    ItemStack pp5s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.DARKSTEEL.getMetaFromType(true));
-    ItemStack pp6s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(true));
-
-    addShaped(pp5, "ss", 's', darkSteel);
-    addShaped(pp6, "ss", 's', soularium);
 
     GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', Blocks.wooden_pressure_plate, 'w', Blocks.wool);
     GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', Blocks.stone_pressure_plate, 'w', Blocks.wool);
     GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', Blocks.light_weighted_pressure_plate, 'w', Blocks.wool);
     GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', Blocks.heavy_weighted_pressure_plate, 'w', Blocks.wool);
 
-    GameRegistry.addRecipe(new RecipePaintedPressurePlate()); // same as below, keeps NBT
-    GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', pp1, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', pp2, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', pp3, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', pp4, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp5s, "p", "w", 'p', pp5, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp6s, "p", "w", 'p', pp6, 'w', Blocks.wool);
+    GameRegistry.addRecipe(new RecipePaintedPressurePlate()); // plate + wool = silent plate (keeps nbt)
+    for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
+      // these are just for JEI, the RecipePaintedPressurePlate has higher priority
+      GameRegistry.addShapedRecipe(new ItemStack(EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(true)), "p", "w", 'p', new ItemStack(
+          EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(false)), 'w', Blocks.wool);
+    }
 
     //Soul Vessel
     GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemSoulVessel), " s ", "q q", " q ", 's', soularium, 'q', new ItemStack(

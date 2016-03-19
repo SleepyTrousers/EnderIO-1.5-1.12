@@ -55,6 +55,8 @@ import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 
+import static crazypants.util.NbtValue.MOBTYPE;
+
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock,
     ISmartRenderAwareBlock, IRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider {
 
@@ -75,9 +77,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       if (rotation == null) {
         rotation = EnumFacing.NORTH;
       }
-      if (nbtRoot.hasKey("mobType")) {
-        mobType = nbtRoot.getString("mobType");
-      }
+      mobType = MOBTYPE.getString(nbtRoot, null);
     }
 
     @Override
@@ -85,9 +85,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       super.writeCustomNBT(nbtRoot);
       nbtRoot.setByte("type", (byte) EnumPressurePlateType.getMetaFromType(type, silent));
       nbtRoot.setString("rotation", rotation.getName());
-      if (mobType != null) {
-        nbtRoot.setString("mobType", mobType);
-      }
+      MOBTYPE.setString(nbtRoot, mobType);
     }
 
     protected EnumPressurePlateType getType() {
@@ -280,9 +278,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     setTypeFromMeta(worldIn, pos, stack.getMetadata());
     setPaintSource(state, worldIn, pos, PainterUtil2.getSourceBlock(stack));
     setRotation(worldIn, pos, EnumFacing.fromAngle(placer.rotationYaw));
-    if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("mobType")) {
-      setMobType(worldIn, pos, stack.getTagCompound().getString("mobType"));
-    }
+    setMobType(worldIn, pos, MOBTYPE.getString(stack));
     if (!worldIn.isRemote) {
       worldIn.markBlockForUpdate(pos);
     }
@@ -316,10 +312,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   protected ItemStack getDrop(IBlockAccess world, BlockPos pos) {
     ItemStack drop = new ItemStack(Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
     PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
-    String mobType = getMobType(world, pos);
-    if (mobType != null) {
-      drop.getTagCompound().setString("mobType", mobType);
-    }
+    MOBTYPE.setString(drop, getMobType(world, pos));
     return drop;
   }
 
@@ -553,13 +546,12 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       super.addInformation(stack, playerIn, tooltip, advanced);
       if (hasMob(stack)) {
         tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned",
-            StatCollector.translateToLocal("entity." + stack.getTagCompound().getString("mobType") + ".name")));
+            StatCollector.translateToLocal("entity." + MOBTYPE.getString(stack) + ".name")));
       }
     }
 
     private boolean hasMob(ItemStack stack) {
-      return stack != null && EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()) == EnumPressurePlateType.TUNED && stack.hasTagCompound()
-          && stack.getTagCompound().hasKey("mobType");
+      return stack != null && EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()) == EnumPressurePlateType.TUNED && MOBTYPE.hasTag(stack);
     }
 
   }

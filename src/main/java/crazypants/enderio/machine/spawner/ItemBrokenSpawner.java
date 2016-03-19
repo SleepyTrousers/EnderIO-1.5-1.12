@@ -2,30 +2,29 @@ package crazypants.enderio.machine.spawner;
 
 import java.util.List;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.util.NbtValue.MOBTYPE;
 
 public class ItemBrokenSpawner extends Item {
 
   private static final String[] CREATIVE_TYPES = new String[] { "Skeleton", "Zombie", "Spider", "CaveSpider", "Blaze", "Enderman", "Chicken" };
 
   public static String getMobTypeFromStack(ItemStack stack) {
-    if (stack == null || stack.getTagCompound() == null || !stack.getTagCompound().hasKey("mobType")) {
-      return null;
-    }
-    return stack.getTagCompound().getString("mobType");
+    return MOBTYPE.getString(stack, null);
   }
 
   public static ItemStack createStackForMobType(String mobType) {
@@ -33,9 +32,7 @@ public class ItemBrokenSpawner extends Item {
       return null;
     }
     ItemStack res = new ItemStack(EnderIO.itemBrokenSpawner);
-    res.setTagCompound(new NBTTagCompound());
-    res.getTagCompound().setString("mobType", mobType);
-    return res;
+    return MOBTYPE.setString(res, mobType);
   }
 
   public static ItemBrokenSpawner create() {

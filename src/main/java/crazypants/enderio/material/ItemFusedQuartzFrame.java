@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.paint.PainterUtil2;
 
@@ -42,7 +41,7 @@ public class ItemFusedQuartzFrame extends Item {
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
-    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
+    // TODO list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
   
   @Override

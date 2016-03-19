@@ -53,6 +53,8 @@ import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
+import static crazypants.util.NbtValue.MOBTYPE;
+
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
  
@@ -60,21 +62,14 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     if(nbt == null) {
       return;
     }
-    if(type == null) {
-      nbt.removeTag("mobType");
-    } else {
-      nbt.setString("mobType", type);
-    }
+    MOBTYPE.setString(nbt, type);
   }
 
   public static String readMobTypeFromNBT(NBTTagCompound nbt) {
     if(nbt == null) {
       return null;
     }
-    if(!nbt.hasKey("mobType")) {
-      return null;
-    }
-    return nbt.getString("mobType");
+    return MOBTYPE.getString(nbt, null);
   }
 
   public static String getSpawnerTypeFromItemStack(ItemStack stack) {

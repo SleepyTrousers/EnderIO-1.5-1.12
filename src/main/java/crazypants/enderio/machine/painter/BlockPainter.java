@@ -15,9 +15,6 @@ import crazypants.enderio.paint.IPaintable;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static final String KEY_SOURCE_BLOCK_ID = "sourceBlockId";
-  public static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
-
   public static BlockPainter create() {
     BlockPainter ppainter = new BlockPainter();
     ppainter.init();

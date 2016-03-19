@@ -10,7 +10,10 @@ import mezz.jei.api.INbtIgnoreList;
 import mezz.jei.api.JEIPlugin;
 import net.minecraft.item.Item;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.painter.BlockPainter;
+
+import static crazypants.util.NbtValue.MOBTYPE;
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
 
 @JEIPlugin
 public class JeiPlugin extends BlankModPlugin {
@@ -30,7 +33,7 @@ public class JeiPlugin extends BlankModPlugin {
     INbtIgnoreList nbtIgnoreList = registry.getJeiHelpers().getNbtIgnoreList();
     final Item ppplate = Item.getItemFromBlock(EnderIO.blockPaintedPressurePlate);
     if (ppplate != null) {
-      nbtIgnoreList.ignoreNbtTagNames(ppplate, "mobType", BlockPainter.KEY_SOURCE_BLOCK_ID, BlockPainter.KEY_SOURCE_BLOCK_META);
+      nbtIgnoreList.ignoreNbtTagNames(ppplate, MOBTYPE.getKey(), SOURCE_BLOCK.getKey(), SOURCE_META.getKey());
     }
   }
 

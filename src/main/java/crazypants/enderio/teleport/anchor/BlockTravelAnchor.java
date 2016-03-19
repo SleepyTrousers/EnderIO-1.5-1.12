@@ -29,7 +29,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -197,13 +196,13 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       return new ItemStack(this);
     }
     ItemStack result = new ItemStack(this, 1, bs.getBlock().getMetaFromState(bs));
-    PainterUtil.setSourceBlock(result, bs);
+    // TODO PainterUtil.setSourceBlock(result, bs);
     return result;
   }
   
   private ItemStack createItemStackForSourceBlock(Block sourceBlock, int itemDamage) {
     ItemStack result = new ItemStack(this, 1, itemDamage);
-    PainterUtil.setSourceBlock(result, sourceBlock, itemDamage);
+    // TODO PainterUtil.setSourceBlock(result, sourceBlock, itemDamage);
     return result;
   }
 

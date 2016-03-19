@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import com.enderio.core.common.util.EntityUtil;
 
@@ -17,6 +16,8 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.xp.XpUtil;
+
+import static crazypants.util.NbtValue.MOBTYPE;
 
 public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -72,32 +73,21 @@ public class SoulBinderTunedPressurePlateRecipe implements IMachineRecipe, ISoul
   @Override
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     String mobType = null;
-    Boolean issilent = null;
-    NBTTagCompound tag = null;
+    ItemStack inPlate = null;
     for(MachineRecipeInput input : inputs) {
       if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
         mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
       }
       if (input != null && Block.getBlockFromItem(input.item.getItem()) == EnderIO.blockPaintedPressurePlate) {
-        issilent = EnumPressurePlateType.getSilentFromMeta(input.item.getMetadata());
-        tag = input.item.getTagCompound();
+        inPlate = input.item;
       }
     }
-    if (mobType == null || issilent == null) {
+    if (mobType == null || inPlate == null) {
       return new ResultStack[0];
     }
-    if (tag == null) {
-      tag = new NBTTagCompound();
-    } else {
-      tag = (NBTTagCompound) tag.copy();
-    }
-    tag.setString("mobType", mobType);
-
-    ItemStack plate = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.TUNED.getMetaFromType(issilent));
-    plate.setTagCompound(tag);
-
-    ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
-    return new ResultStack[] { new ResultStack(soulVessel), new ResultStack(plate) };
+    final ItemStack result = MOBTYPE.setStringCopy(inPlate, mobType, 1);
+    result.setItemDamage(EnumPressurePlateType.getMetaFromType(EnumPressurePlateType.TUNED, silent));
+    return new ResultStack[] { new ResultStack(new ItemStack(EnderIO.itemSoulVessel)), new ResultStack(result) };
   }
 
   @Override

@@ -17,7 +17,9 @@ import net.minecraftforge.fml.common.registry.GameData;
 import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.painter.BlockPainter;
+
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
 
 public class PainterUtil2 {
 
@@ -98,8 +100,8 @@ public class PainterUtil2 {
       return;
     }
     if (paintSource == null) {
-      nbtRoot.removeTag(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      nbtRoot.removeTag(BlockPainter.KEY_SOURCE_BLOCK_META);
+      SOURCE_BLOCK.removeTag(nbtRoot);
+      SOURCE_META.removeTag(nbtRoot);
       return;
     }
     Block block = paintSource.getBlock();
@@ -107,21 +109,20 @@ public class PainterUtil2 {
     if (res != null) {
       String name = res.toString();
       if (!name.trim().isEmpty()) {
-        nbtRoot.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, name);
-        int meta = block.getMetaFromState(paintSource);
-        nbtRoot.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
+        SOURCE_BLOCK.setString(nbtRoot, name);
+        SOURCE_META.setInt(nbtRoot, block.getMetaFromState(paintSource));
       }
     }
   }
 
   public static IBlockState readNbt(NBTTagCompound nbtRoot) {
     if (nbtRoot != null) {
-      String blockId = nbtRoot.getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
+      String blockId = SOURCE_BLOCK.getString(nbtRoot);
       if (!Strings.isNullOrEmpty(blockId)) {
         ResourceLocation res = new ResourceLocation(blockId);
         if (Block.blockRegistry.containsKey(res)) {
           Block block = Block.blockRegistry.getObject(res);
-          int meta = nbtRoot.getInteger(BlockPainter.KEY_SOURCE_BLOCK_META);
+          int meta = SOURCE_META.getInt(nbtRoot);
           return block.getStateFromMeta(meta);
         }
       }
@@ -134,12 +135,23 @@ public class PainterUtil2 {
   }
 
   public static void setSourceBlock(ItemStack itemStack, IBlockState paintSource) {
-    NBTTagCompound tag = itemStack.getTagCompound();
-    if (tag == null) {
-      tag = new NBTTagCompound();
-      itemStack.setTagCompound(tag);
+    if (itemStack == null) {
+      return;
     }
-    writeNbt(tag, paintSource);
+    if (paintSource == null) {
+      SOURCE_BLOCK.removeTag(itemStack);
+      SOURCE_META.removeTag(itemStack);
+      return;
+    }
+    Block block = paintSource.getBlock();
+    ResourceLocation res = Block.blockRegistry.getNameForObject(block);
+    if (res != null) {
+      String name = res.toString();
+      if (!name.trim().isEmpty()) {
+        SOURCE_BLOCK.setString(itemStack, name);
+        SOURCE_META.setInt(itemStack, block.getMetaFromState(paintSource));
+      }
+    }
   }
 
   public static String getTooltTipText(ItemStack itemStack) {

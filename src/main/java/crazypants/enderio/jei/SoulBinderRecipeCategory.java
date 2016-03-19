@@ -33,6 +33,8 @@ import crazypants.enderio.machine.soul.ISoulBinderRecipe;
 import crazypants.enderio.machine.soul.SoulBinderTunedPressurePlateRecipe;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 
+import static crazypants.util.NbtValue.MOBTYPE;
+
 public class SoulBinderRecipeCategory extends BlankRecipeCategory {
 
   public static final @Nonnull String UID = "SoulBinder";
@@ -150,32 +152,31 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     guiItemStacks.init(2, false, 111 - xOff, 33 - yOff);
     guiItemStacks.init(3, false, 133 - xOff, 33 - yOff);
     
-    guiItemStacks.set(0, getSoulVialInputs(currentRecipe.recipe.getSupportedSouls()));
-    guiItemStacks.setFromRecipe(1, currentRecipe.recipe.getInputStack());
-    if(EnderIO.itemBrokenSpawner == currentRecipe.recipe.getOutputStack().getItem()) {
+    final ItemStack outputStack = currentRecipe.recipe.getOutputStack();
+    final List<String> supportedSouls = currentRecipe.recipe.getSupportedSouls();
+    final ItemStack inputStack = currentRecipe.recipe.getInputStack();
+
+    guiItemStacks.set(0, getSoulVialInputs(supportedSouls));
+    guiItemStacks.setFromRecipe(1, inputStack);
+    if(EnderIO.itemBrokenSpawner == outputStack.getItem()) {
       List<ItemStack> outputs = new ArrayList<ItemStack>();
-      for(String soul : currentRecipe.recipe.getSupportedSouls()) {
+      for (String soul : supportedSouls) {
         outputs.add(ItemBrokenSpawner.createStackForMobType(soul));  
       }      
       guiItemStacks.setFromRecipe(2, outputs);
     } else if (currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
       List<ItemStack> outputs = new ArrayList<ItemStack>();
-      for (String soul : currentRecipe.recipe.getSupportedSouls()) {
-        ItemStack copy = currentRecipe.recipe.getOutputStack().copy();
-        if (!copy.hasTagCompound()) {
-          copy.setTagCompound(new NBTTagCompound());
-        }
-        copy.getTagCompound().setString("mobType", soul);
-        outputs.add(copy);
+      for (String soul : supportedSouls) {
+        outputs.add(MOBTYPE.setStringCopy(outputStack, soul));
       }
       guiItemStacks.setFromRecipe(2, outputs);
     } else {
-      guiItemStacks.setFromRecipe(2, currentRecipe.recipe.getOutputStack());
+      guiItemStacks.setFromRecipe(2, outputStack);
     }
     guiItemStacks.setFromRecipe(3, new ItemStack(EnderIO.itemSoulVessel));
   }
   
-  private List<ItemStack> getSoulVialInputs(List<String> mobs) {
+  private @Nonnull List<ItemStack> getSoulVialInputs(List<String> mobs) {
     List<ItemStack> result = new ArrayList<ItemStack>(mobs.size());
     for (String mobName : mobs) {
       ItemStack sv = new ItemStack(EnderIO.itemSoulVessel);
