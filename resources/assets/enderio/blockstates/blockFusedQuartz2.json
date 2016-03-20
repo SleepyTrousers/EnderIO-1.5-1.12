@@ -1,0 +1,25 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "textures": {
+        "particle": "enderio:blocks/fusedQuartzItem"
+    },
+    "model":"enderio:null",
+    "transform":{
+      "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+      "firstperson":{ "rotation":[ {"x":0},  {"y":90},  {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+      "gui":{         "rotation":[ {"x":0},  {"y":-90}, {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+      "fixed":{       "rotation":[ {"x":0},  {"y":0},   {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+    }
+  },
+  "variants":{
+  	"kind":{
+      "fused_quartz":             { },
+      "fused_glass":              { },
+      "enlightened_fused_quartz": { },
+      "enlightened_fused_glass":  { },
+      "dark_fused_quartz":        { },
+      "dark_fused_glass":         { }
+    }
+  }
+}

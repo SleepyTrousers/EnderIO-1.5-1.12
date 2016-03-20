@@ -129,13 +129,13 @@ import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFrankenSkull;
-import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
+import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.rail.BlockEnderRail;
@@ -179,7 +179,6 @@ public class EnderIO {
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
   public static BlockFusedQuartz blockFusedQuartz;
-  public static ItemFusedQuartzFrame itemFusedQuartzFrame;
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
@@ -357,7 +356,7 @@ public class EnderIO {
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();
-//    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+    BlockPaintedFusedQuartz.create();
 
 //    blockEnderRail = BlockEnderRail.create();
 

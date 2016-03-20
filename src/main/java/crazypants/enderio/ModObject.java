@@ -34,7 +34,6 @@ public enum ModObject {
   itemMachinePart,
   itemPowderIngot,
   blockFusedQuartz,
-  itemFusedQuartzFrame,
   blockDarkIronBars,
 
   // Machines

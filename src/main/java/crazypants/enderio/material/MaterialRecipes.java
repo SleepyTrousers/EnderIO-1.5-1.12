@@ -2,7 +2,19 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import com.enderio.core.common.util.OreDictionaryHelper;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.ItemEnderFood.EnderFood;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 
 import static com.enderio.core.common.util.OreDictionaryHelper.hasCopper;
 import static com.enderio.core.common.util.OreDictionaryHelper.hasTin;
@@ -15,17 +27,6 @@ import static crazypants.enderio.material.Material.BINDER_COMPOSITE;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.util.RecipeUtil.addShaped;
 import static crazypants.util.RecipeUtil.addShapeless;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.ItemEnderFood.EnderFood;
-import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class MaterialRecipes {
 
@@ -107,8 +108,6 @@ public class MaterialRecipes {
     //Common Ingredients
     String conduitBinder = CONDUIT_BINDER.oreDict;
 
-    ItemStack fusedQuartzFrame = new ItemStack(EnderIO.itemFusedQuartzFrame, 1, 0);
-
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
     String phasedGold = PHASED_GOLD.getOreIngot();
     String phasedIron = PHASED_IRON.getOreIngot();
@@ -165,10 +164,6 @@ public class MaterialRecipes {
     //Dark Iron Bars
     ItemStack diBars = new ItemStack(EnderIO.blockDarkIronBars, 16, 0);
     addShaped(diBars, "ddd", "ddd", 'd', darkSteel);
-
-    // Fused Quartz Frame
-    addShaped(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood");
-    addShaped(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick");
 
     // Machine Chassis
 

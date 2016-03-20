@@ -22,10 +22,16 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
 
   protected final T resultBlock;
   protected final Block[] validTargets;
+  protected final boolean allowEasyConversion;
+
+  public BasicPainterTemplate(boolean allowEasyConversion, T resultBlock, Block... validTargetBlocks) {
+    this.resultBlock = resultBlock;
+    this.validTargets = validTargetBlocks;
+    this.allowEasyConversion = allowEasyConversion;
+  }
 
   public BasicPainterTemplate(T resultBlock, Block... validTargetBlocks) {
-    this.resultBlock = resultBlock;
-    validTargets = validTargetBlocks;
+    this(true, resultBlock, validTargetBlocks);
   }
 
   @Override
@@ -144,12 +150,12 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
 
     // The paint source and the target are the same item, but maybe with different meta. This means that we can simplify the painting by doing an item
     // conversion (e.g. blue carpet to red carpet).
-    if (paintBlock == targetBlock) {
+    if (paintBlock == targetBlock && allowEasyConversion) {
       return mkItemStack(paintSource, targetBlock);
     }
 
     // The target is paintable, so let's check if the paint source is what was used to create it. If yes, then we unpaint it into it's original form.
-    if (targetBlock == resultBlock) {
+    if (targetBlock == resultBlock && allowEasyConversion) {
       for (Block validTarget : validTargets) {
         if (paintBlock == validTarget) {
           return mkItemStack(paintSource, paintBlock);
