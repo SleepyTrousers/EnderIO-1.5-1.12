@@ -48,9 +48,8 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
   // ------------ Recipes
 
-  private static List<PainterRecipeWrapper> splitRecipe(@Nonnull BasicPainterTemplate<?> recipe) {
+  private static List<PainterRecipeWrapper> splitRecipe(@Nonnull BasicPainterTemplate<?> recipe, List<ItemStack> validItems) {
     List<PainterRecipeWrapper> recipes = new ArrayList<PainterRecipeWrapper>();
-    List<ItemStack> validItems = getValidItems();
     
     for (ItemStack target : validItems) {
       if (recipe.isValidTarget(target) && target != null) {
@@ -79,21 +78,21 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
   public static class PainterRecipeWrapper extends BlankRecipeWrapper {
 
-    private final @Nonnull BasicPainterTemplate<?> recipe;
+    private final int energyRequired;
     private final @Nonnull ItemStack target;
     private final @Nonnull List<ItemStack> paints;
     private final @Nonnull List<ItemStack> results;
 
     public PainterRecipeWrapper(@Nonnull BasicPainterTemplate<?> recipe, @Nonnull ItemStack target, @Nonnull List<ItemStack> paints,
         @Nonnull List<ItemStack> results) {
-      this.recipe = recipe;
+      this.energyRequired = recipe.getEnergyRequired();
       this.target = target;
       this.paints = paints;
       this.results = results;
     }
 
     public long getEnergyRequired() { 
-      return recipe.getEnergyRequired();
+      return energyRequired;
     }
 
     @Override
@@ -110,7 +109,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
     
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {           
-      String energyString = PowerDisplayUtil.formatPower(recipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
+      String energyString = PowerDisplayUtil.formatPower(energyRequired) + " " + PowerDisplayUtil.abrevation();
       minecraft.fontRendererObj.drawString(energyString, 6, 36, 0x808080, false);    
       GlStateManager.color(1,1,1,1);      
     }
@@ -123,23 +122,23 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
     
     List<PainterRecipeWrapper> result = new ArrayList<PainterRecipeWrapper>(); 
+    List<ItemStack> validItems = getValidItems();
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.unlocalisedName);
-    if(recipes.isEmpty()) {
-      return;
-    }
     for (IMachineRecipe recipe : recipes.values()) {
       if (recipe instanceof BasicPainterTemplate) {
-        result.addAll(splitRecipe((BasicPainterTemplate) recipe));
+        result.addAll(splitRecipe((BasicPainterTemplate) recipe, validItems));
       }
     }
-    registry.addRecipes(result);
+    if (!result.isEmpty()) {
+      registry.addRecipes(result);
+    }
   }
 
   // ------------ Category
 
   //Offsets from full size gui, makes it much easier to get the location correct
-  private int xOff = 34;
-  private int yOff = 28;
+  private final static int xOff = 34;
+  private final static int yOff = 28;
   
   @Nonnull
   private final IDrawable background;
@@ -147,8 +146,6 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
   @Nonnull
   protected final IDrawableAnimated arror;
   
-  private PainterRecipeWrapper currentRecipe;
-
   public PainterRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("painter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
@@ -181,75 +178,73 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
     if(recipeWrapper instanceof PainterRecipeWrapper) {
-      currentRecipe = (PainterRecipeWrapper)recipeWrapper;
-    } else {
-      currentRecipe = null;
-    }
-    
-    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-    guiItemStacks.init(0, true, 67 - xOff - 1, 34 - yOff - 1);
-    guiItemStacks.init(1, true, 38 - xOff - 1, 34 - yOff - 1);
-    guiItemStacks.init(2, false, 121 - xOff - 1, 34 - yOff - 1);
+      PainterRecipeWrapper currentRecipe = (PainterRecipeWrapper) recipeWrapper;
 
-    guiItemStacks.set(0, currentRecipe.target);
+      IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+      guiItemStacks.init(0, true, 67 - xOff - 1, 34 - yOff - 1);
+      guiItemStacks.init(1, true, 38 - xOff - 1, 34 - yOff - 1);
+      guiItemStacks.init(2, false, 121 - xOff - 1, 34 - yOff - 1);
 
-    // Not very nice, but the only way to get correct painting recipes into JEI, it seems.
-    if (guiItemStacks instanceof GuiIngredientGroup) {
-      try {
-        List<ItemStack> paints = new ArrayList<ItemStack>();
-        List<ItemStack> results = new ArrayList<ItemStack>();
+      guiItemStacks.set(0, currentRecipe.target);
 
-        Field focusField = GuiIngredientGroup.class.getDeclaredField("focus");
-        focusField.setAccessible(true);
-        Focus focus = (Focus) focusField.get(guiItemStacks);
-        if (focus != null && !focus.isBlank() && focus.getMode() != Mode.NONE) {
-          ItemStack focused = focus.getStack();
-          if (focus.getMode() == Mode.OUTPUT) {
-            // JEI is focusing on the output item. Limit the recipe to only the paints that actually give this output item. Needs some extra comparison because
-            // we told JEI to ignore paint information, which is ok for crafting and soul binding, but not here.
-            for (int i = 0; i < currentRecipe.paints.size(); i++) {
-              ItemStack resultStack = currentRecipe.results.get(i);
-              ItemStack paintStack = currentRecipe.paints.get(i);
-              if (Internal.getStackHelper().isEquivalent(focused, resultStack) && SOURCE_BLOCK.getString(focused).equals(SOURCE_BLOCK.getString(resultStack))
-                  && SOURCE_META.getInt(focused) == SOURCE_META.getInt(resultStack)) {
-                paints.add(paintStack);
-                results.add(resultStack);
+      // Not very nice, but the only way to get correct painting recipes into JEI, it seems.
+      if (guiItemStacks instanceof GuiIngredientGroup) {
+        try {
+          List<ItemStack> paints = new ArrayList<ItemStack>();
+          List<ItemStack> results = new ArrayList<ItemStack>();
+
+          Field focusField = GuiIngredientGroup.class.getDeclaredField("focus");
+          focusField.setAccessible(true);
+          Focus focus = (Focus) focusField.get(guiItemStacks);
+          if (focus != null && !focus.isBlank() && focus.getMode() != Mode.NONE) {
+            ItemStack focused = focus.getStack();
+            if (focus.getMode() == Mode.OUTPUT) {
+              // JEI is focusing on the output item. Limit the recipe to only the paints that actually give this output item. Needs some extra comparison
+              // because we told JEI to ignore paint information, which is ok for crafting and soul binding, but not here.
+              for (int i = 0; i < currentRecipe.paints.size(); i++) {
+                ItemStack resultStack = currentRecipe.results.get(i);
+                ItemStack paintStack = currentRecipe.paints.get(i);
+                if (Internal.getStackHelper().isEquivalent(focused, resultStack) && SOURCE_BLOCK.getString(focused).equals(SOURCE_BLOCK.getString(resultStack))
+                    && SOURCE_META.getInt(focused) == SOURCE_META.getInt(resultStack)) {
+                  paints.add(paintStack);
+                  results.add(resultStack);
+                }
+              }
+            } else if (!Internal.getStackHelper().isEquivalent(focused, currentRecipe.target)) {
+              // JEI is focusing on the paint. Limit the output items to things that are painted with this paint.
+              for (int i = 0; i < currentRecipe.paints.size(); i++) {
+                ItemStack resultStack = currentRecipe.results.get(i);
+                ItemStack paintStack = currentRecipe.paints.get(i);
+                if (Internal.getStackHelper().isEquivalent(focused, paintStack)) {
+                  paints.add(paintStack);
+                  results.add(resultStack);
+                }
+              }
+            } else {
+              // JEI is focusing on a paintable item. If that item also can be used as a paint source, it will display "item+item=anything", which is somewhere
+              // between weird and wrong. So remove the recipe "item+item" from the list to get "anything+item=anything".
+              for (int i = 0; i < currentRecipe.paints.size(); i++) {
+                ItemStack resultStack = currentRecipe.results.get(i);
+                ItemStack paintStack = currentRecipe.paints.get(i);
+                if (!Internal.getStackHelper().isEquivalent(focused, paintStack)) {
+                  paints.add(paintStack);
+                  results.add(resultStack);
+                }
               }
             }
-          } else if (!Internal.getStackHelper().isEquivalent(focused, currentRecipe.target)) {
-            // JEI is focusing on the paint. Limit the output items to things that are painted with this paint.
-            for (int i = 0; i < currentRecipe.paints.size(); i++) {
-              ItemStack resultStack = currentRecipe.results.get(i);
-              ItemStack paintStack = currentRecipe.paints.get(i);
-              if (Internal.getStackHelper().isEquivalent(focused, paintStack)) {
-                paints.add(paintStack);
-                results.add(resultStack);
-              }
-            }
-          } else {
-            // JEI is focusing on a paintable item. If that item also can be used as a paint source, it will display "item+item=anything", which is somewhere
-            // between weird and wrong. So remove the recipe "item+item" from the list to get "anything+item=anything".
-            for (int i = 0; i < currentRecipe.paints.size(); i++) {
-              ItemStack resultStack = currentRecipe.results.get(i);
-              ItemStack paintStack = currentRecipe.paints.get(i);
-              if (!Internal.getStackHelper().isEquivalent(focused, paintStack)) {
-                paints.add(paintStack);
-                results.add(resultStack);
-              }
+            if (!paints.isEmpty()) {
+              guiItemStacks.set(1, paints);
+              guiItemStacks.set(2, results);
+              return;
             }
           }
-          if (!paints.isEmpty()) {
-            guiItemStacks.set(1, paints);
-            guiItemStacks.set(2, results);
-            return;
-          }
+        } catch (Throwable t) {
         }
-      } catch (Throwable t) {
       }
-    }
 
-    guiItemStacks.set(1, currentRecipe.paints);
-    guiItemStacks.set(2, currentRecipe.results);
+      guiItemStacks.set(1, currentRecipe.paints);
+      guiItemStacks.set(2, currentRecipe.results);
+    }
   }
   
   private static @Nonnull List<ItemStack> getValidItems() {

@@ -34,8 +34,6 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileEntityPainter) {
       return new PainterContainer(player.inventory, (TileEntityPainter) te);
@@ -47,27 +45,15 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   @SideOnly(Side.CLIENT)
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    return new GuiPainter(player.inventory, (TileEntityPainter) te);
+    if (te instanceof TileEntityPainter) {
+      return new GuiPainter(player.inventory, (TileEntityPainter) te);
+    }
+    return null;
   }
 
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_PAINTER;
   }
-
-//  public IIcon getInvisibleIcon() {
-//    return invisibleIcon;
-//  }
-//
-//  public void setInvisibleIcon(IIcon invisibleIcon) {
-//    this.invisibleIcon = invisibleIcon;
-//  }
-//
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//    super.registerBlockIcons(iIconRegister);
-//    invisibleIcon = iIconRegister.registerIcon("enderio:invisblePaint");
-//  }
 
 }

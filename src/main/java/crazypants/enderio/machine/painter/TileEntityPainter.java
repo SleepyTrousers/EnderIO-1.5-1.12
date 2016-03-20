@@ -3,7 +3,6 @@ package crazypants.enderio.machine.painter;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 
 import com.enderio.core.common.util.ItemUtil;
 
@@ -21,11 +20,6 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot
     super(new SlotDefinition(2, 1));
-  }
-
-  @Override
-  public boolean canExtractItem(int i, ItemStack itemstack, EnumFacing side) {
-    return super.canExtractItem(i, itemstack, side) && ItemUtil.areStackMergable(itemstack, inventory[2]);
   }
 
   @Override
