@@ -23,6 +23,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -74,7 +75,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
   private final TooltipHandlerGrinding ballsTT = new TooltipHandlerGrinding();
 
   public SagMillRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = new ResourceLocation(EnderIO.MODID, "textures/gui/23/crusher.png");
+    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("crusher");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 109, 78);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 201, 1, 16, 22);

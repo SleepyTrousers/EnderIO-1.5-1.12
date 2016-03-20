@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
 
@@ -66,7 +67,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
   private SliceAndSpliceRecipe currentRecipe;
 
   public SliceAndSpliceRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = new ResourceLocation(EnderIO.MODID, "textures/gui/23/sliceAndSplice.png");
+    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("sliceAndSplice");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 125, 70);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);

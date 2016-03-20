@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -110,7 +111,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
   private SoulBinderRecipeWrapper currentRecipe;
 
   public SoulBinderRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = new ResourceLocation(EnderIO.MODID, "textures/gui/23/soulFuser.png");
+    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("soulFuser");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);

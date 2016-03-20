@@ -22,6 +22,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 
 public class AlloyRecipeCategory extends BlankRecipeCategory {
 
@@ -66,7 +67,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
   private AlloyRecipe currentRecipe;
 
   public AlloyRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = new ResourceLocation(EnderIO.MODID, "textures/gui/23/alloySmelter.png");
+    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("alloySmelter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 82, 78);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 13, 13);

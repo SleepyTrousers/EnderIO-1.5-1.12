@@ -27,6 +27,7 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 
 public class EnchanterRecipeCategory extends BlankRecipeCategory {
 
@@ -127,7 +128,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
   private EnchanterRecipeWrapper currentRecipe;
 
   public EnchanterRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = new ResourceLocation(EnderIO.MODID, "textures/gui/23/enchanter.png");
+    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("enchanter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 134, 48);
   }
 

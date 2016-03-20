@@ -3,12 +3,15 @@ package crazypants.enderio.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
 
 public abstract class GuiContainerBaseEIO extends GuiContainerBase {
 
@@ -36,7 +39,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
     return guiTextures.size() > id ? guiTextures.get(id) : null;
   }
 
-  public static ResourceLocation getGuiTexture(String name) {
+  public static @Nonnull ResourceLocation getGuiTexture(String name) {
     return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
