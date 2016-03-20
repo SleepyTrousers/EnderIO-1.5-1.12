@@ -31,37 +31,44 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
       List<BakedQuad> quads) {
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
 
-    IItemConduit pc = (IItemConduit) conduit;
-    for (EnumFacing dir : conduit.getExternalConnections()) {
-      DyeColor inChannel = null;
-      DyeColor outChannel = null;
-      TextureAtlasSprite inTex = null;
-      TextureAtlasSprite outTex = null;
-      boolean render = true;
-      if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-        inTex = pc.getTextureForInputMode();
-        inChannel = pc.getInputColor(dir);
-      } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-        outTex = pc.getTextureForOutputMode();
-        outChannel = pc.getOutputColor(dir);
-      } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-        inTex = pc.getTextureForInOutMode(true);
-        outTex = pc.getTextureForInOutMode(false);
-        inChannel = pc.getInputColor(dir);
-        outChannel = pc.getOutputColor(dir);
-      } else {
-        render = false;
-      }
+    if (component.dir == null) {
+      return;
+    }
 
-      if (render) {
-        Offset offset = bundle.getOffset(IItemConduit.class, dir);
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, pc.getTextureForInOutBackground(), null, quads);
-        if (inChannel != null) {
-          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, inTex, ColorUtil.toFloat4(inChannel.getColor()), quads);
-        }
-        if (outChannel != null) {
-          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, outTex, ColorUtil.toFloat4(outChannel.getColor()), quads);
-        }
+    EnumFacing dir = component.dir;
+    if (!conduit.getExternalConnections().contains(dir)) {
+      return;
+    }
+
+    IItemConduit pc = (IItemConduit) conduit;
+    DyeColor inChannel = null;
+    DyeColor outChannel = null;
+    TextureAtlasSprite inTex = null;
+    TextureAtlasSprite outTex = null;
+    boolean render = true;
+    if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
+      inTex = pc.getTextureForInputMode();
+      inChannel = pc.getInputColor(dir);
+    } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
+      outTex = pc.getTextureForOutputMode();
+      outChannel = pc.getOutputColor(dir);
+    } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+      inTex = pc.getTextureForInOutMode(true);
+      outTex = pc.getTextureForInOutMode(false);
+      inChannel = pc.getInputColor(dir);
+      outChannel = pc.getOutputColor(dir);
+    } else {
+      render = false;
+    }
+
+    if (render) {
+      Offset offset = bundle.getOffset(IItemConduit.class, dir);
+      ConnectionModeGeometry.addModeConnectorQuads(dir, offset, pc.getTextureForInOutBackground(), null, quads);
+      if (inChannel != null) {
+        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, inTex, ColorUtil.toFloat4(inChannel.getColor()), quads);
+      }
+      if (outChannel != null) {
+        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, outTex, ColorUtil.toFloat4(outChannel.getColor()), quads);
       }
     }
   }
