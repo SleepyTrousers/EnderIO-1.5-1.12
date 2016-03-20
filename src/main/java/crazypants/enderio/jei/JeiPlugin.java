@@ -29,6 +29,7 @@ public class JeiPlugin extends BlankModPlugin {
     EnchanterRecipeCategory.register(registry,guiHelper);
     SliceAndSpliceRecipeCategory.register(registry,guiHelper);
     SoulBinderRecipeCategory.register(registry, guiHelper);
+    PainterRecipeCategory.register(registry, guiHelper);
            
     INbtIgnoreList nbtIgnoreList = registry.getJeiHelpers().getNbtIgnoreList();
     final Item ppplate = Item.getItemFromBlock(EnderIO.blockPaintedPressurePlate);
