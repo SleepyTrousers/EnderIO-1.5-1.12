@@ -10,9 +10,11 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelRotation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -316,6 +318,14 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   @Override
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
     return true;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null) {
+      super.getSubBlocks(itemIn, tab, list);
+    }
   }
 
 }

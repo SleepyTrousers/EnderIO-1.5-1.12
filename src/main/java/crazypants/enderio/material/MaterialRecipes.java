@@ -106,8 +106,6 @@ public class MaterialRecipes {
   public static void addRecipes() {
 
     //Common Ingredients
-    String conduitBinder = CONDUIT_BINDER.oreDict;
-
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
     String phasedGold = PHASED_GOLD.getOreIngot();
     String phasedIron = PHASED_IRON.getOreIngot();

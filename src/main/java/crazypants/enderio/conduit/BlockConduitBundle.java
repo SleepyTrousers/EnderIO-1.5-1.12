@@ -14,8 +14,10 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -1078,4 +1080,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
     return true;
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null) {
+      super.getSubBlocks(itemIn, tab, list);
+    }
+  }
+
 }

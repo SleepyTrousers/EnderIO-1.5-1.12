@@ -13,9 +13,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelRotation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -309,4 +311,13 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     }
     return super.shouldSideBeRendered(worldIn, pos, side);
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null) {
+      super.getSubBlocks(itemIn, tab, list);
+    }
+  }
+
 }

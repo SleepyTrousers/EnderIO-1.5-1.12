@@ -1,14 +1,19 @@
 package crazypants.enderio.enderface;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
 
 public class ItemEnderface extends Item implements IGuiHandler {
   
@@ -44,5 +49,12 @@ public class ItemEnderface extends Item implements IGuiHandler {
     return new GuiEnderface(player, world, x, y, z);
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    if (tab != null) {
+      super.getSubItems(itemIn, tab, subItems);
+    }
+  }
 
 }

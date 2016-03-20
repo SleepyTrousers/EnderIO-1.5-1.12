@@ -1,17 +1,19 @@
 package crazypants.enderio.render.dummy;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,7 +35,7 @@ public class BlockMachineIO extends Block {
     super(Material.circuits);
     setUnlocalizedName(name());
     this.setDefaultState(this.blockState.getBaseState().withProperty(IOMode.IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
-    // setCreativeTab(CreativeTabs.tabRedstone);
+    setCreativeTab(null);
     disableStats();
   }
 
@@ -64,12 +66,10 @@ public class BlockMachineIO extends Block {
   }
 
   @Override
-  public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-    if (playerIn.capabilities.isCreativeMode) {
-      playerIn.addChatMessage(new ChatComponentText(state + (worldIn.isRemote ? " on client" : " on server") + " default: " + getDefaultState()));
-      return true;
-    } else {
-      return false;
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null) {
+      super.getSubBlocks(itemIn, tab, list);
     }
   }
 

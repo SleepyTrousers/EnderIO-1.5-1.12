@@ -1,12 +1,14 @@
 package crazypants.enderio.fluid;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
 
-import crazypants.enderio.config.Config;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockPos;
@@ -15,6 +17,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.config.Config;
 
 public class BlockFluidEio extends BlockFluidClassic {
 
@@ -78,4 +86,13 @@ public class BlockFluidEio extends BlockFluidClassic {
 
     super.onEntityCollidedWithBlock(world,pos, entity);
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null) {
+      super.getSubBlocks(itemIn, tab, list);
+    }
+  }
+
 }
