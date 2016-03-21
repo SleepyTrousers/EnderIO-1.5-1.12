@@ -12,6 +12,8 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
+import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.machine.RedstoneControlMode;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -38,16 +40,33 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
         Vector4f col = ColorUtil.toFloat4(cInt);               
 
         BoundingBox bound = component.bound;
-        if (conMode != ConnectionMode.IN_OUT) {
-          Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);
+        if (conMode != ConnectionMode.IN_OUT && conMode != ConnectionMode.NOT_SET) {
+          Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.12);
           bound = bound.translate(trans);
         }
         addQuadsForSection(bound,tex,component.dir, quads, col); 
-
       }
-    } else {
-      super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+      return;
+    } 
+    
+    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+    
+    if(component.dir  == null) {
+      return;
     }
-
+    IPowerConduit pc = (IPowerConduit)conduit;
+    ConnectionMode mode = pc.getConnectionMode(component.dir);
+    if(mode != ConnectionMode.INPUT && mode != ConnectionMode.OUTPUT) {
+      return;
+    }
+    
+    if(mode == ConnectionMode.INPUT) {
+      tex = pc.getTextureForInputMode();
+    } else {
+      tex = pc.getTextureForOutputMode();
+    }
+    Offset offset = bundle.getOffset(IPowerConduit.class, component.dir);
+    ConnectionModeGeometry.addModeConnectorQuads(component.dir, offset, tex, null, quads);
+    
   }
 }

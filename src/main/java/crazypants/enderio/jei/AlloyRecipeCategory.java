@@ -122,7 +122,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
         guiItemStacks.setFromRecipe(index, ingredients);
       }
     }
-    List outputs = recipeWrapper.getOutputs();
+    List<?> outputs = recipeWrapper.getOutputs();
     if (outputs != null) {
       guiItemStacks.setFromRecipe(3, outputs);
     }
