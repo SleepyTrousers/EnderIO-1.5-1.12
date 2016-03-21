@@ -28,8 +28,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -211,23 +209,23 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return false;
   }
 
-  public final class PainterTemplate extends BasicPainterTemplate {
-
-    public PainterTemplate() {
-      super(BlockTravelAnchor.this);
-    }
-
-    @Override
-    public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-      ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-      if (paintSource == null) {
-        return new ResultStack[0];
-      }
-      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
-    }
-
-   
-  }
+  // public final class PainterTemplate extends BasicPainterTemplate {
+  //
+  // public PainterTemplate() {
+  // super(BlockTravelAnchor.this);
+  // }
+  //
+  // @Override
+  // public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  // ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
+  // if (paintSource == null) {
+  // return new ResultStack[0];
+  // }
+  // return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
+  // }
+  //
+  //
+  // }
 
   @Override
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {

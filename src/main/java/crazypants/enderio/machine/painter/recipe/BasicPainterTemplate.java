@@ -45,9 +45,12 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
   }
 
   @Override
-  public boolean isRecipe(MachineRecipeInput... inputs) {
-    return getPaintSource(inputs) != null && isValidTarget(getTarget(inputs))
-        && PainterUtil2.isValid(getPaintSource(inputs), getTargetBlock(getTarget(inputs)));
+  public final boolean isRecipe(MachineRecipeInput... inputs) {
+    return isRecipe(getPaintSource(inputs), getTarget(inputs));
+  }
+
+  public boolean isRecipe(ItemStack paintSource, ItemStack target) {
+    return paintSource != null && isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
   }
 
   public boolean isPartialRecipe(ItemStack paintSource, ItemStack target) {
@@ -61,10 +64,12 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
   }
 
   @Override
-  public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-    ItemStack target = getTarget(inputs);
+  public final ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+    return getCompletedResult(getPaintSource(inputs), getTarget(inputs));
+  }
+
+  public ResultStack[] getCompletedResult(ItemStack paintSource, ItemStack target) {
     Block targetBlock = getTargetBlock(target);
-    ItemStack paintSource = getPaintSource(inputs);
     if (target == null || paintSource == null || targetBlock == null) {
       return new ResultStack[0];
     }
@@ -72,7 +77,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     if (paintBlock == null) {
       return new ResultStack[0];
     }
-    IBlockState paintState = paintBlock.getStateFromMeta(paintSource.getMetadata());
+    IBlockState paintState = Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
     if (paintState == null) {
       return new ResultStack[0];
     }
@@ -88,6 +93,10 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
       result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
     }
     return new ResultStack[] { new ResultStack(result) };
+  }
+
+  public IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
+    return paintBlock.getStateFromMeta(paintSource.getMetadata());
   }
 
   protected ItemStack mkItemStack(ItemStack target, Block targetBlock) {

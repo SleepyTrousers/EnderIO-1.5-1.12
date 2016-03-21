@@ -173,7 +173,22 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     EnumSet<EnumFacing> connections = EnumSet.noneOf(EnumFacing.class);
 
     for (BlockCoord bc : getSurroundingCoords()) {
-      TileEntity te = bc.getTileEntity(worldObj);
+      TileEntity te = bc.getTileEntity(worldObj); // TODO: NPE spotted here:
+      /*
+       * java.lang.NullPointerException: Ticking block entity at com.enderio.core.common.util.BlockCoord.getTileEntity(BlockCoord.java:81) at
+       * crazypants.enderio.teleport.telepad.TileTelePad.updateConnectedState(TileTelePad.java:176) at
+       * crazypants.enderio.teleport.telepad.TileTelePad.updateConnectedState(TileTelePad.java:182) at
+       * crazypants.enderio.teleport.telepad.BlockTelePad.onNeighborChange(BlockTelePad.java:125) at
+       * net.minecraft.world.World.updateComparatorOutputLevel(World.java:3985) at net.minecraft.world.World.setTileEntity(World.java:2532) at
+       * net.minecraft.world.chunk.Chunk.getTileEntity(Chunk.java:908) at net.minecraft.world.World.getTileEntity(World.java:2483) at
+       * com.enderio.core.common.util.BlockCoord.getTileEntity(BlockCoord.java:81) at
+       * crazypants.enderio.teleport.telepad.TileTelePad.updateConnectedState(TileTelePad.java:176) at
+       * crazypants.enderio.teleport.telepad.TileTelePad.updateConnectedState(TileTelePad.java:182) at
+       * crazypants.enderio.teleport.telepad.TileTelePad.doUpdate(TileTelePad.java:98) at com.enderio.core.common.TileEntityBase.update(TileEntityBase.java:33)
+       * at net.minecraft.world.World.updateEntities(World.java:1860) at net.minecraft.client.Minecraft.runTick(Minecraft.java:2199) at
+       * net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1100) at net.minecraft.client.Minecraft.run(Minecraft.java:384) at
+       * net.minecraft.client.main.Main.main(Main.java:116)
+       */
       EnumFacing con = Util.getDirFromOffset(bc.x - getPos().getX(), 0, bc.z - getPos().getZ());
       if(te instanceof TileTelePad) {
         // let's find the master and let him do the work
