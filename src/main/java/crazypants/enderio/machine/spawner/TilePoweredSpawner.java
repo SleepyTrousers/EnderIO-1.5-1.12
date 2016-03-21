@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -45,6 +46,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   private String entityTypeName;
   private boolean isSpawnMode = true;
+  private boolean isWitherSkeleton = false;
   private int powerUsePerTick;
   private int remainingSpawnTries;
 
@@ -169,6 +171,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   public void readCommon(NBTTagCompound nbtRoot) {
     //Must read the mob type first so we know the multiplier to be used when calculating input/output power
     String mobType = BlockPoweredSpawner.readMobTypeFromNBT(nbtRoot);
+    isWitherSkeleton = BlockPoweredSpawner.isWitherSkeleton(nbtRoot);
     if(mobType == null) {
       mobType = NULL_ENTITY_NAME;
     }
@@ -184,9 +187,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     if(hasEntityName()) {
-      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, getEntityName());
+      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, getEntityName(), isWitherSkeleton);
     } else {
-      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null);
+      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null, isWitherSkeleton);
     }
     nbtRoot.setBoolean("isSpawnMode", isSpawnMode);
     super.writeCommon(nbtRoot);
@@ -238,6 +241,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   Entity createEntity(boolean forceAlive) {
     Entity ent = EntityList.createEntityByName(getEntityName(), worldObj);
+    if (isWitherSkeleton && ent instanceof EntitySkeleton) {
+      ((EntitySkeleton) ent).setSkeletonType(1);
+    }
     if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
        ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
       ((EntityLiving) ent).enablePersistence();
@@ -292,5 +298,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   public boolean hasEntityName() {
     return !NULL_ENTITY_NAME.equals(entityTypeName);
+  }
+
+  public boolean isWitherSkeleton() {
+    return isWitherSkeleton;
   }
 }

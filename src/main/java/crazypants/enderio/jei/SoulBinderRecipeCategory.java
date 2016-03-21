@@ -162,7 +162,10 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     if(EnderIO.itemBrokenSpawner == outputStack.getItem()) {
       List<ItemStack> outputs = new ArrayList<ItemStack>();
       for (String soul : supportedSouls) {
-        outputs.add(ItemBrokenSpawner.createStackForMobType(soul));  
+        outputs.add(ItemBrokenSpawner.createStackForMobType(soul, false));
+        if ("Skeleton".equals(soul)) {
+          outputs.add(ItemBrokenSpawner.createStackForMobType(soul, true));
+        }
       }      
       guiItemStacks.setFromRecipe(2, outputs);
     } else if (currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {

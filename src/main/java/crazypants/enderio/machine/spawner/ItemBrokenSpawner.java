@@ -18,6 +18,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
 import static crazypants.util.NbtValue.MOBTYPE;
+import static crazypants.util.NbtValue.WITHER_SKELETON;
 
 public class ItemBrokenSpawner extends Item {
 
@@ -27,11 +28,18 @@ public class ItemBrokenSpawner extends Item {
     return MOBTYPE.getString(stack, null);
   }
 
-  public static ItemStack createStackForMobType(String mobType) {
+  public static boolean isWitherSkeleton(ItemStack item) {
+    return WITHER_SKELETON.hasTag(item);
+  }
+
+  public static ItemStack createStackForMobType(String mobType, boolean isWitherSkeleton) {
     if (mobType == null) {
       return null;
     }
     ItemStack res = new ItemStack(EnderIO.itemBrokenSpawner);
+    if (isWitherSkeleton) {
+      WITHER_SKELETON.setInt(res, 1);
+    }
     return MOBTYPE.setString(res, mobType);
   }
 
@@ -62,7 +70,7 @@ public class ItemBrokenSpawner extends Item {
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (String mobType : CREATIVE_TYPES) {
-      par3List.add(createStackForMobType(mobType));
+      par3List.add(createStackForMobType(mobType, false));
     }
   }
 
@@ -72,7 +80,11 @@ public class ItemBrokenSpawner extends Item {
     if (par1ItemStack != null && par1ItemStack.getTagCompound() != null) {
       String mobName = getMobTypeFromStack(par1ItemStack);
       if (mobName != null) {
-        par3List.add(StatCollector.translateToLocal("entity." + mobName + ".name"));
+        if (isWitherSkeleton(par1ItemStack)) {
+          par3List.add(StatCollector.translateToLocal("entity.witherSkeleton.name"));
+        } else {
+          par3List.add(StatCollector.translateToLocal("entity." + mobName + ".name"));
+        }
       }
       if (!SpecialTooltipHandler.showAdvancedTooltips()) {
         SpecialTooltipHandler.addShowDetailsTooltip(par3List);

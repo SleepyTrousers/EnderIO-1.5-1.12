@@ -54,15 +54,16 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
 import static crazypants.util.NbtValue.MOBTYPE;
+import static crazypants.util.NbtValue.WITHER_SKELETON;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
  
-  public static void writeMobTypeToNBT(NBTTagCompound nbt, String type) {
-    if(nbt == null) {
-      return;
-    }
+  public static void writeMobTypeToNBT(NBTTagCompound nbt, String type, boolean isWitherSkeleton) {
     MOBTYPE.setString(nbt, type);
+    if (isWitherSkeleton) {
+      WITHER_SKELETON.setInt(nbt, 1);
+    }
   }
 
   public static String readMobTypeFromNBT(NBTTagCompound nbt) {
@@ -70,6 +71,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       return null;
     }
     return MOBTYPE.getString(nbt, null);
+  }
+
+  public static boolean isWitherSkeleton(NBTTagCompound nbt) {
+    return WITHER_SKELETON.hasTag(nbt);
   }
 
   public static String getSpawnerTypeFromItemStack(ItemStack stack) {
@@ -148,7 +153,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           if(logic != null) {
             String entityName = getEntityName(logic);
             if(entityName != null && !isBlackListed(entityName)) {
-              ItemStack drop = ItemBrokenSpawner.createStackForMobType(entityName);
+              ItemStack drop = ItemBrokenSpawner.createStackForMobType(entityName, false); // TODO check wither skel
               dropCache.put(new BlockCoord(evt.pos), drop);
 
               for (int i = (int) (Math.random() * 7); i > 0; i--) {
@@ -190,7 +195,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                 if (logic != null) {
                   String entityName = getEntityName(logic);
                   if (entityName != null && !isBlackListed(entityName)) {
-                    evt.drops.add(ItemBrokenSpawner.createStackForMobType(entityName));
+                    evt.drops.add(ItemBrokenSpawner.createStackForMobType(entityName, false)); // TODO check wither skel
                   }
                 }
               }
@@ -239,7 +244,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       evt.output.setTagCompound(new NBTTagCompound());
     }
     evt.output.getTagCompound().setBoolean("eio.abstractMachine", true);
-    writeMobTypeToNBT(evt.output.getTagCompound(), spawnerType);
+    writeMobTypeToNBT(evt.output.getTagCompound(), spawnerType, ItemBrokenSpawner.isWitherSkeleton(evt.right));
 
   }
 
@@ -305,7 +310,11 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     String type = getSpawnerTypeFromItemStack(itemstack);
     if(type != null) {
-      list.add(StatCollector.translateToLocal("entity." + type + ".name"));
+      if (isWitherSkeleton(itemstack.getTagCompound())) {
+        list.add(StatCollector.translateToLocal("entity.witherSkeleton.name"));
+      } else {
+        list.add(StatCollector.translateToLocal("entity." + type + ".name"));
+      }
     } else {
       list.add(EnderIO.lang.localizeExact("tile.blockPoweredSpawner.tooltip.empty"));
     }
@@ -328,7 +337,11 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TilePoweredSpawner te = (TilePoweredSpawner) world.getTileEntity(new BlockPos(x, y, z));
-    tooltip.add(te.getEntityName());
+    if (te.isWitherSkeleton()) {
+      tooltip.add(StatCollector.translateToLocal("entity.witherSkeleton.name"));
+    } else {
+      tooltip.add(StatCollector.translateToLocal("entity." + te.getEntityName() + ".name"));
+    }
   }
 
   @Override
@@ -340,15 +353,17 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
     super.getSubBlocks(item, tab, list);
-    list.add(createItemStackForMob("Enderman"));
-    list.add(createItemStackForMob("Chicken"));
+    list.add(createItemStackForMob("Enderman", false));
+    list.add(createItemStackForMob("Chicken", false));
+    list.add(createItemStackForMob("Skeleton", false));
+    list.add(createItemStackForMob("Skeleton", true));
   }
 
-  protected ItemStack createItemStackForMob(String mob) {
+  protected ItemStack createItemStackForMob(String mob, boolean isWitherSkeleton) {
     ItemStack stack = new ItemStack(this);
     stack.setTagCompound(new NBTTagCompound());
     stack.getTagCompound().setBoolean("eio.abstractMachine", true);
-    writeMobTypeToNBT(stack.getTagCompound(), mob);
+    writeMobTypeToNBT(stack.getTagCompound(), mob, isWitherSkeleton);
     return stack;
   }
   

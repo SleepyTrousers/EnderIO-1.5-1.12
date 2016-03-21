@@ -6,7 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public enum NbtValue {
   SOURCE_BLOCK("sourceBlockId"),
   SOURCE_META("sourceBlockMeta"),
-  MOBTYPE("mobType");
+  MOBTYPE("mobType"),
+  WITHER_SKELETON("witherSkeleton");
 
   private final String key;
 

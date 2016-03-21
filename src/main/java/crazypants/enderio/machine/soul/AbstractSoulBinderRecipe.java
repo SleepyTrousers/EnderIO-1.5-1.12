@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.entity.EntityList;
+import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.xp.XpUtil;
-import net.minecraft.entity.EntityList;
-import net.minecraft.item.ItemStack;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -75,19 +75,25 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     String mobType = null;
+    boolean isWitherSkeleton = false;
     for(MachineRecipeInput input : inputs) {
       if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
         mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
+        isWitherSkeleton = EnderIO.itemSoulVessel.isWitherSkeleton(input.item);
       }
     }
     if(!getSupportedSouls().contains(mobType)) {
       return new ResultStack[0];
     }
-    ItemStack resultStack = getOutputStack(mobType);
+    ItemStack resultStack = getOutputStack(mobType, isWitherSkeleton);
     ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
     return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(resultStack)};
   }
 
+
+  protected ItemStack getOutputStack(String mobType, boolean isWitherSkeleton) {
+    return getOutputStack(mobType);
+  }
 
   @Override
   public float getExperienceForOutput(ItemStack output) {

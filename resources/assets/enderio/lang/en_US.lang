@@ -117,7 +117,7 @@ enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
 
 enderio.itemOCConduit.name=Network Conduit (OC)
 
-//Entity
+//display string for Skeleton(type==1)
 entity.witherSkeleton.name=Wither Skeleton
 
 //Materials

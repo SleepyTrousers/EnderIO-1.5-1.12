@@ -3,16 +3,6 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.EntityUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
@@ -31,12 +21,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.EntityUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.util.ClientUtil;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHaveRenderers {
 
@@ -277,6 +279,13 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
     return item.getTagCompound().getString("id");
   }
 
+  public boolean isWitherSkeleton(ItemStack item) {
+    if (item.getTagCompound() != null && item.getTagCompound().hasKey("SkeletonType", 99)) {
+      return item.getTagCompound().getByte("SkeletonType") == 1;
+    }
+    return false;
+  }
+
   /** Support for displaying fluid name of captured Moo Fluids cow */
   private String getFluidNameFromStack(ItemStack item) {
     if (!containsSoul(item)) {
@@ -360,7 +369,11 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
     if (par1ItemStack != null) {
       String mobName = getMobTypeFromStack(par1ItemStack);
       if (mobName != null) {
-        par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
+        if (isWitherSkeleton(par1ItemStack)) {
+          par3List.add(StatCollector.translateToLocal("entity.witherSkeleton.name"));
+        } else {
+          par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
+        }
       } else {
         par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
       }
