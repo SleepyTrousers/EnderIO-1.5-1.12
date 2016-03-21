@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -57,13 +58,18 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
         List<ItemStack> results = new ArrayList<ItemStack>();
         List<ItemStack> paints = new ArrayList<ItemStack>();
         for (ItemStack paint : validItems) {
-          MachineRecipeInput recipeInput1 = new MachineRecipeInput(1, paint);
-          if (recipe.isRecipe(recipeInput0, recipeInput1)) {
-            ResultStack[] recipeResults = recipe.getCompletedResult(1f, recipeInput0, recipeInput1);
-            for (ResultStack result : recipeResults) {
-              results.add(result.item);
-              paints.add(paint);
+          try {
+            MachineRecipeInput recipeInput1 = new MachineRecipeInput(1, paint);
+            if (recipe.isRecipe(recipeInput0, recipeInput1)) {
+              ResultStack[] recipeResults = recipe.getCompletedResult(1f, recipeInput0, recipeInput1);
+              for (ResultStack result : recipeResults) {
+                results.add(result.item);
+                paints.add(paint);
+              }
             }
+          } catch (Exception e) {
+            Log.warn("Error while accessing item '" + paint + "': " + e);
+            e.printStackTrace();
           }
         }
 
@@ -116,7 +122,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
   }
  
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-    
+    long start = crazypants.util.Profiler.client.start_always();
     registry.addRecipeCategories(new PainterRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<PainterRecipeWrapper>(PainterRecipeWrapper.class, PainterRecipeCategory.UID));
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
@@ -132,6 +138,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
     if (!result.isEmpty()) {
       registry.addRecipes(result);
     }
+    crazypants.util.Profiler.client.stop(start, "JEI: Painter Recipes");
   }
 
   // ------------ Category
