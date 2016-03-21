@@ -95,7 +95,8 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     return new ResultStack[] { new ResultStack(result) };
   }
 
-  public IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
+  // This line is in this excessively named method to show up nicely in a stack trace
+  private IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
     return paintBlock.getStateFromMeta(paintSource.getMetadata());
   }
 
