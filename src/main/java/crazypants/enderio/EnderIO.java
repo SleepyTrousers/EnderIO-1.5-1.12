@@ -59,7 +59,6 @@ import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
-import crazypants.enderio.entity.SkeletonHandler;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.ItemConduitProbe;
@@ -486,10 +485,6 @@ public class EnderIO {
 
     if(Loader.isModLoaded("ComputerCraft")) {
       ConduitBundledRedstoneProvider.register();
-    }
-
-    if(Config.replaceWitherSkeletons) {
-      SkeletonHandler.registerSkeleton(this);
     }
 
     MaterialRecipes.registerDependantOresInDictionary();

@@ -489,17 +489,12 @@ public final class Config {
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
 
-  public static boolean replaceWitherSkeletons = true;
-  public static int witherSkeletonEntityID = 288970;
-
-  public static boolean enableWaterFromBottles = true;
-
   public static boolean telepadLockDimension = true;
   public static boolean telepadLockCoords = true;
   public static int telepadPowerCoefficient = 100000;
   public static int telepadPowerInterdimensional = 100000;
 
-  public static boolean inventoryPanelFree = false;;
+  public static boolean inventoryPanelFree = false;
   public static float inventoryPanelPowerPerMB = 800.0f;
   public static float inventoryPanelScanCostPerSlot = 0.1f;
   public static float inventoryPanelExtractCostPerItem = 12.0f;
@@ -1335,16 +1330,6 @@ public final class Config {
         "The id of the enchantment.").getInt(enchantmentSoulBoundId);
     enchantmentSoulBoundWeight = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundWeight,
         "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
-
-    replaceWitherSkeletons = config.get(sectionMisc.name, "replaceWitherSkeletons", replaceWitherSkeletons,
-            "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();    
-    witherSkeletonEntityID = config.get(sectionMisc.name, "witherSkeletonEntityID", witherSkeletonEntityID,
-        "The id of the replacment with skels..").getInt(witherSkeletonEntityID);
-    
-    enableWaterFromBottles = config
-        .get(sectionMisc.name, "enableWaterFromBottles", enableWaterFromBottles,
-            "Enables emptying vanilla water bottles without breaking the bottle. In combination with a water source block this allows duping of water without cost.")
-        .getBoolean();
 
     telepadLockDimension = config.get(sectionTelepad.name, "lockDimension", telepadLockDimension,
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
