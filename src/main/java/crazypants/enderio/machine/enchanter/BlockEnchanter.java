@@ -30,7 +30,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
 
   protected BlockEnchanter() {
     super(ModObject.blockEnchanter.unlocalisedName, TileEnchanter.class);
-    setLightOpacity(4);
+    setLightOpacity(0);
   }
 
   @Override
@@ -112,7 +112,12 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   public boolean isOpaqueCube() {
     return false;
   }
-  
+
+  @Override
+  public boolean isFullCube() {
+    return false;
+  }
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));

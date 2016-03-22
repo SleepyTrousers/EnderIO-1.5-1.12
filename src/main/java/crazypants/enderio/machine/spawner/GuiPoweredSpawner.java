@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
 
@@ -14,6 +12,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
@@ -38,8 +37,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   @Override
   public void initGui() {
     super.initGui();
-    modeB.onGuiInit();
-    ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlots());
+    modeB.onGuiInit();    
   }
 
   @Override
@@ -57,12 +55,14 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     ((ContainerPoweredSpawner) inventorySlots).setSlotVisibility(!spawnMode);
 
     if(spawnMode) {
+      getGhostSlots().clear();
       header = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
       progressTooltipRect.x = 80;
       progressTooltipRect.y = 34;
       progressTooltipRect.width = 14;
       progressTooltipRect.height = 14;
     } else {
+      ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlots());
       header = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
       progressTooltipRect.x = 52;
       progressTooltipRect.y = 40;
@@ -73,7 +73,8 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    
+    GlStateManager.color(1, 1, 1);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -94,8 +95,8 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     int y = sy + fr.FONT_HEIGHT + 6;
     fr.drawStringWithShadow(header, x, y, ColorUtil.getRGB(Color.WHITE));
 
+    GlStateManager.color(1, 1, 1);
     bindGuiTexture();
-
     if(spawnMode) {
       drawTexturedModalRect(sx + 80, sy + 34, 207, 0, 17, 15);
       if(shouldRenderProgress()) {
