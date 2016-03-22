@@ -29,6 +29,9 @@ public class XpUtil {
   }
 
   public static int getExperienceForLevel(int level) {
+    if(level >= 21863) {
+      return Integer.MAX_VALUE;
+    }
     if (level == 0) {
       return 0;
     }

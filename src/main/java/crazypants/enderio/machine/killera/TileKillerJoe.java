@@ -6,31 +6,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
@@ -56,6 +31,30 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess, IHasNutrientTank, Predicate<EntityXPOrb> {
 
@@ -99,12 +98,20 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private float prevSwingProgress;
 
-  private final ExperienceContainer xpCon = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
+  private final ExperienceContainer xpCon;
 
   private boolean hadSword;
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
+    
+    int maxXP;
+    if(Config.killerJoeMaxXpLevel <= 0) {
+      maxXP = Integer.MAX_VALUE;
+    } else {
+      maxXP = XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel);
+    }
+    xpCon = new ExperienceContainer(maxXP);
     if (zCache == null) {
       zCache = new ZombieCache();
       MinecraftForge.EVENT_BUS.register(zCache);
@@ -182,17 +189,17 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       xpCon.setDirty(false);
     }
 
-//    if (!redstoneCheckPassed) {
-//      return false;
-//    }
-//
-//    if (fuelTank.getFluidAmount() < getActivationAmount()) {
-//      return false;
-//    }
-//
-//    if (getStackInSlot(0) == null) {
-//      return false;
-//    }
+    if (!redstoneCheckPassed) {
+      return false;
+    }
+
+    if (fuelTank.getFluidAmount() < getActivationAmount()) {
+      return false;
+    }
+
+    if (getStackInSlot(0) == null) {
+      return false;
+    }
 
     List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     if (!entsInBounds.isEmpty()) {
@@ -279,8 +286,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
     for (EntityXPOrb entity : xp) {
       double xDist = (getPos().getX() + 0.5D - entity.posX);
-      double yDist = (getPos().getX() + 0.5D - entity.posY);
-      double zDist = (getPos().getX() + 0.5D - entity.posZ);
+      double yDist = (getPos().getY() + 0.5D - entity.posY);
+      double zDist = (getPos().getZ() + 0.5D - entity.posZ);
 
       double totalDistance = Math.sqrt(xDist * xDist + yDist * yDist + zDist * zDist);
 
@@ -443,30 +450,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   protected boolean doPull(EnumFacing dir) {
     boolean res = super.doPull(dir);
-    // BlockCoord loc = getLocation().getLocation(dir);
-    // IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-    // if(target != null) {
-    // FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-    // if(infos != null) {
-    // for (FluidTankInfo info : infos) {
-    // if(info.fluid != null && info.fluid.amount > 0) {
-    // if(canFill(dir, info.fluid.getFluid())) {
-    // FluidStack canPull = info.fluid.copy();
-    // canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-    // FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-    // if(drained != null && drained.amount > 0) {
-    // int filled = fill(dir, drained, false);
-    // if(filled > 0) {
-    // drained = target.drain(dir.getOpposite(), filled, true);
-    // fill(dir, drained, true);
-    // return res;
-    // }
-    // }
-    // }
-    // }
-    // }
-    // }
-    // }
     FluidUtil.doPull(this, dir, IO_MB_TICK);
     return res;
   }
@@ -575,17 +558,13 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public FluidTank getInputTank(FluidStack forFluidType) {
     if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
       return fuelTank;
-    }
-    /*
-     * if (forFluidType != null && forFluidType.getFluid() ==
-     * EnderIO.fluidXpJuice) { return xpCon; }
-     */
+    }   
     return null;
   }
 
   @Override
   public FluidTank[] getOutputTanks() {
-    return new FluidTank[] { xpCon /* , fuelTank */ };
+    return new FluidTank[] { xpCon };
   }
 
   @Override
