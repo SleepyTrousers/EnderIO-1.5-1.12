@@ -27,7 +27,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -54,18 +53,18 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
-
-import static crazypants.util.NbtValue.MOBTYPE;
+import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.util.CapturedMob;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock,
-    ISmartRenderAwareBlock, IRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider {
+    ISmartRenderAwareBlock, IRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider {
 
   public static class TilePaintedPressurePlate extends TileEntityPaintedBlock {
 
     private EnumPressurePlateType type = EnumPressurePlateType.WOOD;
     private boolean silent = false;
     private EnumFacing rotation = EnumFacing.NORTH;
-    private String mobType = null;
+    private CapturedMob capturedMob = null;
 
     @Override
     public void readCustomNBT(NBTTagCompound nbtRoot) {
@@ -77,7 +76,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       if (rotation == null) {
         rotation = EnumFacing.NORTH;
       }
-      mobType = MOBTYPE.getString(nbtRoot, null);
+      capturedMob = CapturedMob.create(nbtRoot);
     }
 
     @Override
@@ -85,7 +84,9 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       super.writeCustomNBT(nbtRoot);
       nbtRoot.setByte("type", (byte) EnumPressurePlateType.getMetaFromType(type, silent));
       nbtRoot.setString("rotation", rotation.getName());
-      MOBTYPE.setString(nbtRoot, mobType);
+      if (capturedMob != null) {
+        capturedMob.toNbt(nbtRoot);
+      }
     }
 
     protected EnumPressurePlateType getType() {
@@ -118,12 +119,12 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       }
     }
 
-    protected String getMobType() {
-      return mobType;
+    protected CapturedMob getMobType() {
+      return capturedMob;
     }
 
-    protected void setMobType(String mobType) {
-      this.mobType = mobType;
+    protected void setMobType(CapturedMob capturedMob) {
+      this.capturedMob = capturedMob;
     }
 
   }
@@ -140,8 +141,6 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.IRON.getMetaFromType(), Blocks.heavy_weighted_pressure_plate));
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName,
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.GOLD.getMetaFromType(), Blocks.light_weighted_pressure_plate));
-
-    // SpecialTooltipHandler.INSTANCE.addCallback(new SoulToolTip());
 
     return result;
   }
@@ -253,7 +252,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     return false;
   }
 
-  protected String getMobType(IBlockAccess worldIn, BlockPos pos) {
+  protected CapturedMob getMobType(IBlockAccess worldIn, BlockPos pos) {
     TileEntity te = worldIn.getTileEntity(pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getMobType();
@@ -261,7 +260,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     return null;
   }
 
-  protected void setMobType(IBlockAccess worldIn, BlockPos pos, String mobType) {
+  protected void setMobType(IBlockAccess worldIn, BlockPos pos, CapturedMob mobType) {
     TileEntity te = worldIn.getTileEntity(pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).setMobType(mobType);
@@ -278,7 +277,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     setTypeFromMeta(worldIn, pos, stack.getMetadata());
     setPaintSource(state, worldIn, pos, PainterUtil2.getSourceBlock(stack));
     setRotation(worldIn, pos, EnumFacing.fromAngle(placer.rotationYaw));
-    setMobType(worldIn, pos, MOBTYPE.getString(stack));
+    setMobType(worldIn, pos, CapturedMob.create(stack));
     if (!worldIn.isRemote) {
       worldIn.markBlockForUpdate(pos);
     }
@@ -310,9 +309,10 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   }
 
   protected ItemStack getDrop(IBlockAccess world, BlockPos pos) {
-    ItemStack drop = new ItemStack(Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
+    CapturedMob mobType = getMobType(world, pos);
+    ItemStack drop = mobType != null ? mobType.toStack(Item.getItemFromBlock(this), getMetaForStack(world, pos), 1) : new ItemStack(
+        Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
     PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
-    MOBTYPE.setString(drop, getMobType(world, pos));
     return drop;
   }
 
@@ -544,14 +544,10 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
       super.addInformation(stack, playerIn, tooltip, advanced);
-      if (hasMob(stack)) {
-        tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned",
-            StatCollector.translateToLocal("entity." + MOBTYPE.getString(stack) + ".name")));
+      CapturedMob capturedMob = CapturedMob.create(stack);
+      if (capturedMob != null) {
+        tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned", capturedMob.getDisplayName()));
       }
-    }
-
-    private boolean hasMob(ItemStack stack) {
-      return stack != null && EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()) == EnumPressurePlateType.TUNED && MOBTYPE.hasTag(stack);
     }
 
   }
@@ -565,6 +561,23 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName(itemStack.getMetadata());
+  }
+
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    ItemStack drop = getDrop(world, new BlockPos(x, y, z));
+    if (drop != null) {
+      tooltip.add(PainterUtil2.getTooltTipText(drop));
+      CapturedMob capturedMob = CapturedMob.create(drop);
+      if (capturedMob != null) {
+        tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned", capturedMob.getDisplayName()));
+      }
+    }
+  }
+
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return 0;
   }
 
 }

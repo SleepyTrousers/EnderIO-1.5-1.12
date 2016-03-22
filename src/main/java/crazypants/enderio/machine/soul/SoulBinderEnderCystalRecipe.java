@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.soul;
 
+import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.Material;
-import net.minecraft.item.ItemStack;
+import crazypants.util.CapturedMob;
 
 public class SoulBinderEnderCystalRecipe extends AbstractSoulBinderRecipe {
 
@@ -21,6 +22,11 @@ public class SoulBinderEnderCystalRecipe extends AbstractSoulBinderRecipe {
   @Override
   public ItemStack getOutputStack() {
     return new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal());
+  }
+
+  @Override
+  protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
+    return getOutputStack();
   }
 
 }

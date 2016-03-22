@@ -1,8 +1,8 @@
 package crazypants.util;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
@@ -10,10 +10,10 @@ import crazypants.enderio.Log;
 public class Profiler {
 
   public static final Profiler client = new Profiler();
-  public static final Profiler server = new Profiler();
+  public static final Profiler server = client;
 
-  private Map<String, Long> profiler = new HashMap<String, Long>();
-  private Map<String, Long> profilerC = new HashMap<String, Long>();
+  private Map<String, Long> profiler = new ConcurrentHashMap<String, Long>();
+  private Map<String, Long> profilerC = new ConcurrentHashMap<String, Long>();
   private long lastProfiled = 0;
   private boolean on = false;
 

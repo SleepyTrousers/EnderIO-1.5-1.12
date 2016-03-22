@@ -12,6 +12,7 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.xp.XpUtil;
+import crazypants.util.CapturedMob;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -23,7 +24,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   private final List<String> supportedEntities;
   
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid, Class<?> entityClass) {
-    this(energyRequired, xpLevelsRequired, uid, (String)EntityList.classToStringMapping.get(entityClass));
+    this(energyRequired, xpLevelsRequired, uid, EntityList.classToStringMapping.get(entityClass));
   }
   
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid, String... entityNames) {
@@ -32,6 +33,10 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     this.xpRequired = XpUtil.getExperienceForLevel(xpLevelsRequired);
     this.uid = uid;
     this.supportedEntities = Arrays.asList(entityNames);
+  }
+
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid) {
+    this(energyRequired, xpLevelsRequired, uid, new String[0]);
   }
 
   @Override
@@ -74,26 +79,23 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   @Override
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
-    String mobType = null;
-    boolean isWitherSkeleton = false;
+    CapturedMob mobType = null;
+    ItemStack inputItem = null;
     for(MachineRecipeInput input : inputs) {
-      if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
-        mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
-        isWitherSkeleton = EnderIO.itemSoulVessel.isWitherSkeleton(input.item);
+      if (input != null && input.slotNumber == 0 && CapturedMob.containsSoul(input.item)) {
+        mobType = CapturedMob.create(input.item);
+      } else if (input != null && input.slotNumber == 1 && isValidInputItem(input.item)) {
+        inputItem = input.item;
       }
     }
-    if(!getSupportedSouls().contains(mobType)) {
+    if (!isValidInputSoul(mobType) || inputItem == null) {
       return new ResultStack[0];
     }
-    ItemStack resultStack = getOutputStack(mobType, isWitherSkeleton);
+    ItemStack resultStack = getOutputStack(inputItem, mobType);
     ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
     return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(resultStack)};
   }
 
-
-  protected ItemStack getOutputStack(String mobType, boolean isWitherSkeleton) {
-    return getOutputStack(mobType);
-  }
 
   @Override
   public float getExperienceForOutput(ItemStack output) {
@@ -107,14 +109,22 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     }
     int slot = input.slotNumber;
     ItemStack item = input.item;
-    if(slot == 0) {     
-      String type = EnderIO.itemSoulVessel.getMobTypeFromStack(item);
-      return  getSupportedSouls().contains(type);
+    if (slot == 0) {
+      CapturedMob mobType = CapturedMob.create(item);
+      return isValidInputSoul(mobType) && item.getItem() == EnderIO.itemSoulVessel;
     } 
     if(slot == 1) {
-      return item.isItemEqual(getInputStack());
+      return isValidInputItem(item);
     }
     return false;    
+  }
+
+  protected boolean isValidInputSoul(CapturedMob mobType) {
+    return getSupportedSouls().contains(mobType.getEntityName());
+  }
+
+  protected boolean isValidInputItem(ItemStack item) {
+    return item.isItemEqual(getInputStack());
   }
 
   @Override
@@ -136,9 +146,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     return result;
   }
   
-  protected ItemStack getOutputStack(String mobType) {
-    return getOutputStack();
-  }
+  protected abstract ItemStack getOutputStack(ItemStack input, CapturedMob mobType);
 
   @Override
   public List<String> getSupportedSouls() {    
@@ -149,4 +157,5 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   public int getEnergyRequired() {
     return energyRequired;
   }
+
 }

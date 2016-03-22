@@ -49,6 +49,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fluids.FluidStack;
 
+import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 public class WailaCompat implements IWailaDataProvider {
 
   private class WailaWorldWrapper extends World {
@@ -113,6 +114,7 @@ public class WailaCompat implements IWailaDataProvider {
     registrar.registerStackProvider(INSTANCE, BlockDarkSteelAnvil.class);
 
     registrar.registerBodyProvider(INSTANCE, BlockEio.class);
+    registrar.registerBodyProvider(INSTANCE, BlockPaintedPressurePlate.class);
 
     registrar.registerNBTProvider(INSTANCE, TileEntityEio.class);
     

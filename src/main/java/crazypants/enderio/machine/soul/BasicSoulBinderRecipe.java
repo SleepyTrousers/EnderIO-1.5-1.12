@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.soul;
 
 import net.minecraft.item.ItemStack;
+import crazypants.util.CapturedMob;
 
 public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
 
@@ -21,6 +22,11 @@ public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
   @Override
   public ItemStack getOutputStack() {
     return outputStack.copy();
+  }
+
+  @Override
+  protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
+    return getOutputStack();
   }
 
 }

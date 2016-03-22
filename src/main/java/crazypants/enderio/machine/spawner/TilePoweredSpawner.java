@@ -1,10 +1,8 @@
 package crazypants.enderio.machine.spawner;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,6 +20,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.util.CapturedMob;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -42,17 +41,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   public static final int MIN_PLAYER_DISTANCE = Config.poweredSpawnerMaxPlayerDistance;
   public static final boolean USE_VANILLA_SPAWN_CHECKS = Config.poweredSpawnerUseVanillaSpawChecks;
 
-  private static final String NULL_ENTITY_NAME = "None";
 
-  private String entityTypeName;
+  private CapturedMob capturedMob = null;
   private boolean isSpawnMode = true;
-  private boolean isWitherSkeleton = false;
   private int powerUsePerTick;
   private int remainingSpawnTries;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(1, 1, 1));
-    entityTypeName = NULL_ENTITY_NAME;
   }
 
   public boolean isSpawnMode() {
@@ -77,10 +73,10 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         }
       }
     } else {
-      if(getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntityName()) {
+      if (getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntity()) {
         return;
       }
-      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntityStub(getEntityName());
+      ItemStack res = capturedMob.toStack(EnderIO.itemSoulVessel, 1, 1);
       decrStackSize(0, 1);
       setInventorySlotContents(1, res);
     }
@@ -122,14 +118,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       return false;
     }
     if(slotDefinition.isInputSlot(i)) {
-      return itemstack.getItem() == EnderIO.itemSoulVessel && !EnderIO.itemSoulVessel.containsSoul(itemstack);
+      return itemstack.getItem() == EnderIO.itemSoulVessel && !CapturedMob.containsSoul(itemstack);
     }
     return false;
   }
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
-    if(!hasEntityName()) {
+    if (!hasEntity()) {
       return null;
     }
     if(isSpawnMode) {
@@ -170,12 +166,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     //Must read the mob type first so we know the multiplier to be used when calculating input/output power
-    String mobType = BlockPoweredSpawner.readMobTypeFromNBT(nbtRoot);
-    isWitherSkeleton = BlockPoweredSpawner.isWitherSkeleton(nbtRoot);
-    if(mobType == null) {
-      mobType = NULL_ENTITY_NAME;
-    }
-    entityTypeName = mobType;
+    capturedMob = CapturedMob.create(nbtRoot);
     if(!nbtRoot.hasKey("isSpawnMode")) {
       isSpawnMode = true;
     } else {
@@ -186,10 +177,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
-    if(hasEntityName()) {
-      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, getEntityName(), isWitherSkeleton);
-    } else {
-      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null, isWitherSkeleton);
+    if (hasEntity()) {
+      capturedMob.toNbt(nbtRoot);
     }
     nbtRoot.setBoolean("isSpawnMode", isSpawnMode);
     super.writeCommon(nbtRoot);
@@ -240,10 +229,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   Entity createEntity(boolean forceAlive) {
-    Entity ent = EntityList.createEntityByName(getEntityName(), worldObj);
-    if (isWitherSkeleton && ent instanceof EntitySkeleton) {
-      ((EntitySkeleton) ent).setSkeletonType(1);
-    }
+    Entity ent = capturedMob.getEntity(worldObj, false);
     if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
        ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
       ((EntityLiving) ent).enablePersistence();
@@ -293,14 +279,21 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   public String getEntityName() {
-    return entityTypeName;
+    return capturedMob != null ? capturedMob.getEntityName() : null;
   }
 
-  public boolean hasEntityName() {
-    return !NULL_ENTITY_NAME.equals(entityTypeName);
+  public CapturedMob getEntity() {
+    return capturedMob;
   }
 
-  public boolean isWitherSkeleton() {
-    return isWitherSkeleton;
+  public boolean hasEntity() {
+    return capturedMob != null;
   }
+
+  @Override
+  public void readFromItemStack(ItemStack stack) {
+    super.readFromItemStack(stack);
+    capturedMob = CapturedMob.create(stack);
+  }
+
 }

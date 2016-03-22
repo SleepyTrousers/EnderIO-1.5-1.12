@@ -149,6 +149,7 @@ import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
+import crazypants.util.CapturedMob;
 
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
@@ -597,7 +598,7 @@ public class EnderIO {
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             TravelController.instance.addBlockToBlinkBlackList(value);
           } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
-            itemSoulVessel.addEntityToBlackList(value);
+            CapturedMob.addToBlackList(value);
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {

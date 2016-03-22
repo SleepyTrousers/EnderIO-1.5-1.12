@@ -8,7 +8,6 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -22,6 +21,8 @@ import net.minecraft.util.IStringSerializable;
 
 import com.google.common.base.Predicate;
 
+import crazypants.util.CapturedMob;
+
 public enum EnumPressurePlateType implements IStringSerializable {
 
   WOOD(Entity.class),
@@ -33,15 +34,15 @@ public enum EnumPressurePlateType implements IStringSerializable {
   SOULARIUM(EntityLiving.class, EntitySlime.class, EntityGhast.class, EntityMob.class),
   TUNED(EntityLivingBase.class) {
     @Override
-    public Predicate<Entity> getPredicate(final String mobType) {
+    public Predicate<Entity> getPredicate(final CapturedMob capturedMob) {
       return new Predicate<Entity>() {
         @Override
         public boolean apply(@Nullable Entity entity) {
-          if (mobType == null || entity == null || !entity.isEntityAlive() || entity.doesEntityNotTriggerPressurePlate()
+          if (capturedMob == null || entity == null || !entity.isEntityAlive() || entity.doesEntityNotTriggerPressurePlate()
               || ((entity instanceof EntityPlayer) && ((EntityPlayer) entity).isSpectator())) {
             return false;
           }
-          return mobType.equals(EntityList.getEntityString(entity));
+          return capturedMob.isSameType(entity);
         }
 
         @Override
@@ -157,7 +158,7 @@ public enum EnumPressurePlateType implements IStringSerializable {
     return searchClass;
   }
 
-  public Predicate<Entity> getPredicate(String mobType) {
+  public Predicate<Entity> getPredicate(CapturedMob capturedMob) {
     return new Predicate<Entity>() {
       @Override
       public boolean apply(@Nullable Entity entity) {

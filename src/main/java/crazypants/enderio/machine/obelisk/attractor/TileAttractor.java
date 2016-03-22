@@ -6,22 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.mojang.authlib.GameProfile;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.power.BasicCapacitor;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -45,6 +30,21 @@ import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.mojang.authlib.GameProfile;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.util.CapturedMob;
 
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
@@ -125,15 +125,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if (!slotDefinition.isInputSlot(i)) {
       return false;
     }
-    String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(itemstack);
-    if (mob == null) {
-      return false;
-    }
-    Class<?> cl = EntityList.stringToClassMapping.get(mob);
-    if (cl == null) {
-      return false;
-    }
-    return EntityLiving.class.isAssignableFrom(cl);
+    return CapturedMob.containsSoul(itemstack);
   }
 
   @Override
@@ -142,8 +134,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
-    if (redstoneCheckPassed && hasPower()) {
+  protected boolean processTasks(boolean redstoneCheck) {
+    if (redstoneCheck && hasPower()) {
       usePower();
     } else {
       return false;
@@ -224,32 +216,26 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     return target;
   }
 
-  public boolean canAttract(String entityId, EntityLiving mob) {
-    return redstoneCheckPassed && hasPower() && isMobInFilter(entityId) && isMobInRange(mob);
+  public boolean canAttract(EntityLiving mob) {
+    return redstoneCheckPassed && hasPower() && isMobInFilter(mob) && isMobInRange(mob);
   }
 
   private boolean isMobInRange(EntityLiving mob) {
     return isMobInRange(mob, rangeSqu);
   }
 
-  private boolean isMobInRange(EntityLiving mob, int range) {
+  private boolean isMobInRange(EntityLiving mob, int rangeIn) {
     if (mob == null) {
       return false;
     }
-    return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(getPos())) <= range;
+    return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(getPos())) <= rangeIn;
   }
 
-  private boolean isMobInFilter(EntityLiving ent) {
-    return isMobInFilter(EntityList.getEntityString(ent));
-  }
-
-  private boolean isMobInFilter(String entityId) {
+  private boolean isMobInFilter(EntityLiving entity) {
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
-      if (inventory[i] != null) {
-        String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(inventory[i]);
-        if (mob != null && mob.equals(entityId)) {
-          return true;
-        }
+      CapturedMob mob = CapturedMob.create(inventory[i]);
+      if (mob != null && mob.isSameType(entity)) {
+        return true;
       }
     }
     return false;
@@ -404,7 +390,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     private EntityLiving mob;
     private BlockCoord coord;
     private FakePlayer target;
-    private String entityId;
     private int updatesSincePathing;
 
     private boolean started = false;
@@ -413,7 +398,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       this.mob = mob;
       this.coord = coord;
       this.target = target;
-      entityId = EntityList.getEntityString(mob);
     }
 
     @Override
@@ -433,7 +417,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       TileEntity te = mob.worldObj.getTileEntity(coord.getBlockPos());
       if (te instanceof TileAttractor) {
         TileAttractor attractor = (TileAttractor) te;
-        res = attractor.canAttract(entityId, mob);
+        res = attractor.canAttract(mob);
       }
       return res;
     }

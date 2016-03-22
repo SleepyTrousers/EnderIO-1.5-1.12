@@ -21,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -32,9 +31,7 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.soul.GuiSoulBinder;
 import crazypants.enderio.machine.soul.ISoulBinderRecipe;
 import crazypants.enderio.machine.soul.SoulBinderTunedPressurePlateRecipe;
-import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
-
-import static crazypants.util.NbtValue.MOBTYPE;
+import crazypants.util.CapturedMob;
 
 public class SoulBinderRecipeCategory extends BlankRecipeCategory {
 
@@ -54,13 +51,15 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
       return recipe.getEnergyRequired();
     }
 
+    @SuppressWarnings("null")
     @Override
-    public List<?> getInputs() {      
+    public @Nonnull List<?> getInputs() {
       return Arrays.asList(new ItemStack(EnderIO.itemSoulVessel), recipe.getInputStack() );
     }
 
+    @SuppressWarnings("null")
     @Override
-    public List<?> getOutputs() {
+    public @Nonnull List<?> getOutputs() {
       return Arrays.asList(recipe.getOutputStack(), new ItemStack(EnderIO.itemSoulVessel));
     }   
     
@@ -157,36 +156,38 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     final List<String> supportedSouls = currentRecipe.recipe.getSupportedSouls();
     final ItemStack inputStack = currentRecipe.recipe.getInputStack();
 
-    guiItemStacks.set(0, getSoulVialInputs(supportedSouls));
-    guiItemStacks.setFromRecipe(1, inputStack);
-    if(EnderIO.itemBrokenSpawner == outputStack.getItem()) {
+    List<CapturedMob> souls = getSouls(supportedSouls);
+    final List<ItemStack> soulStacks = new ArrayList<ItemStack>();
+    for (CapturedMob soul : souls) {
+      soulStacks.add(soul.toStack(EnderIO.itemSoulVessel, 1, 1));
+    }
+    guiItemStacks.set(0, soulStacks);
+
+    guiItemStacks.setFromRecipe(1, inputStack != null ? inputStack : new ArrayList<ItemStack>());
+
+    if (EnderIO.itemBrokenSpawner == outputStack.getItem() || currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
       List<ItemStack> outputs = new ArrayList<ItemStack>();
-      for (String soul : supportedSouls) {
-        outputs.add(ItemBrokenSpawner.createStackForMobType(soul, false));
-        if ("Skeleton".equals(soul)) {
-          outputs.add(ItemBrokenSpawner.createStackForMobType(soul, true));
-        }
+      for (CapturedMob soul : souls) {
+        outputs.add(soul.toStack(outputStack.getItem(), outputStack.getMetadata(), 1));
       }      
-      guiItemStacks.setFromRecipe(2, outputs);
-    } else if (currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
-      List<ItemStack> outputs = new ArrayList<ItemStack>();
-      for (String soul : supportedSouls) {
-        outputs.add(MOBTYPE.setStringCopy(outputStack, soul));
-      }
       guiItemStacks.setFromRecipe(2, outputs);
     } else {
       guiItemStacks.setFromRecipe(2, outputStack);
     }
+
     guiItemStacks.setFromRecipe(3, new ItemStack(EnderIO.itemSoulVessel));
   }
   
-  private @Nonnull List<ItemStack> getSoulVialInputs(List<String> mobs) {
-    List<ItemStack> result = new ArrayList<ItemStack>(mobs.size());
+  private @Nonnull List<CapturedMob> getSouls(List<String> mobs) {
+    List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
     for (String mobName : mobs) {
-      ItemStack sv = new ItemStack(EnderIO.itemSoulVessel);
-      sv.setTagCompound(new NBTTagCompound());
-      sv.getTagCompound().setString("id", mobName);
-      result.add(sv);
+      CapturedMob soul = CapturedMob.create(mobName, false);
+      if (soul != null) {
+        result.add(soul);
+        if ("Skeleton".equals(mobName)) {
+          CapturedMob.create(mobName, true);
+        }
+      }
     }
     return result;
   }

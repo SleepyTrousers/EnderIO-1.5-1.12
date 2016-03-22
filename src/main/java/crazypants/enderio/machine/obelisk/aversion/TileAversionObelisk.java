@@ -1,17 +1,5 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import com.enderio.core.client.render.BoundingBox;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.power.BasicCapacitor;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -19,6 +7,17 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.client.render.BoundingBox;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.util.CapturedMob;
 
 public class TileAversionObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
@@ -100,15 +99,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     if(!slotDefinition.isInputSlot(i)) {
       return false;
     }
-    String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(itemstack);
-    if(mob == null) {
-      return false;
-    }
-    Class<?> cl = EntityList.stringToClassMapping.get(mob);
-    if(cl == null) {
-      return false;
-    }
-    return EntityLiving.class.isAssignableFrom(cl);
+    return CapturedMob.containsSoul(itemstack);
   }
 
   @Override
@@ -117,8 +108,8 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
-    if(redstoneCheckPassed && hasPower()) {
+  protected boolean processTasks(boolean redstoneCheck) {
+    if (redstoneCheck && hasPower()) {
       if(!registered) {
         AversionObeliskController.instance.registerGuard(this);
         registered = true;
@@ -155,17 +146,11 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     return bounds.isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
   }
 
-  private boolean isMobInFilter(EntityLivingBase ent) {
-    return isMobInFilter(EntityList.getEntityString(ent));
-  }
-
-  private boolean isMobInFilter(String entityId) {
+  private boolean isMobInFilter(EntityLivingBase entity) {
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
-      if(inventory[i] != null) {
-        String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(inventory[i]);
-        if(mob != null && mob.equals(entityId)) {
-          return true;
-        }
+      CapturedMob mob = CapturedMob.create(inventory[i]);
+      if (mob != null && mob.isSameType(entity)) {
+        return true;
       }
     }
     return false;

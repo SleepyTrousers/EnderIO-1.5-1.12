@@ -2,6 +2,8 @@ package crazypants.enderio.config;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -406,7 +408,7 @@ public final class Config {
   public static boolean enableOCConduits = true;
   public static boolean enableOCConduitsAnimatedTexture = true;
 
-  public static String[] soulVesselBlackList = new String[0];
+  public static List<String> soulVesselBlackList = Collections.<String> emptyList();
   public static boolean soulVesselCapturesBosses = false;
 
   public static int soulBinderLevelOnePowerPerTickRF = 500;
@@ -1209,8 +1211,8 @@ public final class Config {
     enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
         enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
     
-    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
-        "Entities listed here will can not be captured in a Soul Vial");
+    soulVesselBlackList = Arrays.asList(config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList.toArray(new String[0]),
+        "Entities listed here will can not be captured in a Soul Vial"));
 
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial");
