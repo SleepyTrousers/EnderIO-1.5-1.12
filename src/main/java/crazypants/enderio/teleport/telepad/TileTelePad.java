@@ -170,6 +170,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public void updateConnectedState(boolean fromBlock) {
 
+    //TODO: This will fex the NPE bellow, but may cause an issue
+    //I believe this happens happens when one of the neighbours is not yet fully loaded.  
+    //We can get a TE from the world, but the world object has not yet been set on it.
+    //I am hoping when this tile does its first update it will sort itself out
+    if(worldObj == null) {
+      return;
+    }
+    
     EnumSet<EnumFacing> connections = EnumSet.noneOf(EnumFacing.class);
 
     for (BlockCoord bc : getSurroundingCoords()) {
