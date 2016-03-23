@@ -32,7 +32,7 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    return redstoneCheckPassed;
+    return false;
   }
 
   @Override
