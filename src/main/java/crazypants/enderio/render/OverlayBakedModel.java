@@ -17,6 +17,7 @@ import net.minecraftforge.client.model.IFlexibleBakedModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+@Deprecated
 public class OverlayBakedModel implements IEnderBakedModel {
 
   private final List<BakedQuad> generalQuads;

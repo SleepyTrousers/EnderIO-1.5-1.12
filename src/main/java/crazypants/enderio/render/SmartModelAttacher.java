@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.render.pipeline.RelayingBakedModel;
 
 public class SmartModelAttacher {
 
@@ -104,7 +105,7 @@ public class SmartModelAttacher {
           throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
               + debugOutput(event.modelRegistry, defaultMrl));
         }
-        MachineSmartModel model = new MachineSmartModel(defaultBakedModel);
+        RelayingBakedModel model = new RelayingBakedModel(defaultBakedModel);
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         event.modelRegistry.putObject(itemMrl, model);
@@ -123,12 +124,12 @@ public class SmartModelAttacher {
 
         for (ModelResourceLocation mrl : locations.values()) {
           IBakedModel model = event.modelRegistry.getObject(mrl);
-          event.modelRegistry.putObject(mrl, new MachineSmartModel(model != null ? model : defaultBakedModel));
+          event.modelRegistry.putObject(mrl, new RelayingBakedModel(model != null ? model : defaultBakedModel));
         }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         if (event.modelRegistry.getObject(itemMrl) == null) {
-          event.modelRegistry.putObject(itemMrl, new MachineSmartModel(defaultBakedModel));
+          event.modelRegistry.putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
         }
       }
     }

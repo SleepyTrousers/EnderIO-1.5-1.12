@@ -16,7 +16,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 
@@ -49,7 +49,7 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     TileEntity tileEntity = state.getTileEntity();
 
     if (tileEntity instanceof TileTelePad) {
@@ -66,7 +66,7 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
   }
 
   @Override
-  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 

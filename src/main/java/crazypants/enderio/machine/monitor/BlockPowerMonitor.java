@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.monitor;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,11 +16,10 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IBlockStateWrapper;
 
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -77,13 +78,9 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
-    TileEntity tileEntity = extendedState.getTileEntity();
-    if (tileEntity instanceof AbstractMachineEntity) {
-      extendedState.setCacheKey(((AbstractMachineEntity) tileEntity).getFacing());
-    }
-    return extendedState;
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TilePowerMonitor tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.getFacing());
   }
 
 }

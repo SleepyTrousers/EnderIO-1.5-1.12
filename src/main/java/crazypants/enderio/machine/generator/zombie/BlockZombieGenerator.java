@@ -3,11 +3,8 @@ package crazypants.enderio.machine.generator.zombie;
 import java.util.List;
 import java.util.Random;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineBlock;
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -20,6 +17,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.render.IBlockStateWrapper;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
@@ -107,6 +110,12 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     if(te != null && te instanceof TileZombieGenerator) {
       tooltip.add(((TileZombieGenerator) te).getFluidStored(EnumFacing.NORTH) + " " + EnderIO.lang.localize("fluid.millibucket.abr"));
     }
+  }
+
+  @Override
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileZombieGenerator tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.getFacing());
   }
 
 }

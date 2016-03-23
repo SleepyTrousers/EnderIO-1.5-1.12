@@ -36,7 +36,7 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -153,7 +153,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
       return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null)));
@@ -164,7 +164,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 

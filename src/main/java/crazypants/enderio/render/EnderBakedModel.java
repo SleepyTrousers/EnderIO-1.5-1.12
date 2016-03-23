@@ -19,6 +19,7 @@ import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+@Deprecated
 public class EnderBakedModel implements IEnderBakedModel {
 
   private final List<BakedQuad> generalQuads = new ArrayList<BakedQuad>();

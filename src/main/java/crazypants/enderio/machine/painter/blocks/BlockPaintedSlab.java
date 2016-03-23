@@ -40,7 +40,7 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -283,7 +283,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     if (isDouble()) {
       List<IBakedModel> result = new ArrayList<IBakedModel>();
       IBlockState paintSource = getPaintSource2(state, world, pos);
@@ -314,7 +314,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 

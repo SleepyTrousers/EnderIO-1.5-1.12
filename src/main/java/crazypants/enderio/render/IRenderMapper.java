@@ -34,29 +34,31 @@ public interface IRenderMapper {
   }
 
   /**
-   * Get lists of blockstates and pre-baked, pre-rotated models to render for the given block.
+   * Get lists of blockstates <strike>and pre-baked, pre-rotated models</strike> to render for the given block.
    * <p>
-   * Will be called in a render thread.
+   * May be called in a render thread.
    * <p>
    * May return null. May return one or both of the lists as null.
    * <p>
    * Note: This will only be called if the current render layer matches the block's getBlockLayer() or the render mapper is IRenderLayerAware.
+   * <p>
+   * <em>The IBakedModel list will no longer be supported in the 1.9 structure!</em>
    */
   @SideOnly(Side.CLIENT)
-  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos);
+  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos);
 
   /**
    * Get lists of blockstates to render as overlay layer for the given block. This layer will be rendered no matter what is rendered for the block itself, e.g.
    * if it is painted.
    * <p>
-   * Will be called in a render thread.
+   * May be called in a render thread.
    * <p>
    * May return null.
    * <p>
    * Note: This will only be called if the current render layer matches the block's getBlockLayer() or the render mapper is IRenderLayerAware.
    */
   @SideOnly(Side.CLIENT)
-  List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos);
+  List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos);
 
   /**
    * Get lists of blockstates and pre-baked, pre-rotated models to render for the given item stack.

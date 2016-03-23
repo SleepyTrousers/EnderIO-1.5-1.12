@@ -1,22 +1,26 @@
 package crazypants.enderio.machine.killera;
 
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.xp.PacketExperianceContainer;
-import crazypants.enderio.xp.PacketGivePlayerXP;
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.PacketGivePlayerXP;
 
 /**
  * Name proudly created by Xaw4
@@ -96,6 +100,12 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     default:
       return EnumFacing.EAST;    
     }
+  }
+
+  @Override
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileKillerJoe tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.getFacing());
   }
   
 }

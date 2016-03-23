@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.pipeline;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,19 +21,22 @@ import net.minecraftforge.client.model.ISmartItemModel;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintWrangler;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.EmptyBakedModel;
+import crazypants.enderio.render.EnderBakedModel;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IEnderBakedModel;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.UnderlayBakedModel;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 
-@Deprecated
-public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
-
-  private final Cache<Long, IEnderBakedModel> cache = CacheBuilder.newBuilder().maximumSize(200).<Long, IEnderBakedModel> build();
+public class RelayingBakedModel implements ISmartBlockModel, ISmartItemModel {
 
   private IBakedModel defaults;
 
@@ -48,7 +51,7 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
     return defaults;
   }
 
-  public MachineSmartModel(IBakedModel defaults) {
+  public RelayingBakedModel(IBakedModel defaults) {
     this.defaults = defaults;
   }
 
@@ -90,6 +93,28 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
   @Override
   public IBakedModel handleBlockState(IBlockState stateIn) {
+    long start = crazypants.util.Profiler.client.start();
+    if (stateIn instanceof BlockStateWrapperBase) {
+      final BlockStateWrapperBase state = (BlockStateWrapperBase) stateIn;
+      IBakedModel model = state.getModel();
+      if (model instanceof CollectedQuadBakedBlockModel) {
+        ((CollectedQuadBakedBlockModel) model).setParticleTexture(getParticleTexture());
+      }
+      if (model != null) {
+        crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (relayed)");
+        return model;
+      }
+    }
+
+    else if (stateIn instanceof IBlockStateWrapper) {
+      return handleBlockState_old(stateIn);
+    }
+
+    return this;
+  }
+
+  @Deprecated
+  public IBakedModel handleBlockState_old(IBlockState stateIn) {
     long start = crazypants.util.Profiler.client.start();
     if (stateIn instanceof IBlockStateWrapper) {
       final BlockStateWrapper state = (BlockStateWrapper) stateIn;
@@ -134,23 +159,9 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
       }
 
       if (renderMapper != null) {
-        final long cacheKey = state.getCacheKey();
-        if (cacheKey != 0) {
-          IEnderBakedModel bakedModel = cache.getIfPresent(cacheKey);
-          if (bakedModel == null) {
-            bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos));
-            cache.put(cacheKey, bakedModel);
-          }
-          if (overlayLayer != null) {
-            bakedModel = new OverlayBakedModel(bakedModel, overlayLayer);
-          }
-          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (w/caching)");
-          return bakedModel;
-        } else {
-          IEnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos), overlayLayer);
-          crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
-          return bakedModel;
-        }
+        IEnderBakedModel bakedModel = new EnderBakedModel(null, renderMapper.mapBlockRender(state, world, pos), overlayLayer);
+        crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
+        return bakedModel;
       }
 
       // assume anything with a BlockStateWrapper will render something in at least one render pass
@@ -159,7 +170,6 @@ public class MachineSmartModel implements ISmartBlockModel, ISmartItemModel {
 
     return this;
   }
-
   @Override
   public IBakedModel handleItemState(ItemStack stack) {
     if (stack != null) {

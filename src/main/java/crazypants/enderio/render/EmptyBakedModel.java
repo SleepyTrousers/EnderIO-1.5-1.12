@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 
+@Deprecated
 public class EmptyBakedModel implements IBakedModel {
 
   public static final IBakedModel instance = new EmptyBakedModel();

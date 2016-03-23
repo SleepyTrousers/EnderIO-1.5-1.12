@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.crafter;
 
-import net.minecraft.block.state.IBlockState;
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -11,11 +12,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
@@ -61,13 +61,9 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
-    TileEntity tileEntity = extendedState.getTileEntity();
-    if (tileEntity instanceof AbstractMachineEntity) {
-      extendedState.setCacheKey(((AbstractMachineEntity) tileEntity).getFacing());
-    }
-    return extendedState;
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileCrafter tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.getFacing());
   }
 
 }

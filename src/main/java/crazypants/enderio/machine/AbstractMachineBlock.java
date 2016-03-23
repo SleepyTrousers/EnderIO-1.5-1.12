@@ -3,6 +3,7 @@ package crazypants.enderio.machine;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -35,14 +36,15 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
@@ -118,8 +120,25 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new BlockStateWrapper(state, world, pos);
+  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+      T tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
+      }
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
+  }
+
+  protected abstract void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull T tileEntity);
+
+  protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    return new BlockStateWrapperBase(state, world, pos);
   }
 
   @Override

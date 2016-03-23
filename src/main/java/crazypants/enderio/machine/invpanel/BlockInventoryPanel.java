@@ -2,18 +2,8 @@ package crazypants.enderio.machine.invpanel;
 
 import java.util.Random;
 
-import org.apache.commons.lang3.tuple.Pair;
+import javax.annotation.Nonnull;
 
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.BlockStateWrapper;
-import crazypants.enderio.render.EnumRenderMode6;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.SmartModelAttacher;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -27,6 +17,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.EnumRenderMode6;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.SmartModelAttacher;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
@@ -198,13 +197,9 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    BlockStateWrapper extendedState = (BlockStateWrapper) super.getExtendedState(state, world, pos);
-    TileEntity tileEntity = extendedState.getTileEntity();
-    if (tileEntity instanceof AbstractMachineEntity) {
-      extendedState.setCacheKey(Pair.of(((AbstractMachineEntity) tileEntity).getFacing(), ((AbstractMachineEntity) tileEntity).isActive()));
-    }
-    return extendedState;
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileInventoryPanel tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
   }
 
 }

@@ -17,7 +17,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IOMode;
@@ -35,7 +35,7 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
 
@@ -93,7 +93,7 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
 

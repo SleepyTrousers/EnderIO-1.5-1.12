@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,6 +34,7 @@ import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.TextureRegistry;
@@ -179,6 +183,12 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
       return IOMode.EnumIOMode.TRANSCIEVERDISABLED;
     }
     throw new RuntimeException("Hey, leave our enums alone!");
+  }
+
+  @Override
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileTransceiver tileEntity) {
+    blockStateWrapper.addCacheKey(0);
   }
 
 }

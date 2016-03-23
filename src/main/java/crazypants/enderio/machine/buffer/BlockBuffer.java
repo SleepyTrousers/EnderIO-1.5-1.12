@@ -2,6 +2,8 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +24,7 @@ import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
@@ -99,6 +102,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
+  }
+
+  @Override
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileBuffer tileEntity) {
+    blockStateWrapper.addCacheKey(0);
   }
 
 }

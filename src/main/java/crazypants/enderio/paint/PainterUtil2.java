@@ -91,6 +91,7 @@ public class PainterUtil2 {
     return paintSource;
   }
   
+  @Deprecated
   public static IBlockState handleDynamicState(IBlockState paintSource, IBlockState state, IBlockAccess world, BlockPos pos) {
     return paintSource;           
   }

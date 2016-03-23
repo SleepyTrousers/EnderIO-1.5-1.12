@@ -2,14 +2,14 @@ package crazypants.enderio.render;
 
 import java.util.Collection;
 
-import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * This blockstate wrapper allows the block to give more information to the smart model. This allows it to talk to the block properly (with world and pos) and
@@ -19,7 +19,8 @@ import net.minecraft.world.IBlockAccess;
  * <p>
  * Note: Careful! This happens in a render thread!
  */
-public class BlockStateWrapper implements IBlockState {
+@Deprecated
+public class BlockStateWrapper implements IBlockStateWrapper {
 
   private final IBlockState state;
   private final IBlockAccess world;
@@ -70,18 +71,22 @@ public class BlockStateWrapper implements IBlockState {
     return state.getBlock();
   }
 
+  @Override
   public BlockPos getPos() {
     return pos;
   }
 
+  @Override
   public TileEntity getTileEntity() {
     return world.getTileEntity(pos);
   }
 
+  @Override
   public IBlockAccess getWorld() {
     return world;
   }
 
+  @Override
   public IBlockState getState() {
     return state;
   }
@@ -90,20 +95,17 @@ public class BlockStateWrapper implements IBlockState {
     return cacheKey;
   }
 
-  public void setCacheKey(Object cacheKey) {
-    this.cacheKey = this.cacheKey ^ cacheKey.hashCode();
-  }
-
-  public void setCacheKey(Object cacheKey, Object cacheKey2) {
-    this.cacheKey = this.cacheKey ^ cacheKey.hashCode() ^ cacheKey2.hashCode();
-  }
-
-  public void setCacheKey(Object cacheKey, Object cacheKey2, Object cacheKey3) {
-    this.cacheKey = this.cacheKey ^ cacheKey.hashCode() ^ cacheKey2.hashCode() ^ cacheKey3.hashCode();
-  }
-
   @Override
   public String toString() {
     return "BlockStateWrapper [" + state + "]";
+  }
+
+  @Override
+  public IBlockStateWrapper addCacheKey(Object addlCacheKey) {
+    this.cacheKey = this.cacheKey ^ addlCacheKey.hashCode();
+    return this;
+  }
+
+  public void bakeModel() {
   }
 }

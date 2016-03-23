@@ -1,5 +1,6 @@
-package crazypants.enderio.paint.render;
+package crazypants.enderio.render.pipeline;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
@@ -13,11 +14,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.ISmartBlockModel;
-
-import org.apache.commons.lang3.tuple.Pair;
-
+import crazypants.enderio.Log;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
-import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 
 public class PaintWrangler {
 
@@ -27,6 +26,7 @@ public class PaintWrangler {
     boolean doExtendedStateWithTe = true;
     boolean doExtendedStateWithOutTe = false;
     boolean dohandleBlockState = true;
+    boolean doPaint = true;
 
     @Override
     public String toString() {
@@ -37,13 +37,17 @@ public class PaintWrangler {
 
   private static final ConcurrentHashMap<Block, Memory> cache = new ConcurrentHashMap<Block, Memory>();
 
-  public static IBakedModel wrangleBakedModel(IBlockAccess blockAccess, BlockPos pos, IBlockState paint) {
+  public static boolean wrangleBakedModel(IBlockAccess blockAccess, BlockPos pos, IBlockState paint, QuadCollector quads) {
 
     Block block = paint.getBlock();
     Memory memory = cache.get(block);
     if (memory == null) {
       memory = new Memory();
       cache.put(block, memory);
+    }
+
+    if (!memory.doPaint) {
+      return false;
     }
 
     if (memory.doActualStateWithTe) {
@@ -94,27 +98,14 @@ public class PaintWrangler {
       }
     }
 
-    return paintModel;
-  }
-
-  /**
-   * pair.left = model to render; pair.right = has paint to render
-   * <p>
-   * (null, true) = has a paint to render but not in the current render pass<br />
-   * (null, false) = is not painted<br />
-   * (model, true) = render this model<br />
-   * (model, false) = invalid return value
-   */
-  public static Pair<IBakedModel, Boolean> handlePaint(final IBlockState state, IBlockPaintableBlock block, final IBlockAccess world, final BlockPos pos) {
-    IBlockState paintSource = block.getPaintSource(state, world, pos);
-    if (paintSource != null) {
-      if (paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
-        return Pair.of(wrangleBakedModel(world, pos, PainterUtil2.handleDynamicState(paintSource, state, world, pos)), true);
-      } else {
-        return Pair.of(null, true);
-      }
+    List<String> errors = quads.addUnfriendlybakedModel(MinecraftForgeClient.getRenderLayer(), paintModel, paint, MathHelper.getPositionRandom(pos));
+    if (errors != null) {
+      memory.doPaint = false;
+      Log.error("Failed to use block " + paint.getBlock() + " as paint. Error(s) while rendering: " + errors);
+      return false;
     }
-    return Pair.of(null, false);
+
+    return true;
   }
 
   public static IBakedModel handlePaint(ItemStack stack, IBlockPaintableBlock block) {

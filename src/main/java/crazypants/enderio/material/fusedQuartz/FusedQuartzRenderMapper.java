@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.MergingBlockStateWrapper;
@@ -30,7 +30,7 @@ public class FusedQuartzRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     if (state instanceof MergingBlockStateWrapper) {
       return Pair.of(((MergingBlockStateWrapper) state).getStates(), null);
     }
@@ -57,7 +57,7 @@ public class FusedQuartzRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public List<IBlockState> mapOverlayLayer(BlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
     return null;
   }
 

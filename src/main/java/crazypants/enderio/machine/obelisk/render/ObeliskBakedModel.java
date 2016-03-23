@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import net.minecraft.block.state.IBlockState;
@@ -40,8 +40,8 @@ public class ObeliskBakedModel implements ISmartBlockModel {
 
   @Override
   public IBakedModel handleBlockState(IBlockState state) {
-    if(state instanceof BlockStateWrapper) {
-      TileEntity te = ((BlockStateWrapper) state).getTileEntity();
+    if(state instanceof IBlockStateWrapper) {
+      TileEntity te = ((IBlockStateWrapper) state).getTileEntity();
       if(te instanceof AbstractMachineEntity) {
         if(((AbstractMachineEntity) te).isActive()) {
           if(activeModel == null) {

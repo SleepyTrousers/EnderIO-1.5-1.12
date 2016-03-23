@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 
 public class BlockAttractor extends BlockObeliskAbstract<TileAttractor> {
   
