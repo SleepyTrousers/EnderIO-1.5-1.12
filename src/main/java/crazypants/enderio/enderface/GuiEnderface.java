@@ -11,7 +11,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.enderio.core.client.render.RenderPassHelper;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Camera;
@@ -40,10 +39,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.ForgeHooksClient;
 
 public class GuiEnderface extends GuiScreen {
 
@@ -267,32 +268,21 @@ public class GuiEnderface extends GuiScreen {
         mc.entityRenderer.enableLightmap();
         RenderUtil.bindBlockTexture();
 
-        // TODO 1.8: Not sure I am doing this render pass stuff correctly
-        // anymore
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
-        for (int pass = 0; pass < 2; pass++) {
-
-          RenderPassHelper.setBlockRenderPass(pass);
-          setGlStateForPass(pass);
+        for(EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {
+          
+          ForgeHooksClient.setRenderLayer(layer);
+          setGlStateForPass(layer);
 
           WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
           wr.begin(7, DefaultVertexFormats.BLOCK);
-
           Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
-
-          for (ViewableBlocks ug : blocks) {
-            // if(ug.block.canRenderInPass(pass)) {
-            // RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-            // RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
-
+          for (ViewableBlocks ug : blocks) {           
             BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
             blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
-
-            // }
           }
           Tessellator.getInstance().draw();
           Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);
-          RenderPassHelper.clearBlockRenderPass();
         }
 
         RenderHelper.enableStandardItemLighting();
@@ -306,10 +296,8 @@ public class GuiEnderface extends GuiScreen {
         TileEntityRendererDispatcher.staticPlayerZ = origin.z - eye.z;
 
         for (int pass = 0; pass < 2; pass++) {
-
-          RenderPassHelper.setEntityRenderPass(pass);
+          ForgeHooksClient.setRenderPass(pass);          
           setGlStateForPass(pass);
-
           for (ViewableBlocks ug : blocks) {
             TileEntity tile = world.getTileEntity(ug.bc.getBlockPos());
             if (tile != null && tile.shouldRenderInPass(pass)) {
@@ -321,8 +309,7 @@ public class GuiEnderface extends GuiScreen {
               TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
               GL11.glPopAttrib();
             }
-          }
-          RenderPassHelper.clearEntityRenderPass();
+          }          
         }
         setGlStateForPass(0);
         TravelController.instance.setSelectionEnabled(true);
@@ -335,6 +322,10 @@ public class GuiEnderface extends GuiScreen {
     drawEffectOverlay(partialTick);
   }
 
+  private void setGlStateForPass(EnumWorldBlockLayer layer) {
+    setGlStateForPass(layer == EnumWorldBlockLayer.TRANSLUCENT ? 1 : 0);    
+  }
+
   private void setGlStateForPass(int pass) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     if (pass == 0) {
@@ -345,7 +336,6 @@ public class GuiEnderface extends GuiScreen {
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GL11.glDepthMask(false);
     }
-
   }
 
   private boolean updateCamera(float partialTick) {

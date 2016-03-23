@@ -3,7 +3,6 @@ package crazypants.enderio.machine.generator.zombie;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderPassHelper;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,13 +32,13 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    if (RenderPassHelper.getEntityRenderPass() == 0 || te == null) {
+    if (MinecraftForgeClient.getRenderPass() == 0 || te == null) {
       EnumFacing facing = EnumFacing.EAST;
       if (te != null) {
         facing = te.facing;
       }
       renderModel(facing);
-    } else if (RenderPassHelper.getEntityRenderPass() == 1 && te != null) {
+    } else if (MinecraftForgeClient.getRenderPass() == 1 && te != null) {
       renderFluid(te);
     }
     GL11.glPopMatrix();

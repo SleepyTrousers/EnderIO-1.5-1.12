@@ -15,7 +15,6 @@ import org.lwjgl.opengl.GL14;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderPassHelper;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Camera;
@@ -47,10 +46,12 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 
 public class IoConfigRenderer {
 
@@ -128,7 +129,6 @@ public class IoConfigRenderer {
     }
 
     world = mc.thePlayer.worldObj;
-    // RB.blockAccess = new InnerBA();
   }
 
   public void init() {
@@ -347,12 +347,14 @@ public class IoConfigRenderer {
     GL11.glEnable(GL11.GL_ALPHA_TEST);
 
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
-    for (int pass = 0; pass < 1; pass++) {
-      setGlStateForPass(pass, false);
-      doWorldRenderPass(trans, configurables, pass);
+    
+    for(EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {
+      ForgeHooksClient.setRenderLayer(layer);      
+      setGlStateForPass(layer, false);
+      doWorldRenderPass(trans, configurables);
       if (renderNeighbours) {
-        setGlStateForPass(pass, true);
-        doWorldRenderPass(trans, neighbours, pass);
+        setGlStateForPass(layer, true);
+        doWorldRenderPass(trans, neighbours);
       }
     }
 
@@ -377,7 +379,7 @@ public class IoConfigRenderer {
   }
 
   private void doTileEntityRenderPass(List<BlockCoord> blocks, int pass) {
-    RenderPassHelper.setEntityRenderPass(pass);
+    ForgeHooksClient.setRenderPass(pass);    
     for (BlockCoord bc : blocks) {
       TileEntity tile = world.getTileEntity(bc.getBlockPos());
       if (tile != null) {
@@ -391,16 +393,10 @@ public class IoConfigRenderer {
           GL11.glPopAttrib();
         }
       }
-    }
-    RenderPassHelper.clearEntityRenderPass();
+    }    
   }
 
-  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, int pass) {
-    // TODO 1.8: Not sure I am doing this render pass stuff correctly anymore
-    RenderPassHelper.setBlockRenderPass(pass);
-
-    // Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
-    RenderPassHelper.setBlockRenderPass(pass);
+  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks) {
 
     WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
@@ -416,8 +412,7 @@ public class IoConfigRenderer {
     }
 
     Tessellator.getInstance().draw();
-    Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);
-    RenderPassHelper.clearBlockRenderPass();
+    Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);    
   }
 
   public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, WorldRenderer worldRendererIn) {
@@ -439,30 +434,34 @@ public class IoConfigRenderer {
     }
   }
 
-  private void setGlStateForPass(int pass, boolean isNeighbour) {
+  private void setGlStateForPass(EnumWorldBlockLayer layer, boolean isNeighbour) {
+    int pass = layer == EnumWorldBlockLayer.TRANSLUCENT ? 1 : 0;
+    //setGlStateForPass(pass, isNeighbour);
+    setGlStateForPass(pass, isNeighbour);
+  }
+  
+  private void setGlStateForPass(int layer, boolean isNeighbour) {
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     if (isNeighbour) {
 
-      float alpha = 0.8f;
-      if (pass == 0) {
+      float alpha = 0.6f;
+      if (layer == 0) {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_COLOR);
         GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
-        GL11.glDepthMask(true);
+        GL11.glDepthMask(false);
       } else {
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
-        GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);        
         GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
         GL11.glDepthMask(false);
       }
       return;
     }
 
-    if (pass == 0) {
+    if (layer == 0) {
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       GL11.glDisable(GL11.GL_BLEND);
       GL11.glDepthMask(true);
