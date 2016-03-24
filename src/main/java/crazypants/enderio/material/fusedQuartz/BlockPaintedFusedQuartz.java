@@ -41,9 +41,6 @@ import crazypants.enderio.render.pipeline.QuadCollector;
 public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock> implements ITileEntityProvider, IPaintable.IBlockPaintableBlock,
     IRenderMapper {
   
-  @SideOnly(Side.CLIENT)
-  private static FusedQuartzRenderMapper RENDER_MAPPER;
-
   public static BlockPaintedFusedQuartz create() {
     BlockPaintedFusedQuartz result = new BlockPaintedFusedQuartz();
     result.init();

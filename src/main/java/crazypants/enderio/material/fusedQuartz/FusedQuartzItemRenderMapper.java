@@ -19,25 +19,17 @@ import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.MergingBlockStateWrapper;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
-public class FusedQuartzRenderMapper implements IRenderMapper {
+public class FusedQuartzItemRenderMapper implements IRenderMapper {
 
-  public FusedQuartzRenderMapper() {
-  }
-
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new FusedQuartzStateWrapper(state, world, pos);
+  public FusedQuartzItemRenderMapper() {
   }
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    if (state instanceof MergingBlockStateWrapper) {
-      return Pair.of(((MergingBlockStateWrapper) state).getStates(), null);
-    }
     return null;
   }
 
@@ -68,13 +60,11 @@ public class FusedQuartzRenderMapper implements IRenderMapper {
   @Override
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
-    // TODO Auto-generated method stub
     return null;
   }
 

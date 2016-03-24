@@ -45,21 +45,16 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
   private final @Nonnull BlockPos pos;
   private final @Nonnull IRenderMapper renderMapper;
   private long cacheKey = 0;
-  private boolean doCaching;
+  private boolean doCaching = false;
 
   private IBakedModel model = null;
 
   public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper renderMapper) {
-    this(state, world, pos, renderMapper, false);
-  }
-
-  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper renderMapper, boolean doCaching) {
     this.state = notnull(state);
     this.block = notnull(state.getBlock());
     this.world = notnull(world);
     this.pos = notnull(pos);
     this.renderMapper = renderMapper != null ? renderMapper : nullRenderMapper;
-    this.doCaching = doCaching;
   }
 
   @Nonnull

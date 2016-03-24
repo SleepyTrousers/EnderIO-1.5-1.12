@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.solar;
+package crazypants.enderio.machine.reservoir;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -19,25 +19,17 @@ import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.MergingBlockStateWrapper;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
-public class SolarRenderMapper implements IRenderMapper {
+public class ReservoirItemRenderMapper implements IRenderMapper {
 
-  public SolarRenderMapper() {
-  }
-
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new SolarStateWrapper(state, world, pos);
+  public ReservoirItemRenderMapper() {
   }
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    if (state instanceof MergingBlockStateWrapper) {
-      return Pair.of(((MergingBlockStateWrapper) state).getStates(), null);
-    }
     return null;
   }
 
@@ -45,13 +37,14 @@ public class SolarRenderMapper implements IRenderMapper {
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     IBlockState defaultState = block.getDefaultState();
-    SolarType bankType = SolarType.getTypeFromMeta(stack.getItemDamage());
-    defaultState = defaultState.withProperty(SolarType.KIND, bankType);
 
     states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides));
 
     for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+      states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.UP)));
       states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, EnumFacing.DOWN)));
+      states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW())));
+      states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.UP)));
       states.add(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.DOWN)));
     }
     return Pair.of(states, null);
@@ -65,13 +58,11 @@ public class SolarRenderMapper implements IRenderMapper {
   @Override
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
-    // TODO Auto-generated method stub
     return null;
   }
 

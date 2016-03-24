@@ -3,17 +3,6 @@ package crazypants.enderio.machine.solar;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -35,10 +24,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.waila.IWailaInfoProvider;
+
 public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
-  private static SolarRenderMapper RENDER_MAPPER;
+  private static SolarItemRenderMapper RENDER_MAPPER;
 
   public static BlockSolarPanel create() {
     BlockSolarPanel result = new BlockSolarPanel();
@@ -89,14 +91,23 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getRenderMapper().getExtendedState(state, world, pos);
+    if (state != null && world != null && pos != null) {
+      SolarBlockRenderMapper renderMapper = new SolarBlockRenderMapper(state, world, pos);
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
+      blockStateWrapper.addCacheKey(state.getValue(SolarType.KIND));
+      blockStateWrapper.addCacheKey(renderMapper);
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public SolarRenderMapper getRenderMapper() {
+  public SolarItemRenderMapper getRenderMapper() {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SolarRenderMapper();
+      RENDER_MAPPER = new SolarItemRenderMapper();
     }
     return RENDER_MAPPER;
   }

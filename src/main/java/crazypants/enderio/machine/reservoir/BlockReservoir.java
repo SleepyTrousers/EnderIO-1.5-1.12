@@ -1,18 +1,5 @@
 package crazypants.enderio.machine.reservoir;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.tool.SmartTank;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -31,10 +18,26 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.tool.SmartTank;
+import crazypants.enderio.tool.ToolUtil;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
-  private static ReservoirRenderMapper RENDER_MAPPER;
+  private static ReservoirItemRenderMapper RENDER_MAPPER;
 
   public static BlockReservoir create() {
     BlockReservoir result = new BlockReservoir();
@@ -77,14 +80,22 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getRenderMapper().getExtendedState(state, world, pos);
+    if (state != null && world != null && pos != null) {
+      ReservoirBlockRenderMapper renderMapper = new ReservoirBlockRenderMapper(state, world, pos);
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
+      blockStateWrapper.addCacheKey(renderMapper);
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ReservoirRenderMapper getRenderMapper() {
+  public ReservoirItemRenderMapper getRenderMapper() {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new ReservoirRenderMapper();
+      RENDER_MAPPER = new ReservoirItemRenderMapper();
     }
     return RENDER_MAPPER;
   }

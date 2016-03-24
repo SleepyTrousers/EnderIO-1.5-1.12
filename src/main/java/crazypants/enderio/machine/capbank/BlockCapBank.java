@@ -53,16 +53,19 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
-import crazypants.enderio.machine.capbank.render.CapBankRenderMapper;
+import crazypants.enderio.machine.capbank.render.CapBankBlockRenderMapper;
+import crazypants.enderio.machine.capbank.render.CapBankItemRenderMapper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
@@ -70,7 +73,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
-  private static CapBankRenderMapper CAPBANK_RENDER_MAPPER;
+  private static CapBankItemRenderMapper CAPBANK_RENDER_MAPPER;
 
   public static BlockCapBank create() {
 
@@ -129,7 +132,16 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getRenderMapper().getExtendedState(state, world, pos);
+    if (state != null && world != null && pos != null) {
+      CapBankBlockRenderMapper renderMapper = new CapBankBlockRenderMapper(state, world, pos);
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
+      blockStateWrapper.addCacheKey(state.getValue(CapBankType.KIND));
+      blockStateWrapper.addCacheKey(renderMapper);
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override
@@ -501,9 +513,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public CapBankRenderMapper getRenderMapper() {
+  public CapBankItemRenderMapper getRenderMapper() {
     if(CAPBANK_RENDER_MAPPER == null) {
-      CAPBANK_RENDER_MAPPER = new CapBankRenderMapper();
+      CAPBANK_RENDER_MAPPER = new CapBankItemRenderMapper();
     }
     return CAPBANK_RENDER_MAPPER;
   }

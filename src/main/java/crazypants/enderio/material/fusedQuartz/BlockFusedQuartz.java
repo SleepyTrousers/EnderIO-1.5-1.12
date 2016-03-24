@@ -13,12 +13,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 
 public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
   
   @SideOnly(Side.CLIENT)
-  private static FusedQuartzRenderMapper RENDER_MAPPER;
+  private static FusedQuartzItemRenderMapper RENDER_MAPPER;
 
   public static BlockFusedQuartz create() {
     BlockFusedQuartz result = new BlockFusedQuartz();
@@ -51,14 +53,23 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return getRenderMapper().getExtendedState(state, world, pos);
+    if (state != null && world != null && pos != null) {
+      FusedQuartzBlockRenderMapper renderMapper = new FusedQuartzBlockRenderMapper(state, world, pos);
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
+      blockStateWrapper.addCacheKey(state.getValue(FusedQuartzType.KIND));
+      blockStateWrapper.addCacheKey(renderMapper);
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public FusedQuartzRenderMapper getRenderMapper() {
+  public FusedQuartzItemRenderMapper getRenderMapper() {
     if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new FusedQuartzRenderMapper();
+      RENDER_MAPPER = new FusedQuartzItemRenderMapper();
     }
     return RENDER_MAPPER;
   }
