@@ -351,12 +351,17 @@ public class IoConfigRenderer {
     for(EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {
       ForgeHooksClient.setRenderLayer(layer);      
       setGlStateForPass(layer, false);
-      doWorldRenderPass(trans, configurables);
-      if (renderNeighbours) {
+      doWorldRenderPass(trans, configurables, layer);      
+    }
+    
+    if (renderNeighbours) {
+      for (EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {        
+        ForgeHooksClient.setRenderLayer(layer);
         setGlStateForPass(layer, true);
-        doWorldRenderPass(trans, neighbours);
+        doWorldRenderPass(trans, neighbours, layer);        
       }
     }
+    
 
     RenderHelper.enableStandardItemLighting();
     GL11.glEnable(GL11.GL_LIGHTING);
@@ -396,7 +401,7 @@ public class IoConfigRenderer {
     }    
   }
 
-  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks) {
+  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, EnumWorldBlockLayer layer) {
 
     WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
@@ -406,7 +411,7 @@ public class IoConfigRenderer {
     for (BlockCoord bc : blocks) {
       IBlockState bs = world.getBlockState(bc.getBlockPos());
       Block block = bs.getBlock();
-      if (block != null) {
+      if (block != null && block.canRenderInLayer(layer)) {
         renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
       }
     }
@@ -436,7 +441,6 @@ public class IoConfigRenderer {
 
   private void setGlStateForPass(EnumWorldBlockLayer layer, boolean isNeighbour) {
     int pass = layer == EnumWorldBlockLayer.TRANSLUCENT ? 1 : 0;
-    //setGlStateForPass(pass, isNeighbour);
     setGlStateForPass(pass, isNeighbour);
   }
   
@@ -444,20 +448,12 @@ public class IoConfigRenderer {
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     if (isNeighbour) {
-
-      float alpha = 0.6f;
-      if (layer == 0) {
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_COLOR);
-        GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
-        GL11.glDepthMask(false);
-      } else {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);        
-        GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
-        GL11.glDepthMask(false);
-      }
+      GL11.glEnable(GL11.GL_BLEND);
+      GL11.glEnable(GL11.GL_DEPTH_TEST);
+      float alpha = 1f;
+      float col = 1f;
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
+      GL14.glBlendColor(col, col, col, alpha);               
       return;
     }
 
@@ -517,35 +513,5 @@ public class IoConfigRenderer {
     }
 
   }
-
-  // private class InnerBA extends IBlockAccessWrapper {
-  //
-  // InnerBA() {
-  // super(world);
-  // }
-  //
-  // @Override
-  // public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default)
-  // {
-  // return false;
-  // }
-  //
-  // @Override
-  // public boolean isAirBlock(BlockPos pos) {
-  // if (!configurables.contains(new BlockCoord(pos))) {
-  // return false;
-  // }
-  // return super.isAirBlock(pos);
-  // }
-  //
-  // @Override
-  // public IBlockState getBlockState(BlockPos pos) {
-  // if (!configurables.contains(new BlockCoord(pos))) {
-  // return Blocks.air.getDefaultState();
-  // }
-  // return super.getBlockState(pos);
-  // }
-  //
-  // }
 
 }
