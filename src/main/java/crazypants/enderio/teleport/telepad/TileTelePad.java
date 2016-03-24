@@ -175,7 +175,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       if (worldObj.isBlockLoaded(bc.getBlockPos())) {
         TileEntity te = bc.getTileEntity(worldObj); 
         EnumFacing con = Util.getDirFromOffset(bc.x - getPos().getX(), 0, bc.z - getPos().getZ());
-        if (te.getWorld() != null && te instanceof TileTelePad) {
+        if (te instanceof TileTelePad && te.getWorld() != null) {
           // let's find the master and let him do the work
           if (fromBlock) {
             // Recurse to all adjacent (diagonal and axis-aligned) telepads, but only 1 deep.
