@@ -40,6 +40,7 @@ import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
@@ -47,7 +48,7 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
-    IWailaInfoProvider {
+    IWailaInfoProvider, ISmartRenderAwareBlock {
   
   public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selectedFace");
 
@@ -283,8 +284,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     throw new RuntimeException("Hey, leave our enums alone!");
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
-  protected IRenderMapper getRenderMapper() {
+  public IRenderMapper getRenderMapper() {
     return RenderMappers.BODY_MAPPER;
   }
 
