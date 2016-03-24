@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.ArrayTable;
@@ -59,6 +61,10 @@ public class QuadCollector {
     }
   }
 
+  /**
+   * Adds the baked model(s) of the given block states to the quad lists for the given block layer. The models are expected to behave. The block layer will be
+   * NOT set when the models are asked for their quads.
+   */
   public void addFriendlyBlockStates(EnumWorldBlockLayer pass, List<IBlockState> states) {
     if (states == null || states.isEmpty()) {
       return;
@@ -80,6 +86,11 @@ public class QuadCollector {
     }
   }
 
+  /**
+   * Adds a baked model that is may blow up to the quad lists for the given block layer. The block layer will NOT be set when the model is asked for its quads.
+   * <p>
+   * Any errors from the model will be returned.
+   */
   public List<String> addUnfriendlybakedModel(EnumWorldBlockLayer pass, IBakedModel model, IBlockState state, long rand) {
     if (model == null) {
       return null;
@@ -106,6 +117,28 @@ public class QuadCollector {
     }
 
     return errors.isEmpty() ? null : errors;
+  }
+
+  /**
+   * Adds a baked model that is expected to behave to the quad lists for the given block layer. The block layer will be set when the model is asked for its
+   * quads.
+   */
+  public void addFriendlybakedModel(EnumWorldBlockLayer pass, IBakedModel model, IBlockState state, long rand) {
+    if (model != null) {
+      EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+      ForgeHooksClient.setRenderLayer(pass);
+      List<BakedQuad> generalQuads = model.getGeneralQuads();
+      if (generalQuads != null && !generalQuads.isEmpty()) {
+        addQuads(null, pass, generalQuads);
+      }
+      for (EnumFacing face : EnumFacing.values()) {
+        List<BakedQuad> faceQuads = model.getFaceQuads(face);
+        if (faceQuads != null && !faceQuads.isEmpty()) {
+          addQuads(face, pass, faceQuads);
+        }
+      }
+      ForgeHooksClient.setRenderLayer(oldRenderLayer);
+    }
   }
 
   public Collection<EnumWorldBlockLayer> getBlockLayers() {

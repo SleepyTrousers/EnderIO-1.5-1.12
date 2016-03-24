@@ -40,6 +40,14 @@ public interface IRenderMapper {
   }
 
   /**
+   * Render mappers that implement this sub-interface will be called even if their block is painted.
+   *
+   */
+  public static interface IPaintAware extends IRenderLayerAware {
+
+  }
+
+  /**
    * Get a list of blockstates to render for the given block. Optionally, this method can add quads to the given quad collector directly.
    * <p>
    * May return null.
@@ -48,10 +56,6 @@ public interface IRenderMapper {
    */
   @SideOnly(Side.CLIENT)
   List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, QuadCollector quadCollector);
-
-  @SideOnly(Side.CLIENT)
-  @Deprecated
-  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos);
 
   /**
    * Get a mapping of EnumFacing to EnumIOMode to render as overlay layer for the given block.

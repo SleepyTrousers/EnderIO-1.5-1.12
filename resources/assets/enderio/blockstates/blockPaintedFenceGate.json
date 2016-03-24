@@ -1,36 +1,25 @@
 {
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/planks_oak"
+        },
+        "model": "enderio:null",
+        "transform":{
+            "thirdperson":{ "rotation":[ {"x":10}, {"y":45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+            "gui":{ "rotation":[ {"x":0}, {"y":270}, {"z":0} ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+            "firstperson": { "rotation": [ {"x":0}, {"y":90}, {"z":0} ], "translation": [ 0, 0, 0 ], "scale": [ 1, 1, 1 ] }
+        }
+    },
     "variants": {
-        "facing=south,in_wall=false,open=false,powered=false": { "model": "oak_fence_gate_closed" },
-        "facing=west,in_wall=false,open=false,powered=false":  { "model": "oak_fence_gate_closed", "y": 90, "uvlock": true },
-        "facing=north,in_wall=false,open=false,powered=false": { "model": "oak_fence_gate_closed", "y": 180, "uvlock": true },
-        "facing=east,in_wall=false,open=false,powered=false":  { "model": "oak_fence_gate_closed", "y": 270, "uvlock": true },
-        "facing=south,in_wall=false,open=true,powered=false": { "model": "oak_fence_gate_open" },
-        "facing=west,in_wall=false,open=true,powered=false":  { "model": "oak_fence_gate_open", "y": 90, "uvlock": true },
-        "facing=north,in_wall=false,open=true,powered=false": { "model": "oak_fence_gate_open", "y": 180, "uvlock": true },
-        "facing=east,in_wall=false,open=true,powered=false":  { "model": "oak_fence_gate_open", "y": 270, "uvlock": true },
-        "facing=south,in_wall=true,open=false,powered=false": { "model": "oak_wall_gate_closed" },
-        "facing=west,in_wall=true,open=false,powered=false":  { "model": "oak_wall_gate_closed", "y": 90, "uvlock": true },
-        "facing=north,in_wall=true,open=false,powered=false": { "model": "oak_wall_gate_closed", "y": 180, "uvlock": true },
-        "facing=east,in_wall=true,open=false,powered=false":  { "model": "oak_wall_gate_closed", "y": 270, "uvlock": true },
-        "facing=south,in_wall=true,open=true,powered=false": { "model": "oak_wall_gate_open" },
-        "facing=west,in_wall=true,open=true,powered=false":  { "model": "oak_wall_gate_open", "y": 90, "uvlock": true },
-        "facing=north,in_wall=true,open=true,powered=false": { "model": "oak_wall_gate_open", "y": 180, "uvlock": true },
-        "facing=east,in_wall=true,open=true,powered=false":  { "model": "oak_wall_gate_open", "y": 270, "uvlock": true },
-        "facing=south,in_wall=false,open=false,powered=true": { "model": "oak_fence_gate_closed" },
-        "facing=west,in_wall=false,open=false,powered=true":  { "model": "oak_fence_gate_closed", "y": 90, "uvlock": true },
-        "facing=north,in_wall=false,open=false,powered=true": { "model": "oak_fence_gate_closed", "y": 180, "uvlock": true },
-        "facing=east,in_wall=false,open=false,powered=true":  { "model": "oak_fence_gate_closed", "y": 270, "uvlock": true },
-        "facing=south,in_wall=false,open=true,powered=true": { "model": "oak_fence_gate_open" },
-        "facing=west,in_wall=false,open=true,powered=true":  { "model": "oak_fence_gate_open", "y": 90, "uvlock": true },
-        "facing=north,in_wall=false,open=true,powered=true": { "model": "oak_fence_gate_open", "y": 180, "uvlock": true },
-        "facing=east,in_wall=false,open=true,powered=true":  { "model": "oak_fence_gate_open", "y": 270, "uvlock": true },
-        "facing=south,in_wall=true,open=false,powered=true": { "model": "oak_wall_gate_closed" },
-        "facing=west,in_wall=true,open=false,powered=true":  { "model": "oak_wall_gate_closed", "y": 90, "uvlock": true },
-        "facing=north,in_wall=true,open=false,powered=true": { "model": "oak_wall_gate_closed", "y": 180, "uvlock": true },
-        "facing=east,in_wall=true,open=false,powered=true":  { "model": "oak_wall_gate_closed", "y": 270, "uvlock": true },
-        "facing=south,in_wall=true,open=true,powered=true": { "model": "oak_wall_gate_open" },
-        "facing=west,in_wall=true,open=true,powered=true":  { "model": "oak_wall_gate_open", "y": 90, "uvlock": true },
-        "facing=north,in_wall=true,open=true,powered=true": { "model": "oak_wall_gate_open", "y": 180, "uvlock": true },
-        "facing=east,in_wall=true,open=true,powered=true":  { "model": "oak_wall_gate_open", "y": 270, "uvlock": true }
+        "facing":{
+            "east": { },
+            "west": { },
+            "south": { },
+            "north": { }
+        },
+        "in_wall":{"true":{},"false":{}},
+        "open":{"true":{},"false":{}},
+        "powered":{"true":{},"false":{}}
     }
 }

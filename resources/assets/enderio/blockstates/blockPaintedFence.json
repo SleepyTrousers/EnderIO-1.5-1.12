@@ -1,20 +1,19 @@
 {
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/planks_oak"
+        },
+        "model": "enderio:null",
+        "transform":{
+            "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+            "gui":{ "rotation":[ {"x":0}, {"y":180}, {"z":0} ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+        }
+    },
     "variants": {
-        "east=false,north=false,south=false,west=false": { "model": "oak_fence_post" },
-        "east=false,north=true,south=false,west=false": { "model": "oak_fence_n", "uvlock": true },
-        "east=true,north=false,south=false,west=false": { "model": "oak_fence_n", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,west=false": { "model": "oak_fence_n", "y": 180, "uvlock": true },
-        "east=false,north=false,south=false,west=true": { "model": "oak_fence_n", "y": 270, "uvlock": true },
-        "east=true,north=true,south=false,west=false": { "model": "oak_fence_ne", "uvlock": true },
-        "east=true,north=false,south=true,west=false": { "model": "oak_fence_ne", "y": 90, "uvlock": true },
-        "east=false,north=false,south=true,west=true": { "model": "oak_fence_ne", "y": 180, "uvlock": true },
-        "east=false,north=true,south=false,west=true": { "model": "oak_fence_ne", "y": 270, "uvlock": true },
-        "east=false,north=true,south=true,west=false": { "model": "oak_fence_ns", "uvlock": true },
-        "east=true,north=false,south=false,west=true": { "model": "oak_fence_ns", "y": 90, "uvlock": true },
-        "east=true,north=true,south=true,west=false": { "model": "oak_fence_nse", "uvlock": true },
-        "east=true,north=false,south=true,west=true": { "model": "oak_fence_nse", "y": 90, "uvlock": true },
-        "east=false,north=true,south=true,west=true": { "model": "oak_fence_nse", "y": 180, "uvlock": true },
-        "east=true,north=true,south=false,west=true": { "model": "oak_fence_nse", "y": 270, "uvlock": true },
-        "east=true,north=true,south=true,west=true": { "model": "oak_fence_nsew", "uvlock": true }
+        "east":{"true":{},"false":{}},
+        "north":{"true":{},"false":{}},
+        "south":{"true":{},"false":{}},
+        "west":{"true":{},"false":{}}
     }
 }

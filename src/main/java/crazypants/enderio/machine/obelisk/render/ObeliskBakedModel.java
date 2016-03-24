@@ -3,10 +3,6 @@ package crazypants.enderio.machine.obelisk.render;
 import java.util.Collections;
 import java.util.List;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,6 +12,10 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ISmartBlockModel;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
 public class ObeliskBakedModel implements ISmartBlockModel {
 

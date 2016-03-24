@@ -79,8 +79,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper {
         }
       }
     }
-    // shift up to leave room for "deepHashCode ^ KIND.ordinal()"
-    return deepHashCode << 3;
+    return deepHashCode;
   }
 
 
@@ -206,13 +205,6 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper {
 
   @Override
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
-  }
-
-  @Override
-  @Deprecated
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    // TODO Auto-generated method stub
     return null;
   }
 

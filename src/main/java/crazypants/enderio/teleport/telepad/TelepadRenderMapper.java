@@ -14,7 +14,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -34,30 +33,31 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
   public TelepadRenderMapper() {
   }
 
-  protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos, TileTelePad tileEntity) {
-    List<IBlockState> states = null;
-    
-    if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.TRANSLUCENT) {
-      if (tileEntity.inNetwork() && tileEntity.isMaster()) {
-        states = Collections.singletonList(state.withProperty(EnumRenderMode.RENDER, GLASS_TOP_MODEL));
-      }
-    } else if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID) {
-      if (!tileEntity.inNetwork()) {
-        states = Collections.singletonList(state.withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
-      } else if (tileEntity.isMaster()) {
-        states = Collections.singletonList(state.withProperty(EnumRenderMode.RENDER, FULL_MODEL));
-      }
-    }
-
-    return states == null ? null : Pair.of(states, (List<IBakedModel>) null);
-  }
-
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+      QuadCollector quadCollector) {
     TileEntity tileEntity = state.getTileEntity();
 
     if (tileEntity instanceof TileTelePad) {
-      return render(state.getState(), world, pos, (TileTelePad) tileEntity);
+      TileTelePad telePad = (TileTelePad) tileEntity;
+
+      switch (blockLayer) {
+      case SOLID:
+        if (!telePad.inNetwork()) {
+          return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
+        } else if (telePad.isMaster()) {
+          return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, FULL_MODEL));
+        } else {
+          return null;
+        }
+      case TRANSLUCENT:
+        if (telePad.inNetwork() && telePad.isMaster()) {
+          return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, GLASS_TOP_MODEL));
+        }
+      default:
+        return null;
+      }
+
     }
     return null;
   }
@@ -74,16 +74,9 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
     return null;
   }
 
-  @Override
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
-      QuadCollector quadCollector) {
-    // TODO Auto-generated method stub
-    return null;
-  }
 
   @Override
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
-    // TODO Auto-generated method stub
     return null;
   }
 

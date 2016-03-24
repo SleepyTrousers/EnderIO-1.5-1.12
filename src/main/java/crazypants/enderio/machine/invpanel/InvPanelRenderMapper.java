@@ -12,6 +12,7 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -32,7 +33,7 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, AbstractMachineEntity tileEntity, AbstractMachineBlock block) {
+  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, AbstractMachineEntity tileEntity, AbstractMachineBlock block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();

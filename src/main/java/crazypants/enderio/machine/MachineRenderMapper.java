@@ -41,17 +41,12 @@ public class MachineRenderMapper implements IRenderMapper {
     Block block = state.getBlock();
 
     if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
-      return render(state.getState(), world, pos, (AbstractMachineEntity) tileEntity, (AbstractMachineBlock) block);
+      return render(state.getState(), world, pos, blockLayer, (AbstractMachineEntity) tileEntity, (AbstractMachineBlock) block);
     }
     return null;
   }
 
-  @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    return null;
-  }
-
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, AbstractMachineEntity tileEntity, AbstractMachineBlock block) {
+  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, AbstractMachineEntity tileEntity, AbstractMachineBlock block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();

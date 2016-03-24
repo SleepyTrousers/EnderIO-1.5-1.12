@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -20,11 +19,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,7 +36,6 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
@@ -45,6 +43,7 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
@@ -146,24 +145,20 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new BlockStateWrapper(state, world, pos);
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      blockStateWrapper.addCacheKey(getPaintSource(state, world, pos));
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
     return this;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    IBlockState paintSource = getPaintSource(state, world, pos);
-    if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
-      return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null)));
-    } else {
-      return null;
-    }
   }
 
   @Override
@@ -181,6 +176,10 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     } else {
       return null;
     }
+  }
+
+  private IBakedModel mapRender(IBlockState state, IBlockState paint) {
+    return PaintRegistry.getModel(IBakedModel.class, "carpet", paint, null);
   }
 
   @Override
@@ -234,7 +233,10 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   @Override
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
-    // TODO Auto-generated method stub
+    IBlockState paintSource = getPaintSource(state, world, pos);
+    if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer)) {
+      quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
+    }
     return null;
   }
 

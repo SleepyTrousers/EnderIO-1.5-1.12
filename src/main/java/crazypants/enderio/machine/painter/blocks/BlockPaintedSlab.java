@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Random;
@@ -24,11 +23,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,7 +40,6 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
@@ -49,6 +47,7 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
@@ -262,11 +261,15 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   public IBlockState getPaintSource2(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
-      return ((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) te).getPaintSource2();
+    if (isDouble()) {
+      TileEntity te = world.getTileEntity(pos);
+      if (te instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
+        return ((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) te).getPaintSource2();
+      }
+      return null;
+    } else {
+      return getPaintSource(state, world, pos);
     }
-    return null;
   }
 
   @Override
@@ -276,45 +279,24 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new BlockStateWrapper(state, world, pos);
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      if (isDouble()) {
+        blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(getPaintSource2(state, world, pos));
+      } else {
+        blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(HALF));
+      }
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper getRenderMapper() {
     return this;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    if (isDouble()) {
-      List<IBakedModel> result = new ArrayList<IBakedModel>();
-      IBlockState paintSource = getPaintSource2(state, world, pos);
-      if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
-        result.add(PaintRegistry.getModel(IBakedModel.class, "slab_hi", paintSource, null));
-      }
-      paintSource = getPaintSource(state, world, pos);
-      if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
-        result.add(PaintRegistry.getModel(IBakedModel.class, "slab_lo", paintSource, null));
-      }
-      if (result.isEmpty()) {
-        return null;
-      } else {
-        return Pair.of(null, result);
-      }
-    } else {
-      IBlockState paintSource = getPaintSource(state, world, pos);
-      if (paintSource != null && paintSource.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer())) {
-        if (state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) {
-          return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "slab_hi", paintSource, null)));
-        } else {
-          return Pair.of(null, Collections.singletonList(PaintRegistry.getModel(IBakedModel.class, "slab_lo", paintSource, null)));
-        }
-      } else {
-        return null;
-      }
-    }
   }
 
   @Override
@@ -400,7 +382,16 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   @Override
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
-    // TODO Auto-generated method stub
+    for (BlockSlab.EnumBlockHalf half : BlockSlab.EnumBlockHalf.values()) {
+      if (isDouble() || half == state.getValue(HALF)) {
+        boolean isTop = half == BlockSlab.EnumBlockHalf.TOP;
+        IBlockState paintSource = isTop ? getPaintSource2(state, world, pos) : getPaintSource(state, world, pos);
+        if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer)) {
+          quadCollector.addFriendlybakedModel(blockLayer, PaintRegistry.getModel(IBakedModel.class, isTop ? "slab_hi" : "slab_lo", paintSource, null),
+              paintSource, MathHelper.getPositionRandom(pos));
+        }
+      }
+    }
     return null;
   }
 

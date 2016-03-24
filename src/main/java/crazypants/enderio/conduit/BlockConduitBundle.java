@@ -73,11 +73,14 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.render.ConduitRenderState;
+import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.tool.ToolUtil;
 
 @Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
@@ -140,6 +143,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
     }
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
+    SmartModelAttacher.registerNoProps(this);
   }
 
   @Override
@@ -154,7 +158,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return new ConduitRenderState(state, world, pos, getTileEntity(world, pos));
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, ConduitRenderMapper.instance);
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
   }
 
   @Override

@@ -133,14 +133,19 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
   }
 
   @Override
-  public IBlockStateWrapper addCacheKey(Object addlCacheKey) {
-    addCacheKeyInternal(addlCacheKey);
+  public IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey) {
+    addCacheKeyInternal(addlCacheKey != null ? addlCacheKey : 0);
     doCaching = true;
     return this;
   }
 
-  protected void addCacheKeyInternal(Object addlCacheKey) {
-    cacheKey = cacheKey ^ addlCacheKey.hashCode();
+  protected void addCacheKeyInternal(@Nonnull Object addlCacheKey) {
+    if (addlCacheKey instanceof IBlockState) {
+      // block states have no hashCode(), so we'd get the identity based default hash
+      cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ addlCacheKey.toString().hashCode();
+    } else {
+      cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ addlCacheKey.hashCode();
+    }
   }
 
   @Override
@@ -156,7 +161,7 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
 
     if (doCaching) {
       if (paintSource != null) {
-        addCacheKeyInternal(paintSource.toString());
+        addCacheKeyInternal(paintSource);
       }
       quads = cache.getIfPresent(Pair.of(block, cacheKey));
       cacheResult = quads == null ? "miss" : "hit";
@@ -169,6 +174,8 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
       if (!bakePaintLayer(quads, paintSource)) {
         bakeBlockLayer(quads);
         paintSource = null;
+      } else if (renderMapper instanceof IRenderMapper.IPaintAware) {
+        bakeBlockLayer(quads);
       }
 
       if (doCaching) {
@@ -242,11 +249,6 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
     @Override
     public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
         QuadCollector quadCollector) {
-      return null;
-    }
-
-    @Override
-    public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
       return null;
     }
 
