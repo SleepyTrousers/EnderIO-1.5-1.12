@@ -1,5 +1,6 @@
 package crazypants.enderio.render;
 
+import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -7,11 +8,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.pipeline.QuadCollector;
 
 /**
  * A render mapper maps the state of a placed block or an item stack into a list of blockstates that will be rendered together.
@@ -34,31 +40,28 @@ public interface IRenderMapper {
   }
 
   /**
-   * Get lists of blockstates <strike>and pre-baked, pre-rotated models</strike> to render for the given block.
-   * <p>
-   * May be called in a render thread.
-   * <p>
-   * May return null. May return one or both of the lists as null.
-   * <p>
-   * Note: This will only be called if the current render layer matches the block's getBlockLayer() or the render mapper is IRenderLayerAware.
-   * <p>
-   * <em>The IBakedModel list will no longer be supported in the 1.9 structure!</em>
-   */
-  @SideOnly(Side.CLIENT)
-  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos);
-
-  /**
-   * Get lists of blockstates to render as overlay layer for the given block. This layer will be rendered no matter what is rendered for the block itself, e.g.
-   * if it is painted.
-   * <p>
-   * May be called in a render thread.
+   * Get a list of blockstates to render for the given block. Optionally, this method can add quads to the given quad collector directly.
    * <p>
    * May return null.
    * <p>
-   * Note: This will only be called if the current render layer matches the block's getBlockLayer() or the render mapper is IRenderLayerAware.
+   * Note: This will be called once for the block's getBlockLayer() or once per render layer if the render mapper is IRenderLayerAware.
    */
   @SideOnly(Side.CLIENT)
-  List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos);
+  List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, QuadCollector quadCollector);
+
+  @SideOnly(Side.CLIENT)
+  @Deprecated
+  Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos);
+
+  /**
+   * Get a mapping of EnumFacing to EnumIOMode to render as overlay layer for the given block.
+   * <p>
+   * May return null.
+   * <p>
+   * Note: This will only be called once, with isPainted either true or false. The render layer is determined by the IO block.
+   */
+  @SideOnly(Side.CLIENT)
+  EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted);
 
   /**
    * Get lists of blockstates and pre-baked, pre-rotated models to render for the given item stack.

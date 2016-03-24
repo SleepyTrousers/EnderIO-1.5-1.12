@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.painter.blocks;
 
+import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -34,10 +35,13 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.pipeline.QuadCollector;
 
 public abstract class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper {
@@ -167,12 +171,6 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     return null;
   }
@@ -212,6 +210,18 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
+  }
+
+  @Override
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+      QuadCollector quadCollector) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+    return null;
   }
 
 }

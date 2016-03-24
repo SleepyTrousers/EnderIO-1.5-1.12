@@ -38,7 +38,6 @@ public class PaintWrangler {
   private static final ConcurrentHashMap<Block, Memory> cache = new ConcurrentHashMap<Block, Memory>();
 
   public static boolean wrangleBakedModel(IBlockAccess blockAccess, BlockPos pos, IBlockState paint, QuadCollector quads) {
-
     Block block = paint.getBlock();
     Memory memory = cache.get(block);
     if (memory == null) {
@@ -48,40 +47,6 @@ public class PaintWrangler {
 
     if (!memory.doPaint) {
       return false;
-    }
-
-    if (memory.doActualStateWithTe) {
-      try {
-        paint = block.getActualState(paint, new PaintedBlockAccessWrapper(blockAccess, true), pos);
-      } catch (Throwable t) {
-        memory.doActualStateWithTe = false;
-        memory.doActualStateWithOutTe = true;
-      }
-    }
-
-    if (memory.doActualStateWithOutTe) {
-      try {
-        paint = block.getActualState(paint, new PaintedBlockAccessWrapper(blockAccess, false), pos);
-      } catch (Throwable t) {
-        memory.doActualStateWithOutTe = false;
-      }
-    }
-
-    if (memory.doExtendedStateWithTe) {
-      try {
-        paint = block.getExtendedState(paint, new PaintedBlockAccessWrapper(blockAccess, true), pos);
-      } catch (Throwable t) {
-        memory.doExtendedStateWithTe = false;
-        memory.doExtendedStateWithOutTe = true;
-      }
-    }
-
-    if (memory.doExtendedStateWithOutTe) {
-      try {
-        paint = block.getExtendedState(paint, new PaintedBlockAccessWrapper(blockAccess, false), pos);
-      } catch (Throwable t) {
-        memory.doExtendedStateWithOutTe = false;
-      }
     }
 
     IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(paint);
@@ -106,6 +71,57 @@ public class PaintWrangler {
     }
 
     return true;
+  }
+
+  public static IBlockState getDynamicBlockState(IBlockAccess blockAccess, BlockPos pos, IBlockState paint) {
+    if (paint == null) {
+      return null;
+    }
+
+    Block block = paint.getBlock();
+    Memory memory = cache.get(block);
+    if (memory == null) {
+      memory = new Memory();
+      cache.put(block, memory);
+    }
+
+    if (memory.doPaint) {
+
+      if (memory.doActualStateWithTe) {
+        try {
+          paint = block.getActualState(paint, new PaintedBlockAccessWrapper(blockAccess, true), pos);
+        } catch (Throwable t) {
+          memory.doActualStateWithTe = false;
+          memory.doActualStateWithOutTe = true;
+        }
+      }
+
+      if (memory.doActualStateWithOutTe) {
+        try {
+          paint = block.getActualState(paint, new PaintedBlockAccessWrapper(blockAccess, false), pos);
+        } catch (Throwable t) {
+          memory.doActualStateWithOutTe = false;
+        }
+      }
+
+      if (memory.doExtendedStateWithTe) {
+        try {
+          paint = block.getExtendedState(paint, new PaintedBlockAccessWrapper(blockAccess, true), pos);
+        } catch (Throwable t) {
+          memory.doExtendedStateWithTe = false;
+          memory.doExtendedStateWithOutTe = true;
+        }
+      }
+
+      if (memory.doExtendedStateWithOutTe) {
+        try {
+          paint = block.getExtendedState(paint, new PaintedBlockAccessWrapper(blockAccess, false), pos);
+        } catch (Throwable t) {
+          memory.doExtendedStateWithOutTe = false;
+        }
+      }
+    }
+    return paint;
   }
 
   public static IBakedModel handlePaint(ItemStack stack, IBlockPaintableBlock block) {

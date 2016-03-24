@@ -1,14 +1,21 @@
 package crazypants.enderio.render.pipeline;
 
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -21,44 +28,54 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
 
 public class BlockStateWrapperBase implements IBlockStateWrapper {
 
-  private final static Cache<Pair<Block, Long>, IBakedModel> cache = CacheBuilder.newBuilder().maximumSize(500).<Pair<Block, Long>, IBakedModel> build();
+  private final static Cache<Pair<Block, Long>, QuadCollector> cache = CacheBuilder.newBuilder().maximumSize(500).<Pair<Block, Long>, QuadCollector> build();
 
-  private final Block block;
-  private final IBlockState state;
-  private final IBlockAccess world;
-  private final BlockPos pos;
+  private final @Nonnull Block block;
+  private final @Nonnull IBlockState state;
+  private final @Nonnull IBlockAccess world;
+  private final @Nonnull BlockPos pos;
+  private final @Nonnull IRenderMapper renderMapper;
   private long cacheKey = 0;
   private boolean doCaching;
 
   private IBakedModel model = null;
 
-  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos) {
-    this(state, world, pos, false);
+  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper renderMapper) {
+    this(state, world, pos, renderMapper, false);
   }
 
-  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, boolean doCaching) {
-    this.block = state.getBlock();
-    this.state = state;
-    this.world = world;
-    this.pos = pos;
+  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper renderMapper, boolean doCaching) {
+    this.state = notnull(state);
+    this.block = notnull(state.getBlock());
+    this.world = notnull(world);
+    this.pos = notnull(pos);
+    this.renderMapper = renderMapper != null ? renderMapper : nullRenderMapper;
     this.doCaching = doCaching;
+  }
+
+  @Nonnull
+  private static <X> X notnull(@Nullable X x) {
+    if (x == null) {
+      throw new NullPointerException();
+    }
+    return x;
   }
 
   protected BlockStateWrapperBase(BlockStateWrapperBase parent, IBlockState state) {
     this.block = parent.block;
-    this.state = state;
+    this.state = notnull(state);
     this.world = parent.world;
     this.pos = parent.pos;
+    this.renderMapper = parent.renderMapper;
     this.cacheKey = parent.cacheKey;
     this.doCaching = parent.doCaching;
     this.model = parent.model;
@@ -92,27 +109,27 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
   }
 
   @Override
-  public Block getBlock() {
-    return state.getBlock();
+  public @Nonnull Block getBlock() {
+    return block;
   }
 
   @Override
-  public BlockPos getPos() {
+  public @Nonnull BlockPos getPos() {
     return pos;
   }
 
   @Override
-  public TileEntity getTileEntity() {
+  public @Nullable TileEntity getTileEntity() {
     return world.getTileEntity(pos);
   }
 
   @Override
-  public IBlockAccess getWorld() {
+  public @Nonnull IBlockAccess getWorld() {
     return world;
   }
 
   @Override
-  public IBlockState getState() {
+  public @Nonnull IBlockState getState() {
     return state;
   }
 
@@ -134,81 +151,53 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
   @Override
   public void bakeModel() {
     long start = crazypants.util.Profiler.client.start();
+    QuadCollector quads = null;
+    IBlockState paintSource = null;
+    String cacheResult;
 
-    boolean renderPaint = block instanceof IBlockPaintableBlock;
-
-    if (block instanceof IWrenchHideablePaint) {
-      renderPaint = renderPaint && !YetaUtil.shouldHeldItemHideFacades();
+    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
+      paintSource = PaintWrangler.getDynamicBlockState(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos));
     }
 
     if (doCaching) {
-      if (renderPaint) {
-        IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(state, world, pos);
-        if (paintSource != null) {
-          addCacheKeyInternal(paintSource.getBlock());
-          addCacheKeyInternal(paintSource.getBlock().getMetaFromState(paintSource));
-        }
+      if (paintSource != null) {
+        addCacheKeyInternal(paintSource.toString());
+      }
+      quads = cache.getIfPresent(Pair.of(block, cacheKey));
+      cacheResult = quads == null ? "miss" : "hit";
+    } else {
+      cacheResult = "not cachable";
+    }
+
+    if (quads == null) {
+      quads = new QuadCollector();
+      if (!bakePaintLayer(quads, paintSource)) {
+        bakeBlockLayer(quads);
+        paintSource = null;
       }
 
-      Pair<Block, Long> cachePair = Pair.of(block, cacheKey);
-      model = cache.getIfPresent(cachePair);
-      if (model != null) {
-        crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (cached)");
-        return;
+      if (doCaching) {
+        cache.put(Pair.of(block, cacheKey), quads);
       }
     }
 
-    QuadCollector quads = new QuadCollector();
+    model = new CollectedQuadBakedBlockModel(quads.combine(OverlayHolder.getOverlay(renderMapper.mapOverlayLayer(this, world, pos, paintSource != null))));
 
-    IRenderMapper renderMapper = block instanceof ISmartRenderAwareBlock ? ((ISmartRenderAwareBlock) block).getRenderMapper() : null;
-
-    bakeOverlayLayer(quads, renderMapper);
-
-    if (!renderPaint || !bakePaintLayer(quads)) {
-      bakeBlockLayer(quads, renderMapper);
-    }
-
-    model = new CollectedQuadBakedBlockModel(quads);
-
-    if (doCaching) {
-      Pair<Block, Long> cachePair = Pair.of(block, cacheKey);
-      cache.put(cachePair, model);
-    }
-
-    crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName());
+    crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (bake, cache=" + cacheResult + ")");
   }
 
-  protected void bakeOverlayLayer(QuadCollector quads, IRenderMapper renderMapper) {
-    if (renderMapper != null) {
-      EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+  protected void bakeBlockLayer(QuadCollector quads) {
+    if (renderMapper instanceof IRenderMapper.IRenderLayerAware) {
       for (EnumWorldBlockLayer layer : quads.getBlockLayers()) {
-        ForgeHooksClient.setRenderLayer(layer);
-        if (renderMapper instanceof IRenderMapper.IRenderLayerAware || block.getBlockLayer() == MinecraftForgeClient.getRenderLayer()) {
-          quads.addFriendlyBlockStates(layer, renderMapper.mapOverlayLayer(this, world, pos));
-        }
+        quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
       }
-      ForgeHooksClient.setRenderLayer(oldRenderLayer);
+    } else {
+      EnumWorldBlockLayer layer = block.getBlockLayer();
+      quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
     }
   }
 
-  protected void bakeBlockLayer(QuadCollector quads, IRenderMapper renderMapper) {
-    if (renderMapper != null) {
-      EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
-      for (EnumWorldBlockLayer layer : quads.getBlockLayers()) {
-        ForgeHooksClient.setRenderLayer(layer);
-        if (renderMapper instanceof IRenderMapper.IRenderLayerAware || block.getBlockLayer() == MinecraftForgeClient.getRenderLayer()) {
-          Pair<List<IBlockState>, List<IBakedModel>> blockRender = renderMapper.mapBlockRender(this, world, pos);
-          if (blockRender != null) {
-            quads.addFriendlyBlockStates(layer, blockRender.getLeft());
-          }
-        }
-      }
-      ForgeHooksClient.setRenderLayer(oldRenderLayer);
-    }
-  }
-
-  protected boolean bakePaintLayer(QuadCollector quads) {
-    IBlockState paintSource = ((IPaintable) block).getPaintSource(state, world, pos);
+  protected boolean bakePaintLayer(QuadCollector quads, IBlockState paintSource) {
     if (paintSource != null) {
       EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
       boolean rendered = true;
@@ -229,12 +218,43 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
     if (model == null) {
       bakeModel();
       if (model != null) {
-        // Log.warn(block + " doesn't bake its model!");
+        Log.warn(block + " doesn't bake its model!");
       } else {
-        Log.warn(block + "s model won't bake!");
+        Log.warn(block + "'s model won't bake!");
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
       }
     }
     return model;
   }
+
+  private static final @Nonnull IRenderMapper nullRenderMapper = new IRenderMapper() {
+
+    @Override
+    public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
+      return null;
+    }
+
+    @Override
+    public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
+      return null;
+    }
+
+    @Override
+    public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+      return null;
+    }
+
+    @Override
+    public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+        QuadCollector quadCollector) {
+      return null;
+    }
+
+    @Override
+    public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+      return null;
+    }
+
+  };
 
 }

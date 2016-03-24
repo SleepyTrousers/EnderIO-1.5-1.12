@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.client.model.ISmartItemModel;
 
@@ -126,32 +125,15 @@ public class RelayingBakedModel implements ISmartBlockModel, ISmartItemModel {
       List<IBlockState> overlayLayer = null;
       if (block instanceof ISmartRenderAwareBlock) {
         renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
-        if (renderMapper instanceof IRenderMapper.IRenderLayerAware || block.getBlockLayer() == MinecraftForgeClient.getRenderLayer()) {
-          overlayLayer = renderMapper.mapOverlayLayer(state, world, pos);
-        } else {
-          renderMapper = null;
-        }
       }
 
       if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
         Pair<IBakedModel, Boolean> paintModel = PaintWrangler.handlePaint(state, (IBlockPaintableBlock) block, world, pos);
         if (paintModel.getRight()) {
           if (paintModel.getLeft() != null) {
-            if (overlayLayer == null || overlayLayer.isEmpty()) {
               crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted)");
               return paintModel.getLeft();
-            } else {
-              IBakedModel bakedModel = new EnderBakedModel(null, Pair.of((List<IBlockState>) null, Collections.singletonList(paintModel.getLeft())),
-                  overlayLayer);
-              crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted, with overlay)");
-              return bakedModel;
-            }
           } else {
-            if (overlayLayer != null && !overlayLayer.isEmpty()) {
-              IBakedModel bakedModel = new EnderBakedModel(null, null, overlayLayer);
-              crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted, overlay only)");
-              return bakedModel;
-            }
             crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (painted, wrong pass)");
             return EmptyBakedModel.instance;
           }

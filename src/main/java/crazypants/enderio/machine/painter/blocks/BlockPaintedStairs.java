@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter.blocks;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -39,12 +40,15 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.BlockStateWrapper;
 import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IRenderLayerAware {
@@ -230,12 +234,6 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
   public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     if (paintSource != null) {
@@ -293,6 +291,18 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
+  }
+
+  @Override
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+      QuadCollector quadCollector) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+    return null;
   }
 
 }

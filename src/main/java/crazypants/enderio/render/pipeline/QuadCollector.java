@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -108,4 +111,30 @@ public class QuadCollector {
   public Collection<EnumWorldBlockLayer> getBlockLayers() {
     return PASS;
   }
+
+  public boolean isEmpty() {
+    for (List<BakedQuad> entry : table.values()) {
+      if (entry != null && !entry.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public @Nonnull QuadCollector combine(@Nullable QuadCollector other) {
+    if (other == null || other.isEmpty()) {
+      return this;
+    }
+    if (this.isEmpty()) {
+      return other;
+    }
+    QuadCollector result = new QuadCollector();
+    for (Integer facing : FACING) {
+      for (EnumWorldBlockLayer pass : PASS) {
+        result.table.put(facing, pass, CompositeList.create(this.table.get(facing, pass), other.table.get(facing, pass)));
+      }
+    }
+    return result;
+  }
+
 }

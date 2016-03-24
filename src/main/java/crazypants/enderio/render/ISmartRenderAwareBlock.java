@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * </ul>
  *
  */
+@Deprecated
 public interface ISmartRenderAwareBlock {
 
   /**

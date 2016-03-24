@@ -1,7 +1,10 @@
 package crazypants.enderio.machine;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -10,21 +13,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.dummy.BlockMachineIO;
+import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class MachineRenderMapper implements IRenderMapper {
 
@@ -35,22 +35,27 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+      QuadCollector quadCollector) {
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
 
     if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
-      return render(state.getState(), world, pos, tileEntity, block);
+      return render(state.getState(), world, pos, (AbstractMachineEntity) tileEntity, (AbstractMachineBlock) block);
     }
     return null;
   }
 
-  protected Pair<List<IBlockState>, List<IBakedModel>> render(IBlockState state, IBlockAccess world, BlockPos pos,
-      TileEntity tileEntity, Block block) {
+  @Override
+  public Pair<List<IBlockState>, List<IBakedModel>> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+    return null;
+  }
+
+  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, AbstractMachineEntity tileEntity, AbstractMachineBlock block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
-    EnumFacing facing = ((AbstractMachineEntity) tileEntity).getFacing();
-    boolean active = ((AbstractMachineEntity) tileEntity).isActive();
+    EnumFacing facing = tileEntity.getFacing();
+    boolean active = tileEntity.isActive();
 
     if (body != null) {
       states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
@@ -62,23 +67,23 @@ public class MachineRenderMapper implements IRenderMapper {
       states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT.rotate(facing)));
     }
 
-    return Pair.of(states, null);
-  }
-
-  protected List<IBlockState> renderIO(TileEntity tileEntity, Block block) {
-    List<IBlockState> states = new ArrayList<IBlockState>();
-    for (EnumFacing face : EnumFacing.values()) {
-      IoMode ioMode = ((AbstractMachineEntity) tileEntity).getIoMode(face);
-      if (ioMode != IoMode.NONE) {
-        @SuppressWarnings("rawtypes")
-        EnumIOMode iOMode = ((AbstractMachineBlock) block).mapIOMode(ioMode, face);
-        states.add(BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode)));
-      }
-    }
     return states;
   }
 
-  protected List<IBlockState> renderPaintIO(TileEntity tileEntity, Block block) {
+  protected EnumMap<EnumFacing, EnumIOMode> renderIO(@Nonnull AbstractMachineEntity tileEntity, @Nonnull AbstractMachineBlock block) {
+    EnumMap<EnumFacing, EnumIOMode> result = new EnumMap<EnumFacing, EnumIOMode>(EnumFacing.class);
+    for (EnumFacing face : EnumFacing.values()) {
+      IoMode ioMode = tileEntity.getIoMode(face);
+      if (ioMode != IoMode.NONE) {
+        @SuppressWarnings("rawtypes")
+        EnumIOMode iOMode = block.mapIOMode(ioMode, face);
+        result.put(face, iOMode);
+      }
+    }
+    return result.isEmpty() ? null : result;
+  }
+
+  protected EnumMap<EnumFacing, EnumIOMode> renderPaintIO(@Nonnull AbstractMachineEntity tileEntity, @Nonnull AbstractMachineBlock block) {
     return null;
   }
 
@@ -93,24 +98,22 @@ public class MachineRenderMapper implements IRenderMapper {
   }
 
   @Override
-  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
-    TileEntity tileEntity = state.getTileEntity();
-    Block block = state.getBlock();
-
-    if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
-      if ((tileEntity instanceof IPaintableTileEntity) && (block instanceof IPaintable.IWrenchHideablePaint)) {
-        IPaintableTileEntity te = (IPaintableTileEntity) tileEntity;
-        if (te.getPaintSource() != null && !YetaUtil.shouldHeldItemHideFacades()) {
-          return renderPaintIO(tileEntity, block);
-        }
-      }
-      return renderIO(tileEntity, block);
-    }
+  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
     return null;
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+    TileEntity tileEntity = state.getTileEntity();
+    Block block = state.getBlock();
+
+    if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
+      if (isPainted) {
+        return renderPaintIO((AbstractMachineEntity) tileEntity, (AbstractMachineBlock) block);
+      } else {
+        return renderIO((AbstractMachineEntity) tileEntity, (AbstractMachineBlock) block);
+      }
+    }
     return null;
   }
 

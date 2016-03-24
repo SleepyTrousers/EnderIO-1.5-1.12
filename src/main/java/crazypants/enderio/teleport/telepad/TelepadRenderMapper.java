@@ -2,6 +2,7 @@ package crazypants.enderio.teleport.telepad;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -10,15 +11,18 @@ import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.BlockStateWrapper;import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
 
@@ -66,12 +70,20 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
   }
 
   @Override
-  public List<IBlockState> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos) {
+  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
     return null;
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+      QuadCollector quadCollector) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+    // TODO Auto-generated method stub
     return null;
   }
 
