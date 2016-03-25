@@ -138,7 +138,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       @Nonnull T tileEntity);
 
   protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    return new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+    return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
   }
 
   @Override
@@ -286,7 +286,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
+  public IRenderMapper.IItemRenderMapper getRenderMapper() {
+    return RenderMappers.BODY_MAPPER;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return RenderMappers.BODY_MAPPER;
   }
 

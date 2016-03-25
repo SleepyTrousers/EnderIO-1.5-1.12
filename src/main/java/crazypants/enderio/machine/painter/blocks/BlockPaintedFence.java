@@ -32,9 +32,6 @@ import net.minecraftforge.client.model.ModelLoader.UVLock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -43,6 +40,7 @@ import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -53,7 +51,7 @@ import crazypants.enderio.render.pipeline.QuadCollector;
 
 @SuppressWarnings("deprecation")
 public class BlockPaintedFence extends BlockFence implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
-    IRenderMapper.IRenderLayerAware {
+    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedFence create() {
     BlockPaintedFence woodFence = new BlockPaintedFence(Material.wood, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.unlocalisedName);
@@ -183,7 +181,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
       blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(BlockFence.EAST))
           .addCacheKey(state.getValue(BlockFence.NORTH)).addCacheKey(state.getValue(BlockFence.SOUTH)).addCacheKey(state.getValue(BlockFence.WEST));
       blockStateWrapper.bakeModel();
@@ -195,7 +193,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
     return this;
   }
 
@@ -243,7 +241,13 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
+  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+    return cacheKey.addCacheKey(getPaintSource(block, stack));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     if (paintSource != null) {
       IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
@@ -253,16 +257,10 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
       List<IBakedModel> list = new ArrayList<IBakedModel>();
       list.add(model1);
       list.add(model2);
-      return Pair.of(null, list);
+      return list;
     } else {
       return null;
     }
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
   }
 
   @Override
@@ -315,6 +313,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
@@ -325,6 +324,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }

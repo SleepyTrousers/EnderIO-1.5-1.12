@@ -26,7 +26,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
@@ -93,7 +93,7 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, RenderMappers.FRONT_MAPPER_NO_IO);
       blockStateWrapper.addCacheKey(0);
       blockStateWrapper.bakeModel();
       return blockStateWrapper;
@@ -135,7 +135,7 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
   }
 
   @Override
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER_NO_IO;
   }
 

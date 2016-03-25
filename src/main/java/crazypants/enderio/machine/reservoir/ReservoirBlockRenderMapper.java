@@ -8,6 +8,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.render.ConnectedBlockRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
@@ -20,11 +22,13 @@ public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   protected List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, QuadCollector quadCollector) {
     return null;
   }
@@ -35,11 +39,13 @@ public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   protected IBlockState getMergedBlockstate(IBlockState state) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   protected IBlockState getBorderedBlockstate(IBlockState state) {
     return state;
   }

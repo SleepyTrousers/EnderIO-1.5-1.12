@@ -141,7 +141,7 @@ public class SmartModelAttacher {
   private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl) {
     String prefix = defaultMrl.getResourceDomain()+ ":" + defaultMrl.getResourcePath();
     if (modelRegistry instanceof RegistrySimple) {
-      RegistrySimple rg = (RegistrySimple) modelRegistry;
+      RegistrySimple<?, ?> rg = (RegistrySimple<?, ?>) modelRegistry;
       StringBuilder sb = new StringBuilder();
       for (Object key : rg.getKeys()) {
         if (key.toString().startsWith(prefix)) {

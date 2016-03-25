@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFirework;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 
 public class EntityWeatherRocket extends EntityFireworkRocket {
 
@@ -72,10 +72,10 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
     for (int j = -size; j <= size; ++j) {
       for (int k = -size; k <= size; ++k) {
         for (int l = -size; l <= size; ++l) {
-          double d4 = (double) k + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
-          double d5 = (double) j + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
-          double d6 = (double) l + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
-          double d7 = (double) MathHelper.sqrt_double(d4 * d4 + d5 * d5 + d6 * d6) / speed + this.rand.nextGaussian() * 0.05D;
+          double d4 = k + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
+          double d5 = j + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
+          double d6 = l + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
+          double d7 = MathHelper.sqrt_double(d4 * d4 + d5 * d5 + d6 * d6) / speed + this.rand.nextGaussian() * 0.05D;
 
           EntityFirework.SparkFX entityfireworksparkfx = new EntityFirework.SparkFX(this.worldObj, d1, d2, d3, d4 / d7, d5 / d7, d6 / d7,
               Minecraft.getMinecraft().effectRenderer);

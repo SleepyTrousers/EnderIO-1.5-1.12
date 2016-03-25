@@ -24,6 +24,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
@@ -86,9 +87,10 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, TelepadRenderMapper.instance);
       TileTelePad tileEntity = getTileEntity(world, pos);
       if (tileEntity != null) {
         blockStateWrapper.addCacheKey(tileEntity.inNetwork()).addCacheKey(tileEntity.isMaster());
@@ -201,11 +203,8 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new TelepadRenderMapper();
-    }
-    return RENDER_MAPPER;
+  public IItemRenderMapper getRenderMapper() {
+    return TelepadRenderMapper.instance;
   }
 
 }

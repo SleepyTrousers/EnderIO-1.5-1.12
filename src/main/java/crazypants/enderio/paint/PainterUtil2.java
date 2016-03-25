@@ -9,9 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameData;
 
 import com.google.common.base.Strings;
@@ -91,11 +89,6 @@ public class PainterUtil2 {
     return paintSource;
   }
   
-  @Deprecated
-  public static IBlockState handleDynamicState(IBlockState paintSource, IBlockState state, IBlockAccess world, BlockPos pos) {
-    return paintSource;           
-  }
-
   public static void writeNbt(NBTTagCompound nbtRoot, IBlockState paintSource) {
     if (nbtRoot == null) {
       return;

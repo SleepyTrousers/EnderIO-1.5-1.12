@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -15,6 +8,13 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
 
 @SideOnly(Side.CLIENT)
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombieGenerator> {
@@ -38,7 +38,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombi
         facing = te.facing;
       }
       renderModel(facing);
-    } else if (MinecraftForgeClient.getRenderPass() == 1 && te != null) {
+    } else if (MinecraftForgeClient.getRenderPass() == 1) {
       renderFluid(te);
     }
     GL11.glPopMatrix();

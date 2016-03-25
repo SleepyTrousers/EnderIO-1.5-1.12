@@ -12,7 +12,6 @@ import net.minecraft.world.IBlockAccess;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
 
 public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
@@ -55,7 +54,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   private IBlockState getPaintSource(BlockPos pos) {
     IBlockState state = super.getBlockState(pos);
     if (state.getBlock() instanceof IPaintable.IBlockPaintableBlock) {
-      return PainterUtil2.handleDynamicState(((IPaintable.IBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos), state, wrapped, pos);
+      return ((IPaintable.IBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos);
     }
     // TODO: Foreign painted blocks
     return null;

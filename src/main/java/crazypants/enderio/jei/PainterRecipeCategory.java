@@ -54,16 +54,16 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
   @SuppressWarnings("null")
   private static List<PainterRecipeWrapper> splitRecipes(@Nonnull Collection<IMachineRecipe> recipes, List<ItemStack> validItems) {
     long start = System.nanoTime();
-    List<BasicPainterTemplate> basicPainterTemplates = new ArrayList<BasicPainterTemplate>();
+    List<BasicPainterTemplate<?>> basicPainterTemplates = new ArrayList<BasicPainterTemplate<?>>();
     for (IMachineRecipe recipe : recipes) {
       if (recipe instanceof BasicPainterTemplate) {
-        basicPainterTemplates.add((BasicPainterTemplate) recipe);
+        basicPainterTemplates.add((BasicPainterTemplate<?>) recipe);
       }
     }
 
     List<PainterRecipeWrapper> recipesWrappers = new ArrayList<PainterRecipeWrapper>();
     for (ItemStack target : validItems) {
-      for (BasicPainterTemplate basicPainterTemplate : basicPainterTemplates) {
+      for (BasicPainterTemplate<?> basicPainterTemplate : basicPainterTemplates) {
         if (basicPainterTemplate.isValidTarget(target)) {
           recipesWrappers.add(new PainterRecipeWrapper(basicPainterTemplate, target, new ArrayList<ItemStack>(), new ArrayList<ItemStack>()));
         }
@@ -104,7 +104,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
   public static class PainterRecipeWrapper extends BlankRecipeWrapper {
 
-    final BasicPainterTemplate recipe;
+    final BasicPainterTemplate<?> recipe;
     final int energyRequired;
     final @Nonnull ItemStack target;
     final @Nonnull List<ItemStack> paints;

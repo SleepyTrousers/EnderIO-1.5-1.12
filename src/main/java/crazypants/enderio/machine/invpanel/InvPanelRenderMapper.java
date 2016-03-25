@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -8,12 +9,13 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -33,7 +35,9 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, AbstractMachineEntity tileEntity, AbstractMachineBlock block) {
+  @SideOnly(Side.CLIENT)
+  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, AbstractMachineEntity tileEntity,
+      AbstractMachineBlock<?> block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();
@@ -49,7 +53,8 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  protected EnumMap<EnumFacing, EnumIOMode> renderIO(@Nonnull AbstractMachineEntity tileEntity, @Nonnull AbstractMachineBlock block) {
+  @SideOnly(Side.CLIENT)
+  protected EnumMap<EnumFacing, EnumIOMode> renderIO(@Nonnull AbstractMachineEntity tileEntity, @Nonnull AbstractMachineBlock<?> block) {
     EnumMap<EnumFacing, EnumIOMode> result = new EnumMap<EnumFacing, EnumIOMode>(EnumFacing.class);
     EnumFacing face = tileEntity.getFacing().getOpposite();
     IoMode ioMode = tileEntity.getIoMode(face);
@@ -61,10 +66,10 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-    List<IBlockState> states = new ArrayList<IBlockState>();
-    states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.FRONT_ON_NORTH));
-    return Pair.of(states, null);
+  @SideOnly(Side.CLIENT)
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack) {
+    return Collections.singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.FRONT_ON_NORTH),
+        stack));
   }
 
 

@@ -13,6 +13,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -20,6 +22,7 @@ import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
 
@@ -97,7 +100,13 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
   }
 
   @Override
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER_NO_IO;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return RenderMappers.FRONT_MAPPER_NO_IO;
   }
 

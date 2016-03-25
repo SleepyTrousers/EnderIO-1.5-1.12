@@ -6,13 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,6 +13,14 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
@@ -123,11 +124,11 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
   }
 
-  private static void clean(List list) {
-    Iterator iterator = list.iterator();
+  private static void clean(List<ItemStack> list) {
+    Iterator<ItemStack> iterator = list.iterator();
     while (iterator.hasNext()) {
-      final Object o = iterator.next();
-      if (o == null || (o instanceof ItemStack && ((ItemStack) o).getItem() == null)) {
+      final ItemStack o = iterator.next();
+      if (o == null || o.getItem() == null) {
         iterator.remove();
       }
     }

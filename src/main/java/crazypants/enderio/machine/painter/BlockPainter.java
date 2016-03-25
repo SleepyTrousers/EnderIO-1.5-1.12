@@ -29,6 +29,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
     super(ModObject.blockPainter, TileEntityPainter.class);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   protected void init() {
     super.init();

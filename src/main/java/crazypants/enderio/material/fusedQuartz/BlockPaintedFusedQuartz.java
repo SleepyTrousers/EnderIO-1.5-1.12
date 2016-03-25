@@ -1,14 +1,10 @@
 package crazypants.enderio.material.fusedQuartz;
 
-import java.util.EnumMap;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,9 +17,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -32,14 +25,11 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.render.pipeline.QuadCollector;
 
-public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock> implements ITileEntityProvider, IPaintable.IBlockPaintableBlock,
-    IRenderMapper {
+public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock> implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
   
   public static BlockPaintedFusedQuartz create() {
     BlockPaintedFusedQuartz result = new BlockPaintedFusedQuartz();
@@ -90,7 +80,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @SideOnly(Side.CLIENT)
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, null);
       blockStateWrapper.addCacheKey(0);
       blockStateWrapper.bakeModel();
       return blockStateWrapper;
@@ -101,8 +91,8 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
-    return this;
+  public IItemRenderMapper getRenderMapper() {
+    return null;
   }
 
   @Override
@@ -164,18 +154,6 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
-  }
-
-  @Override
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
     return getPaintSource(getDefaultState(), world, pos);
   }
@@ -196,17 +174,6 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
     return true;
-  }
-
-  @Override
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
-      QuadCollector quadCollector) {
-    return null;
-  }
-
-  @Override
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
-    return null;
   }
 
 }

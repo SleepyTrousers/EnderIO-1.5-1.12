@@ -17,6 +17,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
   
@@ -56,7 +57,13 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

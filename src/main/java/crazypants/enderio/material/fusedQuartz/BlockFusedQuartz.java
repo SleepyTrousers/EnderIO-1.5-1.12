@@ -14,6 +14,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 
@@ -67,11 +68,8 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public FusedQuartzItemRenderMapper getRenderMapper() {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new FusedQuartzItemRenderMapper();
-    }
-    return RENDER_MAPPER;
+  public IItemRenderMapper getRenderMapper() {
+    return FusedQuartzItemRenderMapper.instance;
   }
 
   @Override

@@ -3,23 +3,6 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-import com.enderio.core.common.util.ItemUtil;
-import com.google.common.collect.Sets;
-
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.teleport.TravelController;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -40,7 +23,24 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel,
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.ItemUtil;
+import com.google.common.collect.Sets;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.teleport.TravelController;
+
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel,
     IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_pickaxe";

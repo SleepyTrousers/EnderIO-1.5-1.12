@@ -25,6 +25,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.EnumRenderMode6;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.SmartModelAttacher;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
@@ -192,7 +193,13 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
+    return InvPanelRenderMapper.instance;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return InvPanelRenderMapper.instance;
   }
 

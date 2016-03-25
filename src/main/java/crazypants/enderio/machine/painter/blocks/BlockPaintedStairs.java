@@ -30,9 +30,6 @@ import net.minecraftforge.client.model.ModelLoader.UVLock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -41,6 +38,7 @@ import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -50,7 +48,7 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
-    IRenderMapper.IRenderLayerAware {
+    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedStairs create() {
     BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.oak_stairs, ModObject.blockPaintedStair.unlocalisedName);
@@ -161,7 +159,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
       blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(HALF)).addCacheKey(state.getValue(FACING))
           .addCacheKey(state.getValue(SHAPE));
       blockStateWrapper.bakeModel();
@@ -173,7 +171,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
     return this;
   }
 
@@ -230,7 +228,13 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
+  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+    return cacheKey.addCacheKey(getPaintSource(block, stack));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     if (paintSource != null) {
       IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
@@ -240,16 +244,10 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
       List<IBakedModel> list = new ArrayList<IBakedModel>();
       list.add(model1);
       list.add(model2);
-      return Pair.of(null, list);
+      return list;
     } else {
       return null;
     }
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
   }
 
   @Override
@@ -290,6 +288,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
@@ -300,6 +299,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }

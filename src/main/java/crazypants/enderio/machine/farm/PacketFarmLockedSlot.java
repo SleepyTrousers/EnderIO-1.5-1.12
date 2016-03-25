@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> implements IMessage, IMessageHandler<PacketFarmLockedSlot, IMessage> {
+import com.enderio.core.common.network.MessageTileEntity;
+
+public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> implements IMessageHandler<PacketFarmLockedSlot, IMessage> {
 
   public PacketFarmLockedSlot() {}
   

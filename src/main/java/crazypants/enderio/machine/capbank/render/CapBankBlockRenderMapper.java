@@ -10,6 +10,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
@@ -32,11 +34,13 @@ public class CapBankBlockRenderMapper extends ConnectedBlockRenderMapper {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   protected List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, QuadCollector quadCollector) {
     List<IBlockState> states = new ArrayList<IBlockState>();
     TileEntity tileEntity = state.getTileEntity();
@@ -60,11 +64,13 @@ public class CapBankBlockRenderMapper extends ConnectedBlockRenderMapper {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   protected IBlockState getMergedBlockstate(IBlockState state) {
     return state.withProperty(CapBankType.KIND, CapBankType.NONE);
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   protected IBlockState getBorderedBlockstate(IBlockState state) {
     return state;
   }

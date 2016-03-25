@@ -1,16 +1,16 @@
 package crazypants.enderio.conduit.item;
 
-import com.enderio.core.common.util.DyeColor;
-
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IExtractor;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-public interface IItemConduit extends IConduit, IExtractor {
+import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.conduit.IExtractor;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+
+public interface IItemConduit extends IExtractor {
 
   TextureAtlasSprite getTextureForInputMode();
 

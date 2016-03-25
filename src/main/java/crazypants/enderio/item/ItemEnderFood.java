@@ -3,17 +3,6 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.google.common.collect.Lists;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
-import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -26,6 +15,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.google.common.collect.Lists;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider, IHaveRenderers {
 
@@ -146,6 +147,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
     return "enderio." + EnderFood.get(itemStack).unlocalisedName;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     List<ResourceLocation> names = EnderFood.resources();    

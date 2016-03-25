@@ -37,6 +37,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
@@ -163,10 +164,16 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
   }
 
   @Override
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
   
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+    return RenderMappers.FRONT_MAPPER;
+  }
+
   @Override
   @SideOnly(Side.CLIENT)
   public IOMode.EnumIOMode mapIOMode(IoMode mode, EnumFacing side) {

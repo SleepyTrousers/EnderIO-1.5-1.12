@@ -12,7 +12,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -20,6 +19,8 @@ import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -35,7 +36,7 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 
-public class BlockStateWrapperBase implements IBlockStateWrapper {
+public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrapper {
 
   private final static Cache<Pair<Block, Long>, QuadCollector> cache = CacheBuilder.newBuilder().maximumSize(500).<Pair<Block, Long>, QuadCollector> build();
 
@@ -43,13 +44,12 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
   private final @Nonnull IBlockState state;
   private final @Nonnull IBlockAccess world;
   private final @Nonnull BlockPos pos;
-  private final @Nonnull IRenderMapper renderMapper;
-  private long cacheKey = 0;
+  private final @Nonnull IRenderMapper.IBlockRenderMapper renderMapper;
   private boolean doCaching = false;
 
   private IBakedModel model = null;
 
-  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper renderMapper) {
+  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper.IBlockRenderMapper renderMapper) {
     this.state = notnull(state);
     this.block = notnull(state.getBlock());
     this.world = notnull(world);
@@ -71,7 +71,6 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
     this.world = parent.world;
     this.pos = parent.pos;
     this.renderMapper = parent.renderMapper;
-    this.cacheKey = parent.cacheKey;
     this.doCaching = parent.doCaching;
     this.model = parent.model;
   }
@@ -128,24 +127,10 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
     return state;
   }
 
-  public long getCacheKey() {
-    return cacheKey;
-  }
-
   @Override
   public IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey) {
-    addCacheKeyInternal(addlCacheKey != null ? addlCacheKey : 0);
-    doCaching = true;
+    super.addCacheKey(addlCacheKey);
     return this;
-  }
-
-  protected void addCacheKeyInternal(@Nonnull Object addlCacheKey) {
-    if (addlCacheKey instanceof IBlockState) {
-      // block states have no hashCode(), so we'd get the identity based default hash
-      cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ addlCacheKey.toString().hashCode();
-    } else {
-      cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ addlCacheKey.hashCode();
-    }
   }
 
   @Override
@@ -163,7 +148,7 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
       if (paintSource != null) {
         addCacheKeyInternal(paintSource);
       }
-      quads = cache.getIfPresent(Pair.of(block, cacheKey));
+      quads = cache.getIfPresent(Pair.of(block, getCacheKey()));
       cacheResult = quads == null ? "miss" : "hit";
     } else {
       cacheResult = "not cachable";
@@ -174,12 +159,12 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
       if (!bakePaintLayer(quads, paintSource)) {
         bakeBlockLayer(quads);
         paintSource = null;
-      } else if (renderMapper instanceof IRenderMapper.IPaintAware) {
+      } else if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware) {
         bakeBlockLayer(quads);
       }
 
       if (doCaching) {
-        cache.put(Pair.of(block, cacheKey), quads);
+        cache.put(Pair.of(block, getCacheKey()), quads);
       }
     }
 
@@ -189,7 +174,7 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
   }
 
   protected void bakeBlockLayer(QuadCollector quads) {
-    if (renderMapper instanceof IRenderMapper.IRenderLayerAware) {
+    if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware) {
       for (EnumWorldBlockLayer layer : quads.getBlockLayers()) {
         quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
       }
@@ -229,24 +214,16 @@ public class BlockStateWrapperBase implements IBlockStateWrapper {
     return model;
   }
 
-  private static final @Nonnull IRenderMapper nullRenderMapper = new IRenderMapper() {
+  private static final @Nonnull IRenderMapper.IBlockRenderMapper nullRenderMapper = new IRenderMapper.IBlockRenderMapper() {
 
     @Override
-    public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-      return null;
-    }
-
-    @Override
-    public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-      return null;
-    }
-
-    @Override
+    @SideOnly(Side.CLIENT)
     public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
       return null;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
         QuadCollector quadCollector) {
       return null;

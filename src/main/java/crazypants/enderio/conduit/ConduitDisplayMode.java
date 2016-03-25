@@ -104,16 +104,17 @@ public class ConduitDisplayMode {
     return conduitType;
   }
 
-  public boolean renderConduit(Class<? extends IConduit> conduitType) {
+  public boolean renderConduit(Class<? extends IConduit> conduitTypeIn) {
     if (this == ALL) {
       return true;
     } else if (this == NONE) {
       return false;
     } else {
-      return this.conduitType.isAssignableFrom(conduitType);
+      return this.conduitType.isAssignableFrom(conduitTypeIn);
     }
   }
 
+  @SuppressWarnings("null")
   @Nonnull
   public String getName() {
     return overrideName == null ? conduitType.getSimpleName() : overrideName;

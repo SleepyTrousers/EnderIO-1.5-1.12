@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess;
  * To enable caching, call addCacheKey() at least once. If it is not called before bakeModel(), no caching will be performed.
  *
  */
-public interface IBlockStateWrapper extends IBlockState {
+public interface IBlockStateWrapper extends IBlockState, ICacheKey {
 
   BlockPos getPos();
 
@@ -23,6 +23,7 @@ public interface IBlockStateWrapper extends IBlockState {
 
   IBlockState getState();
 
+  @Override
   IBlockStateWrapper addCacheKey(Object addlCacheKey);
 
   void bakeModel();

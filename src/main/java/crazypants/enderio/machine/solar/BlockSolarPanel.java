@@ -32,6 +32,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
@@ -105,11 +106,8 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public SolarItemRenderMapper getRenderMapper() {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new SolarItemRenderMapper();
-    }
-    return RENDER_MAPPER;
+  public IItemRenderMapper getRenderMapper() {
+    return SolarItemRenderMapper.instance;
   }
 
   @Override

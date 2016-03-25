@@ -4,12 +4,12 @@ import java.awt.Point;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> {
 
@@ -69,15 +69,15 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
     int x = offset.x;
     int y = offset.y;    
     for (i = 0; i < 4; i++) {      
-      ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
-      ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
+      inventorySlots.get(i).xDisplayPosition = x;
+      inventorySlots.get(i).yDisplayPosition = y;
       x += 18;
     }
     x = offset.x;
     y = offset.y + 18;
     for (; i < 8; i++) {      
-      ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
-      ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
+      inventorySlots.get(i).xDisplayPosition = x;
+      inventorySlots.get(i).yDisplayPosition = y;
       x += 18;
     }
     
@@ -85,15 +85,15 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
     //y = offset.y + 18 + getItemRowSpacing();
     y = offset.y;
     for (; i < 12; i++) {
-      ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
-      ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
+      inventorySlots.get(i).xDisplayPosition = x;
+      inventorySlots.get(i).yDisplayPosition = y;
       x += 18;
     }
     x = offset.x + (18 * 4) + getItemBufferSpacing();
     y = offset.y + 18;
     for (; i < 16; i++) {
-      ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
-      ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
+      inventorySlots.get(i).xDisplayPosition = x;
+      inventorySlots.get(i).yDisplayPosition = y;
       x += 18;
     }
   }

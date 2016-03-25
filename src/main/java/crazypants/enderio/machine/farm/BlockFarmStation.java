@@ -19,17 +19,14 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
-
-  @SideOnly(Side.CLIENT)
-  private static MachineRenderMapper FARM_MACHINE_RENDER_MAPPER;
 
   public static BlockFarmStation create() {
     PacketHandler.INSTANCE.registerMessage(PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
@@ -121,11 +118,14 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> impl
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
-    if (FARM_MACHINE_RENDER_MAPPER == null) {
-      FARM_MACHINE_RENDER_MAPPER = new FarmingStationRenderMapper();
-    }
-    return FARM_MACHINE_RENDER_MAPPER;
+  public IItemRenderMapper getRenderMapper() {
+    return FarmingStationRenderMapper.instance;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+    return FarmingStationRenderMapper.instance;
   }
 
   @Override

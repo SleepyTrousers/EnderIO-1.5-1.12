@@ -26,6 +26,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
@@ -93,11 +94,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ReservoirItemRenderMapper getRenderMapper() {
-    if (RENDER_MAPPER == null) {
-      RENDER_MAPPER = new ReservoirItemRenderMapper();
-    }
-    return RENDER_MAPPER;
+  public IItemRenderMapper getRenderMapper() {
+    return ReservoirItemRenderMapper.instance;
   }
 
   @Override

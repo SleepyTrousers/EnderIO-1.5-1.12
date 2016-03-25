@@ -35,8 +35,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIO;
@@ -50,6 +48,7 @@ import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -61,7 +60,8 @@ import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.CapturedMob;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock,
-    ISmartRenderAwareBlock, IRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider {
+    ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider,
+    IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static class TilePaintedPressurePlate extends TileEntityPaintedBlock {
 
@@ -367,7 +367,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, getRenderMapper());
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
       blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(getRotation(world, pos))
           .addCacheKey(state.getValue(BlockPressurePlateWeighted.POWER) > 0);
       blockStateWrapper.bakeModel();
@@ -379,7 +379,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper getRenderMapper() {
+  public IItemRenderMapper getRenderMapper() {
     return this;
   }
 
@@ -428,27 +428,27 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-    IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", paintSource, null);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
-        IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
-        list.add(model2);
-      }
-      return Pair.of(null, list);
-    } else {
-      return null;
-    }
+  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+    return cacheKey.addCacheKey(getPaintSource(block, stack));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
+  public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
+    IBlockState paintSource = getPaintSource(block, stack);
+    if (paintSource != null) {
+      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", paintSource, null);
+      List<IBakedModel> list = new ArrayList<IBakedModel>();
+      list.add(model1);
+      if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
+        IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+        IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
+        list.add(model2);
+      }
+      return list;
+    } else {
+      return null;
+    }
   }
 
   @Override
@@ -575,6 +575,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
@@ -585,6 +586,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }

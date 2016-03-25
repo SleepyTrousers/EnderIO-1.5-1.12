@@ -1,14 +1,15 @@
 package crazypants.enderio.item;
 
-import org.lwjgl.opengl.GL11;
-
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 
 public class PowerBarOverlayRenderHelper {
 
@@ -116,24 +117,24 @@ public class PowerBarOverlayRenderHelper {
 
   private void drawGrad(WorldRenderer renderer, int x, int y, double width, int height, int redL, int greenL, int blueL, int alphaL, int redR, int greenR,
       int blueR, int alphaR) {
-    renderer.pos((double) (x + 0), (double) (y + 0), 0.0D).color(redL, greenL, blueL, alphaL).endVertex();
-    renderer.pos((double) (x + 0), (double) (y + height), 0.0D).color(redL, greenL, blueL, alphaL).endVertex();
-    renderer.pos((double) (x + width), (double) (y + height), 0.0D).color(redR, greenR, blueR, alphaR).endVertex();
-    renderer.pos((double) (x + width), (double) (y + 0), 0.0D).color(redR, greenR, blueR, alphaR).endVertex();
+    renderer.pos(x + 0, y + 0, 0.0D).color(redL, greenL, blueL, alphaL).endVertex();
+    renderer.pos(x + 0, y + height, 0.0D).color(redL, greenL, blueL, alphaL).endVertex();
+    renderer.pos(x + width, y + height, 0.0D).color(redR, greenR, blueR, alphaR).endVertex();
+    renderer.pos(x + width, y + 0, 0.0D).color(redR, greenR, blueR, alphaR).endVertex();
   }
 
   private void drawPlain(WorldRenderer renderer, int x, int y, double width, int height, int red, int green, int blue, int alpha) {
-    renderer.pos((double) (x + 0), (double) (y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
-    renderer.pos((double) (x + 0), (double) (y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-    renderer.pos((double) (x + width), (double) (y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-    renderer.pos((double) (x + width), (double) (y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x + 0, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x + 0, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x + width, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x + width, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
   }
 
   private void drawRight(WorldRenderer renderer, int x, int y, double width, int height, int red, int green, int blue, int alpha) {
-    renderer.pos((double) (x - width), (double) (y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
-    renderer.pos((double) (x - width), (double) (y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-    renderer.pos((double) x, (double) (y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-    renderer.pos((double) x, (double) (y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x - width, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x - width, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
+    renderer.pos(x, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
   }
 
   private void overpaintVanillaRenderBug(int xPosition, int yPosition) {

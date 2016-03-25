@@ -2,21 +2,6 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
-
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,7 +29,22 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.teleport.TravelController;
+
+public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_sword";
   

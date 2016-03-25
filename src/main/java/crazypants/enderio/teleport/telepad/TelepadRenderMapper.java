@@ -1,19 +1,19 @@
 package crazypants.enderio.teleport.telepad;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -23,17 +23,20 @@ import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
-public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
+public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemStateMapper {
+
+  public static final TelepadRenderMapper instance = new TelepadRenderMapper();
 
   private static final EnumRenderMode GLASS_TOP_MODEL = EnumRenderMode.FRONT_ON;
   private static final EnumRenderMode FULL_MODEL = EnumRenderMode.FRONT_EAST;
   private static final EnumRenderMode SINGLE_MODEL = EnumRenderMode.FRONT;
   private static final EnumRenderMode SINGLE_MODEL_INVENTORY = EnumRenderMode.FRONT_SOUTH;
 
-  public TelepadRenderMapper() {
+  protected TelepadRenderMapper() {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     TileEntity tileEntity = state.getTileEntity();
@@ -63,19 +66,14 @@ public class TelepadRenderMapper implements IRenderMapper.IRenderLayerAware {
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-    List<IBlockState> states = new ArrayList<IBlockState>();
-    states.add(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY));
-    return Pair.of(states, null);
+  @SideOnly(Side.CLIENT)
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack) {
+    return Collections.singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY),
+        (ItemStack) null));
   }
 
   @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
-  }
-
-
-  @Override
+  @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }

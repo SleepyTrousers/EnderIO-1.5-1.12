@@ -1,15 +1,16 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
-import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> implements IMessage, IMessageHandler<PacketUpdateNotification, IMessage> {
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
+
+public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> implements IMessageHandler<PacketUpdateNotification, IMessage> {
 
   private String notification;
 

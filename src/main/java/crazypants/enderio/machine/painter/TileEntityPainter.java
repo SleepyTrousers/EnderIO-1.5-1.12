@@ -47,7 +47,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
     for (IMachineRecipe rec : recipes.values()) {
       if (rec instanceof BasicPainterTemplate) {
-        BasicPainterTemplate temp = (BasicPainterTemplate) rec;
+        BasicPainterTemplate<?> temp = (BasicPainterTemplate<?>) rec;
         if (temp.isPartialRecipe(paint, targt)) {
           return true;
         }

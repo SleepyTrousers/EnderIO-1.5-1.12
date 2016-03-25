@@ -4,33 +4,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
-
-import org.apache.commons.lang3.tuple.Pair;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
-public abstract class ConnectedBlockRenderMapper implements IRenderMapper {
+public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlockRenderMapper {
 
   protected boolean skip_top = false, skip_bottom = false, skip_side = false, skip_top_side = false, skip_bottom_side = false;
 
+  @SideOnly(Side.CLIENT)
   protected abstract List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector);
 
   protected abstract boolean isSameKind(IBlockState state, IBlockState other);
 
+  @SideOnly(Side.CLIENT)
   protected abstract IBlockState getMergedBlockstate(IBlockState state);
 
+  @SideOnly(Side.CLIENT)
   protected abstract IBlockState getBorderedBlockstate(IBlockState state);
 
   private final boolean[][][] neighborKinds = new boolean[3][3][3];
@@ -96,6 +95,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     List<IBlockState> states = renderBody(state, world, pos, blockLayer, quadCollector);
@@ -196,16 +196,6 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper {
     if (!skip && state != null) {
       states.add(state.withProperty(property, value));
     }
-  }
-
-  @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemRender(Block block, ItemStack stack) {
-    return null;
-  }
-
-  @Override
-  public Pair<List<IBlockState>, List<IBakedModel>> mapItemPaintOverlayRender(Block block, ItemStack stack) {
-    return null;
   }
 
 }

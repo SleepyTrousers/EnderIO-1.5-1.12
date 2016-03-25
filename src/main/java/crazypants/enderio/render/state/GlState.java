@@ -112,7 +112,7 @@ public class GlState {
   public static GlState create(Object... data) {
     GlState glstate = new GlState();
 
-    Iterator iterator = Arrays.asList(data).iterator();
+    Iterator<Object> iterator = Arrays.asList(data).iterator();
     while (iterator.hasNext()) {
       Object key = iterator.next();
       State state = allStates.get(key);

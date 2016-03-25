@@ -83,7 +83,7 @@ public final class Config {
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
-  public static boolean jeiUseShortenedPainterRecipes = false; // TODO check category
+  public static boolean jeiUseShortenedPainterRecipes = true;
 
   public static boolean reinforcedObsidianEnabled = true;
   public static boolean reinforcedObsidianUseDarkSteelBlocks = false;

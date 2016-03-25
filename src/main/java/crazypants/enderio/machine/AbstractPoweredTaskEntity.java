@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.power.IInternalPowerReceiver;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IProgressTile {
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+
+public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;

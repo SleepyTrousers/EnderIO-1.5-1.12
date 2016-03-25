@@ -7,6 +7,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
@@ -25,20 +40,6 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -231,7 +232,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
       if(res != null && res.component != null) {
         EnumFacing connDir = res.component.dir;
-        if(connDir != null && connDir != null && containsExternalConnection(connDir)) {
+        if (connDir != null && containsExternalConnection(connDir)) {
           if(!player.worldObj.isRemote) {
             PacketConduitProbe.sendInfoMessage(player, this, player.getCurrentEquippedItem());
           }

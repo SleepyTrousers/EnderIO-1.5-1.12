@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.render;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,7 +33,6 @@ public class ConduitBundleRenderManager {
   public static final ConduitBundleRenderManager instance = new ConduitBundleRenderManager();
 
   private final ConduitBundleRenderer cbr = new ConduitBundleRenderer();
-  private ModelResourceLocation modelLocation = new ModelResourceLocation("enderio:blockConduitBundle");
 
   private TextureAtlasSprite connectorIconExternal;
 
@@ -63,24 +61,8 @@ public class ConduitBundleRenderManager {
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
-    // StateMapperBase ignoreState = new StateMapperBase() {
-    // @Override
-    // protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-    // return modelLocation;
-    // }
-    // };
-    // if(EnderIO.blockConduitBundle != null) {
-    // ModelLoader.setCustomStateMapper(EnderIO.blockConduitBundle, ignoreState);
-    // }
     MinecraftForge.EVENT_BUS.register(this);
   }
-
-  // @SubscribeEvent
-  // public void onModelBakeEvent(ModelBakeEvent event) {
-  // IBakedModel defaultBakedModel = event.modelRegistry.getObject(modelLocation);
-  // ConduitBundleBakedModel model = new ConduitBundleBakedModel(defaultBakedModel);
-  // event.modelRegistry.putObject(modelLocation, model);
-  // }
 
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
