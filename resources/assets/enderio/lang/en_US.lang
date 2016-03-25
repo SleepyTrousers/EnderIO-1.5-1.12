@@ -162,16 +162,16 @@ tile.fluid.rocket_fuel.name=Rocket Fuel
 item.bucketRocket_fuel.name=Rocket Fuel Bucket
 
 fluid.liquid_sunshine=Liquid Sunshine
-tile.fluid.liquid_sunshine=Liquid Sunshine
+tile.fluid.liquid_sunshine.name=Liquid Sunshine
 item.bucketLiquid_sunshine.name=Liquid Sunshine Bucket
 
 fluid.cloud_seed=Cloud Seed
-tile.fluid.cloud_seed=Cloud Seed
-item.bucketCloud_seed=Cloud Seed Bucket
+tile.fluid.cloud_seed.name=Cloud Seed
+item.bucketCloud_seed.name=Cloud Seed Bucket
 
 fluid.cloud_seed_concentrated=Concentrated Cloud Seed
-tile.fluid.cloud_seed_concentrated=Concentrated Cloud Seed
-item.bucketCloud_seed_concentrated=Concentrated Cloud Seed Bucket
+tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
+item.bucketCloud_seed_concentrated.name=Concentrated Cloud Seed Bucket
 
 fluid.eio.xpjuice=Liquid XP
 tile.fluid.eio.xpjuice.name=Liquid XP
