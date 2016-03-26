@@ -103,7 +103,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileKillerJoe tileEntity) {
-    blockStateWrapper.addCacheKey(0);
+    blockStateWrapper.addCacheKey(tileEntity.getFacing());
   }
 
   @Override
