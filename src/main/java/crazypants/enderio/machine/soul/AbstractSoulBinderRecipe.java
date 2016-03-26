@@ -111,7 +111,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     ItemStack item = input.item;
     if (slot == 0) {
       CapturedMob mobType = CapturedMob.create(item);
-      return isValidInputSoul(mobType) && item.getItem() == EnderIO.itemSoulVessel;
+      return mobType != null && item.getItem() == EnderIO.itemSoulVessel && isValidInputSoul(mobType);
     } 
     if(slot == 1) {
       return isValidInputItem(item);
