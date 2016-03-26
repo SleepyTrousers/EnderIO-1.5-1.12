@@ -19,17 +19,6 @@ public class ModelZombieJar extends ModelBase {
   ModelRenderer electrode10;
   ModelRenderer electrode11;
   ModelRenderer electrode12;
-  ModelRenderer glass1;
-  ModelRenderer glass2;
-  ModelRenderer glass3;
-  ModelRenderer glass4;
-  ModelRenderer top;
-  ModelRenderer Lid1;
-  ModelRenderer bottom;
-  ModelRenderer Lid2;
-  ModelRenderer Lid3;
-  ModelRenderer Lid4;
-  ModelRenderer Lid5;
 
   public ModelZombieJar() {
     this(0.0f);
@@ -88,55 +77,11 @@ public class ModelZombieJar extends ModelBase {
     electrode12.setTextureSize(64, 64);
     electrode12.addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1);
     electrode12.setRotationPoint(-2.626554F, -11.95237F, 4.388215F);
-    glass1 = new ModelRenderer(this, 36, 2);
-    glass1.setTextureSize(64, 64);
-    glass1.addBox(-6F, -7F, 0F, 12, 14, 0);
-    glass1.setRotationPoint(0F, -8F, -5F);
-    glass2 = new ModelRenderer(this, 36, 2);
-    glass2.setTextureSize(64, 64);
-    glass2.addBox(-6F, -7F, 0F, 12, 14, 0);
-    glass2.setRotationPoint(-6F, -8F, 1F);
-    glass3 = new ModelRenderer(this, 36, 2);
-    glass3.setTextureSize(64, 64);
-    glass3.addBox(-6F, -7F, 0F, 12, 14, 0);
-    glass3.setRotationPoint(0F, -8F, 7F);
-    glass4 = new ModelRenderer(this, 36, 2);
-    glass4.setTextureSize(64, 64);
-    glass4.addBox(-6F, -7F, 0F, 12, 14, 0);
-    glass4.setRotationPoint(6F, -8F, 1F);
-    top = new ModelRenderer(this, 1, 17);
-    top.setTextureSize(64, 64);
-    top.addBox(-6F, -0.5F, -6F, 12, 1, 12);
-    top.setRotationPoint(0F, -15.5F, 1F);
-    Lid1 = new ModelRenderer(this, 4, 33);
-    Lid1.setTextureSize(64, 64);
-    Lid1.addBox(-4.5F, -1F, -4.5F, 9, 2, 9);
-    Lid1.setRotationPoint(0F, -17F, 1F);
-    bottom = new ModelRenderer(this, 1, 17);
-    bottom.setTextureSize(64, 64);
-    bottom.addBox(-6F, -0.5F, -6F, 12, 1, 12);
-    bottom.setRotationPoint(0F, -0.5F, 1F);
-    Lid2 = new ModelRenderer(this, 12, 41);
-    Lid2.setTextureSize(64, 64);
-    Lid2.addBox(-4F, -1F, -0.5F, 8, 2, 1);
-    Lid2.setRotationPoint(0F, -17F, -4F);
-    Lid3 = new ModelRenderer(this, 12, 41);
-    Lid3.setTextureSize(64, 64);
-    Lid3.addBox(-4F, -1F, -0.5F, 8, 2, 1);
-    Lid3.setRotationPoint(0F, -17F, 6F);
-    Lid4 = new ModelRenderer(this, 5, 34);
-    Lid4.setTextureSize(64, 64);
-    Lid4.addBox(-0.5F, -1F, -4F, 1, 2, 8);
-    Lid4.setRotationPoint(5F, -17F, 1F);
-    Lid5 = new ModelRenderer(this, 5, 34);
-    Lid5.setTextureSize(64, 64);
-    Lid5.addBox(-0.5F, -1F, -4F, 1, 2, 8);
-    Lid5.setRotationPoint(-5F, -17F, 1F);
   }
 
   @Override
   public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-    
+    /*
     Head.rotateAngleX = 0.03054326F;
     Head.rotateAngleY = 0.1745329F;
     Head.rotateAngleZ = 0.2392846F;
@@ -201,62 +146,7 @@ public class ModelZombieJar extends ModelBase {
     electrode12.rotateAngleY = 0.1745329F;
     electrode12.rotateAngleZ = 0.2392846F;
     electrode12.renderWithRotation(par7);
-
-    glass1.rotateAngleX = 0F;
-    glass1.rotateAngleY = 0F;
-    glass1.rotateAngleZ = 0F;
-    glass1.renderWithRotation(par7);
-
-    glass2.rotateAngleX = 0F;
-    glass2.rotateAngleY = -1.570796F;
-    glass2.rotateAngleZ = 0F;
-    glass2.renderWithRotation(par7);
-
-    glass3.rotateAngleX = 0F;
-    glass3.rotateAngleY = 0F;
-    glass3.rotateAngleZ = 0F;
-    glass3.renderWithRotation(par7);
-
-    glass4.rotateAngleX = 0F;
-    glass4.rotateAngleY = -1.570796F;
-    glass4.rotateAngleZ = 0F;
-    glass4.renderWithRotation(par7);
-
-    top.rotateAngleX = 0F;
-    top.rotateAngleY = 0F;
-    top.rotateAngleZ = 0F;
-    top.renderWithRotation(par7);
-
-    Lid1.rotateAngleX = 0F;
-    Lid1.rotateAngleY = 0F;
-    Lid1.rotateAngleZ = 0F;
-    Lid1.renderWithRotation(par7);
-
-    bottom.rotateAngleX = 0F;
-    bottom.rotateAngleY = 0F;
-    bottom.rotateAngleZ = 0F;
-    bottom.renderWithRotation(par7);
-
-    Lid2.rotateAngleX = 0F;
-    Lid2.rotateAngleY = 0F;
-    Lid2.rotateAngleZ = 0F;
-    Lid2.renderWithRotation(par7);
-
-    Lid3.rotateAngleX = 0F;
-    Lid3.rotateAngleY = 0F;
-    Lid3.rotateAngleZ = 0F;
-    Lid3.renderWithRotation(par7);
-
-    Lid4.rotateAngleX = 0F;
-    Lid4.rotateAngleY = 0F;
-    Lid4.rotateAngleZ = 0F;
-    Lid4.renderWithRotation(par7);
-
-    Lid5.rotateAngleX = 0F;
-    Lid5.rotateAngleY = 0F;
-    Lid5.rotateAngleZ = 0F;
-    Lid5.renderWithRotation(par7);
-
+*/
   }
 
 }

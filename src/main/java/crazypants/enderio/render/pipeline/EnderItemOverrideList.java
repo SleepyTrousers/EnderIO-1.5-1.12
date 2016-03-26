@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -20,8 +19,8 @@ import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 
@@ -62,44 +61,34 @@ public class EnderItemOverrideList /* extends ItemOverrideList */{
     if (block instanceof ISmartRenderAwareBlock) {
       IRenderMapper.IItemRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
 
-      if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemStateMapper) {
-        Pair<Block, Long> cacheKey = Pair.of(block, new CacheKey().addCacheKey(stack.getMetadata()).getCacheKey());
-        ItemQuadCollector quads = cache.getIfPresent(cacheKey);
-        if (quads == null) {
-          quads = new ItemQuadCollector();
-          quads.addBlockStates(((IRenderMapper.IItemRenderMapper.IItemStateMapper) renderMapper).mapItemRender(block, stack), stack, block);
-          cache.put(cacheKey, quads);
-        }
-        if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemStateMapper.IDynamicOverlayMapper) {
-          List<BakedQuad> dynamicOverlay = ((IRenderMapper.IItemRenderMapper.IItemStateMapper.IDynamicOverlayMapper) renderMapper).mapItemDynamicOverlayRender(
-              block, stack);
-          if (dynamicOverlay != null && !dynamicOverlay.isEmpty()) {
-            ItemQuadCollector overlayQuads = new ItemQuadCollector();
-            overlayQuads.addQuads(null, dynamicOverlay);
-            quads = quads.combine(overlayQuads);
-          }
-        }
-        return new CollectedItemQuadBakedBlockModel(originalModel, quads);
-      }
+      Pair<Block, Long> cacheKey = Pair.of(block, renderMapper.getCacheKey(block, stack, new CacheKey().addCacheKey(stack.getMetadata())).getCacheKey());
+      ItemQuadCollector quads = cacheKey.getRight() == null ? null : cache.getIfPresent(cacheKey);
+      if (quads == null) {
+        quads = new ItemQuadCollector();
 
-      if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemModelMapper) {
-        ICacheKey iCacheKey = ((IRenderMapper.IItemRenderMapper.IItemModelMapper) renderMapper).getCacheKey(block, stack,
-            new CacheKey().addCacheKey(stack.getMetadata()));
-        Pair<Block, Long> cacheKey = Pair.of(block, iCacheKey.getCacheKey());
-        ItemQuadCollector quads = cache.getIfPresent(cacheKey);
-        if (quads == null) {
-          quads = new ItemQuadCollector();
+        if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemStateMapper) {
+          quads.addBlockStates(((IRenderMapper.IItemRenderMapper.IItemStateMapper) renderMapper).mapItemRender(block, stack, quads), stack, block);
+        } else if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemModelMapper) {
           List<IBakedModel> bakedModels = ((IRenderMapper.IItemRenderMapper.IItemModelMapper) renderMapper).mapItemRender(block, stack);
           if (bakedModels != null) {
             for (IBakedModel bakedModel : bakedModels) {
               quads.addItemBakedModel(bakedModel);
             }
           }
+        } else {
+          return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+        }
+
+        if (cacheKey.getRight() != null) {
           cache.put(cacheKey, quads);
         }
-        return new CollectedItemQuadBakedBlockModel(originalModel, quads);
       }
 
+      if (renderMapper instanceof IItemRenderMapper.IDynamicOverlayMapper) {
+        quads = quads.combine(((IItemRenderMapper.IDynamicOverlayMapper) renderMapper).mapItemDynamicOverlayRender(block, stack));
+      }
+
+      return new CollectedItemQuadBakedBlockModel(originalModel, quads);
     }
 
     return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();

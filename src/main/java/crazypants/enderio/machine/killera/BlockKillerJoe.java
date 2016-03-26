@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -14,11 +15,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 
@@ -28,6 +34,8 @@ import crazypants.enderio.xp.PacketGivePlayerXP;
 public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   static final String USERNAME = "KillerJoe";
+  public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killerJoe_head");
+  public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/killerJoe_head2");
   
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);    
@@ -73,16 +81,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   }
 
   @Override
-  public int getRenderType() {
-    return 2;
-  }
-  
-  @Override
-  protected void registerInSmartModelAttacher() {   
-  }
-
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }
@@ -105,7 +103,25 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileKillerJoe tileEntity) {
-    blockStateWrapper.addCacheKey(tileEntity.getFacing());
+    blockStateWrapper.addCacheKey(0);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemRenderMapper getRenderMapper() {
+    return KillerJoeRenderMapper.instance;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IBlockRenderMapper getBlockRenderMapper() {
+    return KillerJoeRenderMapper.instance;
   }
   
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
+
+
 }

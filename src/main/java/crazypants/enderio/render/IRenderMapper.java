@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -18,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 /**
@@ -89,26 +89,10 @@ public interface IRenderMapper {
      * to do it.
      * <p>
      * May return null to render nothing. Will not be called for block-painted items.
+     * @param itemQuadCollector TODO
      */
     @SideOnly(Side.CLIENT)
-    List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack);
-  
-    /**
-     * Render mappers that need to decorate their item render with dynamic data (e.g. RF bar on capBanks).
-     */
-      public static interface IDynamicOverlayMapper extends IItemStateMapper {
-      /**
-       * Get lists of baked quads render for the given item stack in addition to the mapped block states. The result of this method will not be cached, the
-       * block states from mapItemRender() will be.
-       * <p>
-       * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had
-       * to do it.
-       * <p>
-       * May return null.
-       */
-    @SideOnly(Side.CLIENT)
-      List<BakedQuad> mapItemDynamicOverlayRender(Block block, ItemStack stack);
-    }
+    List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector);
   }
 
   /**
@@ -116,13 +100,6 @@ public interface IRenderMapper {
    * item+meta+cacheKey. If the returned cacheKey is null, the model will not be cached at all.
    */
     public static interface IItemModelMapper extends IItemRenderMapper {
-      /**
-       * Gets the cacheKey that should be used to cache the model. A cacheKey that was pre-populated with block+meta is given as parameter. It this returns
-       * null, no caching will be performed.
-       */
-      @SideOnly(Side.CLIENT)
-      ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey);
-    
       /**
        * Get lists of baked model to render for the given item stack.
        * <p>
@@ -134,6 +111,30 @@ public interface IRenderMapper {
     @SideOnly(Side.CLIENT)
     List<IBakedModel> mapItemRender(Block block, ItemStack stack);
   }
+
+  /**
+   * Render mappers that need to decorate their item render with dynamic data (e.g. RF bar on capBanks).
+   */
+    public static interface IDynamicOverlayMapper extends IItemRenderMapper {
+    /**
+     * Get lists of baked quads render for the given item stack in addition to the mapped block states. The result of this method will not be cached, the
+     * block states from mapItemRender() will be.
+     * <p>
+     * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had
+     * to do it.
+     * <p>
+     * May return null.
+     */
+  @SideOnly(Side.CLIENT)
+    ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack);
+  }
+
+  /**
+   * Gets the cacheKey that should be used to cache the model. A cacheKey that was pre-populated with block+meta is given as parameter. It this returns
+   * null, no caching will be performed.
+   */
+  @SideOnly(Side.CLIENT)
+  ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey);
   }
 
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,18 +14,19 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.IRenderMapper;
-
+import crazypants.enderio.render.ICacheKey;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
-public class CapBankItemRenderMapper implements IRenderMapper.IItemRenderMapper.IItemStateMapper.IDynamicOverlayMapper {
+public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
 
   public CapBankItemRenderMapper() {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
     states.add(Pair.of(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides).withProperty(CapBankType.KIND, CapBankType.NONE), (ItemStack) null));
@@ -44,9 +44,14 @@ public class CapBankItemRenderMapper implements IRenderMapper.IItemRenderMapper.
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<BakedQuad> mapItemDynamicOverlayRender(Block block, ItemStack stack) {
+  public ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack) {
     // TODO: Create a fill level overlay here
     return null;
+  }
+
+  @Override
+  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+    return cacheKey;
   }
 
 }

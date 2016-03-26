@@ -19,8 +19,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemStateMapper {
@@ -67,7 +69,7 @@ public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
     return Collections.singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY),
         (ItemStack) null));
   }
@@ -76,6 +78,12 @@ public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
   @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+    return cacheKey;
   }
 
 }

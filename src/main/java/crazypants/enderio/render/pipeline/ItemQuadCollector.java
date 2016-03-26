@@ -20,29 +20,22 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class ItemQuadCollector {
 
-  private static final List<Integer> FACING = new ArrayList<Integer>();
-
-  static {
-    FACING.add(-1);
-    for (EnumFacing face : EnumFacing.values()) {
-      FACING.add(face.ordinal());
-    }
-  }
-
   @SuppressWarnings("unchecked")
-  private final List<BakedQuad>[] table = new List[FACING.size()];
+  private final List<BakedQuad>[] table = new List[EnumFacing.values().length + 1];
 
   private static Integer facing2Integer(EnumFacing facing) {
     return facing == null ? facing.values().length : facing.ordinal();
   }
 
   public void addQuads(EnumFacing side, List<BakedQuad> quads) {
-    Integer face = facing2Integer(side);
-    List<BakedQuad> list = table[face];
-    if (list == null) {
-      table[face] = new ArrayList<BakedQuad>(quads);
-    } else {
-      list.addAll(quads);
+    if (quads != null && !quads.isEmpty()) {
+      Integer face = facing2Integer(side);
+      List<BakedQuad> list = table[face];
+      if (list == null) {
+        table[face] = new ArrayList<BakedQuad>(quads);
+      } else {
+        list.addAll(quads);
+      }
     }
   }
 
@@ -166,8 +159,8 @@ public class ItemQuadCollector {
       return other;
     }
     ItemQuadCollector result = new ItemQuadCollector();
-    for (Integer facing : FACING) {
-      result.table[facing] = CompositeList.create(this.table[facing], other.table[facing]);
+    for (int i = 0; i < table.length; i++) {
+      result.table[i] = CompositeList.create(this.table[i], other.table[i]);
     }
     return result;
   }

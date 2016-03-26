@@ -22,9 +22,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IRenderMapper.IItemRenderMapper.IItemStateMapper {
@@ -90,7 +92,7 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     if (body != null) {
       states.add(Pair.of(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body), stack));
@@ -113,6 +115,12 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
       }
     }
     return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+    return cacheKey;
   }
 
 }

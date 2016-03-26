@@ -1,0 +1,16 @@
+{
+"__comment": "Designed by Henryloenwind with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "__comment": "Glass",
+    "from": [ 2.5, 1, 2.5 ],
+    "to": [ 13.5, 14, 13.5 ],
+    "faces": {
+        "north": { "uv": [ 2.5, 2, 13.5, 15 ], "texture": "#glass" },
+        "south": { "uv": [ 2.5, 2, 13.5, 15 ], "texture": "#glass" },
+        "west":  { "uv": [ 2.5, 2, 13.5, 15 ], "texture": "#glass" },
+        "east":  { "uv": [ 2.5, 2, 13.5, 15 ], "texture": "#glass" }
+    }
+}
+]
+}
