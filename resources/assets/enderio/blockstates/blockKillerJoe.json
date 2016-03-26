@@ -4,6 +4,7 @@
         "textures":{
             "particle":"enderio:blocks/killerJoe_body",
             "body":"enderio:blocks/killerJoe_body",
+            "lid":"enderio:blocks/killerJoe_lid",
             "glass":"enderio:blocks/telepad/glass"
         }
     },

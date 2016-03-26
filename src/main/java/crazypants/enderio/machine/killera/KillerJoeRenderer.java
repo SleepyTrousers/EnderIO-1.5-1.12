@@ -22,12 +22,10 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.render.HalfBakedQuad;
+import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 
 @SideOnly(Side.CLIENT)
 public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> {
-
-  private static final String TEXTURE = "enderio:models/KillerJoe.png";
 
 //  private static final ItemStack DEFAULT_SWORD = new ItemStack(Items.iron_sword);
 
@@ -99,7 +97,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
 
   protected void renderFluid(TileKillerJoe gen) {
 
-    List<HalfBakedQuad> buffer = KillerJoeRenderMapper.mkTank(gen.fuelTank);
+    HalfBakedList buffer = KillerJoeRenderMapper.mkTank(gen.fuelTank);
     if (buffer != null) {
       RenderUtil.bindBlockTexture();
       GlStateManager.enableBlend();
@@ -108,9 +106,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
       GlStateManager.depthMask(false);
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-      for (HalfBakedQuad halfBakedQuad : buffer) {
-        halfBakedQuad.render(tes);
-      }
+      buffer.render(tes);
       Tessellator.getInstance().draw();
       GlStateManager.depthMask(true);
     }

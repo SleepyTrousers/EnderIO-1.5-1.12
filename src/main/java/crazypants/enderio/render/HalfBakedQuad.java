@@ -1,5 +1,7 @@
 package crazypants.enderio.render;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.WorldRenderer;
@@ -39,4 +41,37 @@ public class HalfBakedQuad {
           .endVertex();
     }
   }
+
+  public static class HalfBakedList extends AbstractList<HalfBakedQuad> {
+
+    private final List<HalfBakedQuad> store = new ArrayList<HalfBakedQuad>();
+
+    @Override
+    public HalfBakedQuad get(int index) {
+      return store.get(index);
+    }
+
+    @Override
+    public int size() {
+      return store.size();
+    }
+
+    public void add(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color) {
+      store.add(new HalfBakedQuad(bb, face, umin, umax, vmin, vmax, tex, color));
+    }
+
+    public void bake(List<BakedQuad> quads, VertexTransform... xforms) {
+      for (HalfBakedQuad halfBakedQuad : store) {
+        halfBakedQuad.bake(quads, xforms);
+      }
+    }
+
+    public void render(WorldRenderer tes) {
+      for (HalfBakedQuad halfBakedQuad : store) {
+        halfBakedQuad.render(tes);
+      }
+    }
+
+  }
+
 }

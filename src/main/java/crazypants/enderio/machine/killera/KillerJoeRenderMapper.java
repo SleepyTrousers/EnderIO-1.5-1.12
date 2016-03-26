@@ -27,19 +27,17 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.HalfBakedQuad;
+import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IOMode.EnumIOMode;
@@ -103,45 +101,35 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     VertexTransform mov = new VertexTranslation(0, -1 * px, 0);
     TextureAtlasSprite tex1 = BlockKillerJoe.textureHead1.get(TextureAtlasSprite.class);
     TextureAtlasSprite tex2 = BlockKillerJoe.textureHead2.get(TextureAtlasSprite.class);
+
+    HalfBakedList buffer = new HalfBakedList();
+
+    buffer.add(bb, EnumFacing.NORTH, 0f, .5f, 0f, .5f, tex1, null);
+    buffer.add(bb, EnumFacing.EAST, .5f, 1f, 0f, .5f, tex1, null);
+    buffer.add(bb, EnumFacing.SOUTH, 0f, .5f, .5f, 1f, tex1, null);
+    buffer.add(bb, EnumFacing.WEST, .5f, 1f, .5f, 1f, tex1, null);
+    buffer.add(bb, EnumFacing.UP, 0f, .5f, 0f, .5f, tex2, null);
+    buffer.add(bb, EnumFacing.DOWN, .5f, 1f, 0f, .5f, tex2, null);
+
     List<BakedQuad> quads = new ArrayList<BakedQuad>();
-
-    bake(quads, bb, EnumFacing.NORTH, 0f, .5f, 0f, .5f, tex1, null, rotx, roty, rotz, mov, rot);
-    bake(quads, bb, EnumFacing.EAST, .5f, 1f, 0f, .5f, tex1, null, rotx, roty, rotz, mov, rot);
-    bake(quads, bb, EnumFacing.SOUTH, 0f, .5f, .5f, 1f, tex1, null, rotx, roty, rotz, mov, rot);
-    bake(quads, bb, EnumFacing.WEST, .5f, 1f, .5f, 1f, tex1, null, rotx, roty, rotz, mov, rot);
-    bake(quads, bb, EnumFacing.UP, 0f, .5f, 0f, .5f, tex2, null, rotx, roty, rotz, mov, rot);
-    bake(quads, bb, EnumFacing.DOWN, .5f, 1f, 0f, .5f, tex2, null, rotx, roty, rotz, mov, rot);
-
+    buffer.bake(quads, rotx, roty, rotz, mov, rot);
     return quads;
-  }
-
-  private void bake(List<BakedQuad> quads, BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex,
-      Vector4f color, VertexTransform... xforms) {
-    List<Vertex> corners = bb.getCornersWithUvForFace(face, umin, umax, vmin, vmax);
-    for (Vertex vertex : corners) {
-      for (VertexTransform xform : xforms) {
-        xform.apply(vertex);
-      }
-    }
-    RenderUtil.addBakedQuads(quads, corners, tex, color);
   }
 
   private List<BakedQuad> renderFuel(ItemStack stack) {
     if (stack.hasTagCompound()) {
       SmartTank tank = TileKillerJoe.loadTank(stack.getTagCompound());
-      List<HalfBakedQuad> buffer = mkTank(tank);
+      HalfBakedList buffer = mkTank(tank);
       if (buffer != null) {
         List<BakedQuad> quads = new ArrayList<BakedQuad>();
-        for (HalfBakedQuad halfBakedQuad : buffer) {
-          halfBakedQuad.bake(quads);
-        }
+        buffer.bake(quads);
         return quads;
       }
     }
     return null;
   }
 
-  public static List<HalfBakedQuad> mkTank(SmartTank tank) {
+  public static HalfBakedList mkTank(SmartTank tank) {
     float ratio = tank.getFilledRatio();
     if (ratio > 0.01) {
 
@@ -154,13 +142,13 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
       BoundingBox bb = new BoundingBox(2.51 * px, 1 * px, 2.51 * px, 13.49 * px, (13d * ratio + 1) * px, 13.49 * px);
 
-      List<HalfBakedQuad> buffer = new ArrayList<HalfBakedQuad>();
+      HalfBakedList buffer = new HalfBakedList();
 
-      buffer.add(new HalfBakedQuad(bb, EnumFacing.NORTH, 0f, 1f, height, 1f, sprite, vecC));
-      buffer.add(new HalfBakedQuad(bb, EnumFacing.EAST, 0f, 1f, height, 1f, sprite, vecC));
-      buffer.add(new HalfBakedQuad(bb, EnumFacing.SOUTH, 0f, 1f, height, 1f, sprite, vecC));
-      buffer.add(new HalfBakedQuad(bb, EnumFacing.WEST, 0f, 1f, height, 1f, sprite, vecC));
-      buffer.add(new HalfBakedQuad(bb, EnumFacing.UP, 0f, 1f, 0f, 1f, sprite, vecC));
+      buffer.add(bb, EnumFacing.NORTH, 0f, 1f, height, 1f, sprite, vecC);
+      buffer.add(bb, EnumFacing.EAST, 0f, 1f, height, 1f, sprite, vecC);
+      buffer.add(bb, EnumFacing.SOUTH, 0f, 1f, height, 1f, sprite, vecC);
+      buffer.add(bb, EnumFacing.WEST, 0f, 1f, height, 1f, sprite, vecC);
+      buffer.add(bb, EnumFacing.UP, 0f, 1f, 0f, 1f, sprite, vecC);
 
       return buffer;
     }
