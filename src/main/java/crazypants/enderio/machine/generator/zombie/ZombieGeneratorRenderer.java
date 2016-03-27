@@ -16,7 +16,7 @@ import crazypants.enderio.render.TankRenderHelper;
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer<TileZombieGenerator> {
 
   @Override
-  public void renderTileEntityAt(TileZombieGenerator te, double x, double y, double z, float tick, int b) {
+  public void renderTileEntityAt(TileZombieGenerator te, double x, double y, double z, float partialTicks, int destroyStage) {
 
     if (te != null && MinecraftForgeClient.getRenderPass() == 1) {
       HalfBakedList buffer = TankRenderHelper.mkTank(te.fuelTank, 2.51, 1, 14, false);

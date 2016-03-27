@@ -19,14 +19,14 @@ import crazypants.enderio.render.TankRenderHelper;
 public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> {
 
   @Override
-  public void renderTileEntityAt(TileKillerJoe te, double x, double y, double z, float tick, int b) {
+  public void renderTileEntityAt(TileKillerJoe te, double x, double y, double z, float partialTicks, int destroyStage) {
 
     if(te != null) {
       if (MinecraftForgeClient.getRenderPass() == 0 && te.getStackInSlot(0) != null) {
         RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
-        renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(tick), false); // TODO 1.9 hand
+        renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), false); // TODO 1.9 hand
         GlStateManager.popMatrix();
       } else if (MinecraftForgeClient.getRenderPass() == 1) {
         HalfBakedList buffer = TankRenderHelper.mkTank(te.fuelTank, 2.51, 1, 14, false);

@@ -440,5 +440,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     tankDirty = true;
   }
 
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    return pass == 1;
+  }
   
 }

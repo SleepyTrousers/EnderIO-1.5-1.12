@@ -31,30 +31,33 @@ public class TankRenderHelper {
    * @return A HalfBakedList with the tank content or null if the tank is empty
    */
   public static HalfBakedList mkTank(SmartTank tank, double xzBorder, double miny, double maxy, boolean renderBottom) {
-    float ratio = tank.getFilledRatio();
-    if (ratio > 0) {
-  
-      float height = 1 - ratio;
-  
-      ResourceLocation still = tank.getFluid().getFluid().getStill(tank.getFluid());
-      int color = tank.getFluid().getFluid().getColor(tank.getFluid());
-      Vector4f vecC = new Vector4f((color >> 16 & 0xFF) / 255d * 2, (color >> 8 & 0xFF) / 255d * 2, (color & 0xFF) / 255d * 2, 1);
-      TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(still.toString());
-  
-      BoundingBox bb = new BoundingBox(xzBorder * px, miny * px, xzBorder * px, (16 - xzBorder) * px, ((maxy - miny) * ratio + miny) * px, (16 - xzBorder) * px);
-  
-      HalfBakedList buffer = new HalfBakedList();
-  
-      buffer.add(bb, EnumFacing.NORTH, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.EAST, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.SOUTH, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.WEST, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.UP, 0f, 1f, 0f, 1f, sprite, vecC);
-      if (renderBottom) {
-        buffer.add(bb, EnumFacing.DOWN, 0f, 1f, 0f, 1f, sprite, vecC);
+    if (tank != null) {
+      float ratio = tank.getFilledRatio();
+      if (ratio > 0) {
+
+        float height = 1 - ratio;
+
+        ResourceLocation still = tank.getFluid().getFluid().getStill(tank.getFluid());
+        int color = tank.getFluid().getFluid().getColor(tank.getFluid());
+        Vector4f vecC = new Vector4f((color >> 16 & 0xFF) / 255d * 2, (color >> 8 & 0xFF) / 255d * 2, (color & 0xFF) / 255d * 2, 1);
+        TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(still.toString());
+
+        BoundingBox bb = new BoundingBox(xzBorder * px, miny * px, xzBorder * px, (16 - xzBorder) * px, ((maxy - miny) * ratio + miny) * px, (16 - xzBorder)
+            * px);
+
+        HalfBakedList buffer = new HalfBakedList();
+
+        buffer.add(bb, EnumFacing.NORTH, 0f, 1f, height, 1f, sprite, vecC);
+        buffer.add(bb, EnumFacing.EAST, 0f, 1f, height, 1f, sprite, vecC);
+        buffer.add(bb, EnumFacing.SOUTH, 0f, 1f, height, 1f, sprite, vecC);
+        buffer.add(bb, EnumFacing.WEST, 0f, 1f, height, 1f, sprite, vecC);
+        buffer.add(bb, EnumFacing.UP, 0f, 1f, 0f, 1f, sprite, vecC);
+        if (renderBottom) {
+          buffer.add(bb, EnumFacing.DOWN, 0f, 1f, 0f, 1f, sprite, vecC);
+        }
+
+        return buffer;
       }
-  
-      return buffer;
     }
     return null;
   }
