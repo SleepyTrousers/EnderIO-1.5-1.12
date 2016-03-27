@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
@@ -24,6 +25,17 @@ public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
   @Override
   @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+    TileEntity tileEntity = state.getTileEntity();
+    if ((tileEntity instanceof TileReservoir) && ((TileReservoir) tileEntity).isAutoEject()) {
+      EnumMap<EnumFacing, EnumIOMode> result = new EnumMap<EnumFacing, EnumIOMode>(EnumFacing.class);
+      for (EnumFacing face : EnumFacing.values()) {
+        IBlockState neighborState = world.getBlockState(pos.offset(face));
+        if (!isSameKind(state, neighborState)) {
+          result.put(face, EnumIOMode.RESERVOIR);
+        }
+      }
+      return result.isEmpty() ? null : result;
+    }
     return null;
   }
 

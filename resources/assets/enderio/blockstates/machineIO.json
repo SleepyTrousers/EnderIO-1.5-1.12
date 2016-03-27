@@ -1,7 +1,6 @@
 {
 	"forge_marker":1,
 	"variants":{
-	    "inventory": [{}],
 		"iomode":{
 			"down_none":{
 				"textures":{
@@ -274,6 +273,17 @@
 				"submodel":{
 					"overlay":{
 						"model":"enderio:overlay2",
+						"x":90
+					}
+				}
+			},
+			"down_reservoir":{
+				"textures":{
+					"overlay":"enderio:blocks/overlays/reservoir"
+				},
+				"submodel":{
+					"overlay":{
+						"model":"enderio:overlay3",
 						"x":90
 					}
 				}
@@ -553,6 +563,17 @@
 					}
 				}
 			},
+			"up_reservoir":{
+				"textures":{
+					"overlay":"enderio:blocks/overlays/reservoir"
+				},
+				"submodel":{
+					"overlay":{
+						"model":"enderio:overlay3",
+						"x":270
+					}
+				}
+			},
 			"north_none":{
 				"textures":{
 					"overlay":"enderio:blocks/overlays/none"
@@ -824,6 +845,17 @@
 				"submodel":{
 					"overlay":{
 						"model":"enderio:overlay2",
+						"y":0
+					}
+				}
+			},
+			"north_reservoir":{
+				"textures":{
+					"overlay":"enderio:blocks/overlays/reservoir"
+				},
+				"submodel":{
+					"overlay":{
+						"model":"enderio:overlay3",
 						"y":0
 					}
 				}
@@ -1103,6 +1135,17 @@
 					}
 				}
 			},
+			"south_reservoir":{
+				"textures":{
+					"overlay":"enderio:blocks/overlays/reservoir"
+				},
+				"submodel":{
+					"overlay":{
+						"model":"enderio:overlay3",
+						"y":180
+					}
+				}
+			},
 			"east_none":{
 				"textures":{
 					"overlay":"enderio:blocks/overlays/none"
@@ -1378,6 +1421,17 @@
 					}
 				}
 			},
+			"east_reservoir":{
+				"textures":{
+					"overlay":"enderio:blocks/overlays/reservoir"
+				},
+				"submodel":{
+					"overlay":{
+						"model":"enderio:overlay3",
+						"y":90
+					}
+				}
+			},
 			"west_none":{
 				"textures":{
 					"overlay":"enderio:blocks/overlays/none"
@@ -1649,6 +1703,17 @@
 				"submodel":{
 					"overlay":{
 						"model":"enderio:overlay2",
+						"y":270
+					}
+				}
+			},
+			"west_reservoir":{
+				"textures":{
+					"overlay":"enderio:blocks/overlays/reservoir"
+				},
+				"submodel":{
+					"overlay":{
+						"model":"enderio:overlay3",
 						"y":270
 					}
 				}

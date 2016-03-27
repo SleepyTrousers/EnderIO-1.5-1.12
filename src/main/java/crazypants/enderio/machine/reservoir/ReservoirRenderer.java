@@ -23,8 +23,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.render.TextureRegistry;
@@ -48,10 +46,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
   @Override
   public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
-
-    TileReservoir res = tileentity;
-
-    if (res.tank.getFluidAmount() > 0 || res.isAutoEject()) {
+    if (tileentity != null && tileentity.tank.getFluidAmount() > 0) {
       Minecraft.getMinecraft().entityRenderer.disableLightmap();
       GlStateManager.pushMatrix();
 
@@ -66,27 +61,13 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
       Set<EnumFacing> mergers = getMergers(tileentity.getWorld(), tileentity.getPos());
 
-      if (res.tank.getFluidAmount() > 0) {
-        renderTankFluid(res.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
-      }
-
-      if (res.isAutoEject()) {
-        float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.getWorld(), tileentity.getPos());
-        GlStateManager.color(val, val, val, 0.875f);
-        for (EnumFacing dir : EnumFacing.VALUES) {
-          if (!mergers.contains(dir)) {
-            drawSwitch(dir, BoundingBox.UNIT_CUBE);
-          }
-        }
-      }
+      renderTankFluid(tileentity.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
 
       tessellator.draw();
       GlState.CLEAN_TESR_STATE.apply_filtered(state);
       GlStateManager.popMatrix();
       Minecraft.getMinecraft().entityRenderer.enableLightmap();
     }
-
-
   }
 
   private Set<EnumFacing> getMergers(World world, BlockPos pos) {
@@ -264,62 +245,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
     for (Vertex v : corners) {
       tes.pos(v.x(), v.y(), v.z()).tex(v.u(), v.v()).color(r, g, b, a).endVertex();
     }
-  }
-
-  private Vector3d forward = new Vector3d();
-  private Vector3d left = new Vector3d();
-  private Vector3d up = new Vector3d();
-  private Vector3d offset = new Vector3d();
-
-  private void drawSwitch(EnumFacing dir, BoundingBox bb) {
-
-    Vector3d cent = bb.getCenter();
-    offset.set(cent);
-
-    boolean isUp = dir.getFrontOffsetY() != 0;
-    forward.set(ForgeDirectionOffsets.forDir(dir));
-    forward.scale(0.5);
-    forward.x *= bb.sizeX();
-    forward.y *= bb.sizeY();
-    forward.z *= bb.sizeZ();
-
-    offset.add(forward);
-
-    if (dir.getFrontOffsetY() == 0) {
-      offset.y += bb.sizeY() * 0.25;
-    }
-    if (dir.getFrontOffsetX() == 0) {
-      offset.x -= (isUp ? dir.getFrontOffsetY() : dir.getFrontOffsetZ()) * bb.sizeX() * 0.25;
-    }
-    if (dir.getFrontOffsetZ() == 0) {
-      offset.z += (isUp ? -dir.getFrontOffsetY() : dir.getFrontOffsetX()) * bb.sizeZ() * 0.25;
-    }
-
-    left.set(isUp ? -dir.getFrontOffsetY() : -dir.getFrontOffsetZ(), 0, dir.getFrontOffsetX());
-
-    if (isUp) {
-      up.set(0, 0, -1);
-    } else {
-      up.set(0, 1, 0);
-    }
-
-    forward.scale(0.5);
-    left.scale(0.125);
-    up.scale(0.125);
-
-    TextureAtlasSprite icon = switchIcon.get(TextureAtlasSprite.class);
-    if (icon != null) {
-      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-      tes.pos(offset.x + left.x - up.x, offset.y + left.y - up.y, offset.z + left.z - up.z).tex(icon.getMinU(), icon.getMaxV()).color(255, 255, 255, 255)
-          .endVertex();
-      tes.pos(offset.x - left.x - up.x, offset.y - left.y - up.y, offset.z - left.z - up.z).tex(icon.getMaxU(), icon.getMaxV()).color(255, 255, 255, 255)
-          .endVertex();
-      tes.pos(offset.x - left.x + up.x, offset.y - left.y + up.y, offset.z - left.z + up.z).tex(icon.getMaxU(), icon.getMinV()).color(255, 255, 255, 255)
-          .endVertex();
-      tes.pos(offset.x + left.x + up.x, offset.y + left.y + up.y, offset.z + left.z + up.z).tex(icon.getMinU(), icon.getMinV()).color(255, 255, 255, 255)
-          .endVertex();
-    }
-
   }
 
 }

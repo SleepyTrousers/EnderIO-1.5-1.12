@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.reservoir;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -105,6 +108,11 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
   
   @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
+
+  @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {
     TileEntity te;
     if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
@@ -117,7 +125,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
       }
       if (tank.tank.getAvailableSpace() >= BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, tank)) {
         return true;
-      } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, new TankWrapper(tank))) {
+      } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, new TankWrapper(tank, world, pos))) {
         return true;
       }
       if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, tank)) {
@@ -129,36 +137,60 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   private static class TankWrapper implements ITankAccess {
 
-    private final ITankAccess parent;
-    FluidTank parentTank;
+    private final List<ITankAccess> parents = new ArrayList<ITankAccess>();
     private SmartTank tank;
+    private final World world;
+    private final BlockPos pos;
 
-    private TankWrapper(ITankAccess parent) {
-      this.parent = parent;
+    private TankWrapper(ITankAccess parent, World world, BlockPos pos) {
+      this.parents.add(parent);
+      this.world = world;
+      this.pos = pos;
     }
 
     @Override
     public FluidTank getInputTank(FluidStack forFluidType) {
-      parentTank = parent.getInputTank(forFluidType);
+      FluidTank parentTank = parents.get(0).getInputTank(forFluidType);
       if (parentTank == null) {
         return null;
       }
-      tank = new SmartTank(parentTank.getFluid(), parentTank.getCapacity() + BUCKET_VOLUME);
+      int free = parentTank.getCapacity() - parentTank.getFluidAmount();
+      for (EnumFacing face : EnumFacing.values()) {
+        TileEntity neighbor = world.getTileEntity(pos.offset(face));
+        if (neighbor instanceof ITankAccess) {
+          FluidTank tank2 = ((ITankAccess) neighbor).getInputTank(forFluidType);
+          if (tank2 != null) {
+            free += tank2.getCapacity() - tank2.getFluidAmount();
+            parents.add(((ITankAccess) neighbor));
+          }
+        }
+      }
+      if (free < BUCKET_VOLUME) {
+        free = BUCKET_VOLUME;
+      }
+      tank = new SmartTank(parentTank.getFluid(), free);
       return tank;
     }
 
     @Override
     public FluidTank[] getOutputTanks() {
-      return parent.getOutputTanks();
+      return parents.get(0).getOutputTanks();
     }
 
     @Override
     public void setTanksDirty() {
-      if (parentTank != null) {
-        tank.setCapacity(parentTank.getCapacity());
-        parentTank.setFluid(tank.getFluid());
+      FluidStack stack = tank.getFluid();
+      if (stack.amount > 0) {
+        for (ITankAccess parent : parents) {
+          FluidTank ptank = parent.getInputTank(stack);
+          stack.amount -= ptank.fill(stack, true);
+          parent.setTanksDirty();
+          if (stack.amount <= 0) {
+            return;
+          }
+        }
       }
-      parent.setTanksDirty();
+      tank.setCapacity(0);
     }
 
   }

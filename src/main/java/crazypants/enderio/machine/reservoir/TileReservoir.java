@@ -3,13 +3,6 @@ package crazypants.enderio.machine.reservoir;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
-
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.tool.SmartTank;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -20,6 +13,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.tool.SmartTank;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 
@@ -35,8 +36,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     seen.add(this);
     int got = tank.getFluidAmount();
     for (EnumFacing neighbor : EnumFacing.VALUES) {
-      BlockPos pos = getPos().offset(neighbor);
-      TileEntity tileEntity = worldObj.getTileEntity(pos);
+      BlockPos pos1 = getPos().offset(neighbor);
+      TileEntity tileEntity = worldObj.getTileEntity(pos1);
       if (tileEntity instanceof TileReservoir && ((TileReservoir) tileEntity).tank != null && !seen.contains(tileEntity)) {
         seen.add((TileReservoir) tileEntity);
         got += ((TileReservoir) tileEntity).tank.getFluidAmount();
@@ -44,7 +45,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
           return true;
         }
         for (EnumFacing neighbor2 : EnumFacing.VALUES) {
-          BlockPos pos2 = pos.offset(neighbor2);
+          BlockPos pos2 = pos1.offset(neighbor2);
           TileEntity tileEntity2 = worldObj.getTileEntity(pos2);
           if (tileEntity2 instanceof TileReservoir && ((TileReservoir) tileEntity2).tank != null && !seen.contains(tileEntity2)) {
             seen.add((TileReservoir) tileEntity2);
@@ -92,13 +93,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     }
     doLeak(down, max);
     for (EnumFacing dir : EnumFacing.Plane.HORIZONTAL) {
-      BlockPos pos = down.offset(dir);
-      doLeak(pos, max / 2);
+      BlockPos pos1 = down.offset(dir);
+      doLeak(pos1, max / 2);
     }
   }
 
-  protected void doLeak(BlockPos pos, int maxAmount) {
-    TileEntity tileEntity = worldObj.getTileEntity(pos);
+  protected void doLeak(BlockPos pos1, int maxAmount) {
+    TileEntity tileEntity = worldObj.getTileEntity(pos1);
     if (tileEntity instanceof TileReservoir && !((TileReservoir) tileEntity).tank.isFull()) {
       FluidStack canDrain = tank.drain(maxAmount, false);
       if (canDrain != null && canDrain.amount > 0) {
@@ -111,8 +112,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   protected void doEqualize() {
     for (EnumFacing dir : EnumFacing.Plane.HORIZONTAL) {
-      BlockPos pos = getPos().offset(dir);
-      TileEntity tileEntity = worldObj.getTileEntity(pos);
+      BlockPos pos1 = getPos().offset(dir);
+      TileEntity tileEntity = worldObj.getTileEntity(pos1);
       if (tileEntity instanceof TileReservoir) {
         TileReservoir other = (TileReservoir) tileEntity;
         int toMove = (tank.getFluidAmount() - other.tank.getFluidAmount()) / 2;

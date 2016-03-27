@@ -39,7 +39,8 @@ public class IOMode implements Comparable<IOMode> {
     CAPACITORBANKOUTPUT,
     CAPACITORBANKINPUTSMALL,
     CAPACITORBANKLOCKEDSMALL,
-    CAPACITORBANKOUTPUTSMALL;
+    CAPACITORBANKOUTPUTSMALL,
+    RESERVOIR;
   }
 
   private static final Map<String, IOMode> values = new HashMap<String, IOMode>();
