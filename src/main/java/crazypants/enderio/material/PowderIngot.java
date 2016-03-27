@@ -3,13 +3,13 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.ResourceLocation;
+
 import static com.enderio.core.common.util.OreDictionaryHelper.DUST_ENDERPEARL;
 import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_COPPER;
 import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_ENDERIUM;
 import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_TIN;
 import static com.enderio.core.common.util.OreDictionaryHelper.isRegistered;
-
-import net.minecraft.util.ResourceLocation;
 
 public enum PowderIngot {
 
@@ -78,7 +78,7 @@ public enum PowderIngot {
   }
 
   public boolean hasDependancy() {
-    return oreDictDependancy == null;
+    return oreDictDependancy != null;
   }
 
   public void setRegistered() {

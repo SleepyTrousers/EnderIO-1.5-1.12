@@ -9,16 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machine.invpanel.server.ChangeLog;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -30,6 +20,17 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.invpanel.server.ChangeLog;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
+import crazypants.enderio.network.PacketHandler;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -69,50 +70,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
     slotCraftResult = inventorySlots.size();
-    //TODO: 1.8: getInv() needs to redturn an InventoyCrafting
-//    addSlotToContainer(new SlotCrafting(playerInv.player, getInv(), getInv(), TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59,
-//        CRAFTING_GRID_Y + 18) {
-//      @Override
-//      public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
-//        FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, getInv());
-//        for (int i = TileInventoryPanel.SLOT_CRAFTING_START; i < TileInventoryPanel.SLOT_CRAFTING_RESULT; i++) {
-//          ItemStack itemstack = getInv().getStackInSlot(i);
-//          if(itemstack == null)
-//            continue;
-//
-//          getInv().decrStackSize(i, 1);
-//          if(!itemstack.getItem().hasContainerItem(itemstack))
-//            continue;
-//
-//          ItemStack containerIS = itemstack.getItem().getContainerItem(itemstack);
-//          if(containerIS != null && containerIS.isItemStackDamageable() && containerIS.getItemDamage() > containerIS.getMaxDamage()) {
-//            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerIS));
-//          } else {
-//            if(itemstack.getItem().doesContainerItemLeaveCraftingGrid(itemstack)) {
-//              if(ItemUtil.doInsertItem(getInv(), 10, 20, itemstack) > 0)
-//                continue;
-//              if(player.inventory.addItemStackToInventory(containerIS))
-//                continue;
-//            }
-//            if(getInv().getStackInSlot(i) == null) {
-//              getInv().setInventorySlotContents(i, containerIS);
-//            } else {
-//              player.dropPlayerItemWithRandomChoice(containerIS, false);
-//            }
-//          }
-//        }
-//      }
-//
-//      @Override
-//      public ItemStack decrStackSize(int p_75209_1_) {
-//        if (this.getHasStack()) {
-//          // on a right click we are asked to craft half a result. Ignore that.
-//          return super.decrStackSize(this.getStack().stackSize);
-//        }
-//        return super.decrStackSize(p_75209_1_);
-//      }
-//
-//    });
+    addSlotToContainer(new SlotCraftingWrapper(playerInv.player, new InventoryCraftingWrapper(getInv(), this, 3, 3), getInv(),
+        TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59, CRAFTING_GRID_Y + 18));
     
 
     firstSlotCraftingGrid = inventorySlots.size();
