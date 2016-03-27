@@ -26,7 +26,7 @@ public class BlockMachineBase extends Block {
   }
 
   public static void create() {
-    GameRegistry.registerBlock(block = new BlockMachineBase(), name());
+    GameRegistry.registerBlock(block = new BlockMachineBase(), null, name());
   }
 
   public BlockMachineBase() {

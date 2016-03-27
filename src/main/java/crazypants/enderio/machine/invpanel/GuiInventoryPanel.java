@@ -6,6 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -32,18 +45,6 @@ import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -92,12 +93,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        ghostSlots.add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
+        getGhostSlots().add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
       }
     }
 
     for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; i++) {
-      ghostSlots.add(new RecipeSlot(i, 7, 7 + i * 20));
+      getGhostSlots().add(new RecipeSlot(i, 7, 7 + i * 20));
     }
 
     this.view = new DatabaseView();
@@ -482,7 +483,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int index = scrollPos * GHOST_COLUMNS;
     int count = view.getNumEntries();
     for (int i = 0; i < GHOST_ROWS * GHOST_COLUMNS; i++, index++) {
-      InvSlot slot = (InvSlot) ghostSlots.get(i);
+      InvSlot slot = (InvSlot) getGhostSlots().get(i);
       if(index < count) {
         slot.entry = view.getItemEntry(index);
         slot.stack = slot.entry.makeItemStack();

@@ -25,8 +25,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.state.GlState;
 import crazypants.enderio.tool.SmartTank;
 @SideOnly(Side.CLIENT)
@@ -35,8 +33,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   private static final GlState state = GlState.create("color", 1.0f, 1.0f, 1.0f, 1.0f, "blend", true, GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA,
       "lighting", false, "colormask", true, true, true, true, "depth", true, true, GL11.GL_LEQUAL, "cullface", true, GL11.GL_BACK, "alpha", true,
       GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE, "normalize", false);
-
-  public static final TextureSupplier switchIcon = TextureRegistry.registerTexture("blocks/reservoirSwitch");
 
   private final BlockReservoir block;
 

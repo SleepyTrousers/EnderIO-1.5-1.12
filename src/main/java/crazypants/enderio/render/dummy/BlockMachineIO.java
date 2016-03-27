@@ -28,7 +28,7 @@ public class BlockMachineIO extends Block {
   }
 
   public static void create() {
-    GameRegistry.registerBlock(block = new BlockMachineIO(), name());
+    GameRegistry.registerBlock(block = new BlockMachineIO(), null, name());
   }
 
   public BlockMachineIO() {

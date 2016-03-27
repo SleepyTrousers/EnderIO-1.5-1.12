@@ -99,9 +99,9 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       Log.error("BlockPoweredSpawner: Could not find field: mobID");
     }
     try {
-      spawnDelayField = ReflectionHelper.findField(MobSpawnerBaseLogic.class, "spawnDelayField", "field_98286_b");
+      spawnDelayField = ReflectionHelper.findField(MobSpawnerBaseLogic.class, "spawnDelay", "field_98286_b");
     } catch (Exception e) {
-      Log.error("BlockPoweredSpawner: Could not find field: spawnDelayField");
+      Log.error("BlockPoweredSpawner: Could not find field: spawnDelay");
     }
   }
 
