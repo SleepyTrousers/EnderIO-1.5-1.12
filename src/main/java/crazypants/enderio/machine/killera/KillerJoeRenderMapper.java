@@ -31,7 +31,9 @@ import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -77,6 +79,7 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
   private static final Double px = 1d / 16d;
   private static final Vector3d CENTER = new Vector3d(8 * px, 8 * px, 8 * px);
+  private static final double[] ROTS = { 0, Math.PI / 2, Math.PI, Math.PI / 2 * 3 };
 
   private List<BakedQuad> renderHead(@Nullable IBlockStateWrapper state) {
     EnumFacing facing = EnumFacing.NORTH;
@@ -95,10 +98,11 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     rot.setRotation(facing);
 
     BoundingBox bb = new BoundingBox(4 * px, 4 * px, 4 * px, 12 * px, 12 * px, 12 * px);
+    VertexTransform sca = new VertexScale(.9, .9, .9, CENTER);
     VertexTransform rotx = new VertexRotation(0.03054326, new Vector3d(1, 0, 0), CENTER);
     VertexTransform roty = new VertexRotation(0.17453290, new Vector3d(0, 1, 0), CENTER);
     VertexTransform rotz = new VertexRotation(0.23928460, new Vector3d(0, 0, 1), CENTER);
-    VertexTransform mov = new VertexTranslation(0, -1 * px, 0);
+    VertexTransform mov = new VertexTranslation(0.25 * px, -1 * px, 0);
     TextureAtlasSprite tex1 = BlockKillerJoe.textureHead1.get(TextureAtlasSprite.class);
     TextureAtlasSprite tex2 = BlockKillerJoe.textureHead2.get(TextureAtlasSprite.class);
 
@@ -112,7 +116,25 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     buffer.add(bb, EnumFacing.DOWN, .5f, 1f, 0f, .5f, tex2, null);
 
     List<BakedQuad> quads = new ArrayList<BakedQuad>();
-    buffer.bake(quads, rotx, roty, rotz, mov, rot);
+    buffer.bake(quads, sca, rotx, roty, rotz, mov, rot);
+
+    for (double angle : ROTS) {
+      buffer = new HalfBakedList();
+
+      BoundingBox bb1 = new BoundingBox(4.5 * px, 10.5 * px, 3 * px, 5.5 * px, 11.5 * px, 4 * px);
+      BoundingBox bb2 = new BoundingBox(7.5 * px, 9.5 * px, 3 * px, 8.5 * px, 10.5 * px, 4 * px);
+      BoundingBox bb3 = new BoundingBox(10.5 * px, 10.5 * px, 3 * px, 11.5 * px, 11.5 * px, 4 * px);
+
+      for (EnumFacing face : EnumFacing.values()) {
+        buffer.add(bb1, face, (face.ordinal() + 1) * px, (face.ordinal() + 2) * px, 9 * px, 10 * px, tex2, null);
+        buffer.add(bb2, face, (face.ordinal() + 1) * px, (face.ordinal() + 2) * px, 10 * px, 11 * px, tex2, null);
+        buffer.add(bb3, face, (face.ordinal() + 1) * px, (face.ordinal() + 2) * px, 11 * px, 12 * px, tex2, null);
+      }
+
+      VertexTransform rota = new VertexRotation(angle, new Vector3d(0, 1, 0), CENTER);
+      buffer.bake(quads, sca, rota, rotx, roty, rotz, mov, rot);
+    }
+
     return quads;
   }
 
@@ -185,6 +207,55 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     } else {
       return null;
     }
+  }
+
+  public class VertexScale implements VertexTransform {
+    private final Vector3d center;
+    private final double x;
+    private final double y;
+    private final double z;
+
+    public VertexScale(double x, double y, double z, Vector3d center) {
+      this.center = new Vector3d(center);
+      this.x = x;
+      this.y = y;
+      this.z = z;
+    }
+
+    public VertexScale(float x, float y, float z, Vector3d center) {
+      this.center = new Vector3d(center);
+      this.x = x;
+      this.y = y;
+      this.z = z;
+    }
+
+    public VertexScale(Vector3d scale, Vector3d center) {
+      this(scale.x, scale.y, scale.z, center);
+    }
+
+    public VertexScale(Vector3f scale, Vector3d center) {
+      this(scale.x, scale.y, scale.z, center);
+    }
+
+    @Override
+    public void apply(Vertex vertex) {
+      apply(vertex.xyz);
+    }
+
+    @Override
+    public void apply(Vector3d vec) {
+      vec.sub(center);
+      vec.x *= x;
+      vec.y *= y;
+      vec.z *= z;
+      vec.add(center);
+    }
+
+    @Override
+    public void applyToNormal(Vector3f vec) {
+
+    }
+
   }
 
 }

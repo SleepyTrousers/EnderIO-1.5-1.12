@@ -60,6 +60,10 @@ public class HalfBakedQuad {
       store.add(new HalfBakedQuad(bb, face, umin, umax, vmin, vmax, tex, color));
     }
 
+    public void add(BoundingBox bb, EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex, Vector4f color) {
+      store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmin, (float) vmax, tex, color));
+    }
+
     public void bake(List<BakedQuad> quads, VertexTransform... xforms) {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.bake(quads, xforms);
