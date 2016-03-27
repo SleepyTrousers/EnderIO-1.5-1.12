@@ -1,19 +1,19 @@
 package crazypants.enderio.machine.sagmill;
 
-import crazypants.enderio.machine.recipe.RecipeInput;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
-  
-  float chanceMultiplier = 1;
 
-  float powerMultiplier = 1;
+  private float chanceMultiplier = 1;
 
-  float grindingMultiplier = 1;
+  private float powerMultiplier = 1;
 
-  int durationMJ;
+  private float grindingMultiplier = 1;
 
-  RecipeInput ri;
+  private int durationMJ;
+
+  private RecipeInput ri;
 
   public GrindingBall(RecipeInput ri, float gm, float cm, float pm, int dmj) {
     super(ri.getInput());
@@ -23,9 +23,9 @@ public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
     powerMultiplier = pm;
     durationMJ = dmj;
   }
-  
+
   @Override
-  public RecipeInput copy() {    
+  public RecipeInput copy() {
     return new GrindingBall(ri, grindingMultiplier, chanceMultiplier, powerMultiplier, durationMJ);
   }
 

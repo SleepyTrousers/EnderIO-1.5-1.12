@@ -19,7 +19,7 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
-    if(input == null) {
+    if (input == null) {
       return false;
     }
     return SagMillRecipeManager.instance.isValidInput(input);
@@ -30,5 +30,4 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
     return ModObject.blockSagMill.unlocalisedName;
   }
 
-  
 }

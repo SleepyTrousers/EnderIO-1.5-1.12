@@ -26,10 +26,6 @@ public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
     addProgressTooltip(79, 31, 18, 24);
   }
 
-  /**
-   * Draw the background layer for the GuiContainer (everything behind the
-   * items)
-   */
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -37,17 +33,16 @@ public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
 
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
-    if(shouldRenderProgress()) {
+    if (shouldRenderProgress()) {
       int barHeight = getProgressScaled(24);
       drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, barHeight + 1);
     }
 
     int barHeight = getTileEntity().getBallDurationScaled(16);
-    if(barHeight > 0) {
+    if (barHeight > 0) {
       drawTexturedModalRect(guiLeft + 142, guiTop + 23 + (16 - barHeight), 186, 31, 4, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-
 
 }

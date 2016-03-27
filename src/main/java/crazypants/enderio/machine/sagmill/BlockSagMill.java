@@ -36,8 +36,6 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof TileSagMill) {
       return new ContainerSagMill(player.inventory, (TileSagMill) te);
@@ -61,9 +59,9 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
 
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
-  
+
     TileSagMill te = (TileSagMill) world.getTileEntity(pos);
-    if(te != null && te.isActive()) {
+    if (te != null && te.isActive()) {
       EnumFacing front = te.facing;
 
       for (int i = 0; i < 3; i++) {
@@ -74,7 +72,7 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
         double vx = 0;
         double vz = 0;
 
-        if(front == EnumFacing.NORTH || front == EnumFacing.SOUTH) {
+        if (front == EnumFacing.NORTH || front == EnumFacing.SOUTH) {
           px += world.rand.nextFloat() * 0.8 - 0.4;
           vz += front == EnumFacing.NORTH ? -v : v;
         } else {

@@ -42,20 +42,20 @@ public class GrindingBallTagHandler implements CustomTagHandler {
 
   @Override
   public boolean startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-    if(ELEMENT_ROOT.equals(localName)) {
+    if (ELEMENT_ROOT.equals(localName)) {
       return true;
     }
-    if(BALL_ROOT.equals(localName)) {
+    if (BALL_ROOT.equals(localName)) {
       id = RecipeConfigParser.getStringValue(AT_ID, attributes, null);
-      if(id == null) {
+      if (id == null) {
         Log.warn("GrindingBallTagHandler: grinding ball specified without the '" + AT_ID + "' attribute. It will be ignored.");
         processStack = false;
         return true;
       }
       boolean remove = RecipeConfigParser.getBooleanValue(AT_REMOVE, attributes, false);
-      if(remove) {
+      if (remove) {
         GrindingBall res = balls.remove(id);
-        if(res == null) {
+        if (res == null) {
           Log.warn("User config requested removal of grinding ball with id: " + id + " but it was not found.");
         } else {
           Log.info("Removed grinding ball with id=" + id + " due to user config.");
@@ -70,22 +70,22 @@ public class GrindingBallTagHandler implements CustomTagHandler {
       processStack = true;
       return true;
     }
-    if(EXCLUDES_ROOT.equals(localName)) {
+    if (EXCLUDES_ROOT.equals(localName)) {
       processExclude = true;
       return true;
     }
-    if(processStack && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
+    if (processStack && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
       RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
-      if(ri != null) {
+      if (ri != null) {
         GrindingBall gb = new GrindingBall(ri, gm, cm, pm, drf);
         balls.put(id, gb);
       }
     }
-    if(processExclude && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
+    if (processExclude && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
       RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
-      if(ri != null) {
+      if (ri != null) {
         boolean remove = RecipeConfigParser.getBooleanValue(AT_REMOVE, attributes, false);
-        if(remove) {
+        if (remove) {
           excludes.remove(ri);
           Log.info("Removed grinding ball exclude for " + ri.getInput().getDisplayName() + " due to user config.");
         } else {
@@ -99,7 +99,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
 
   @Override
   public boolean endElement(String uri, String localName, String qName) throws SAXException {
-    if(ELEMENT_ROOT.equals(localName) || BALL_ROOT.equals(localName) || EXCLUDES_ROOT.equals(localName)) {
+    if (ELEMENT_ROOT.equals(localName) || BALL_ROOT.equals(localName) || EXCLUDES_ROOT.equals(localName)) {
       processStack = false;
       processExclude = false;
       return true;
@@ -108,9 +108,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
   }
 
   @Override
-  public void configProcessed() {   
+  public void configProcessed() {
   }
-  
-  
 
 }

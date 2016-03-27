@@ -11,10 +11,7 @@ import crazypants.enderio.EnderIO;
 
 public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
 
-  private int x;
-  private int y;
-  private int z;
-
+  private long pos;
   int currGbUse;
   int maxGbUse;
 
@@ -22,27 +19,21 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   }
 
   public PacketGrindingBall(TileSagMill ent) {
-    x = ent.getPos().getX();
-    y = ent.getPos().getY();
-    z = ent.getPos().getZ();
+    pos = ent.getPos().toLong();
     currGbUse = ent.currGbUse;
     maxGbUse = ent.gb == null ? 0 : ent.gb.getDurationMJ();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(x);
-    buf.writeInt(y);
-    buf.writeInt(z);
+    buf.writeLong(pos);
     buf.writeInt(currGbUse);
     buf.writeInt(maxGbUse);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    x = buf.readInt();
-    y = buf.readInt();
-    z = buf.readInt();
+    pos = buf.readLong();
     currGbUse = buf.readInt();
     maxGbUse = buf.readInt();
   }
@@ -50,7 +41,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   @Override
   public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = player.worldObj.getTileEntity(BlockPos.fromLong(message.pos));
     if (te instanceof TileSagMill) {
       TileSagMill me = (TileSagMill) te;
       me.currGbUse = message.currGbUse;

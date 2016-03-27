@@ -4,13 +4,13 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GrindingMultiplierNBT implements IGrindingMultiplier {
 
-  float chanceMultiplier = 1;
+  private float chanceMultiplier = 1;
 
-  float powerMultiplier = 1;
+  private float powerMultiplier = 1;
 
-  float grindingMultiplier = 1;
+  private float grindingMultiplier = 1;
 
-  int durationMJ;
+  private int durationMJ;
 
   private static String CM = "grindBall.chanceMultiplier";
   private static String PM = "grindBall.powerMultiplier";
@@ -18,21 +18,20 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier {
   private static String DMJ = "grindBall.durationMJ";
 
   public static GrindingMultiplierNBT readFromNBT(NBTTagCompound nbtRoot) {
-    if(nbtRoot.hasKey(CM) && nbtRoot.hasKey(PM)&& nbtRoot.hasKey(GM)&& nbtRoot.hasKey(DMJ)) {
+    if (nbtRoot.hasKey(CM) && nbtRoot.hasKey(PM) && nbtRoot.hasKey(GM) && nbtRoot.hasKey(DMJ)) {
       return new GrindingMultiplierNBT(nbtRoot.getFloat(CM), nbtRoot.getFloat(PM), nbtRoot.getFloat(GM), nbtRoot.getInteger(DMJ));
     }
     return null;
   }
 
   public static void writeToNBT(IGrindingMultiplier gm, NBTTagCompound nbtRoot) {
-    if(gm != null) {
+    if (gm != null) {
       nbtRoot.setFloat(CM, gm.getChanceMultiplier());
       nbtRoot.setFloat(PM, gm.getPowerMultiplier());
       nbtRoot.setFloat(GM, gm.getGrindingMultiplier());
       nbtRoot.setInteger(DMJ, gm.getDurationMJ());
     }
   }
-
 
   protected GrindingMultiplierNBT(float chanceMultiplier, float powerMultiplier, float grindingMultiplier, int durationMJ) {
     this.chanceMultiplier = chanceMultiplier;
@@ -80,7 +79,5 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier {
   public void setDurationMJ(int durationMJ) {
     this.durationMJ = durationMJ;
   }
-
-
 
 }

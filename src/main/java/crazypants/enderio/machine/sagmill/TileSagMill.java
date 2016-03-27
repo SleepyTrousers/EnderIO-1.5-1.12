@@ -21,7 +21,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
 
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
-  
+
   public TileSagMill() {
     super(new SlotDefinition(2, 4));
   }
@@ -34,11 +34,11 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   @Override
   public String getMachineName() {
     return ModObject.blockSagMill.unlocalisedName;
-  }  
+  }
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if(itemstack == null) {
+    if (itemstack == null) {
       return false;
     }
     return SagMillRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));
@@ -53,31 +53,31 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     double res = super.usePower();
     boolean sendGB = false;
 
-    if(gb != null && useGrindingBall) {
+    if (gb != null && useGrindingBall) {
       currGbUse += res;
 
-      if(currGbUse >= gb.getDurationMJ()) {
+      if (currGbUse >= gb.getDurationMJ()) {
         currGbUse = 0;
         maxGbUse = 0;
         gb = null;
         sendGB = true;
       } else {
         int newScaled = getBallDurationScaled(16);
-        if(newScaled != lastSendGbScaled) {
+        if (newScaled != lastSendGbScaled) {
           sendGB = true;
         }
       }
     }
-    if(gb == null) {
+    if (gb == null) {
       gb = SagMillRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
-      if(gb != null) {
+      if (gb != null) {
         maxGbUse = gb.getDurationMJ();
         decrStackSize(1, 1);
         markDirty();
         sendGB = false; // the tile update will also sync the grinding ball
       }
     }
-    if(sendGB) {
+    if (sendGB) {
       PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
       lastSendGbScaled = getBallDurationScaled(16);
     }
@@ -88,13 +88,13 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   protected void taskComplete() {
     IPoweredTask ct = currentTask;
     super.taskComplete();
-    //run it again if the ball says so
-    if(gb != null && useGrindingBall && ct != null) {
-      if(ct.getBonusType() == RecipeBonusType.MULTIPLY_OUTPUT) {
+    // run it again if the ball says so
+    if (gb != null && useGrindingBall && ct != null) {
+      if (ct.getBonusType() == RecipeBonusType.MULTIPLY_OUTPUT) {
         float chance = random.nextFloat();
         float mul = gb.getGrindingMultiplier() - 1;
         while (mul > 0) {
-          if(chance <= mul) {
+          if (chance <= mul) {
             currentTask = ct;
             super.taskComplete();
           }
@@ -108,9 +108,9 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res;
     useGrindingBall = false;
-    if(gb != null) {
+    if (gb != null) {
       useGrindingBall = !SagMillRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
-      if(useGrindingBall) {
+      if (useGrindingBall) {
         res = new PoweredTask(nextRecipe, chance / gb.getChanceMultiplier(), getRecipeInputs());
         res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
       } else {
@@ -133,7 +133,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
-    if(gb != null) {
+    if (gb != null) {
       GrindingMultiplierNBT.writeToNBT(gb, nbtRoot);
     }
     nbtRoot.setInteger("currGbUse", currGbUse);
@@ -150,9 +150,10 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   public String getSoundName() {
     return "machine.sagmill";
   }
-  
+
   @Override
   public float getVolume() {
     return super.getVolume() * 0.125f;
   }
+
 }
