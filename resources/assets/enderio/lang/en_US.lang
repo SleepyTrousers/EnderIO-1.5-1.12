@@ -267,9 +267,9 @@ tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase o
 tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency with capacitors
 
 tile.blockReservoir.name=Reservoir
-tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
+tile.blockReservoir.tooltip.detailed.line1=When connected with other Reservoirs:
 tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
-tile.blockReservoir.tooltip.detailed.line3=an infinite water source
+tile.blockReservoir.tooltip.detailed.line3=an infinite water source.
 tile.blockReservoir.tooltip.detailed.line4=Produces one bucket per second
 tile.blockReservoir.tooltip.detailed.line5=R-Click with a wrench to
 tile.blockReservoir.tooltip.detailed.line6=enable auto-output
