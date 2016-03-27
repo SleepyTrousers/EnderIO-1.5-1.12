@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,9 +23,17 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.killera.KillerJoeRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
+
+  public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombieGen_head");
+  public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombieGen_head2");
 
   public static BlockZombieGenerator create() {
     BlockZombieGenerator gen = new BlockZombieGenerator();
@@ -36,16 +45,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
   }
   
-  @Override
-  public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {  
-    return true;
-  }
-
-  @Override
-  public boolean isReplaceable(World worldIn, BlockPos pos) {  
-    return false;
-  }
-
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new ContainerZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(new BlockPos(x, y, z)));
@@ -69,15 +68,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   @Override
   public boolean isOpaqueCube() {
     return false;
-  }
-
-  @Override
-  public int getRenderType() {
-    return 2;
-  }
-  
-  @Override
-  protected void registerInSmartModelAttacher() {   
   }
 
   @SideOnly(Side.CLIENT)
@@ -116,6 +106,30 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileZombieGenerator tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemRenderMapper getRenderMapper() {
+    return KillerJoeRenderMapper.zombieGen;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IBlockRenderMapper getBlockRenderMapper() {
+    return KillerJoeRenderMapper.zombieGen;
+  }
+
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
+
+  private static final Double px = 1d / 16d;
+
+  @Override
+  public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
+    setBlockBounds(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
   }
 
 }

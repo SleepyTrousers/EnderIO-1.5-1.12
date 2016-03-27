@@ -109,13 +109,13 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getRenderMapper() {
-    return KillerJoeRenderMapper.instance;
+    return KillerJoeRenderMapper.killerJoe;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IBlockRenderMapper getBlockRenderMapper() {
-    return KillerJoeRenderMapper.instance;
+    return KillerJoeRenderMapper.killerJoe;
   }
   
   @Override
@@ -123,5 +123,11 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return true;
   }
 
+  private static final Double px = 1d / 16d;
+
+  @Override
+  public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
+    setBlockBounds(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
+  }
 
 }

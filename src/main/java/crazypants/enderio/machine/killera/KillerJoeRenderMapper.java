@@ -2,10 +2,8 @@ package crazypants.enderio.machine.killera;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -31,20 +29,19 @@ import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.VertexScale;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
 import crazypants.enderio.tool.SmartTank;
@@ -52,15 +49,16 @@ import crazypants.enderio.tool.SmartTank;
 public class KillerJoeRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
     IItemRenderMapper.IDynamicOverlayMapper {
 
-  public static final KillerJoeRenderMapper instance = new KillerJoeRenderMapper();
+  private final TextureSupplier head1, head2;
 
-  protected KillerJoeRenderMapper() {
+  public static final KillerJoeRenderMapper killerJoe = new KillerJoeRenderMapper(BlockKillerJoe.textureHead1, BlockKillerJoe.textureHead2);
+
+  public static final KillerJoeRenderMapper zombieGen = new KillerJoeRenderMapper(BlockZombieGenerator.textureHead1, BlockZombieGenerator.textureHead2);
+
+  protected KillerJoeRenderMapper(TextureSupplier head1, TextureSupplier head2) {
     super(null);
-  }
-
-  @Override
-  protected EnumMap<EnumFacing, EnumIOMode> renderIO(@Nonnull AbstractMachineEntity tileEntity, @Nonnull AbstractMachineBlock<?> block) {
-    return null;
+    this.head1 = head1;
+    this.head2 = head2;
   }
 
   @Override
@@ -103,8 +101,8 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     VertexTransform roty = new VertexRotation(0.17453290, new Vector3d(0, 1, 0), CENTER);
     VertexTransform rotz = new VertexRotation(0.23928460, new Vector3d(0, 0, 1), CENTER);
     VertexTransform mov = new VertexTranslation(0.25 * px, -1 * px, 0);
-    TextureAtlasSprite tex1 = BlockKillerJoe.textureHead1.get(TextureAtlasSprite.class);
-    TextureAtlasSprite tex2 = BlockKillerJoe.textureHead2.get(TextureAtlasSprite.class);
+    TextureAtlasSprite tex1 = head1.get(TextureAtlasSprite.class);
+    TextureAtlasSprite tex2 = head2.get(TextureAtlasSprite.class);
 
     HalfBakedList buffer = new HalfBakedList();
 
@@ -183,6 +181,7 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT), stack));
     if (!stack.hasTagCompound()) {
+      // glass needs to be rendered on top of fluid
       states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON), stack));
     }
     itemQuadCollector.addQuads(null, renderHead(null));
@@ -202,60 +201,11 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
       ItemQuadCollector result = new ItemQuadCollector();
       result.addQuads(null, renderFuel(stack));
       result.addBlockState(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON), stack);
-      // TODO: render sword here
+      // TODO: render sword here if it's a killer joe
       return result;
     } else {
       return null;
     }
-  }
-
-  public class VertexScale implements VertexTransform {
-    private final Vector3d center;
-    private final double x;
-    private final double y;
-    private final double z;
-
-    public VertexScale(double x, double y, double z, Vector3d center) {
-      this.center = new Vector3d(center);
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    }
-
-    public VertexScale(float x, float y, float z, Vector3d center) {
-      this.center = new Vector3d(center);
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    }
-
-    public VertexScale(Vector3d scale, Vector3d center) {
-      this(scale.x, scale.y, scale.z, center);
-    }
-
-    public VertexScale(Vector3f scale, Vector3d center) {
-      this(scale.x, scale.y, scale.z, center);
-    }
-
-    @Override
-    public void apply(Vertex vertex) {
-      apply(vertex.xyz);
-    }
-
-    @Override
-    public void apply(Vector3d vec) {
-      vec.sub(center);
-      vec.x *= x;
-      vec.y *= y;
-      vec.z *= z;
-      vec.add(center);
-    }
-
-    @Override
-    public void applyToNormal(Vector3f vec) {
-
-    }
-
   }
 
 }

@@ -23,6 +23,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
+import crazypants.enderio.tool.SmartTank;
 
 @SideOnly(Side.CLIENT)
 public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> {
@@ -43,7 +44,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     }
     if(te != null) {
       renderSword(facing, te.getStackInSlot(0), te.getSwingProgress(tick), false); // TODO 1.9 hand
-      renderFluid(te);
+      renderFluid(te.fuelTank);
     }
     GlStateManager.popMatrix();
 
@@ -95,9 +96,9 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
 
   }
 
-  protected void renderFluid(TileKillerJoe gen) {
+  public static void renderFluid(SmartTank fuelTank) {
 
-    HalfBakedList buffer = KillerJoeRenderMapper.mkTank(gen.fuelTank);
+    HalfBakedList buffer = KillerJoeRenderMapper.mkTank(fuelTank);
     if (buffer != null) {
       RenderUtil.bindBlockTexture();
       GlStateManager.enableBlend();
