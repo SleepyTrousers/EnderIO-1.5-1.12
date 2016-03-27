@@ -4,10 +4,15 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+
+import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
@@ -74,6 +79,19 @@ public class HalfBakedQuad {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.render(tes);
       }
+    }
+
+    public void render() {
+      RenderUtil.bindBlockTexture();
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.disableLighting();
+      GlStateManager.depthMask(false);
+      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+      render(tes);
+      Tessellator.getInstance().draw();
+      GlStateManager.depthMask(true);
     }
 
   }

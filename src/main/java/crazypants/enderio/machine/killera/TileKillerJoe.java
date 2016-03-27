@@ -175,7 +175,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
 
     if (!shouldDoWorkThisTick(10)) {
       return false;
@@ -190,7 +190,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       xpCon.setDirty(false);
     }
 
-    if (!redstoneCheckPassed) {
+    if (!redstoneCheck) {
       return false;
     }
 
@@ -255,10 +255,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private boolean canJoeSee(EntityLivingBase ent) {
     Vec3 entPos = new Vec3(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
-    for (EnumFacing facing : frontFaceAndSides) {
-      if (this.worldObj.rayTraceBlocks(
-          new Vec3(getPos().getX() + faceMidPoints[facing.ordinal()][0], getPos().getY() + faceMidPoints[facing.ordinal()][1], getPos().getZ() + faceMidPoints[facing.ordinal()][2]),
-          entPos) == null)
+    for (EnumFacing facing1 : frontFaceAndSides) {
+      if (this.worldObj.rayTraceBlocks(new Vec3(getPos().getX() + faceMidPoints[facing1.ordinal()][0], getPos().getY() + faceMidPoints[facing1.ordinal()][1],
+          getPos().getZ() + faceMidPoints[facing1.ordinal()][2]), entPos) == null)
         return true;
     }
     return false;
@@ -588,4 +587,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public boolean equals(@Nullable Object obj) {
     return super.equals(obj);
   }
+
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    return true;
+  }
+
 }

@@ -110,10 +110,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
     boolean res = false;
 
-    if(!redstoneCheckPassed) {
+    if(!redstoneCheck) {
       if(active) {
         active = false;
         res = true;

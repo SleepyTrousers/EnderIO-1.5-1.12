@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,7 +27,6 @@ import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
@@ -40,6 +37,7 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.TankRenderHelper;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.VertexScale;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
@@ -139,38 +137,12 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
   private List<BakedQuad> renderFuel(ItemStack stack) {
     if (stack.hasTagCompound()) {
       SmartTank tank = TileKillerJoe.loadTank(stack.getTagCompound());
-      HalfBakedList buffer = mkTank(tank);
+      HalfBakedList buffer = TankRenderHelper.mkTank(tank, 2.51, 1, 14, false);
       if (buffer != null) {
         List<BakedQuad> quads = new ArrayList<BakedQuad>();
         buffer.bake(quads);
         return quads;
       }
-    }
-    return null;
-  }
-
-  public static HalfBakedList mkTank(SmartTank tank) {
-    float ratio = tank.getFilledRatio();
-    if (ratio > 0.01) {
-
-      float height = 1 - ratio;
-
-      ResourceLocation still = tank.getFluid().getFluid().getStill(tank.getFluid());
-      int color = tank.getFluid().getFluid().getColor(tank.getFluid());
-      Vector4f vecC = new Vector4f((color >> 16 & 0xFF) / 255d * 2, (color >> 8 & 0xFF) / 255d * 2, (color & 0xFF) / 255d * 2, 1);
-      TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(still.toString());
-
-      BoundingBox bb = new BoundingBox(2.51 * px, 1 * px, 2.51 * px, 13.49 * px, (13d * ratio + 1) * px, 13.49 * px);
-
-      HalfBakedList buffer = new HalfBakedList();
-
-      buffer.add(bb, EnumFacing.NORTH, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.EAST, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.SOUTH, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.WEST, 0f, 1f, height, 1f, sprite, vecC);
-      buffer.add(bb, EnumFacing.UP, 0f, 1f, 0f, 1f, sprite, vecC);
-
-      return buffer;
     }
     return null;
   }

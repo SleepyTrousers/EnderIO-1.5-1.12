@@ -1,60 +1,48 @@
 package crazypants.enderio.machine.killera;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
-import crazypants.enderio.tool.SmartTank;
+import crazypants.enderio.render.TankRenderHelper;
 
 @SideOnly(Side.CLIENT)
 public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> {
-
-//  private static final ItemStack DEFAULT_SWORD = new ItemStack(Items.iron_sword);
 
   @Override
   public void renderTileEntityAt(TileKillerJoe te, double x, double y, double z, float tick, int b) {
 
     if(te != null) {
-      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+      if (MinecraftForgeClient.getRenderPass() == 0 && te.getStackInSlot(0) != null) {
+        RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x, (float) y, (float) z);
+        renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(tick), false); // TODO 1.9 hand
+        GlStateManager.popMatrix();
+      } else if (MinecraftForgeClient.getRenderPass() == 1) {
+        HalfBakedList buffer = TankRenderHelper.mkTank(te.fuelTank, 2.51, 1, 14, false);
+        if (buffer != null) {
+          RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+          GlStateManager.pushMatrix();
+          GlStateManager.translate((float) x, (float) y, (float) z);
+          buffer.render();
+          GlStateManager.popMatrix();
+        }
+      }
     }
-    GlStateManager.pushMatrix();    
-    GlStateManager.translate((float) x, (float) y, (float) z);
-    EnumFacing facing = EnumFacing.WEST;
-    if (te != null) {
-      facing = te.facing;
-    }
-    if(te != null) {
-      renderSword(facing, te.getStackInSlot(0), te.getSwingProgress(tick), false); // TODO 1.9 hand
-      renderFluid(te.fuelTank);
-    }
-    GlStateManager.popMatrix();
 
   }
 
   private void renderSword(EnumFacing facing, ItemStack sword, float swingProgress, boolean leftHand) {
-
-    if(sword == null) {
-      return;
-    }
 
     //Sword
     GlStateManager.pushMatrix();
@@ -86,38 +74,15 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     GlStateManager.scale(scale, scale, scale);
 
     // render
-    Minecraft.getMinecraft().getRenderItem().renderItem(sword, TransformType.NONE);
+    @SuppressWarnings("deprecation")
+    final net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType none = net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE;
+    Minecraft.getMinecraft().getRenderItem().renderItem(sword, none);
 
     // cleanup
     GlStateManager.popMatrix();
     GlStateManager.popMatrix();
     GlStateManager.popMatrix();
     
-
-  }
-
-  public static void renderFluid(SmartTank fuelTank) {
-
-    HalfBakedList buffer = KillerJoeRenderMapper.mkTank(fuelTank);
-    if (buffer != null) {
-      RenderUtil.bindBlockTexture();
-      GlStateManager.enableBlend();
-      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GlStateManager.disableLighting();
-      GlStateManager.depthMask(false);
-      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-      buffer.render(tes);
-      Tessellator.getInstance().draw();
-      GlStateManager.depthMask(true);
-    }
-  }
-
-  public static void renderFace(WorldRenderer tes, BoundingBox bb, EnumFacing face, float minU, float maxU, float minV, float maxV, TextureAtlasSprite tex) {
-    List<Vertex> corners = bb.getCornersWithUvForFace(face, minU, maxU, minV, maxV);
-    for (Vertex v : corners) {
-      tes.pos(v.x(), v.y(), v.z()).tex(tex.getInterpolatedU(v.u() * 16), tex.getInterpolatedV(v.v() * 16)).endVertex();
-    }
   }
 
 }
