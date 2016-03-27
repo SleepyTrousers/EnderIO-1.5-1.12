@@ -320,7 +320,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   
   @Override
   public boolean apply(@Nullable EntityXPOrb input) {
-    return true;
+    return input != null && !input.isDead;
   }
 
   // ------------------------------- Weapon stuffs
