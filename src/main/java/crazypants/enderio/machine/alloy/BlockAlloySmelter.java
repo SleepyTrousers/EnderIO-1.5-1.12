@@ -24,7 +24,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
     PacketHandler.INSTANCE.registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockAlloySmelter res = new BlockAlloySmelter();
-    res.init();    
+    res.init();
     return res;
   }
 
@@ -39,13 +39,11 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
   }
-  
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileAlloySmelter) {
+    if (te instanceof TileAlloySmelter) {
       return new ContainerAlloySmelter(player.inventory, (TileAlloySmelter) te);
     }
     return null;
@@ -54,18 +52,21 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);
+    if (te instanceof TileAlloySmelter) {
+      return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);
+    }
+    return null;
   }
-
+  
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_ALLOY_SMELTER;
-  }
+    }
 
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileAlloySmelter tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
-  }
+    }
 
-}
+  }
