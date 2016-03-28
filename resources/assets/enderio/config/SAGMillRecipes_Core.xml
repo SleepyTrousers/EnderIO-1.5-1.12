@@ -277,8 +277,10 @@
         <itemStack modID="minecraft" itemName="cobblestone" />
       </input>
       <output>
-        <itemStack oreDictionary="sand" />
-        <itemStack oreDictionary="gravel" chance="0.1" />
+        <itemStack oreDictionary="gravel" chance="0.7" />
+        <itemStack oreDictionary="gravel" chance="0.3" />
+        <itemStack oreDictionary="sand" chance="0.1" />
+        <itemStack oreDictionary="itemFlint" chance="0.05" />
       </output>
     </recipe>
     <recipe name="Sandstone" energyCost="2400" >
@@ -304,9 +306,9 @@
         <itemStack oreDictionary="gravel" />
       </input>
       <output>
-        <itemStack oreDictionary="itemFlint" />
-        <itemStack oreDictionary="itemFlint" chance="0.1" />
-        <itemStack oreDictionary="sand" chance="0.1" />
+        <itemStack oreDictionary="sand" chance="0.7" />
+        <itemStack oreDictionary="sand" chance="0.3" />
+        <itemStack oreDictionary="itemFlint" chance="0.3" />
       </output>
     </recipe>
     <recipe name="Netherrack" energyCost="2400" >
@@ -390,6 +392,7 @@
       <output>
         <itemStack modID="minecraft" itemName="diamond" number="1" />
         <itemStack modID="minecraft" itemName="diamond" number="1" chance="0.25" />
+        <itemStack oreDictionary="dustCoal" number="1" chance="0.05" />
       </output>
     </recipe>
     <recipe name="EmeraldOre" energyCost="3000" >

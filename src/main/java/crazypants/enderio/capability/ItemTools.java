@@ -24,7 +24,7 @@ public class ItemTools {
   public static boolean doPush(IBlockAccess world, BlockPos pos) {
     boolean result = false;
     for (EnumFacing facing : EnumFacing.values()) {
-      MoveResult moveResult = move(world, pos, facing, pos.offset(facing), facing.getOpposite());
+      MoveResult moveResult = move(NO_LIMIT, world, pos, facing, pos.offset(facing), facing.getOpposite());
       if (moveResult == MoveResult.SOURCE_EMPTY) {
         return false;
       } else if (moveResult == MoveResult.MOVED) {
@@ -37,7 +37,7 @@ public class ItemTools {
   public static boolean doPull(IBlockAccess world, BlockPos pos) {
     boolean result = false;
     for (EnumFacing facing : EnumFacing.values()) {
-      MoveResult moveResult = move(world, pos.offset(facing), facing.getOpposite(), pos, facing);
+      MoveResult moveResult = move(NO_LIMIT, world, pos.offset(facing), facing.getOpposite(), pos, facing);
       if (moveResult == MoveResult.TARGET_FULL) {
         return false;
       } else if (moveResult == MoveResult.MOVED) {
@@ -49,12 +49,16 @@ public class ItemTools {
 
   public static enum MoveResult {
     NO_ACTION,
+    LIMITED,
     MOVED,
     TARGET_FULL,
     SOURCE_EMPTY;
   }
 
-  public static MoveResult move(IBlockAccess world, BlockPos sourcePos, EnumFacing sourceFacing, BlockPos targetPos, EnumFacing targetFacing) {
+  public static MoveResult move(Limit limit, IBlockAccess world, BlockPos sourcePos, EnumFacing sourceFacing, BlockPos targetPos, EnumFacing targetFacing) {
+    if (!limit.canWork()) {
+      return MoveResult.LIMITED;
+    }
     boolean movedSomething = false;
     TileEntity source = world.getTileEntity(sourcePos);
     if (source != null && source.hasWorldObj() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
@@ -65,12 +69,11 @@ public class ItemTools {
           IItemHandler targetHandler = target.getCapability(ITEM_HANDLER_CAPABILITY, targetFacing);
           if (targetHandler != null && hasFreeSpace(targetHandler)) {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
-              ItemStack removable = sourceHandler.extractItem(i, Integer.MAX_VALUE, true);
+              ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);
               if (removable != null && removable.stackSize > 0) {
                 ItemStack unacceptable = ItemHandlerHelper.insertItemStacked(targetHandler, removable, true);
                 int movable = removable.stackSize - (unacceptable == null ? 0 : unacceptable.stackSize);
                 if (movable > 0) {
-                  movedSomething = true;
                   ItemStack removed = sourceHandler.extractItem(i, movable, false);
                   if (removed != null && removed.stackSize > 0) {
                     ItemStack targetRejected = ItemHandlerHelper.insertItemStacked(targetHandler, removed, false);
@@ -82,6 +85,11 @@ public class ItemTools {
                         source.getWorld().spawnEntityInWorld(drop);
                       }
                     }
+                  }
+                  movedSomething = true;
+                  limit.useItems(movable);
+                  if (!limit.canWork()) {
+                    return MoveResult.MOVED;
                   }
                 }
               }
@@ -135,6 +143,40 @@ public class ItemTools {
       return ioMode != IoMode.DISABLED && ioMode != IoMode.PULL;
     }
     return true;
+  }
+
+  public static final Limit NO_LIMIT = new Limit(Integer.MAX_VALUE, Integer.MAX_VALUE);
+
+  public static class Limit {
+    private int stacks, items;
+
+    public Limit(int stacks, int items) {
+      this.stacks = stacks;
+      this.items = items;
+    }
+
+    public Limit(int items) {
+      this.stacks = Integer.MAX_VALUE;
+      this.items = items;
+    }
+
+    public int getStacks() {
+      return stacks;
+    }
+
+    public int getItems() {
+      return items;
+    }
+
+    public void useItems(int count) {
+      stacks--;
+      items -= count;
+    }
+
+    public boolean canWork() {
+      return stacks > 0 && items > 0;
+    }
+
   }
 
 }
