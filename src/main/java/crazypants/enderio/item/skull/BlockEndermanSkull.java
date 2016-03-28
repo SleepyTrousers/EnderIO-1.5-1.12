@@ -55,7 +55,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   private BlockEndermanSkull() {
-    super(ModObject.blockEndermanSkull.unlocalisedName, TileEndermanSkull.class, ItemEndermanSkull.class, Material.circuits);
+    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, ItemEndermanSkull.class, Material.circuits);
     setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
   }
 
@@ -72,7 +72,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     int num = SkullType.values().length;
     for (int i = 0; i < num; i++) {
       SkullType st = SkullType.values()[i];
-      ClientUtil.regRenderer(item, i, ModObject.blockEndermanSkull.unlocalisedName + "_" + st.name);
+      ClientUtil.regRenderer(item, i, ModObject.blockEndermanSkull.getUnlocalisedName() + "_" + st.name);
     }
   }
 

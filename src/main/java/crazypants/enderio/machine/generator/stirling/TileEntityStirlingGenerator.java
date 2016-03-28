@@ -36,7 +36,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   public String getMachineName() {
-    return ModObject.blockStirlingGenerator.unlocalisedName;
+    return ModObject.blockStirlingGenerator.getUnlocalisedName();
   }
 
   @Override

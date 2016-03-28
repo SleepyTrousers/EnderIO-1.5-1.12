@@ -51,14 +51,14 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedStairs create() {
-    BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.oak_stairs, ModObject.blockPaintedStair.unlocalisedName);
+    BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.oak_stairs, ModObject.blockPaintedStair.getUnlocalisedName());
     woodStairs.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedStairs>(woodStairs,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(woodStairs,
         Blocks.oak_stairs, Blocks.acacia_stairs, Blocks.spruce_stairs, Blocks.birch_stairs, Blocks.jungle_stairs, Blocks.dark_oak_stairs));
 
-    BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.stone_stairs, ModObject.blockPaintedStair.unlocalisedName + "2");
+    BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.stone_stairs, ModObject.blockPaintedStoneStair.getUnlocalisedName());
     stoneStairs.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedStairs>(stoneStairs,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(stoneStairs,
         Blocks.stone_stairs, Blocks.brick_stairs, Blocks.stone_brick_stairs, Blocks.nether_brick_stairs, Blocks.sandstone_stairs, Blocks.quartz_stairs,
         Blocks.red_sandstone_stairs));
 
@@ -171,7 +171,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

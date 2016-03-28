@@ -24,14 +24,14 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   }
 
   protected BlockDarkSteelLadder() {       
-    setUnlocalizedName(ModObject.blockDarkSteelLadder.unlocalisedName);
+    setUnlocalizedName(ModObject.blockDarkSteelLadder.getUnlocalisedName());
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);
   }
   
   protected void init() {
-    GameRegistry.registerBlock(this, ModObject.blockDarkSteelLadder.unlocalisedName);    
+    GameRegistry.registerBlock(this, ModObject.blockDarkSteelLadder.getUnlocalisedName());    
   }
   
   @Override

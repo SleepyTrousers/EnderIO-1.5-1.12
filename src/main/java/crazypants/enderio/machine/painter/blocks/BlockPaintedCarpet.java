@@ -56,17 +56,17 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   protected BlockPaintedCarpet() {
     super();
     setCreativeTab(null);
-    setUnlocalizedName(ModObject.blockPaintedCarpet.unlocalisedName);
+    setUnlocalizedName(ModObject.blockPaintedCarpet.getUnlocalisedName());
     setHardness(0.1F);
     setStepSound(soundTypeCloth);
     setLightOpacity(0);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, ModObject.blockPaintedCarpet.unlocalisedName);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), ModObject.blockPaintedCarpet.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedCarpet.unlocalisedName + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.carpet));
+    GameRegistry.registerBlock(this, null, ModObject.blockPaintedCarpet.getUnlocalisedName());
+    GameRegistry.registerItem(new BlockItemPaintedBlock(this), ModObject.blockPaintedCarpet.getUnlocalisedName());
+    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedCarpet.getUnlocalisedName() + "TileEntity");
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.carpet));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
@@ -155,7 +155,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

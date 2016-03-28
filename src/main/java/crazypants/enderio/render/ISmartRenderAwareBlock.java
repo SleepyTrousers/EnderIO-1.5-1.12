@@ -11,6 +11,6 @@ public interface ISmartRenderAwareBlock {
    * This is called in a render thread.
    */
   @SideOnly(Side.CLIENT)
-  IRenderMapper.IItemRenderMapper getRenderMapper();
+  IRenderMapper.IItemRenderMapper getItemRenderMapper();
 
 }

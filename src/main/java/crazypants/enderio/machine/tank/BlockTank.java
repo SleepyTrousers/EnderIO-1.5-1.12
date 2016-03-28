@@ -205,7 +205,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return TankItemRenderMapper.instance;
   }
 

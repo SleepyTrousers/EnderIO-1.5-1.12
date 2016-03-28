@@ -36,7 +36,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   protected BlockVacuumChest() {
-    super(ModObject.blockVacuumChest.unlocalisedName, TileVacuumChest.class);
+    super(ModObject.blockVacuumChest.getUnlocalisedName(), TileVacuumChest.class);
   }
 
   @Override

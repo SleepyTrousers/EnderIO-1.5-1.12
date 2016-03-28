@@ -85,7 +85,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   
   @Override
   public String getMachineName() {
-    return ModObject.blockAlloySmelter.unlocalisedName;
+    return ModObject.blockAlloySmelter.getUnlocalisedName();
   }
 
   @Override

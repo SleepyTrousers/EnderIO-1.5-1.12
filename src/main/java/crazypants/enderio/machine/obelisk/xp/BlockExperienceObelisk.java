@@ -73,7 +73,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

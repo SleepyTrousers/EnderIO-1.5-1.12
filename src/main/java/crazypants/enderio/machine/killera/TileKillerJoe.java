@@ -121,7 +121,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public String getMachineName() {
-    return ModObject.blockKillerJoe.unlocalisedName;
+    return ModObject.blockKillerJoe.getUnlocalisedName();
   }
 
   @Override

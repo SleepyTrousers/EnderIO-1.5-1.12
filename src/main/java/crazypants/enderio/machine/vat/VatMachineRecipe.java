@@ -32,7 +32,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockVat.unlocalisedName;
+    return ModObject.blockVat.getUnlocalisedName();
   }
 
   @Override

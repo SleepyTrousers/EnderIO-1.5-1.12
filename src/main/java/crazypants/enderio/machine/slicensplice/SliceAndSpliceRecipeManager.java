@@ -21,9 +21,9 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
     MachineRecipeRegistry.instance.registerRecipe(
-        ModObject.blockSliceAndSplice.unlocalisedName,
+        ModObject.blockSliceAndSplice.getUnlocalisedName(),
         new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
-            ModObject.blockAlloySmelter.unlocalisedName, this));
+            ModObject.blockAlloySmelter.getUnlocalisedName(), this));
   }
 
 }

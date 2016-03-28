@@ -27,7 +27,7 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSagMill.unlocalisedName;
+    return ModObject.blockSagMill.getUnlocalisedName();
   }
 
 }

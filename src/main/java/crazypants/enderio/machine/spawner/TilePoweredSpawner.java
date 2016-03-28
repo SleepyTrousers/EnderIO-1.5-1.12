@@ -65,20 +65,24 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   protected void taskComplete() {
     super.taskComplete();
-    if(isSpawnMode) {
-      remainingSpawnTries = Config.poweredSpawnerSpawnCount + Config.poweredSpawnerMaxSpawnTries;
-      for (int i = 0; i < Config.poweredSpawnerSpawnCount && remainingSpawnTries > 0; ++i) {
-        if(!trySpawnEntity()) {
-          break;
+    if (hasEntity()) {
+      if (isSpawnMode) {
+        remainingSpawnTries = Config.poweredSpawnerSpawnCount + Config.poweredSpawnerMaxSpawnTries;
+        for (int i = 0; i < Config.poweredSpawnerSpawnCount && remainingSpawnTries > 0; ++i) {
+          if (!trySpawnEntity()) {
+            break;
+          }
         }
+      } else {
+        if (getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntity()) {
+          return;
+        }
+        ItemStack res = capturedMob.toStack(EnderIO.itemSoulVessel, 1, 1);
+        decrStackSize(0, 1);
+        setInventorySlotContents(1, res);
       }
     } else {
-      if (getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntity()) {
-        return;
-      }
-      ItemStack res = capturedMob.toStack(EnderIO.itemSoulVessel, 1, 1);
-      decrStackSize(0, 1);
-      setInventorySlotContents(1, res);
+      this.worldObj.destroyBlock(getPos(), true);
     }
   }
 
@@ -109,7 +113,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public String getMachineName() {
-    return ModObject.blockPoweredSpawner.unlocalisedName;
+    return ModObject.blockPoweredSpawner.getUnlocalisedName();
   }
 
   @Override

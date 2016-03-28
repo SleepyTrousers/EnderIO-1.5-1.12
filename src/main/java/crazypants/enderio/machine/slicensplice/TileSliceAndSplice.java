@@ -47,7 +47,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSliceAndSplice.unlocalisedName;
+    return ModObject.blockSliceAndSplice.getUnlocalisedName();
   }
 
   @Override

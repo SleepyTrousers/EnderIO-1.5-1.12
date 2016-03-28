@@ -83,7 +83,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);
     
     List<SoulBinderRecipeWrapper> result = new ArrayList<SoulBinderRecipeWrapper>(); 
-    Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
+    Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.getUnlocalisedName());
     if(recipes.isEmpty()) {
       return;
     }

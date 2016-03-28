@@ -94,7 +94,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemConduitProbe.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemConduitProbe.getUnlocalisedName());
   }
 
  

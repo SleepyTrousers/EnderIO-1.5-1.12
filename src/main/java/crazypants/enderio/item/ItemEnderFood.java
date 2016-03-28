@@ -121,7 +121,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
 
   public static ItemEnderFood create() {
     ItemEnderFood ret = new ItemEnderFood();
-    GameRegistry.registerItem(ret, ModObject.itemEnderFood.unlocalisedName);
+    GameRegistry.registerItem(ret, ModObject.itemEnderFood.getUnlocalisedName());
     return ret;
   }
 

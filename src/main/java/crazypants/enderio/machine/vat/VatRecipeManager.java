@@ -42,7 +42,7 @@ public class VatRecipeManager {
       Log.error("Could not load recipes for Vat.");
     }
 
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockVat.unlocalisedName, new VatMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockVat.getUnlocalisedName(), new VatMachineRecipe());
 
   }
 

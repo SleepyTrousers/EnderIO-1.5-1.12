@@ -74,7 +74,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   private int linkId;
 
   protected BlockEnderRail() {
-    setUnlocalizedName(ModObject.blockEnderRail.unlocalisedName);
+    setUnlocalizedName(ModObject.blockEnderRail.getUnlocalisedName());
     setStepSound(Block.soundTypeMetal);
     if(Config.transceiverEnabled && Config.enderRailEnabled) {
       setCreativeTab(EnderIOTab.tabEnderIO);
@@ -85,7 +85,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, ModObject.blockEnderRail.unlocalisedName);
+    GameRegistry.registerBlock(this, ModObject.blockEnderRail.getUnlocalisedName());
   }
 
 //  @Override

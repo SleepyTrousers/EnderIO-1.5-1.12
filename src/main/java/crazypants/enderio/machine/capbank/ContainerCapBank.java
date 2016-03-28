@@ -2,12 +2,6 @@ package crazypants.enderio.machine.capbank;
 
 import java.awt.Point;
 
-import com.enderio.core.common.ContainerEnder;
-
-import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.util.BaublesUtil;
-import crazypants.util.ShadowInventory;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,6 +10,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.common.ContainerEnder;
+
+import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.util.BaublesUtil;
+import crazypants.util.ShadowInventory;
 
 public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
@@ -72,10 +72,8 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
         @Override
         @SideOnly(Side.CLIENT)
-        public TextureAtlasSprite getBackgroundSprite() {          
-          //TODO: 1.8
-//          return ItemArmor.func_94602_b(k);
-          return super.getBackgroundSprite();
+        public String getSlotTexture() {
+          return ItemArmor.EMPTY_SLOT_NAMES[k];
         }
       });
     }
@@ -105,6 +103,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     return p;
   }
   
+  @SuppressWarnings("hiding")
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
 

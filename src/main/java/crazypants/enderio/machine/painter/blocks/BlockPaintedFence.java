@@ -54,16 +54,16 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedFence create() {
-    BlockPaintedFence woodFence = new BlockPaintedFence(Material.wood, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.unlocalisedName);
+    BlockPaintedFence woodFence = new BlockPaintedFence(Material.wood, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.getUnlocalisedName());
     woodFence.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
     woodFence.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedFence>(woodFence,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(woodFence,
         Blocks.oak_fence, Blocks.acacia_fence, Blocks.spruce_fence, Blocks.birch_fence, Blocks.jungle_fence, Blocks.dark_oak_fence));
 
-    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.rock, MapColor.netherrackColor, ModObject.blockPaintedStoneFence.unlocalisedName);
+    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.rock, MapColor.netherrackColor, ModObject.blockPaintedStoneFence.getUnlocalisedName());
     stoneFence.setHardness(2.0F).setResistance(10.0F).setStepSound(soundTypePiston);
     stoneFence.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
         Blocks.nether_brick_fence));
 
     return woodFence;
@@ -193,7 +193,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

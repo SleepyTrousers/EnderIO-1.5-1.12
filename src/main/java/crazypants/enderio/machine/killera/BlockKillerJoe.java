@@ -108,7 +108,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return KillerJoeRenderMapper.killerJoe;
   }
 

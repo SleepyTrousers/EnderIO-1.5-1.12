@@ -49,7 +49,7 @@ public class DummyRecipe implements IMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockPoweredSpawner.unlocalisedName;
+    return ModObject.blockPoweredSpawner.getUnlocalisedName();
   }
 
   @Override

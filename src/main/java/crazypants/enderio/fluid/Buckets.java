@@ -1,8 +1,8 @@
 package crazypants.enderio.fluid;
 
-import crazypants.util.ClientUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.util.ClientUtil;
 
 public class Buckets {
 
@@ -17,15 +17,15 @@ public class Buckets {
   
   public static void createBuckets() {
     if(Fluids.fluidXpJuice != null) {
-      itemBucketXpJuice = ItemBucketEio.create(Fluids.fluidXpJuice);
+      itemBucketXpJuice = ItemBucketEio.create(null, Fluids.fluidXpJuice);
     } 
-    itemBucketNutrientDistillation = ItemBucketEio.create(Fluids.fluidNutrientDistillation);
-    itemBucketHootch = ItemBucketEio.create(Fluids.fluidHootch);
-    itemBucketRocketFuel = ItemBucketEio.create(Fluids.fluidRocketFuel);
-    itemBucketFireWater = ItemBucketEio.create(Fluids.fluidFireWater);
-    itemBucketLiquidSunshine = ItemBucketEio.create(Fluids.fluidLiquidSunshine);
-    itemBucketCloudSeed = ItemBucketEio.create(Fluids.fluidCloudSeed);
-    itemBucketCloudSeedCompressed = ItemBucketEio.create(Fluids.fluidCloudSeedConcentrated);
+    itemBucketNutrientDistillation = ItemBucketEio.create(Fluids.blockNutrientDistillation, Fluids.fluidNutrientDistillation);
+    itemBucketHootch = ItemBucketEio.create(Fluids.blockHootch, Fluids.fluidHootch);
+    itemBucketRocketFuel = ItemBucketEio.create(Fluids.blockRocketFuel, Fluids.fluidRocketFuel);
+    itemBucketFireWater = ItemBucketEio.create(Fluids.blockFireWater, Fluids.fluidFireWater);
+    itemBucketLiquidSunshine = ItemBucketEio.create(Fluids.blockLiquidSunshine, Fluids.fluidLiquidSunshine);
+    itemBucketCloudSeed = ItemBucketEio.create(Fluids.blockCloudSeed, Fluids.fluidCloudSeed);
+    itemBucketCloudSeedCompressed = ItemBucketEio.create(Fluids.blockCloudSeedConcentrated, Fluids.fluidCloudSeedConcentrated);
   }
   
   @SideOnly(Side.CLIENT)

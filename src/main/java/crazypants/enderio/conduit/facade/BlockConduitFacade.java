@@ -40,7 +40,7 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
   }
 
   private BlockConduitFacade() {
-    super(ModObject.blockConduitFacade.unlocalisedName, TileEntityPaintedBlock.class, ItemConduitFacade.class, new Material(MapColor.stoneColor));
+    super(ModObject.blockConduitFacade.getUnlocalisedName(), TileEntityPaintedBlock.class, ItemConduitFacade.class, new Material(MapColor.stoneColor));
     setStepSound(Block.soundTypeStone);
     setCreativeTab(EnderIOTab.tabEnderIO);
     initDefaultState();
@@ -135,7 +135,7 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
   }
 
   @Override
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER_NO_IO;
   }
 

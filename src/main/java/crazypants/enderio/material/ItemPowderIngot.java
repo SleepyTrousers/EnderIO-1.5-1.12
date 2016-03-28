@@ -27,12 +27,12 @@ public class ItemPowderIngot extends Item {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemPowderIngot.unlocalisedName);
+    setUnlocalizedName(ModObject.itemPowderIngot.getUnlocalisedName());
 
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemPowderIngot.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemPowderIngot.getUnlocalisedName());
   }
   
   @SideOnly(Side.CLIENT)

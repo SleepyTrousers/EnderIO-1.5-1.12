@@ -164,7 +164,8 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
   }
 
   @Override
-  public IItemRenderMapper getRenderMapper() {
+  @SideOnly(Side.CLIENT)
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
   

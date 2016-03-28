@@ -31,7 +31,7 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
 
   @Override
   public String getMachineName() {
-    return ModObject.blockExperienceObelisk.unlocalisedName;
+    return ModObject.blockExperienceObelisk.getUnlocalisedName();
   }
 
   @Override

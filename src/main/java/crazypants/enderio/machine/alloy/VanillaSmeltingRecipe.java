@@ -147,7 +147,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockAlloySmelter.unlocalisedName;
+    return ModObject.blockAlloySmelter.getUnlocalisedName();
   }
 
   @Override

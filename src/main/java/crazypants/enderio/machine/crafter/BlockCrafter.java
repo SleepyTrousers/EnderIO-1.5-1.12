@@ -57,7 +57,7 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

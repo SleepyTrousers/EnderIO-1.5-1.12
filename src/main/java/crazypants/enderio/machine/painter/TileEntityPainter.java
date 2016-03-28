@@ -58,7 +58,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
 
   @Override
   public String getMachineName() {
-    return ModObject.blockPainter.unlocalisedName;
+    return ModObject.blockPainter.getUnlocalisedName();
   }
 
   @Override

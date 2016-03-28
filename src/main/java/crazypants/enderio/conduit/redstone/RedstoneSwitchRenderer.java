@@ -2,6 +2,10 @@ package crazypants.enderio.conduit.redstone;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -17,9 +21,6 @@ import crazypants.enderio.conduit.render.BakedQuadBuilder;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
 
 public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
 
@@ -46,7 +47,6 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
 
   @Override
   public void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, List<BakedQuad> quads) {
-    // TODO Auto-generated method stub
     super.addBakedQuads(conduitBundleRenderer, bundle, conduit, brightness, quads);
 
     RedstoneSwitch sw = (RedstoneSwitch) conduit;

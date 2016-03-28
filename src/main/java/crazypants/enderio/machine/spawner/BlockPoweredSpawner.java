@@ -61,7 +61,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public static final String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
 
   public static BlockPoweredSpawner create() {
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.unlocalisedName, new DummyRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.getUnlocalisedName(), new DummyRecipe());
 
     PacketHandler.INSTANCE.registerMessage(PacketMode.class, PacketMode.class, PacketHandler.nextID(), Side.SERVER);
 
@@ -346,7 +346,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

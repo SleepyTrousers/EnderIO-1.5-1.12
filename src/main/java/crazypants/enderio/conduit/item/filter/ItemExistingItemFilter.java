@@ -34,14 +34,14 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
 
   protected ItemExistingItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemExistingItemFilter.unlocalisedName);
+    setUnlocalizedName(ModObject.itemExistingItemFilter.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemExistingItemFilter.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemExistingItemFilter.getUnlocalisedName());
   }
 
   @Override

@@ -20,12 +20,12 @@ public class BlockDarkIronBars extends BlockPane {
     setResistance(2000.0F); //TNT Proof
     setHardness(5.0F);
     setStepSound(soundTypeMetal);
-    setUnlocalizedName(ModObject.blockDarkIronBars.unlocalisedName);
+    setUnlocalizedName(ModObject.blockDarkIronBars.getUnlocalisedName());
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
   
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemDarkIronBars.class, ModObject.blockDarkIronBars.unlocalisedName);
+    GameRegistry.registerBlock(this, BlockItemDarkIronBars.class, ModObject.blockDarkIronBars.getUnlocalisedName());
     OreDictionary.registerOre("barsIron", this);
   }
 

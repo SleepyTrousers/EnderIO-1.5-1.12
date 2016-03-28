@@ -30,7 +30,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemEnderface.unlocalisedName);    
+    GameRegistry.registerItem(this, ModObject.itemEnderface.getUnlocalisedName());    
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }
 

@@ -12,19 +12,19 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.render.IBlockStateWrapper;
 
 public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> {
 
-  public BlockObeliskAbstract(ModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
+  public BlockObeliskAbstract(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
     super(mo, teClass, itemBlockClass);
     setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
   }
 
-  protected BlockObeliskAbstract(ModObject mo, Class<T> teClass) {
+  protected BlockObeliskAbstract(IModObject mo, Class<T> teClass) {
     super(mo, teClass);
     setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
   }

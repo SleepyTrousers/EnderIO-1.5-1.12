@@ -71,7 +71,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public static final TextureSupplier highlightOverlayIcon = TextureRegistry.registerTexture("blocks/blockTravelAnchorHighlight");
 
   private BlockTravelAnchor(Class<T> clz) {
-    super(ModObject.blockTravelAnchor.unlocalisedName, clz);
+    super(ModObject.blockTravelAnchor.getUnlocalisedName(), clz);
     if (!Config.travelAnchorEnabled) {
       setCreativeTab(null);
     }

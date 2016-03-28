@@ -9,6 +9,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -28,15 +38,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public abstract class AbstractConduit implements IConduit {
 
@@ -451,13 +452,6 @@ public abstract class AbstractConduit implements IConduit {
     BlockCoord pos = getLocation();
     if (getNetwork() == null && world.isBlockLoaded(pos.getBlockPos())) {
       ConduitUtil.ensureValidNetwork(this);
-      // TODO figure out if removing this causes anything horrible to happen.
-      // Initial testing shows no difference.
-      // if(getNetwork() != null && !world.isRemote && bundle != null) {
-      // world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord,
-      // bundle.getEntity().yCoord, bundle.getEntity().zCoord,
-      // bundle.getEntity().getBlockType());
-      // }
     }
   }
 

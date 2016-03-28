@@ -48,9 +48,9 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, new ManyToOneMachineRecipe("AlloySmelterRecipe", ModObject.blockAlloySmelter.unlocalisedName, this));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), new ManyToOneMachineRecipe("AlloySmelterRecipe", ModObject.blockAlloySmelter.getUnlocalisedName(), this));
     //vanilla alloy furnace recipes    
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, vanillaRecipe);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), vanillaRecipe);
   }
 
 

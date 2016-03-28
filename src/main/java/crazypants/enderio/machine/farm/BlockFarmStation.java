@@ -118,7 +118,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> impl
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return FarmingStationRenderMapper.instance;
   }
 

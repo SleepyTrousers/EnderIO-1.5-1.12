@@ -91,7 +91,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSpawnGuard.unlocalisedName;
+    return ModObject.blockSpawnGuard.getUnlocalisedName();
   }
 
   @Override

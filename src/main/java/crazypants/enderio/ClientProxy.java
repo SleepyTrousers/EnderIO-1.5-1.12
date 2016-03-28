@@ -140,11 +140,11 @@ public class ClientProxy extends CommonProxy {
 
     // Blocks
     if (EnderIO.blockDarkIronBars != null) {      
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.unlocalisedName);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.getUnlocalisedName());
     }
     registerRenderers(EnderIO.blockDarkSteelAnvil);
     if (EnderIO.blockDarkSteelLadder != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.unlocalisedName);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.getUnlocalisedName());
     }   
     registerRenderers(EnderIO.blockIngotStorage);
     registerRenderers(EnderIO.blockEndermanSkull);
@@ -160,7 +160,7 @@ public class ClientProxy extends CommonProxy {
       EnchanterModelRenderer emr = new EnchanterModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);      
       ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnchanter), 0, TileEnchanter.class);
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), ModObject.blockEnchanter.unlocalisedName);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), ModObject.blockEnchanter.getUnlocalisedName());
     }
     if (EnderIO.blockFarmStation != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
@@ -169,13 +169,13 @@ public class ClientProxy extends CommonProxy {
       ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
       ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockZombieGenerator), 0, TileZombieGenerator.class);
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), ModObject.blockZombieGenerator.unlocalisedName);            
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), ModObject.blockZombieGenerator.getUnlocalisedName());            
     }
     if (EnderIO.blockKillerJoe != null) {
       KillerJoeRenderer kjr = new KillerJoeRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
       ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockKillerJoe), 0, TileKillerJoe.class);
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), ModObject.blockKillerJoe.unlocalisedName);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), ModObject.blockKillerJoe.getUnlocalisedName());
     }
     if (EnderIO.blockCapBank != null) {
       CapBankRenderer newCbr = new CapBankRenderer();
@@ -184,7 +184,7 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockEnderIo != null) {
       EnderIoRenderer eior = new EnderIoRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);      
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), ModObject.blockEnderIo.unlocalisedName);
+      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), ModObject.blockEnderIo.getUnlocalisedName());
     }
     if (EnderIO.blockReservoir != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
@@ -206,8 +206,8 @@ public class ClientProxy extends CommonProxy {
     new ConduitProbeOverlayRenderer();
 
     // Items
-    ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemEnderface, ModObject.itemEnderface.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemEnderface, ModObject.itemEnderface.getUnlocalisedName());
     EnderIO.itemAlloy.registerRenderers();
     EnderIO.itemBasicCapacitor.registerRenderers();
     EnderIO.itemPowderIngot.registerRenderers();
@@ -226,14 +226,14 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.itemLiquidConduit);
     registerRenderers(EnderIO.itemItemConduit);
     registerRenderers(EnderIO.itemRedstoneConduit);
-    ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemExistingItemFilter, ModObject.itemExistingItemFilter.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.unlocalisedName);
-    ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.unlocalisedName);
+    ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemExistingItemFilter, ModObject.itemExistingItemFilter.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.getUnlocalisedName());
+    ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.getUnlocalisedName());
     DarkSteelItems.registerItemRenderers();
     Buckets.registerRenderers();
 

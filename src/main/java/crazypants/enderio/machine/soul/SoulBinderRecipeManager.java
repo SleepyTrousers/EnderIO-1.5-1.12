@@ -22,13 +22,13 @@ public class SoulBinderRecipeManager {
   }
 
   public void addDefaultRecipes() {
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderTunedPressurePlateRecipe.instance1);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderTunedPressurePlateRecipe.instance2);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderReanimationRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSentientRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderEnderCystalRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderAttractorCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSpawnerRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderTunedPressurePlateRecipe.instance1);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderTunedPressurePlateRecipe.instance2);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderReanimationRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSentientRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderEnderCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderAttractorCystalRecipe.instance);
 
     //Ender Rail
     //TODO: 1.8 Enable once BlockEnderRail is available
@@ -121,7 +121,7 @@ public class SoulBinderRecipeManager {
 
       BasicSoulBinderRecipe recipe = new BasicSoulBinderRecipe(inputStack, outputStack, energyRequired, xpLevelsRequired, recipeUid, entityNames);
 
-      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, recipe);
+      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), recipe);
 
       return true;
     } catch (Exception e) {

@@ -149,7 +149,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeHandlers(new BaseRecipeHandler<PainterRecipeWrapper>(PainterRecipeWrapper.class, PainterRecipeCategory.UID));
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
     
-    registry.addRecipes(splitRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.unlocalisedName).values(), getValidItems()));
+    registry.addRecipes(splitRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.getUnlocalisedName()).values(), getValidItems()));
   }
 
   // ------------ Category

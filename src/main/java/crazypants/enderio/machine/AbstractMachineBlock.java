@@ -32,7 +32,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -54,7 +54,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected final Random random;
 
-  protected final ModObject modObject;
+  protected final IModObject modObject;
 
   static {
     PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -62,8 +62,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
-  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass, Material mat) {
-    super(mo.unlocalisedName, teClass, itemBlockClass, mat);
+  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass, Material mat) {
+    super(mo.getUnlocalisedName(), teClass, itemBlockClass, mat);
     modObject = mo;
     setHardness(2.0F);
     setStepSound(soundTypeMetal);
@@ -76,15 +76,15 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
-  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
+  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Material mat) {
     this(mo, teClass, null, mat);
   }
 
-  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
+  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
     this(mo, teClass, itemBlockClass, new Material(MapColor.ironColor));
   }
 
-  protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
+  protected AbstractMachineBlock(IModObject mo, Class<T> teClass) {
     this(mo, teClass, null, new Material(MapColor.ironColor));
   }
 
@@ -120,6 +120,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
@@ -286,7 +287,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper.IItemRenderMapper getRenderMapper() {
+  public IRenderMapper.IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.BODY_MAPPER;
   }
 

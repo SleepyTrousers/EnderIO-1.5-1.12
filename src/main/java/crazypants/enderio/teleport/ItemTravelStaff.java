@@ -49,7 +49,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemTravelStaff.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemTravelStaff.getUnlocalisedName());
   }
 
   @Override

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -17,7 +16,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.ClientProxy;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -61,8 +59,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @Override
   protected void registerInSmartModelAttacher() {
     SmartModelAttacher.register(this, EnumRenderMode6.RENDER, EnumRenderMode6.DEFAULTS, EnumRenderMode6.AUTO);
-//    PaintRegistry.registerModel("invPanel", new ResourceLocation(EnderIO.DOMAIN, "block/invPanel"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("invPanel_off", new ResourceLocation(EnderIO.DOMAIN, "block/invPanel_off"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
   @Override
@@ -73,9 +69,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @SideOnly(Side.CLIENT)
   @Override
   public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    //TODO: 1.8
-    EnumFacing facing = getFacing(worldIn, pos.getX(), pos.getY(), pos.getZ());
-    return ClientProxy.sideAndFacingToSpriteOffset[side.ordinal()][facing.ordinal()] == 2;
+    return getFacing(worldIn, pos) == side.getOpposite();
   }
 
   @Override
@@ -108,8 +102,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     return getBoundingBox(worldIn, pos);
   }
   
-  
-  
   @Override
   public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {  
     AxisAlignedBB bb = getBoundingBox(new BlockPos(0, 0, 0), getFacing(worldIn, pos));
@@ -122,47 +114,31 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   public AxisAlignedBB getBoundingBox(BlockPos pos, EnumFacing facing) {
-    //TODO: 1.8
-    return getBoundingBox(pos.getX(), pos.getY(), pos.getZ(), facing.ordinal());
-  }
-  
-  public AxisAlignedBB getBoundingBox(int x, int y, int z, int facing) {
+    int x = pos.getX(), y = pos.getY(), z = pos.getZ();
     switch (facing) {
-    case 0:
+    case DOWN:
       return new AxisAlignedBB(x, y + (1 - BLOCK_SIZE), z, x + 1, y + 1, z + 1);
-    case 1:
+    case UP:
       return new AxisAlignedBB(x, y, z, x + 1, y + BLOCK_SIZE, z + 1);
-    case 2:
+    case NORTH:
       return new AxisAlignedBB(x, y, z + (1- BLOCK_SIZE), x + 1, y + 1, z + 1);
-    case 3:
+    case SOUTH:
       return new AxisAlignedBB(x, y, z, x + 1, y + 1, z + BLOCK_SIZE);
-    case 4:
+    case WEST:
       return new AxisAlignedBB(x + (1 - BLOCK_SIZE), y, z, x + 1, y + 1, z + 1);
-    case 5:
+    case EAST:
       return new AxisAlignedBB(x, y, z, x + BLOCK_SIZE, y + 1, z + 1);
     default:
       return new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
     }
   }
 
-  private EnumFacing getFacing(IBlockAccess world, int x, int y, int z) {
-    return getFacing(world, new BlockPos(x,y,z));
-  }
-  
   private EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if(te instanceof TileInventoryPanel) {
       return ((TileInventoryPanel) te).getFacing();
     }
     return EnumFacing.NORTH;
-  }
-
-
-  @Override
-  public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-    //TODO: 1.8
-    // this is handled by BlockItemInventoryPanel.placeBlockAt
-    return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
   }
 
   @SideOnly(Side.CLIENT)
@@ -177,23 +153,25 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // The server needs the container as it manages the adding and removing of
-    // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileInventoryPanel) {
-      return new InventoryPanelContainer(player.inventory, (TileInventoryPanel) te);
+    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new InventoryPanelContainer(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = (TileInventoryPanel) world.getTileEntity(new BlockPos(x, y, z));
-    return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
+    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
+    }
+    return null;
   }
 
   @Override
-  public IItemRenderMapper getRenderMapper() {
+  @SideOnly(Side.CLIENT)
+  public IItemRenderMapper getItemRenderMapper() {
     return InvPanelRenderMapper.instance;
   }
 

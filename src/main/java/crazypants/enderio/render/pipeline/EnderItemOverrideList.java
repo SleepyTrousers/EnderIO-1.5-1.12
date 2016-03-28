@@ -59,7 +59,7 @@ public class EnderItemOverrideList /* extends ItemOverrideList */{
     }
 
     if (block instanceof ISmartRenderAwareBlock) {
-      IRenderMapper.IItemRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getRenderMapper();
+      IRenderMapper.IItemRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getItemRenderMapper();
 
       Pair<Block, Long> cacheKey = Pair.of(block, renderMapper.getCacheKey(block, stack, new CacheKey().addCacheKey(stack.getMetadata())).getCacheKey());
       ItemQuadCollector quads = cacheKey.getRight() == null ? null : cache.getIfPresent(cacheKey);

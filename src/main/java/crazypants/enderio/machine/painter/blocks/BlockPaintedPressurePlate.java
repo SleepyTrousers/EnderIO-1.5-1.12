@@ -134,16 +134,16 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   }
 
   public static BlockPaintedPressurePlate create() {
-    BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(ModObject.blockPaintedPressurePlate.unlocalisedName);
+    BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(ModObject.blockPaintedPressurePlate.getUnlocalisedName());
     result.setHardness(0.5F).setStepSound(soundTypeWood);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.WOOD.getMetaFromType(), Blocks.wooden_pressure_plate));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.STONE.getMetaFromType(), Blocks.stone_pressure_plate));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.IRON.getMetaFromType(), Blocks.heavy_weighted_pressure_plate));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.GOLD.getMetaFromType(), Blocks.light_weighted_pressure_plate));
 
     return result;
@@ -379,7 +379,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

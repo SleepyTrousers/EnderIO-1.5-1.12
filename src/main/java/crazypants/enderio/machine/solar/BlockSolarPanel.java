@@ -52,7 +52,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
   
   private BlockSolarPanel() {
-    super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class, BlockItemSolarPanel.class);
+    super(ModObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class, BlockItemSolarPanel.class);
     if(!Config.photovoltaicCellEnabled) {
       setCreativeTab(null);
     }
@@ -106,7 +106,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return SolarItemRenderMapper.instance;
   }
 

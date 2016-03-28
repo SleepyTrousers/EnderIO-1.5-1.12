@@ -43,7 +43,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
 
   protected ItemSoulVessel() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemSoulVessel.unlocalisedName);
+    setUnlocalizedName(ModObject.itemSoulVessel.getUnlocalisedName());
     setMaxStackSize(64);
     blackList = new ArrayList<String>();
     for (String ent : Config.soulVesselBlackList) {
@@ -52,7 +52,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemSoulVessel.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemSoulVessel.getUnlocalisedName());
   }
 
   @Override

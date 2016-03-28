@@ -95,7 +95,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/capBankInfoPanel");
 
   protected BlockCapBank() {
-    super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class, BlockItemCapBank.class);
+    super(ModObject.blockCapBank.getUnlocalisedName(), TileCapBank.class, BlockItemCapBank.class);
     setHardness(2.0F);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
@@ -513,7 +513,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public CapBankItemRenderMapper getRenderMapper() {
+  public CapBankItemRenderMapper getItemRenderMapper() {
     if(CAPBANK_RENDER_MAPPER == null) {
       CAPBANK_RENDER_MAPPER = new CapBankItemRenderMapper();
     }

@@ -45,7 +45,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   static int pass;
 
   private BlockEnderIO() {
-    super(ModObject.blockEnderIo.unlocalisedName, TileEnderIO.class);
+    super(ModObject.blockEnderIo.getUnlocalisedName(), TileEnderIO.class);
   }
 
   @Override

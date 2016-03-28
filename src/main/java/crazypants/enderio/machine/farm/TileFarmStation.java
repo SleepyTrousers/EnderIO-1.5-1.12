@@ -703,7 +703,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   @Override
   public String getMachineName() {
-    return ModObject.blockFarmStation.unlocalisedName;
+    return ModObject.blockFarmStation.getUnlocalisedName();
   }
 
   @Override

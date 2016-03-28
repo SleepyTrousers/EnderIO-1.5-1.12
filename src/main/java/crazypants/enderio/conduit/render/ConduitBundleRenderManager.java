@@ -1,14 +1,9 @@
 package crazypants.enderio.conduit.render;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.item.ItemConduit;
@@ -26,6 +21,8 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
 import crazypants.enderio.conduit.redstone.RedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneSwitch;
 import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
+import crazypants.enderio.render.TextureRegistry;
+import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderManager {
@@ -34,11 +31,11 @@ public class ConduitBundleRenderManager {
 
   private final ConduitBundleRenderer cbr = new ConduitBundleRenderer();
 
-  private TextureAtlasSprite connectorIconExternal;
+  public static final TextureSupplier connectorIconExternal = TextureRegistry.registerTexture("blocks/conduitConnector");
 
-  private TextureAtlasSprite connectorIcon;
+  public static final TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduitConnectorExternal");
 
-  private TextureAtlasSprite wireFrameIcon;
+  public static final TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wireFrame");
 
   public void registerRenderers() {
 
@@ -60,25 +57,14 @@ public class ConduitBundleRenderManager {
     cbr.registerRenderer(new EnderLiquidConduitRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
-
-    MinecraftForge.EVENT_BUS.register(this);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onIconLoad(TextureStitchEvent.Pre event) {
-    // TODO use registry
-    connectorIconExternal = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitConnector"));
-    connectorIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/conduitConnectorExternal"));
-    wireFrameIcon = event.map.registerSprite(new ResourceLocation(EnderIO.MODID, "blocks/wireFrame"));
   }
 
   public TextureAtlasSprite getConnectorIcon(Object data) {
-    return data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon;
+    return (data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon).get(TextureAtlasSprite.class);
   }
 
   public TextureAtlasSprite getWireFrameIcon() {    
-    return wireFrameIcon;
+    return wireFrameIcon.get(TextureAtlasSprite.class);
   }
 
   public ConduitBundleRenderer getConduitBundleRenderer() {

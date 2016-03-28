@@ -29,7 +29,7 @@ public class ItemAlloy extends Item {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemAlloy.unlocalisedName);
+    setUnlocalizedName(ModObject.itemAlloy.getUnlocalisedName());
 
     numItems = Alloy.values().length;
     if (useNuggets) {
@@ -38,7 +38,7 @@ public class ItemAlloy extends Item {
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemAlloy.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemAlloy.getUnlocalisedName());
   }
 
   @SideOnly(Side.CLIENT)

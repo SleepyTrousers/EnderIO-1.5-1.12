@@ -89,7 +89,6 @@ public interface IRenderMapper {
      * to do it.
      * <p>
      * May return null to render nothing. Will not be called for block-painted items.
-     * @param itemQuadCollector TODO
      */
     @SideOnly(Side.CLIENT)
     List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector);

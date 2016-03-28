@@ -128,7 +128,7 @@ public class SagMillRecipeManager {
     } else {
       Log.error("Could not load recipes for SAG Mill.");
     }
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.unlocalisedName, new SagMillMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.getUnlocalisedName(), new SagMillMachineRecipe());
   }
 
   public void addCustomRecipes(String xmlDef) {

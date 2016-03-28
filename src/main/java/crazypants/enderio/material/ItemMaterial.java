@@ -26,12 +26,12 @@ public class ItemMaterial extends Item implements IHaveRenderers {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemMaterial.unlocalisedName);
+    setUnlocalizedName(ModObject.itemMaterial.getUnlocalisedName());
 
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemMaterial.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemMaterial.getUnlocalisedName());
   }
 
   @Override

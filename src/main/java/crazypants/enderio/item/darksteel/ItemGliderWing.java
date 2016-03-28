@@ -28,14 +28,14 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
   protected ItemGliderWing() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemGliderWing.unlocalisedName);
+    setUnlocalizedName(ModObject.itemGliderWing.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemGliderWing.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemGliderWing.getUnlocalisedName());
   }
 
   @SideOnly(Side.CLIENT)

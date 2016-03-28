@@ -28,7 +28,7 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
 
   protected ItemFunctionUpgrade() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemFunctionUpgrade.unlocalisedName);
+    setUnlocalizedName(ModObject.itemFunctionUpgrade.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
@@ -36,7 +36,7 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemFunctionUpgrade.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemFunctionUpgrade.getUnlocalisedName());
   }
 
   @Override

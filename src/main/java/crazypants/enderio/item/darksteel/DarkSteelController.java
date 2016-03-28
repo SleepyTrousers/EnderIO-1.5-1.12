@@ -6,29 +6,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.VecmathUtil;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4d;
-import com.mojang.authlib.GameProfile;
-
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
-import crazypants.enderio.machine.solar.TileEntitySolarPanel;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.EntityFX;
@@ -52,6 +29,31 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
+
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4d;
+import com.mojang.authlib.GameProfile;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
+import crazypants.enderio.machine.solar.TileEntitySolarPanel;
+import crazypants.enderio.network.PacketHandler;
 
 public class DarkSteelController {
 

@@ -43,7 +43,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public String getName() {
-    return ModObject.blockVat.unlocalisedName;
+    return ModObject.blockVat.getUnlocalisedName();
   }
 
   @Override
@@ -53,7 +53,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public String getMachineName() {
-    return ModObject.blockVat.unlocalisedName;
+    return ModObject.blockVat.getUnlocalisedName();
   }
 
   @Override

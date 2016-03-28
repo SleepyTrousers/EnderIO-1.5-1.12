@@ -35,7 +35,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
   protected ItemXpTransfer() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemXpTransfer.unlocalisedName);
+    setUnlocalizedName(ModObject.itemXpTransfer.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
@@ -127,7 +127,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemXpTransfer.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemXpTransfer.getUnlocalisedName());
   }
 
   // @Override

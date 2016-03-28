@@ -110,7 +110,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return KillerJoeRenderMapper.zombieGen;
   }
 

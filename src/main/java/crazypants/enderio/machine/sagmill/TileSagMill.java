@@ -28,12 +28,12 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
 
   @Override
   public String getName() {
-    return ModObject.blockSagMill.unlocalisedName;
+    return ModObject.blockSagMill.getUnlocalisedName();
   }
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSagMill.unlocalisedName;
+    return ModObject.blockSagMill.getUnlocalisedName();
   }
 
   @Override

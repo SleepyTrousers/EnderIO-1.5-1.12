@@ -28,14 +28,14 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
 
   protected ItemExtractSpeedUpgrade() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemExtractSpeedUpgrade.unlocalisedName);
+    setUnlocalizedName(ModObject.itemExtractSpeedUpgrade.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemExtractSpeedUpgrade.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemExtractSpeedUpgrade.getUnlocalisedName());
   }
 
   @Override

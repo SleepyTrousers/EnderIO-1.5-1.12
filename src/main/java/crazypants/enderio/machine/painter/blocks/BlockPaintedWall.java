@@ -51,9 +51,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedWall create() {
-    BlockPaintedWall result = new BlockPaintedWall(ModObject.blockPaintedWall.unlocalisedName);
+    BlockPaintedWall result = new BlockPaintedWall(ModObject.blockPaintedWall.getUnlocalisedName());
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedWall>(result,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedWall>(result,
         Blocks.cobblestone_wall));
 
     return result;
@@ -201,7 +201,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

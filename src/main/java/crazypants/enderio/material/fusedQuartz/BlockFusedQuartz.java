@@ -30,7 +30,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
   }
 
   private BlockFusedQuartz() {
-    super(ModObject.blockFusedQuartz.unlocalisedName, null);
+    super(ModObject.blockFusedQuartz.getUnlocalisedName(), null);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
   }
@@ -68,7 +68,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return FusedQuartzItemRenderMapper.instance;
   }
 

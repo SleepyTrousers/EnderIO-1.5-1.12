@@ -34,13 +34,13 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
   public static ItemCoordSelector create() {
     ItemCoordSelector ret = new ItemCoordSelector();
-    GameRegistry.registerItem(ret, ModObject.itemCoordSelector.unlocalisedName);
+    GameRegistry.registerItem(ret, ModObject.itemCoordSelector.getUnlocalisedName());
     return ret;
   }
 
   private ItemCoordSelector() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemCoordSelector.unlocalisedName);
+    setUnlocalizedName(ModObject.itemCoordSelector.getUnlocalisedName());
 //    setTextureName("EnderIO:" + ModObject.itemCoordSelector.unlocalisedName);
     setMaxStackSize(1);
   }

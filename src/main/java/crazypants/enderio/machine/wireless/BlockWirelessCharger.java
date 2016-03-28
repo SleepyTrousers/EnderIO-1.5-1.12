@@ -33,7 +33,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   public static final PropertyBool RENDER_ACTIVE = PropertyBool.create("active");
   
   protected BlockWirelessCharger() {
-    super(ModObject.blockWirelessCharger.unlocalisedName, TileWirelessCharger.class);
+    super(ModObject.blockWirelessCharger.getUnlocalisedName(), TileWirelessCharger.class);
     setLightOpacity(1);
     setDefaultState(blockState.getBaseState().withProperty(RENDER_ACTIVE, false)); 
   }

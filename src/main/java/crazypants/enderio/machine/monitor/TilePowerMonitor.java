@@ -106,7 +106,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
 
   @Override
   public String getMachineName() {
-    return ModObject.blockPowerMonitor.unlocalisedName;
+    return ModObject.blockPowerMonitor.getUnlocalisedName();
   }
 
   @Override

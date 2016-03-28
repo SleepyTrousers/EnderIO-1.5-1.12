@@ -117,7 +117,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   @Override
   public String getMachineName() {
-    return ModObject.blockAttractor.unlocalisedName;
+    return ModObject.blockAttractor.getUnlocalisedName();
   }
 
   @Override
@@ -380,7 +380,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private class Target extends FakePlayerEIO {
 
     public Target() {
-      super(getWorld(), getLocation(), new GameProfile(null, ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
+      super(getWorld(), getLocation(), new GameProfile(null, ModObject.blockAttractor.getUnlocalisedName() + ":" + getLocation()));
       posY += 1;
     }
   }

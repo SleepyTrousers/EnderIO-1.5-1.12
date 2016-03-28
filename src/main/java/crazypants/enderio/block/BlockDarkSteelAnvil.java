@@ -38,12 +38,12 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     setStepSound(soundTypeAnvil);
     setResistance(2000.0F);
 
-    setUnlocalizedName(ModObject.blockDarkSteelAnvil.unlocalisedName);
+    setUnlocalizedName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   protected void init() {
-    GameRegistry.registerBlock(this, ItemAnvilBlock.class, ModObject.blockDarkSteelAnvil.unlocalisedName);
+    GameRegistry.registerBlock(this, ItemAnvilBlock.class, ModObject.blockDarkSteelAnvil.getUnlocalisedName());
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ANVIL, new IGuiHandler() {
 
       @Override

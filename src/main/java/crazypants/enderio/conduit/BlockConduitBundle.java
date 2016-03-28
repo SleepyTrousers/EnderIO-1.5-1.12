@@ -116,7 +116,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   private final Random rand = new Random();
 
   protected BlockConduitBundle() {
-    super(ModObject.blockConduitBundle.unlocalisedName, TileConduitBundle.class);
+    super(ModObject.blockConduitBundle.getUnlocalisedName(), TileConduitBundle.class);
     setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
     setHardness(1.5f);
     setResistance(10.0f);

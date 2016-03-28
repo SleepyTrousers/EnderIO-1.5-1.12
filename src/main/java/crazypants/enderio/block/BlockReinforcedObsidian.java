@@ -29,7 +29,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   private BlockReinforcedObsidian() {
-    super(ModObject.blockReinforcedObsidian.unlocalisedName, null, Material.rock);    
+    super(ModObject.blockReinforcedObsidian.getUnlocalisedName(), null, Material.rock);    
     setHardness(50.0F);
     setResistance(2000.0F);
     setStepSound(soundTypePiston);

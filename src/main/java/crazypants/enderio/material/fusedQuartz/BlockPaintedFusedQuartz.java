@@ -38,7 +38,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   private BlockPaintedFusedQuartz() {
-    super(ModObject.blockFusedQuartz.unlocalisedName + "2", TileEntityPaintedBlock.class);
+    super(ModObject.blockPaintedFusedQuartz.getUnlocalisedName(), TileEntityPaintedBlock.class);
     setCreativeTab(null);
     setDefaultState(this.blockState.getBaseState().withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
   }
@@ -47,7 +47,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   protected void init() {
     super.init();
     SmartModelAttacher.registerNoProps(this);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedFusedQuartz>(this,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFusedQuartz>(this,
         EnderIO.blockFusedQuartz) {
       @Override
       public ItemStack isUnpaintingOp(ItemStack paintSource, ItemStack target) {
@@ -91,7 +91,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return null;
   }
 

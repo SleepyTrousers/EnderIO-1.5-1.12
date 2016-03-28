@@ -366,7 +366,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   @Override
   public String getMachineName() {
-    return ModObject.blockInventoryPanel.unlocalisedName;
+    return ModObject.blockInventoryPanel.getUnlocalisedName();
   }
 
   @Override

@@ -47,7 +47,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public String getMachineName() {
-    return ModObject.blockZombieGenerator.unlocalisedName;
+    return ModObject.blockZombieGenerator.getUnlocalisedName();
   }
 
 

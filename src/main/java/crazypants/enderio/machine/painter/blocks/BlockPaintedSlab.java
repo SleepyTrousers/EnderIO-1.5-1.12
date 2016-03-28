@@ -52,32 +52,32 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedSlab create() {
-    BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.wood, ModObject.blockPaintedSlab.unlocalisedName);
+    BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.wood, ModObject.blockPaintedSlab.getUnlocalisedName());
     woodHalfSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
     woodHalfSlab.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedSlab>(woodHalfSlab,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedSlab>(woodHalfSlab,
         Blocks.wooden_slab));
 
-    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.wood, ModObject.blockPaintedDoubleSlab.unlocalisedName, woodHalfSlab);
+    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.wood, ModObject.blockPaintedDoubleSlab.getUnlocalisedName(), woodHalfSlab);
     woodDoubleSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
     woodDoubleSlab.init();
 
-    GameRegistry.registerItem(new BlockItemPaintedSlab(woodHalfSlab, woodDoubleSlab), ModObject.blockPaintedSlab.unlocalisedName);
+    GameRegistry.registerItem(new BlockItemPaintedSlab(woodHalfSlab, woodDoubleSlab), ModObject.blockPaintedSlab.getUnlocalisedName());
 
-    BlockPaintedHalfSlab rockHalfSlab = new BlockPaintedHalfSlab(Material.rock, ModObject.blockPaintedSlab.unlocalisedName + "2");
+    BlockPaintedHalfSlab rockHalfSlab = new BlockPaintedHalfSlab(Material.rock, ModObject.blockPaintedStoneSlab.getUnlocalisedName());
     rockHalfSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
     rockHalfSlab.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedSlab>(rockHalfSlab,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedSlab>(rockHalfSlab,
         Blocks.stone_slab, Blocks.stone_slab2));
 
-    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.rock, ModObject.blockPaintedDoubleSlab.unlocalisedName + "2",
+    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.rock, ModObject.blockPaintedStoneDoubleSlab.getUnlocalisedName(),
         rockHalfSlab);
     rockDoubleSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
     rockDoubleSlab.init();
 
-    GameRegistry.registerItem(new BlockItemPaintedSlab(rockHalfSlab, rockDoubleSlab), ModObject.blockPaintedSlab.unlocalisedName + "2");
+    GameRegistry.registerItem(new BlockItemPaintedSlab(rockHalfSlab, rockDoubleSlab), ModObject.blockPaintedStoneSlab.getUnlocalisedName());
 
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.TileEntityTwicePaintedBlock.class, ModObject.blockPaintedSlab.unlocalisedName + "TileEntity");
+    GameRegistry.registerTileEntity(TileEntityPaintedBlock.TileEntityTwicePaintedBlock.class, ModObject.blockPaintedSlab.getUnlocalisedName() + "TileEntity");
 
     return woodHalfSlab;
   }
@@ -293,7 +293,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

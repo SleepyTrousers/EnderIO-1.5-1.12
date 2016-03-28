@@ -134,7 +134,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   @Override
   public String getName() {
-    return ModObject.blockEnchanter.unlocalisedName;
+    return ModObject.blockEnchanter.getUnlocalisedName();
   }
 
   @Override

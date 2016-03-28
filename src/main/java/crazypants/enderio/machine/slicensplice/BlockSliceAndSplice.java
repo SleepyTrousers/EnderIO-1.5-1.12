@@ -101,7 +101,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.SOUL_MAPPER;
   }
 

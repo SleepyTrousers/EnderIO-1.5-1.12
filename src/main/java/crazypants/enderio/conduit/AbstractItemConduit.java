@@ -9,7 +9,7 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,21 +28,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem,IHaveRenderers {
 
-  protected ModObject modObj;
+  protected IModObject modObj;
 
   protected ItemConduitSubtype[] subtypes;
 
-  protected AbstractItemConduit(ModObject modObj, ItemConduitSubtype... subtypes) {
+  protected AbstractItemConduit(IModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
     this.subtypes = subtypes;
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(modObj.unlocalisedName);
+    setUnlocalizedName(modObj.getUnlocalisedName());
     setMaxStackSize(64);
     setHasSubtypes(true);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, modObj.unlocalisedName);
+    GameRegistry.registerItem(this, modObj.getUnlocalisedName());
   }
 
   @Override

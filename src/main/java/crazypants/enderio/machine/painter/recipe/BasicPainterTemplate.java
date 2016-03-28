@@ -133,7 +133,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
 
   @Override
   public String getMachineName() {
-    return ModObject.blockPainter.unlocalisedName;
+    return ModObject.blockPainter.getUnlocalisedName();
   }
 
   protected T getTargetBlock(ItemStack target) {

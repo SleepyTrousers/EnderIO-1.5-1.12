@@ -53,10 +53,10 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedFenceGate create() {
-    BlockPaintedFenceGate result = new BlockPaintedFenceGate(BlockPlanks.EnumType.OAK, ModObject.blockPaintedFenceGate.unlocalisedName);
+    BlockPaintedFenceGate result = new BlockPaintedFenceGate(BlockPlanks.EnumType.OAK, ModObject.blockPaintedFenceGate.getUnlocalisedName());
     result.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new BasicPainterTemplate<BlockPaintedFenceGate>(result,
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFenceGate>(result,
         Blocks.oak_fence_gate, Blocks.acacia_fence_gate, Blocks.spruce_fence_gate, Blocks.birch_fence_gate, Blocks.jungle_fence_gate,
         Blocks.dark_oak_fence_gate));
 
@@ -181,7 +181,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 

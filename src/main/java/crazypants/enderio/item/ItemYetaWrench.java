@@ -51,14 +51,14 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     ItemYetaWrench result = new ItemYetaWrench();
     result = ToolUtil.addInterfaces(result);
 
-    GameRegistry.registerItem(result, ModObject.itemYetaWrench.unlocalisedName);
+    GameRegistry.registerItem(result, ModObject.itemYetaWrench.getUnlocalisedName());
 
     return result;
   }
 
   protected ItemYetaWrench() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemYetaWrench.unlocalisedName);
+    setUnlocalizedName(ModObject.itemYetaWrench.getUnlocalisedName());
     setMaxStackSize(1);
   }
 

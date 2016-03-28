@@ -29,7 +29,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   }
 
   protected BlockEnchanter() {
-    super(ModObject.blockEnchanter.unlocalisedName, TileEnchanter.class);
+    super(ModObject.blockEnchanter.getUnlocalisedName(), TileEnchanter.class);
     setLightOpacity(0);
   }
 

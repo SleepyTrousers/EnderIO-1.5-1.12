@@ -112,7 +112,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

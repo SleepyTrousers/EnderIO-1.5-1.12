@@ -74,7 +74,7 @@ public class DarkSteelItems {
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelShears, DarkSteelItems.itemDarkSteelShears.getItemName());
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelPickaxe, DarkSteelItems.itemDarkSteelPickaxe.getItemName());
     
-    ClientUtil.registerRenderer(itemMagnet, ModObject.itemMagnet.unlocalisedName);
+    ClientUtil.registerRenderer(itemMagnet, ModObject.itemMagnet.getUnlocalisedName());
   }
     
 }

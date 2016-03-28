@@ -129,7 +129,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSoulBinder.unlocalisedName;
+    return ModObject.blockSoulBinder.getUnlocalisedName();
   }
 
   @Override

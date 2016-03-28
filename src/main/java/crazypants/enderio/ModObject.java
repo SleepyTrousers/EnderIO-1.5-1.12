@@ -1,6 +1,6 @@
 package crazypants.enderio;
 
-public enum ModObject {
+public enum ModObject implements IModObject {
   // Enderface
   blockEnderIo,
   itemEnderface,
@@ -13,7 +13,7 @@ public enum ModObject {
   itemItemConduit,
   itemGasConduit,
   itemMEConduit,
- itemOCConduit,
+  itemOCConduit,
   itemBasicFilterUpgrade,
   itemExistingItemFilter,
   itemModItemFilter,
@@ -34,6 +34,7 @@ public enum ModObject {
   itemMachinePart,
   itemPowderIngot,
   blockFusedQuartz,
+  blockPaintedFusedQuartz,
   blockDarkIronBars,
 
   // Machines
@@ -88,9 +89,13 @@ public enum ModObject {
   blockPaintedFenceGate,
   blockPaintedWall,
   blockPaintedStair,
+  blockPaintedStoneStair,
   blockPaintedSlab,
+  blockPaintedStoneSlab,
   blockPaintedDoubleSlab,
+  blockPaintedStoneDoubleSlab,
   blockPaintedGlowstone,
+  blockPaintedGlowstoneSolid,
   blockPaintedCarpet,
   blockPaintedPressurePlate,
 
@@ -112,10 +117,15 @@ public enum ModObject {
   
   itemEnderFood;
 
-  public final String unlocalisedName;
+  private final String unlocalisedName;
 
   private ModObject() {
     unlocalisedName = name();
+  }
+
+  @Override
+  public String getUnlocalisedName() {
+    return unlocalisedName;
   }
 
 }

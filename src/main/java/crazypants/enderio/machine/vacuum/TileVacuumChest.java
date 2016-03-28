@@ -212,7 +212,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
 
   @Override
   public String getName() {
-    return ModObject.blockVacuumChest.unlocalisedName;
+    return ModObject.blockVacuumChest.getUnlocalisedName();
   }
 
   @Override

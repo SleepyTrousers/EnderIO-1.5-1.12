@@ -52,7 +52,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
   }
 
   protected BlockTelePad() {
-    super(ModObject.blockTelePad.unlocalisedName, TileTelePad.class);
+    super(ModObject.blockTelePad.getUnlocalisedName(), TileTelePad.class);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
     setLightOpacity(255);
     useNeighborBrightness = true;
@@ -203,7 +203,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return TelepadRenderMapper.instance;
   }
 

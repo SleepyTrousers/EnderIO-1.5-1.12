@@ -100,7 +100,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
   }
 
   @Override
-  public IItemRenderMapper getRenderMapper() {
+  public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER_NO_IO;
   }
 

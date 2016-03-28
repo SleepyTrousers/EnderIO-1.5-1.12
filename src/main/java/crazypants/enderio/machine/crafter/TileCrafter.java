@@ -57,7 +57,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
   @Override
   public String getMachineName() {
-    return ModObject.blockCrafter.unlocalisedName;
+    return ModObject.blockCrafter.getUnlocalisedName();
   }
 
   @Override
