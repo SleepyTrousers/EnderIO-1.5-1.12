@@ -25,19 +25,24 @@ public class HalfBakedQuad {
   private final TextureAtlasSprite tex;
   private final Vector4f color;
 
+  private final static Vector4f NO_COLOR = new Vector4f(1, 1, 1, 1);
+
   public HalfBakedQuad(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color) {
     this.corners = bb.getCornersWithUvForFace(face, umin, umax, vmin, vmax);
     this.tex = tex;
-    this.color = color;
+    this.color = color != null ? color : NO_COLOR;
   }
 
-  public void bake(List<BakedQuad> quads, VertexTransform... xforms) {
+  public void bake(List<BakedQuad> quads) {
+    RenderUtil.addBakedQuads(quads, corners, tex, color);
+  }
+
+  public void transform(VertexTransform... xforms) {
     for (Vertex vertex : corners) {
       for (VertexTransform xform : xforms) {
         xform.apply(vertex);
       }
     }
-    RenderUtil.addBakedQuads(quads, corners, tex, color);
   }
 
   public void render(WorldRenderer tes) {
@@ -69,9 +74,22 @@ public class HalfBakedQuad {
       store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmin, (float) vmax, tex, color));
     }
 
+    public void transform(VertexTransform... xforms) {
+      for (HalfBakedQuad halfBakedQuad : store) {
+        halfBakedQuad.transform(xforms);
+      }
+    }
+
     public void bake(List<BakedQuad> quads, VertexTransform... xforms) {
       for (HalfBakedQuad halfBakedQuad : store) {
-        halfBakedQuad.bake(quads, xforms);
+        halfBakedQuad.transform(xforms);
+        halfBakedQuad.bake(quads);
+      }
+    }
+
+    public void bake(List<BakedQuad> quads) {
+      for (HalfBakedQuad halfBakedQuad : store) {
+        halfBakedQuad.bake(quads);
       }
     }
 

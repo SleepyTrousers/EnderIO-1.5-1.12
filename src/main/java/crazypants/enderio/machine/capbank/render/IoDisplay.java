@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.EnumFacing;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
@@ -14,15 +23,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 
 public class IoDisplay implements IInfoRenderer {
 
@@ -42,22 +42,15 @@ public class IoDisplay implements IInfoRenderer {
       return;
     }
 
-    boolean selfIlum = true;    
-    if(!selfIlum) {      
-      BlockPos p = cb.getPos().offset(dir);
-      RenderUtil.setupLightmapCoords(p, cb.getWorld());
-    } else {
-      OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-    }
+    int i = cb.getWorld().getCombinedLight(cb.getPos().offset(dir), 0);
+    int j = i % 65536;
+    int k = i / 65536;
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
     boolean drawBackground = true;
     if(drawBackground) {
       RenderUtil.bindBlockTexture();
-
-      //TODO: 1.8
-//      if(!selfIlum) {
-//        tes.setBrightness(brightness);
-//      }
 
       float scale = 0.85f;
       float offset = (1-scale)/2;
