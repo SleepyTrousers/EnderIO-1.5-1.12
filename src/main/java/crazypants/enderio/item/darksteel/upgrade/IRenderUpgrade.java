@@ -1,14 +1,13 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public interface IRenderUpgrade {
-
-  void render(RenderPlayerEvent event, ItemStack stack, boolean head);
 
   /**
    * A few helper methods for rendering. Credit to Vazkii, used from Botania.
@@ -30,4 +29,7 @@ public interface IRenderUpgrade {
       GlStateManager.translate(0, (player != Minecraft.getMinecraft().thePlayer ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
     }
   }
+
+  void doRenderLayer(RenderPlayer renderPlayer, ItemStack piece, AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_,
+      float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale);
 }

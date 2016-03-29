@@ -17,10 +17,10 @@ import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.PHASED_GOLD;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Alloy.REDSTONE_ALLOY;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
-import static crazypants.enderio.material.Material.PHASED_IRON_NUGGET;
+import static crazypants.enderio.material.Material.PULSATING_IRON_NUGGET;
 import static crazypants.util.RecipeUtil.addShaped;
 
 public class ConduitRecipes {
@@ -34,10 +34,10 @@ public class ConduitRecipes {
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_GLASS.ordinal());
 
     String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
-    String phasedGold = PHASED_GOLD.getOreIngot();
+    String phasedGold = VIBRANT_ALLOY.getOreIngot();
     String conductiveIron = CONDUCTIVE_IRON.getOreIngot();
     String energeticGold = ENERGETIC_ALLOY.getOreIngot();
-    String phasedIronNugget = PHASED_IRON_NUGGET.oreDict;
+    String phasedIronNugget = PULSATING_IRON_NUGGET.oreDict;
     String redstoneAlloy = REDSTONE_ALLOY.getOreIngot();
 
     String binder = CONDUIT_BINDER.oreDict;

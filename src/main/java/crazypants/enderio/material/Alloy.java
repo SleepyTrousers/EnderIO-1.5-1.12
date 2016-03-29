@@ -3,21 +3,22 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import crazypants.enderio.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
+
+import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.EnderIO;
 
 public enum Alloy implements IStringSerializable {
 
   ELECTRICAL_STEEL("electricalSteel", 6.0f),
   ENERGETIC_ALLOY("energeticAlloy", 7.0f),
-  PHASED_GOLD("phasedGold", 4.0f, "vibrantAlloy"),
+  VIBRANT_ALLOY("vibrantAlloy", 4.0f),
   REDSTONE_ALLOY("redstoneAlloy", 1.0f),
   CONDUCTIVE_IRON("conductiveIron", 5.2f),
-  PHASED_IRON("phasedIron", 7.0f, "pulsatingIron"),
+  PULSATING_IRON("pulsatingIron", 7.0f),
   DARK_STEEL("darkSteel", 10.0f),
   SOULARIUM("soularium", 10.0f);
 

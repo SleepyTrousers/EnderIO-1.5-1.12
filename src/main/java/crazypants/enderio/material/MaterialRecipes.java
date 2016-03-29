@@ -21,8 +21,8 @@ import static com.enderio.core.common.util.OreDictionaryHelper.hasTin;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.PHASED_GOLD;
-import static crazypants.enderio.material.Alloy.PHASED_IRON;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
+import static crazypants.enderio.material.Alloy.PULSATING_IRON;
 import static crazypants.enderio.material.Material.BINDER_COMPOSITE;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.util.RecipeUtil.addShaped;
@@ -73,7 +73,7 @@ public class MaterialRecipes {
       }
     }
 
-    OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
+    OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_IRON_NUGGET.ordinal()));
     OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
 
     OreDictionary.registerOre("glass", Blocks.glass);
@@ -107,8 +107,8 @@ public class MaterialRecipes {
 
     //Common Ingredients
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
-    String phasedGold = PHASED_GOLD.getOreIngot();
-    String phasedIron = PHASED_IRON.getOreIngot();
+    String phasedGold = VIBRANT_ALLOY.getOreIngot();
+    String phasedIron = PULSATING_IRON.getOreIngot();
     String darkSteel = DARK_STEEL.getOreIngot();
 
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
@@ -123,17 +123,17 @@ public class MaterialRecipes {
     GameRegistry.addSmelting(BINDER_COMPOSITE.getStack(), CONDUIT_BINDER.getStack(4), 0);
 
     //Nuggets
-    ItemStack phasedIronNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.PHASED_IRON_NUGGET.ordinal());
+    ItemStack phasedIronNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.PULSATING_IRON_NUGGET.ordinal());
     addShapeless(phasedIronNugget, phasedIron);
     phasedIronNugget = phasedIronNugget.copy();
     phasedIronNugget.stackSize = 1;
-    addShaped(PHASED_IRON.getStackIngot(), "eee", "eee", "eee", 'e', phasedIronNugget);
+    addShaped(PULSATING_IRON.getStackIngot(), "eee", "eee", "eee", 'e', phasedIronNugget);
 
     ItemStack vibrantNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.VIBRANT_NUGGET.ordinal());
     addShapeless(vibrantNugget, phasedGold);
     vibrantNugget = vibrantNugget.copy();
     vibrantNugget.stackSize = 1;
-    addShaped(PHASED_GOLD.getStackIngot(), "eee", "eee", "eee", 'e', vibrantNugget);
+    addShaped(VIBRANT_ALLOY.getStackIngot(), "eee", "eee", "eee", 'e', vibrantNugget);
 
     //Crystals
     ItemStack pulsCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());

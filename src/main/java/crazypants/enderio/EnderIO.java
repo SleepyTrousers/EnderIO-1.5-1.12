@@ -469,12 +469,12 @@ public class EnderIO {
 
     if(Config.lootPhasedIron) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()), 1, 2, 10));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PULSATING_IRON.ordinal()), 1, 2, 10));
     }
 
     if(Config.lootPhasedGold) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.VIBRANT_ALLOY.ordinal()), 1, 2, 5));
     }
 
     if(Config.lootTravelStaff) {

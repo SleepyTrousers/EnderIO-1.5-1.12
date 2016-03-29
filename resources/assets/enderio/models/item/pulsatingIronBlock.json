@@ -1,5 +1,5 @@
 {
-    "parent":"enderio:block/phasedGoldBlock",
+    "parent":"enderio:block/pulsatingIronBlock",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

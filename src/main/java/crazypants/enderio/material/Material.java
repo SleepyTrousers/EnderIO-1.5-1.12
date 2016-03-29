@@ -3,20 +3,21 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import crazypants.enderio.EnderIO;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.EnderIO;
 
 public enum Material {
 
   SILICON("silicon"),
   CONDUIT_BINDER("conduitBinder"),
   BINDER_COMPOSITE("binderComposite"),
-  PHASED_IRON_NUGGET("phasedIronNugget"),
+  PULSATING_IRON_NUGGET("pulsatingIronNugget"),
   VIBRANT_NUGGET("vibrantNugget"),
   PULSATING_CYSTAL("pulsatingCrystal", true),
   VIBRANT_CYSTAL("vibrantCrystal", true),

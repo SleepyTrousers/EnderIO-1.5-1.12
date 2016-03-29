@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "enderio:blocks/phasedIronBlock"
+        "all": "enderio:blocks/pulsatingIronBlock"
     }
 }

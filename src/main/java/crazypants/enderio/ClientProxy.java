@@ -33,6 +33,7 @@ import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.darksteel.SoundRenderer;
+import crazypants.enderio.item.darksteel.upgrade.UpgradeRenderDispatcher;
 import crazypants.enderio.item.skull.EndermanSkullRenderer;
 import crazypants.enderio.item.skull.TileEndermanSkull;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -249,7 +250,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-
+    MinecraftForge.EVENT_BUS.register(UpgradeRenderDispatcher.instance);
   }
 
   private void registerRenderers(IHaveRenderers bob) {

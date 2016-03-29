@@ -14,7 +14,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -22,16 +21,12 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
-
 import cofh.api.energy.IEnergyContainerItem;
 
 import com.enderio.core.common.util.Util;
@@ -45,8 +40,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
@@ -405,56 +398,6 @@ public class DarkSteelController {
         jumpCount = 0;
       }
       ticksSinceLastJump++;
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onPlayerRender(RenderPlayerEvent.Post event) {
-    if (event.entityLiving.getActivePotionEffect(Potion.invisibility) != null) {
-      return;
-    }
-
-    EntityPlayer player = event.entityPlayer;
-    ItemStack[] armors = player.inventory.armorInventory;
-
-    dispatchRenders(armors, event, false);
-
-    float yaw = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * event.partialRenderTick;
-    float yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick;
-    float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.partialRenderTick;
-
-    GL11.glPushMatrix();
-    if (player.isSneaking()) {
-      GL11.glTranslatef(0, 0.0625f, 0);
-    }
-    GL11.glRotatef(yawOffset, 0, -1, 0);
-    GL11.glRotatef(yaw - 270, 0, 1, 0);
-    GL11.glRotatef(pitch, 0, 0, 1);
-    dispatchRenders(armors, event, true);
-    GL11.glPopMatrix();
-  }
-
-  private void dispatchRenders(ItemStack[] armors, RenderPlayerEvent event, boolean head) {
-    for (int i = 0; i < armors.length; i++) {
-      ItemStack stack = armors[i];
-      if (stack != null) {
-        Item item = stack.getItem();
-
-        if (item instanceof IDarkSteelItem) {
-          for (IDarkSteelUpgrade upg : DarkSteelRecipeManager.instance.getUpgrades()) {
-            if (upg.hasUpgrade(stack)) {
-              GL11.glPushMatrix();
-              GL11.glColor4f(1F, 1F, 1F, 1F);
-              IRenderUpgrade render = upg.getRender();
-              if (render != null) {
-                upg.getRender().render(event, stack, head);
-              }
-              GL11.glPopMatrix();
-            }
-          }
-        }
-      }
     }
   }
 

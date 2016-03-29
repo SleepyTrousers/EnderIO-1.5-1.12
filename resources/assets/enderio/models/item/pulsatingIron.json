@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "enderio:items/phasedIronNugget"
+        "layer0": "enderio:items/pulsatingIron"
     },
     "display": {
         "thirdperson": {

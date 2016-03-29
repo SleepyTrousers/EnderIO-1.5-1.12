@@ -24,8 +24,8 @@ import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.PHASED_GOLD;
-import static crazypants.enderio.material.Alloy.PHASED_IRON;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
+import static crazypants.enderio.material.Alloy.PULSATING_IRON;
 import static crazypants.enderio.material.Alloy.SOULARIUM;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.ENDER_CRYSTAL;
@@ -56,8 +56,8 @@ public class MachineRecipes {
     String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
     String darkSteel = DARK_STEEL.getOreIngot();
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
-    String phasedGold = PHASED_GOLD.getOreIngot();
-    String phasedIron = PHASED_IRON.getOreIngot();
+    String phasedGold = VIBRANT_ALLOY.getOreIngot();
+    String phasedIron = PULSATING_IRON.getOreIngot();
     String soularium = SOULARIUM.getOreIngot();
 
     String vibCry = VIBRANT_CYSTAL.oreDict;

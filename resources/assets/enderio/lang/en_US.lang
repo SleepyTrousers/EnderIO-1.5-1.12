@@ -125,7 +125,7 @@ enderio.itemMaterial.name=Materials
 enderio.silicon.name=Silicon
 enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
-enderio.phasedIronNugget.name=Pulsating Iron Nugget
+enderio.pulsatingIronNugget.name=Pulsating Iron Nugget
 tile.blockDarkIronBars.name=Dark Iron Bars
 tile.blockEndermanSkull.name=Enderman Skull
 tile.blockEndermanSkull.base.name=Enderman Head
@@ -220,10 +220,10 @@ enderio.itemPowderIngot=Powders & Ingots
 enderio.itemAlloy.name=Alloy
 enderio.electricalSteel.name=Electrical Steel
 enderio.energeticAlloy.name=Energetic Alloy
-enderio.phasedGold.name=Vibrant Alloy
+enderio.vibrantAlloy.name=Vibrant Alloy
 enderio.redstoneAlloy.name=Redstone Alloy
 enderio.conductiveIron.name=Conductive Iron
-enderio.phasedIron.name=Pulsating Iron
+enderio.pulsatingIron.name=Pulsating Iron
 enderio.vibrantNugget.name=Vibrant Alloy Nugget
 enderio.darkSteel.name=Dark Steel
 enderio.soularium.name=Soularium
@@ -231,10 +231,10 @@ enderio.soularium.name=Soularium
 tile.blockIngotStorage.name=Ingot Storage
 tile.enderio.electricalSteel.name=Electrical Steel Block
 tile.enderio.energeticAlloy.name=Energetic Alloy Block
-tile.enderio.phasedGold.name=Vibrant Alloy Block
+tile.enderio.vibrantAlloy.name=Vibrant Alloy Block
 tile.enderio.redstoneAlloy.name=Redstone Alloy Block
 tile.enderio.conductiveIron.name=Conductive Iron Block
-tile.enderio.phasedIron.name=Pulsating Iron Block
+tile.enderio.pulsatingIron.name=Pulsating Iron Block
 tile.enderio.vibrantNugget.name=Vibrant Nugget Block
 tile.enderio.darkSteel.name=Dark Steel Block
 tile.enderio.soularium.name=Soularium Block
@@ -921,6 +921,9 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generates power from 
 
 enderio.darksteel.upgrade.solar_two.name=Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_three.name=Solar III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
 
 //------GUI
 
