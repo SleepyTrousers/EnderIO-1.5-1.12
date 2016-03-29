@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,11 +13,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
+
 import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
 public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
@@ -45,7 +48,21 @@ public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapp
   @Override
   @SideOnly(Side.CLIENT)
   public ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack) {
-    // TODO: Create a fill level overlay here
+    if (stack.getItem() instanceof IEnergyContainerItem) {
+      IEnergyContainerItem energyItem = (IEnergyContainerItem) stack.getItem();
+      int maxEnergy = energyItem.getMaxEnergyStored(stack);
+      if (maxEnergy > 0) {
+        int energy = energyItem.getEnergyStored(stack);
+        FillGaugeBakery gauge = new FillGaugeBakery((double) energy / maxEnergy);
+        if (gauge.canRender()) {
+          ItemQuadCollector result = new ItemQuadCollector();
+          List<BakedQuad> quads = new ArrayList<BakedQuad>();
+          gauge.bake(quads);
+          result.addQuads(null, quads);
+          return result;
+        }
+      }
+    }
     return null;
   }
 

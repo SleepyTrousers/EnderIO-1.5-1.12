@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.capbank;
 
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
@@ -75,12 +77,12 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
       PowerHandlerUtil.setStoredEnergyForItem(container, energy);
     }
     return energyExtracted;
-
   }
 
   @Override
   public int getEnergyStored(ItemStack container) {
-    return PowerHandlerUtil.getStoredEnergyForItem(container);
+    return CapBankType.getTypeFromMeta(container.getItemDamage()).isCreative() ? CapBankType.getTypeFromMeta(container.getItemDamage()).getMaxEnergyStored() / 2
+        : PowerHandlerUtil.getStoredEnergyForItem(container);
   }
 
   @Override
@@ -90,7 +92,14 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
 
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
-    PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
+    if (Config.capacitorBankRenderPowerOverlayOnItem) {
+      PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
+    }
+  }
+
+  @Override
+  public boolean hasEffect(ItemStack stack) {
+    return CapBankType.getTypeFromMeta(stack.getItemDamage()).isCreative() || super.hasEffect(stack);
   }
 
 }

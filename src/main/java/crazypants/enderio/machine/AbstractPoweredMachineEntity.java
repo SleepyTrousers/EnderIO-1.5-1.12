@@ -1,5 +1,10 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
@@ -8,10 +13,6 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
@@ -162,14 +163,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
     setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
-    int energy;
-    if(nbtRoot.hasKey("storedEnergy")) {
-      float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
-      energy = (int) (storedEnergyMJ * 10);
-    } else {
-      energy = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
-    }
-    setEnergyStored(energy);
+    setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
   }
 
   /**
@@ -180,6 +174,16 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     super.writeCommon(nbtRoot);
     nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
+  }
+
+  @Override
+  public void readFromItemStack(ItemStack stack) {
+    if (stack == null || stack.getTagCompound() == null) {
+      return;
+    }
+    NBTTagCompound nbtRoot = stack.getTagCompound();
+    setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
+    super.readFromItemStack(stack);
   }
 
 }

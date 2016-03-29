@@ -1,10 +1,13 @@
 package crazypants.enderio.machine.capbank.render;
 
+import java.util.List;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +21,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.BlockCapBank;
@@ -39,9 +41,16 @@ public class FillGaugeBakery {
   private double localFillLevel;
   private boolean connectUp, connectDown;
   private IBlockAccess world;
-  private  BlockPos pos;
-  private  EnumFacing face;
+  private BlockPos pos;
+  private EnumFacing face;
   private HalfBakedList buffer;
+
+  public FillGaugeBakery(double fillLevel) {
+    localFillLevel = fillLevel * 10 + 3;
+    connectUp = connectDown = false;
+    face = EnumFacing.NORTH;
+    mkQuads();
+  }
 
   public FillGaugeBakery(IBlockAccess world, BlockPos pos, EnumFacing face) {
     if (world.getBlockState(pos.offset(face)).getBlock().isSideSolid(world, pos.offset(face), face.getOpposite())) {
@@ -69,10 +78,10 @@ public class FillGaugeBakery {
       calculateFillLevel();
     }
 
-    bake();
+    mkQuads();
   }
 
-  private void bake() {
+  private void mkQuads() {
 
     VertexRotationFacing rot = new VertexRotationFacing(face);
     rot.setCenter(CENTER);
@@ -86,31 +95,31 @@ public class FillGaugeBakery {
     final double full_out = -.5 * px, half_out = full_out / 2, quarter_out = full_out / 4, bit_in = .01 * px;
 
     BoundingBox border1 = new BoundingBox(6 * px, lowerBound, full_out, 7 * px, upperBound, bit_in);
-    buffer.add(border1, EnumFacing.NORTH, 15.01 * px, 15.99 * px, lowerBound, upperBound, tex1, b);
-    buffer.add(border1, EnumFacing.EAST, 15.01 * px, 15.49 * px, lowerBound, upperBound, tex1, b);
-    buffer.add(border1, EnumFacing.WEST, 15.99 * px, 15.51 * px, lowerBound, upperBound, tex1, b);
+    buffer.add(border1, EnumFacing.NORTH, 15.01 * px, 15.99 * px, lowerBound, upperBound, tex1, null);
+    buffer.add(border1, EnumFacing.EAST, 15.01 * px, 15.49 * px, lowerBound, upperBound, tex1, null);
+    buffer.add(border1, EnumFacing.WEST, 15.99 * px, 15.51 * px, lowerBound, upperBound, tex1, null);
 
     BoundingBox border2 = new BoundingBox(9 * px, lowerBound, full_out, 10 * px, upperBound, bit_in);
-    buffer.add(border2, EnumFacing.NORTH, 12.01 * px, 12.99 * px, lowerBound, upperBound, tex1, b);
-    buffer.add(border2, EnumFacing.EAST, 12.01 * px, 12.49 * px, lowerBound, upperBound, tex1, b);
-    buffer.add(border2, EnumFacing.WEST, 12.99 * px, 12.51 * px, lowerBound, upperBound, tex1, b);
+    buffer.add(border2, EnumFacing.NORTH, 12.01 * px, 12.99 * px, lowerBound, upperBound, tex1, null);
+    buffer.add(border2, EnumFacing.EAST, 12.01 * px, 12.49 * px, lowerBound, upperBound, tex1, null);
+    buffer.add(border2, EnumFacing.WEST, 12.99 * px, 12.51 * px, lowerBound, upperBound, tex1, null);
 
     if (!connectDown) {
       BoundingBox border3 = new BoundingBox(6 * px, lowerBound - 1 * px, full_out, 10 * px, 3 * px, bit_in);
-      buffer.add(border3, EnumFacing.NORTH, 0.005 * px, 3.995 * px, 13.01 * px, 13.99 * px, tex1, b);
-      buffer.add(border3, EnumFacing.UP, 0.005 * px, 3.995 * px, 13.5 * px, 13.99 * px, tex1, b);
-      buffer.add(border3, EnumFacing.DOWN, 0.005 * px, 3.995 * px, 13.5 * px, 13.99 * px, tex1, b);
-      buffer.add(border3, EnumFacing.WEST, 3.01 * px, 3.49 * px, 13.01 * px, 13.99 * px, tex1, b);
-      buffer.add(border3, EnumFacing.EAST, 0.99 * px, 0.51 * px, 13.01 * px, 13.99 * px, tex1, b);
+      buffer.add(border3, EnumFacing.NORTH, 0.005 * px, 3.995 * px, 13.01 * px, 13.99 * px, tex1, null);
+      buffer.add(border3, EnumFacing.UP, 0.005 * px, 3.995 * px, 13.5 * px, 13.99 * px, tex1, null);
+      buffer.add(border3, EnumFacing.DOWN, 0.005 * px, 3.995 * px, 13.5 * px, 13.99 * px, tex1, null);
+      buffer.add(border3, EnumFacing.WEST, 3.01 * px, 3.49 * px, 13.01 * px, 13.99 * px, tex1, null);
+      buffer.add(border3, EnumFacing.EAST, 0.99 * px, 0.51 * px, 13.01 * px, 13.99 * px, tex1, null);
     }
 
     if (!connectUp) {
       BoundingBox border4 = new BoundingBox(6 * px, 13 * px, full_out, 10 * px, upperBound + 1 * px, bit_in);
-      buffer.add(border4, EnumFacing.NORTH, 0.005 * px, 3.995 * px, 2.01 * px, 2.99 * px, tex1, b);
-      buffer.add(border4, EnumFacing.UP, 0.005 * px, 3.995 * px, 2.01 * px, 2.5 * px, tex1, b);
-      buffer.add(border4, EnumFacing.DOWN, 0.005 * px, 3.995 * px, 2.01 * px, 2.5 * px, tex1, b);
-      buffer.add(border4, EnumFacing.WEST, 3.01 * px, 3.49 * px, 2.01 * px, 2.99 * px, tex1, b);
-      buffer.add(border4, EnumFacing.EAST, 0.99 * px, 0.51 * px, 2.01 * px, 2.99 * px, tex1, b);
+      buffer.add(border4, EnumFacing.NORTH, 0.005 * px, 3.995 * px, 2.01 * px, 2.99 * px, tex1, null);
+      buffer.add(border4, EnumFacing.UP, 0.005 * px, 3.995 * px, 2.01 * px, 2.5 * px, tex1, null);
+      buffer.add(border4, EnumFacing.DOWN, 0.005 * px, 3.995 * px, 2.01 * px, 2.5 * px, tex1, null);
+      buffer.add(border4, EnumFacing.WEST, 3.01 * px, 3.49 * px, 2.01 * px, 2.99 * px, tex1, null);
+      buffer.add(border4, EnumFacing.EAST, 0.99 * px, 0.51 * px, 2.01 * px, 2.99 * px, tex1, null);
     }
 
     BoundingBox bg = new BoundingBox(6.5 * px, (connectDown ? 0 : 2.5) * px, quarter_out, 9.5 * px, (connectUp ? 16 : 13.5) * px, bit_in);
@@ -138,12 +147,7 @@ public class FillGaugeBakery {
     }
     ((CapBankClientNetwork) network).requestPowerUpdate(((TileCapBank) tileEntity), 20);
     double ratio = Math.min(((CapBankClientNetwork) network).getEnergyStoredRatio(), 1);
-    localFillLevel = // Math.min(Math.max(0, ratio * (height * 16 - 6) - myOffset * 16), 13) + Math.signum(myOffset) * 3;
-    Math.max(0, Math.min(ratio * (height * 16 - 6) - myOffset * 16, 13) + 3);
-
-    // System.out.println("CapBank at " + pos + ": ratio=" + ratio + " localFillLevel=" + localFillLevel + " height=" + height + " myOffset=" + myOffset +
-    // " raw="
-    // + (ratio * (height * 16 - 6) - (myOffset * 16 - Math.signum(myOffset) * 3)));
+    localFillLevel = Math.max(0, Math.min(ratio * (height * 16 - 6) - myOffset * 16, 13) + 3);
   }
 
   private void countNeighbors() {
@@ -155,7 +159,6 @@ public class FillGaugeBakery {
       IBlockState state = world.getBlockState(other);
       if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType
           || world.getBlockState(other.offset(face)).getBlock().isSideSolid(world, other.offset(face), face.getOpposite())) {
-        // world.getBlockState(other.offset(face)).getBlock().isOpaqueCube()) {
         break;
       }
       TileEntity tileEntity = world.getTileEntity(other);
@@ -171,7 +174,7 @@ public class FillGaugeBakery {
       other = other.down();
       IBlockState state = world.getBlockState(other);
       if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType
-          || world.getBlockState(other.offset(face)).getBlock().isOpaqueCube()) {
+          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(world, other.offset(face), face.getOpposite())) {
         break;
       }
       TileEntity tileEntity = world.getTileEntity(other);
@@ -184,7 +187,6 @@ public class FillGaugeBakery {
     }
   }
   
-  Vector4f b;
   public void render() {
     if (buffer != null) {
       int i = world.getCombinedLight(pos.offset(face), 0);
@@ -203,6 +205,10 @@ public class FillGaugeBakery {
 
   public boolean canRender() {
     return buffer != null;
+  }
+
+  public void bake(List<BakedQuad> quads) {
+    buffer.bake(quads);
   }
 
 }

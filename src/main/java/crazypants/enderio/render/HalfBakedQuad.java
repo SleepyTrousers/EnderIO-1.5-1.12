@@ -2,6 +2,8 @@ package crazypants.enderio.render;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,12 +12,18 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Vec3i;
+import net.minecraftforge.client.model.pipeline.LightUtil;
+import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
@@ -33,8 +41,82 @@ public class HalfBakedQuad {
     this.color = color != null ? color : NO_COLOR;
   }
 
+  // TODO: pull this up into RenderUtil
+
+  private static void addBakedQuads(List<BakedQuad> quads, Collection<Vertex> vertices, TextureAtlasSprite tex, Vector4f color) {
+    UnpackedBakedQuad.Builder builder = null;
+
+    Iterator<Vertex> it = vertices.iterator();
+    while (it.hasNext()) {
+      EnumFacing face = null;
+      for (int i = 0; i < 4; i++) {
+        Vertex v = it.next();
+        if (i == 0) {
+          face = EnumFacing.getFacingFromVector(v.nx(), v.ny(), v.nz());
+          builder = new UnpackedBakedQuad.Builder(net.minecraft.client.renderer.vertex.DefaultVertexFormats.ITEM); // this one has normals
+          builder.setQuadOrientation(face);
+          builder.setQuadColored();
+        }
+        v.color = color;
+        putVertexData(builder, v, face.getDirectionVec(), tex);
+      }
+      quads.add(builder.build());
+    }
+
+  }
+
+  private static void putVertexData(Builder builder, Vertex v, Vec3i normal, TextureAtlasSprite sprite) {
+    if (sprite == null) {
+      sprite = IconUtil.instance.errorTexture;
+    }
+
+    VertexFormat format = builder.getVertexFormat();
+    for (int e = 0; e < format.getElementCount(); e++) {
+      switch (format.getElement(e).getUsage()) {
+      case POSITION:
+        builder.put(e, (float) v.x(), (float) v.y(), (float) v.z(), 1);
+        break;
+      case COLOR:
+        float d;
+        if (v.normal != null) {
+          d = LightUtil.diffuseLight(v.normal.x, v.normal.y, v.normal.z);
+        } else {
+          d = LightUtil.diffuseLight(normal.getX(), normal.getY(), normal.getZ());
+        }
+
+        if (v.color != null) {
+          builder.put(e, d * v.color.x, d * v.color.y, d * v.color.z, v.color.w);
+        } else {
+          builder.put(e, d, d, d, 1);
+        }
+        break;
+      case UV:
+        builder.put(e, sprite.getInterpolatedU(v.u() * 16), sprite.getInterpolatedV(v.v() * 16), 0, 1);
+
+        break;
+      case NORMAL:
+        if (v.normal != null) {
+          builder.put(e, v.nx(), v.ny(), v.nz(), 0);
+        } else {
+          builder.put(e, normal.getX(), normal.getY(), normal.getZ(), 0);
+        }
+        break;
+      default:
+        builder.put(e);
+      }
+    }
+  }
+
+  // END TODO
+
+  boolean use = true;
+
   public void bake(List<BakedQuad> quads) {
-    RenderUtil.addBakedQuads(quads, corners, tex, color);
+    if (use) {
+      addBakedQuads(quads, corners, tex, color);
+    } else {
+      RenderUtil.addBakedQuads(quads, corners, tex, color);
+    }
   }
 
   public void transform(VertexTransform... xforms) {

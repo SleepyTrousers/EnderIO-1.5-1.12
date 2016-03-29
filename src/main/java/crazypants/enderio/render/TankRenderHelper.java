@@ -39,7 +39,7 @@ public class TankRenderHelper {
 
         ResourceLocation still = tank.getFluid().getFluid().getStill(tank.getFluid());
         int color = tank.getFluid().getFluid().getColor(tank.getFluid());
-        Vector4f vecC = new Vector4f((color >> 16 & 0xFF) / 255d * 2, (color >> 8 & 0xFF) / 255d * 2, (color & 0xFF) / 255d * 2, 1);
+        Vector4f vecC = new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
         TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(still.toString());
 
         BoundingBox bb = new BoundingBox(xzBorder * px, miny * px, xzBorder * px, (16 - xzBorder) * px, ((maxy - miny) * ratio + miny) * px, (16 - xzBorder)

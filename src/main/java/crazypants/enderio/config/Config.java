@@ -358,6 +358,8 @@ public final class Config {
   public static int capacitorBankTierThreeMaxIoRF = 25000;
   public static int capacitorBankTierThreeMaxStorageRF = 25000000;
 
+  public static boolean capacitorBankRenderPowerOverlayOnItem = false;
+
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
   public static int poweredSpawnerLevelOnePowerPerTickRF = 160;
@@ -592,6 +594,9 @@ public final class Config {
     capacitorBankTierThreeMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierThreeMaxStorageRF", capacitorBankTierThreeMaxStorageRF,
         "The maximum storage for a single tier three capacitor in RF")
         .getInt(capacitorBankTierThreeMaxStorageRF);
+
+    capacitorBankRenderPowerOverlayOnItem = config.getBoolean("capacitorBankRenderPowerOverlayOnItem", sectionAesthetic.name,
+        capacitorBankRenderPowerOverlayOnItem, "When true the the capacitor bank item wil get a power bar in addition to the gauge on the bank");
 
     powerConduitTierOneRF = config.get(sectionPower.name, "powerConduitTierOneRF", powerConduitTierOneRF, "The maximum IO for the tier 1 power conduit")
         .getInt(powerConduitTierOneRF);

@@ -1,10 +1,10 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyConnection;
-import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import cofh.api.energy.IEnergyConnection;
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class PowerHandlerUtil {
 
@@ -20,10 +20,10 @@ public class PowerHandlerUtil {
   }
 
   public static int getStoredEnergyForItem(ItemStack item) {
-    NBTTagCompound tag = item.getTagCompound();
-    if(tag == null) {
+    if (!item.hasTagCompound()) {
       return 0;
     }
+    NBTTagCompound tag = item.getTagCompound();
 
     if(tag.hasKey("storedEnergy")) {
       double storedMj = tag.getDouble("storedEnergy");

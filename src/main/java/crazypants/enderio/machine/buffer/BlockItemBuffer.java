@@ -13,10 +13,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.PowerHandlerUtil;
 
-public class BlockItemBuffer extends ItemBlock {
+public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
   public BlockItemBuffer(Block block) {
     super(block);
@@ -73,6 +82,68 @@ public class BlockItemBuffer extends ItemBlock {
       }
     }
     return super.getColorFromItemStack(stack, renderPass);
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    if (stack.stackSize == 1 && EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
+      PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
+    }
+  }
+
+  @Override
+  public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate) {
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
+    if (stack.stackSize == 1 && type.hasPower && !type.isCreative) {
+      int energy = getEnergyStored(stack);
+      int maxInput = Config.powerConduitTierThreeRF / 20;
+      int energyReceived = Math.min(Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored() - energy, Math.min(maxReceive, maxInput));
+
+      if (!simulate) {
+        energy += energyReceived;
+        PowerHandlerUtil.setStoredEnergyForItem(stack, energy);
+      }
+      return energyReceived;
+    }
+    return 0;
+  }
+
+  @Override
+  public int extractEnergy(ItemStack stack, int maxExtract, boolean simulate) {
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
+    if (stack.stackSize == 1 && type.hasPower) {
+      int energy = PowerHandlerUtil.getStoredEnergyForItem(stack);
+      int energyExtracted = Math.min(energy, Math.min(Config.powerConduitTierThreeRF / 20, maxExtract));
+
+      if (!simulate && !type.isCreative) {
+        energy -= energyExtracted;
+        PowerHandlerUtil.setStoredEnergyForItem(stack, energy);
+      }
+      return energyExtracted;
+    }
+    return 0;
+  }
+
+  @Override
+  public int getEnergyStored(ItemStack stack) {
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
+    if (stack.stackSize == 1 && type.hasPower) {
+      return type.isCreative ? Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored() : PowerHandlerUtil.getStoredEnergyForItem(stack);
+    }
+    return 0;
+  }
+
+  @Override
+  public int getMaxEnergyStored(ItemStack stack) {
+    if (stack.stackSize == 1 && EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
+      return Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored();
+    }
+    return 0;
+  }
+
+  @Override
+  public boolean hasEffect(ItemStack stack) {
+    return EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).isCreative || super.hasEffect(stack);
   }
 
 }
