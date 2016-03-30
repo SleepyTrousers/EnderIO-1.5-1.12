@@ -1,8 +1,17 @@
 {
-    "variants": {
-        "facing=north": { "model": "enderio:blockDarkSteelLadder" },
-        "facing=east":  { "model": "enderio:blockDarkSteelLadder", "y": 90 },
-        "facing=south": { "model": "enderio:blockDarkSteelLadder", "y": 180 },
-        "facing=west":  { "model": "enderio:blockDarkSteelLadder", "y": 270 }
-    }
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+	        "particle": "enderio:blocks/blockDarkSteelLadder",
+	        "texture": "enderio:blocks/blockDarkSteelLadder"
+        }
+    },
+	"variants": {
+        "facing": {
+        	"north": { "submodel":{ "s1":{ "model":"enderio:blockDarkSteelLadder", "y":180 } } },
+        	"east": { "submodel":{ "s1":{ "model":"enderio:blockDarkSteelLadder", "y":270 } } },
+        	"south": { "submodel":{ "s1":{ "model":"enderio:blockDarkSteelLadder", "y":0 } } },
+        	"west": { "submodel":{ "s1":{ "model":"enderio:blockDarkSteelLadder", "y":90 } } }
+        }
+	}
 }

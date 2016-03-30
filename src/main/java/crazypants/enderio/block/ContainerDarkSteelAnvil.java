@@ -2,13 +2,10 @@ package crazypants.enderio.block;
 
 import java.lang.reflect.Field;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -16,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 
@@ -23,19 +22,21 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
   private final Field _outputSlot = ReflectionHelper.findField(ContainerRepair.class, "outputSlot", "field_82852_f");
   private final Field _inputSlots = ReflectionHelper.findField(ContainerRepair.class, "inputSlots", "field_82853_g");
-  private final Field _materialCost = ReflectionHelper.findField(ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
+
+  // public at the moment
+  // private final Field _materialCost = ReflectionHelper.findField(ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
 
   public ContainerDarkSteelAnvil(InventoryPlayer playerInv, final World world, final int x, final int y, final int z, EntityPlayer player) {
     super(playerInv, world, new BlockPos(x, y, z), player);
 
     final BlockPos blockPosIn = new BlockPos(x, y, z);
     final IInventory outputSlot, inputSlots;
-    final int materialCost;
+//    final int materialCost;
 
     try {
       outputSlot = (IInventory) _outputSlot.get(this);
       inputSlots = (IInventory) _inputSlots.get(this);
-      materialCost = _materialCost.getInt(this);
+      // materialCost = _materialCost.getInt(this);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -58,9 +59,9 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
       }
 
       @Override
-      public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
-        if (!player.capabilities.isCreativeMode) {
-          player.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);
+      public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
+        if (!playerIn.capabilities.isCreativeMode) {
+          playerIn.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);
         }
 
         inputSlots.setInventorySlotContents(0, (ItemStack) null);
@@ -81,7 +82,8 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
         ContainerDarkSteelAnvil.this.maximumCost = 0;
         IBlockState iblockstate = world.getBlockState(blockPosIn);
 
-        if (!player.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == Blocks.anvil && player.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
+        if (!playerIn.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == EnderIO.blockDarkSteelAnvil
+            && playerIn.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
           int l = iblockstate.getValue(BlockAnvil.DAMAGE).intValue();
           ++l;
 
@@ -94,7 +96,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
           }
         } else if (!world.isRemote) {
           world.playAuxSFX(1021, blockPosIn, 0);
-        }        
+        }
       }
     });
   }

@@ -1,6 +1,25 @@
 package crazypants.enderio.block;
 
 import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
@@ -9,16 +28,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -39,10 +48,52 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
     }
   }
   
-  public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
-    return false;
+  @Override
+  @SideOnly(Side.CLIENT)
+  public MapColor getMapColor(IBlockState state) {
+    return MapColor.obsidianColor;
   }
-  
+
+  private static final int[] COLS = { 0x3c3056, 0x241e31, 0x1e182b, 0x0e0e15, 0x07070b };
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    if (rand.nextFloat() < .25f) {
+      EnumFacing face = EnumFacing.values()[rand.nextInt(EnumFacing.values().length)];
+      double xd = face.getFrontOffsetX() == 0 ? rand.nextDouble() : face.getFrontOffsetX() < 0 ? -0.05 : 1.05;
+      double yd = face.getFrontOffsetY() == 0 ? rand.nextDouble() : face.getFrontOffsetY() < 0 ? -0.05 : 1.05;
+      double zd = face.getFrontOffsetZ() == 0 ? rand.nextDouble() : face.getFrontOffsetZ() < 0 ? -0.05 : 1.05;
+
+      double x = pos.getX() + xd;
+    double y = pos.getY() + yd;
+      double z = pos.getZ() + zd;
+
+    int col = COLS[rand.nextInt(COLS.length)];
+
+    worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, (col >> 16 & 255) / 255d, (col >> 8 & 255) / 255d, (col & 255) / 255d, new int[0]);
+    }
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null) {
+      super.getSubBlocks(itemIn, tab, list);
+    }
+  }
+
+  @Override
+  public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity) {
+    return !(entity instanceof EntityWither);
+  }
+
+  @Override
+  public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+    this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
+    return true;
+  }
+
   @Override
   public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
   }
@@ -52,10 +103,6 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
     return false;
   }
   
-  public MapColor getMapColor(int p_149728_1_) {
-    return MapColor.obsidianColor;
-  }
-
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
@@ -73,4 +120,5 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.BIT_BASIC;
   }
+
 }

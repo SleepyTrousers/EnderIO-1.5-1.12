@@ -1,10 +1,5 @@
 package crazypants.enderio.block;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.material.Material;
@@ -14,6 +9,12 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 
 public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider {
   
@@ -59,4 +60,5 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
+
 }

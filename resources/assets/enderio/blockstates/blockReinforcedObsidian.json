@@ -1,14 +1,33 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "minecraft:cube_all",
+        "model": "enderio:blockReinforcedObsidianCore",
         "textures": {
-            "all": "enderio:blocks/blockReinforcedObsidian"
+            "particle": "enderio:blocks/blockReinforcedObsidian",
+            "texture": "enderio:blocks/blockReinforcedObsidian"
         },
         "transform": "forge:default-block"
     },
 	"variants": {
-        "normal": [{}],
-        "inventory": [{}]
+        "normal": [{
+        "submodel":{
+             "s1":{ "model":"enderio:blockReinforcedObsidianSide", "y":0 },
+             "s2":{ "model":"enderio:blockReinforcedObsidianSide", "y":90 },
+             "s3":{ "model":"enderio:blockReinforcedObsidianSide", "y":180 },
+             "s4":{ "model":"enderio:blockReinforcedObsidianSide", "y":270 },
+             "s5":{ "model":"enderio:blockReinforcedObsidianTop", "x":90 },
+             "s6":{ "model":"enderio:blockReinforcedObsidianTop", "x":270 }
+         }
+        }],
+        "inventory": [{
+        "submodel":{
+             "s1":{ "model":"enderio:blockReinforcedObsidianSide", "y":0 },
+             "s2":{ "model":"enderio:blockReinforcedObsidianSide", "y":90 },
+             "s3":{ "model":"enderio:blockReinforcedObsidianSide", "y":180 },
+             "s4":{ "model":"enderio:blockReinforcedObsidianSide", "y":270 },
+             "s5":{ "model":"enderio:blockReinforcedObsidianTop", "x":90 },
+             "s6":{ "model":"enderio:blockReinforcedObsidianTop", "x":270 }
+         }
+        }]
 	}
 }

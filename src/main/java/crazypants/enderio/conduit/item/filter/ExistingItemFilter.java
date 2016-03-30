@@ -1,7 +1,18 @@
 package crazypants.enderio.conduit.item.filter;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
@@ -11,15 +22,6 @@ import crazypants.enderio.conduit.gui.item.ExistingItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ExistingItemFilter implements IItemFilter {
 
@@ -39,7 +41,7 @@ public class ExistingItemFilter implements IItemFilter {
     }
     if (snapshot != null) {
       return isStackInSnapshot(item) == !blacklist;
-    } else if (ni != null) {
+    } else if (ni != null && ni.getInventory() != null) {
       return isStackInInventory(ni, item) == !blacklist;
     }
     return false;
