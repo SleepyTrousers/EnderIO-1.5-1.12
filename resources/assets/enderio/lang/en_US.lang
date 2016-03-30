@@ -5,8 +5,8 @@ enderio.power.rf=RF
 enderio.power.tmb=t/mB
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
-enderio.power.generates=Generates
-enderio.power.generation_rate=at
+// pre-formatted number, "RF" ("power.rf"), pre-formatted number, "RF" ("power.rf"), "/t" ("power.tick")
+enderio.power.generates=Generates {0} {1} at {2} {3}{4}
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
@@ -1226,7 +1226,7 @@ enderio.nei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
 enderio.nei.slicensplice=Slice'N'Splice
 enderio.nei.soulbinder=Soul Binder
 enderio.nei.vat=Vat
-enderio.tooltip.burntime=Burn Time:
+enderio.tooltip.burntime=Burn Time: {0,number}
 enderio.tooltip.oredict=Ore Dictionary:
 enderio.tooltip.meta=Meta:
 enderio.tooltip.uid=UID:

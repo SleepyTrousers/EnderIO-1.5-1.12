@@ -1,11 +1,10 @@
 package crazypants.enderio.enderface;
 
-import java.util.UUID;
-
-import com.enderio.core.common.Handlers.Handler;
-
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
+
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerPlayer;
@@ -14,6 +13,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+
+import com.enderio.core.common.Handlers.Handler;
 
 @Handler
 public enum EnderIOController {
@@ -57,7 +58,6 @@ public enum EnderIOController {
         if (windowId != clientWindowId && locked) {
           clientWindowId = windowId;
           locked = false;
-          System.out.println("Unlocked and set windowId to " + clientWindowId);
         }
       }
     }

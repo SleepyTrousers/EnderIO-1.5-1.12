@@ -53,6 +53,7 @@ public class ItemBucketEio extends ItemBucket {
 
   @SideOnly(Side.CLIENT)
   public void addRenderers() {       
+    // TODO 1.8 what??? copy&paste error?
     ModelBakery.registerItemVariants(this, new ResourceLocation("enderio:filterUpgradeBasic"),new ResourceLocation("enderio:filterUpgradeAdvanced"));        
     ClientUtil.regRenderer(this, 0,"filterUpgradeBasic");
     ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");    

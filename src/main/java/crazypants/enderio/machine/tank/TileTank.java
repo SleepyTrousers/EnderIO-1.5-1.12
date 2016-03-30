@@ -20,6 +20,7 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -37,7 +38,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   protected int lastUpdateLevel = -1;
   
   private boolean tankDirty = false;
-  private Fluid lastFluid = null;
+  private int lastFluidLuminosity = 0;
 
   private VoidMode voidMode = VoidMode.NEVER;
 
@@ -275,22 +276,42 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     return false;
   }
   
+  private static long lastSendTickAll = -1;
+  private long nextSendTickThis = -1;
+  private int sendPrio = 0;
+
+  /*
+   * Limit sending of client updates because a group of tanks pushing into each other can severely kill the clients fps from doing these updates.
+   */
+  private boolean canSendClientUpdate() {
+    long tick = EnderIO.proxy.getTickCount();
+    if (nextSendTickThis > tick) {
+      return false;
+    }
+    if (tick == lastSendTickAll && sendPrio++ < 200) {
+      return false;
+    }
+    nextSendTickThis = (lastSendTickAll = tick) + 10 + sendPrio * 2;
+    sendPrio = 0;
+    return true;
+  }
+
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     boolean res = processItems(redstoneCheck);
     int filledLevel = getFilledLevel();
     if(lastUpdateLevel != filledLevel) {
       lastUpdateLevel = filledLevel;
-      tankDirty = false;
-      return true;
+      tankDirty = true;
     }
-    if(tankDirty && shouldDoWorkThisTick(10)) {
+    if (tankDirty && canSendClientUpdate()) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
       worldObj.updateComparatorOutputLevel(pos, getBlockType());
-      Fluid held = tank.getFluid() == null ? null : tank.getFluid().getFluid();
-      if(lastFluid != held) {
-        lastFluid = held;
+      int thisFluidLuminosity = tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluidAmount() == 0 ? 0 : tank.getFluid().getFluid()
+          .getLuminosity(tank.getFluid());
+      if (thisFluidLuminosity != lastFluidLuminosity) {
         worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+        lastFluidLuminosity = thisFluidLuminosity;
       }
       tankDirty = false;
     }
@@ -315,6 +336,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     }
     if (canVoidItems()) {
       inventory[2] = null;
+      markDirty();
     }
     return drainFullContainer() || fillEmptyContainer();
   }
@@ -442,7 +464,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   public boolean shouldRenderInPass(int pass) {
-    return pass == 1;
+    return pass == 1 && tank.getFluidAmount() > 0;
   }
   
 }

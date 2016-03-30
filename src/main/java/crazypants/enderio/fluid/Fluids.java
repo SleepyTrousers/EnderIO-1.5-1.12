@@ -2,11 +2,6 @@ package crazypants.enderio.fluid;
 
 import java.lang.reflect.Field;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -27,6 +22,11 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.network.PacketHandler;
 
 public class Fluids {
 
@@ -34,6 +34,7 @@ public class Fluids {
   public static final String HOOTCH_NAME = "hootch";
   public static final String ROCKET_FUEL_NAME = "rocket_fuel";
   public static final String FIRE_WATER_NAME = "fire_water";
+  public static final String XP_JUICE_NAME = "xpjuice";
   
   public static final String LIQUID_SUNSHINE_NAME = "liquid_sunshine";
   public static final String CLOUD_SEED_NAME = "cloud_seed";
@@ -63,11 +64,15 @@ public class Fluids {
   public static Fluid fluidXpJuice;
 
   public static ResourceLocation getStill(String fluidName) {
-    return new ResourceLocation(EnderIO.MODID, "blocks/" + fluidName + "_still");
+    return new ResourceLocation(EnderIO.DOMAIN, "blocks/" + fluidName + "_still");
   }
 
   public static ResourceLocation getFlowing(String fluidName) {
-    return new ResourceLocation(EnderIO.MODID, "blocks/" + fluidName + "_flow");
+    return new ResourceLocation(EnderIO.DOMAIN, "blocks/" + fluidName + "_flow");
+  }
+
+  public static ResourceLocation getRaw(String fluidName) {
+    return new ResourceLocation(EnderIO.DOMAIN, "blocks/" + fluidName);
   }
 
   public static String toCapactityString(IFluidTank tank) {
@@ -133,8 +138,8 @@ public class Fluids {
     
     if (!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getStill(Fluids.FIRE_WATER_NAME), Fluids.getFlowing(Fluids.FIRE_WATER_NAME)).setLuminosity(10)
-          .setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+      fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getRaw(Fluids.XP_JUICE_NAME + "still"), Fluids.getRaw(Fluids.XP_JUICE_NAME + "flowing"))
+          .setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
     } else {
       Log.info("XP Juice regististration left to Open Blocks.");

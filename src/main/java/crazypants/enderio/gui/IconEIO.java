@@ -1,11 +1,11 @@
 package crazypants.enderio.gui;
 
+import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.client.render.IWidgetMap;
-
-import net.minecraft.util.ResourceLocation;
 
 public enum IconEIO implements IWidgetIcon {
 
@@ -71,11 +71,6 @@ public enum IconEIO implements IWidgetIcon {
   FILTER_FUZZY_75(192, 176),
   FILTER_FUZZY_99(176, 176),
 
-  @Deprecated
-  INPUT_OLD(128, 197 + 32, 30, 14),
-  @Deprecated
-  OUTPUT_OLD(128, 180 + 32, 30, 14),
-
   INPUT(32, 176, 16, 8),
   OUTPUT(48, 176, 16, 8),
   INPUT_OUTPUT(32, 176, 32, 8),
@@ -134,7 +129,7 @@ public enum IconEIO implements IWidgetIcon {
   public final int height;
   public final IconEIO overlay;
 
-  public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgetsv2.png");
+  public static final ResourceLocation TEXTURE = GuiContainerBaseEIO.getGuiTexture("widgetsv2");
 
   public static final IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
     @Override
@@ -194,4 +189,5 @@ public enum IconEIO implements IWidgetIcon {
   public IconEIO getOverlay() {
     return overlay;
   }
+
 }

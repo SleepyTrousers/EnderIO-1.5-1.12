@@ -20,44 +20,34 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.google.common.base.Throwables;
-import com.google.common.collect.ArrayTable;
-import com.google.common.collect.Table;
 
 public class QuadCollector {
 
-  private static final List<Integer> FACING = new ArrayList<Integer>();
-  private static final List<EnumWorldBlockLayer> PASS = Arrays.asList(EnumWorldBlockLayer.values());
+  @SuppressWarnings("unchecked")
+  private final List<BakedQuad>[] table = new List[mkKey(EnumFacing.values()[EnumFacing.values().length - 1],
+      EnumWorldBlockLayer.values()[EnumWorldBlockLayer.values().length - 1]) + 1];
 
-  static {
-    FACING.add(-1);
-    for (EnumFacing face : EnumFacing.values()) {
-      FACING.add(face.ordinal());
-    }
-  }
-
-  private final Table<Integer, EnumWorldBlockLayer, List<BakedQuad>> table = ArrayTable.create(FACING, PASS);
-
-  private static Integer facing2Integer(EnumFacing facing) {
-    return facing == null ? -1 : facing.ordinal();
+  private static Integer mkKey(EnumFacing side, EnumWorldBlockLayer pass) {
+    return (side == null ? 0 : side.ordinal() + 1) * EnumWorldBlockLayer.values().length + (pass == null ? 0 : pass.ordinal());
   }
 
   public void addQuads(EnumFacing side, EnumWorldBlockLayer pass, List<BakedQuad> quads) {
-    Integer face = facing2Integer(side);
-    List<BakedQuad> list = table.get(face, pass);
-    if (list == null) {
-      table.put(face, pass, new ArrayList<BakedQuad>(quads));
-    } else {
-      list.addAll(quads);
+    if (quads != null && !quads.isEmpty()) {
+      Integer key = mkKey(side, pass);
+      if (table[key] == null) {
+        table[key] = new ArrayList<BakedQuad>(quads);
+      } else {
+        table[key].addAll(quads);
+      }
     }
   }
 
   public List<BakedQuad> getQuads(EnumFacing side, EnumWorldBlockLayer pass) {
-    Integer face = facing2Integer(side);
-    List<BakedQuad> list = table.get(face, pass);
-    if (list == null) {
+    Integer key = mkKey(side, pass);
+    if (table[key] == null) {
       return Collections.<BakedQuad> emptyList();
     } else {
-      return list;
+      return table[key];
     }
   }
 
@@ -142,11 +132,11 @@ public class QuadCollector {
   }
 
   public Collection<EnumWorldBlockLayer> getBlockLayers() {
-    return PASS;
+    return Arrays.asList(EnumWorldBlockLayer.values());
   }
 
   public boolean isEmpty() {
-    for (List<BakedQuad> entry : table.values()) {
+    for (List<BakedQuad> entry : table) {
       if (entry != null && !entry.isEmpty()) {
         return false;
       }
@@ -162,10 +152,8 @@ public class QuadCollector {
       return other;
     }
     QuadCollector result = new QuadCollector();
-    for (Integer facing : FACING) {
-      for (EnumWorldBlockLayer pass : PASS) {
-        result.table.put(facing, pass, CompositeList.create(this.table.get(facing, pass), other.table.get(facing, pass)));
-      }
+    for (int i = 0; i < table.length; i++) {
+      result.table[i] = CompositeList.create(this.table[i], other.table[i]);
     }
     return result;
   }

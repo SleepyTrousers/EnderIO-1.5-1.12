@@ -47,3 +47,4 @@ public class RedstoneModeButton extends CycleButton<RedstoneControlMode> {
     setToolTip(EnderIO.lang.localizeExact(tooltipKey), getMode().getTooltip());
   }
 }
+
