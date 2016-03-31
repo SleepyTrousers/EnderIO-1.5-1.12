@@ -163,17 +163,17 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
     this.hasInventory = nbtRoot.getBoolean("hasInv");
     this.hasPower = nbtRoot.getBoolean("hasPower");
     this.isCreative = nbtRoot.getBoolean("creative");
+    super.readCustomNBT(nbtRoot);
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
     this.maxIn = nbtRoot.getInteger("maxIn");
     this.maxOut = nbtRoot.getInteger("maxOut");
+    super.readCommon(nbtRoot);
   }
 
   public boolean hasInventory() {
@@ -215,6 +215,11 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
 
   public int getMaxOutput() {
     return maxOut;
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    return hasPower ? super.getMaxEnergyStored() : 0;
   }
 
 }

@@ -114,7 +114,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileBuffer tileEntity) {
-    blockStateWrapper.addCacheKey(0);
+    blockStateWrapper.addCacheKey(blockStateWrapper.getValue(BufferType.TYPE));
   }
 
 }
