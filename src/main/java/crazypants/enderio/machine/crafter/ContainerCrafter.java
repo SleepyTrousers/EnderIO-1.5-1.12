@@ -1,16 +1,18 @@
 package crazypants.enderio.machine.crafter;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
 
@@ -18,7 +20,10 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
     super(playerInv, te);
   }
 
+  private final List<DummySlot> dummySlots = new ArrayList<DummySlot>();
+
   public void addCrafterSlots(List<GhostSlot> ghostSlots) {
+    dummySlots.clear();
     int topY = 16;
     int leftX = 31;
     int index = 0;
@@ -27,7 +32,9 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        ghostSlots.add(new DummySlot(index, x, y));
+        final DummySlot dummySlot = new DummySlot(index, x, y);
+        ghostSlots.add(dummySlot);
+        dummySlots.add(dummySlot);
         index++;
       }
     }
@@ -84,7 +91,11 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
     }
   }
 
-  private class DummySlot extends GhostSlot {
+  public List<DummySlot> getDummySlots() {
+    return dummySlots;
+  }
+
+  public class DummySlot extends GhostSlot {
     private final int slotIndex;
 
     public DummySlot(int slotIndex, int x, int y) {
@@ -110,4 +121,10 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
       PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getInv(), slotIndex, stack));
     }
   }
+
+  @Override
+  public AbstractMachineContainer.SlotRange getPlayerInventorySlotRange(boolean reverse) {
+    return super.getPlayerInventorySlotRange(reverse);
+  }
+
 }

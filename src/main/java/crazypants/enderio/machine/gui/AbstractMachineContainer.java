@@ -79,7 +79,7 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
 
       boolean merged = false;
       for(SlotRange range : getTargetSlotsForTransfer(slotNumber, slot)) {
-        if(mergeItemStack(origStack, range.start, range.end, range.reverse)) {
+        if(mergeItemStack(origStack, range.getStart(), range.getEnd(), range.reverse)) {
           merged = true;
           break;
         }
@@ -182,14 +182,22 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
   }
 
   public static class SlotRange {
-    final int start;
-    final int end;
+    private final int start;
+    private final int end;
     final boolean reverse;
 
     public SlotRange(int start, int end, boolean reverse) {
       this.start = start;
       this.end = end;
       this.reverse = reverse;
+    }
+
+    public int getStart() {
+      return start;
+    }
+
+    public int getEnd() {
+      return end;
     }
   }
 }

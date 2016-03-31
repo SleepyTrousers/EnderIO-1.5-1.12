@@ -3,6 +3,11 @@ package crazypants.enderio.machine.crafter;
 import java.io.IOException;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -15,10 +20,6 @@ import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
 
@@ -34,18 +35,19 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
     bufferSizeB.setSelectedToolTip(EnderIO.lang.localize("gui.machine.bufferingstacks"));
     bufferSizeB.setUnselectedToolTip(EnderIO.lang.localize("gui.machine.bufferingsingle"));
     bufferSizeB.setSelected(te.isBufferStacks());
+    recipeButton.setYOrigin(recipeButton.getBounds().y + 19);
   }
 
   @Override
   public void initGui() {
     super.initGui();
     bufferSizeB.onGuiInit();
-    ((ContainerCrafter) inventorySlots).addCrafterSlots(ghostSlots);
+    ((ContainerCrafter) inventorySlots).addCrafterSlots(getGhostSlots());
   }
 
   @Override
   protected void mouseClickMove(int mouseX, int mouseY, int button, long par4) {
-    if(!ghostSlots.isEmpty()) {
+    if (!getGhostSlots().isEmpty()) {
       GhostSlot slot = getGhostSlot(mouseX, mouseY);
       if(slot != null) {
         ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
@@ -65,11 +67,6 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
       getTileEntity().setBufferStacks(bufferSizeB.isSelected());
       PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(getTileEntity()));
     }
-  }
-
-  @Override
-  protected boolean showRecipeButton() {
-    return false;
   }
 
   @Override

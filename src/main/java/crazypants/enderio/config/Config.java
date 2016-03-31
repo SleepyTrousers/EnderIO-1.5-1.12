@@ -24,6 +24,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.network.PacketHandler;
 
 public final class Config {
@@ -1377,6 +1378,7 @@ public final class Config {
     rangeEntityID = config.get(sectionMisc.name, "rangeEntityID", rangeEntityID,
         "The ID used to register the entity used to display ranges of blocks").getInt(rangeEntityID);
     
+    CapacitorKey.processConfig(config);
   }
 
   public static void checkYetaAccess() {

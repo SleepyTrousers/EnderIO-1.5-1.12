@@ -40,6 +40,8 @@ public class JeiPlugin extends BlankModPlugin {
     if (ppplate != null) {
       nbtIgnoreList.ignoreNbtTagNames(ppplate, ENTITY_KEY, CUSTOM_NAME_KEY, IS_STUB_KEY, IS_VARIANT_KEY, SOURCE_BLOCK.getKey(), SOURCE_META.getKey());
     }
+
+    CrafterRecipeTransferHandler.register(registry);
   }
 
 
