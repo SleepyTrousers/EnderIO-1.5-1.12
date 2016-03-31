@@ -2,8 +2,16 @@ package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.BlockCoord;
@@ -14,11 +22,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.EnumFacing;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
@@ -44,8 +47,33 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   @Override
+  protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    if (keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
+      mc.thePlayer.closeScreen();
+    }
+
+    if (won && keyCode == mc.gameSettings.keyBindForward.getKeyCode()) {
+      go(W);
+    } else if (son && keyCode == mc.gameSettings.keyBindBack.getKeyCode()) {
+      go(S);
+    } else if (aon && keyCode == mc.gameSettings.keyBindLeft.getKeyCode()) {
+      go(A);
+    } else if (don && keyCode == mc.gameSettings.keyBindRight.getKeyCode()) {
+      go(D);
+    } else if (jon && keyCode == mc.gameSettings.keyBindJump.getKeyCode()) {
+      go(EnumFacing.UP);
+    } else if (con && keyCode == mc.gameSettings.keyBindSneak.getKeyCode()) {
+      go(EnumFacing.DOWN);
+    }
+  }
+
+  @Override
   protected void actionPerformed(GuiButton b) {
     EnumFacing dir = EnumFacing.values()[b.id];
+    go(dir);
+  }
+
+  private void go(EnumFacing dir) {
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     BlockCoord loc = cb.getLocation();
     PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
@@ -56,7 +84,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   public void initGui() {
     GuiButton b;
     for (EnumFacing dir : EnumFacing.VALUES) {
-      Point p = getOffsetForDir(dir);
+      Point p = getOffsetForDir(dir, cons.contains(dir));
       b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
       buttonList.add(b);
       if(!cons.contains(dir)) {
@@ -83,20 +111,75 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     int y = height / 2 - butHeight * 3 - 5;
         
     drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+
+    if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
+      txt = "You can also right-click the connector directly";
+      x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
+      y = height / 2 + butHeight * 3 - 5;
+      drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+    }
   }
 
-  private Point getOffsetForDir(EnumFacing dir) {
+  private EnumFacing W, S, A, D;
+  private float w, s, a, d;
+  private boolean won, son, aon, don, jon, con;
+
+  private static final float deg2rad = (float) (2 * Math.PI / 360);
+  private static final float headg2rad = (float) (2 * Math.PI / 4);
+
+  private Point getOffsetForDir(EnumFacing dir, boolean enabled) {
     int mx = width / 2;
     int my = height / 2;
     int butWidth = 60;
     int butHeight = 20;
 
-    int x = mx - butWidth / 2 + (dir.getFrontOffsetX() * butWidth);
-    int y = my - butHeight / 2 + (dir.getFrontOffsetZ() * butHeight * 2);
-    x += Math.abs(dir.getFrontOffsetY()) * (5 + butWidth * 2);
-    y -= (dir.getFrontOffsetY() * butHeight * 2);
+    if (dir.getFrontOffsetY() == 0) {
 
-    return new Point(x, y);
+      float playerAngle = Minecraft.getMinecraft().thePlayer.rotationYaw * deg2rad;
+      float dirAngle = dir.getHorizontalIndex() * headg2rad;
+      float buttonAngle = dirAngle - playerAngle - 90 * deg2rad;
+
+      int ax = (int) (MathHelper.cos((buttonAngle)) * butWidth);
+      int ay = (int) (MathHelper.sin((buttonAngle)) * butHeight * 2);
+
+      int x = mx - butWidth / 2 + ax;
+      int y = my - butHeight / 2 + ay;
+
+      if (ay < w) {
+        W = dir;
+        won = enabled;
+        w = ay;
+      }
+      if (ay > s) {
+        S = dir;
+        son = enabled;
+        s = ay;
+      }
+      if (ax < a) {
+        A = dir;
+        aon = enabled;
+        a = ax;
+      }
+      if (ax > d) {
+        D = dir;
+        don = enabled;
+        d = ax;
+      }
+
+      return new Point(x, y);
+    } else {
+
+      int x = mx - butWidth / 2 - dir.getFrontOffsetY() * (5 + butWidth * 2);
+      int y = my - butHeight / 2 - (dir.getFrontOffsetY() * butHeight * 2);
+
+      if (dir == EnumFacing.DOWN) {
+        con = enabled;
+      } else {
+        jon = enabled;
+      }
+
+      return new Point(x, y);
+    }
   }
 
 }
