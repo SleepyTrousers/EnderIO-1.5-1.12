@@ -5,7 +5,8 @@
             "particle": "enderio:blocks/machineBottom",    
             "side": "enderio:blocks/blockTank",
             "top": "enderio:blocks/machineTop",
-            "bottom": "enderio:blocks/machineBottom"
+            "bottom": "enderio:blocks/machineBottom",
+            "glass":"enderio:blocks/telepad/glass"
         }
     },
     "variants":{
@@ -18,15 +19,21 @@
                   "fixed":{       "rotation":[ {"x":0},  {"y":0},   {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
               }
           },
-            "auto":{ },
-            "front":{          "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":0 },
-            "front_east":{     "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":90 },
-            "front_south":{    "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":180 },
-            "front_west":{     "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":270 },
-            "front_on":{       "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":0 },
-            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":90 },
-            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":180 },
-            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":270 }            
+            "auto":{ "model":"enderio:null" },
+            "front":{          "submodel":{ 
+            	"s":{ "model":"enderio:blockTankSide", "y":0   },
+            	"w":{ "model":"enderio:blockTankSide", "y":90  },
+            	"n":{ "model":"enderio:blockTankSide", "y":180 },
+            	"o":{ "model":"enderio:blockTankSide", "y":270 },
+            	"t":{ "model":"enderio:blockTankTopBottom"     } 
+            } },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:blockTankGlass" } } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:null" } } }
         },
         "kind":{
             "normal":{},

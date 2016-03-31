@@ -31,6 +31,8 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -172,7 +174,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
     if (slotDefinition.isUpgradeSlot(i)) {
-      return itemstack != null && itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0;
+      final ICapacitorData capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(itemstack);
+      return itemstack != null && ((itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0) || capacitorData != null); // TODO level
+                                                                                                                                                   // check
     }
     return isMachineItemValidForSlot(i, itemstack);
   }

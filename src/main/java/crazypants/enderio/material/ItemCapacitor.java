@@ -2,15 +2,6 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.ICapacitorItem;
-import crazypants.util.ClientUtil;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +13,20 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemCapacitor extends Item implements ICapacitorItem {
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.ICapacitorData;
+import crazypants.enderio.capacitor.ICapacitorDataItem;
+import crazypants.enderio.power.DefaultCapacitor;
+import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.ICapacitorItem;
+import crazypants.util.ClientUtil;
+
+public class ItemCapacitor extends Item implements ICapacitorItem, ICapacitorDataItem {
 
 //  private static final BasicCapacitor CAP = new BasicCapacitor();
 
@@ -46,37 +50,40 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
 
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    List<ResourceLocation> names = Capacitors.resources();    
-    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[names.size()]));    
-    for (Capacitors c : Capacitors.values()) {
-      ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
-    }     
+    final ResourceLocation[] resourceLocations = DefaultCapacitorData.getResourceLocations();
+    ModelBakery.registerItemVariants(this, resourceLocations);
+    for (int i = 0; i < resourceLocations.length; i++) {
+      ClientUtil.regRenderer(this, i, resourceLocations[i]);
+    }
   }
   
   @Override
-  public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length - 1);
-    return Capacitors.values()[i].unlocalisedName;
+  public String getUnlocalizedName(ItemStack stack) {
+    return getCapacitorData(stack).getUnlocalizedName();
   }
 
   @Override  
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-    for (int j = 0; j < Capacitors.values().length; ++j) {
+    for (int j = 0; j < DefaultCapacitorData.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }
 
   @Override
+  public int getMetadata(ItemStack stack) {
+    return MathHelper.clamp_int(stack != null ? stack.getItemDamage() : 0, 0, DefaultCapacitorData.values().length - 1);
+  }
+
+  @Override
   public ICapacitor getCapacitor(ItemStack stack) {
-    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, Capacitors.values().length - 1);
-    return Capacitors.values()[damage].capacitor;
+    return new DefaultCapacitor(getCapacitorData(stack));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-    if(par1ItemStack != null && par1ItemStack.getItemDamage() > 0) {
+  public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
+    if (getMetadata(stack) > 0) {
       par3List.add(EnderIO.lang.localize("machine.tooltip.upgrade"));
       if(SpecialTooltipHandler.showAdvancedTooltips()) {
         SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
@@ -85,6 +92,11 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
       }
     }
 
+  }
+
+  @Override
+  public ICapacitorData getCapacitorData(ItemStack stack) {
+    return DefaultCapacitorData.values()[getMetadata(stack)];
   }
 
 }

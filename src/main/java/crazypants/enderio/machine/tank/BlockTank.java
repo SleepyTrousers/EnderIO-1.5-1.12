@@ -31,7 +31,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -212,7 +211,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return RenderMappers.FRONT_MAPPER;
+    return TankItemRenderMapper.instance;
   }
 
   @Override

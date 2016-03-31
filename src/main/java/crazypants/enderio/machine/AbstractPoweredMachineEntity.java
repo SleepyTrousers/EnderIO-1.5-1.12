@@ -8,6 +8,8 @@ import net.minecraft.util.MathHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -17,7 +19,10 @@ import crazypants.enderio.power.PowerHandlerUtil;
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
+  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR; // WIP
+  @Deprecated
   private Capacitors capacitorType;
+  @Deprecated
   private ICapacitor capacitor;
 
   private int storedEnergyRF;
@@ -90,10 +95,12 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     return storedEnergyRF > 0;
   }
 
+  @Deprecated
   public Capacitors getCapacitorType() {
     return capacitorType;
   }
 
+  @Deprecated
   public ICapacitor getCapacitor() {
     return capacitor != null ? capacitor : capacitorType.capacitor;
   }
@@ -103,12 +110,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     return VecmathUtil.clamp(Math.round(scale * ((float) storedEnergyRF / getMaxEnergyStored())), 0, scale);
   }
 
+  @Deprecated
   protected void setCapacitor(ICapacitor capacitor) {
     this.capacitor = capacitor;
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
   }
 
+  @Deprecated
   public void setCapacitor(Capacitors capacitorType) {
     this.capacitorType = capacitorType;
     this.capacitor = null;

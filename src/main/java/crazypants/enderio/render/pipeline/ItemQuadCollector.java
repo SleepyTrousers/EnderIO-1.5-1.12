@@ -18,6 +18,15 @@ import net.minecraft.util.EnumFacing;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+/**
+ * This class can hold all quads a backed item model needs. It can collect them from multiple source, including other ItemQuadCollectors.
+ * <p>
+ * <em>Details</em>
+ * <p>
+ * <strong>allFacesToGeneral</strong> - If allFacesToGeneral is set to true, all collected quads will be added to the list of "general" quads. This is needed if
+ * the order in which the quads are being rendered is important, e.g. because there are overlaying translucent textures.
+ *
+ */
 public class ItemQuadCollector {
 
   @SuppressWarnings("unchecked")
@@ -93,13 +102,17 @@ public class ItemQuadCollector {
   }
 
   public void addBlockState(IBlockState state, ItemStack stack) {
+    addBlockState(state, stack, false);
+  }
+
+  public void addBlockState(IBlockState state, ItemStack stack, boolean allFacesToGeneral) {
     if (state != null) {
       if (stack == null) {
         stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
       }
       BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
       IBakedModel model = modelShapes.getModelForState(state);
-      addBakedModel(model, stack);
+      addBakedModel(model, stack, allFacesToGeneral);
     }
   }
 
@@ -119,6 +132,10 @@ public class ItemQuadCollector {
   }
 
   public void addBakedModel(IBakedModel model, ItemStack stack) {
+    addBakedModel(model, stack, false);
+  }
+
+  public void addBakedModel(IBakedModel model, ItemStack stack, boolean allFacesToGeneral) {
     if (model instanceof net.minecraftforge.client.model.ISmartItemModel) {
       model = ((net.minecraftforge.client.model.ISmartItemModel) model).handleItemState(stack);
     }
@@ -126,10 +143,14 @@ public class ItemQuadCollector {
     if (model == null) {
       model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel();
     }
-    addItemBakedModel(model);
+    addItemBakedModel(model, allFacesToGeneral);
   }
 
   public void addItemBakedModel(IBakedModel model) {
+    addItemBakedModel(model, false);
+  }
+
+  public void addItemBakedModel(IBakedModel model, boolean allFacesToGeneral) {
     List<BakedQuad> generalQuads = model.getGeneralQuads(); // model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
     if (generalQuads != null && !generalQuads.isEmpty()) {
       addQuads(null, generalQuads);
@@ -137,7 +158,7 @@ public class ItemQuadCollector {
     for (EnumFacing face : EnumFacing.values()) {
       List<BakedQuad> faceQuads = model.getFaceQuads(face); // model.getQuads((IBlockState)null, face, 0L);
       if (faceQuads != null && !faceQuads.isEmpty()) {
-        addQuads(face, faceQuads);
+        addQuads(allFacesToGeneral ? null : face, faceQuads);
       }
     }
   }

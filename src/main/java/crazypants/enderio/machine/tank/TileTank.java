@@ -298,7 +298,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    boolean res = processItems(redstoneCheck);
+    processItems(redstoneCheck);
     int filledLevel = getFilledLevel();
     if(lastUpdateLevel != filledLevel) {
       lastUpdateLevel = filledLevel;
@@ -315,7 +315,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       }
       tankDirty = false;
     }
-    return res;
+    return false;
   }
   
   public int getComparatorOutput() {
