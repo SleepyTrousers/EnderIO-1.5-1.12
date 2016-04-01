@@ -156,12 +156,13 @@ public class DarkSteelController {
 
     ItemStack helm = player.getEquipmentInSlot(4);
     SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
-    if (upgrade == null) {
+    if (upgrade == null
+        || !player.worldObj.canBlockSeeSky(new BlockPos(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + player.eyeHeight + .25),
+            MathHelper.floor_double(player.posZ)))) {
       return;
     }
 
-    int RFperSecond = Math.round(upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj,
-        new BlockPos(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ))));
+    int RFperSecond = Math.round(upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj));
 
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;

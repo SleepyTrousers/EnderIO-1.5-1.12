@@ -2,12 +2,12 @@ package crazypants.enderio.machine.invpanel.client;
 
 import java.util.Locale;
 
-import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import crazypants.enderio.machine.invpanel.ItemEntryBase;
 
 public class ItemEntry extends ItemEntryBase {
   String name;
@@ -67,12 +67,13 @@ public class ItemEntry extends ItemEntryBase {
 
   private void findModId() {
     Item item = getItem();
-    GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
-    if (id != null && id.modId != null) {
-      modId = id.modId;
-    } else {
-      modId = "Unknown";
+    if (item != null) {
+      ResourceLocation resourceName = item.delegate.getResourceName();
+      if (resourceName != null) {
+        modId = resourceName.getResourceDomain();
+      }
     }
+    modId = "Unknown";
   }
 
 }

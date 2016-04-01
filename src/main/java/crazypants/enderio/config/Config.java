@@ -509,6 +509,9 @@ public final class Config {
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
+  public static boolean photovoltaicCanTypesJoins = true;
+  public static int photovoltaicRecalcSunTick = 100;
+
   public static int soundEntityID = 1490324;
   public static int rangeEntityID = 1490325;
   
@@ -664,6 +667,11 @@ public final class Config {
         "Maximum output in RF/t of the Advanced Photovoltaic Panels.").getInt(maxPhotovoltaicAdvancedOutputRF);
     maxPhotovoltaicVibrantOutputRF = config.get(sectionPower.name, "maxPhotovoltaicVibrantOutputRF", maxPhotovoltaicVibrantOutputRF,
         "Maximum output in RF/t of the Vibrant Photovoltaic Panels.").getInt(maxPhotovoltaicVibrantOutputRF);
+
+    photovoltaicCanTypesJoins = config.get(sectionPower.name, "photovoltaicCanTypesJoins", photovoltaicCanTypesJoins,
+        "When enabled Photovoltaic Panels of different kinds can join together as a multi-block").getBoolean(photovoltaicCanTypesJoins);
+    photovoltaicRecalcSunTick = config.get(sectionPower.name, "photovoltaicRecalcSunTick", photovoltaicRecalcSunTick,
+        "How often (in ticks) the Photovoltaic Panels should check the sun's angle.").getInt(photovoltaicRecalcSunTick);
 
     useAlternateBinderRecipe = config.get(sectionRecipe.name, "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);

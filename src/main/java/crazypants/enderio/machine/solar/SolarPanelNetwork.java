@@ -1,90 +1,129 @@
 package crazypants.enderio.machine.solar;
 
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import com.google.common.collect.Lists;
-
-import cofh.api.energy.EnergyStorage;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 
 public class SolarPanelNetwork {
 
-  private List<TileEntitySolarPanel> panels;
-  private boolean empty = true;
+  private Set<BlockPos> panels = new HashSet<BlockPos>();
+  private World world = null;
+  private boolean valid = false;
 
-  private EnergyStorage energy;
-
-  public static final int ENERGY_PER = 10000;
-
-  public static final EnumSet<EnumFacing> VALID_CONS = EnumSet.of(EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST);
+  private int energyMaxPerTick = 0;
+  private int energyAvailablePerTick = 0;
+  private int energyAvailableThisTick = 0;
+  private long lastTick = -1, nextCollectTick = Long.MAX_VALUE;
 
   public SolarPanelNetwork() {
-    panels = Lists.newArrayList();
-    energy = new EnergyStorage(ENERGY_PER);
+    this((World) null);
   }
 
-  SolarPanelNetwork(TileEntitySolarPanel initial) {
-    this();
-    panels.add(initial);
-    empty = false;
+  public SolarPanelNetwork(World world) {
+    this.world = world;
   }
 
-  void onUpdate(TileEntitySolarPanel panel) {
+  public SolarPanelNetwork(TileEntitySolarPanel panel) {
+    this.world = panel.getWorld();
+    this.valid = true;
   }
 
-  boolean addToNetwork(TileEntitySolarPanel panel) {
-    if(panel.network == this && panel.network.isValid() && panels.contains(panel)) {
-      return false;
+  void onUpdate(TileEntitySolarPanel panel, boolean force) {
+    if (valid && (force || !contains(panel))) {
+      panels.add(panel.getPos().getImmutable());
+      nextCollectTick = Long.MAX_VALUE;
+      cleanupMemberlist();
     }
+  }
 
-    if(panel.network == null || !panel.network.isValid() || panel.network == this) {
-      if (!panels.contains(panel)) {
-        panels.add(panel);
+  boolean contains(TileEntitySolarPanel panel) {
+    if (world == null) {
+      world = panel.getWorld();
+    }
+    return panels.contains(panel.getPos().getImmutable());
+  }
+
+  void cleanupMemberlist() {
+    if (!panels.isEmpty()) {
+      Iterator<BlockPos> iterator = panels.iterator();
+      Set<BlockPos> candidates = new HashSet<BlockPos>();
+      while (iterator.hasNext()) {
+        BlockPos panel = iterator.next();
+        if (world.isBlockLoaded(panel)) {
+          TileEntity tileEntity = world.getTileEntity(panel);
+          if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorldObj()) {
+            if (((TileEntitySolarPanel) tileEntity).network == this) {
+              for (EnumFacing neighborDir : EnumFacing.Plane.HORIZONTAL) {
+                final BlockPos neighbor = panel.offset(neighborDir);
+                if (!panels.contains(neighbor) && world.isBlockLoaded(neighbor)) {
+                  candidates.add(neighbor);
+                }
+              }
+              continue;
+            }
+          }
+        }
+        iterator.remove();
       }
-      panel.setNetwork(this);
-      updateEnergy();
-    } else {
-      SolarPanelNetwork other = panel.network;
-      for (TileEntitySolarPanel otherPanel : other.panels) {
-        panels.add(otherPanel);
-        otherPanel.setNetwork(this);
+      while (!candidates.isEmpty()) {
+        List<BlockPos> candidateList = new ArrayList<BlockPos>(candidates);
+        for (BlockPos candidate : candidateList) {
+          if (!panels.contains(candidate) && canConnect(candidate)) {
+            TileEntity tileEntity = world.getTileEntity(candidate);
+            if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorldObj()) {
+              panels.add(candidate.getImmutable());
+              final SolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
+              if (otherNetwork != this) {
+                ((TileEntitySolarPanel) tileEntity).setNetwork(this);
+                for (BlockPos other : otherNetwork.panels) {
+                  if (!panels.contains(other) && world.isBlockLoaded(other)) {
+                    candidates.add(other);
+                  }
+                }
+                otherNetwork.destroyNetwork();
+                for (EnumFacing neighborDir : EnumFacing.Plane.HORIZONTAL) {
+                  final BlockPos neighbor = candidate.offset(neighborDir);
+                  if (!panels.contains(neighbor) && world.isBlockLoaded(neighbor)) {
+                    candidates.add(neighbor);
+                  }
+                }
+              }
+            }
+          }
+          candidates.remove(candidate);
+        }
       }
-      updateEnergy();
-      this.energy.setEnergyStored(energy.getEnergyStored() + other.energy.getEnergyStored());
-      other.invalidate();
     }
-
-    empty = false;
-    return true;
   }
 
-  void removeFromNetwork(TileEntitySolarPanel panel) {
-    // build list of formerly connected neighbors
-    List<TileEntitySolarPanel> neighbors = Lists.newArrayList();
-    for (EnumFacing dir : VALID_CONS) {
-      TileEntity te = panel.getLocation().getLocation(dir).getTileEntity(panel.getWorld());
-      if(te != null && te instanceof TileEntitySolarPanel) {
-        neighbors.add((TileEntitySolarPanel) te);
+  private boolean canConnect(BlockPos other) {
+    if (Config.photovoltaicCanTypesJoins || panels.isEmpty()) {
+      return true;
+    }
+    SolarType otherType = null;
+    IBlockState otherState = world.getBlockState(other);
+    if (otherState.getBlock() == EnderIO.blockSolarPanel) {
+      otherType = otherState.getValue(SolarType.KIND);
+    }
+    for (BlockPos panel : panels) {
+      if (world.isBlockLoaded(panel)) {
+        IBlockState state = world.getBlockState(panel);
+        if (state.getBlock() == EnderIO.blockSolarPanel) {
+          return state.getValue(SolarType.KIND) == otherType;
+        }
       }
     }
-
-    // distribute power from split networks evenly to neighbors
-    for (TileEntitySolarPanel te : neighbors) {
-      int dist = energy.getEnergyStored() / neighbors.size();
-      te.destroyedNetworkBuffer = new EnergyStorage(dist);
-      te.destroyedNetworkBuffer.setEnergyStored(dist);
-    }
-
-    // allow solars to reform networks
-    destroyNetwork();
-  }
-
-  private void updateEnergy() {
-    energy.setCapacity(ENERGY_PER * panels.size());
-    energy.setMaxExtract(energy.getMaxEnergyStored());
+    return false;
   }
 
   /**
@@ -92,73 +131,68 @@ public class SolarPanelNetwork {
    * network for each panel on this current one.
    */
   void destroyNetwork() {
-    for (TileEntitySolarPanel te : panels) {
-      te.setNetwork(new SolarPanelNetwork());
+    for (BlockPos panel : panels) {
+      if (world.isBlockLoaded(panel)) {
+        TileEntity tileEntity = world.getTileEntity(panel);
+        if (tileEntity instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) tileEntity).network == this) {
+          ((TileEntitySolarPanel) tileEntity).setNetwork(new SolarPanelNetwork(world));
+        }
+      }
     }
-    invalidate();
-  }
-
-  /**
-   * Does nothing but clear this network, other panels may still hold a
-   * reference to this network.
-   */
-  private void invalidate() {
     panels.clear();
-    empty = true;
+    valid = false;
   }
 
   public boolean isValid() {
-    return !empty;
+    return valid;
   }
 
-  public int extractEnergy(int maxExtract, boolean simulate) {
-    return isValid() ? energy.extractEnergy(maxExtract, simulate) : 0;
-  }
+  private int rfMax = -1;
 
-  public int getEnergyStored() {
-    return energy.getEnergyStored();
-  }
-
-  public int setEnergyStored(int energy) {
-    if(isValid()) {
-      this.energy.setEnergyStored(energy);
-    }
-    return this.energy.getEnergyStored();
-  }
-
-  public int getMaxEnergyStored() {
-    return energy.getMaxEnergyStored();
-  }
-
-  public int getMaxEnergyExtracted() {
-    return energy.getMaxExtract();
-  }
-
-  public void addBuffer(EnergyStorage destroyedNetworkBuffer) {
-    energy.receiveEnergy(destroyedNetworkBuffer.getEnergyStored(), false);
-  }
-
-  TileEntitySolarPanel getMaster() {
-    return panels.get(0);
-  }
-
-  boolean shouldSave(TileEntitySolarPanel panel) {
-    return getMaster() == panel;
-  }
-
-  public int size() {
-    return panels.size();
-  }
-
-  void writeToNBT(NBTTagCompound tag) {
-    tag.setBoolean("validSolar", true);
-    energy.writeToNBT(tag);
-  }
-
-  void readFromNBT(TileEntitySolarPanel panel, NBTTagCompound tag) {
-    if(tag.getBoolean("validSolar")) {
-      energy.readFromNBT(tag);
-      addToNetwork(panel);
+  private void updateEnergy() {
+    long tick = EnderIO.proxy.getTickCount();
+    if (tick != lastTick && world != null) {
+      lastTick = tick;
+      if (tick < nextCollectTick) {
+        nextCollectTick = tick + Config.photovoltaicRecalcSunTick;
+        energyMaxPerTick = energyAvailablePerTick = 0;
+        float lightRatio = TileEntitySolarPanel.calculateLightRatio(world);
+        for (BlockPos panel : panels) {
+          if (world.isBlockLoaded(panel)) {
+            TileEntity tileEntity = world.getTileEntity(panel);
+            if (tileEntity instanceof TileEntitySolarPanel) {
+              if (rfMax < 0 || Config.photovoltaicCanTypesJoins) {
+                rfMax = ((TileEntitySolarPanel) tileEntity).getEnergyPerTick();
+              }
+              energyMaxPerTick += rfMax;
+              if (((TileEntitySolarPanel) tileEntity).canSeeSun()) {
+                energyAvailablePerTick += rfMax * lightRatio;
+              }
+            }
+          }
+        }
+      }
+      energyAvailableThisTick = energyAvailablePerTick;
     }
   }
+
+  public void extractEnergy(int maxExtract) {
+    energyAvailableThisTick = Math.max(energyAvailableThisTick - maxExtract, 0);
+  }
+
+  public int getEnergyAvailableThisTick() {
+    updateEnergy();
+    return energyAvailableThisTick;
+  }
+
+  public int getEnergyAvailablePerTick() {
+    updateEnergy();
+    return energyAvailablePerTick;
+  }
+
+  public int getEnergyMaxPerTick() {
+    updateEnergy();
+    return energyMaxPerTick;
+  }
+
 }

@@ -11,6 +11,7 @@ import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.render.ConnectedBlockRenderMapper;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -49,7 +50,8 @@ public class SolarBlockRenderMapper extends ConnectedBlockRenderMapper {
 
   @Override
   protected boolean isSameKind(IBlockState state, IBlockState other) {
-    return state.getBlock() == other.getBlock() && state.getValue(SolarType.KIND).connectTo(other.getValue(SolarType.KIND));
+    return state.getBlock() == other.getBlock()
+        && (Config.photovoltaicCanTypesJoins || state.getValue(SolarType.KIND).connectTo(other.getValue(SolarType.KIND)));
   }
 
   @Override

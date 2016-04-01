@@ -5,8 +5,6 @@ import java.util.List;
 import javax.vecmath.Matrix4f;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -59,7 +57,7 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
 
   @SuppressWarnings("deprecation")
   @Override
-  public ItemCameraTransforms getItemCameraTransforms() {
+  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
     return parent.getItemCameraTransforms();
   }
 
@@ -70,7 +68,8 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
 
   @SuppressWarnings("deprecation")
   @Override
-  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(
+      net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
     if (parent instanceof IPerspectiveAwareModel) {
       Pair<? extends IFlexibleBakedModel, Matrix4f> perspective = ((IPerspectiveAwareModel) parent).handlePerspective(cameraTransformType);
       return Pair.of(this, perspective.getRight());

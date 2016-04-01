@@ -1,35 +1,37 @@
 package crazypants.enderio.jei;
 
+import javax.annotation.Nonnull;
+
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 public class BaseRecipeHandler<T extends IRecipeWrapper> implements IRecipeHandler<T> {
 
-  private final Class<T> clazz;
-  private final String uid;
+  private final @Nonnull Class<T> clazz;
+  private final @Nonnull String uid;
   
-  public BaseRecipeHandler(Class<T> clazz, String uid) {  
+  public BaseRecipeHandler(@Nonnull Class<T> clazz, @Nonnull String uid) {
     this.clazz = clazz;
     this.uid = uid;
   }
 
   @Override
-  public Class<T> getRecipeClass() {
+  public @Nonnull Class<T> getRecipeClass() {
     return clazz;
   }
 
   @Override
-  public String getRecipeCategoryUid() {
+  public @Nonnull String getRecipeCategoryUid() {
     return uid;
   }
 
   @Override
-  public IRecipeWrapper getRecipeWrapper(T recipe) {
+  public @Nonnull IRecipeWrapper getRecipeWrapper(@Nonnull T recipe) {
     return recipe;
   }
   
   @Override
-  public boolean isRecipeValid(T recipe) {
+  public boolean isRecipeValid(@Nonnull T recipe) {
     return true;
   }
 

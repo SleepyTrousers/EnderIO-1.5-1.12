@@ -3,7 +3,6 @@ package crazypants.enderio.item.darksteel.upgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,7 +42,7 @@ public class SolarUpgradeLayer implements IRenderUpgrade {
         .getMinecraft()
         .getItemRenderer()
         .renderItem(entitylivingbaseIn, new ItemStack(EnderIO.blockSolarPanel, 1, SolarUpgrade.loadFromItem(piece).getLevel() - 1),
-            ItemCameraTransforms.TransformType.HEAD);
+            net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.HEAD);
 
     GlStateManager.popMatrix();
   }

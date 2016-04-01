@@ -5,12 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
-import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -25,7 +19,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
+import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
 
@@ -133,14 +133,18 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
     List<?> inputs = recipeWrapper.getInputs();
     int slot = 2;
     for(Object input : inputs) {
-      guiItemStacks.setFromRecipe(slot, input);
+      if (input != null) {
+        guiItemStacks.setFromRecipe(slot, input);
+      }
       ++slot;
     }    
     Object output = recipeWrapper.getOutputs().get(0);
-    guiItemStacks.setFromRecipe(8, output);    
+    if (output != null) {
+      guiItemStacks.setFromRecipe(8, output);
+    }
   }
   
-  private List<ItemStack> getAxes() {
+  private @Nonnull List<ItemStack> getAxes() {
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(new ItemStack(Items.wooden_axe));
     res.add(new ItemStack(Items.iron_axe));
@@ -150,7 +154,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
     return res;
   }
   
-  private List<ItemStack> getShears() {
+  private @Nonnull List<ItemStack> getShears() {
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(new ItemStack(Items.shears));    
     res.add(new ItemStack(DarkSteelItems.itemDarkSteelShears));

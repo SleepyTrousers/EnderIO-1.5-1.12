@@ -8,15 +8,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.render.RenderUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.vat.GuiVat;
-import crazypants.enderio.machine.vat.VatRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -31,9 +22,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.vat.GuiVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
+
 public class VatRecipeCategory extends BlankRecipeCategory {
 
-  public static final String UID = "Vat";
+  public static final @Nonnull String UID = "Vat";
 
   // Offsets from full size gui, makes it much easier to get the location
   // correct
@@ -108,8 +109,9 @@ public class VatRecipeCategory extends BlankRecipeCategory {
       currentIngredients = ings;
     }
 
+    @SuppressWarnings("null")
     @Override
-    public List<FluidStack> getFluidInputs() {
+    public @Nonnull List<FluidStack> getFluidInputs() {
       return Collections.singletonList(inputFl);
     }
 
@@ -132,7 +134,7 @@ public class VatRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeHandlers(new BaseRecipeHandler<VatRecipeWrapper>(VatRecipeWrapper.class, VatRecipeCategory.UID) {
 
       @Override
-      public boolean isRecipeValid(VatRecipeWrapper recipe) {
+      public boolean isRecipeValid(@Nonnull VatRecipeWrapper recipe) {
         return recipe.isValid();
       }
 
@@ -159,22 +161,23 @@ public class VatRecipeCategory extends BlankRecipeCategory {
   }
 
   @Override
-  public String getUid() {
+  public @Nonnull String getUid() {
     return UID;
   }
 
+  @SuppressWarnings("null")
   @Override
-  public String getTitle() {
+  public @Nonnull String getTitle() {
     return EnderIO.blockVat.getLocalizedName();
   }
 
   @Override
-  public IDrawable getBackground() {
+  public @Nonnull IDrawable getBackground() {
     return background;
   }
 
   @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
 
     if (recipeWrapper instanceof VatRecipeWrapper) {
       currentRecipe = (VatRecipeWrapper) recipeWrapper;

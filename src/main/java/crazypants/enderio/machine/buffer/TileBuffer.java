@@ -189,6 +189,11 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
     return hasPower;
   }
 
+  @Override
+  public boolean displayPower() {
+    return hasPower;
+  }
+
   public void setHasPower(boolean hasPower) {
     this.hasPower = hasPower;
   }

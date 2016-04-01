@@ -1,13 +1,15 @@
 package crazypants.enderio.jei;
 
+import javax.annotation.Nonnull;
+
 public class RecipeHandler<T extends RecipeWrapper> extends  BaseRecipeHandler<T> {
 
-  public RecipeHandler(Class<T> clazz, String uid) { 
+  public RecipeHandler(@Nonnull Class<T> clazz, @Nonnull String uid) {
     super(clazz, uid);    
   }
 
   @Override
-  public boolean isRecipeValid(T recipe) {
+  public boolean isRecipeValid(@Nonnull T recipe) {
     return recipe.isValid();
   }
 

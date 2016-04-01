@@ -3,7 +3,6 @@ package crazypants.enderio.machine.solar;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -119,14 +118,6 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   @Override
   public int damageDropped(IBlockState bs) {
     return getMetaFromState(bs);
-  }
-
-  @Override
-  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-    TileEntity te = world.getTileEntity(pos);
-    if(te instanceof TileEntitySolarPanel) {
-      ((TileEntitySolarPanel) te).onNeighborBlockChange();
-    }
   }
 
   @Override

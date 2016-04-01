@@ -7,7 +7,6 @@ import javax.vecmath.Matrix4f;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -111,7 +110,8 @@ public class RelayingBakedModel implements ISmartBlockModel, ISmartItemModel, IP
 
   @SuppressWarnings("deprecation")
   @Override
-  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(
+      net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
     if (getDefaults() instanceof IPerspectiveAwareModel) {
       Pair<? extends IFlexibleBakedModel, Matrix4f> perspective = ((IPerspectiveAwareModel) getDefaults()).handlePerspective(cameraTransformType);
       return Pair.of(this, perspective.getRight());

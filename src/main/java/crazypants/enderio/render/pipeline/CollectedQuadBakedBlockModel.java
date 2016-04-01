@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.util.EnumFacing;
@@ -56,8 +55,8 @@ public class CollectedQuadBakedBlockModel implements IBakedModel {
 
   @SuppressWarnings("deprecation")
   @Override
-  public ItemCameraTransforms getItemCameraTransforms() {
-    return ItemCameraTransforms.DEFAULT;
+  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
+    return net.minecraft.client.renderer.block.model.ItemCameraTransforms.DEFAULT;
   }
 
 }

@@ -6,11 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.enchanter.EnchanterRecipe;
-import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.enchanter.GuiEnchanter;
-import crazypants.enderio.machine.enchanter.TileEnchanter;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -27,11 +22,16 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.machine.enchanter.EnchanterRecipe;
+import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
+import crazypants.enderio.machine.enchanter.GuiEnchanter;
+import crazypants.enderio.machine.enchanter.TileEnchanter;
 
 public class EnchanterRecipeCategory extends BlankRecipeCategory {
 
-  public static final String UID = "Enchanter";
+  public static final @Nonnull String UID = "Enchanter";
 
   // ------------ Recipes
 
@@ -75,7 +75,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     }
     
     @Override
-    public List<?> getInputs() {      
+    public @Nonnull List<?> getInputs() {
       List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
       List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
       getItemStacks(rec, itemInputs, itemOutputs);
@@ -84,7 +84,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     }
 
     @Override
-    public List<?> getOutputs() {      
+    public @Nonnull List<?> getOutputs() {
       List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
       List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
       getItemStacks(rec, itemInputs, itemOutputs);
@@ -99,7 +99,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeHandlers(new BaseRecipeHandler<EnchanterRecipeWrapper>(EnchanterRecipeWrapper.class, EnchanterRecipeCategory.UID) {
 
       @Override
-      public boolean isRecipeValid(EnchanterRecipeWrapper recipe) {
+      public boolean isRecipeValid(@Nonnull EnchanterRecipeWrapper recipe) {
         return recipe.isValid();
       }
 
@@ -133,22 +133,23 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
   }
 
   @Override
-  public String getUid() {
+  public @Nonnull String getUid() {
     return UID;
   }
 
+  @SuppressWarnings("null")
   @Override
-  public String getTitle() {
+  public @Nonnull String getTitle() {
     return EnderIO.blockEnchanter.getLocalizedName();
   }
 
   @Override
-  public IDrawable getBackground() {
+  public @Nonnull IDrawable getBackground() {
     return background;
   }
 
   @Override
-  public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
 
     if (recipeWrapper instanceof EnchanterRecipeWrapper) {
       currentRecipe = (EnchanterRecipeWrapper) recipeWrapper;
