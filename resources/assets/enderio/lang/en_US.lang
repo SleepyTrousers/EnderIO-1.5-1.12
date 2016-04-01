@@ -1,7 +1,7 @@
 //***  Ender IO *****//
 
 //Power
-enderio.power.rf=Endergy
+enderio.power.rf=RF
 enderio.power.tmb=t/mB
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
@@ -9,13 +9,13 @@ enderio.power.maxOutput=Max Output
 enderio.power.generates=Generates {0} {1} at {2} {3}{4}
 
 //Ender IO / Enderface
-tile.blockEnderIo.name=Endergy IO
+tile.blockEnderIo.name=Ender IO
 tile.blockEnderIo.tooltip.detailed.line1=Allow remote access to nearby
 tile.blockEnderIo.tooltip.detailed.line2=blocks
 tile.blockEnderIo.tooltip.detailed.line3=Used with Travel Anchors or
 tile.blockEnderIo.tooltip.detailed.line4=the Staff of Travel
 
-item.enderio.itemEnderface.name=Endergyface
+item.enderio.itemEnderface.name=Enderface
 
 //Conduits
 enderio.blockConduitBundle=Conduit Bundle
@@ -29,9 +29,9 @@ item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or co
 item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
 item.enderio.itemConduitFacade.hardened.tooltip=Hardened: Resists breaking and explosions
 
-enderio.itemPowerConduit.name=Endergy Conduit
-enderio.itemPowerConduitEnhanced.name=Enhanced Endergy Conduit
-enderio.itemPowerConduitEnder.name=Ender Endergy Conduit
+enderio.itemPowerConduit.name=Energy Conduit
+enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
+enderio.itemPowerConduitEnder.name=Ender Energy Conduit
 
 enderio.itemRedstoneConduit.name=Redstone Conduit
 enderio.itemRedstoneConduitSwitch.name=Conduit Switch
@@ -96,8 +96,8 @@ item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
 item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
 item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
 
-item.itemInventoryPanelUpgrade.name=Remote Endergy Upgrade
-item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Endergy
+item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
 item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
 item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
 item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
@@ -118,20 +118,20 @@ enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
 enderio.itemOCConduit.name=Network Conduit (OC)
 
 //display string for Skeleton(type==1)
-entity.witherSkeleton.name=Endergy Skeleton
+entity.witherSkeleton.name=Wither Skeleton
 
 //Materials
 enderio.itemMaterial.name=Materials
 enderio.silicon.name=Silicon
-enderio.conduitBinder.name=Endergy Binder
-enderio.binderComposite.name=Endergy Composite
-enderio.pulsatingIronNugget.name=Pulsating Endergy Nugget
-tile.blockDarkIronBars.name=Dark Endergy Bars
-tile.blockEndermanSkull.name=Endergy Skull
-tile.blockEndermanSkull.base.name=Endergy Head
-tile.blockEndermanSkull.reanimated.name=Reanimated Endergy Head
-tile.blockEndermanSkull.tormented.name=Tormented Endergy Head
-enderio.blastResistant=Endergy Resistant
+enderio.conduitBinder.name=Conduit Binder
+enderio.binderComposite.name=Binder Composite
+enderio.pulsatingIronNugget.name=Pulsating Iron Nugget
+tile.blockDarkIronBars.name=Dark Iron Bars
+tile.blockEndermanSkull.name=Enderman Skull
+tile.blockEndermanSkull.base.name=Enderman Head
+tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
+tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
+enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
@@ -145,9 +145,9 @@ enderio.itemEnderios.tooltip.detailed.line3=Side effects of ender dust include: 
 enderio.itemEnderios.tooltip.detailed.line4=and random teleporting.
 
 //Fluids
-fluid.nutrient_distillation=Nutrient Endergy
-tile.fluid.nutrient_distillation.name=Nutrient Endergy
-item.bucketNutrient_distillation.name=Nutrient Endergy Bucket
+fluid.nutrient_distillation=Nutrient Distillation
+tile.fluid.nutrient_distillation.name=Nutrient Distillation
+item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 
 fluid.hootch=Hootch
 tile.fluid.hootch.name=Hootch
@@ -187,15 +187,15 @@ enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
 enderio.gas.gasTick=Gas/t
 
 //Materials
-enderio.itemMachinePart.name=Endergy Parts
-enderio.machineChassi.name=Endergy Chassis
-enderio.basicGear.name=Basic Endergy
+enderio.itemMachinePart.name=Machine Parts
+enderio.machineChassi.name=Machine Chassis
+enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
-enderio.enderCrystal.name=Endergy Crystal
+enderio.enderCrystal.name=Ender Crystal
 enderio.attractorCrystal.name=Enticing Crystal
 enderio.weatherCrystal.name=Weather Crystal
-enderio.darkGrindingBall.name=Dark Endergy Ball
+enderio.darkGrindingBall.name=Dark Steel Ball
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
 enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
@@ -210,34 +210,34 @@ enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
 enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
 enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
-enderio.blockFusedQuartz.darkFusedQuartz.name=Endergy Fused Quartz
-enderio.blockFusedQuartz.darkFusedGlass.name=Endergy Clear Glass
+enderio.blockFusedQuartz.darkFusedQuartz.name=Dark Fused Quartz
+enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
 
 item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
 
 //Alloys
 enderio.itemAlloy.name=Alloy
-enderio.electricalSteel.name=Electrical Endergy
-enderio.energeticAlloy.name=Energetic Endergy
-enderio.vibrantAlloy.name=Vibrant Endergy
-enderio.redstoneAlloy.name=Redstone Endergy
-enderio.conductiveIron.name=Conductive Endergy
-enderio.pulsatingIron.name=Pulsating Endergy
-enderio.vibrantNugget.name=Vibrant Endergy Nugget
-enderio.darkSteel.name=Dark Endergy
-enderio.soularium.name=Soul Endergy
+enderio.electricalSteel.name=Electrical Steel
+enderio.energeticAlloy.name=Energetic Alloy
+enderio.vibrantAlloy.name=Vibrant Alloy
+enderio.redstoneAlloy.name=Redstone Alloy
+enderio.conductiveIron.name=Conductive Iron
+enderio.pulsatingIron.name=Pulsating Iron
+enderio.vibrantNugget.name=Vibrant Alloy Nugget
+enderio.darkSteel.name=Dark Steel
+enderio.soularium.name=Soularium
 
 tile.blockIngotStorage.name=Ingot Storage
-tile.enderio.electricalSteel.name=Electrical Endergy Block
-tile.enderio.energeticAlloy.name=Energetic Endergy Block
-tile.enderio.vibrantAlloy.name=Vibrant Endergy Block
-tile.enderio.redstoneAlloy.name=Redstone Endergy Block
-tile.enderio.conductiveIron.name=Conductive Endergy Block
-tile.enderio.pulsatingIron.name=Pulsating Endergy Block
-tile.enderio.vibrantNugget.name=Vibrant Endergy Nugget Block
-tile.enderio.darkSteel.name=Dark Endergy Block
-tile.enderio.soularium.name=Soul Endergy Block
+tile.enderio.electricalSteel.name=Electrical Steel Block
+tile.enderio.energeticAlloy.name=Energetic Alloy Block
+tile.enderio.vibrantAlloy.name=Vibrant Alloy Block
+tile.enderio.redstoneAlloy.name=Redstone Alloy Block
+tile.enderio.conductiveIron.name=Conductive Iron Block
+tile.enderio.pulsatingIron.name=Pulsating Iron Block
+tile.enderio.vibrantNugget.name=Vibrant Nugget Block
+tile.enderio.darkSteel.name=Dark Steel Block
+tile.enderio.soularium.name=Soularium Block
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder
@@ -245,7 +245,7 @@ enderio.powderIron.name=Iron Powder
 enderio.powderGold.name=Gold Powder
 enderio.powderCopper.name=Copper Powder
 enderio.powderTin.name=Tin Powder
-enderio.powderEnder.name=Endergy Pearl Powder
+enderio.powderEnder.name=Ender Pearl Powder
 enderio.powderObsidian.name=Obsidian Powder
 enderio.ingotEnderiumBase.name=Enderium Base
 
@@ -256,7 +256,7 @@ enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases endergy storage and
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
 enderio.machine.tooltip.clearConfig=This will clear all stored info!
 
@@ -279,7 +279,7 @@ tile.blockAlloySmelter.tooltip.detailed.line1=Used to create EnderIO alloys
 tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
 tile.blockAlloySmelter.tooltip.detailed.line3=furnace
 tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase
-tile.blockAlloySmelter.tooltip.detailed.line5=speed and endergy storage
+tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
@@ -303,21 +303,21 @@ item.itemElectricLightInverted.tooltip.detailed.line3=Turn off with a redstone s
 
 item.itemLight.name=Light
 item.itemLight.tooltip.detailed.line1=Emits light with a
-item.itemLight.tooltip.detailed.line2=Endergy signal.
+item.itemLight.tooltip.detailed.line2=redstone signal.
 
 item.itemLightInverted.name=Light (Inverted)
 item.itemLightInverted.tooltip.detailed.line1=Emits light, disable with
-item.itemLightInverted.tooltip.detailed.line2=a Endergy signal.
+item.itemLightInverted.tooltip.detailed.line2=a redstone signal.
 
 item.itemWirelessLight.name=Wireless Powered Light
 item.itemWirelessLight.tooltip.detailed.line1=Lights a large area when supplied with
-item.itemWirelessLight.tooltip.detailed.line2=power and a Endergy signal.
+item.itemWirelessLight.tooltip.detailed.line2=power and a redstone signal.
 item.itemWirelessLight.tooltip.detailed.line3=Can receive power from wireless chargers.
 
 item.itemWirelessLightInverted.name=Wireless Powered Light (Inverted)
 item.itemWirelessLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
 item.itemWirelessLightInverted.tooltip.detailed.line2=power.
-item.itemWirelessLightInverted.tooltip.detailed.line3=Turn off with a Endergy signal.
+item.itemWirelessLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
 item.itemWirelessLightInverted.tooltip.detailed.line4=Can receive power from wireless chargers.
 
 tile.blockCapacitorBank.name=Capacitor Bank (Deprecated)
@@ -326,11 +326,11 @@ tile.blockCapacitorBank.tooltip.detailed.line1=Convert to new block by placing
 tile.blockCapacitorBank.tooltip.detailed.line2=in a crafting grid
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
-tile.blockCapBank.creative.name=Creative Endergy Bank
-tile.blockCapBank.simple.name=Basic Endergy Bank
-tile.blockCapBank.activated.name=Endergy Bank
-tile.blockCapBank.vibrant.name=Vibrant Endergy Bank
-tile.blockCapBank.tooltip.detailed.line1=Multi-block endergy storage.
+tile.blockCapBank.creative.name=Creative Capacitor Bank
+tile.blockCapBank.simple.name=Basic Capacitor Bank
+tile.blockCapBank.activated.name=Capacitor Bank
+tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
+tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
 tile.blockCapBank.tooltip.detailed.line4=to change information display
@@ -356,7 +356,7 @@ tile.blockSagMill.tooltip.detailed.line1=Grinds ore and other items
 tile.blockSagMill.tooltip.detailed.line2=Add grinding balls to increase output
 tile.blockSagMill.tooltip.detailed.line3=and efficiency
 tile.blockSagMill.tooltip.detailed.line4=Upgrade with capacitors to increase
-tile.blockSagMill.tooltip.detailed.line5=speed and endergy storage
+tile.blockSagMill.tooltip.detailed.line5=speed and energy storage
 tile.blockSagMill.tooltipPrefix=Contains
 
 tile.blockHyperCube.name=Dimensional Transceiver (Deprecated)
@@ -378,7 +378,7 @@ tile.blockEnderRail.tooltip.detailed.line6=of a wrench
 
 enderio.trans.showChannels=<Shift to show channels>
 
-enderio.trans.power=Endergy
+enderio.trans.power=Power
 enderio.trans.item=Item
 enderio.trans.fluid=Fluid
 enderio.trans.rail=Rail
@@ -386,7 +386,7 @@ enderio.trans.rail=Rail
 enderio.trans.receiving=Receiving
 enderio.trans.sending=Sending
 
-tile.blockPowerMonitor.name=Endergy Monitor
+tile.blockPowerMonitor.name=Power Monitor
 tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
 tile.blockPowerMonitor.tooltip.detailed.line2=storage
 tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone
@@ -395,14 +395,14 @@ tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
 tile.blockPowerMonitor.tooltip.detailed.line6=conduit
 
 tile.blockVat.name=The Vat
-tile.blockVat.tooltip.detailed.line1=Used to brew Endergy fluids
+tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
 
 tile.blockEnchanter.name=Enchanter
 tile.blockEnchanter.tooltip.detailed.line1=Uses XP to combine items
 tile.blockEnchanter.tooltip.detailed.line2=and a book and quill to
 tile.blockEnchanter.tooltip.detailed.line3=created enchanted books
 
-tile.blockCombustionGenerator.name=Endergy Generator
+tile.blockCombustionGenerator.name=Combustion Generator
 tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to generate power
 tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. water)
 tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
@@ -469,27 +469,27 @@ tile.blockCrafter.name=Crafter
 tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
 tile.blockCrafter.tooltip.detailed.line2=Consumes power per operation
 tile.blockCrafter.tooltip.detailed.line3=Can be upgraded to increase speed
-tile.blockCrafter.tooltip.detailed.line4=and endergy storage with capacitors
+tile.blockCrafter.tooltip.detailed.line4=and energy storage with capacitors
 
 tile.blockVacuumChest.name=Vacuum Chest
 tile.blockVacuumChest.tooltip.detailed.line1=Pulls nearby items
 tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
 
-tile.blockPoweredSpawner.name=Endergy Spawner
+tile.blockPoweredSpawner.name=Powered Spawner
 tile.blockPoweredSpawner.tooltip.empty=Empty
 enderio.tile.blockPoweredSpawner.tooltip.none=None
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
-tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with Endergy to
+tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
 tile.blockPoweredSpawner.tooltip.detailed.line2=activate
 tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
-tile.blockPoweredSpawner.tooltip.detailed.line4=speed and endergy storage
+tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
 
 item.itemBrokenSpawner.name=Broken Spawner
 item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
 item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
 
-tile.blockSoulBinder.name=Endergy Binder
+tile.blockSoulBinder.name=Soul Binder
 tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
 tile.blockSoulBinder.tooltip.detailed.line2=a broken spawner
 
@@ -518,11 +518,11 @@ tile.blockInhibitorObelisk.tooltip.detailed.line1=Prevents teleporting within
 tile.blockInhibitorObelisk.tooltip.detailed.line2=its area of effect
 
 tile.blockBuffer.item.name=Item Buffer
-tile.blockBuffer.power.name=Endergy Buffer
+tile.blockBuffer.power.name=Power Buffer
 tile.blockBuffer.omni.name=Omni Buffer
 tile.blockBuffer.creative.name=Creative Buffer
 
-tile.blockInventoryPanel.name=Endergy Panel
+tile.blockInventoryPanel.name=Inventory Panel
 tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
 tile.blockInventoryPanel.tooltip.detailed.line1=Allows remote access to inventories via
 tile.blockInventoryPanel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
@@ -668,14 +668,14 @@ tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line5=Can be tuned 
 
 enderio.tile.plockPaintedPressurePlate.tuned=Tuned to: %s
 
-tile.blockDarkSteelAnvil.intact.name=Dark Endergy Anvil
-tile.blockDarkSteelAnvil.slightlyDamaged.name=Slightly Damaged Dark Endergy Anvil
-tile.blockDarkSteelAnvil.veryDamaged.name=Very Damaged Dark Endergy Anvil
+tile.blockDarkSteelAnvil.intact.name=Dark Steel Anvil
+tile.blockDarkSteelAnvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
+tile.blockDarkSteelAnvil.veryDamaged.name=Very Damaged Dark Steel Anvil
 tile.blockDarkSteelAnvil.tooltip.common.line1=Damage Resistant
 tile.blockDarkSteelAnvil.tooltip.detailed.line1=Lasts much longer than
 tile.blockDarkSteelAnvil.tooltip.detailed.line2=the vanilla anvil
 
-tile.blockDarkSteelLadder.name=Dark Endergy Ladder
+tile.blockDarkSteelLadder.name=Dark Steel Ladder
 tile.blockDarkSteelLadder.tooltip.common.line1=Faster than regular ladders
 
 //Travel
@@ -696,7 +696,7 @@ tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
 tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
 enderio.gui.telepad.teleport=Teleport!
 
-item.itemTravelStaff.name=Staff of Endergy
+item.itemTravelStaff.name=Staff of Traveling
 item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
 item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be
 item.itemTravelStaff.tooltip.detailed.line3=activated by R-Click
@@ -704,7 +704,7 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
-item.itemCoordSelector.name=Endergy Selector
+item.itemCoordSelector.name=Coordinate Selector
 item.itemCoordSelector.tooltip.detailed.line1=Stores coordinates of a block.
 item.itemCoordSelector.tooltip.detailed.line2=Right click at block to select
 item.itemCoordSelector.tooltip.detailed.line3=the block adjacent on that side.
@@ -743,7 +743,7 @@ tile.blockPainter.tooltip.detailed.line5=Dark Steel Pressure Plates,
 tile.blockPainter.tooltip.detailed.line6=and many machines
 
 //Items
-item.itemYetaWrench.name=Endergy Wrench
+item.itemYetaWrench.name=Yeta Wrench
 item.itemYetaWrench.tooltip.detailed.line1=Hides conduit facades when held
 item.itemYetaWrench.tooltip.detailed.line2=Shift-R-Click to break machines
 item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
@@ -752,13 +752,13 @@ item.itemYetaWrench.tooltip.detailed.line5=open conduit settings GUI
 item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
 item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
 
-item.itemMagnet.name=Endergy Magnet
+item.itemMagnet.name=Electromagnet
 item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
 item.itemMagnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
 item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.tooltip.detailed.line4=hot bar (or a Baubles slot) to function
 
-item.enderio.itemConduitProbe.name=Endergy Probe
+item.enderio.itemConduitProbe.name=Conduit Probe
 item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit
 item.enderio.itemConduitProbe.tooltip.detailed.line2=to display details about its network
 item.enderio.itemConduitProbe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
@@ -766,7 +766,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles conn
 item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
 item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
 
-item.itemSoulVessel.name=Endergy Vial
+item.itemSoulVessel.name=Soul Vial
 enderio.item.itemSoulVessel.tooltip.health=Health:
 enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
 enderio.item.itemSoulVessel.tooltip.color=Color:
@@ -775,7 +775,7 @@ item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
 
-item.itemXpTransfer.name=Endergy Rod
+item.itemXpTransfer.name=Experience Rod
 item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing
 item.itemXpTransfer.tooltip.detailed.line2=liquid XP to gain levels
 item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
@@ -785,19 +785,19 @@ skullZombieElectrode.name=Zombie Electrode
 skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
-skullSentientEnder.name=Sentient Endergy
+skullSentientEnder.name=Sentient Ender
 
 item.itemSpawnEggEnderIO.name=Spawn
 
 //Dark Steel
-item.darkSteel_helmet.name=Endergy Helm
-item.darkSteel_chestplate.name=Endergy Plate
-item.darkSteel_leggings.name=Endergy Leggings
-item.darkSteel_boots.name=Endergy Boots
-item.darkSteel_sword.name=The Endergy
-item.darkSteel_pickaxe.name=Endergy Pick
-item.darkSteel_axe.name=Endergy Axe
-item.darkSteel_shears.name=Endergy Shears
+item.darkSteel_helmet.name=Dark Helm
+item.darkSteel_chestplate.name=Dark Plate
+item.darkSteel_leggings.name=Dark Leggings
+item.darkSteel_boots.name=Dark Boots
+item.darkSteel_sword.name=The Ender
+item.darkSteel_pickaxe.name=Dark Pick
+item.darkSteel_axe.name=Dark Axe
+item.darkSteel_shears.name=Dark Shears
 
 enderio.item.darkSteel.tooltip.lvs=lvs
 
@@ -934,13 +934,13 @@ enderio.gui.available=Available
 enderio.gui.disabled=Disabled
 enderio.gui.enabled=Enabled
 enderio.gui.max=Max:
-enderio.gui.progress=Endergy {0,number}%
+enderio.gui.progress=Progress {0,number}%
 enderio.gui.receive=Receive
 enderio.gui.send=Send
 enderio.gui.sendReceive=Send & Receive 
 
 //Redstone controls
-enderio.gui.tooltip.redstoneControlMode=Endergy Mode
+enderio.gui.tooltip.redstoneControlMode=Redstone Mode
 enderio.gui.tooltip.redstoneControlMode.ignore=Always active
 enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
@@ -988,7 +988,7 @@ enderio.gui.machine.side.down=Down
 
 
 //Power Monitor
-enderio.gui.powerMonitor.engineControl=Endergy Control
+enderio.gui.powerMonitor.engineControl=Engine Control
 enderio.gui.powerMonitor.emit=Emit
 enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
 enderio.gui.powerMonitor.engineSection2=than
@@ -997,7 +997,7 @@ enderio.gui.powerMonitor.engineSection4= Stop when storage greater than
 enderio.gui.powerMonitor.engineSection5=or equal to
 enderio.gui.powerMonitor.of=of
 enderio.gui.powerMonitor.monHeading1=Conduit Storage
-enderio.gui.powerMonitor.monHeading2=Endergy Bank Storage
+enderio.gui.powerMonitor.monHeading2=Capacitor Bank Storage
 enderio.gui.powerMonitor.monHeading3=Machine Buffers
 enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
 enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
@@ -1023,8 +1023,8 @@ enderio.gui.mjReader.receiveItem1=Can receive
 enderio.gui.mjReader.receiveItem2=from:
 
 //CapactorBank
-enderio.gui.capBank.inputRs=Input Endergy Mode
-enderio.gui.capBank.outputRs=Output Endergy Mode
+enderio.gui.capBank.inputRs=Input Redstone Mode
+enderio.gui.capBank.outputRs=Output Redstone Mode
 enderio.gui.capBank.maxIo=Max I/O
 enderio.gui.capBank.maxInput=Max Input
 enderio.gui.capBank.maxOutput=Max Output
@@ -1037,7 +1037,7 @@ enderio.gui.trans.privateChannel=Private Channel
 enderio.gui.trans.addChannel=Add Channel
 enderio.gui.trans.deleteChannel=Delete Channel
 enderio.gui.trans.activateChannel=Activate Channel
-enderio.gui.trans.powerMode=Endergy Mode
+enderio.gui.trans.powerMode=Power Mode
 enderio.gui.trans.fluidMode=Fluid Mode
 enderio.gui.trans.itemMode=Item Mode
 enderio.gui.trans.publicHeading=Public
@@ -1046,7 +1046,7 @@ enderio.gui.trans.privateHeading=Private
 //Alloy Smelter
 enderio.gui.alloy.mode.heading=Furnace Mode
 enderio.gui.alloy.mode.all=All Smelting
-enderio.gui.alloy.mode.alloy=Endergy Only
+enderio.gui.alloy.mode.alloy=Alloys Only
 enderio.gui.alloy.mode.furnace=Furnace Only
 
 //Vacuum chest
@@ -1068,7 +1068,7 @@ enderio.combustionGenerator.output=Generating:
 
 //Stirling Gen
 enderio.stirlingGenerator.output=Generating:
-enderio.stirlingGenerator.burnRate=Endergy Rate:
+enderio.stirlingGenerator.burnRate=Burn Rate:
 enderio.stirlingGenerator.upgradeslot=Upgrade slot
 enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
 enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
@@ -1086,8 +1086,8 @@ enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted tele
 enderio.gui.travelAccessable.skipObstructed=Skipped obstructed anchor.
 enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
 
-enderio.gui.telepad.configure.travel=Endergy Settings
-enderio.gui.telepad.configure.telepad=Endergy Settings
+enderio.gui.telepad.configure.travel=Travel Settings
+enderio.gui.telepad.configure.telepad=Telepad Settings
 enderio.gui.telepad.blocked=Teleport Blocked!
 
 //Spawn Gurad [sic]
@@ -1159,7 +1159,7 @@ enderio.gui.weather.requiredfluid=Required Fluid: %s mB
 enderio.weatherObelisk.fuelTank=Barometric Flux Tank
 
 //Enchants
-enchantment.soulBound=Endergybound
+enchantment.soulBound=Soulbound
 description.enchantment.enderio.soulBound=Prevents item from being lost on death
 
 //Configuration
@@ -1202,13 +1202,13 @@ enderio.config.magnet=Magnet Settings
 enderio.config.magnet.tooltip=How do they work?
 
 enderio.config.fluid=Fluid Settings
-enderio.config.fluid.tooltip=Pure liquid endergy!
+enderio.config.fluid.tooltip=Pure liquid energy!
 
 enderio.config.spawner=PoweredSpawner Settings
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
 //Keybinds/Waila/NEI/Tooltips
-enderio.category.darksteelarmor=Dark Endergy Armor
+enderio.category.darksteelarmor=Dark Steel Armor
 enderio.category.tools=Tools
 enderio.keybind.glidertoggle=Glider Toggle
 enderio.keybind.gogglesofrevealing=Goggles of Revealing
@@ -1217,14 +1217,14 @@ enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.speed=Speed
 enderio.keybind.jump=Jump
 enderio.keybind.stepassist=Step Assist
-enderio.keybind.yetawrenchmode=Endergy Wrench Mode
-enderio.keybind.magnet=Toggle Endergy Magnet
+enderio.keybind.yetawrenchmode=Yeta Wrench Mode
+enderio.keybind.magnet=Toggle Electromagnet
 enderio.nei.alloysmelter=Alloy Smelter
 enderio.nei.enchanter=Enchanter
 enderio.nei.sagmill=SAG Mill
 enderio.nei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
 enderio.nei.slicensplice=Slice'N'Splice
-enderio.nei.soulbinder=Endergy Binder
+enderio.nei.soulbinder=Soul Binder
 enderio.nei.vat=Vat
 enderio.tooltip.burntime=Burn Time: {0,number}
 enderio.tooltip.oredict=Ore Dictionary:
