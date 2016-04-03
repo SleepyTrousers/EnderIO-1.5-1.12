@@ -15,6 +15,9 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
+
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
   private boolean hasPower, hasInventory, isCreative;
@@ -25,7 +28,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   private int maxIn = maxOut;
 
   public TileBuffer() {
-    super(new SlotDefinition(9, 0, 0));
+    super(new SlotDefinition(9, 0, 0), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, null);
   }
 
   @Override

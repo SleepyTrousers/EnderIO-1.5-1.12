@@ -3,7 +3,7 @@ package crazypants.enderio.capacitor;
 import java.util.Locale;
 
 public enum CapacitorKeyType {
-  BUFFER,
+  ENERGY_BUFFER,
   ENERGY_INTAKE,
   ENERGY_USE,
   SPEED,

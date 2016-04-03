@@ -1,13 +1,25 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.util.EnumFacing;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
-import net.minecraft.util.EnumFacing;
 
 public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements IInternalPowerReceiver {
 
-  public AbstractPowerConsumerEntity(SlotDefinition slotDefinition) {
+  @Deprecated
+  protected AbstractPowerConsumerEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
+  }
+
+  protected AbstractPowerConsumerEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored,
+      ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
+  protected AbstractPowerConsumerEntity(SlotDefinition slotDefinition, ModObject modObject) {
+    super(slotDefinition, modObject);
   }
 
   @Override

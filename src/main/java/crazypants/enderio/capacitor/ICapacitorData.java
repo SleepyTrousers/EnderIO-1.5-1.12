@@ -2,7 +2,9 @@ package crazypants.enderio.capacitor;
 
 public interface ICapacitorData {
 
-  float getUnscaledValue(CapacitorKey key);
+  int getBaseLevel();
+
+  float getUnscaledValue(ICapacitorKey key);
 
   String getUnlocalizedName();
 

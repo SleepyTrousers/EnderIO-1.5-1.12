@@ -2,16 +2,6 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.api.common.util.ITankAccess;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
@@ -28,6 +18,17 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.api.common.util.ITankAccess;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
 
@@ -109,7 +110,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public void init() {
-    setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
+    // TODO setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
   @Override

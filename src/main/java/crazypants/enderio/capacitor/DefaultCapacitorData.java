@@ -28,7 +28,7 @@ public enum DefaultCapacitorData implements ICapacitorData {
   }
 
   @Override
-  public float getUnscaledValue(CapacitorKey key) {
+  public float getUnscaledValue(ICapacitorKey key) {
     return baselevel;
   }
 
@@ -38,6 +38,11 @@ public enum DefaultCapacitorData implements ICapacitorData {
       result[i] = new ResourceLocation(EnderIO.DOMAIN, values()[i].unlocalizedName);
     }
     return result;
+  }
+
+  @Override
+  public int getBaseLevel() {
+    return baselevel;
   }
 
 }

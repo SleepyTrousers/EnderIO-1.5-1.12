@@ -8,14 +8,17 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config.Section;
 
-public enum CapacitorKey {
-  ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20),
-  ALLOY_SMELTER_POWER_IN(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
-  ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.BUFFER, Scaler.POWER, 100000),
+public enum CapacitorKey implements ICapacitorKey {
+  ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 82),
+  ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100002),
+  ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 22),
 
-  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 21),
+  BUFFER_POWER_INTAKE(ModObject.blockBuffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 83),
+  BUFFER_POWER_BUFFER(ModObject.blockBuffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100003),
+
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 81),
-  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.BUFFER, Scaler.POWER, 100001),
+  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100001),
+  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 21),
 
   //
   ;
@@ -67,6 +70,7 @@ public enum CapacitorKey {
    * The capacitor level is a 1, 2 and 3 for the basic capacitors. Custom ones may have any non-zero, positive level. The scalers are expected to only map to
    * halfway reasonable output levels. Capacitors can choose to report different levels for each and any CapacitorKey.
    */
+  @Override
   public int get(ICapacitorData capacitor) {
     return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
   }
@@ -75,18 +79,22 @@ public enum CapacitorKey {
    * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make a
    * difference.
    */
+  @Override
   public float getFloat(ICapacitorData capacitor) {
     return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
   }
 
+  @Override
   public ModObject getOwner() {
     return owner;
   }
 
+  @Override
   public CapacitorKeyType getValueType() {
     return valueType;
   }
   
+  @Override
   public String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }

@@ -1,0 +1,29 @@
+package crazypants.enderio.capacitor;
+
+import crazypants.enderio.ModObject;
+
+public interface ICapacitorKey {
+
+  /**
+   * Calculates the value to use for the given capacitor. Calculation is:
+   * <p>
+   * <tt>final value = base value * scaler(capacitor level)</tt>
+   * <p>
+   * The capacitor level is a 1, 2 and 3 for the basic capacitors. Custom ones may have any non-zero, positive level. The scalers are expected to only map to
+   * halfway reasonable output levels. Capacitors can choose to report different levels for each and any CapacitorKey.
+   */
+  int get(ICapacitorData capacitor);
+
+  /**
+   * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make a
+   * difference.
+   */
+  float getFloat(ICapacitorData capacitor);
+
+  ModObject getOwner();
+
+  CapacitorKeyType getValueType();
+
+  String getName();
+
+}

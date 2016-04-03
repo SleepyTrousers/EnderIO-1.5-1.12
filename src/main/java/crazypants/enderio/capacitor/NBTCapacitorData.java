@@ -21,7 +21,7 @@ public class NBTCapacitorData implements ICapacitorData {
   }
 
   @Override
-  public float getUnscaledValue(CapacitorKey key) {
+  public float getUnscaledValue(ICapacitorKey key) {
     if (tag.hasKey(key.getName(), 99)) {
       return tag.getFloat(key.getName());
     }
@@ -40,6 +40,11 @@ public class NBTCapacitorData implements ICapacitorData {
   @Override
   public String getLocalizedName() {
     return EnderIO.lang.localizeExact(unlocalizedName + ".name");
+  }
+
+  @Override
+  public int getBaseLevel() {
+    return baselevel;
   }
 
 }

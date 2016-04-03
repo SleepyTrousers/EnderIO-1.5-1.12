@@ -15,6 +15,10 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.paint.IPaintable;
 
+import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
+
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public static enum Mode {
@@ -34,7 +38,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   private Mode mode;
 
   public TileAlloySmelter() {
-    super(new SlotDefinition(3, 1));
+    super(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
     mode = Mode.ALL;
   }
 

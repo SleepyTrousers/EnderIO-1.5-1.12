@@ -12,6 +12,8 @@ import net.minecraft.util.EnumFacing;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
@@ -26,11 +28,18 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected boolean startFailed = false;
   protected float nextChance = Float.NaN;
 
-  public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
+  protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
   }
   
-  
+  protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
+  protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition, ModObject modObject) {
+    super(slotDefinition, modObject);
+  }
+
   @Override
   public int[] getSlotsForFace(EnumFacing dir) {
     IoMode mode = getIoMode(dir);

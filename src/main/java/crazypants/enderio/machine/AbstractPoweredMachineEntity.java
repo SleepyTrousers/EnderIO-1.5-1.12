@@ -7,9 +7,15 @@ import net.minecraft.util.MathHelper;
 
 import com.enderio.core.common.vecmath.VecmathUtil;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.capacitor.CapacitorKey;
+import crazypants.enderio.capacitor.CapacitorKeyType;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.ICapacitorData;
+import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -20,17 +26,36 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   // Power
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR; // WIP
-  @Deprecated
-  private Capacitors capacitorType;
+  private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
   @Deprecated
   private ICapacitor capacitor;
 
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
 
+  @Deprecated
   protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition) {
+    this(slotDefinition, null);
+  }
+
+  protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition, ModObject modObject) {
     super(slotDefinition);
-    capacitorType = Capacitors.BASIC_CAPACITOR;
+    if (modObject == null) {
+      this.maxEnergyRecieved = CapacitorKey.LEGACY_ENERGY_INTAKE;
+      this.maxEnergyStored = CapacitorKey.LEGACY_ENERGY_BUFFER;
+      this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
+    } else {
+      this.maxEnergyRecieved = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80);
+      this.maxEnergyStored = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000);
+      this.maxEnergyUsed = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20);
+    }
+  }
+
+  public AbstractPoweredMachineEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition);
+    this.maxEnergyRecieved = maxEnergyRecieved;
+    this.maxEnergyStored = maxEnergyStored;
+    this.maxEnergyUsed = maxEnergyUsed;
   }
 
   @Override
@@ -63,15 +88,15 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    if(isSideDisabled(dir)) {
+    if (isSideDisabled(dir) || maxEnergyRecieved == null) {
       return 0;
     }
-    return getCapacitor().getMaxEnergyReceived();
+    return maxEnergyRecieved.get(capacitorData);
   }
 
   @Override
   public int getMaxEnergyStored() {
-    return getCapacitor().getMaxEnergyStored();
+    return maxEnergyStored == null ? 0 : maxEnergyStored.get(capacitorData);
   }
 
   @Override
@@ -97,40 +122,44 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   @Deprecated
   public Capacitors getCapacitorType() {
-    return capacitorType;
+    return Capacitors.getFromData(capacitorData);
   }
 
   @Deprecated
-  public ICapacitor getCapacitor() {
-    return capacitor != null ? capacitor : capacitorType.capacitor;
+  public ICapacitor getCapacitor() { // TODO
+    return capacitor != null ? capacitor : getCapacitorType().capacitor;
+  }
+
+  public ICapacitorData getCapacitorData() {
+    return capacitorData;
   }
 
   public int getEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return VecmathUtil.clamp(Math.round(scale * ((float) storedEnergyRF / getMaxEnergyStored())), 0, scale);
+    final int maxEnergyStored2 = getMaxEnergyStored();
+    return maxEnergyStored2 == 0 ? 0 : VecmathUtil.clamp(Math.round(scale * ((float) storedEnergyRF / maxEnergyStored2)), 0, scale);
   }
 
   @Deprecated
-  protected void setCapacitor(ICapacitor capacitor) {
+  protected void setCapacitor(ICapacitor capacitor) { // TODO
     this.capacitor = capacitor;
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
   }
 
-  @Deprecated
-  public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;
-    this.capacitor = null;
+  public void onCapacitorDataChange() {
+    capacitor = null;
     onCapacitorTypeChange();
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
     forceClientUpdate = true;
   }
 
+  @Deprecated
   public void onCapacitorTypeChange() {}
 
   public int getPowerUsePerTick() {
-    return getCapacitor().getMaxEnergyExtracted();
+    return maxEnergyUsed == null ? 0 : maxEnergyUsed.get(capacitorData);
   }
 
   @Override
@@ -152,15 +181,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   private void updateCapacitorFromSlot() {
     if(slotDefinition.getNumUpgradeSlots() <= 0) {
-      setCapacitor(Capacitors.BASIC_CAPACITOR);
-      return;
-    }
-    ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-    if(contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
-      setCapacitor(Capacitors.BASIC_CAPACITOR);
+      capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
     } else {
-      setCapacitor(Capacitors.values()[contents.getItemDamage()]);
+      capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(inventory[slotDefinition.minUpgradeSlot]);
+      if (capacitorData == null) {
+        capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+      }
     }
+    onCapacitorDataChange();
   }
 
   //--------- NBT
@@ -171,7 +199,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
+    updateCapacitorFromSlot();
     setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
   }
 
@@ -182,7 +210,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
-    nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
   }
 
   @Override
@@ -190,9 +217,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     if (stack == null || stack.getTagCompound() == null) {
       return;
     }
+    super.readFromItemStack(stack);
     NBTTagCompound nbtRoot = stack.getTagCompound();
     setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
-    super.readFromItemStack(stack);
   }
 
 }

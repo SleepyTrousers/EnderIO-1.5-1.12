@@ -3,10 +3,12 @@ package crazypants.enderio.power;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.capacitor.ICapacitorData;
 
+@Deprecated
 public enum Capacitors {
 
   BASIC_CAPACITOR(
@@ -21,6 +23,7 @@ public enum Capacitors {
       new BasicCapacitor(400, 500000, 100),
       "enderCapacitor");
 
+  @Deprecated
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
     for(Capacitors c : values()) {
@@ -41,8 +44,22 @@ public enum Capacitors {
     this.iconKey = "enderio:" + baseName;
   }
 
+  @Deprecated
   public ItemStack getItemStack() {
     return new ItemStack(EnderIO.itemBasicCapacitor, 1, ordinal());
+  }
+
+  public static Capacitors getFromData(ICapacitorData data) {
+    if (data == null) {
+      return BASIC_CAPACITOR;
+    }
+    switch (data.getBaseLevel()) {
+    case 2:
+      return ACTIVATED_CAPACITOR;
+    case 3:
+      return ENDER_CAPACITOR;
+    default: return BASIC_CAPACITOR;
+    }
   }
 
 }
