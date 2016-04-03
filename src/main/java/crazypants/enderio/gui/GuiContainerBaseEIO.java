@@ -7,12 +7,15 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 
+@SideOnly(Side.CLIENT)
 public abstract class GuiContainerBaseEIO extends GuiContainerBase {
 
   private static final String TEXTURE_PATH = ":textures/gui/23/";

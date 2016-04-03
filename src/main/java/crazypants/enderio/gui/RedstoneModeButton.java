@@ -10,7 +10,7 @@ import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 
-public class RedstoneModeButton extends CycleButton<RedstoneControlMode> {
+public class RedstoneModeButton extends CycleButton<RedstoneControlMode.IconHolder> {
 
   private IRedstoneModeControlable model;
 
@@ -23,19 +23,19 @@ public class RedstoneModeButton extends CycleButton<RedstoneControlMode> {
   }
 
   public RedstoneModeButton(IGuiScreen gui, int id, int x, int y, IRedstoneModeControlable model, BlockCoord bc) {
-    super(gui, id, x, y, RedstoneControlMode.class);
+    super(gui, id, x, y, RedstoneControlMode.IconHolder.class);
     this.model = model;
     this.bc = bc;
-    setMode(model.getRedstoneControlMode());
+    setMode(RedstoneControlMode.IconHolder.getFromMode(model.getRedstoneControlMode()));
   }
 
   @Override
-  public void setMode(RedstoneControlMode newMode) {
+  public void setMode(RedstoneControlMode.IconHolder newMode) {
     if (model == null) {
       return;
     }
     super.setMode(newMode);
-    model.setRedstoneControlMode(getMode());
+    model.setRedstoneControlMode(getMode().getMode());
     if (bc != null) {
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneMode(model, bc.x, bc.y, bc.z));
     }

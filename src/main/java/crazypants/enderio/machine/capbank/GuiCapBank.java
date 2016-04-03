@@ -5,6 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -26,12 +33,6 @@ import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
@@ -361,8 +362,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private void updateFieldsFromState() {
     maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
     maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
-    inputRsButton.setMode(network.getInputControlMode());
-    outputRsButton.setMode(network.getOutputControlMode());
+    inputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getInputControlMode()));
+    outputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getOutputControlMode()));
   }
 
 

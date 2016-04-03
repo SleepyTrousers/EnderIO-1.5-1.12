@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.gui.item;
 
+import net.minecraft.client.gui.GuiButton;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CycleButton;
@@ -12,7 +14,6 @@ import crazypants.enderio.conduit.item.filter.FuzzyMode;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
-import net.minecraft.client.gui.GuiButton;
 
 public class BasicItemFilterGui implements IItemFilterGui {
     
@@ -30,7 +31,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private final IconButton whiteListB;
   private final ToggleButton useOreDictB;
   private final ToggleButton stickyB;
-  private final CycleButton<FuzzyMode> fuzzyB;
+  private final CycleButton<FuzzyMode.IconHolder> fuzzyB;
     
   final boolean isAdvanced;
   final boolean isStickyModeAvailable;
@@ -93,7 +94,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
-    fuzzyB = new CycleButton<FuzzyMode>(gui, ID_FUZZY + buttonIdOffset, x, y, FuzzyMode.class);
+    fuzzyB = new CycleButton<FuzzyMode.IconHolder>(gui, ID_FUZZY + buttonIdOffset, x, y, FuzzyMode.IconHolder.class);
   }
 
   public void createFilterSlots() {
@@ -126,7 +127,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
       }
 
       fuzzyB.onGuiInit();
-      fuzzyB.setMode(activeFilter.getFuzzyMode());
+      fuzzyB.setMode(FuzzyMode.IconHolder.getFromMode(activeFilter.getFuzzyMode()));
     }
 
     useMetaB.onGuiInit();
@@ -159,7 +160,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
     } else if(guiButton.id == ID_FUZZY + buttonIdOffset) {
-      filter.setFuzzyMode(fuzzyB.getMode());
+      filter.setFuzzyMode(fuzzyB.getMode().getMode());
       sendFilterChange();
     } else if(guiButton.id == ID_WHITELIST + buttonIdOffset) {
       filter.setBlacklist(!filter.isBlacklist());

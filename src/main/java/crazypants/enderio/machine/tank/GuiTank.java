@@ -2,56 +2,26 @@ package crazypants.enderio.machine.tank;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton;
-import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
-  public enum VoidMode implements ICycleEnum {
-    ALWAYS(IconEIO.TICK),
-    IF_NOT_CONTAINER(IconEIO.ITEM_SINGLE),
-    NEVER(IconEIO.CROSS);
-    
-    private final IWidgetIcon icon;
-    private final List<String> unlocTooltips;
-    
-    private VoidMode(IWidgetIcon icon) {
-      this.icon = icon;
-      String prefix = "gui.void.mode";
-      String mode = prefix + "." + name().toLowerCase(Locale.US);
-      this.unlocTooltips = Lists.newArrayList(prefix, mode, mode + ".desc");
-    }
-
-    @Override
-    public IWidgetIcon getIcon() {
-      return icon;
-    }
-
-    @Override
-    public List<String> getTooltipLines() {
-      return EnderIO.lang.localizeAll(unlocTooltips);
-    }
-  }
-  
-  private CycleButton<VoidMode> voidBut;
+  private CycleButton<VoidMode.IconHolder> voidBut;
   
   public GuiTank(InventoryPlayer par1InventoryPlayer, TileTank te) {
     super(te, new ContainerTank(par1InventoryPlayer, te), "tank");
@@ -78,14 +48,14 @@ public class GuiTank extends GuiMachineBase<TileTank> {
       }
     });
     
-    voidBut = new CycleButton<VoidMode>(this, 123, 155, 43, VoidMode.class);
+    voidBut = new CycleButton<VoidMode.IconHolder>(this, 123, 155, 43, VoidMode.IconHolder.class);
   }
 
   @Override
   public void initGui() {
     super.initGui();
     voidBut.onGuiInit();
-    voidBut.setMode(getTileEntity().getVoidMode());
+    voidBut.setMode(VoidMode.IconHolder.getFromMode(getTileEntity().getVoidMode()));
     ((ContainerTank) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
@@ -107,7 +77,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   protected void actionPerformed(GuiButton button) throws IOException {
     super.actionPerformed(button);
     if (button.id == voidBut.id) {
-      getTileEntity().setVoidMode(voidBut.getMode());
+      getTileEntity().setVoidMode(voidBut.getMode().getMode());
       PacketHandler.INSTANCE.sendToServer(new PacketTankVoidMode(getTileEntity()));
     }
   }

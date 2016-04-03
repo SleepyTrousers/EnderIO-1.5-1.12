@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ColorButton;
@@ -31,8 +34,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -255,7 +256,7 @@ public class ItemSettings extends BaseSettingsPanel {
     if(!outputActive) {
 
       rsB.onGuiInit();
-      rsB.setMode(itemConduit.getExtractionRedstoneMode(gui.getDir()));
+      rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
 
       colorB.onGuiInit();
       colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());

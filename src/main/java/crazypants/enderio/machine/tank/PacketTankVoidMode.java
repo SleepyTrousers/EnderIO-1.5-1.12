@@ -2,7 +2,6 @@ package crazypants.enderio.machine.tank;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.machine.tank.GuiTank.VoidMode;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

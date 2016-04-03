@@ -24,7 +24,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.tank.GuiTank.VoidMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.tool.ArrayMappingTool;

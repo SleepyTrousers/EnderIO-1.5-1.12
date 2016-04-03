@@ -3,40 +3,67 @@ package crazypants.enderio.machine;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import net.minecraft.tileentity.TileEntity;
 
-public enum RedstoneControlMode implements ICycleEnum {
+public enum RedstoneControlMode {
+  IGNORE,
+  ON,
+  OFF,
+  NEVER;
 
-  IGNORE(IconEIO.REDSTONE_MODE_ALWAYS),
-  ON(IconEIO.REDSTONE_MODE_WITH_SIGNAL),
-  OFF(IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL),
-  NEVER(IconEIO.REDSTONE_MODE_NEVER);
+  @SideOnly(Side.CLIENT)
+  @SuppressWarnings("hiding")
+  public static enum IconHolder implements ICycleEnum {
 
+    IGNORE(RedstoneControlMode.IGNORE, IconEIO.REDSTONE_MODE_ALWAYS),
+    ON(RedstoneControlMode.ON, IconEIO.REDSTONE_MODE_WITH_SIGNAL),
+    OFF(RedstoneControlMode.OFF, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL),
+    NEVER(RedstoneControlMode.NEVER, IconEIO.REDSTONE_MODE_NEVER);
 
-  private IWidgetIcon icon;
-  
-  RedstoneControlMode(IWidgetIcon icon) {
-    this.icon = icon;
-  }
+    private final RedstoneControlMode mode;
+    private final IWidgetIcon icon;
 
-  public String getTooltip() {
-    return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US));
-  }
-  
-  @Override
-  public IWidgetIcon getIcon() {
-    return icon;
-  }
-  
-  @Override
-  public List<String> getTooltipLines() {
-    return Lists.newArrayList(getTooltip());
+    IconHolder(RedstoneControlMode mode, IWidgetIcon icon) {
+      this.mode = mode;
+      this.icon = icon;
+    }
+
+    public String getTooltip() {
+      return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US));
+    }
+
+    @Override
+    public IWidgetIcon getIcon() {
+      return icon;
+    }
+
+    @Override
+    public List<String> getTooltipLines() {
+      return Lists.newArrayList(getTooltip());
+    }
+
+    public RedstoneControlMode getMode() {
+      return mode;
+    }
+
+    public static IconHolder getFromMode(RedstoneControlMode mode) {
+      for (IconHolder holder : values()) {
+        if (holder.mode == mode) {
+          return holder;
+        }
+      }
+      return IGNORE;
+    }
+
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {

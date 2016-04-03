@@ -1,12 +1,15 @@
 package crazypants.enderio.gui;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.client.render.IWidgetMap;
 
+@SideOnly(Side.CLIENT)
 public enum IconEIO implements IWidgetIcon {
 
   TICK(0, 192),
