@@ -56,5 +56,7 @@ public interface Scaler {
   };
   public static final Scaler OCTADIC_1_8 = new IndexedScaler(.5f, 0, .5f, 1, 3, 2, 4, 8, 10, 16);
   public static final Scaler POWER = new IndexedScaler(1f, 0, 1, 3, 5, 8, 10);
+  public static final Scaler SPEED = new IndexedScaler(1f, 100, 20, 10, 2, 1);
+  public static final Scaler POWER10 = new IndexedScaler(1f, 0, 1, 2, 10, 20);
 
 }

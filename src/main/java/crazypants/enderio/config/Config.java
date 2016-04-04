@@ -81,6 +81,7 @@ public final class Config {
   public static final Section sectionTelepad = new Section("Telepad", "telepad");
   public static final Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
   public static final Section sectionMisc = new Section("Misc", "misc");
+  public static final Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 

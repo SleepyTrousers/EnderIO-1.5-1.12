@@ -26,9 +26,10 @@ import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
+
+import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_TICKS;
 
 public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer, IPaintable.IPaintableTileEntity {
 
@@ -43,16 +44,8 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   private FakePlayer playerInst;
 
   public TileCrafter() {
-    super(new SlotDefinition(9, 1));
+    super(new SlotDefinition(9, 1), CRAFTER_POWER_INTAKE, CRAFTER_POWER_BUFFER, null);
     containerItems = new ArrayList<ItemStack>();    
-  }
-
-  @Override
-  public void onCapacitorTypeChange() {
-    ICapacitor refCap = getCapacitor();
-    int maxUse = getPowerUsePerTick(getCapacitorType());
-    int io = Math.max(maxUse, refCap.getMaxEnergyExtracted());
-    setCapacitor(new BasicCapacitor(io * 4, refCap.getMaxEnergyStored(), io));
   }
 
   @Override
@@ -79,7 +72,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     if(!redstoneCheck || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
       return false;
     }
-    int ticksPerCraft = getTicksPerCraft(getCapacitorType());
+    int ticksPerCraft = getTicksPerCraft();
     if(ticksSinceLastCraft <= ticksPerCraft) {
       return false;
     }
@@ -102,34 +95,27 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }
 
     if(craftRecipe()) {
-      int used = Math.min(getEnergyStored(), Config.crafterRfPerCraft);
+      int used = Math.min(getEnergyStored(), getPowerUsePerCraft());
       setEnergyStored(getEnergyStored() - used);
     }
     return false;
   }
 
   private boolean hasRequiredPower() {
-    return getEnergyStored() >= Config.crafterRfPerCraft;
+    return getEnergyStored() >= getPowerUsePerCraft();
   }
 
   @Override
   public int getPowerUsePerTick() {
-    return getPowerUsePerTick(getCapacitorType());
-  }
-  
-  public int getPowerUsePerTick(Capacitors type) {
-    int ticks = getTicksPerCraft(type);    
-    return (int)Math.ceil(Config.crafterRfPerCraft / (double)ticks);
+    return (int) Math.ceil(getPowerUsePerCraft() / (double) getTicksPerCraft());
   }
 
-  public int getTicksPerCraft(Capacitors type) {
-    if(type == Capacitors.BASIC_CAPACITOR) {
-      return 20;
-    } else if(type == Capacitors.ACTIVATED_CAPACITOR) {
-      return 10;
-    } else {
-      return 2;
-    }    
+  protected int getPowerUsePerCraft() {
+    return Config.crafterRfPerCraft;
+  }
+
+  public int getTicksPerCraft() {
+    return Math.max(1, CRAFTER_TICKS.get(getCapacitorData()));
   }
 
   static boolean compareDamageable(ItemStack stack, ItemStack req) {

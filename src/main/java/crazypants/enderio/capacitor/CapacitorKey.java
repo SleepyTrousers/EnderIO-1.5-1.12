@@ -8,17 +8,23 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config.Section;
 
+import static crazypants.enderio.config.Config.sectionCapacitor;
+
 public enum CapacitorKey implements ICapacitorKey {
-  ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 82),
-  ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100002),
-  ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 22),
+  ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
+  ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20),
 
-  BUFFER_POWER_INTAKE(ModObject.blockBuffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 83),
-  BUFFER_POWER_BUFFER(ModObject.blockBuffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100003),
+  BUFFER_POWER_INTAKE(ModObject.blockBuffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
+  BUFFER_POWER_BUFFER(ModObject.blockBuffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
 
-  LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 81),
-  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100001),
-  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 21),
+  CRAFTER_POWER_INTAKE(ModObject.blockCrafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER10, 500),
+  CRAFTER_POWER_BUFFER(ModObject.blockCrafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  CRAFTER_TICKS(ModObject.blockCrafter, CapacitorKeyType.SPEED, Scaler.SPEED, 1),
+
+  LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
+  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),
+  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20, null, null),
 
   //
   ;
@@ -37,21 +43,21 @@ public enum CapacitorKey implements ICapacitorKey {
   private int baseValue;
 
   private CapacitorKey(ModObject owner, CapacitorKeyType valueType, Scaler scaler, int defaultBaseValue) {
-    this(owner, valueType, scaler, null, null, defaultBaseValue);
+    this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null);
   }
 
-  private CapacitorKey(ModObject owner, CapacitorKeyType valueType, Scaler scaler, String configKey, Section configSection, int defaultBaseValue) {
+  private CapacitorKey(ModObject owner, CapacitorKeyType valueType, Scaler scaler, int defaultBaseValue, Section configSection, String configKey) {
     this.owner = owner;
     this.valueType = valueType;
     this.scaler = scaler;
-    this.configKey = configKey;
+    this.configKey = configKey == null ? name().toLowerCase(Locale.US) : configKey;
     this.configSection = configSection;
-    this.configComment = localizeComment(configKey);
+    this.configComment = localizeComment(this.configSection, this.configKey);
     this.baseValue = this.defaultBaseValue = defaultBaseValue;
   }
 
-  private static String localizeComment(String configKey) {
-    if (configKey == null) {
+  private static String localizeComment(Section configSection, String configKey) {
+    if (configSection == null || configKey == null) {
       return null;
     } else {
       final String langKey = "config.capacitor." + configKey;

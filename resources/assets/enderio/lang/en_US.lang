@@ -1232,3 +1232,12 @@ enderio.tooltip.meta=Meta:
 enderio.tooltip.uid=UID:
 enderio.tooltip.anvilupgrades=Anvil Upgrades:
 enderio.waila.config.hiddenfacades=Sneaky Facades
+
+enderio.config.capacitor.alloy_smelter_power_buffer=Alloy Smelter: Internal power buffer size (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.alloy_smelter_power_intake=Alloy Smelter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.alloy_smelter_power_use=Alloy Smelter: Power use per tick (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.buffer_power_buffer=Energy/Omni Buffer: Internal power buffer size (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.buffer_power_intake=Energy/Omni Buffer: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.crafter_power_buffer=Crafter: Internal power buffer size (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.crafter_power_intake=Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
