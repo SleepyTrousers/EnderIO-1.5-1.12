@@ -67,7 +67,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory {
   private AlloyRecipe currentRecipe;
 
   public AlloyRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("alloySmelter");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("alloySmelter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 82, 78);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 13, 13);

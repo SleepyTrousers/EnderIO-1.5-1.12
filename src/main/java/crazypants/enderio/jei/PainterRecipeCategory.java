@@ -165,7 +165,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
   protected final IDrawableAnimated arror;
   
   public PainterRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("painter");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("painter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 14, 24, 16);

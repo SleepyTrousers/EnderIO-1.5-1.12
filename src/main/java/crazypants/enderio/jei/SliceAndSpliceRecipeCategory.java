@@ -67,7 +67,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
   private SliceAndSpliceRecipe currentRecipe;
 
   public SliceAndSpliceRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("sliceAndSplice");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("sliceAndSplice");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 125, 70);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);

@@ -1,11 +1,14 @@
 package crazypants.enderio;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +25,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.fluid.Buckets;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
@@ -167,24 +171,16 @@ public class ClientProxy extends CommonProxy {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
     }
     if (EnderIO.blockZombieGenerator != null) {
-      ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
-      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockZombieGenerator), 0, TileZombieGenerator.class);
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), ModObject.blockZombieGenerator.getUnlocalisedName());            
+      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, new ZombieGeneratorRenderer());
     }
     if (EnderIO.blockKillerJoe != null) {
-      KillerJoeRenderer kjr = new KillerJoeRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
-      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockKillerJoe), 0, TileKillerJoe.class);
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), ModObject.blockKillerJoe.getUnlocalisedName());
+      ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, new KillerJoeRenderer());
     }
     if (EnderIO.blockCapBank != null) {
-      CapBankRenderer newCbr = new CapBankRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, newCbr);
+      ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, new CapBankRenderer());
     }
     if (EnderIO.blockEnderIo != null) {
-      EnderIoRenderer eior = new EnderIoRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);      
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, new EnderIoRenderer());
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), ModObject.blockEnderIo.getUnlocalisedName());
     }
     if (EnderIO.blockReservoir != null) {
@@ -197,8 +193,7 @@ public class ClientProxy extends CommonProxy {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEndermanSkull.class, new EndermanSkullRenderer());
     }
     if (Config.transceiverEnabled) {
-      TransceiverRenderer tr = new TransceiverRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
+      ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, new TransceiverRenderer());
     }
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
   
@@ -284,6 +279,11 @@ public class ClientProxy extends CommonProxy {
       ++clientTickCount;
       YetaUtil.onTick();
     }
+  }
+
+  @Override
+  public @Nonnull ResourceLocation getGuiTexture(String name) {
+    return GuiContainerBaseEIO.getGuiTexture(name);
   }
 
 }

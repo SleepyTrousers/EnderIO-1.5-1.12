@@ -75,7 +75,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
   private final TooltipHandlerGrinding ballsTT = new TooltipHandlerGrinding();
 
   public SagMillRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("crusher");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("crusher");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 109, 78);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 201, 1, 16, 22);

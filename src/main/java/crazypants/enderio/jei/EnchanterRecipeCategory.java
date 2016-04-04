@@ -128,7 +128,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
   private EnchanterRecipeWrapper currentRecipe;
 
   public EnchanterRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("enchanter");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("enchanter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 134, 48);
   }
 

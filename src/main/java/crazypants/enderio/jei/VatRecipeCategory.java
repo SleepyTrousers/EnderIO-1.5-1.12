@@ -156,7 +156,7 @@ public class VatRecipeCategory extends BlankRecipeCategory {
   private VatRecipeWrapper currentRecipe;
 
   public VatRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("vat");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("vat");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 130, 70);
   }
 

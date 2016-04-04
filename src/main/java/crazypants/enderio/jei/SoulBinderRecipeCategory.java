@@ -110,7 +110,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
   private SoulBinderRecipeWrapper currentRecipe;
 
   public SoulBinderRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = GuiContainerBaseEIO.getGuiTexture("soulFuser");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("soulFuser");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);

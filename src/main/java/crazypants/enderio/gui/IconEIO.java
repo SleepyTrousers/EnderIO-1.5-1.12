@@ -1,15 +1,14 @@
 package crazypants.enderio.gui;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.client.render.IWidgetMap;
 
-@SideOnly(Side.CLIENT)
+import crazypants.enderio.EnderIO;
+
 public enum IconEIO implements IWidgetIcon {
 
   TICK(0, 192),
@@ -132,7 +131,7 @@ public enum IconEIO implements IWidgetIcon {
   public final int height;
   public final IconEIO overlay;
 
-  public static final ResourceLocation TEXTURE = GuiContainerBaseEIO.getGuiTexture("widgetsv2");
+  public static final ResourceLocation TEXTURE = EnderIO.proxy.getGuiTexture("widgetsv2");
 
   public static final IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
     @Override

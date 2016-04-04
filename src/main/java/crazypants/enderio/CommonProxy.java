@@ -1,8 +1,11 @@
 package crazypants.enderio;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -11,7 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class CommonProxy {
-
 
   protected long serverTickCount = 0;
   protected long clientTickCount = 0;
@@ -76,6 +78,10 @@ public class CommonProxy {
         onClientTick();
       }
     }
+  }
+
+  public @Nonnull ResourceLocation getGuiTexture(String name) {
+    return new ResourceLocation(EnderIO.DOMAIN + ":unknown");
   }
 
 }
