@@ -1,0 +1,59 @@
+package crazypants.enderio.render;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+
+@SideOnly(Side.CLIENT)
+public class ItemModelRegistry {
+
+  private ItemModelRegistry() {
+  }
+
+  public static void create() {
+    MinecraftForge.EVENT_BUS.register(new ItemModelRegistry());
+  }
+
+  public static interface Registry {
+    IBakedModel wrap(IBakedModel model);
+  }
+
+  private static final Map<ModelResourceLocation, Registry> registries = new HashMap<ModelResourceLocation, Registry>();
+
+  public static void register(String resource, Registry registry) {
+    registries.put(new ModelResourceLocation(EnderIO.DOMAIN + ":" + resource + "#inventory"), registry);
+  }
+
+  public static void register(ModelResourceLocation resource, Registry registry) {
+    registries.put(resource, registry);
+  }
+
+  public static void registerRotating(String resource, final int speed) {
+    register(resource, new Registry() {
+      @Override
+      public IBakedModel wrap(IBakedModel model) {
+        return new RotatingSmartItemModel((IPerspectiveAwareModel) model, speed);
+      }
+    });
+  }
+
+  @SubscribeEvent()
+  public void bakeModels(ModelBakeEvent event) {
+    for (Entry<ModelResourceLocation, Registry> entry : registries.entrySet()) {
+      IBakedModel model = event.modelRegistry.getObject(entry.getKey());
+      event.modelRegistry.putObject(entry.getKey(), entry.getValue().wrap(model));
+
+    }
+  }
+
+}

@@ -59,6 +59,7 @@ import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.render.ItemModelRegistry;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
@@ -233,6 +234,10 @@ public class ClientProxy extends CommonProxy {
 
     // Entities
     RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, RangeRenerer.FACTORY);
+
+    // Item Models
+    ItemModelRegistry.create();
+    ItemModelRegistry.registerRotating("enderCrystal", 2);
 
     // Listeners
     if (Config.useSneakMouseWheelYetaWrench) {
