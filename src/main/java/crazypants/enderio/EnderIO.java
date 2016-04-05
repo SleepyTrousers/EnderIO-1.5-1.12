@@ -67,7 +67,6 @@ import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
@@ -407,7 +406,6 @@ public class EnderIO {
 
     DarkSteelItems.createDarkSteelArmorItems();
 
-    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", Config.soundEntityID, this, 0, 0, false);
     EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", Config.rangeEntityID, this, 0, 0, false);
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");

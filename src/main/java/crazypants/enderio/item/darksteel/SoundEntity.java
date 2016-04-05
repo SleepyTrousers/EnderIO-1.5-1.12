@@ -1,53 +1,89 @@
 package crazypants.enderio.item.darksteel;
 
-import com.enderio.core.common.vecmath.Vector3d;
-
-import crazypants.enderio.config.Config;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class SoundEntity extends Entity {
+import org.lwjgl.opengl.GL11;
 
-  int lifeSpan = Config.darkSteelSoundLocatorLifespan;
-  float volume;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.item.darksteel.SoundDetector.SoundSource;
 
-  public SoundEntity(World world, Vector3d pos, float volume) {
-    super(world);
-    setPosition(pos.x, pos.y, pos.z);
-    this.volume = volume;
+public class SoundEntity extends EntityFX {
+
+  private final SoundSource ss;
+
+  public SoundEntity(World worldIn, SoundSource ss) {
+    super(worldIn, ss.pos.x, ss.pos.y, ss.pos.z, 0.0D, 0.0D, 0.0D);
+    this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
+    this.motionX = this.motionY = this.motionZ = 0.0D;
+    this.particleGravity = 0.0F;
+    this.particleMaxAge = Config.darkSteelSoundLocatorLifespan;
+    this.ss = ss;
   }
 
   @Override
-  protected void entityInit() {
+  public int getFXLayer() {
+    return 3;
   }
 
   @Override
-  protected boolean canTriggerWalking() {
-    return false;
-  }
+  public void renderParticle(WorldRenderer worldRendererIn, Entity player, float partialTicks, float rotX, float rotZ, float rotYZ, float rotXY, float rotXZ) {
 
-  @Override
-  public AxisAlignedBB getEntityBoundingBox() {
-    return null;
-  }
+    final IconEIO icon = IconEIO.SOUND;
+    double minU = (double) icon.getX() / IconEIO.map.getSize();
+    double maxU = (double) (icon.getX() + icon.getWidth()) / IconEIO.map.getSize();
+    double minV = (double) icon.getY() / IconEIO.map.getSize();
+    double maxV = (double) (icon.getY() + icon.getHeight()) / IconEIO.map.getSize();
 
-  @Override
-  public void onUpdate() {
-    super.onUpdate();
-    lifeSpan--;
-    if(lifeSpan == 0) {
-      setDead();
+    float ageScale = (particleAge + partialTicks) / particleMaxAge;
+    ageScale = (1 - ageScale * ageScale) * 1.03f;
+    if (ageScale > 1) {
+      ageScale = 2 - ageScale;
+      ageScale = ageScale * ageScale;
     }
-  }
+    float volumeScale = MathHelper.clamp_float(ss.volume / 3f + .5f, .5f, 1f);
+    float scale = 0.5F * ageScale * volumeScale;
 
-  @Override
-  protected void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-  }
 
-  @Override
-  protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
+    float alpha = MathHelper.clamp_float((ss.volume + 1) / 3f, .6f, .4f);
+    float brightness = 1.0f;
+
+    float x1 = (float) (prevPosX + (posX - prevPosX) * partialTicks - interpPosX);
+    float y1 = (float) (prevPosY + (posY - prevPosY) * partialTicks - interpPosY);
+    float z1 = (float) (prevPosZ + (posZ - prevPosZ) * partialTicks - interpPosZ);
+
+    GlStateManager.pushMatrix();
+    GlStateManager.disableLighting();
+    GlStateManager.disableDepth();
+    GlStateManager.enableBlend();
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+    Minecraft.getMinecraft().getTextureManager().bindTexture(icon.TEXTURE);
+
+    worldRendererIn.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+    worldRendererIn.pos(x1 - rotX * scale - rotXY * scale, y1 - rotZ * scale, z1 - rotYZ * scale - rotXZ * scale).tex(maxU, maxV)
+        .color(brightness, brightness, brightness, alpha).endVertex();
+    worldRendererIn.pos(x1 - rotX * scale + rotXY * scale, y1 + rotZ * scale, z1 - rotYZ * scale + rotXZ * scale).tex(maxU, minV)
+        .color(brightness, brightness, brightness, alpha).endVertex();
+    worldRendererIn.pos(x1 + rotX * scale + rotXY * scale, y1 + rotZ * scale, z1 + rotYZ * scale + rotXZ * scale).tex(minU, minV)
+        .color(brightness, brightness, brightness, alpha).endVertex();
+    worldRendererIn.pos(x1 + rotX * scale - rotXY * scale, y1 - rotZ * scale, z1 + rotYZ * scale - rotXZ * scale).tex(minU, maxV)
+        .color(brightness, brightness, brightness, alpha).endVertex();
+    Tessellator.getInstance().draw();
+
+    GlStateManager.disableBlend();
+    GlStateManager.enableDepth();
+    GlStateManager.enableLighting();
+    GlStateManager.popMatrix();
   }
 
 }

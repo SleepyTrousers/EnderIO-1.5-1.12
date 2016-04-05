@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-
-import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
@@ -18,14 +14,19 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.config.Config;
+
 public class SoundDetector {
 
-  private static final int MAX_ENTITIES = 64;
+  private static final int MAX_PARTICLES = 64;
 
   public static SoundDetector instance = new SoundDetector();
 
   private List<SoundSource> sounds;
-  private ArrayBlockingQueue<SoundSource> soundQueue = new ArrayBlockingQueue<SoundSource>(MAX_ENTITIES);
+  private ArrayBlockingQueue<SoundSource> soundQueue = new ArrayBlockingQueue<SoundSource>(MAX_PARTICLES);
 
   private Minecraft mc = Minecraft.getMinecraft();
 
@@ -35,14 +36,14 @@ public class SoundDetector {
 
   @SubscribeEvent
   public void onSound(PlaySoundAtEntityEvent evt) {
-    if(enabled && evt.entity != null && evt.entity != Minecraft.getMinecraft().thePlayer && soundQueue.size() < MAX_ENTITIES) {
+    if (enabled && evt.entity != null && evt.entity != Minecraft.getMinecraft().thePlayer && soundQueue.size() < MAX_PARTICLES) {
       soundQueue.offer(new SoundSource(evt.entity, evt.volume));
     }
   }
 
   @SubscribeEvent
   public void onSound(PlaySoundSourceEvent evt) {
-    if(enabled && soundQueue.size() < MAX_ENTITIES) {
+    if (enabled && soundQueue.size() < MAX_PARTICLES) {
       soundQueue.offer(new SoundSource(evt.sound.getXPosF(), evt.sound.getYPosF(), evt.sound.getZPosF(), evt.sound.getVolume()));
     }
   }
@@ -51,11 +52,11 @@ public class SoundDetector {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
 
-    if(!enabled || mc.thePlayer == null || mc.thePlayer.worldObj == null) {
+    if (!enabled || mc.thePlayer == null || mc.thePlayer.worldObj == null) {
       return;
     }
 
-    sounds = new ArrayList<SoundSource>(MAX_ENTITIES);
+    sounds = new ArrayList<SoundSource>(MAX_PARTICLES);
     soundQueue.drainTo(sounds);
 
     try {
@@ -63,12 +64,12 @@ public class SoundDetector {
       for (SoundSource ss : sounds) {
         double distSq = ss.pos.distanceSquared(eye);
         int minDist = ss.isEntity ? 4 : 49;
-        if(distSq > minDist && distSq <= maxRangeSq) {
-          mc.thePlayer.worldObj.spawnEntityInWorld(new SoundEntity(mc.thePlayer.worldObj, ss.pos, ss.volume));
+        if (distSq > minDist && distSq <= maxRangeSq) {
+          Minecraft.getMinecraft().effectRenderer.addEffect(new SoundEntity(mc.thePlayer.worldObj, ss));
         }
       }
     } catch (Exception ex) {
-      //Probably not necessary anymore but saftey first!
+      // Probably not necessary anymore but safety first!
     }
   }
 
@@ -80,7 +81,7 @@ public class SoundDetector {
     this.enabled = enabled;
   }
 
-  private static class SoundSource {
+  public static class SoundSource {
 
     Vector3d pos;
     float volume;
@@ -88,7 +89,7 @@ public class SoundDetector {
 
     public SoundSource(Entity ent, float volume) {
       AxisAlignedBB bb = ent.getEntityBoundingBox();
-      if(bb != null) {
+      if (bb != null) {
         pos = new Vector3d(bb.minX + (bb.maxX - bb.minX) / 2, bb.minY + (bb.maxY - bb.minY) / 2, bb.minZ + (bb.maxZ - bb.minZ) / 2);
       } else {
         pos = new Vector3d(ent.posX, ent.posY, ent.posZ);

@@ -35,8 +35,6 @@ import crazypants.enderio.item.ToolTickHandler;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundDetector;
-import crazypants.enderio.item.darksteel.SoundEntity;
-import crazypants.enderio.item.darksteel.SoundRenderer;
 import crazypants.enderio.item.darksteel.upgrade.UpgradeRenderDispatcher;
 import crazypants.enderio.item.skull.EndermanSkullRenderer;
 import crazypants.enderio.item.skull.TileEndermanSkull;
@@ -234,7 +232,6 @@ public class ClientProxy extends CommonProxy {
     Buckets.registerRenderers();
 
     // Entities
-    RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, SoundRenderer.FACTORY);
     RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, RangeRenerer.FACTORY);
 
     // Listeners

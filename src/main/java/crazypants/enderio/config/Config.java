@@ -513,7 +513,6 @@ public final class Config {
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
 
-  public static int soundEntityID = 1490324;
   public static int rangeEntityID = 1490325;
   
   public static void load(FMLPreInitializationEvent event) {
@@ -571,6 +570,7 @@ public final class Config {
     PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
   }
 
+  @SuppressWarnings("hiding")
   public static void processConfig(Configuration config) {
 
     capacitorBankMaxIoRF = config.get(sectionPower.name, "capacitorBankMaxIoRF", capacitorBankMaxIoRF, "The maximum IO for a single capacitor in RF/t")
@@ -1382,8 +1382,6 @@ public final class Config {
     inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
         10000.0f, "Internal power used per extract operation (independent of stack size)");
     
-    soundEntityID = config.get(sectionMisc.name, "soundEntityID", soundEntityID,
-        "The ID used to register the entity used to display sound (via dark steel helmet)").getInt(soundEntityID);
     rangeEntityID = config.get(sectionMisc.name, "rangeEntityID", rangeEntityID,
         "The ID used to register the entity used to display ranges of blocks").getInt(rangeEntityID);
     
