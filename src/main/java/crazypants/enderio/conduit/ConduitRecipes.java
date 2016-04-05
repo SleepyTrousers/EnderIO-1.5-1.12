@@ -17,8 +17,8 @@ import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import static crazypants.enderio.material.Alloy.CONDUCTIVE_IRON;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Alloy.REDSTONE_ALLOY;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.PULSATING_IRON_NUGGET;
 import static crazypants.util.RecipeUtil.addShaped;
@@ -50,6 +50,9 @@ public class ConduitRecipes {
         new ItemStack(EnderIO.blockConduitFacade, 1, EnumFacadeType.BASIC.ordinal()), 'o', "dustObsidian"));
 
     int numConduits = Config.numConduitsPerRecipe;
+    if (numConduits <= 0 || numConduits > 64) {
+      numConduits = Config.recipeLevel > 2 ? 2 : Config.recipeLevel > 1 ? 8 : 12;
+    }
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', fusedGlass);
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', fusedQuartz);
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 2), "bbb", "#p#", "bbb", 'b', binder, '#', fusedQuartz, 'p', phasedGold);
@@ -66,8 +69,6 @@ public class ConduitRecipes {
 
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     addShaped(itemConduit, "bbb", "###", "bbb", 'b', binder, '#', phasedIronNugget);
-
-    // MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, EnderIO.itemConduitFacade.new FacadePainterRecipe());
 
     //Filter Recipes
     ItemStack basicFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 0);

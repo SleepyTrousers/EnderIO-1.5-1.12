@@ -21,8 +21,8 @@ import static com.enderio.core.common.util.OreDictionaryHelper.hasTin;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Alloy.PULSATING_IRON;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Material.BINDER_COMPOSITE;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.util.RecipeUtil.addShaped;
@@ -114,13 +114,13 @@ public class MaterialRecipes {
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
 
     //Conduit Binder
-    ItemStack cbc = BINDER_COMPOSITE.getStack(8);
-    if (Config.useAlternateBinderRecipe) {
+    ItemStack cbc = BINDER_COMPOSITE.getStack(Config.recipeLevel > 2 ? 4 : 8);
+    if (Config.recipeLevel > 0) {
       addShaped(cbc, "gcg", "sgs", "gcg", 'g', Blocks.gravel, 's', "sand", 'c', Items.clay_ball);
     } else {
       addShaped(cbc, "ggg", "scs", "ggg", 'g', Blocks.gravel, 's', "sand", 'c', Items.clay_ball);
     }
-    GameRegistry.addSmelting(BINDER_COMPOSITE.getStack(), CONDUIT_BINDER.getStack(4), 0);
+    GameRegistry.addSmelting(BINDER_COMPOSITE.getStack(), CONDUIT_BINDER.getStack(Config.recipeLevel > 1 ? 2 : 4), 0);
 
     //Nuggets
     ItemStack phasedIronNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.PULSATING_IRON_NUGGET.ordinal());
@@ -144,7 +144,13 @@ public class MaterialRecipes {
 
     //Balls
     ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DARK_GRINDING_BALL.ordinal());
-    addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
+    if (Config.recipeLevel > 2) {
+      addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
+    } else if (Config.recipeLevel > 1) {
+      addShaped(darkBall, " s ", "s s", " s ", 's', darkSteel);
+    } else {
+      addShaped(darkBall, "ss", "ss", 's', darkSteel);
+    }
 
     //Smelting
     ItemStack dustIron = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal());
@@ -166,33 +172,44 @@ public class MaterialRecipes {
     // Machine Chassis
 
     List<ItemStack> steelIngots = OreDictionary.getOres("ingotSteel");
+    boolean hasSteel = steelIngots != null && !steelIngots.isEmpty();
 
     ItemStack chassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
-    String mat = Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty() ? "ingotSteel" : "ingotIron";
-    addShaped(chassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', mat, 'c', capacitor);
+    if (!hasSteel || Config.recipeLevel < 2) {
+      addShaped(chassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', "ingotIron", 'c', capacitor);
+    } else if (Config.recipeLevel > 2) {
+      addShaped(chassis, "fSf", "ScS", "fSf", 'f', Blocks.iron_bars, 'S', "ingotSteel", 'c', capacitor);
+    } else {
+      addShaped(chassis, "fif", "ScS", "fif", 'f', Blocks.iron_bars, 'i', "ingotIron", 'S', "ingotSteel", 'c', capacitor);
+    }
 
     // Basic Gear
     ItemStack gear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
-    addShaped(gear, "scs", "c c", "scs", 's', "stickWood", 'c', "cobblestone");
-    addShaped(gear, "scs", "c c", "scs", 's', "woodStick", 'c', "cobblestone");
+    if (Config.recipeLevel > 2) {
+      addShaped(gear, "scs", "cic", "scs", 's', "stickWood", 'c', "cobblestone", 'i', "ingotIron");
+      addShaped(gear, "scs", "cic", "scs", 's', "woodStick", 'c', "cobblestone", 'i', "ingotIron");
+    } else {
+      addShaped(gear, "scs", "c c", "scs", 's', "stickWood", 'c', "cobblestone");
+      addShaped(gear, "scs", "c c", "scs", 's', "woodStick", 'c', "cobblestone");
+    }
 
     //Ender Capacitor
     ItemStack enderCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 2);
     ItemStack activatedCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 1);
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 2) {
       addShaped(enderCapacitor, "eee", "cgc", "eee", 'e', phasedGold, 'c', activatedCapacitor, 'g', "glowstone");
     } else {
       addShaped(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', "glowstone");
     }
 
     // Weather Crystal
-    ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
+    ItemStack main = Config.recipeLevel > 1 ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
     GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main /* TODO figure out new weather crystal recipe */));
 
     if (Config.reinforcedObsidianEnabled) {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);
       String corners = darkSteel;
-      if (Config.reinforcedObsidianUseDarkSteelBlocks) {
+      if (Config.recipeLevel > 2) {
         corners = Alloy.DARK_STEEL.getOreBlock();
       }
       addShaped(reinfObs, "dbd", "bob", "dbd", 'd', corners, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
@@ -227,20 +244,19 @@ public class MaterialRecipes {
       GameRegistry.addSmelting(dustTin, ingotTin, 0);
     }
 
-    List<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
     String gold;
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 2) {
       gold = "ingotGold";
     } else {
       gold = "nuggetGold";
     }
-    if (copperIngots != null && !copperIngots.isEmpty() && Config.useModMetals) {
-      addShaped(capacitor, " gr", "gcg", "rg ", 'r', "dustRedstone", 'g', gold, 'c', "ingotCopper");
-    } else {
+    if (!hasCopper() || Config.recipeLevel < 1) {
       addShaped(capacitor, " gr", "gig", "rg ", 'r', "dustRedstone", 'g', gold, 'i', "ingotIron");
+    } else {
+      addShaped(capacitor, " gr", "gcg", "rg ", 'r', "dustRedstone", 'g', gold, 'c', "ingotCopper");
     }
 
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 2) {
       addShaped(activatedCapacitor, "eee", "cCc", "eee", 'e', energeticAlloy, 'c', capacitor, 'C', "dustCoal");
     } else {
       addShaped(activatedCapacitor, " e ", "cCc", " e ", 'e', energeticAlloy, 'c', capacitor, 'C', "dustCoal");

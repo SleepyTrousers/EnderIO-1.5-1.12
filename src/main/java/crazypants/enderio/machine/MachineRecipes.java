@@ -24,9 +24,9 @@ import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
 import static crazypants.enderio.material.Alloy.ELECTRICAL_STEEL;
 import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Alloy.PULSATING_IRON;
 import static crazypants.enderio.material.Alloy.SOULARIUM;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.ENDER_CRYSTAL;
 import static crazypants.enderio.material.Material.PULSATING_CYSTAL;
@@ -66,7 +66,7 @@ public class MachineRecipes {
     String binder = CONDUIT_BINDER.oreDict;
     String silicon = SILICON.oreDict;
 
-    if (Config.addPeacefulRecipes) {
+    if (Config.addPeacefulRecipes || Config.recipeLevel <= 0) {
       addShaped(frankenZombie, "gdg", "dzd", "gdg", 'g', "ingotGold", 'd', "gemDiamond", 'z', zombieController);
       addShaped(sentientEnder, "ddd", "ded", "dgd", 'g', "blockGold", 'd', "gemDiamond", 'e', enderRes);
     }
@@ -100,7 +100,7 @@ public class MachineRecipes {
     //Powered Spawner
     ItemStack poweredSpawner = new ItemStack(EnderIO.blockPoweredSpawner);
     ItemStack zombieBit;
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 2) {
       zombieBit = frankenZombie;
     } else {
       zombieBit = zombieController;
@@ -111,7 +111,7 @@ public class MachineRecipes {
       //reservoir    
       ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
       Object glassSides;
-      if (Config.useHardRecipes) {
+      if (Config.recipeLevel > 1) {
         glassSides = "blockGlassHardened";
       } else {
         glassSides = "glass";
@@ -128,7 +128,7 @@ public class MachineRecipes {
 
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 1) {
       addShaped(crusher, "ooo", "fmf", "pip", 'f', Items.flint, 'm', machineChassi, 'i', "ingotIron", 'p', Blocks.piston, 'o', Blocks.obsidian);
     } else {
       addShaped(crusher, "fff", "imi", "ipi", 'f', Items.flint, 'm', machineChassi, 'i', "ingotIron", 'p', Blocks.piston);
@@ -136,7 +136,7 @@ public class MachineRecipes {
 
     //alloy smelter
     ItemStack alloySmelter = new ItemStack(EnderIO.blockAlloySmelter, 1, 0);
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 2) {
       addShaped(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', "blockIron", 'f', Blocks.furnace);
     } else {
       addShaped(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', "ingotIron", 'f', Blocks.furnace);
@@ -161,7 +161,7 @@ public class MachineRecipes {
 
 //    //painter
     ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 1) {
       addShaped(painter, "qqq", "mdm", "mMm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
     } else {
       addShaped(painter, "qdq", "mMm", "mmm", 'm', electricalSteel, 'M', machineChassi, 'q', "gemQuartz", 'd', "gemDiamond", 'd', "gemDiamond");
@@ -169,21 +169,16 @@ public class MachineRecipes {
 
     //Farm
     ItemStack farm = new ItemStack(EnderIO.blockFarmStation, 1, 0);
-    if (Config.useHardRecipes) {
-      zombieBit = frankenZombie;
-    } else {
-      zombieBit = zombieController;
-    }
     addShaped(farm, "ehe", "eme", "pzp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricalSteel, 'z', zombieController, 'p', pulCry);
 
     if (Config.transceiverEnabled) {
       //transceiver
       ItemStack transceiver = new ItemStack(EnderIO.blockTransceiver, 1, 0);
-      if (Config.transceiverUseEasyRecipe) {
+      if (Config.recipeLevel > 1) {
+        addShaped(transceiver, "oeo", "pdp", "oco", 'o', electricalSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);
+      } else {
         addShaped(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd',
             Items.diamond);
-      } else {
-        addShaped(transceiver, "oeo", "pdp", "oco", 'o', electricalSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);        
       }
     }
 
@@ -194,7 +189,7 @@ public class MachineRecipes {
       ItemStack advSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, SolarType.getMetaFromType(SolarType.ADVANCED));
       ItemStack vibSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, SolarType.getMetaFromType(SolarType.VIBRANT));
       ItemStack darkQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.getMetaFromType(FusedQuartzType.DARK_FUSED_QUARTZ));
-      if (Config.useHardRecipes) {
+      if (Config.recipeLevel > 1) {
         addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'c', capacitor, 'e', energeticAlloy, 'p',
             phasedGold);
         addShaped(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e', phasedIron, 'p', phasedGold);
@@ -224,7 +219,7 @@ public class MachineRecipes {
 
     //Soul Binder
     Object enderBit;
-    if (Config.soulBinderRequiresEndermanSkull) {
+    if (Config.recipeLevel > 1) {
       enderBit = new ItemStack(EnderIO.blockEndermanSkull);
     } else {
       enderBit = pulCry;
@@ -279,7 +274,7 @@ public class MachineRecipes {
     ItemStack machineChassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
 
     //powered light
-    if (Config.useHardRecipes) {
+    if (Config.recipeLevel > 1) {
       addShaped(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', "dustGlowstone", 's', "itemSilicon", 'c', capacitor);
     } else {
       addShaped(poweredLamp, "ggg", "sds", "scs", 'g', "glass", 'd', "dustGlowstone", 's', "itemSilicon", 'c', capacitor);

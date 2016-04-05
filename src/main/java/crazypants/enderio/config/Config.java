@@ -88,9 +88,6 @@ public final class Config {
   public static boolean jeiUseShortenedPainterRecipes = true;
 
   public static boolean reinforcedObsidianEnabled = true;
-  public static boolean reinforcedObsidianUseDarkSteelBlocks = false;
-
-  public static boolean useAlternateBinderRecipe = false;
 
   public static boolean useAlternateTesseractModel = false;
 
@@ -100,23 +97,20 @@ public final class Config {
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static int numConduitsPerRecipe = 8;
+  public static int numConduitsPerRecipe = -1;
 
   public static boolean transceiverEnabled = true;
   public static double transceiverEnergyLoss = 0.1;
   public static int transceiverUpkeepCostRF = 10;
   public static int transceiverBucketTransmissionCostRF = 100;
   public static int transceiverMaxIoRF = 20480;
-  public static boolean transceiverUseEasyRecipe = false;
 
   public static File configDirectory;
 
-  public static boolean useHardRecipes = false;
+  public static int recipeLevel = 2; // TODO
   public static boolean addPeacefulRecipes = false;
   public static boolean allowExternalTickSpeedup = true;
   public static boolean crateSyntheticRecipes = true;
-
-  public static boolean useSteelInChassi = false;
 
   public static boolean detailedPowerTrackingEnabled = false;
 
@@ -384,8 +378,6 @@ public final class Config {
 
   public static int vacuumChestRange = 6;
 
-  public static boolean useModMetals = true;
-
   public static int wirelessChargerRange = 24;
 
   public static long nutrientFoodBoostDelay = 400;
@@ -444,7 +436,6 @@ public final class Config {
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
 
-  public static boolean soulBinderRequiresEndermanSkull = true;
 
   public static int attractorRangeLevelOne = 16;
   public static int attractorPowerPerTickLevelOne = 20;
@@ -619,21 +610,16 @@ public final class Config {
         "The total amount of RF required to paint one block")
         .getInt(painterEnergyPerTaskRF);
 
-    useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
-        .getBoolean(useHardRecipes);
+    recipeLevel = config.get(sectionRecipe.name, "recipeLevel", recipeLevel,
+        "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive").getInt(recipeLevel);
+
     addPeacefulRecipes = config.get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
         .getBoolean(addPeacefulRecipes);
-    soulBinderRequiresEndermanSkull = config.getBoolean("soulBinderRequiresEndermanSkull", sectionRecipe.name, soulBinderRequiresEndermanSkull,
-        "When true the Soul Binder requires an Enderman Skull to craft");
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
         "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
         .getBoolean(allowTileEntitiesAsPaintSource);
-    useSteelInChassi = config.get(sectionRecipe.name, "useSteelInChassi", useSteelInChassi, "When enabled machine chassis will require steel instead of iron.")
-        .getBoolean(useSteelInChassi);
     numConduitsPerRecipe = config.get(sectionRecipe.name, "numConduitsPerRecipe", numConduitsPerRecipe,
-        "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
-    transceiverUseEasyRecipe= config.get(sectionRecipe.name, "transceiverUseEasyRecipe", transceiverUseEasyRecipe, "When enabled the dim trans. will use a cheaper recipe")
-        .getBoolean(useHardRecipes);
+        "The number of conduits crafted per recipe. (-1 to use default from recipeLevel)").getInt(numConduitsPerRecipe);
     crateSyntheticRecipes = config
         .get(
             sectionRecipe.name,
@@ -673,9 +659,6 @@ public final class Config {
         "When enabled Photovoltaic Panels of different kinds can join together as a multi-block").getBoolean(photovoltaicCanTypesJoins);
     photovoltaicRecalcSunTick = config.get(sectionPower.name, "photovoltaicRecalcSunTick", photovoltaicRecalcSunTick,
         "How often (in ticks) the Photovoltaic Panels should check the sun's angle.").getInt(photovoltaicRecalcSunTick);
-
-    useAlternateBinderRecipe = config.get(sectionRecipe.name, "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
-        .getBoolean(useAlternateBinderRecipe);
 
     conduitScale = config.get(sectionAesthetic.name, "conduitScale", DEFAULT_CONDUIT_SCALE,
         "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" +
@@ -765,8 +748,6 @@ public final class Config {
 
     reinforcedObsidianEnabled = config.get(sectionItems.name, "reinforcedObsidianEnabled", reinforcedObsidianEnabled,
         "When set to false reinforced obsidian is not craftable.").getBoolean(reinforcedObsidianEnabled);
-    reinforcedObsidianUseDarkSteelBlocks = config.get(sectionRecipe.name, "reinforcedObsidianUseDarkSteelBlocks", reinforcedObsidianUseDarkSteelBlocks,
-        "When set to true four dark steel blocks are required instead of ingots when making reinforced obsidian.").getBoolean(reinforcedObsidianUseDarkSteelBlocks);
 
     travelAnchorEnabled = config.get(sectionItems.name, "travelAnchorEnabled", travelAnchorEnabled,
         "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
@@ -1192,9 +1173,6 @@ public final class Config {
 
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
-
-    useModMetals = config.get(sectionRecipe.name, "useModMetals", useModMetals,
-        "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);
 
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
