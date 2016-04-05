@@ -40,11 +40,10 @@ import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TravelController;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel,
-    IOverlayRenderAware {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_pickaxe";
-  
+
   public static boolean isEquipped(EntityPlayer player) {
     if (player == null) {
       return false;
@@ -74,12 +73,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);
-    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(NAME);
   }
-  
+
   @Override
-  public String getItemName() {  
+  public String getItemName() {
     return NAME;
   }
 
@@ -126,15 +125,13 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
     if (slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
       /*
-       * this will not work with buckets unless we don't switch back to the
-       * current item (the pick); there's probably some client <-> server event
-       * thing going on with buckets, so our item-switch within the same tick
-       * would be a problem.
+       * this will not work with buckets unless we don't switch back to the current item (the pick); there's probably some client <-> server event thing going
+       * on with buckets, so our item-switch within the same tick would be a problem.
        */
       player.inventory.currentItem = slot;
       Minecraft mc = Minecraft.getMinecraft();
-      boolean result = mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot], mc.objectMouseOver.getBlockPos(),
-          mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
+      boolean result = mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],
+          mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
       player.inventory.currentItem = current;
       return (result);
     }
@@ -185,7 +182,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered
           + Config.darkSteelPickEffeciencyObsidian;
     }
-    if (isToolEffective(state, stack )) {
+    if (isToolEffective(state, stack)) {
       if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
       }
@@ -217,8 +214,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       useObsidianSpeed = block == Blocks.obsidian;
       if (!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
         try {
-          useObsidianSpeed = (block != null
-              && block.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
+          useObsidianSpeed = (block != null && block.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
         } catch (Exception e) {
           // given we are passing in a null world to getBlockHardness it is
           // possible this could cause an NPE, so just ignore it
@@ -288,8 +284,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
-      list.add(
-          EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
+      list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs")
+          + " ");
       list.add(EnumChatFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " " + PowerDisplayUtil.abrevation() + ")");
     }

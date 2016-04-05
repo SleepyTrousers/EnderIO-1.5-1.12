@@ -47,24 +47,24 @@ import crazypants.enderio.teleport.TravelController;
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_sword";
-  
+
   private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 1561, 7, 2, 25);
 
   public static boolean isEquipped(EntityPlayer player) {
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
+    if (equipped == null) {
       return false;
     }
     return equipped.getItem() == DarkSteelItems.itemDarkSteelSword;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
-    if(!isEquipped(player)) {
+    if (!isEquipped(player)) {
       return false;
     }
     return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem()) >= requiredPower;
@@ -82,12 +82,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   public ItemDarkSteelSword() {
     super(MATERIAL);
-    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(NAME);
   }
-  
+
   @Override
-  public String getItemName() {  
+  public String getItemName() {
     return NAME;
   }
 
@@ -111,7 +111,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @SubscribeEvent
   public void onEnderTeleport(EnderTeleportEvent evt) {
-    if(evt.entityLiving.getEntityData().getBoolean("hitByDarkSteelSword")) {
+    if (evt.entityLiving.getEntityData().getBoolean("hitByDarkSteelSword")) {
       evt.setCanceled(true);
     }
   }
@@ -121,49 +121,48 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void onEntityDrop(LivingDropsEvent evt) {
 
-    if(!(evt.source.getEntity() instanceof EntityPlayer)) {
+    if (!(evt.source.getEntity() instanceof EntityPlayer)) {
       return;
     }
 
     EntityPlayer player = (EntityPlayer) evt.source.getEntity();
-    //Handle TiC weapons with beheading differently
-    if(handleBeheadingWeapons(player, evt)) {
+    // Handle TiC weapons with beheading differently
+    if (handleBeheadingWeapons(player, evt)) {
       return;
     }
 
     double skullDropChance = getSkullDropChance(player, evt);
-    if(player instanceof FakePlayer) {
+    if (player instanceof FakePlayer) {
       skullDropChance *= Config.fakePlayerSkullChance;
     }
-    if(Math.random() <= skullDropChance) {
+    if (Math.random() <= skullDropChance) {
       dropSkull(evt, player);
     }
 
     // Special handling for ender pearl drops
-    if(isEquipped(player)) {
+    if (isEquipped(player)) {
       String name = EntityList.getEntityString(evt.entityLiving);
-      if(evt.entityLiving instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
+      if (evt.entityLiving instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
         int numPearls = 0;
-        if(Math.random() <= Config.darkSteelSwordEnderPearlDropChance) {
+        if (Math.random() <= Config.darkSteelSwordEnderPearlDropChance) {
           numPearls++;
         }
         for (int i = 0; i < evt.lootingLevel; i++) {
-          if(Math.random() <= Config.darkSteelSwordEnderPearlDropChancePerLooting) {
+          if (Math.random() <= Config.darkSteelSwordEnderPearlDropChancePerLooting) {
             numPearls++;
           }
         }
 
         int existing = 0;
         for (EntityItem stack : evt.drops) {
-          if(stack.getEntityItem() != null && stack.getEntityItem().getItem() == Items.ender_pearl) {
+          if (stack.getEntityItem() != null && stack.getEntityItem().getItem() == Items.ender_pearl) {
             existing += stack.getEntityItem().stackSize;
           }
         }
         int toDrop = numPearls - existing;
-        if(toDrop > 0) {
+        if (toDrop > 0) {
           evt.drops.add(Util.createDrop(player.worldObj, new ItemStack(Items.ender_pearl, toDrop, 0), evt.entityLiving.posX, evt.entityLiving.posY,
-              evt.entityLiving.posZ,
-              false));
+              evt.entityLiving.posZ, false));
         }
 
       }
@@ -173,54 +172,54 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   protected void dropSkull(LivingDropsEvent evt, EntityPlayer player) {
     ItemStack skull = getSkullForEntity(evt.entityLiving);
-    if(skull != null && !containsDrop(evt, skull)) {
+    if (skull != null && !containsDrop(evt, skull)) {
       evt.drops.add(Util.createEntityItem(player.worldObj, skull, evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ));
     }
   }
 
   private boolean handleBeheadingWeapons(EntityPlayer player, LivingDropsEvent evt) {
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null || equipped.getTagCompound() == null) {
+    if (equipped == null || equipped.getTagCompound() == null) {
       return false;
     }
     NBTTagCompound infiToolRoot = equipped.getTagCompound().getCompoundTag("InfiTool");
-    if(infiToolRoot == null) {
+    if (infiToolRoot == null) {
       return false;
     }
 
     boolean isCleaver = "tconstruct.items.tools.Cleaver".equals(equipped.getItem().getClass().getName());
     boolean hasBeheading = infiToolRoot.hasKey("Beheading");
-    if(!isCleaver && !hasBeheading) {
-      //Use default behavior if it is not a cleaver and doesn't have beheading
+    if (!isCleaver && !hasBeheading) {
+      // Use default behavior if it is not a cleaver and doesn't have beheading
       return false;
     }
 
-    if(!(evt.entityLiving instanceof EntityEnderman)) {
-      //If its not an enderman just let TiC do its thing
-      //We wont modify head drops at all
+    if (!(evt.entityLiving instanceof EntityEnderman)) {
+      // If its not an enderman just let TiC do its thing
+      // We wont modify head drops at all
       return true;
     }
 
     float fromWeapon;
-    if(isCleaver) {
+    if (isCleaver) {
       fromWeapon = Config.ticCleaverSkullDropChance;
     } else {
       fromWeapon = Config.vanillaSwordSkullChance;
     }
     float fromLooting = 0;
-    if(hasBeheading) {
+    if (hasBeheading) {
       fromLooting = Config.ticBeheadingSkullModifier * infiToolRoot.getInteger("Beheading");
     }
     float skullDropChance = fromWeapon + fromLooting;
-    if(Math.random() <= skullDropChance) {
+    if (Math.random() <= skullDropChance) {
       dropSkull(evt, player);
     }
     return true;
   }
 
   private double getSkullDropChance(EntityPlayer player, LivingDropsEvent evt) {
-    if(isWitherSkeleton(evt)) {
-      if(isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
+    if (isWitherSkeleton(evt)) {
+      if (isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
         return Config.darkSteelSwordWitherSkullChance + (Config.darkSteelSwordWitherSkullLootingModifier * evt.lootingLevel);
       } else {
         return 0.01;
@@ -228,7 +227,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     }
     float fromWeapon;
     float fromLooting;
-    if(isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
+    if (isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
       fromWeapon = Config.darkSteelSwordSkullChance;
       fromLooting = Config.darkSteelSwordSkullLootingModifier * evt.lootingLevel;
     } else {
@@ -244,7 +243,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private boolean containsDrop(LivingDropsEvent evt, ItemStack skull) {
     for (EntityItem ei : evt.drops) {
-      if(ei != null && ei.getEntityItem() != null && ei.getEntityItem().getItem() == skull.getItem()
+      if (ei != null && ei.getEntityItem() != null && ei.getEntityItem().getItem() == skull.getItem()
           && ei.getEntityItem().getItemDamage() == skull.getItemDamage()) {
         return true;
       }
@@ -253,18 +252,18 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private ItemStack getSkullForEntity(EntityLivingBase entityLiving) {
-    if(entityLiving instanceof EntitySkeleton) {
+    if (entityLiving instanceof EntitySkeleton) {
       int type = ((EntitySkeleton) entityLiving).getSkeletonType();
-      if(type == 1) {
+      if (type == 1) {
         return new ItemStack(Items.skull, 1, 1);
       } else {
         return new ItemStack(Items.skull, 1, 0);
       }
-    } else if(entityLiving instanceof EntityZombie) {
+    } else if (entityLiving instanceof EntityZombie) {
       return new ItemStack(Items.skull, 1, 2);
-    } else if(entityLiving instanceof EntityCreeper) {
+    } else if (entityLiving instanceof EntityCreeper) {
       return new ItemStack(Items.skull, 1, 4);
-    } else if(entityLiving instanceof EntityEnderman) {
+    } else if (entityLiving instanceof EntityEnderman) {
       return new ItemStack(EnderIO.blockEndermanSkull);
     }
 
@@ -278,28 +277,28 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @Override
   public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase playerEntity) {
 
-    if(playerEntity instanceof EntityPlayer) {
+    if (playerEntity instanceof EntityPlayer) {
 
       EntityPlayer player = (EntityPlayer) playerEntity;
       ItemStack sword = player.getCurrentEquippedItem();
 
-      //Durability damage
+      // Durability damage
       EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-      if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+      if (eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
         eu.extractEnergy(powerPerDamagePoint, false);
 
       } else {
         super.hitEntity(stack, entity, playerEntity);
       }
 
-      //sword hit
-      if(eu != null) {
+      // sword hit
+      if (eu != null) {
         eu.writeToItem(sword);
 
-        if(eu.getEnergy() > Config.darkSteelSwordPowerUsePerHit) {
+        if (eu.getEnergy() > Config.darkSteelSwordPowerUsePerHit) {
           extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelSwordPowerUsePerHit, false);
           String name = EntityList.getEntityString(entity);
-          if(entity instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
+          if (entity instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
             entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
           }
         }
@@ -332,7 +331,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    //return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+    // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
     return false;
   }
 
@@ -348,15 +347,15 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    if(!Config.addDurabilityTootip) {
+    if (!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
-    if(str != null) {
+    if (str != null) {
       list.add(str);
     }
     list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+    if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
       list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
@@ -383,20 +382,20 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-    if(isTravelUpgradeActive(player, stack)) {
-      if(world.isRemote) {
-        if(TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
+    if (isTravelUpgradeActive(player, stack)) {
+      if (world.isRemote) {
+        if (TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
           player.swingItem();
           return stack;
         }
       }
 
       long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
-      if(ticksSinceBlink < 0) {
+      if (ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
-      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if(TravelController.instance.doBlink(stack, player)) {
+      if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if (TravelController.instance.doBlink(stack, player)) {
           player.swingItem();
           lastBlickTick = EnderIO.proxy.getTickCount();
         }

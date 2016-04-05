@@ -42,13 +42,13 @@ import crazypants.enderio.machine.farm.farmers.HarvestResult;
 public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_shears";
-  
+
   public static boolean isEquipped(EntityPlayer player) {
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
+    if (equipped == null) {
       return false;
     }
     return equipped.getItem() == DarkSteelItems.itemDarkSteelShears;
@@ -59,7 +59,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   }
 
   public static int getStoredPower(EntityPlayer player) {
-    if(!isEquipped(player)) {
+    if (!isEquipped(player)) {
       return 0;
     }
     return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem());
@@ -78,15 +78,15 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   protected ItemDarkSteelShears() {
     super();
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
-    setCreativeTab(EnderIOTab.tabEnderIO);    
-    setUnlocalizedName(NAME);    
+    setCreativeTab(EnderIOTab.tabEnderIO);
+    setUnlocalizedName(NAME);
   }
 
   @Override
-  public String getItemName() {  
+  public String getItemName() {
     return NAME;
   }
-  
+
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 2;
@@ -116,20 +116,20 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     }
 
     Block block = player.worldObj.getBlockState(pos).getBlock();
-    if (block instanceof IShearable && ((IShearable)block).isShearable(itemstack, player.worldObj, pos)) {
-      
+    if (block instanceof IShearable && ((IShearable) block).isShearable(itemstack, player.worldObj, pos)) {
+
       HarvestResult res = new HarvestResult(null, pos);
 
       int x = pos.getX();
       int y = pos.getX();
       int z = pos.getX();
-      
+
       for (int dx = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dx <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dx++) {
         for (int dy = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dy <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dy++) {
           for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dz <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dz++) {
-            Block block2 = player.worldObj.getBlockState(new BlockPos(x+dx, y+dy, z+dz)).getBlock();
-            if (block2 instanceof IShearable && ((IShearable)block2).isShearable(itemstack, player.worldObj, new BlockPos(x+dx, y+dy, z+dz))) {
-                res.getHarvestedBlocks().add(new BlockPos(x+dx, y+dy, z+dz));
+            Block block2 = player.worldObj.getBlockState(new BlockPos(x + dx, y + dy, z + dz)).getBlock();
+            if (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.worldObj, new BlockPos(x + dx, y + dy, z + dz))) {
+              res.getHarvestedBlocks().add(new BlockPos(x + dx, y + dy, z + dz));
             }
           }
         }
@@ -140,7 +140,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
       Collections.sort(sortedTargets, harvestComparator);
 
       int maxBlocks = Math.min(sortedTargets.size(), powerStored / Config.darkSteelShearsPowerUsePerDamagePoint);
-      for (int i=0 ; i < maxBlocks ; i++) {
+      for (int i = 0; i < maxBlocks; i++) {
         BlockPos bc2 = sortedTargets.get(i);
         super.onBlockStartBreak(itemstack, bc2, player);
         if (bc2 != pos) {
@@ -152,11 +152,11 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     return false;
   }
 
-  Predicate<Entity> selectShearable = new Predicate<Entity> () {
+  Predicate<Entity> selectShearable = new Predicate<Entity>() {
 
     @Override
     public boolean apply(@Nullable Entity entity) {
-      return entity instanceof IShearable && ((IShearable)entity).isShearable(null, entity.worldObj, entity.getPosition());
+      return entity instanceof IShearable && !entity.isDead && ((IShearable) entity).isShearable(null, entity.worldObj, entity.getPosition());
     }
 
     @Override
@@ -177,18 +177,18 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     }
 
     if (entity instanceof IShearable) {
-      AxisAlignedBB bb = new AxisAlignedBB(
-          entity.posX - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ - Config.darkSteelShearsEntityAreaBoostWhenPowered,
-          entity.posX + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ + Config.darkSteelShearsEntityAreaBoostWhenPowered);
-      
-      
+      AxisAlignedBB bb = new AxisAlignedBB(entity.posX - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY
+          - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posX
+          + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ
+          + Config.darkSteelShearsEntityAreaBoostWhenPowered);
+
       List<Entity> sortedTargets = new ArrayList<Entity>(entity.worldObj.getEntitiesWithinAABB(Entity.class, bb, selectShearable));
       entityComparator.refPoint = entity;
       Collections.sort(sortedTargets, entityComparator);
 
       boolean result = false;
       int maxSheep = Math.min(sortedTargets.size(), powerStored / Config.darkSteelShearsPowerUsePerDamagePoint);
-      for (int i=0 ; i < maxSheep ; i++) {
+      for (int i = 0; i < maxSheep; i++) {
         Entity entity2 = sortedTargets.get(i);
         if (entity2 instanceof EntityLivingBase && super.itemInteractionForEntity(itemstack, player, (EntityLivingBase) entity2)) {
           result = true;
@@ -199,10 +199,9 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     return false;
   }
 
-
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if(evt.originalSpeed > 2.0 && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelShearsPowerUsePerDamagePoint)) {
+    if (evt.originalSpeed > 2.0 && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelShearsPowerUsePerDamagePoint)) {
       evt.newSpeed = evt.originalSpeed * Config.darkSteelShearsEffeciencyBoostWhenPowered;
     }
   }
@@ -216,12 +215,12 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     int damage = newDamage - oldDamage;
 
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
     } else {
       super.setDamage(stack, newDamage);
     }
-    if(eu != null) {
+    if (eu != null) {
       eu.writeToItem(stack);
     }
   }
@@ -252,7 +251,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
 
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    //return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+    // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
     return false;
   }
 
@@ -273,14 +272,14 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    if(!Config.addDurabilityTootip) {
+    if (!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
-    if(str != null) {
+    if (str != null) {
       list.add(str);
     }
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+    if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnderIO.lang.localize("item.darkSteel_shears.tooltip.multiHarvest"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));

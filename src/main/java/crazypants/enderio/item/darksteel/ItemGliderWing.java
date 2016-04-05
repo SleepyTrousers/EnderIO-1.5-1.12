@@ -2,12 +2,6 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.power.Capacitors;
-import crazypants.util.ClientUtil;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -17,6 +11,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 
 public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
@@ -47,7 +47,7 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length - 1);
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 1);
     if(i == 0) {
       return super.getUnlocalizedName();
     }
