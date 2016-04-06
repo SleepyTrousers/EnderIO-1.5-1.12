@@ -27,8 +27,10 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
+
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
 
@@ -96,8 +98,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean canBeActive = true;
   private boolean tanksDirty;
 
-  private static final ICapacitor cap = Capacitors.BASIC_CAPACITOR.capacitor;
-  
   private FluidTank inputTank = new FluidTank(8000);
   
   /* client fields */
@@ -105,12 +105,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean playedFuse = false;
 
   public TileWeatherObelisk() {
-    super(new SlotDefinition(1, 0, 0));
+    super(new SlotDefinition(1, 0, 0), WEATHER_POWER_INTAKE, WEATHER_POWER_BUFFER, WEATHER_POWER_USE);
   }
 
   @Override
   public void init() {
-    // TODO setCapacitor(Capacitors.ACTIVATED_CAPACITOR);
   }
 
   @Override
@@ -148,11 +147,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     return this;
   }
 
-  @Override
-  public ICapacitor getCapacitor() {
-    return cap;
-  }
-  
   public WeatherTask getActiveTask() {
     return activeTask;
   }
@@ -170,17 +164,21 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     if (progress < 0.9f) {      
       Color c = getActiveTask().color;
       double correction = 0.1;
-      BlockPos pos = getPos();
-      double xf = pos.getX() + 0.5 + correction;
-      double yf = pos.getY() + 0.8;
-      double zf = pos.getZ() + 0.5 + correction;
+      BlockPos pos1 = getPos();
+      double xf = pos1.getX() + 0.5 + correction;
+      double yf = pos1.getY() + 0.8;
+      double zf = pos1.getZ() + 0.5 + correction;
       Block b = getBlockType();
-      double yi = pos.getY() + b.getBlockBoundsMaxY() - 0.1;
+      double yi = pos1.getY() + b.getBlockBoundsMaxY() - 0.1;
       double offset = 0.3;
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos.getX() + offset + correction, yi, pos.getZ() + offset + correction, xf, yf, zf, c));
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos.getX() + (1 - offset) + correction, yi, pos.getZ() + offset + correction, xf, yf, zf, c));
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos.getX() + (1 - offset) + correction, yi, pos.getZ() + (1 - offset) + correction, xf, yf, zf, c));
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos.getX() + offset + correction, yi, pos.getZ() + (1 - offset) + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + offset
+          + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + (1 - offset) + correction, yi, pos1.getZ() + offset
+          + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + (1 - offset) + correction, yi, pos1.getZ()
+          + (1 - offset) + correction, xf, yf, zf, c));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + (1 - offset)
+          + correction, xf, yf, zf, c));
     } else if (!playedFuse) {
       worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), "game.tnt.primed", 1, 1, true);
       playedFuse = true;
@@ -188,10 +186,10 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
   
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
     boolean res = false;
 
-    if(!redstoneCheckPassed) {
+    if (!redstoneCheck) {
       if(canBeActive) {
         canBeActive = false;
         res = true;
@@ -238,7 +236,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
    * @return True if the task can be started with the item in the inventory.
    */
   public boolean canStartTask(WeatherTask task) {
-    return getActiveTask() == null && !WeatherTask.worldIsState(task, worldObj) && getStackInSlot(0) != null && inputTank.getFluidAmount() >= 1000;
+    return task != null && getActiveTask() == null && !WeatherTask.worldIsState(task, worldObj) && getStackInSlot(0) != null
+        && inputTank.getFluidAmount() >= 1000 && task == WeatherTask.fromFluid(inputTank.getFluid().getFluid());
   }
 
   /**

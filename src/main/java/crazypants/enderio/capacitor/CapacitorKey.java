@@ -38,6 +38,10 @@ public enum CapacitorKey implements ICapacitorKey {
   TRANSCEIVER_POWER_BUFFER(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.FIXED_1, 500000),
   TRANSCEIVER_POWER_USE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_USE, Scaler.FIXED_1, 10, sectionPower, "transceiverUpkeepCostRF"),
 
+  WEATHER_POWER_INTAKE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
+  WEATHER_POWER_BUFFER(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  WEATHER_POWER_USE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20),
+
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),
   LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20, null, null),
