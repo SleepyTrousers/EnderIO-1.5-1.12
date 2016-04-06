@@ -38,4 +38,19 @@ public class CapacitorHelper {
     return new NBTCapacitorData(item.getUnlocalizedName(stack), capLevel, nbtTag);
   }
 
+  public static ItemStack addCapData(ItemStack stack, CapacitorKey key, float value) {
+    if (!stack.hasTagCompound()) {
+      stack.setTagCompound(new NBTTagCompound());
+    }
+    NBTTagCompound root = stack.getTagCompound();
+    NBTTagCompound tag = root.getCompoundTag("eiocap");
+    root.setTag("eiocap", tag);
+    if (key == null) {
+      tag.setInteger("level", (int) value);
+    } else {
+      tag.setFloat(key.getName(), value);
+    }
+    return stack;
+  }
+
 }
