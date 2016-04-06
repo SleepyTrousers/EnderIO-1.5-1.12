@@ -17,14 +17,13 @@ import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR; // WIP
+  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
   private int storedEnergyRF;
@@ -42,9 +41,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
       this.maxEnergyStored = CapacitorKey.LEGACY_ENERGY_BUFFER;
       this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
     } else {
-      this.maxEnergyRecieved = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80);
-      this.maxEnergyStored = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000);
-      this.maxEnergyUsed = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20);
+      this.maxEnergyRecieved = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80);
+      this.maxEnergyStored = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
+      this.maxEnergyUsed = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20);
     }
   }
 
@@ -115,11 +114,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   public boolean hasPower() {
     return storedEnergyRF > 0;
-  }
-
-  @Deprecated
-  public Capacitors getCapacitorType() {
-    return Capacitors.getFromData(capacitorData);
   }
 
   public ICapacitorData getCapacitorData() {

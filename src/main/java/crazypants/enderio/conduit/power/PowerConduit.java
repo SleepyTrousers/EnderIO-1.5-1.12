@@ -8,6 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
@@ -27,43 +40,16 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
   
-  private static ICapacitor[] capacitors;
-
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
 
-  static ICapacitor[] getCapacitors() {
-    if(capacitors == null) {
-      capacitors = new BasicCapacitor[] {
-        new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
-        new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
-        new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF)
-      };
-    }
-    return capacitors;
-  }
-  
   static ItemStack createItemStackForSubtype(int subtype) {
     ItemStack result = new ItemStack(EnderIO.itemPowerConduit, 1, subtype);
     return result;
@@ -159,11 +145,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   private boolean isColorBandRendered(EnumFacing dir) {
     return getConnectionMode(dir) != ConnectionMode.DISABLED && getExtractionRedstoneMode(dir) != RedstoneControlMode.IGNORE;
-  }
-
-  @Override
-  public ICapacitor getCapacitor() {
-    return getCapacitors()[subtype];
   }
 
   @Override
@@ -320,7 +301,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
     }
-    return getCapacitor().getMaxEnergyReceived();
+    return getMaxEnergyIO(subtype);
   }
 
   @Override
@@ -332,7 +313,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(recievedRfThisTick(dir)) {
       return 0;
     }
-    return getCapacitor().getMaxEnergyExtracted();
+    return getMaxEnergyIO(subtype);
   }
 
   private boolean recievedRfThisTick(EnumFacing dir) {
@@ -524,9 +505,20 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return result;
   }
 
+  static int getMaxEnergyIO(int subtype) {
+    switch (subtype) {
+    case 1:
+      return Config.powerConduitTierTwoRF;
+    case 2:
+      return Config.powerConduitTierThreeRF;
+    default:
+      return Config.powerConduitTierOneRF;
+    }
+  }
+
   @Override
   public int getMaxEnergyStored() {
-    return getCapacitors()[subtype].getMaxEnergyStored();
+    return getMaxEnergyIO(subtype);
   }
 
   @Override

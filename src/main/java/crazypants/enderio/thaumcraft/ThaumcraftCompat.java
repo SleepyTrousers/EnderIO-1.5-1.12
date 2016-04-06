@@ -2,14 +2,6 @@ package crazypants.enderio.thaumcraft;
 
 import java.util.List;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
-import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
-import crazypants.enderio.material.Alloy;
-import crazypants.enderio.material.FrankenSkull;
-import crazypants.enderio.material.Material;
-import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
-import crazypants.enderio.power.Capacitors;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,6 +13,13 @@ import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
+import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.FrankenSkull;
+import crazypants.enderio.material.Material;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 
 public class ThaumcraftCompat {
 
@@ -79,19 +78,19 @@ public class ThaumcraftCompat {
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull, 1, SkullType.TORMENTED.ordinal()), new AspectList()
         .add(getAspects(EnderIO.blockEndermanSkull))
         .add(getAspects(Items.potionitem)).add(getAspects(Items.potionitem))
-        .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
+            .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, 0)))
         .add(getAspects(Alloy.SOULARIUM.getOreIngot())).add(getAspects(Alloy.SOULARIUM.getOreIngot())));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_ELECTRODE.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.skull, 1, 2)))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
-        .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
+            .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, 0)))
         .add(getAspects(Alloy.ENERGETIC_ALLOY.getOreIngot())).add(getAspects(Alloy.ENERGETIC_ALLOY.getOreIngot())));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal()), new AspectList()
         .add(getAspects(new ItemStack(Items.skull, 1, 2)))
         .add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
-        .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.BASIC_CAPACITOR.ordinal())))
+            .add(getAspects(new ItemStack(EnderIO.itemBasicCapacitor, 1, 0)))
         .add(getAspects(Alloy.SOULARIUM.getOreIngot())).add(getAspects(Alloy.SOULARIUM.getOreIngot())));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal()), new AspectList()

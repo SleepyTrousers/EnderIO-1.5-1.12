@@ -1,24 +1,23 @@
 package crazypants.enderio.teleport;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.material.Alloy;
-import crazypants.enderio.material.Material;
-import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.Material;
+import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
+import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 
 public class TeleportRecipes {
 
   public static void addRecipes() {
 
     ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 4, Material.CONDUIT_BINDER.ordinal());
-    ItemStack enderCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
+    ItemStack enderCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 2);
 
     //travel blocks
     if(Config.travelAnchorEnabled) {
@@ -39,10 +38,10 @@ public class TeleportRecipes {
     if(Config.travelAnchorEnabled && Config.travelStaffEnabled) {
       ItemStack travelBlock = new ItemStack(EnderIO.blockTravelPlatform);
       ItemStack telepad = new ItemStack(EnderIO.blockTelePad);
-      ItemStack octadic = new ItemStack(EnderIO.itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
       ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, OreDictionary.WILDCARD_VALUE);
       ItemStack fq = new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_QUARTZ.ordinal());
-      GameRegistry.addRecipe(new ShapedOreRecipe(telepad, "gSg", "dAd", "dod", 'g', fq, 'S', staff, 'd', "ingotDarkSteel", 'A', travelBlock, 'o', octadic));
+      GameRegistry.addRecipe(new ShapedOreRecipe(telepad, "gSg", "dAd", "dod", 'g', fq, 'S', staff, 'd', "ingotDarkSteel", 'A', travelBlock, 'o',
+          enderCapacitor));
     }
     
     ItemStack coordSelector = new ItemStack(EnderIO.itemCoordSelector);

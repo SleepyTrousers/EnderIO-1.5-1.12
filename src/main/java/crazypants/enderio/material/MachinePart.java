@@ -3,17 +3,17 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.StringUtils;
+
 public enum MachinePart {
 
   MACHINE_CHASSI("machineChassi"),
-  BASIC_GEAR("basicGear");
+  BASIC_GEAR("basicGear", "gearStone");
 
   public final String baseName;
   public final String unlocalisedName;
@@ -29,10 +29,14 @@ public enum MachinePart {
   }
   
   private MachinePart(String baseName) {
+    this(baseName, "item" + StringUtils.capitalize(baseName));
+  }
+
+  private MachinePart(String baseName, String oreDict) {
     this.baseName = baseName;
     this.unlocalisedName = "enderio." + baseName;
     this.iconKey = "enderio:" + baseName;
-    this.oreDict = "item" + StringUtils.capitalize(baseName);
+    this.oreDict = oreDict;
   }
   
   public static void registerOres(Item item) {

@@ -11,13 +11,17 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerDistributor;
+
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
 
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
 
@@ -31,7 +35,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   private PowerDistributor powerDis;
   
   public TileEntityStirlingGenerator() {
-    super(new SlotDefinition(1, 0));        
+    super(new SlotDefinition(1, 0), null, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
   }
 
   @Override
@@ -114,11 +118,6 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     }
   }
 
-  @Override
-  public int getPowerUsePerTick() {
-    return Math.round(Config.stirlingGeneratorBaseRfPerTick * getEnergyMultiplier());
-  }
-
   public int getBurnTime(ItemStack item) {
     return Math.round(TileEntityFurnace.getItemBurnTime(item) * getBurnTimeMultiplier());
   }
@@ -183,30 +182,16 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return doPush(dir, te, 0, 0);
   }
 
-  public static float getEnergyMultiplier(Capacitors capacitorType) {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return Config.stirlingGeneratorEnergyMultiplierT2;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return Config.stirlingGeneratorEnergyMultiplierT3;
-    }
-    return Config.stirlingGeneratorEnergyMultiplierT1;
+  public static float getEnergyMultiplier(ICapacitorData capacitorType) {
+    return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
-  private float getEnergyMultiplier() {
-    return getEnergyMultiplier(getCapacitorType());
-  }
-
-  public static float getBurnTimeMultiplier(Capacitors capacitorType) {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return Config.stirlingGeneratorBurnTimeMultiplierT2;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return Config.stirlingGeneratorBurnTimeMultiplierT3;
-    }
-    return Config.stirlingGeneratorBurnTimeMultiplierT1;
+  public static float getBurnTimeMultiplier(ICapacitorData capacitorType) {
+    return STIRLING_POWER_TIME.getFloat(capacitorType);
   }
 
   public float getBurnTimeMultiplier() {
-    return getBurnTimeMultiplier(getCapacitorType());
+    return getBurnTimeMultiplier(getCapacitorData());
   }
 
   //private PowerDistributor powerDis;

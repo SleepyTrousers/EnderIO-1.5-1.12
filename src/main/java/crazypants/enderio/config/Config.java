@@ -105,7 +105,7 @@ public final class Config {
 
   public static File configDirectory;
 
-  public static int recipeLevel = 2; // TODO
+  public static int recipeLevel = 2;
   public static boolean addPeacefulRecipes = false;
   public static boolean allowExternalTickSpeedup = true;
   public static boolean crateSyntheticRecipes = true;
@@ -272,16 +272,6 @@ public final class Config {
   public static int zombieGeneratorRfPerTick = 80;
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
 
-  public static int stirlingGeneratorBaseRfPerTick = 20;
-  public static float stirlingGeneratorEnergyMultiplierT1 = 1f;
-  public static float stirlingGeneratorEnergyMultiplierT2 = 2f;
-  public static float stirlingGeneratorEnergyMultiplierT3 = 4f;
-  public static float stirlingGeneratorBurnTimeMultiplierT1 = 1f / 2f;
-  public static float stirlingGeneratorBurnTimeMultiplierT2 = 1f / 1.5f;
-  public static float stirlingGeneratorBurnTimeMultiplierT3 = 1f / 1.5f;
-
-  public static boolean combustionGeneratorUseOpaqueModel = true;
-
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
   public static boolean addDurabilityTootip = true;
@@ -333,8 +323,6 @@ public final class Config {
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static String  magnetBaublesType = "AMULET";
   
-  public static boolean useCombustionGenModel = false;
-
   public static int crafterRfPerCraft = 2500;
 
   public static int capacitorBankMaxIoRF = 5000;
@@ -1008,23 +996,6 @@ public final class Config {
     zombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
 
-    stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
-        "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
-
-    stirlingGeneratorEnergyMultiplierT1 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT1",
-        stirlingGeneratorEnergyMultiplierT1, "Energy multiplier for the Stirling Generator, Tier 1 machine").getDouble();
-    stirlingGeneratorEnergyMultiplierT2 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT2",
-        stirlingGeneratorEnergyMultiplierT2, "Energy multiplier for the Stirling Generator, Tier 2 machine").getDouble();
-    stirlingGeneratorEnergyMultiplierT3 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT3",
-        stirlingGeneratorEnergyMultiplierT3, "Energy multiplier for the Stirling Generator, Tier 3 machine").getDouble();
-
-    stirlingGeneratorBurnTimeMultiplierT1 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT1",
-        stirlingGeneratorBurnTimeMultiplierT1, "Burn time multiplier for the Stirling Generator, Tier 1 machine").getDouble();
-    stirlingGeneratorBurnTimeMultiplierT2 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT2",
-        stirlingGeneratorBurnTimeMultiplierT2, "Burn time multiplier for the Stirling Generator, Tier 2 machine").getDouble();
-    stirlingGeneratorBurnTimeMultiplierT3 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT3",
-        stirlingGeneratorBurnTimeMultiplierT3, "Burn time multiplier for the Stirling Generator, Tier 3 machine").getDouble();
-
     addFuelTooltipsToAllFluidContainers = config.get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the RF/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
         addFuelTooltipsToAllFluidContainers);
@@ -1069,9 +1040,6 @@ public final class Config {
         "saplings in store, it will only shear part the leaves and break the others for spalings. Set this to 0 to " +
         "always shear all leaves.").getInt(farmSaplingReserveAmount);
     
-    combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
-        "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
-
     magnetPowerUsePerSecondRF = config.get(sectionMagnet.name, "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF,
         "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerSecondRF);
     magnetPowerCapacityRF = config.get(sectionMagnet.name, "magnetPowerCapacityRF", magnetPowerCapacityRF,
@@ -1095,9 +1063,6 @@ public final class Config {
     magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
         "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
     
-    useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
-        "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
-
     crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft,
         "RF used per autocrafted recipe").getInt(crafterRfPerCraft);
 

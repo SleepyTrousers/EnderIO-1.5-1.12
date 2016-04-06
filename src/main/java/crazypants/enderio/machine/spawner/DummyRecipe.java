@@ -3,11 +3,11 @@ package crazypants.enderio.machine.spawner;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import net.minecraft.item.ItemStack;
 
 public class DummyRecipe implements IMachineRecipe {
 
@@ -19,7 +19,7 @@ public class DummyRecipe implements IMachineRecipe {
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
     //NB: This value is not actually used, see createTask in the tile
-   return TilePoweredSpawner.POWER_PER_TICK_ONE * 800;
+    return 8000;
   }
 
   @Override

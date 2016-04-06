@@ -18,12 +18,14 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerHandlerUtil;
+
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 
 public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
@@ -97,7 +99,7 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
     if (stack.stackSize == 1 && type.hasPower && !type.isCreative) {
       int energy = getEnergyStored(stack);
       int maxInput = Config.powerConduitTierThreeRF / 20;
-      int energyReceived = Math.min(Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored() - energy, Math.min(maxReceive, maxInput));
+      int energyReceived = Math.min(BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) - energy, Math.min(maxReceive, maxInput));
 
       if (!simulate) {
         energy += energyReceived;
@@ -128,7 +130,7 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
   public int getEnergyStored(ItemStack stack) {
     BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
     if (stack.stackSize == 1 && type.hasPower) {
-      return type.isCreative ? Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored() : PowerHandlerUtil.getStoredEnergyForItem(stack);
+      return type.isCreative ? BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : PowerHandlerUtil.getStoredEnergyForItem(stack);
     }
     return 0;
   }
@@ -136,7 +138,7 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
   @Override
   public int getMaxEnergyStored(ItemStack stack) {
     if (stack.stackSize == 1 && EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
-      return Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored();
+      return BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR);
     }
     return 0;
   }

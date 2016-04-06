@@ -15,58 +15,64 @@ import static crazypants.enderio.config.Config.sectionPower;
 import static crazypants.enderio.config.Config.sectionSpawner;
 
 public enum CapacitorKey implements ICapacitorKey {
-  ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
-  ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20),
+  ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
-  BUFFER_POWER_INTAKE(ModObject.blockBuffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
-  BUFFER_POWER_BUFFER(ModObject.blockBuffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  BUFFER_POWER_INTAKE(ModObject.blockBuffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  BUFFER_POWER_BUFFER(ModObject.blockBuffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
 
-  CRAFTER_POWER_INTAKE(ModObject.blockCrafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER10, 500),
-  CRAFTER_POWER_BUFFER(ModObject.blockCrafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  CRAFTER_TICKS(ModObject.blockCrafter, CapacitorKeyType.SPEED, Scaler.SPEED, 1),
+  CRAFTER_POWER_INTAKE(ModObject.blockCrafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER10, 500),
+  CRAFTER_POWER_BUFFER(ModObject.blockCrafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  CRAFTER_TICKS(ModObject.blockCrafter, CapacitorKeyType.SPEED, Scaler.Factory.SPEED, 1),
 
-  ATTRACTOR_POWER_INTAKE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 80),
-  ATTRACTOR_POWER_BUFFER(ModObject.blockAttractor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  ATTRACTOR_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 20, sectionAttractor, "attractorPowerPerTickLevelOne"),
-  ATTRACTOR_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.QUADRATIC, 16, sectionAttractor, "attractorRangeLevelOne"),
+  ATTRACTOR_POWER_INTAKE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 80),
+  ATTRACTOR_POWER_BUFFER(ModObject.blockAttractor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  ATTRACTOR_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 20, sectionAttractor, "attractorPowerPerTickLevelOne"),
+  ATTRACTOR_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.Factory.QUADRATIC, 16, sectionAttractor, "attractorRangeLevelOne"),
 
-  AVERSION_POWER_INTAKE(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_INTAKE, Scaler.CUBIC, 640),
-  AVERSION_POWER_BUFFER(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  AVERSION_POWER_USE(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_USE, Scaler.CUBIC, 80, sectionAttractor, "spawnGuardPowerPerTickLevelOne"),
-  AVERSION_RANGE(ModObject.blockSpawnGuard, CapacitorKeyType.AREA, Scaler.RANGE, 16),
+  AVERSION_POWER_INTAKE(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 640),
+  AVERSION_POWER_BUFFER(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  AVERSION_POWER_USE(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 80, sectionAttractor, "spawnGuardPowerPerTickLevelOne"),
+  AVERSION_RANGE(ModObject.blockSpawnGuard, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 16),
 
-  TRANSCEIVER_POWER_INTAKE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_INTAKE, Scaler.FIXED_1, 20480 * 2, sectionPower, "transceiverMaxIoRF"),
-  TRANSCEIVER_POWER_BUFFER(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.FIXED_1, 500000),
-  TRANSCEIVER_POWER_USE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_USE, Scaler.FIXED_1, 10, sectionPower, "transceiverUpkeepCostRF"),
+  TRANSCEIVER_POWER_INTAKE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20480 * 2, sectionPower, "transceiverMaxIoRF"),
+  TRANSCEIVER_POWER_BUFFER(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 500000),
+  TRANSCEIVER_POWER_USE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10, sectionPower, "transceiverUpkeepCostRF"),
 
-  WEATHER_POWER_INTAKE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
-  WEATHER_POWER_BUFFER(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  WEATHER_POWER_USE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20),
+  WEATHER_POWER_INTAKE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  WEATHER_POWER_BUFFER(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  WEATHER_POWER_USE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
-  FARM_POWER_INTAKE(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_INTAKE, Scaler.RANGE, 400),
-  FARM_POWER_BUFFER(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_BUFFER, Scaler.RANGE, 250000),
-  FARM_POWER_USE(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_USE, Scaler.RANGE, 10),
-  FARM_BASE_SIZE(ModObject.blockFarmStation, CapacitorKeyType.AREA, Scaler.FIXED_1, 1, sectionFarm, null),
-  FARM_BONUS_SIZE(ModObject.blockFarmStation, CapacitorKeyType.AREA, Scaler.IDENTITY, 2, sectionFarm, "farmBonusSize"),
-  FARM_STACK_LIMIT(ModObject.blockFarmStation, CapacitorKeyType.AMOUNT, Scaler.QUADRATIC, 16),
+  FARM_POWER_INTAKE(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.RANGE, 400),
+  FARM_POWER_BUFFER(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.RANGE, 250000),
+  FARM_POWER_USE(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_USE, Scaler.Factory.RANGE, 10),
+  FARM_BASE_SIZE(ModObject.blockFarmStation, CapacitorKeyType.AREA, Scaler.Factory.FIXED_1, 1, sectionFarm, null),
+  FARM_BONUS_SIZE(ModObject.blockFarmStation, CapacitorKeyType.AREA, Scaler.Factory.IDENTITY, 2, sectionFarm, "farmBonusSize"),
+  FARM_STACK_LIMIT(ModObject.blockFarmStation, CapacitorKeyType.AMOUNT, Scaler.Factory.QUADRATIC, 16),
 
-  SPAWNER_POWER_INTAKE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_INTAKE, Scaler.SPAWNER, 200),
-  SPAWNER_POWER_BUFFER(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  SPAWNER_POWER_USE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_USE, Scaler.SPAWNER, 160, sectionSpawner, "poweredSpawnerLevelOnePowerPerTickRF"),
-  SPAWNER_SPEEDUP(ModObject.blockPoweredSpawner, CapacitorKeyType.SPEED, Scaler.QUADRATIC, 1),
+  SPAWNER_POWER_INTAKE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.SPAWNER, 200),
+  SPAWNER_POWER_BUFFER(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  SPAWNER_POWER_USE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_USE, Scaler.Factory.SPAWNER, 160, sectionSpawner,
+      "poweredSpawnerLevelOnePowerPerTickRF"),
+  SPAWNER_SPEEDUP(ModObject.blockPoweredSpawner, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
 
-  SLICE_POWER_INTAKE(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 160),
-  SLICE_POWER_BUFFER(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  SLICE_POWER_USE(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 80, sectionPower, "sliceAndSpliceLevelOnePowerPerTickRF"),
+  SLICE_POWER_INTAKE(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 160),
+  SLICE_POWER_BUFFER(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  SLICE_POWER_USE(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 80, sectionPower,
+      "sliceAndSpliceLevelOnePowerPerTickRF"),
 
-  SOUL_BINDER_POWER_INTAKE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 1000),
-  SOUL_BINDER_POWER_BUFFER(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  SOUL_BINDER_POWER_USE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 500, sectionPower, "soulBinderLevelOnePowerPerTickRF"),
+  SOUL_BINDER_POWER_INTAKE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 1000),
+  SOUL_BINDER_POWER_BUFFER(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  SOUL_BINDER_POWER_USE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 500, sectionPower, "soulBinderLevelOnePowerPerTickRF"),
 
-  LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
-  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),
-  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20, null, null),
+  STIRLING_POWER_BUFFER(ModObject.blockStirlingGenerator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  STIRLING_POWER_GEN(ModObject.blockStirlingGenerator, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 20),
+  STIRLING_POWER_TIME(ModObject.blockStirlingGenerator, CapacitorKeyType.SPEED, Scaler.Factory.BURNTIME, 1),
+
+  LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80, null, null),
+  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000, null, null),
+  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20, null, null),
 
   //
   ;
@@ -77,7 +83,7 @@ public enum CapacitorKey implements ICapacitorKey {
 
   private final ModObject owner;
   private final CapacitorKeyType valueType;
-  private final Scaler scaler;
+  private Scaler scaler;
   private final String configKey;
   private final Section configSection;
   private final String configComment;
@@ -151,6 +157,16 @@ public enum CapacitorKey implements ICapacitorKey {
     for (CapacitorKey key : values()) {
       if (key.configSection != null && key.configKey != null && key.configComment != null) {
         key.baseValue = config.get(key.configSection.name, key.configKey, key.defaultBaseValue, key.configComment).getInt(key.baseValue);
+        String string = Scaler.Factory.toString(key.scaler);
+        if (string != null) {
+          String string2 = config.get(key.configSection.name, key.configKey + ".scaler", string, null).getString();
+          Scaler tmp = Scaler.Factory.fromString(string2);
+          if (tmp != null) {
+            key.scaler = tmp;
+          } else {
+            config.get(key.configSection.name, key.configKey + ".scaler", string, null).set(string);
+          }
+        }
       }
     }
   }

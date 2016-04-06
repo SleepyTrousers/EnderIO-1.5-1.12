@@ -21,14 +21,9 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorDataItem;
-import crazypants.enderio.power.DefaultCapacitor;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.ICapacitorItem;
 import crazypants.util.ClientUtil;
 
-public class ItemCapacitor extends Item implements ICapacitorItem, ICapacitorDataItem {
-
-//  private static final BasicCapacitor CAP = new BasicCapacitor();
+public class ItemCapacitor extends Item implements ICapacitorDataItem {
 
   public static ItemCapacitor create() {
     ItemCapacitor result = new ItemCapacitor();
@@ -73,11 +68,6 @@ public class ItemCapacitor extends Item implements ICapacitorItem, ICapacitorDat
   @Override
   public int getMetadata(ItemStack stack) {
     return MathHelper.clamp_int(stack != null ? stack.getItemDamage() : 0, 0, DefaultCapacitorData.values().length - 1);
-  }
-
-  @Override
-  public ICapacitor getCapacitor(ItemStack stack) {
-    return new DefaultCapacitor(getCapacitorData(stack));
   }
 
   @Override

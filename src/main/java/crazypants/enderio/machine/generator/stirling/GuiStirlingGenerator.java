@@ -5,21 +5,22 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.text.MessageFormat;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.Capacitors;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirlingGenerator> {
@@ -30,10 +31,8 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     final StirlingGeneratorContainer c = (StirlingGeneratorContainer)inventorySlots;
     Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));
     MessageFormat fmt = new MessageFormat(EnderIO.lang.localize("stirlingGenerator.upgrades"));
-    ttMan.addToolTip(new GuiToolTip(r,
-            EnderIO.lang.localize("stirlingGenerator.upgradeslot"),
-            formatUpgrade(fmt, Capacitors.ACTIVATED_CAPACITOR),
-            formatUpgrade(fmt, Capacitors.ENDER_CAPACITOR)) {
+    ttMan.addToolTip(new GuiToolTip(r, EnderIO.lang.localize("stirlingGenerator.upgradeslot"), formatUpgrade(fmt, DefaultCapacitorData.ACTIVATED_CAPACITOR),
+        formatUpgrade(fmt, DefaultCapacitorData.ENDER_CAPACITOR)) {
       @Override
       public boolean shouldDraw() {
         return !c.getUpgradeSlot().getHasStack() && super.shouldDraw();
@@ -43,19 +42,14 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     addProgressTooltip(80, 52, 14, 14);
   }
 
-  private static float getFactor(Capacitors upgrade) {
+  private static float getFactor(ICapacitorData upgrade) {
     return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) *
             TileEntityStirlingGenerator.getBurnTimeMultiplier(upgrade);
   }
 
-  private static String formatUpgrade(MessageFormat fmt, Capacitors upgrade) {
-    float efficiency = getFactor(upgrade) / getFactor(Capacitors.BASIC_CAPACITOR);
-    Object[] args = new Object[] {
-      EnderIO.lang.localizeExact(upgrade.unlocalisedName.concat(".name")),
-      efficiency,
-      EnumChatFormatting.WHITE,
-      EnumChatFormatting.GRAY
-    };
+  private static String formatUpgrade(MessageFormat fmt, ICapacitorData upgrade) {
+    float efficiency = getFactor(upgrade) / getFactor(DefaultCapacitorData.BASIC_CAPACITOR);
+    Object[] args = new Object[] { upgrade.getLocalizedName(), efficiency, EnumChatFormatting.WHITE, EnumChatFormatting.GRAY };
     return fmt.format(args, new StringBuffer(), null).toString();
   }
 
@@ -111,7 +105,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
     txt = String.format("%s %d%%", EnderIO.lang.localize("stirlingGenerator.burnRate"),
-        Math.round(getTileEntity().getBurnTimeMultiplier() / Config.stirlingGeneratorBurnTimeMultiplierT1 * 100));
+        Math.round(getTileEntity().getBurnTimeMultiplier() / getTileEntity().getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

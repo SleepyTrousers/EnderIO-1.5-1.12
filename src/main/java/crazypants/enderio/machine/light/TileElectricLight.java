@@ -6,16 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.machine.wireless.WirelessChargedLocation;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +13,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.machine.wireless.WirelessChargedLocation;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerUtil;
+
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
 
@@ -412,7 +415,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     if(!requiresPower) {
       return 0;
     }
-    return Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyReceived();
+    return LEGACY_ENERGY_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
   @Override

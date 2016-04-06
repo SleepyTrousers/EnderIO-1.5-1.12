@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -13,13 +16,10 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 
 public class GeneralTab implements ITabPanel {
 
@@ -127,15 +127,16 @@ public class GeneralTab implements ITabPanel {
   public void updatePowerBarTooltip(List<String> text) {
     text.add(EnderIO.lang.localize("gui.machine.localbuffer"));
     text.add(EnderIO.lang.localize("gui.machine.upkeep") + " " + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));    
-    int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored()/2;
+    int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);       
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));    
   }
   
   private void updateSendPowerBarTooltip(List<String> text) {
     text.add(EnderIO.lang.localize("gui.machine.sendReceivebuffer"));
-    text.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " " + PowerDisplayUtil.formatPowerPerTick(Config.transceiverMaxIoRF));
-    int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored()/2;
+    text.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " "
+        + PowerDisplayUtil.formatPowerPerTick(parent.getTransciever().getMaxEnergyRecieved(null)));
+    int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));    
   }
