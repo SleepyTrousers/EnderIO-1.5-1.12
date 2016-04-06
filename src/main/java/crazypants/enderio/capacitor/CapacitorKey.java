@@ -56,9 +56,13 @@ public enum CapacitorKey implements ICapacitorKey {
   SPAWNER_POWER_USE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_USE, Scaler.SPAWNER, 160, sectionSpawner, "poweredSpawnerLevelOnePowerPerTickRF"),
   SPAWNER_SPEEDUP(ModObject.blockPoweredSpawner, CapacitorKeyType.SPEED, Scaler.QUADRATIC, 1),
 
-  SLICE_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 160),
-  SLICE_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  SLICE_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 80, sectionPower, "sliceAndSpliceLevelOnePowerPerTickRF"),
+  SLICE_POWER_INTAKE(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 160),
+  SLICE_POWER_BUFFER(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  SLICE_POWER_USE(ModObject.blockSliceAndSplice, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 80, sectionPower, "sliceAndSpliceLevelOnePowerPerTickRF"),
+
+  SOUL_BINDER_POWER_INTAKE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 1000),
+  SOUL_BINDER_POWER_BUFFER(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  SOUL_BINDER_POWER_USE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 500, sectionPower, "soulBinderLevelOnePowerPerTickRF"),
 
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),

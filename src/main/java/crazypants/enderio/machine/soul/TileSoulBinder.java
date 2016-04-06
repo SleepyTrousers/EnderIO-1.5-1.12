@@ -23,31 +23,21 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
 
+import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
+
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
-  public static final int POWER_PER_TICK_ONE = Config.soulBinderLevelOnePowerPerTickRF;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2, 
-      Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_ONE);
-
-  public static final int POWER_PER_TICK_TWO = Config.soulBinderLevelTwoPowerPerTickRF;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(POWER_PER_TICK_TWO * 2,
-      Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_TWO);
-
-  public static final int  POWER_PER_TICK_THREE = Config.soulBinderLevelThreePowerPerTickRF;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(POWER_PER_TICK_THREE * 2,
-      Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_THREE);
-  
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
 
   public TileSoulBinder() {
-    super(new SlotDefinition(2, 2, 1));
+    super(new SlotDefinition(2, 2, 1), SOUL_BINDER_POWER_INTAKE, SOUL_BINDER_POWER_BUFFER, SOUL_BINDER_POWER_USE);
   }
 
   @Override
@@ -156,21 +146,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
     }
     return false;
-  }
-
-  @Override
-  public void onCapacitorTypeChange() {
-    switch (getCapacitorType()) {
-    case BASIC_CAPACITOR:
-      setCapacitor(CAP_ONE);
-      break;
-    case ACTIVATED_CAPACITOR:
-      setCapacitor(CAP_TWO);
-      break;
-    case ENDER_CAPACITOR:
-      setCapacitor(CAP_THREE);
-      break;
-    }
   }
 
   @Override

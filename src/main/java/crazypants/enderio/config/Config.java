@@ -401,9 +401,6 @@ public final class Config {
   public static List<String> soulVesselBlackList = Collections.<String> emptyList();
   public static boolean soulVesselCapturesBosses = false;
 
-  public static int soulBinderLevelOnePowerPerTickRF = 500;
-  public static int soulBinderLevelTwoPowerPerTickRF = 1000;
-  public static int soulBinderLevelThreePowerPerTickRF = 2000;
   public static int soulBinderBrokenSpawnerRF = 2500000;
   public static int soulBinderBrokenSpawnerLevels = 15;
   public static int soulBinderReanimationRF = 100000;
@@ -1174,12 +1171,6 @@ public final class Config {
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial");
 
-    soulBinderLevelOnePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelOnePowerPerTickRF", soulBinderLevelOnePowerPerTickRF,
-        "The number of RF/t consumed by an unupgraded soul binder.").getInt(soulBinderLevelOnePowerPerTickRF);
-    soulBinderLevelTwoPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelTwoPowerPerTickRF", soulBinderLevelTwoPowerPerTickRF,
-        "The number of RF/t consumed by a soul binder with a double layer capacitor upgrade.").getInt(soulBinderLevelTwoPowerPerTickRF);
-    soulBinderLevelThreePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelThreePowerPerTickRF", soulBinderLevelThreePowerPerTickRF,
-        "The number of RF/t consumed by a soul binder with an octadic capacitor upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);
     soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
         "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
     soulBinderReanimationRF = config.get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF,
