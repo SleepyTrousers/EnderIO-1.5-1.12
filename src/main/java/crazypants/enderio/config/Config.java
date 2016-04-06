@@ -436,14 +436,6 @@ public final class Config {
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
 
-
-  public static int attractorRangeLevelOne = 16;
-  public static int attractorPowerPerTickLevelOne = 20;
-  public static int attractorRangeLevelTwo = 32;
-  public static int attractorPowerPerTickLevelTwo = 40;
-  public static int attractorRangeLevelThree = 64;
-  public static int attractorPowerPerTickLevelThree = 80;
-
   public static int spawnGuardRangeLevelOne = 64;
   public static int spawnGuardPowerPerTickLevelOne = 80;
   public static int spawnGuardRangeLevelTwo = 96;
@@ -1260,20 +1252,6 @@ public final class Config {
         "The number of RF/t consumed by a Slice'N'Splice with a double layer capacitor upgrade.").getInt(sliceAndSpliceLevelTwoPowerPerTickRF);
     sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
         "The number of RF/t consumed by a Slice'N'Splice with an octadic capacitor upgrade.").getInt(sliceAndSpliceLevelThreePowerPerTickRF);
-
-    attractorRangeLevelOne = config.get(sectionAttractor.name, "attractorRangeLevelOne", attractorRangeLevelOne,
-        "The range of the mob attractor with no upgrades").getInt(attractorRangeLevelOne);
-    attractorRangeLevelTwo = config.get(sectionAttractor.name, "attractorRangeLevelTwo", attractorRangeLevelTwo,
-        "The range of the mob attractor with a double layer capacitor upgrade").getInt(attractorRangeLevelTwo);
-    attractorRangeLevelThree = config.get(sectionAttractor.name, "attractorRangeLevelThree", attractorRangeLevelThree,
-        "The range of the mob attractor with an octadic capacitor upgrade").getInt(attractorRangeLevelThree);
-    attractorPowerPerTickLevelOne = config.get(sectionAttractor.name, "attractorPowerPerTickLevelOne", attractorPowerPerTickLevelOne,
-        "The RF/t  power use of a levele 1 mob attractor").getInt(attractorPowerPerTickLevelOne);
-    attractorPowerPerTickLevelTwo = config.get(sectionAttractor.name, "attractorPowerPerTickLevelTwo", attractorPowerPerTickLevelTwo,
-        "The RF/t  power use of a levele 2 mob attractor").getInt(attractorPowerPerTickLevelTwo);
-    attractorPowerPerTickLevelThree = config.get(sectionAttractor.name, "attractorPowerPerTickLevelThree", attractorPowerPerTickLevelThree,
-        "The RF/t  power use of a levele 3 mob attractor").getInt(attractorPowerPerTickLevelThree);
-
 
     spawnGuardRangeLevelOne = config.get(sectionAttractor.name, "spawnGuardRangeLevelOne", spawnGuardRangeLevelOne,
         "The range of the spawn guard with no upgrades").getInt(spawnGuardRangeLevelOne);

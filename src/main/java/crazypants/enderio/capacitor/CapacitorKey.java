@@ -8,6 +8,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config.Section;
 
+import static crazypants.enderio.config.Config.sectionAttractor;
 import static crazypants.enderio.config.Config.sectionCapacitor;
 
 public enum CapacitorKey implements ICapacitorKey {
@@ -21,6 +22,11 @@ public enum CapacitorKey implements ICapacitorKey {
   CRAFTER_POWER_INTAKE(ModObject.blockCrafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER10, 500),
   CRAFTER_POWER_BUFFER(ModObject.blockCrafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
   CRAFTER_TICKS(ModObject.blockCrafter, CapacitorKeyType.SPEED, Scaler.SPEED, 1),
+
+  ATTRACTOR_POWER_INTAKE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 80),
+  ATTRACTOR_POWER_BUFFER(ModObject.blockAttractor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  ATTRACTOR_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 20),
+  ATTRACTOR_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.QUADRATIC, 16, sectionAttractor, null),
 
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),

@@ -37,22 +37,22 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.power.BasicCapacitor;
 import crazypants.util.CapturedMob;
+
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
   private AxisAlignedBB attractorBounds;
   private FakePlayer target;
-  private int rangeSqu;
-  private int range;
-  private int powerPerTick;
   private Set<EntityLiving> tracking = new HashSet<EntityLiving>();
   private int tickCounter = 0;
   private int maxMobsAttracted = 20;
@@ -60,12 +60,12 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   private boolean showingRange;
 
   public TileAttractor() {
-    super(new SlotDefinition(12, 0));
+    super(new SlotDefinition(12, 0), ATTRACTOR_POWER_INTAKE, ATTRACTOR_POWER_BUFFER, ATTRACTOR_POWER_USE);
   }
 
   @Override
   public float getRange() {
-    return range;
+    return ATTRACTOR_RANGE.get(getCapacitorData());
   }
 
   @Override
@@ -92,27 +92,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   @Override
   public void onCapacitorTypeChange() {
-    switch (getCapacitorType()) {
-    case ACTIVATED_CAPACITOR:
-      range = Config.attractorRangeLevelTwo;
-      powerPerTick = Config.attractorPowerPerTickLevelTwo;
-      break;
-    case ENDER_CAPACITOR:
-      range = Config.attractorRangeLevelThree;
-      powerPerTick = Config.attractorPowerPerTickLevelThree;
-      break;
-    case BASIC_CAPACITOR:
-    default:
-      range = Config.attractorRangeLevelOne;
-      powerPerTick = Config.attractorPowerPerTickLevelOne;
-      break;
-    }
-    rangeSqu = range * range;
-
-    BoundingBox bb = new BoundingBox(new BlockCoord(this));
-    bb = bb.scale(range, range, range);
-    attractorBounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    setCapacitor(new BasicCapacitor(powerPerTick * 8, getCapacitor().getMaxEnergyStored(), powerPerTick));
+    attractorBounds = null;
   }
 
   @Override
@@ -149,6 +129,11 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     }
     tickCounter = 0;
 
+    if (attractorBounds == null) {
+      BoundingBox bb = new BoundingBox(new BlockCoord(this));
+      bb = bb.scale(getRange(), getRange(), getRange());
+      attractorBounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    }
     Set<EntityLiving> trackingThisTick = new HashSet<EntityLiving>();
     List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, attractorBounds);
     
@@ -204,11 +189,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     return used;
   }
 
-  @Override
-  public int getPowerUsePerTick() {
-    return powerPerTick;
-  }
-
   FakePlayer getTarget() {
     if (target == null) {
       target = new Target();
@@ -221,7 +201,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   private boolean isMobInRange(EntityLiving mob) {
-    return isMobInRange(mob, rangeSqu);
+    return isMobInRange(mob, (int) (getRange() * getRange()));
   }
 
   private boolean isMobInRange(EntityLiving mob, int rangeIn) {
