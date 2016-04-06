@@ -11,25 +11,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.power.BasicCapacitor;
 import crazypants.util.CapturedMob;
+
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
 public class TileAversionObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
-  private int powerPerTick;
-  private int range;
   private boolean registered = false;
   private AxisAlignedBB bounds;
   
   private boolean showingRange;
   
   public TileAversionObelisk() {
-    super(new SlotDefinition(12, 0));
+    super(new SlotDefinition(12, 0), AVERSION_POWER_INTAKE, AVERSION_POWER_BUFFER, AVERSION_POWER_USE);
   }
   
   @Override
@@ -63,30 +64,12 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
   
   @Override
   public float getRange() {
-    return range;    
+    return AVERSION_RANGE.getFloat(getCapacitorData());
   }
 
   @Override
   public void onCapacitorTypeChange() {
-    switch (getCapacitorType()) {
-    case BASIC_CAPACITOR:
-    	range = Config.spawnGuardRangeLevelOne;
-    	powerPerTick = Config.spawnGuardPowerPerTickLevelOne;
-    	break;
-    case ACTIVATED_CAPACITOR:
-      range = Config.spawnGuardRangeLevelTwo;
-      powerPerTick = Config.spawnGuardPowerPerTickLevelTwo;
-      break;
-    case ENDER_CAPACITOR:
-      range = Config.spawnGuardRangeLevelThree;
-      powerPerTick = Config.spawnGuardPowerPerTickLevelThree;
-      break;
-    }
-    setCapacitor(new BasicCapacitor(powerPerTick * 8, getCapacitor().getMaxEnergyStored(), powerPerTick));
-    
-    BoundingBox bb = new BoundingBox(getLocation());
-    bb = bb.scale(range + 0.5f, range + 0.5f, range + 0.5f).translate(0.5f, 0.5f, 0.5f);    
-    bounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    bounds = null;
   }
 
   @Override
@@ -109,6 +92,11 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
+    if (bounds == null) {
+      BoundingBox bb = new BoundingBox(getLocation());
+      bb = bb.scale(getRange() + 0.5f, getRange() + 0.5f, getRange() + 0.5f).translate(0.5f, 0.5f, 0.5f);
+      bounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    }
     if (redstoneCheck && hasPower()) {
       if(!registered) {
         AversionObeliskController.instance.registerGuard(this);
@@ -129,17 +117,12 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     return used;
   }
 
-  @Override
-  public int getPowerUsePerTick() {
-    return powerPerTick;
-  }
-
   public boolean isSpawnPrevented(EntityLivingBase mob) {
     return redstoneCheckPassed && hasPower() && isMobInRange(mob) && isMobInFilter(mob);
   }
   
   private boolean isMobInRange(EntityLivingBase mob) {
-    if(mob == null) {
+    if (mob == null || bounds == null) {
       return false;
     }    
     //return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= rangeSqu;

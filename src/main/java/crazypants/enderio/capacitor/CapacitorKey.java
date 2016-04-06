@@ -28,6 +28,11 @@ public enum CapacitorKey implements ICapacitorKey {
   ATTRACTOR_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 20),
   ATTRACTOR_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.QUADRATIC, 16, sectionAttractor, null),
 
+  AVERSION_POWER_INTAKE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_INTAKE, Scaler.CUBIC, 640),
+  AVERSION_POWER_BUFFER(ModObject.blockAttractor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  AVERSION_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.CUBIC, 80),
+  AVERSION_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.RANGE, 16),
+
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),
   LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20, null, null),

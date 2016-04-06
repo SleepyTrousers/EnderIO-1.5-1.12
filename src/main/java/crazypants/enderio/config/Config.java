@@ -436,12 +436,6 @@ public final class Config {
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
 
-  public static int spawnGuardRangeLevelOne = 64;
-  public static int spawnGuardPowerPerTickLevelOne = 80;
-  public static int spawnGuardRangeLevelTwo = 96;
-  public static int spawnGuardPowerPerTickLevelTwo = 300;
-  public static int spawnGuardRangeLevelThree = 160;
-  public static int spawnGuardPowerPerTickLevelThree = 800;
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
 
@@ -1253,18 +1247,6 @@ public final class Config {
     sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
         "The number of RF/t consumed by a Slice'N'Splice with an octadic capacitor upgrade.").getInt(sliceAndSpliceLevelThreePowerPerTickRF);
 
-    spawnGuardRangeLevelOne = config.get(sectionAttractor.name, "spawnGuardRangeLevelOne", spawnGuardRangeLevelOne,
-        "The range of the spawn guard with no upgrades").getInt(spawnGuardRangeLevelOne);
-    spawnGuardRangeLevelTwo = config.get(sectionAttractor.name, "spawnGuardRangeLevelTwo", spawnGuardRangeLevelTwo,
-        "The range of the spawn guard with a double layer capacitor upgrade").getInt(spawnGuardRangeLevelTwo);
-    spawnGuardRangeLevelThree = config.get(sectionAttractor.name, "spawnGuardRangeLevelThree", spawnGuardRangeLevelThree,
-        "The range of the spawn guard with an octadic capacitor upgrade").getInt(spawnGuardRangeLevelThree);
-    spawnGuardPowerPerTickLevelOne = config.get(sectionAttractor.name, "spawnGuardPowerPerTickLevelOne", spawnGuardPowerPerTickLevelOne,
-        "The RF/t  power use of a levele 1 spawn guard").getInt(spawnGuardPowerPerTickLevelOne);
-    spawnGuardPowerPerTickLevelTwo = config.get(sectionAttractor.name, "spawnGuardPowerPerTickLevelTwo", spawnGuardPowerPerTickLevelTwo,
-        "The RF/t  power use of a levele 2 spawn guard").getInt(spawnGuardPowerPerTickLevelTwo);
-    spawnGuardPowerPerTickLevelThree = config.get(sectionAttractor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree,
-        "The RF/t  power use of a levele 3 spawn guard").getInt(spawnGuardPowerPerTickLevelThree);
     spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttractor.name, spawnGuardStopAllSlimesDebug,
         "When true slimes wont be allowed to spawn at all. Only added to aid testing in super flat worlds.");
     spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttractor.name, spawnGuardStopAllSquidSpawning,
