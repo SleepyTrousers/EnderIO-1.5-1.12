@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -17,32 +16,19 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
+
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
 
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
-
-  public static final int POWER_PER_TICK_ONE = Config.sliceAndSpliceLevelOnePowerPerTickRF;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2,
-      Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(),
-      POWER_PER_TICK_ONE);
-
-  public static final int POWER_PER_TICK_TWO = Config.sliceAndSpliceLevelTwoPowerPerTickRF;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(POWER_PER_TICK_TWO * 2,
-      Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored(),
-      POWER_PER_TICK_TWO);
-
-  public static final int POWER_PER_TICK_THREE = Config.sliceAndSpliceLevelThreePowerPerTickRF;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(POWER_PER_TICK_THREE * 2,
-      Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(),
-      POWER_PER_TICK_THREE);
 
   private final int axeIndex = 6;
   private final int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
 
   public TileSliceAndSplice() {
-    super(new SlotDefinition(8, 1));
+    super(new SlotDefinition(8, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
   }
 
   @Override
@@ -53,21 +39,6 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   @Override
   public int getInventoryStackLimit() {
     return 1;
-  }
-
-  @Override
-  public void onCapacitorTypeChange() {
-    switch (getCapacitorType()) {
-    case BASIC_CAPACITOR:
-      setCapacitor(CAP_ONE);
-      break;
-    case ACTIVATED_CAPACITOR:
-      setCapacitor(CAP_TWO);
-      break;
-    case ENDER_CAPACITOR:
-      setCapacitor(CAP_THREE);
-      break;
-    }
   }
 
   @Override

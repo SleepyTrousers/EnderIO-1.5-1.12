@@ -424,10 +424,6 @@ public final class Config {
   public static int powerConduitTierThreeRF = 20480;
   public static boolean powerConduitOutputMJ = true;
 
-  public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
-  public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
-  public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
-
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
 
@@ -1212,14 +1208,6 @@ public final class Config {
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
     soulBinderMaxXpLevel = config.get(sectionSoulBinder.name, "soulBinderMaxXPLevel", soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.").getInt();
-
-
-    sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
-        "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);
-    sliceAndSpliceLevelTwoPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelTwoPowerPerTickRF", sliceAndSpliceLevelTwoPowerPerTickRF,
-        "The number of RF/t consumed by a Slice'N'Splice with a double layer capacitor upgrade.").getInt(sliceAndSpliceLevelTwoPowerPerTickRF);
-    sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
-        "The number of RF/t consumed by a Slice'N'Splice with an octadic capacitor upgrade.").getInt(sliceAndSpliceLevelThreePowerPerTickRF);
 
     spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttractor.name, spawnGuardStopAllSlimesDebug,
         "When true slimes wont be allowed to spawn at all. Only added to aid testing in super flat worlds.");
