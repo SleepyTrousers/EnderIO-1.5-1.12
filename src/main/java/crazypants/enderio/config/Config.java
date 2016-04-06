@@ -101,9 +101,7 @@ public final class Config {
 
   public static boolean transceiverEnabled = true;
   public static double transceiverEnergyLoss = 0.1;
-  public static int transceiverUpkeepCostRF = 10;
   public static int transceiverBucketTransmissionCostRF = 100;
-  public static int transceiverMaxIoRF = 20480;
 
   public static File configDirectory;
 
@@ -683,10 +681,6 @@ public final class Config {
         .getBoolean(false);
     transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
         "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
-    transceiverUpkeepCostRF = config.get(sectionPower.name, "transceiverUpkeepCostRF", transceiverUpkeepCostRF,
-        "Number of RF/t required to keep a Dimensional Transceiver connection open").getInt(transceiverUpkeepCostRF);
-    transceiverMaxIoRF = config.get(sectionPower.name, "transceiverMaxIoRF", transceiverMaxIoRF,
-        "Maximum RF/t sent and received by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIoRF);
     transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
         "The cost in RF of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
 

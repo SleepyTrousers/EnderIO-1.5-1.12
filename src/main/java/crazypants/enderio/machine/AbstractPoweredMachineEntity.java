@@ -18,7 +18,6 @@ import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 
@@ -27,8 +26,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   // Power
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR; // WIP
   private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
-  @Deprecated
-  private ICapacitor capacitor;
 
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
@@ -125,11 +122,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     return Capacitors.getFromData(capacitorData);
   }
 
-  @Deprecated
-  public ICapacitor getCapacitor() { // TODO
-    return capacitor != null ? capacitor : getCapacitorType().capacitor;
-  }
-
   public ICapacitorData getCapacitorData() {
     return capacitorData;
   }
@@ -140,15 +132,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     return maxEnergyStored2 == 0 ? 0 : VecmathUtil.clamp(Math.round(scale * ((float) storedEnergyRF / maxEnergyStored2)), 0, scale);
   }
 
-  @Deprecated
-  protected void setCapacitor(ICapacitor capacitor) { // TODO
-    this.capacitor = capacitor;
-    //Force a check that the new value is in bounds
-    setEnergyStored(getEnergyStored());
-  }
-
   public void onCapacitorDataChange() {
-    capacitor = null;
     onCapacitorTypeChange();
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());

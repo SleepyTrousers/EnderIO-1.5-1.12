@@ -262,11 +262,11 @@ public class ServerChannelRegister extends ChannelRegister {
 
   //Fluid
 
-  public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channels) {
+  public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channelsIn) {
     List<FluidTankInfo> infos = new ArrayList<FluidTankInfo>();
     for (TileTransceiver tran : transceivers) {
       if(tran != tileTransceiver) {
-        tran.getRecieveTankInfo(infos, channels);
+        tran.getRecieveTankInfo(infos, channelsIn);
       }
     }
     return infos.toArray(new FluidTankInfo[infos.size()]);
@@ -307,14 +307,14 @@ public class ServerChannelRegister extends ChannelRegister {
 
   //Item 
 
-  public void sendItem(TileTransceiver from, Set<Channel> channels, int slot, ItemStack contents) {
+  public void sendItem(TileTransceiver from, Set<Channel> channelsIn, int slot, ItemStack contents) {
     if(!from.hasPower()) {
       return;
     }
     if(!from.getSendItemFilter().doesItemPassFilter(null, contents)) {
       return;
     }
-    for (Channel channel : channels) {
+    for (Channel channel : channelsIn) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
       for (TileTransceiver trans : iter) {
         if(trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel) && trans.getRedstoneChecksPassed()) {

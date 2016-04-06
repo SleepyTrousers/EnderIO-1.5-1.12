@@ -27,7 +27,6 @@ import com.google.common.collect.SetMultimap;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IItemBuffer;
@@ -35,11 +34,13 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
+
+import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
@@ -49,7 +50,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private final SetMultimap<ChannelType, Channel> sendChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
   private final SetMultimap<ChannelType, Channel> recieveChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
 
-  private ICapacitor capacitor = new BasicCapacitor(Config.transceiverMaxIoRF * 2, 500000, Config.transceiverMaxIoRF);
   private boolean sendChannelsDirty = false;
   private boolean recieveChannelsDirty = false;
   private boolean registered = false;
@@ -69,9 +69,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private boolean bufferStacks = true;
 
   public TileTransceiver() {
-    super(new SlotDefinition(8, 8, 0));
+    super(new SlotDefinition(8, 8, 0), TRANSCEIVER_POWER_INTAKE, TRANSCEIVER_POWER_BUFFER, TRANSCEIVER_POWER_USE);
 
-    currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
+    currentTask = new ContinuousTask(getPowerUsePerTick());
     railController = new EnderRailController(this);
 
     sendItemFilter = new ItemFilter(true);
@@ -162,16 +162,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return hasPower();
   }
 
-  @Override
-  public ICapacitor getCapacitor() {
-    return capacitor;
-  }
-
-  @Override
-  public int getPowerUsePerTick() {
-    return Config.transceiverUpkeepCostRF;
-  }
-
   public Set<Channel> getSendChannels(ChannelType type) {
     return sendChannels.get(type);
   }
@@ -228,7 +218,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     railController.readFromNBT(nbtRoot);
-    currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
+    currentTask = new ContinuousTask(getPowerUsePerTick());
   }
 
   @Override

@@ -65,5 +65,11 @@ public interface Scaler {
   public static final Scaler SPEED = new IndexedScaler(1f, 100, 20, 10, 2, 1);
   public static final Scaler POWER10 = new IndexedScaler(1f, 0, 1, 2, 10, 20);
   public static final Scaler RANGE = new IndexedScaler(1f, 0, 4, 6, 10);
+  public static final Scaler FIXED_1 = new Scaler() {
+    @Override
+    public float scaleValue(float idx) {
+      return 1;
+    }
+  };
 
 }

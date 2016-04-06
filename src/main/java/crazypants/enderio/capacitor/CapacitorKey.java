@@ -10,6 +10,7 @@ import crazypants.enderio.config.Config.Section;
 
 import static crazypants.enderio.config.Config.sectionAttractor;
 import static crazypants.enderio.config.Config.sectionCapacitor;
+import static crazypants.enderio.config.Config.sectionPower;
 
 public enum CapacitorKey implements ICapacitorKey {
   ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
@@ -25,13 +26,17 @@ public enum CapacitorKey implements ICapacitorKey {
 
   ATTRACTOR_POWER_INTAKE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_INTAKE, Scaler.QUADRATIC, 80),
   ATTRACTOR_POWER_BUFFER(ModObject.blockAttractor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  ATTRACTOR_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 20),
-  ATTRACTOR_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.QUADRATIC, 16, sectionAttractor, null),
+  ATTRACTOR_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.QUADRATIC, 20, sectionAttractor, "attractorPowerPerTickLevelOne"),
+  ATTRACTOR_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.QUADRATIC, 16, sectionAttractor, "attractorRangeLevelOne"),
 
-  AVERSION_POWER_INTAKE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_INTAKE, Scaler.CUBIC, 640),
-  AVERSION_POWER_BUFFER(ModObject.blockAttractor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
-  AVERSION_POWER_USE(ModObject.blockAttractor, CapacitorKeyType.ENERGY_USE, Scaler.CUBIC, 80),
-  AVERSION_RANGE(ModObject.blockAttractor, CapacitorKeyType.AREA, Scaler.RANGE, 16),
+  AVERSION_POWER_INTAKE(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_INTAKE, Scaler.CUBIC, 640),
+  AVERSION_POWER_BUFFER(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  AVERSION_POWER_USE(ModObject.blockSpawnGuard, CapacitorKeyType.ENERGY_USE, Scaler.CUBIC, 80, sectionAttractor, "spawnGuardPowerPerTickLevelOne"),
+  AVERSION_RANGE(ModObject.blockSpawnGuard, CapacitorKeyType.AREA, Scaler.RANGE, 16),
+
+  TRANSCEIVER_POWER_INTAKE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_INTAKE, Scaler.FIXED_1, 20480 * 2, sectionPower, "transceiverMaxIoRF"),
+  TRANSCEIVER_POWER_BUFFER(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.FIXED_1, 500000),
+  TRANSCEIVER_POWER_USE(ModObject.blockTransceiver, CapacitorKeyType.ENERGY_USE, Scaler.FIXED_1, 10, sectionPower, "transceiverUpkeepCostRF"),
 
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),
