@@ -18,7 +18,6 @@ import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
-import crazypants.enderio.power.Capacitors;
 
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.DARK_STEEL;
@@ -42,7 +41,7 @@ public class MachineRecipes {
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
     ItemStack capacitor2 = new ItemStack(itemBasicCapacitor, 1, 1);
     ItemStack capacitor3 = new ItemStack(itemBasicCapacitor, 1, 2);
-    ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
+    ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor, 1, 2);
     String basicGear = MachinePart.BASIC_GEAR.oreDict;
     String machineChassi = MachinePart.MACHINE_CHASSI.oreDict;
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);

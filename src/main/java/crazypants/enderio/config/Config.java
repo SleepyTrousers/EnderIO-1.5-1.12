@@ -286,14 +286,11 @@ public final class Config {
   public static boolean addFurnaceFuelTootip = true;
   public static boolean addDurabilityTootip = true;
 
-  public static int farmContinuousEnergyUseRF = 40;
   public static int farmActionEnergyUseRF = 500;
   public static int farmAxeActionEnergyUseRF = 1000;
   public static int farmBonemealActionEnergyUseRF = 160;
   public static int farmBonemealTryEnergyUseRF = 80;
 
-  public static int farmDefaultSize = 3;
-  public static int farmBonusSize = 2;
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
   public static boolean disableFarmNotification = false;
@@ -356,9 +353,6 @@ public final class Config {
 
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
-  public static int poweredSpawnerLevelOnePowerPerTickRF = 160;
-  public static int poweredSpawnerLevelTwoPowerPerTickRF = 500;
-  public static int poweredSpawnerLevelThreePowerPerTickRF = 1500;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static int poweredSpawnerDespawnTimeSeconds = 120;
   public static int poweredSpawnerSpawnCount = 4;
@@ -1047,8 +1041,6 @@ public final class Config {
     addFurnaceFuelTootip = config.get(sectionPersonal.name, "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
 
-    farmContinuousEnergyUseRF = config.get(sectionFarm.name, "farmContinuousEnergyUseRF", farmContinuousEnergyUseRF,
-        "The amount of power used by a farm per tick ").getInt(farmContinuousEnergyUseRF);
     farmActionEnergyUseRF = config.get(sectionFarm.name, "farmActionEnergyUseRF", farmActionEnergyUseRF,
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getInt(farmActionEnergyUseRF);
     farmAxeActionEnergyUseRF = config.get(sectionFarm.name, "farmAxeActionEnergyUseRF", farmAxeActionEnergyUseRF,
@@ -1058,11 +1050,6 @@ public final class Config {
         "The amount of power used by a farm per bone meal used").getInt(farmBonemealActionEnergyUseRF);
     farmBonemealTryEnergyUseRF = config.get(sectionFarm.name, "farmBonemealTryEnergyUseRF", farmBonemealTryEnergyUseRF,
         "The amount of power used by a farm per bone meal try").getInt(farmBonemealTryEnergyUseRF);
-
-    farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
-        "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
-    farmBonusSize = config.get(sectionFarm.name, "farmBonusSize", farmBonusSize,
-        "The extra number of blocks a farm will extend from its center per upgrade").getInt(farmBonusSize);
 
     farmAxeDamageOnLeafBreak = config.get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak,
         "Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
@@ -1125,13 +1112,6 @@ public final class Config {
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);
     poweredSpawnerMaxDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks,
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);
-    poweredSpawnerLevelOnePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelOnePowerPerTickRF", poweredSpawnerLevelOnePowerPerTickRF,
-        "RF per tick for a level 1 (non-upgraded) spawner. See PoweredSpanerConfig_Core.json for mob type multipliers").getInt(poweredSpawnerLevelOnePowerPerTickRF);
-    poweredSpawnerLevelTwoPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelTwoPowerPerTickRF", poweredSpawnerLevelTwoPowerPerTickRF,
-        "RF per tick for a level 2 spawner").getInt(poweredSpawnerLevelTwoPowerPerTickRF);
-    poweredSpawnerLevelThreePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTickRF",
-        poweredSpawnerLevelThreePowerPerTickRF,
-        "RF per tick for a level 3 spawner").getInt(poweredSpawnerLevelThreePowerPerTickRF);
     poweredSpawnerMaxPlayerDistance = config.get(sectionSpawner.name, "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerDespawnTimeSeconds = config.get(sectionSpawner.name, "poweredSpawnerDespawnTimeSeconds" , poweredSpawnerDespawnTimeSeconds,

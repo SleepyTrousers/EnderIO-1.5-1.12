@@ -8,7 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -27,6 +29,7 @@ import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
@@ -59,6 +62,13 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   protected void init() {
     super.init();
     SmartModelAttacher.register(this, EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.DEFAULTS, EnumMergingBlockRenderMode.AUTO);
+  }
+
+  @Override
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+    if (tab != null && Config.reservoirEnabled) {
+      super.getSubBlocks(itemIn, tab, list);
+    }
   }
 
   @Override

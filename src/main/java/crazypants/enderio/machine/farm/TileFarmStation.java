@@ -34,8 +34,15 @@ import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.tool.ArrayMappingTool;
+
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
+import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -142,11 +149,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private boolean wasActive;
 
   public TileFarmStation() {
-    super(new SlotDefinition(9, 6, 1));
+    super(new SlotDefinition(9, 6, 1), FARM_POWER_INTAKE, FARM_POWER_BUFFER, FARM_POWER_USE);
   }
 
   public int getFarmSize() {
-    return Config.farmDefaultSize + getUpgradeDist();
+    return (int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
+  }
+
+  public int getFarmBaseSize() {
+    return (int) (FARM_BASE_SIZE.getFloat(BASIC_CAPACITOR) + FARM_BONUS_SIZE.getFloat(BASIC_CAPACITOR));
   }
 
   public void actionPerformed(boolean isAxe) {
@@ -189,15 +200,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       }
     }
     return result;
-  }
-
-  private int getUpgradeDist() {
-    int upg = slotDefinition.getMaxUpgradeSlot();
-    if(inventory[upg] == null) {
-      return 0;
-    } else {
-      return Config.farmBonusSize * inventory[upg].getItemDamage();
-    }
   }
 
   public boolean hasHoe() {
@@ -712,24 +714,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  public void onCapacitorTypeChange() {
-    int ppt = calcPowerUsePerTick();
-    switch (getCapacitorType()) {
-    case BASIC_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 250000, ppt));
-      break;
-    case ACTIVATED_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 500000, ppt));
-      break;
-    case ENDER_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 1000000, ppt));
-      break;
-    }
+  public void onCapacitorDataChange() {
     currentTask = createTask();
-  }
-
-  private int calcPowerUsePerTick() {
-    return Math.round(Config.farmContinuousEnergyUseRF * (getFarmSize()/(float)Config.farmDefaultSize ));
   }
 
   @Override
@@ -781,14 +767,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Override
   public int getInventoryStackLimit(int slot) {
     if (slot >= minSupSlot && slot <= maxSupSlot) {
-      switch (getCapacitorType()) {
-      case BASIC_CAPACITOR:
-        return 16;
-      case ACTIVATED_CAPACITOR:
-        return 32;
-      case ENDER_CAPACITOR:
-        return 64;
-      }
+      return Math.min(FARM_STACK_LIMIT.get(getCapacitorData()), 64);
     }
     return 64;
   }

@@ -28,6 +28,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected boolean startFailed = false;
   protected float nextChance = Float.NaN;
 
+  @Deprecated
   protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
   }

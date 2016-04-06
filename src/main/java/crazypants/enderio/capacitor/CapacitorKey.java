@@ -10,7 +10,9 @@ import crazypants.enderio.config.Config.Section;
 
 import static crazypants.enderio.config.Config.sectionAttractor;
 import static crazypants.enderio.config.Config.sectionCapacitor;
+import static crazypants.enderio.config.Config.sectionFarm;
 import static crazypants.enderio.config.Config.sectionPower;
+import static crazypants.enderio.config.Config.sectionSpawner;
 
 public enum CapacitorKey implements ICapacitorKey {
   ALLOY_SMELTER_POWER_INTAKE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
@@ -41,6 +43,18 @@ public enum CapacitorKey implements ICapacitorKey {
   WEATHER_POWER_INTAKE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80),
   WEATHER_POWER_BUFFER(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
   WEATHER_POWER_USE(ModObject.blockWeatherObelisk, CapacitorKeyType.ENERGY_USE, Scaler.POWER, 20),
+
+  FARM_POWER_INTAKE(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_INTAKE, Scaler.RANGE, 400),
+  FARM_POWER_BUFFER(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_BUFFER, Scaler.RANGE, 250000),
+  FARM_POWER_USE(ModObject.blockFarmStation, CapacitorKeyType.ENERGY_USE, Scaler.RANGE, 10),
+  FARM_BASE_SIZE(ModObject.blockFarmStation, CapacitorKeyType.AREA, Scaler.FIXED_1, 1, sectionFarm, null),
+  FARM_BONUS_SIZE(ModObject.blockFarmStation, CapacitorKeyType.AREA, Scaler.IDENTITY, 2, sectionFarm, "farmBonusSize"),
+  FARM_STACK_LIMIT(ModObject.blockFarmStation, CapacitorKeyType.AMOUNT, Scaler.QUADRATIC, 16),
+
+  SPAWNER_POWER_INTAKE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_INTAKE, Scaler.SPAWNER, 200),
+  SPAWNER_POWER_BUFFER(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000),
+  SPAWNER_POWER_USE(ModObject.blockPoweredSpawner, CapacitorKeyType.ENERGY_USE, Scaler.SPAWNER, 160, sectionSpawner, "poweredSpawnerLevelOnePowerPerTickRF"),
+  SPAWNER_SPEEDUP(ModObject.blockPoweredSpawner, CapacitorKeyType.SPEED, Scaler.QUADRATIC, 1),
 
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.POWER, 100000, null, null),
