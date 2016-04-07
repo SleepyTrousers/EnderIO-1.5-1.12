@@ -3,6 +3,8 @@ package crazypants.enderio.machine.solar;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -45,7 +47,7 @@ public class SolarItemRenderMapper implements IRenderMapper.IItemRenderMapper.II
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
     return cacheKey;
   }
 

@@ -60,35 +60,37 @@ public class EnderItemOverrideList /* extends ItemOverrideList */{
 
     if (block instanceof ISmartRenderAwareBlock) {
       IRenderMapper.IItemRenderMapper renderMapper = ((ISmartRenderAwareBlock) block).getItemRenderMapper();
+      if (renderMapper != null) {
 
-      Pair<Block, Long> cacheKey = Pair.of(block, renderMapper.getCacheKey(block, stack, new CacheKey().addCacheKey(stack.getMetadata())).getCacheKey());
-      ItemQuadCollector quads = cacheKey.getRight() == null ? null : cache.getIfPresent(cacheKey);
-      if (quads == null) {
-        quads = new ItemQuadCollector();
+        Pair<Block, Long> cacheKey = Pair.of(block, renderMapper.getCacheKey(block, stack, new CacheKey().addCacheKey(stack.getMetadata())).getCacheKey());
+        ItemQuadCollector quads = cacheKey.getRight() == null ? null : cache.getIfPresent(cacheKey);
+        if (quads == null) {
+          quads = new ItemQuadCollector();
 
-        if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemStateMapper) {
-          quads.addBlockStates(((IRenderMapper.IItemRenderMapper.IItemStateMapper) renderMapper).mapItemRender(block, stack, quads), stack, block);
-        } else if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemModelMapper) {
-          List<IBakedModel> bakedModels = ((IRenderMapper.IItemRenderMapper.IItemModelMapper) renderMapper).mapItemRender(block, stack);
-          if (bakedModels != null) {
-            for (IBakedModel bakedModel : bakedModels) {
-              quads.addItemBakedModel(bakedModel);
+          if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemStateMapper) {
+            quads.addBlockStates(((IRenderMapper.IItemRenderMapper.IItemStateMapper) renderMapper).mapItemRender(block, stack, quads), stack, block);
+          } else if (renderMapper instanceof IRenderMapper.IItemRenderMapper.IItemModelMapper) {
+            List<IBakedModel> bakedModels = ((IRenderMapper.IItemRenderMapper.IItemModelMapper) renderMapper).mapItemRender(block, stack);
+            if (bakedModels != null) {
+              for (IBakedModel bakedModel : bakedModels) {
+                quads.addItemBakedModel(bakedModel);
+              }
             }
+          } else {
+            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
           }
-        } else {
-          return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+
+          if (cacheKey.getRight() != null) {
+            cache.put(cacheKey, quads);
+          }
         }
 
-        if (cacheKey.getRight() != null) {
-          cache.put(cacheKey, quads);
+        if (renderMapper instanceof IItemRenderMapper.IDynamicOverlayMapper) {
+          quads = quads.combine(((IItemRenderMapper.IDynamicOverlayMapper) renderMapper).mapItemDynamicOverlayRender(block, stack));
         }
-      }
 
-      if (renderMapper instanceof IItemRenderMapper.IDynamicOverlayMapper) {
-        quads = quads.combine(((IItemRenderMapper.IDynamicOverlayMapper) renderMapper).mapItemDynamicOverlayRender(block, stack));
+        return new CollectedItemQuadBakedBlockModel(originalModel, quads);
       }
-
-      return new CollectedItemQuadBakedBlockModel(originalModel, quads);
     }
 
     return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();

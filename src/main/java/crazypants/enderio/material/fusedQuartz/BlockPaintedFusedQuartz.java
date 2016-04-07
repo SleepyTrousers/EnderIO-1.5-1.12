@@ -1,5 +1,7 @@
 package crazypants.enderio.material.fusedQuartz;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
@@ -117,6 +119,15 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     if (!world.isRemote) {
       world.markBlockForUpdate(pos);
     }
+  }
+
+  @Override
+  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+    List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
+    for (ItemStack drop : drops) {
+      PainterUtil2.setSourceBlock(drop, getPaintSource(state, world, pos));
+    }
+    return drops;
   }
 
   @Override

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockPlanks;
@@ -241,7 +243,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
     return cacheKey.addCacheKey(getPaintSource(block, stack));
   }
 

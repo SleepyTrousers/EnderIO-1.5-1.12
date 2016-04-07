@@ -1,7 +1,13 @@
 package crazypants.enderio.render;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public interface ICacheKey {
-  ICacheKey addCacheKey(Object addlCacheKey);
+
+  @Nonnull
+  ICacheKey addCacheKey(@Nullable Object addlCacheKey);
 
   long getCacheKey();
+
 }

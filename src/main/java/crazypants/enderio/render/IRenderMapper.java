@@ -3,6 +3,8 @@ package crazypants.enderio.render;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -133,7 +135,8 @@ public interface IRenderMapper {
    * null, no caching will be performed.
    */
   @SideOnly(Side.CLIENT)
-  ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey);
+    @Nonnull
+    ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey);
   }
 
 }

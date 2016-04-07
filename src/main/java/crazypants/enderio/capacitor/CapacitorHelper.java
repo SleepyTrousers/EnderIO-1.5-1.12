@@ -17,9 +17,17 @@ public class CapacitorHelper {
     if (item == null) {
       return null;
     }
+    final ICapacitorData capData = getNBTCapacitorDataFromItemStack(stack, item);
+    if (capData != null) {
+      return capData;
+    }
     if (item instanceof ICapacitorDataItem) {
       return ((ICapacitorDataItem) item).getCapacitorData(stack);
     }
+    return null;
+  }
+
+  protected static ICapacitorData getNBTCapacitorDataFromItemStack(ItemStack stack, final Item item) {
     if (!stack.hasTagCompound()) {
       return null;
     }

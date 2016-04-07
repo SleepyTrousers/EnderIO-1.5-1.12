@@ -3,6 +3,8 @@ package crazypants.enderio.material.fusedQuartz;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -48,7 +50,7 @@ public class FusedQuartzItemRenderMapper implements IRenderMapper.IItemRenderMap
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
     return cacheKey;
   }
 

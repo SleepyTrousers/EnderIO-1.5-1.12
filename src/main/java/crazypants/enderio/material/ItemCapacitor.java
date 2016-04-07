@@ -18,6 +18,8 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorDataItem;
@@ -63,6 +65,9 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
     for (int j = 0; j < DefaultCapacitorData.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
+    final ItemStack stack = CapacitorHelper.addCapData(CapacitorHelper.addCapData(new ItemStack(par1, 1, 0), null, 1), CapacitorKey.ALLOY_SMELTER_POWER_USE, 5);
+    stack.setStackDisplayName("Smelting Capacitor"); // TODO remve this test
+    par3List.add(stack);
   }
 
   @Override

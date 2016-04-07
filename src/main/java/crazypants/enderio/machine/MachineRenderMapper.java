@@ -119,7 +119,7 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ICacheKey getCacheKey(Block block, ItemStack stack, ICacheKey cacheKey) {
+  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
     return cacheKey;
   }
 

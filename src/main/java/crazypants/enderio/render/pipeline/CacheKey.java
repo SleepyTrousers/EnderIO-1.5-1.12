@@ -11,6 +11,7 @@ public class CacheKey implements ICacheKey {
   private long cacheKey = 0;
 
   @Override
+  @Nonnull
   public ICacheKey addCacheKey(@Nullable Object addlCacheKey) {
     addCacheKeyInternal(addlCacheKey != null ? addlCacheKey : 0);
     return this;
