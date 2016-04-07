@@ -3,6 +3,10 @@ package crazypants.enderio.machine.obelisk.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
@@ -12,9 +16,6 @@ import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
 
 public class ObeliskModelQuads {
   
@@ -32,9 +33,10 @@ public class ObeliskModelQuads {
   public static final ObeliskModelQuads INSTANCE_ACTIVE = new ObeliskModelQuads(true);
   public static final ObeliskModelQuads INSTANCE = new ObeliskModelQuads(false);
     
-  private final List<BakedQuad> quads = new ArrayList<BakedQuad>(); 
-  private final VertXForm2 xform2 = new VertXForm2();
-  private final VertXForm3 xform3 = new VertXForm3();
+  private List<BakedQuad> quads = new ArrayList<BakedQuad>();
+  private static final VertXForm2x xform2x = new VertXForm2x();
+  private static final VertXForm2z xform2z = new VertXForm2z();
+  private static final VertXForm3 xform3 = new VertXForm3();
 
   private boolean isActive;
   
@@ -44,16 +46,17 @@ public class ObeliskModelQuads {
   
   public List<BakedQuad> getQuads() {
     if(quads.isEmpty()) {
-      createQuads();
+      quads = createQuads(isActive);
     }
     return quads;
   }
   
   public void invalidate() {
-    quads.clear();
+    quads = new ArrayList<BakedQuad>();
   }
 
-  private void createQuads() {    
+  private static List<BakedQuad> createQuads(boolean isActive) {
+    List<BakedQuad> quads = new ArrayList<BakedQuad>();
 
     TextureSupplier[] texs;
     if(isActive) {
@@ -76,17 +79,15 @@ public class ObeliskModelQuads {
     icons[BOTTOM] = IconUtil.instance.blankTexture;
 
     int i=0;
-    xform2.isX = false;
     for(EnumFacing face : EnumFacing.values()) {
-      RenderUtil.addBakedQuadForFace(quads, bb1, icons[i], face, xform2);
+      RenderUtil.addBakedQuadForFace(quads, bb1, icons[i], face, xform2z);
       ++i;
     }    
 
-    xform2.isX = true;
     icons[TOP] = IconUtil.instance.blankTexture;
     i=0;
     for(EnumFacing face : EnumFacing.values()) {
-      RenderUtil.addBakedQuadForFace(quads, bb2, icons[i], face, xform2);
+      RenderUtil.addBakedQuadForFace(quads, bb2, icons[i], face, xform2x);
       ++i;
     }    
 
@@ -94,15 +95,42 @@ public class ObeliskModelQuads {
     for(EnumFacing face : EnumFacing.values()) {
       RenderUtil.addBakedQuadForFace(quads, BoundingBox.UNIT_CUBE, bottomIcons[i], face, xform3);
       ++i;
-    }        
+    }
+
+    return quads;
   }
 
 
-  private static class VertXForm2 implements VertexTransform {
+  private static class VertXForm2x implements VertexTransform {
 
-    boolean isX = true;
+    public VertXForm2x() {
+    }
 
-    public VertXForm2() {
+    @Override
+    public void apply(Vertex vertex) {
+      apply(vertex.xyz);
+    }
+
+    @Override
+    public void apply(Vector3d vec) {
+      double pinch = WIDE_PINCH;
+      if (vec.y > 0.2) {
+        pinch = 0.5;
+      }
+      vec.x -= 0.5;
+      vec.x *= pinch;
+      vec.x += 0.5;
+    }
+
+    @Override
+    public void applyToNormal(Vector3f vec) {
+    }
+
+  }
+
+  private static class VertXForm2z implements VertexTransform {
+
+    public VertXForm2z() {
     }
 
     @Override
@@ -116,15 +144,9 @@ public class ObeliskModelQuads {
       if(vec.y > 0.2) {
         pinch = 0.5;
       }
-      if(isX) {
-        vec.x -= 0.5;
-        vec.x *= pinch;
-        vec.x += 0.5;
-      } else {
-        vec.z -= 0.5;
-        vec.z *= pinch;
-        vec.z += 0.5;
-      }
+      vec.z -= 0.5;
+      vec.z *= pinch;
+      vec.z += 0.5;
     }
 
     @Override
