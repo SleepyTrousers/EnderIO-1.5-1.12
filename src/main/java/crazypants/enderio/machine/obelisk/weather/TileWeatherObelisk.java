@@ -304,11 +304,14 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    int res = inputTank.fill(resource, doFill);
-    if(res > 0 && doFill) {
-      tanksDirty = true;
+    if (resource != null && canFill(from, resource.getFluid())) {
+      int res = inputTank.fill(resource, doFill);
+      if (res > 0 && doFill) {
+        tanksDirty = true;
+      }
+      return res;
     }
-    return res;
+    return 0;
   }
 
   @Override
