@@ -305,6 +305,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    if (resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
+      return 0;
+    }
     int res = inputTank.fill(resource, doFill);
     if(res > 0 && doFill) {
       tanksDirty = true;
