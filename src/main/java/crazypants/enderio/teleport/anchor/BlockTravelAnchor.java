@@ -1,18 +1,21 @@
 package crazypants.enderio.teleport.anchor;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -31,8 +34,15 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAccessable;
@@ -43,13 +53,13 @@ import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
-import crazypants.util.IFacade;
+import crazypants.enderio.teleport.telepad.TelepadRenderMapper;
 import crazypants.util.UserIdent;
 
-public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
-  
-  public static BlockTravelAnchor<TileTravelAnchor> create() {
+public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
+    ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock {
 
+  public static BlockTravelAnchor<TileTravelAnchor> create() {
     PacketHandler.INSTANCE.registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketLabel.class, PacketLabel.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketTravelEvent.class, PacketTravelEvent.class, PacketHandler.nextID(), Side.SERVER);
@@ -59,11 +69,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
     BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(TileTravelAnchor.class);
     result.init();
-
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, result);
-    //TODO: 1.8
-//    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
     return result;
   }
 
@@ -75,12 +80,86 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     if (!Config.travelAnchorEnabled) {
       setCreativeTab(null);
     }
+    initDefaultState();
+  }
+
+  protected void initDefaultState() {
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   public BlockTravelAnchor(String unlocalisedName, Class<T> teClass) {
     super(unlocalisedName, teClass);
+    initDefaultState();
   }
-  
+
+  @Override
+  protected void init() {
+    super.init();
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
+    registerInSmartModelAttacher();
+  }
+
+  protected void registerInSmartModelAttacher() {
+    SmartModelAttacher.register(this);
+  }
+
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState();
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return 0;
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return getDefaultState();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+      T tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
+      }
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
+  }
+
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull T tileEntity) {
+    blockStateWrapper.addCacheKey(0);
+  }
+
+  protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemRenderMapper getItemRenderMapper() {
+    return TelepadRenderMapper.instance;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+    return TelepadRenderMapper.instance;
+  }
+
   @Override
   public TileEntity createNewTileEntity(World var1, int var2) {
     return new TileTravelAnchor();
@@ -88,12 +167,12 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-  
+
     if (entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileTravelAnchor) {
         TileTravelAnchor ta = (TileTravelAnchor) te;
-        ta.setPlacedBy((EntityPlayer) entity);        
+        ta.setPlacedBy((EntityPlayer) entity);
         IBlockState bs = PainterUtil2.getSourceBlock(stack);
         ta.setPaintSource(bs);
         world.markBlockForUpdate(pos);
@@ -101,10 +180,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     }
   }
 
-  
-  
   @Override
-  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {   
+  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     TileEntity te = world.getTileEntity(pos);
     if (!world.isRemote && te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
@@ -119,12 +196,10 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   public static void sendPrivateChatMessage(EntityPlayer player, UserIdent owner) {
     if (!player.isSneaking()) {
-      ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED
-          + owner.getPlayerName() + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
+      ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED + owner.getPlayerName()
+          + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
     }
   }
-  
-  
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -153,35 +228,13 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileTravelAnchor anchor, ItemStack drop) {       
-    if (anchor == null) {
-      return;
-    }
-    ItemStack itemStack = new ItemStack(this);
-    IBlockState srcBlk = anchor.getPaintSource();
-    if (srcBlk != null) {
-      itemStack = createItemStackForSourceBlock(anchor.getPaintSource());
-      drop.setTagCompound((NBTTagCompound) itemStack.getTagCompound().copy());
-    }
-  }
-  
-  @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {  
-    return false;
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileTravelAnchor anchor, ItemStack drop) {
+    PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
   }
 
-  
-  @SideOnly(Side.CLIENT)
   @Override
-  public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      IBlockState sourceBlock = ((IPaintable.IPaintableTileEntity) te).getPaintSource();
-      if (sourceBlock != null && sourceBlock.getBlock() != this) {
-        return sourceBlock.getBlock().colorMultiplier(world, pos);
-      }
-    }
-    return super.colorMultiplier(world, pos, renderPass);
+  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
+    return false;
   }
 
   @Override
@@ -189,51 +242,67 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return getUnlocalizedName();
   }
 
-  public ItemStack createItemStackForSourceBlock(IBlockState bs) {
-    if (bs.getBlock() == this) {
-      return new ItemStack(this);
-    }
-    ItemStack result = new ItemStack(this, 1, bs.getBlock().getMetaFromState(bs));
-    // TODO PainterUtil.setSourceBlock(result, bs);
-    return result;
-  }
-  
-  private ItemStack createItemStackForSourceBlock(Block sourceBlock, int itemDamage) {
-    ItemStack result = new ItemStack(this, 1, itemDamage);
-    // TODO PainterUtil.setSourceBlock(result, sourceBlock, itemDamage);
-    return result;
-  }
-
   @Override
   public boolean isOpaqueCube() {
     return false;
   }
 
-  // public final class PainterTemplate extends BasicPainterTemplate {
-  //
-  // public PainterTemplate() {
-  // super(BlockTravelAnchor.this);
-  // }
-  //
-  // @Override
-  // public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-  // ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-  // if (paintSource == null) {
-  // return new ResultStack[0];
-  // }
-  // return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
-  // }
-  //
-  //
-  // }
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT START
+  // ///////////////////////////////////////////////////////////////////////
 
   @Override
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    TileTravelAnchor te = getTileEntity(world, pos);
-    if(te == null) {
-      return null;
-    }
-    return te.getPaintSource();
+    return getPaintSource(getDefaultState(), world, pos);
   }
+
+  @Override
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+    T te = getTileEntity(world, pos);
+    if (te != null) {
+      ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
+    }
+  }
+
+  @Override
+  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+    PainterUtil2.setSourceBlock(stack, paintSource);
+  }
+
+  @Override
+  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+    T te = getTileEntity(world, pos);
+    if (te != null) {
+      return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
+    }
+    return null;
+  }
+
+  @Override
+  public IBlockState getPaintSource(Block block, ItemStack stack) {
+    return PainterUtil2.getSourceBlock(stack);
+  }
+
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+    IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
+    if (paintSource != null) {
+      try {
+        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+      } catch (Throwable e) {
+      }
+    }
+    return super.colorMultiplier(worldIn, pos, renderPass);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT END
+  // ///////////////////////////////////////////////////////////////////////
 
 }

@@ -65,7 +65,10 @@ public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
         return null;
       }
 
+    } else if (blockLayer == EnumWorldBlockLayer.CUTOUT) {
+      return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
     }
+
     return null;
   }
 

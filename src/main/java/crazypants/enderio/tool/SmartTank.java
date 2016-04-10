@@ -1,15 +1,17 @@
 package crazypants.enderio.tool;
 
-import com.enderio.core.common.util.FluidUtil;
-import com.google.common.base.Strings;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+import com.enderio.core.common.util.FluidUtil;
+import com.google.common.base.Strings;
+
 public class SmartTank extends FluidTank {
+
+  // Note: NBT-safe as long as the restriction isn't using NBT
 
   protected Fluid restriction;
   
@@ -41,6 +43,10 @@ public class SmartTank extends FluidTank {
 
   public boolean isFull() {
     return getFluidAmount() >= getCapacity();
+  }
+
+  public boolean isEmpty() {
+    return getFluidAmount() == 0;
   }
 
   public boolean canDrainFluidType(FluidStack resource) {

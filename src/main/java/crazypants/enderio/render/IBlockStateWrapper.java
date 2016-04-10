@@ -1,5 +1,8 @@
 package crazypants.enderio.render;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -24,7 +27,8 @@ public interface IBlockStateWrapper extends IBlockState, ICacheKey {
   IBlockState getState();
 
   @Override
-  IBlockStateWrapper addCacheKey(Object addlCacheKey);
+  @Nonnull
+  IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey);
 
   void bakeModel();
 

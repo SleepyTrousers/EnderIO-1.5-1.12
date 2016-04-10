@@ -147,10 +147,10 @@
     </recipe>
     <recipe name="Fused Glass" energyCost="2500" >
       <input>
-        <itemStack oreDictionary="sand" />
+        <itemStack oreDictionary="blockGlass" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.2" />
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.1" />
       </output>
     </recipe>
     <recipe name="Enlightened Fused Quartz" energyCost="5000" >

@@ -1,0 +1,143 @@
+{
+"__comment": "Designed by Henryloenwind with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "__comment": "body",
+    "from": [ 5, 0, 0 ],
+    "to": [ 11, 5, 16 ],
+    "faces": {
+        "south": { "uv": [ 5.01, 11.01, 10.99, 15.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "from": [ 5, 11, 15 ],
+    "to": [ 11, 12, 16 ],
+    "faces": {
+        "down":  { "uv": [ 10.99, 11.99, 5.01, 11.01 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "from": [ 4, 5, 15 ],
+    "to": [ 5, 11, 16 ],
+    "faces": {
+        "east":  { "uv": [ 4.01, 5.01, 4.99, 10.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "from": [ 11, 5, 15 ],
+    "to": [ 12, 11, 16 ],
+    "faces": {
+        "west":  { "uv": [ 11.01, 5.01, 11.99, 10.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "from": [ 5, 4, 15 ],
+    "to": [ 11, 5, 16 ],
+    "faces": {
+        "up":    { "uv": [ 5.01, 11.01, 10.99, 11.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "from": [ 4, 5.5, 14.5 ],
+    "to": [ 5.5, 10.5, 15 ],
+    "faces": {
+        "south": { "uv": [ 4.01, 5.51, 5.49, 10.49 ], "texture": "#inner", "cullface": "south" },
+        "east":  { "uv": [ 1.01, 5.51, 1.49, 10.49 ], "texture": "#inner", "cullface": "south" }
+    }
+},
+{
+    "from": [ 10.5, 5.5, 14.5 ],
+    "to": [ 12, 10.5, 15 ],
+    "faces": {
+        "south": { "uv": [ 10.51, 5.51, 11.99, 10.49 ], "texture": "#inner", "cullface": "south" },
+        "west":  { "uv": [ 14.51, 5.51, 14.99, 10.49 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "from": [ 4, 10.5, 14.5 ],
+    "to": [ 12, 12, 15 ],
+    "faces": {
+        "down":  { "uv": [ 11.99, 14.99, 4.01, 14.51 ], "texture": "#inner", "cullface": "south" },
+        "south": { "uv": [ 4.01, 4.01, 11.99, 5.49 ], "texture": "#inner", "cullface": "south" }
+    }
+},
+{
+    "from": [ 4, 4, 14.5 ],
+    "to": [ 12, 5.5, 15 ],
+    "faces": {
+        "up":    { "uv": [ 4.01, 14.51, 11.99, 14.99 ], "texture": "#inner", "cullface": "south" },
+        "south": { "uv": [ 4.01, 10.51, 11.99, 11.99 ], "texture": "#inner", "cullface": "south" }
+    }
+},
+{
+    "from": [ 4, 4, 4 ],
+    "to": [ 12, 12, 12 ],
+    "faces": {
+        "south": { "uv": [ 4.01, 4.01, 11.99, 11.99 ], "texture": "#core", "cullface": "south" }
+    }
+},
+{
+    "from": [ 1.5, 1.5, 14.5 ],
+    "to": [ 14.5, 14.5, 15 ],
+    "faces": {
+        "north": { "uv": [ 1.49, 1.49, 14.51, 14.51 ], "texture": "#inner" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 0, 0, 0 ],
+    "to": [ 5, 5, 16 ],
+    "faces": {
+        "south": { "uv": [ 0.01, 11.01, 4.99, 15.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 0, 11, 0 ],
+    "to": [ 5, 16, 16 ],
+    "faces": {
+        "south": { "uv": [ 0.01, 0.01, 4.99, 4.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 11, 11, 0 ],
+    "to": [ 16, 16, 16 ],
+    "faces": {
+        "south": { "uv": [ 11.01, 0.01, 15.99, 4.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 11, 0, 0 ],
+    "to": [ 16, 5, 16 ],
+    "faces": {
+        "south": { "uv": [ 11.01, 11.01, 15.99, 15.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 11, 5, 0 ],
+    "to": [ 16, 11, 16 ],
+    "faces": {
+        "south": { "uv": [ 11.01, 5.01, 15.99, 10.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 0, 5, 0 ],
+    "to": [ 5, 11, 16 ],
+    "faces": {
+        "south": { "uv": [ 0.01, 5.01, 4.99, 10.99 ], "texture": "#body", "cullface": "south" }
+    }
+},
+{
+    "__comment": "body*",
+    "from": [ 5, 11, 0 ],
+    "to": [ 11, 16, 16 ],
+    "faces": {
+        "south": { "uv": [ 5.01, 0.01, 10.99, 4.99 ], "texture": "#body", "cullface": "south" }
+    }
+}
+]
+}

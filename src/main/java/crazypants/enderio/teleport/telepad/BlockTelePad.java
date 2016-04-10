@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport.telepad;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockState;
@@ -21,19 +23,18 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
-public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISmartRenderAwareBlock {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock {
 
   @SideOnly(Side.CLIENT)
   private static IRenderMapper RENDER_MAPPER;
@@ -87,19 +88,9 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, TelepadRenderMapper.instance);
-      TileTelePad tileEntity = getTileEntity(world, pos);
-      if (tileEntity != null) {
-        blockStateWrapper.addCacheKey(tileEntity.inNetwork()).addCacheKey(tileEntity.isMaster());
-      }
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
-    }
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileTelePad tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.inNetwork()).addCacheKey(tileEntity.isMaster());
   }
 
   @Override
@@ -204,6 +195,12 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements ISma
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {
+    return TelepadRenderMapper.instance;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return TelepadRenderMapper.instance;
   }
 

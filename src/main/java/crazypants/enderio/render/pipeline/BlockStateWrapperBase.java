@@ -128,7 +128,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey) {
+  public @Nonnull IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey) {
     super.addCacheKey(addlCacheKey);
     doCaching = true;
     return this;

@@ -175,7 +175,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
-   
     super.onBlockPlacedBy(world, pos, state, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
     AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(pos);
@@ -207,8 +206,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     world.markBlockForUpdate(pos);
   }
   
-  
-  
   @Override
   public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {   
     TileEntity ent = world.getTileEntity(pos);
@@ -218,8 +215,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  
-  
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {  

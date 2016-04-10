@@ -4,27 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
-
-import cofh.api.energy.EnergyStorage;
-import crazypants.enderio.api.teleport.ITelePad;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.MachineSound;
-import crazypants.enderio.machine.PacketPowerStorage;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.rail.TeleporterEIO;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.teleport.packet.PacketTravelEvent;
-import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,6 +26,28 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import cofh.api.energy.EnergyStorage;
+
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
+
+import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.MachineSound;
+import crazypants.enderio.machine.PacketPowerStorage;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.rail.TeleporterEIO;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
 
@@ -175,7 +176,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       if (worldObj.isBlockLoaded(bc.getBlockPos())) {
         TileEntity te = bc.getTileEntity(worldObj); 
         EnumFacing con = Util.getDirFromOffset(bc.x - getPos().getX(), 0, bc.z - getPos().getZ());
-        if (te instanceof TileTelePad && te.getWorld() != null) {
+        if (te instanceof TileTelePad && te.hasWorldObj() && isPainted() == ((TileTelePad) te).isPainted()) {
           // let's find the master and let him do the work
           if (fromBlock) {
             // Recurse to all adjacent (diagonal and axis-aligned) telepads, but only 1 deep.
@@ -226,12 +227,16 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     master.redstoneActivePrev = redstone;
   }
 
+  public boolean isPainted() {
+    return sourceBlock != null;
+  }
+
   private boolean formNetwork() {
     List<TileTelePad> temp = Lists.newArrayList();
 
     for (BlockCoord c : getSurroundingCoords()) {
       TileEntity te = c.getTileEntity(worldObj);
-      if (!(te instanceof TileTelePad) || ((TileTelePad) te).inNetwork()) {
+      if (!(te instanceof TileTelePad) || ((TileTelePad) te).inNetwork() || isPainted() != ((TileTelePad) te).isPainted()) {
         return false;
       }
       temp.add((TileTelePad) te);
@@ -373,8 +378,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if (!inNetwork()) {
       return new AxisAlignedBB(p, p.offset(EnumFacing.UP).offset(EnumFacing.SOUTH).offset(EnumFacing.EAST));
     }
-    TileTelePad master = getMaster();
-    p = master.getPos();
+    p = getMaster().getPos();
     return new AxisAlignedBB(p.getX() - 1, p.getY(), p.getZ() - 1, p.getX() + 2, p.getY() + 1, p.getZ() + 2);
   }
 

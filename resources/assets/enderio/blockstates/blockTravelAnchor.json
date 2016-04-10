@@ -1,14 +1,40 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "minecraft:cube_all",
-        "textures": {
-           "all": "enderio:blocks/blockTravelAnchor"
-        },
-        "transform": "forge:default-block"
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/blockTravelAnchor",
+            "all": "enderio:blocks/blockTravelAnchor",
+		    "body": "enderio:blocks/blockTravelAnchor_body",
+		    "core": "enderio:blocks/ender_still",
+		    "inner": "enderio:blocks/blockTravelAnchor_inner"
+        }
     },
-	"variants": {
-        "normal": [{}],
-        "inventory": [{}]
-	}
+    "variants":{
+        "render":{
+            "defaults":{
+                "model":"minecraft:cube_all", "transform":{
+                    "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+                    "firstperson":{ "rotation":[ {"x":0},  {"y":90},  {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+                    "gui":{         "rotation":[ {"x":0},  {"y":-90}, {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+                    "fixed":{       "rotation":[ {"x":0},  {"y":0},   {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+                }
+            },
+            "auto":{                                              "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front":{                                             "submodel":{ 
+				            "s1":{ "model":"enderio:blockTravelAnchor", "y":0   },
+				            "s2":{ "model":"enderio:blockTravelAnchor", "y":90  },
+				            "s3":{ "model":"enderio:blockTravelAnchor", "y":180 },
+				            "s4":{ "model":"enderio:blockTravelAnchor", "y":270 },
+				            "s5":{ "model":"enderio:blockTravelAnchor", "x":90  },
+				            "s6":{ "model":"enderio:blockTravelAnchor", "x":270 }
+            } },
+            "front_east":{                                        "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front_south":{                                       "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front_west":{                                        "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front_on":{                                          "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front_on_east":{                                     "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front_on_south":{                                    "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+            "front_on_west":{                                     "submodel":{ "front":{ "model":"minecraft:cube_all" } } }
+        }
+    }
 }

@@ -30,7 +30,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
   private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
   
-  private IBlockState sourceBlock;  
+  protected IBlockState sourceBlock;
 
   private AccessMode accessMode = AccessMode.PUBLIC;
 
@@ -85,8 +85,8 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean authoriseUser(EntityPlayer username, ItemStack[] password) {
-    if(checkPassword(password)) {
+  public boolean authoriseUser(EntityPlayer username, ItemStack[] passwordIn) {
+    if (checkPassword(passwordIn)) {
       authorisedUsers.add(UserIdent.create(username.getGameProfile()));
       return true;
     }
