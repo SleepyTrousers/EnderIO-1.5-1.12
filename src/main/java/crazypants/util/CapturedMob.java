@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.EntityUtil;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 
 public class CapturedMob {
@@ -119,6 +120,9 @@ public class CapturedMob {
   public @Nonnull ItemStack toStack(Item item, int meta, int amount) {
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(toNbt(null));
+    if (item == EnderIO.itemSoulVessel && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
+      stack.getTagCompound().setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
+    }
     return stack;
   }
 
