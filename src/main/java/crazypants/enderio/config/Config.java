@@ -310,6 +310,8 @@ public final class Config {
       "ProjRed|Exploration:projectred.exploration.hoeperidot",
       "magicalcrops:magicalcrops_AccioHoe", "magicalcrops:magicalcrops_CrucioHoe", "magicalcrops:magicalcrops_ImperioHoe",
       // disabled as it is currently not unbreaking as advertised "magicalcrops:magicalcrops_ZivicioHoe",
+      "magicalcrops:magicalcropsarmor_AccioHoe", "magicalcrops:magicalcropsarmor_CrucioHoe",
+      "magicalcrops:magicalcropsarmor_ImperioHoe",
       "BiomesOPlenty:hoeAmethyst", "BiomesOPlenty:hoeMud",
       "Eln:Eln.Copper Hoe",
       "Thaumcraft:ItemHoeThaumium", "Thaumcraft:ItemHoeElemental", "Thaumcraft:ItemHoeVoid",
