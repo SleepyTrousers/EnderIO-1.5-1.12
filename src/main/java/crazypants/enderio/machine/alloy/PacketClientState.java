@@ -43,7 +43,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
     TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.getPos());
-    if(te instanceof TileAlloySmelter) {
+    if (te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setMode(message.mode);
       ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(getPos());

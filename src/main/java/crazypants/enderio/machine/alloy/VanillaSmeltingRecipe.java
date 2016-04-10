@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -15,17 +19,13 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import crazypants.enderio.material.OreDictionaryPreferences;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   // We will use the same energy as per a standard furnace.
   // To do the conversion between fuel burning and RF, use the Stirling Gen
   // which produces ten RF per tick of burn time
-  private static int RF_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.coal, 1, 0)) * 10 / 8 ;
+  private static int RF_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.coal, 1, 0)) * 10 / 8;
 
   private boolean enabled = true;
 
@@ -58,7 +58,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   private int getNumInputs(MachineRecipeInput[] inputs) {
     int numInputs = 0;
     for (MachineRecipeInput input : inputs) {
-      if(input != null && isValidInput(input)) {
+      if (input != null && isValidInput(input)) {
         numInputs += input.item.stackSize;
       }
     }
@@ -67,20 +67,20 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isRecipe(MachineRecipeInput... inputs) {
-    if(!enabled) {
+    if (!enabled) {
       return false;
     }
     ItemStack output = null;
     for (MachineRecipeInput ri : inputs) {
-      if(ri != null && ri.item != null && !isExcluded(ri.item)) {
-        if(output == null) {
+      if (ri != null && ri.item != null && !isExcluded(ri.item)) {
+        if (output == null) {
           output = FurnaceRecipes.instance().getSmeltingResult(ri.item);
-          if(output == null) {
+          if (output == null) {
             return false;
           }
         } else {
           ItemStack newOutput = FurnaceRecipes.instance().getSmeltingResult(ri.item);
-          if(newOutput == null || !newOutput.isItemEqual(output)) {
+          if (newOutput == null || !newOutput.isItemEqual(output)) {
             return false;
           }
         }
@@ -91,7 +91,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   private boolean isExcluded(ItemStack item) {
     for (RecipeInput ri : excludes) {
-      if(ri != null && ri.isInput(item)) {
+      if (ri != null && ri.isInput(item)) {
         return true;
       }
     }
@@ -100,13 +100,13 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-    ItemStack output = null;    
+    ItemStack output = null;
     for (MachineRecipeInput ri : inputs) {
-      if(ri != null && ri.item != null && output == null) {
+      if (ri != null && ri.item != null && output == null) {
         output = FurnaceRecipes.instance().getSmeltingResult(ri.item);
       }
     }
-    if(output == null) {
+    if (output == null) {
       return new ResultStack[0];
     }
     int stackSize = output.stackSize;
@@ -119,7 +119,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public float getExperienceForOutput(ItemStack output) {
-    if(output == null) {
+    if (output == null) {
       return 0;
     }
     float result = FurnaceRecipes.instance().getSmeltingExperience(output);
@@ -132,13 +132,13 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
-    if(!enabled) {
+    if (!enabled) {
       return false;
     }
-    if(input == null || input.item == null) {
+    if (input == null || input.item == null) {
       return false;
     }
-    if(isExcluded(input.item)) {
+    if (isExcluded(input.item)) {
       return false;
     }
     ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
@@ -159,7 +159,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
         int available = ri.item.stackSize;
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);
-        if(use > 0) {
+        if (use > 0) {
           ItemStack st = ri.item.copy();
           st.stackSize = use;
           result.add(new MachineRecipeInput(ri.slotNumber, st));
@@ -169,10 +169,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     }
     return result;
   }
-  
-  
+
   public List<IRecipe> getAllRecipes() {
-    if(!enabled) {
+    if (!enabled) {
       return Collections.emptyList();
     }
     List<IRecipe> result = new ArrayList<IRecipe>();

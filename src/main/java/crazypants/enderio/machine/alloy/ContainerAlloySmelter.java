@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.alloy;
 
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -10,6 +7,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
+
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
 
@@ -54,7 +55,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
 
     @Override
     public ItemStack decrStackSize(int par1) {
-      if(getHasStack()) {
+      if (getHasStack()) {
         numResults += Math.min(par1, getStack().stackSize);
       }
       return super.decrStackSize(par1);
@@ -80,7 +81,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
     @Override
     protected void onCrafting(ItemStack output) {
       output.onCrafting(thePlayer.worldObj, thePlayer, numResults);
-      if(!thePlayer.worldObj.isRemote) {
+      if (!thePlayer.worldObj.isRemote) {
         ItemStack outputSized = output.copy();
         outputSized.stackSize = numResults;
         float experience = getInv().getExperienceForOutput(outputSized);
@@ -88,10 +89,10 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
       }
       numResults = 0;
 
-      if(output.getItem() == Items.iron_ingot) {
+      if (output.getItem() == Items.iron_ingot) {
         thePlayer.addStat(AchievementList.acquireIron, 1);
       }
-      if(output.getItem() == Items.cooked_fish) {
+      if (output.getItem() == Items.cooked_fish) {
         thePlayer.addStat(AchievementList.cookFish, 1);
       }
     }

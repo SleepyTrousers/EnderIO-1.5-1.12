@@ -57,16 +57,16 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
     }
     return null;
   }
-  
+
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_ALLOY_SMELTER;
-    }
+  }
 
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileAlloySmelter tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
-    }
-
   }
+
+}

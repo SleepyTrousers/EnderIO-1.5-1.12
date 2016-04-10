@@ -16,7 +16,7 @@ import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
-  
+
   private static final String CORE_FILE_NAME = "AlloySmelterRecipes_Core.xml";
   private static final String CUSTOM_FILE_NAME = "AlloySmelterRecipes_User.xml";
 
@@ -39,7 +39,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
   public void setVanillaRecipe(VanillaSmeltingRecipe vanillaRecipe) {
     this.vanillaRecipe = vanillaRecipe;
   }
-  
+
   @Override
   protected CustomTagHandler createCustomTagHandler() {
     return new VanillaFurnaceTagHandler();
@@ -48,15 +48,14 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), new ManyToOneMachineRecipe("AlloySmelterRecipe", ModObject.blockAlloySmelter.getUnlocalisedName(), this));
-    //vanilla alloy furnace recipes    
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), new ManyToOneMachineRecipe("AlloySmelterRecipe",
+        ModObject.blockAlloySmelter.getUnlocalisedName(), this));
+    // vanilla alloy furnace recipes
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), vanillaRecipe);
   }
 
-
   private static final String ELEMENT_ROOT = "vanillaFurnaceRecipes";
   private static final String ELEMENT_EXCLUDE = "exclude";
-
 
   private class VanillaFurnaceTagHandler implements CustomTagHandler {
 
@@ -70,18 +69,18 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
     @Override
     public boolean startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-      if(ELEMENT_ROOT.equals(localName)) {
+      if (ELEMENT_ROOT.equals(localName)) {
         inTag = true;
-        if(RecipeConfigParser.hasAttribute(RecipeConfigParser.AT_ENABLED, attributes)) {
+        if (RecipeConfigParser.hasAttribute(RecipeConfigParser.AT_ENABLED, attributes)) {
           boolean defVal = true;
-          if(enabled != null) {
+          if (enabled != null) {
             defVal = enabled;
           }
           enabled = RecipeConfigParser.getBooleanValue(RecipeConfigParser.AT_ENABLED, attributes, defVal);
         }
-      } else if(ELEMENT_EXCLUDE.equals(localName)) {
+      } else if (ELEMENT_EXCLUDE.equals(localName)) {
         inExcludes = true;
-      } else if(inExcludes && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
+      } else if (inExcludes && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
         RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
         excludes.add(ri);
       }
@@ -90,9 +89,9 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
     @Override
     public boolean endElement(String uri, String localName, String qName) throws SAXException {
-      if(ELEMENT_ROOT.equals(localName)) {
+      if (ELEMENT_ROOT.equals(localName)) {
         inTag = false;
-      } else if(ELEMENT_EXCLUDE.equals(localName)) {
+      } else if (ELEMENT_EXCLUDE.equals(localName)) {
         inExcludes = false;
       }
       return inTag;
@@ -100,7 +99,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
     @Override
     public void configProcessed() {
-      if(enabled != null) {
+      if (enabled != null) {
         Log.info("AlloyRecipeManager: Vannila smelting in AlloySmelting enabled=" + enabled);
         vanillaRecipe.setEnabled(enabled.booleanValue());
       }
