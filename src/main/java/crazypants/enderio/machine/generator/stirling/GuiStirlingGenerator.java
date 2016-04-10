@@ -28,7 +28,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   public GuiStirlingGenerator(InventoryPlayer par1InventoryPlayer, TileEntityStirlingGenerator te) {
     super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te), "stirlingGenerator");
 
-    final StirlingGeneratorContainer c = (StirlingGeneratorContainer)inventorySlots;
+    final StirlingGeneratorContainer c = (StirlingGeneratorContainer) inventorySlots;
     Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));
     MessageFormat fmt = new MessageFormat(EnderIO.lang.localize("stirlingGenerator.upgrades"));
     ttMan.addToolTip(new GuiToolTip(r, EnderIO.lang.localize("stirlingGenerator.upgradeslot"), formatUpgrade(fmt, DefaultCapacitorData.ACTIVATED_CAPACITOR),
@@ -43,8 +43,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   }
 
   private static float getFactor(ICapacitorData upgrade) {
-    return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) *
-            TileEntityStirlingGenerator.getBurnTimeMultiplier(upgrade);
+    return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) * TileEntityStirlingGenerator.getBurnTimeMultiplier(upgrade);
   }
 
   private static String formatUpgrade(MessageFormat fmt, ICapacitorData upgrade) {
@@ -61,18 +60,17 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   @Override
   protected String formatProgressTooltip(int scaledProgress, float remaining) {
     int totalBurnTime = getTileEntity().totalBurnTime;
-    int remainingTicks = (int)(remaining * totalBurnTime);
+    int remainingTicks = (int) (remaining * totalBurnTime);
     int remainingSecs = remainingTicks / 20;
     int remainingRF = getTileEntity().getPowerUsePerTick() * remainingTicks;
-    return MessageFormat.format(EnderIO.lang.localize("stirlingGenerator.remaining"),
-            remaining, remainingSecs / 60, remainingSecs % 60, remainingRF);
+    return MessageFormat.format(EnderIO.lang.localize("stirlingGenerator.remaining"), remaining, remainingSecs / 60, remainingSecs % 60, remainingRF);
   }
 
   @Override
   protected int scaleProgressForTooltip(float progress) {
     int totalBurnTime = getTileEntity().totalBurnTime;
-    int scale = Math.max(100, (totalBurnTime+19)/20);
-    return (int)(progress * scale);
+    int scale = Math.max(100, (totalBurnTime + 19) / 20);
+    return (int) (progress * scale);
   }
 
   @Override
@@ -85,7 +83,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     int scaled;
 
-    if(shouldRenderProgress()) {
+    if (shouldRenderProgress()) {
       scaled = getProgressScaled(12);
       drawTexturedModalRect(sx + 80, sy + 64 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }
@@ -96,7 +94,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     int y = guiTop + fr.FONT_HEIGHT / 2 + 3;
 
     int output = 0;
-    if(getTileEntity().isActive()) {
+    if (getTileEntity().isActive()) {
       output = getTileEntity().getPowerUsePerTick();
     }
     String txt = EnderIO.lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()

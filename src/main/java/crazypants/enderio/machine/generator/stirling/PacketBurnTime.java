@@ -1,20 +1,20 @@
 package crazypants.enderio.machine.generator.stirling;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
-import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
+
 public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
 
   public int burnTime;
   public int totalBurnTime;
-  
+
   public PacketBurnTime() {
   }
 
@@ -37,7 +37,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
     burnTime = buf.readInt();
     totalBurnTime = buf.readInt();
   }
-  
+
   @Override
   public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();

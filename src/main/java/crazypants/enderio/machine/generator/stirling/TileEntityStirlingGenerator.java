@@ -33,7 +33,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public int totalBurnTime;
 
   private PowerDistributor powerDis;
-  
+
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0), null, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
   }
@@ -54,7 +54,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public int[] getSlotsForFace(EnumFacing var1) {    
+  public int[] getSlotsForFace(EnumFacing var1) {
     return new int[] { 0 };
   }
 
@@ -75,7 +75,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   public float getProgress() {
-    if(totalBurnTime <= 0) {
+    if (totalBurnTime <= 0) {
       return 0;
     }
     return (float) burnTime / (float) totalBurnTime;
@@ -90,12 +90,12 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public TileEntity getTileEntity() {
     return this;
   }
-  
+
   @Override
   public String getSoundName() {
     return SOUND_NAME;
   }
-  
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
@@ -113,7 +113,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
-    if(powerDis != null) {
+    if (powerDis != null) {
       powerDis.neighboursChanged();
     }
   }
@@ -126,26 +126,26 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   protected boolean processTasks(boolean redstoneCheck) {
     boolean needsUpdate = false;
     boolean sendBurnTimePacket = false;
-    
-    if(burnTime > 0) {
-      if(getEnergyStored() < getMaxEnergyStored()) {
-        setEnergyStored(getEnergyStored() + getPowerUsePerTick());        
+
+    if (burnTime > 0) {
+      if (getEnergyStored() < getMaxEnergyStored()) {
+        setEnergyStored(getEnergyStored() + getPowerUsePerTick());
       }
       burnTime--;
-      sendBurnTimePacket = shouldDoWorkThisTick(20,-1) || burnTime == 0;    
+      sendBurnTimePacket = shouldDoWorkThisTick(20, -1) || burnTime == 0;
     }
 
     transmitEnergy();
 
-    if(redstoneCheck) {
+    if (redstoneCheck) {
 
-      if(burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
-        if(inventory[0] != null && inventory[0].stackSize > 0) {
+      if (burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
+        if (inventory[0] != null && inventory[0].stackSize > 0) {
           burnTime = getBurnTime(inventory[0]);
-          if(burnTime > 0) {
+          if (burnTime > 0) {
             totalBurnTime = burnTime;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
-            if(containedItem != null) {
+            if (containedItem != null) {
               inventory[0] = containedItem;
             } else {
               decrStackSize(0, 1);
@@ -155,7 +155,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
         }
       }
     }
-    if(!needsUpdate && sendBurnTimePacket) {
+    if (!needsUpdate && sendBurnTimePacket) {
       PacketHandler.sendToAllAround(new PacketBurnTime(this), this);
     }
 
@@ -164,15 +164,15 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   protected boolean doPush(EnumFacing dir) {
-    if(inventory[0] == null) {
+    if (inventory[0] == null) {
       return false;
     }
 
-    if(!shouldDoWorkThisTick(20)) {
+    if (!shouldDoWorkThisTick(20)) {
       return false;
     }
 
-    if(!canExtractItem(0, inventory[0], dir)) {
+    if (!canExtractItem(0, inventory[0], dir)) {
       return false;
     }
 
@@ -194,17 +194,16 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return getBurnTimeMultiplier(getCapacitorData());
   }
 
-  //private PowerDistributor powerDis;
   private boolean transmitEnergy() {
-    if(powerDis == null) {
+    if (powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
     int canTransmit = Math.min(getEnergyStored(), getPowerUsePerTick() * 2);
-    if(canTransmit <= 0) {
+    if (canTransmit <= 0) {
       return false;
     }
     int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
-    setEnergyStored(getEnergyStored() - transmitted);    
+    setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
 
@@ -212,6 +211,5 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public boolean hasCustomName() {
     return false;
   }
-  
-  
+
 }
