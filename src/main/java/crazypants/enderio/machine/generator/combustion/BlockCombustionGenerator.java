@@ -28,15 +28,14 @@ import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> implements IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
 
-  
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();
     return gen;
-  } 
- 
+  }
+
   protected BlockCombustionGenerator() {
     super(ModObject.blockCombustionGenerator, TileCombustionGenerator.class);
   }
@@ -48,18 +47,18 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCombustionGenerator) {
-      return new ContainerCombustionEngine(player.inventory, (TileCombustionGenerator) te);
+    TileCombustionGenerator te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerCombustionEngine(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCombustionGenerator) {
-      return new GuiCombustionGenerator(player.inventory, (TileCombustionGenerator) te);
+    TileCombustionGenerator te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiCombustionGenerator(player.inventory, te);
     }
     return null;
   }
@@ -76,12 +75,12 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
-      // If active, randomly throw some smoke around
-    if(isActive(world, pos)) {
+    // If active, randomly throw some smoke around
+    if (isActive(world, pos)) {
 
       TileEntity te = world.getTileEntity(pos);
       EnumFacing facing = EnumFacing.SOUTH;
-      if(te instanceof AbstractMachineEntity) {
+      if (te instanceof AbstractMachineEntity) {
         AbstractMachineEntity me = (AbstractMachineEntity) te;
         facing = me.facing;
       }
@@ -90,9 +89,9 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
       float startY = pos.getY() + 0.5f;
       float startZ = pos.getZ() + (dir.getFrontOffsetZ() == 0 ? 0.5f : 0f);
 
-      if(dir.getFrontOffsetX() == 1) {
+      if (dir.getFrontOffsetX() == 1) {
         startX++;
-      } else if(dir.getFrontOffsetZ() == 1) {
+      } else if (dir.getFrontOffsetZ() == 1) {
         startZ++;
       }
 
@@ -104,7 +103,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
       }
     }
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {

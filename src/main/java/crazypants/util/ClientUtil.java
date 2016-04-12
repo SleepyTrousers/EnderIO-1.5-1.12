@@ -2,6 +2,16 @@ package crazypants.util;
 
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
@@ -13,15 +23,6 @@ import crazypants.enderio.machine.generator.combustion.PacketCombustionTank;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 
 public class ClientUtil {
 
@@ -59,8 +60,8 @@ public class ClientUtil {
         (rand.nextDouble() - 0.5) * 1.5);
   }
 
-  public static void setTankNBT(PacketCombustionTank message, int x, int y, int z) {
-    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
+  public static void setTankNBT(PacketCombustionTank message, BlockPos pos) {
+    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(pos);
     if(tile == null) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
