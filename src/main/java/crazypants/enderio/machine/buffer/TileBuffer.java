@@ -48,10 +48,10 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if(getEnergyStored() <= 0 || !redstoneCheck) {
+    if (!redstoneCheck || getEnergyStored() <= 0) {
       return false;
     }
-    if(dist == null) {
+    if (dist == null) {
       dist = new PowerDistributor(new BlockCoord(this));
     }
     int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored()));
@@ -64,7 +64,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @Override
   public void setIoMode(EnumFacing faceHit, IoMode mode) {
     super.setIoMode(faceHit, mode);
-    if(dist != null) {
+    if (dist != null) {
       dist.neighboursChanged();
     }
   }
@@ -72,15 +72,15 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @Override
   public void clearAllIoModes() {
     super.clearAllIoModes();
-    if(dist != null) {
+    if (dist != null) {
       dist.neighboursChanged();
     }
   }
-  
+
   @Override
   public void writeToItemStack(ItemStack stack) {
-      super.writeToItemStack(stack);
-      stack.setItemDamage(BufferType.get(this).ordinal());
+    super.writeToItemStack(stack);
+    stack.setItemDamage(BufferType.get(this).ordinal());
   }
 
   @Override
@@ -105,48 +105,49 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
 
   @Override
   public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-    return hasPower() && getIoMode(from).canRecieveInput() ? super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
+    return hasPower() && getIoMode(from).canRecieveInput() ? super.receiveEnergy(from, maxReceive, simulate || isCreative()) : 0;
   }
- 
 
   @Override
   protected boolean doPull(EnumFacing dir) {
-    ItemStack[] invCopy = new ItemStack[inventory.length];
-    for (int i = 0; i < inventory.length; i++) {
-      invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
-    }
+    if (isCreative()) {
+      ItemStack[] invCopy = new ItemStack[inventory.length];
+      for (int i = 0; i < inventory.length; i++) {
+        invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
+      }
 
-    boolean ret = super.doPull(dir);
+      boolean ret = super.doPull(dir);
 
-    if(isCreative()) {
       inventory = invCopy;
+      return ret;
+    } else {
+      return super.doPull(dir);
     }
-
-    return ret;
   }
 
   @Override
   protected boolean doPush(EnumFacing dir) {
 
-    if(!shouldDoWorkThisTick(20)) {
+    if (!shouldDoWorkThisTick(20)) {
       return false;
-    }
-
-    ItemStack[] invCopy = new ItemStack[inventory.length];
-    for (int i = 0; i < inventory.length; i++) {
-      invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
     }
 
     BlockCoord loc = getLocation().getLocation(dir);
     TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
 
-    boolean ret = super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
+    if (isCreative()) {
+      ItemStack[] invCopy = new ItemStack[inventory.length];
+      for (int i = 0; i < inventory.length; i++) {
+        invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
+      }
 
-    if(isCreative()) {
+      boolean ret = super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
+
       inventory = invCopy;
+      return ret;
+    } else {
+      return super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
     }
-
-    return ret;
   }
 
   @Override

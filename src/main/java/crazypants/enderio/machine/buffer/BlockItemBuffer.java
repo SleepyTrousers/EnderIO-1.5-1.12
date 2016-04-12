@@ -39,7 +39,7 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
   public int getMetadata(int damage) {
     return damage;
   }
-  
+
   @Override
   public String getUnlocalizedName(ItemStack stack) {
     return BufferType.values()[stack.getItemDamage()].getUnlocalizedName();
@@ -49,11 +49,11 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
   public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
       IBlockState newState) {
     super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
-    
-    if(newState.getBlock() == block) {
+
+    if (newState.getBlock() == block) {
       TileEntity te = world.getTileEntity(pos);
-      if(te instanceof TileBuffer) {
-        TileBuffer buffer = ((TileBuffer) te);        
+      if (te instanceof TileBuffer) {
+        TileBuffer buffer = ((TileBuffer) te);
         BufferType t = BufferType.values()[block.getMetaFromState(newState)];
         buffer.setHasInventory(t.hasInventory);
         buffer.setHasPower(t.hasPower);

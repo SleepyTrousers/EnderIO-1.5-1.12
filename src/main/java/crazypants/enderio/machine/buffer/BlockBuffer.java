@@ -35,14 +35,13 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
     BlockBuffer res = new BlockBuffer();
     res.init();
     return res;
-  } 
+  }
 
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class, BlockItemBuffer.class);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)
-        .withProperty(BufferType.TYPE, BufferType.ITEM));
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
   }
-  
+
   @Override
   protected BlockState createBlockState() {
     return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER, BufferType.TYPE });
@@ -79,7 +78,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileBuffer) {
+    if (te instanceof TileBuffer) {
       return new ContainerBuffer(player.inventory, (TileBuffer) te);
     }
     return null;
@@ -88,7 +87,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileBuffer) {
+    if (te instanceof TileBuffer) {
       return new GuiBuffer(player.inventory, (TileBuffer) te);
     }
     return null;

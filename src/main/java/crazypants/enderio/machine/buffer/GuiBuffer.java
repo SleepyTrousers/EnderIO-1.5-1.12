@@ -2,6 +2,9 @@ package crazypants.enderio.machine.buffer;
 
 import java.io.IOException;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.TextFieldEnder;
@@ -12,8 +15,6 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
@@ -30,14 +31,14 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     redstoneButton.setPosition(isFull() ? 153 : 120, 24);
     configB.setPosition(isFull() ? 153 : 120, 42);
 
-    if(te.hasPower()) {
+    if (te.hasPower()) {
       int x = (isFull() ? 20 : 58);
       int y = guiTop + 27;
 
       maxInput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
       y += 28;
       maxOutput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
-      
+
       textFields.add(maxInput);
       textFields.add(maxOutput);
     }
@@ -47,7 +48,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   public void initGui() {
     super.initGui();
 
-    if(getTileEntity().hasPower()) {
+    if (getTileEntity().hasPower()) {
       maxInput.setMaxStringLength(10);
       maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
       maxOutput.setMaxStringLength(10);
@@ -58,11 +59,11 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   @Override
   protected void keyTyped(char par1, int par2) throws IOException {
     super.keyTyped(par1, par2);
-    if(par1 == 'e') {
+    if (par1 == 'e') {
       super.keyTyped(par1, 1);
     }
 
-    if(getTileEntity().hasPower()) {
+    if (getTileEntity().hasPower()) {
       updateInputOutput();
     }
   }
@@ -76,14 +77,14 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   }
 
   private void setMaxOutput(int output) {
-    if(output != lastOutput) {
+    if (output != lastOutput) {
       lastOutput = output;
       maxOutput.setText(PowerDisplayUtil.formatPower(output));
     }
   }
 
   private void setMaxInput(int input) {
-    if(input != lastInput) {
+    if (input != lastInput) {
       lastInput = input;
       maxInput.setText(PowerDisplayUtil.formatPower(input));
       sendUpdateToServer();
@@ -131,7 +132,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     bindGuiTexture(isFull() ? 1 : 0);
@@ -142,11 +143,11 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     bindGuiTexture();
 
-    if(getTileEntity().hasPower()) {
+    if (getTileEntity().hasPower()) {
       drawPowerBg(sx, sy);
     }
 
-    if(getTileEntity().hasInventory()) {
+    if (getTileEntity().hasInventory()) {
       drawSlotBg(sx, sy);
     }
 
@@ -155,7 +156,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     String invName = EnderIO.lang.localizeExact(getTileEntity().getName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
-    if(getTileEntity().hasPower()) {
+    if (getTileEntity().hasPower()) {
       sx += isFull() ? 19 : 57;
       sy += 17;
 
@@ -173,7 +174,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     if (!getTileEntity().hasInventory()) {
       return;
     }
-    
+
     for (int slot = 0; slot < getTileEntity().getSizeInventory(); slot++) {
       renderSlotHighlight(slot, mode);
     }
@@ -181,19 +182,19 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   protected void renderSlotHighlight(int slot, IoMode mode) {
     Slot invSlot = inventorySlots.inventorySlots.get(slot);
-    if(mode == IoMode.PULL) {
+    if (mode == IoMode.PULL) {
       renderSlotHighlight(slot, PULL_COLOR);
-    } else if(mode == IoMode.PUSH) {
+    } else if (mode == IoMode.PUSH) {
       renderSlotHighlight(slot, PUSH_COLOR);
-    } else if(mode == IoMode.PUSH_PULL) {
+    } else if (mode == IoMode.PUSH_PULL) {
       renderSplitHighlight(invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
     }
   }
 
-  protected void renderSplitHighlight(int x, int y, int width, int height) {
+  protected void renderSplitHighlight(int x, int y, int widthIn, int heightIn) {
     GL11.glEnable(GL11.GL_BLEND);
-    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, width, height / 2, PULL_COLOR);
-    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y + (height / 2), 0, width, height / 2, PUSH_COLOR);
+    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, widthIn, heightIn / 2, PULL_COLOR);
+    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y + (heightIn / 2), 0, widthIn, heightIn / 2, PUSH_COLOR);
     GL11.glDisable(GL11.GL_BLEND);
   }
 

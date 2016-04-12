@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.buffer;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -10,24 +9,25 @@ import com.enderio.core.common.network.MessageTileEntity;
 
 public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessageHandler<PacketBufferIO, IMessage> {
 
-  public PacketBufferIO() {}
-  
+  public PacketBufferIO() {
+  }
+
   private int in, out;
-  
+
   public PacketBufferIO(TileBuffer tile, int in, int out) {
     super(tile);
     tile.setIO(in, out);
     this.in = in;
     this.out = out;
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     this.in = buf.readInt();
     this.out = buf.readInt();
   }
-  
+
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);

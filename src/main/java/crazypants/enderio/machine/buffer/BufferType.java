@@ -35,11 +35,11 @@ public enum BufferType implements IStringSerializable {
   public String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
-  
+
   public String getUnlocalizedName() {
-    return "tile." + ModObject.blockBuffer.getUnlocalisedName() + "." + name().toLowerCase(Locale.US);
+    return "tile." + ModObject.blockBuffer.getUnlocalisedName() + "." + getName();
   }
-  
+
   public static BufferType getTypeFromMeta(int meta) {
     return values()[meta >= 0 && meta < values().length ? meta : 0];
   }
@@ -47,10 +47,9 @@ public enum BufferType implements IStringSerializable {
   public static int getMetaFromType(BufferType value) {
     return value.ordinal();
   }
-  
+
   public static ItemStack getStack(BufferType type) {
     return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
   }
 
-  
 }
