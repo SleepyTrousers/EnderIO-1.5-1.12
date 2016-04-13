@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.vacuum;
 
+import info.loenwind.autosave.Reader;
+import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -12,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -32,17 +37,22 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 
+@Storable
 public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable {
 
   public static final int ITEM_ROWS = 3;
   public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
   public static final int FILTER_SLOTS = 5;
 
+  @Store
   private final ItemStack[] inv = new ItemStack[ITEM_SLOTS];
+  @Store
   private int range = Config.vacuumChestRange;
   private ItemFilter filter;
+  @Store
   private ItemStack filterItem;
 
+  @Store
   protected RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
   protected boolean redstoneCheckPassed;
   private boolean redstoneStateDirty = true;
@@ -310,72 +320,32 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    readContentsFromNBT(nbtRoot);
-    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
+  protected void onAfterDataPacket() {
+    refreshFilter();
   }
 
-  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
-    NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-    if (itemList != null) {
-      for (int i = 0; i < itemList.tagCount(); i++) {
-        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-        byte slot = itemStack.getByte("Slot");
-        if (slot >= 0 && slot < inv.length) {
-          inv[slot] = ItemStack.loadItemStackFromNBT(itemStack);
-        }
-      }
-    }
-    if (nbtRoot.hasKey("range")) {
-      range = limitRange(nbtRoot.getInteger("range"));
-    } else {
-      range = Config.vacuumChestRange;
-    }
-    if (nbtRoot.hasKey("filter")) {
-      NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag("filter");
-      filterItem = ItemStack.loadItemStackFromNBT(filterTag);
-      IItemFilter flt = FilterRegister.getFilterForUpgrade(filterItem);
-      if (flt instanceof ItemFilter) {
-        filter = (ItemFilter) flt;
-      } else {
-        filterItem = null;
-      }
+  private void refreshFilter() {
+    IItemFilter flt = FilterRegister.getFilterForUpgrade(filterItem);
+    if (flt instanceof ItemFilter) {
+      filter = (ItemFilter) flt;
     } else {
       filterItem = null;
-      filter = null;
     }
-
-    int rsContr = nbtRoot.getInteger("redstoneControlMode");
-    if (rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
-      rsContr = 0;
-    }
-    redstoneControlMode = RedstoneControlMode.values()[rsContr];
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    writeContentsToNBT(nbtRoot);
-    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
+  protected void readCustomNBT(NBTTagCompound root) {
+    super.readCustomNBT(root);
+    refreshFilter();
+  }
+
+  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
+    Reader.read(StoreFor.ITEM, nbtRoot, this);
+    refreshFilter();
   }
 
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
-    NBTTagList itemList = new NBTTagList();
-    for (int i = 0; i < inv.length; i++) {
-      if (inv[i] != null) {
-        NBTTagCompound itemStackNBT = new NBTTagCompound();
-        itemStackNBT.setByte("Slot", (byte) i);
-        inv[i].writeToNBT(itemStackNBT);
-        itemList.appendTag(itemStackNBT);
-      }
-    }
-    nbtRoot.setTag("Items", itemList);
-    nbtRoot.setInteger("range", range);
-    if (filterItem != null) {
-      NBTTagCompound filterNBT = new NBTTagCompound();
-      filterItem.writeToNBT(filterNBT);
-      nbtRoot.setTag("filter", filterNBT);
-    }
-    nbtRoot.setInteger("redstoneControlMode", redstoneControlMode.ordinal());
+    Writer.write(StoreFor.ITEM, nbtRoot, this);
   }
 
   @Override

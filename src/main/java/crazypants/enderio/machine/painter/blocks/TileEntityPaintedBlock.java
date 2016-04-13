@@ -2,8 +2,6 @@ package crazypants.enderio.machine.painter.blocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -26,8 +24,7 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.
   }
 
   @Override
-  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-    super.onDataPacket(net, pkt);
+  public void onAfterDataPacket() {
     updateBlock();
   }
 

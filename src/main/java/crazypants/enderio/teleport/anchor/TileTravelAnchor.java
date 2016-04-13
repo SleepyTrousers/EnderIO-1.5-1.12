@@ -11,8 +11,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -288,13 +286,6 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     
   }
     
-  @Override
-  public Packet<?> getDescriptionPacket() {
-    NBTTagCompound tag = new NBTTagCompound();
-    writeCustomNBT(tag);
-    return new S35PacketUpdateTileEntity(getPos(), 1, tag);
-  }
-
   @Override
   public BlockCoord getLocation() {
     return new BlockCoord(pos);

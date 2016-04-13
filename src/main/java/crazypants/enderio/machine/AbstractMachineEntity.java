@@ -1,5 +1,9 @@
 package crazypants.enderio.machine;
 
+import info.loenwind.autosave.Reader;
+import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -444,6 +448,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
+    super.readCustomNBT(nbtRoot);
 
     setFacing(EnumFacing.VALUES[nbtRoot.getShort("facing")]);
     redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
@@ -495,8 +500,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       return;
     }
     NBTTagCompound root = stack.getTagCompound();
+    Reader.read(StoreFor.ITEM, root, this);
     if (root.hasKey("eio.abstractMachine")) {
-      readCommon(root);
+      try {
+        doingOtherNbt = true;
+        readCommon(root);
+      } finally {
+        doingOtherNbt = false;
+      }
     } else if (this instanceof IPaintable.IPaintableTileEntity) {
       paintSource = PainterUtil2.readNbt(root);
     }
@@ -505,6 +516,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
 
     nbtRoot.setShort("facing", (short) facing.ordinal());
     nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
@@ -557,7 +569,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
     NBTTagCompound root = stack.getTagCompound();
     root.setBoolean("eio.abstractMachine", true);
-    writeCommon(root);
+    try {
+      doingOtherNbt = true;
+      writeCommon(root);
+    } finally {
+      doingOtherNbt = false;
+    }
+    Writer.write(StoreFor.ITEM, root, this);
 
     String name;
     if (stack.hasDisplayName()) {

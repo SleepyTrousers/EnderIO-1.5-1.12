@@ -9,9 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -309,19 +306,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     targetDim = root.getInteger("targetDim");
     redstoneActivePrev = root.getBoolean("redstoneActive");
     autoUpdate = true;
-  }
-
-  @Override
-  public Packet<?> getDescriptionPacket() {
-    S35PacketUpdateTileEntity pkt = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
-    // pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
-    return pkt;
-  }
-
-  @Override
-  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-    super.onDataPacket(net, pkt);
-    // this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
   }
 
   @Override

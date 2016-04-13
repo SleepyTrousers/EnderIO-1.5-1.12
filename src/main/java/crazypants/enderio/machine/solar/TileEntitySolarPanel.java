@@ -1,8 +1,6 @@
 package crazypants.enderio.machine.solar;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -133,13 +131,6 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     if (network.isValid()) {
       tag.setInteger("rfCap", network.getEnergyMaxPerTick()); // for WAILA
     }
-  }
-
-  @Override
-  public Packet<?> getDescriptionPacket() {
-    NBTTagCompound nbt = new NBTTagCompound();
-    writeToNBT(nbt);
-    return new S35PacketUpdateTileEntity(pos, 1, nbt);
   }
 
   @Override
