@@ -29,8 +29,8 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   int maxPowerInConduits;
   long powerInCapBanks;
   long maxPowerInCapBanks;
-  long  powerInMachines;
-  long  maxPowerInMachines;
+  long powerInMachines;
+  long maxPowerInMachines;
   float aveRfSent;
   float aveRfReceived;
 
@@ -41,7 +41,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   private Signal currentlyEmmittedSignal;
 
   public TilePowerMonitor() {
-    super(new SlotDefinition(0, 0));
+    super(new SlotDefinition(0, 0), ModObject.blockPowerMonitor);
   }
 
   @Override
@@ -50,7 +50,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   }
 
   public int[] getRednetOutputValues(EnumFacing side) {
-    if(currentlyEmmittedSignal == null) {
+    if (currentlyEmmittedSignal == null) {
       return new int[16];
     }
     int[] res = new int[DyeColor.values().length];
@@ -61,7 +61,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   }
 
   public int getRednetOutputValue(EnumFacing side, int subnet) {
-    if(currentlyEmmittedSignal != null) {
+    if (currentlyEmmittedSignal != null) {
       return 15;
     }
     return 0;
@@ -158,16 +158,16 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     setEnergyStored(getEnergyStored() - energyPerTick);
-    
+
     boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
     NetworkPowerManager pm = getPowerManager();
-    if(pm != null && update) {
+    if (pm != null && update) {
       update(pm);
       Signal sig = null;
       if (engineControlEnabled) {
-        float percentFull = getPercentFull();        
-        if(currentlyEmmittedSignal == null) {
-          if(percentFull <= startLevel) {
+        float percentFull = getPercentFull();
+        if (currentlyEmmittedSignal == null) {
+          if (percentFull <= startLevel) {
             sig = new Signal(getPos(), null, 15, DyeColor.RED);
           }
         } else {
@@ -176,14 +176,14 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
           }
         }
       }
-      if(currentlyEmmittedSignal != sig) {
+      if (currentlyEmmittedSignal != sig) {
         currentlyEmmittedSignal = sig;
         broadcastSignal();
       }
     }
-    if(update) {      
+    if (update) {
       PacketHandler.sendToAllAround(new PacketPowerInfo(this), this);
-    }    
+    }
     return false;
   }
 
@@ -192,7 +192,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   }
 
   private float getPercentFull() {
-    return (float)(powerInConduits + powerInCapBanks) / (maxPowerInConduits + maxPowerInCapBanks);
+    return (float) (powerInConduits + powerInCapBanks) / (maxPowerInConduits + maxPowerInCapBanks);
   }
 
   private void update(NetworkPowerManager pm) {
@@ -210,11 +210,11 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   private NetworkPowerManager getPowerManager() {
     for (EnumFacing dir : EnumFacing.VALUES) {
       IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
-      if(con != null) {
+      if (con != null) {
         AbstractConduitNetwork<?, ?> n = con.getNetwork();
-        if(n instanceof PowerConduitNetwork) {
+        if (n instanceof PowerConduitNetwork) {
           NetworkPowerManager pm = ((PowerConduitNetwork) n).getPowerManager();
-          if(pm != null) {
+          if (pm != null) {
             return pm;
           }
         }
@@ -232,7 +232,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IPa
   public void readPowerInfoFromNBT(NBTTagCompound nbtRoot) {
     powerInConduits = nbtRoot.getInteger("powerInConduits");
     maxPowerInConduits = nbtRoot.getInteger("maxPowerInConduits");
-    if(nbtRoot.hasKey("powerInCapBanks")) {
+    if (nbtRoot.hasKey("powerInCapBanks")) {
       powerInCapBanks = nbtRoot.getInteger("powerInCapBanks");
       maxPowerInCapBanks = nbtRoot.getInteger("maxPowerInCapBanks");
     } else {

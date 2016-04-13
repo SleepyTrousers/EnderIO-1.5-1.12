@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
@@ -25,8 +24,8 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   public static BlockPowerMonitor create() {
 
-    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitor.class,PacketPowerMonitor.class,PacketHandler.nextID(),Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketPowerInfo.class,PacketPowerInfo.class,PacketHandler.nextID(),Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitor.class, PacketPowerMonitor.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketPowerInfo.class, PacketPowerInfo.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockPowerMonitor result = new BlockPowerMonitor();
     result.init();
@@ -39,18 +38,18 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TilePowerMonitor) {
-      return new ContainerNoInv((TilePowerMonitor) te);
+    TilePowerMonitor te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerNoInv(te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TilePowerMonitor) {
-      return new GuiPowerMonitor(player.inventory, (TilePowerMonitor) te);
+    TilePowerMonitor te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiPowerMonitor(player.inventory, te);
     }
     return null;
 
@@ -61,7 +60,6 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     return GuiHandler.GUI_ID_POWER_MONITOR;
   }
 
-
   @Override
   public boolean canProvidePower() {
     return true;
@@ -69,10 +67,9 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public int getWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side) {
-    TileEntity te = world.getTileEntity(pos);
-    if(te instanceof TilePowerMonitor) {
-
-      return ((TilePowerMonitor) te).getRednetOutputValue(side, DyeColor.RED.ordinal());
+    TilePowerMonitor te = getTileEntity(world, pos);
+    if (te != null) {
+      return te.getRednetOutputValue(side, DyeColor.RED.ordinal());
     }
     return 0;
   }
