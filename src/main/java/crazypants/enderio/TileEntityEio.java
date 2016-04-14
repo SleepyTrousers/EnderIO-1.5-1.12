@@ -37,6 +37,7 @@ public abstract class TileEntityEio extends TileEntityBase {
     } finally {
       doingOtherNbt = false;
     }
+    onAfterDataPacket();
   }
 
   protected void onAfterDataPacket() {
@@ -54,6 +55,14 @@ public abstract class TileEntityEio extends TileEntityBase {
     if (!doingOtherNbt) {
       Reader.read(StoreFor.SAVE, root, this);
     }
+  }
+
+  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
+    Reader.read(StoreFor.ITEM, nbtRoot, this);
+  }
+
+  public void writeContentsToNBT(NBTTagCompound nbtRoot) {
+    Writer.write(StoreFor.ITEM, nbtRoot, this);
   }
 
 }

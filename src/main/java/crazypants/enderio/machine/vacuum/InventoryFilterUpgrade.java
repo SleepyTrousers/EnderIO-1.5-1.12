@@ -22,7 +22,7 @@ public class InventoryFilterUpgrade implements IInventory {
 
   @Override
   public ItemStack getStackInSlot(int slot) {
-    if(slot == 0) {
+    if (slot == 0) {
       return te.getFilterItem();
     }
     return null;
@@ -30,14 +30,14 @@ public class InventoryFilterUpgrade implements IInventory {
 
   @Override
   public ItemStack decrStackSize(int slot, int num) {
-    if(slot == 0) {
-      ItemStack current = te.getFilterItem();      
-      if(current == null) {
+    if (slot == 0) {
+      ItemStack current = te.getFilterItem();
+      if (current == null) {
         return current;
       }
       ItemStack result;
       ItemStack remaining;
-      if(num >= current.stackSize) {
+      if (num >= current.stackSize) {
         result = current.copy();
         remaining = null;
       } else {
@@ -55,18 +55,18 @@ public class InventoryFilterUpgrade implements IInventory {
 
   @Override
   public void setInventorySlotContents(int slot, ItemStack is) {
-    if(slot == 0) {
+    if (slot == 0) {
       te.setFilterItem(is);
     }
   }
-  
+
   @Override
   public void clear() {
-    te.setFilterItem(null);    
+    te.setFilterItem(null);
   }
-  
+
   @Override
-  public ItemStack removeStackFromSlot(int index) {    
+  public ItemStack removeStackFromSlot(int index) {
     ItemStack res = te.getFilterItem();
     te.setFilterItem(null);
     return res;
@@ -120,7 +120,7 @@ public class InventoryFilterUpgrade implements IInventory {
   }
 
   @Override
-  public void setField(int id, int value) {    
+  public void setField(int id, int value) {
   }
 
   @Override
@@ -128,5 +128,4 @@ public class InventoryFilterUpgrade implements IInventory {
     return 0;
   }
 
-  
 }

@@ -1,16 +1,11 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,10 +21,30 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.teleport.telepad.TelepadRenderMapper;
+
+public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable, ISmartRenderAwareBlock,
+    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockVacuumChest create() {
-    PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.class,PacketVaccumChest.class,PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
     BlockVacuumChest res = new BlockVacuumChest();
     res.init();
     return res;
@@ -37,6 +52,11 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
 
   protected BlockVacuumChest() {
     super(ModObject.blockVacuumChest.getUnlocalisedName(), TileVacuumChest.class);
+    initDefaultState();
+  }
+
+  protected void initDefaultState() {
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   @Override
@@ -44,11 +64,10 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
     return true;
   }
 
-
   @Override
   public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
     TileEntity ent = world.getTileEntity(pos);
-    if(ent instanceof TileVacuumChest) {
+    if (ent instanceof TileVacuumChest) {
       ((TileVacuumChest) ent).onNeighborBlockChange(neighborBlock);
     }
   }
@@ -57,48 +76,109 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   protected void init() {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_VACUUM_CHEST, this);
+    registerInSmartModelAttacher();
   }
 
-  
+  protected void registerInSmartModelAttacher() {
+    SmartModelAttacher.register(this);
+  }
+
+  @Override
+  protected BlockState createBlockState() {
+    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  }
+
+  @Override
+  public IBlockState getStateFromMeta(int meta) {
+    return getDefaultState();
+  }
+
+  @Override
+  public int getMetaFromState(IBlockState state) {
+    return 0;
+  }
+
+  @Override
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    return getDefaultState();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+      TileVacuumChest tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
+      }
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
+    }
+  }
+
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileVacuumChest tileEntity) {
+    blockStateWrapper.addCacheKey(0);
+  }
+
+  protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public IItemRenderMapper getItemRenderMapper() {
+    return TelepadRenderMapper.instance;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+    return TelepadRenderMapper.instance;
+  }
 
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
-    if(!world.isRemote) {
+    if (!world.isRemote) {
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, pos.getX(), pos.getY(), pos.getZ());
     }
     return true;
   }
 
   @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {  
+  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
     return false;
   }
 
   @Override
   protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileVacuumChest te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
-    if(te != null) {
+    if (te != null) {
       te.writeContentsToNBT(drop.getTagCompound());
     }
+    PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
   }
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-    if(!world.isRemote) {
+    if (!world.isRemote) {
       TileEntity te = world.getTileEntity(pos);
-      if(stack != null && stack.getTagCompound() != null && te instanceof TileVacuumChest) {
+      if (stack != null && stack.getTagCompound() != null && te instanceof TileVacuumChest) {
         ((TileVacuumChest) te).readContentsFromNBT(stack.getTagCompound());
+        ((TileVacuumChest) te).setPaintSource(PainterUtil2.getSourceBlock(stack));
         world.markBlockForUpdate(pos);
       }
     }
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public EnumWorldBlockLayer getBlockLayer() {
     return EnumWorldBlockLayer.CUTOUT;
   }
-  
+
   @Override
   public boolean isOpaqueCube() {
     return false;
@@ -107,7 +187,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileVacuumChest) {
+    if (te instanceof TileVacuumChest) {
       return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }
     return null;
@@ -116,7 +196,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileVacuumChest) {
+    if (te instanceof TileVacuumChest) {
       return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
     }
     return null;
@@ -126,5 +206,63 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT START
+  // ///////////////////////////////////////////////////////////////////////
+
+  @Override
+  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return getPaintSource(getDefaultState(), world, pos);
+  }
+
+  @Override
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+    TileVacuumChest te = getTileEntity(world, pos);
+    if (te != null) {
+      te.setPaintSource(paintSource);
+    }
+  }
+
+  @Override
+  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+    PainterUtil2.setSourceBlock(stack, paintSource);
+  }
+
+  @Override
+  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+    TileVacuumChest te = getTileEntity(world, pos);
+    if (te != null) {
+      return te.getPaintSource();
+    }
+    return null;
+  }
+
+  @Override
+  public IBlockState getPaintSource(Block block, ItemStack stack) {
+    return PainterUtil2.getSourceBlock(stack);
+  }
+
+  @Override
+  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+    return true;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+    IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
+    if (paintSource != null) {
+      try {
+        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+      } catch (Throwable e) {
+      }
+    }
+    return super.colorMultiplier(worldIn, pos, renderPass);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT END
+  // ///////////////////////////////////////////////////////////////////////
 
 }

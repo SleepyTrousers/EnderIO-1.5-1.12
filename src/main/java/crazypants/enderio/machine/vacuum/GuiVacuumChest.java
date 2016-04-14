@@ -3,6 +3,12 @@ package crazypants.enderio.machine.vacuum;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -19,26 +25,21 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GuiVacuumChest extends GuiContainerBaseEIO {
 
-  private static final int RANGE_LEFT  = 145;
-  private static final int RANGE_TOP   = 86;
+  private static final int RANGE_LEFT = 145;
+  private static final int RANGE_TOP = 86;
   private static final int RANGE_WIDTH = 16;
 
   private static final int FILTER_LEFT = 29;
   private static final int FILTER_TOP = 85;
 
-  private static final int ID_RANGE_UP   = 4711;
+  private static final int ID_RANGE_UP = 4711;
   private static final int ID_RANGE_DOWN = 4712;
-  private static final int ID_WHITELIST  = 4713;
-  private static final int ID_MATCHMETA  = 4714;
-  private static final int ID_REDSTONE   = 4715;
+  private static final int ID_WHITELIST = 4713;
+  private static final int ID_MATCHMETA = 4714;
+  private static final int ID_REDSTONE = 4715;
 
   private final TileVacuumChest te;
 
@@ -74,7 +75,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     y = 104;
     rsB = new RedstoneModeButton(this, ID_REDSTONE, x, y, te, new BlockCoord(te));
 
-    x = FILTER_LEFT + TileVacuumChest.FILTER_SLOTS*18 + 2;
+    x = FILTER_LEFT + TileVacuumChest.FILTER_SLOTS * 18 + 2;
     y = 86;
     whiteListB = new ToggleButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST, IconEIO.FILTER_BLACKLIST);
     whiteListB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
@@ -87,8 +88,8 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
-    for(int i=0 ; i<TileVacuumChest.FILTER_SLOTS ; i++) {
-      ghostSlots.add(new FilterGhostSlot(i, FILTER_LEFT + i*18 + 1, FILTER_TOP + 1));
+    for (int i = 0; i < TileVacuumChest.FILTER_SLOTS; i++) {
+      getGhostSlots().add(new FilterGhostSlot(i, FILTER_LEFT + i * 18 + 1, FILTER_TOP + 1));
     }
 
     headerChest = EnderIO.lang.localize("gui.vacuum.header.chest");
@@ -96,7 +97,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     headerRange = EnderIO.lang.localize("gui.vacuum.header.range");
     headerInventory = EnderIO.lang.localizeExact("container.inventory");
 
-    ((ContainerVacuumChest)inventorySlots).setFilterChangedCB(new Runnable() {
+    ((ContainerVacuumChest) inventorySlots).setFilterChangedCB(new Runnable() {
       @Override
       public void run() {
         filterChanged();
@@ -121,26 +122,26 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   public void actionPerformed(GuiButton guiButton) {
     ItemFilter itemFilter;
     switch (guiButton.id) {
-      case ID_RANGE_UP:
-        setRange(te.getRange() + 1);
-        break;
-      case ID_RANGE_DOWN:
-        setRange(te.getRange() - 1);
-        break;
-      case ID_WHITELIST:
-        itemFilter = te.getItemFilter();
-        if(itemFilter != null) {
-          PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterBlacklist(te, !itemFilter.isBlacklist()));
-          updateButtons();
-        }
-        break;
-      case ID_MATCHMETA:
-        itemFilter = te.getItemFilter();
-        if(itemFilter != null) {
-          PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterMatchMeta(te, !itemFilter.isMatchMeta()));
-          updateButtons();
-        }
-        break;
+    case ID_RANGE_UP:
+      setRange(te.getRange() + 1);
+      break;
+    case ID_RANGE_DOWN:
+      setRange(te.getRange() - 1);
+      break;
+    case ID_WHITELIST:
+      itemFilter = te.getItemFilter();
+      if (itemFilter != null) {
+        PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterBlacklist(te, !itemFilter.isBlacklist()));
+        updateButtons();
+      }
+      break;
+    case ID_MATCHMETA:
+      itemFilter = te.getItemFilter();
+      if (itemFilter != null) {
+        PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterMatchMeta(te, !itemFilter.isMatchMeta()));
+        updateButtons();
+      }
+      break;
     }
   }
 
@@ -153,7 +154,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   }
 
   void filterChanged() {
-    if(te.hasItemFilter()) {
+    if (te.hasItemFilter()) {
       whiteListB.onGuiInit();
       useMetaB.onGuiInit();
       updateButtons();
@@ -177,16 +178,16 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    if(te.getItemFilter() != null) {
-      drawTexturedModalRect(sx + FILTER_LEFT, sy + FILTER_TOP, 0, 238, TileVacuumChest.FILTER_SLOTS*18, 18);
+    if (te.getItemFilter() != null) {
+      drawTexturedModalRect(sx + FILTER_LEFT, sy + FILTER_TOP, 0, 238, TileVacuumChest.FILTER_SLOTS * 18, 18);
     }
 
     int headerColor = 0x404040;
     FontRenderer fr = getFontRenderer();
-    fr.drawString(headerChest, sx+7, sy+6, headerColor);
-    fr.drawString(headerFilter, sx+7, sy+74, headerColor);
-    fr.drawString(headerRange, sx+xSize-7-fr.getStringWidth(headerRange), sy+74, headerColor);
-    fr.drawString(headerInventory, sx+7, sy+111, headerColor);
+    fr.drawString(headerChest, sx + 7, sy + 6, headerColor);
+    fr.drawString(headerFilter, sx + 7, sy + 74, headerColor);
+    fr.drawString(headerRange, sx + xSize - 7 - fr.getStringWidth(headerRange), sy + 74, headerColor);
+    fr.drawString(headerInventory, sx + 7, sy + 111, headerColor);
 
     IconEIO.map.render(EnderWidget.BUTTON_DOWN, sx + RANGE_LEFT, sy + RANGE_TOP, RANGE_WIDTH, 16, 0, true);
     String str = Integer.toString(te.getRange());
@@ -197,7 +198,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   }
 
   class FilterGhostSlot extends GhostSlot {
-    final int slot;
+
     FilterGhostSlot(int slot, int x, int y) {
       this.slot = slot;
       this.x = x;
@@ -217,7 +218,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     @Override
     public ItemStack getStack() {
       ItemFilter itemFilter = GuiVacuumChest.this.te.getItemFilter();
-      if(itemFilter != null) {
+      if (itemFilter != null) {
         return itemFilter.getStackInSlot(slot);
       }
       return null;

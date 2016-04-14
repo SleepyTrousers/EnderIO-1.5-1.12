@@ -57,7 +57,7 @@ import crazypants.enderio.teleport.telepad.TelepadRenderMapper;
 import crazypants.util.UserIdent;
 
 public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
-    ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock {
+    ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockTravelAnchor<TileTravelAnchor> create() {
     PacketHandler.INSTANCE.registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);

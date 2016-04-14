@@ -1,78 +1,83 @@
 package crazypants.enderio.machine.wireless;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.PowerHandlerUtil;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import cofh.api.energy.IEnergyContainerItem;
 
-public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger {
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerUtil;
+
+@Storable
+public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
 
   public static final int MAX_ENERGY_STORED = 200000;
   public static final int MAX_ENERGY_IN = 10000;
   public static final int MAX_ENERGY_OUT = 10000;
-  
-  int storedEnergyRF; 
-  
+
+  @Store({ StoreFor.ITEM, StoreFor.SAVE })
+  int storedEnergyRF;
+
   private double lastPowerUpdate = -1;
-  
+
   private boolean registered = false;
-  
-  public TileWirelessCharger() {    
+
+  public TileWirelessCharger() {
   }
- 
+
   @Override
   public void invalidate() {
-    super.invalidate();    
+    super.invalidate();
     WirelessChargerController.instance.deregisterCharger(this);
     registered = false;
   }
 
   @Override
   public void doUpdate() {
-    
     if (worldObj.isRemote) {
+      YetaUtil.refresh(this);
       return;
     }
-    
-    if(!registered) {
+
+    if (!registered) {
       WirelessChargerController.instance.registerCharger(this);
       registered = true;
     }
-    
-    if( (lastPowerUpdate == -1) || 
-        (lastPowerUpdate == 0 && storedEnergyRF > 0) ||
-        (lastPowerUpdate > 0 && storedEnergyRF == 0) ||
-        (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(20))
-        ) {
+
+    if ((lastPowerUpdate == -1) || (lastPowerUpdate == 0 && storedEnergyRF > 0) || (lastPowerUpdate > 0 && storedEnergyRF == 0)
+        || (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(20))) {
       lastPowerUpdate = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketStoredEnergy(this), this);
     }
 
   }
-  
+
   @Override
   public boolean chargeItems(ItemStack[] items) {
     boolean chargedItem = false;
     int available = Math.min(MAX_ENERGY_OUT, storedEnergyRF);
-    for (int i=0,end=items.length ; i<end  && available>0 ; i++) {
+    for (int i = 0, end = items.length; i < end && available > 0; i++) {
       ItemStack item = items[i];
-      if(item != null) {
-        if(item.getItem() instanceof IEnergyContainerItem && item.stackSize == 1) {
+      if (item != null) {
+        if (item.getItem() instanceof IEnergyContainerItem && item.stackSize == 1) {
           IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
 
           int max = chargable.getMaxEnergyStored(item);
           int cur = chargable.getEnergyStored(item);
           int canUse = Math.min(available, max - cur);
-          if(cur < max) {
+          if (cur < max) {
             int used = chargable.receiveEnergy(item, canUse, false);
-            if(used > 0) {
+            if (used > 0) {
               storedEnergyRF = storedEnergyRF - used;
               chargedItem = true;
               available -= used;
@@ -82,21 +87,6 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
       }
     }
     return chargedItem;
-  }
-
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) {    
-    root.setInteger("storedEnergyRF", storedEnergyRF);
-  }
-
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    if(root.hasKey("storedEnergy")) {
-      double storedMJ = root.getDouble("storedEnergy");
-      storedEnergyRF = (int)(storedMJ * 10);
-    } else {
-      storedEnergyRF = root.getInteger("storedEnergyRF");
-    }
   }
 
   @Override
@@ -116,7 +106,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = stored;    
+    storedEnergyRF = stored;
   }
 
   @Override
@@ -150,7 +140,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public World getWorldObj() {    
+  public World getWorldObj() {
     return getWorld();
   }
 
@@ -168,4 +158,25 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   public BlockCoord getLocation() {
     return new BlockCoord(pos);
   }
+
+  @Override
+  protected void onAfterDataPacket() {
+    updateBlock();
+  }
+
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  protected IBlockState sourceBlock;
+
+  @Override
+  public IBlockState getPaintSource() {
+    return sourceBlock;
+  }
+
+  @Override
+  public void setPaintSource(IBlockState sourceBlock) {
+    this.sourceBlock = sourceBlock;
+    markDirty();
+    updateBlock();
+  }
+
 }

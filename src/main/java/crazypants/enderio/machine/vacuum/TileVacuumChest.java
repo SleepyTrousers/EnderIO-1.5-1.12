@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.vacuum;
 
-import info.loenwind.autosave.Reader;
-import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
@@ -11,6 +9,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
@@ -36,9 +35,11 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.YetaUtil;
 
 @Storable
-public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable {
+public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity {
 
   public static final int ITEM_ROWS = 3;
   public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
@@ -59,6 +60,9 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
 
   @Override
   public void doUpdate() {
+    if (worldObj.isRemote) {
+      YetaUtil.refresh(this);
+    }
     if (redstoneStateDirty) {
       updateRedstoneStatus();
     }
@@ -90,7 +94,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     }
     return true;
   }
-  
+
   private void doHoover() {
 
     int rangeSqr = range * range;
@@ -322,6 +326,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   @Override
   protected void onAfterDataPacket() {
     refreshFilter();
+    updateBlock();
   }
 
   private void refreshFilter() {
@@ -339,13 +344,10 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     refreshFilter();
   }
 
+  @Override
   public void readContentsFromNBT(NBTTagCompound nbtRoot) {
-    Reader.read(StoreFor.ITEM, nbtRoot, this);
+    super.readContentsFromNBT(nbtRoot);
     refreshFilter();
-  }
-
-  public void writeContentsToNBT(NBTTagCompound nbtRoot) {
-    Writer.write(StoreFor.ITEM, nbtRoot, this);
   }
 
   @Override
@@ -371,4 +373,20 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   public boolean equals(@Nullable Object obj) {
     return super.equals(obj);
   }
+
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  protected IBlockState sourceBlock;
+
+  @Override
+  public IBlockState getPaintSource() {
+    return sourceBlock;
+  }
+
+  @Override
+  public void setPaintSource(IBlockState sourceBlock) {
+    this.sourceBlock = sourceBlock;
+    markDirty();
+    updateBlock();
+  }
+
 }

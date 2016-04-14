@@ -1,21 +1,50 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "cube_all",
-        "textures": {
-            "all": "enderio:blocks/blockWirelessChargerOff"
-        },
-        "transform": "forge:default-block"
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle": "enderio:blocks/blockWirelessChargerOff",
+            "front": "enderio:blocks/blockWirelessChargerOff"
+        }
     },
-    "variants": {
-        "active": {
-            "false": {},
-            "true": {
-                "textures": {
-                    "all": "enderio:blocks/blockWirelessChargerOn"
-                }
-            }
-        },
-        "inventory": [{}] 
+    "variants":{
+        "render":{
+          "defaults":{
+                "model":"enderio:null", "transform":{
+                  "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
+                  "firstperson":{ "rotation":[ {"x":0},  {"y":90},  {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+                  "gui":{         "rotation":[ {"x":0},  {"y":-90}, {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] },
+                  "fixed":{       "rotation":[ {"x":0},  {"y":0},   {"z":0}   ], "translation":[ 0, 0, 0 ], "scale":[ 1, 1, 1 ] }
+              }
+          },
+            "auto":{ },
+            "front":{          "submodel":{
+	            	"frame":{ "model":"enderio:machine_frame" },
+	          		"s1":{ "model":"enderio:blockWirelessCharger", "y":0 },
+	          		"s2":{ "model":"enderio:blockWirelessCharger", "y":90 },
+	          		"s3":{ "model":"enderio:blockWirelessCharger", "y":180 },
+	          		"s4":{ "model":"enderio:blockWirelessCharger", "y":270 },
+	          		"s5":{ "model":"enderio:blockWirelessCharger", "x":90 },
+	          		"s6":{ "model":"enderio:blockWirelessCharger", "x":270 }
+            } },
+            "front_east":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_south":{    "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_west":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on":{       "submodel":{
+	            	"frame":{ "model":"enderio:machine_frame" },
+	          		"s1":{ "model":"enderio:blockWirelessCharger", "y":0 },
+	          		"s2":{ "model":"enderio:blockWirelessCharger", "y":90 },
+	          		"s3":{ "model":"enderio:blockWirelessCharger", "y":180 },
+	          		"s4":{ "model":"enderio:blockWirelessCharger", "y":270 },
+	          		"s5":{ "model":"enderio:blockWirelessCharger", "x":90 },
+	          		"s6":{ "model":"enderio:blockWirelessCharger", "x":270 }
+	            },
+			        "textures":{
+			            "front": "enderio:blocks/blockWirelessChargerOn"
+			        }
+            },
+            "front_on_east":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_south":{ "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_west":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } }            
+        }
     }
-}    
+}

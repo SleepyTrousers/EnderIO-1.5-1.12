@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.vacuum;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import com.enderio.core.common.network.MessageTileEntity;
 
 public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implements IMessageHandler<PacketVaccumChest, IMessage> {
 
@@ -78,18 +78,18 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implem
     TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
     if (te != null) {
       switch (msg.cmd) {
-        case CMD_SET_RANGE:
-          te.setRange(msg.value);
-          break;
-        case CMD_SET_SLOT:
-          te.setItemFilterSlot(msg.value, msg.stack);
-          break;
-        case CMD_SET_BLACKLIST:
-          te.setFilterBlacklist(msg.value != 0);
-          break;
-        case CMD_SET_MATCHMETA:
-          te.setFilterMatchMeta(msg.value != 0);
-          break;
+      case CMD_SET_RANGE:
+        te.setRange(msg.value);
+        break;
+      case CMD_SET_SLOT:
+        te.setItemFilterSlot(msg.value, msg.stack);
+        break;
+      case CMD_SET_BLACKLIST:
+        te.setFilterBlacklist(msg.value != 0);
+        break;
+      case CMD_SET_MATCHMETA:
+        te.setFilterMatchMeta(msg.value != 0);
+        break;
       }
     }
     return null;
