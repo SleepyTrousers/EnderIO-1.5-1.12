@@ -123,6 +123,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     } else {
       brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation().getBlockPos());
     }
+    // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
     renderConduits(bundle, brightness, result);
 
     return result;
@@ -136,7 +137,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     List<BoundingBox> wireBounds = new ArrayList<BoundingBox>();
 
-    for (IConduit con : bundle.getConduits()) {
+    for (IConduit con : bundle.getConduits().toArray(new IConduit[0])) {
 
       if (ConduitUtil.renderConduit(player, con)) {
         ConduitRenderer renderer = getRendererForConduit(con);

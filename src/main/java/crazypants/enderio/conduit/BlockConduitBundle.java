@@ -160,6 +160,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, ConduitRenderMapper.instance);
+      // TODO: can we build a cache key?
       blockStateWrapper.bakeModel();
       return blockStateWrapper;
     } else {
