@@ -76,7 +76,7 @@ public class ManyToOneRecipeManager {
     List<Recipe> newRecipes = config.getRecipes(false);
     Log.info("Found " + newRecipes.size() + " valid " + managerName + " recipes in config.");
     for (Recipe rec : newRecipes) {
-      if (Config.crateSyntheticRecipes //
+      if (Config.createSyntheticRecipes //
           && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
           && rec.getInputs()[0].getInput().stackSize <= 21
           && rec.getOutputs().length == 1 && !rec.getOutputs()[0].isFluid() //
