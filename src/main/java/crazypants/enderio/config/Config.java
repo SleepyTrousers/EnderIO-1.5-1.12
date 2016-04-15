@@ -571,7 +571,8 @@ public final class Config {
         .getInt(painterEnergyPerTaskRF);
 
     recipeLevel = config.get(sectionRecipe.name, "recipeLevel", recipeLevel,
-        "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive").getInt(recipeLevel);
+        "How expensive should the crafting recipes be? -1=don't register any crafting/smelting recipes, 0=cheapest, 1=cheaper, 2=normal, 3=expensive").getInt(
+        recipeLevel);
 
     addPeacefulRecipes = config.get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
         .getBoolean(addPeacefulRecipes);

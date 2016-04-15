@@ -489,12 +489,14 @@ public class EnderIO {
 
     MaterialRecipes.registerDependantOresInDictionary();
 
-    EnderfaceRecipes.addRecipes();
-    MaterialRecipes.addRecipes();
-    ConduitRecipes.addRecipes();
-    MachineRecipes.addRecipes();
-    ItemRecipes.addRecipes();
-    TeleportRecipes.addRecipes();    
+    if (Config.recipeLevel >= 0) {
+      EnderfaceRecipes.addRecipes();
+      MaterialRecipes.addRecipes();
+      ConduitRecipes.addRecipes();
+      MachineRecipes.addRecipes();
+      ItemRecipes.addRecipes();
+      TeleportRecipes.addRecipes();
+    }
     
     proxy.init();
   }
