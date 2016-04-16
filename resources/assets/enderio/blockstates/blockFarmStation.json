@@ -2,7 +2,13 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/machineBottom"
+		        "particle":"enderio:blocks/machineBottom",
+		        "machineTop":"enderio:blocks/machineTop",
+		        "farmBaseTop":"enderio:blocks/farmBaseTop",
+		        "machineBottom":"enderio:blocks/machineBottom",
+		        "farmSide":"enderio:blocks/farmSide",
+		        "farmHatBottom":"enderio:blocks/farmHatBottom",
+		        "farmCore":"enderio:blocks/farmCore"
         }
     },
     "variants":{
@@ -16,13 +22,13 @@
 	            }
 	        },
             "auto":{ },
-            "front":{                                             "submodel":{ "front":{ "model":"enderio:farm" } } },
+            "front":{                                             "submodel":{ "front":{ "model":"enderio:blockFarmStation" } } },
             "front_east":{      },
             "front_south":{     },
             "front_west":{      },
             "front_on":{                                          "submodel":{ "portal":{ "model":"enderio:farmPortal" } } },
             "front_on_east":{   },
-            "front_on_south":{                                    "submodel":{ "portal":{ "model":"enderio:farmNoPortal" } } },
+            "front_on_south":{  },
             "front_on_west":{   }
         }
     }

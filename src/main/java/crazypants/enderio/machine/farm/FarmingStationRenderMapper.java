@@ -27,17 +27,13 @@ public class FarmingStationRenderMapper extends MachineRenderMapper implements I
   @SideOnly(Side.CLIENT)
   protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, AbstractMachineEntity tileEntity,
       AbstractMachineBlock<?> block) {
-    boolean active = tileEntity.isActive();
     if (blockLayer == EnumWorldBlockLayer.TRANSLUCENT) {
-      if (active) {
+      if (tileEntity.isActive()) {
         return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
-      } else {
-        return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_SOUTH));
       }
     } else if (blockLayer == EnumWorldBlockLayer.SOLID) {
       return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     }
-
     return null;
   }
 

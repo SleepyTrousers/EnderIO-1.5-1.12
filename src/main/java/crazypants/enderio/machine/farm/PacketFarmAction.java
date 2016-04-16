@@ -1,17 +1,19 @@
 package crazypants.enderio.machine.farm;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.util.ClientUtil;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.util.ClientUtil;
 
 public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAction, IMessage> {
 
@@ -36,9 +38,7 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
     int size = coords.size();
     buffer.writeInt(size);
     for (BlockPos coord : coords) {
-      buffer.writeInt(coord.getX());
-      buffer.writeInt(coord.getY());
-      buffer.writeInt(coord.getZ());
+      buffer.writeLong(coord.toLong());
     }
 
   }
@@ -48,7 +48,7 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
     int size = buffer.readInt();
     coords = new ArrayList<BlockPos>(size);
     for (int i = 0; i < size; i++) {
-      coords.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
+      coords.add(BlockPos.fromLong(buffer.readLong()));
     }
   }
 

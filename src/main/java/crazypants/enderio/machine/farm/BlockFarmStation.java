@@ -7,10 +7,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,18 +41,18 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> impl
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileFarmStation) {
-      return new FarmStationContainer(player.inventory, (TileFarmStation) te);
+    TileFarmStation te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new FarmStationContainer(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileFarmStation) {
-      return new GuiFarmStation(player.inventory, (TileFarmStation) te);
+    TileFarmStation te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiFarmStation(player.inventory, te);
     }
     return null;
   }
@@ -126,12 +124,6 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> impl
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return FarmingStationRenderMapper.instance;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
-    return true;
   }
 
   @Override

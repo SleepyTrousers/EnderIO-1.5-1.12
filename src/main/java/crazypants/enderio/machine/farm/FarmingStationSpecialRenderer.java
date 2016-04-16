@@ -1,32 +1,28 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector3f;
-
-import crazypants.enderio.config.Config;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3f;
+
+import crazypants.enderio.config.Config;
+
 @SideOnly(Side.CLIENT)
 public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer<TileFarmStation> {
 
-  private void renderFarmStationAt(TileFarmStation tile, double x, double y, double z, float partialTickTime) {
-
+  @Override
+  public void renderTileEntityAt(TileFarmStation tile, double x, double y, double z, float partialTickTime, int destroyStage) {
     String toRender = tile.notification;
     if ("".equals(toRender) || Config.disableFarmNotification) {
       return;
     }
 
-    GlStateManager.disableLighting();    
+    GlStateManager.disableLighting();
     RenderUtil.drawBillboardedText(new Vector3f(x + 0.5, y + 1.5, z + 0.5), toRender, 0.25f);
     GlStateManager.enableLighting();
-
   }
 
-  @Override
-  public void renderTileEntityAt(TileFarmStation tile, double x, double y, double z, float partialTickTime, int b) {
-    renderFarmStationAt(tile, x, y, z, partialTickTime);
-  }
 }
