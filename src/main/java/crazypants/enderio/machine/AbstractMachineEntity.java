@@ -66,7 +66,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Store
   protected RedstoneControlMode redstoneControlMode;
 
-  @Store(StoreFor.SAVE)
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   protected boolean redstoneCheckPassed;
 
   private boolean redstoneStateDirty = true;

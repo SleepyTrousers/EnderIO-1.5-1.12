@@ -68,7 +68,8 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
   }
 
   @Override
-  public void onCapacitorTypeChange() {
+  public void onCapacitorDataChange() {
+    super.onCapacitorDataChange();
     bounds = null;
   }
 

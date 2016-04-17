@@ -1,6 +1,8 @@
 package crazypants.enderio.machine;
 
 import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,9 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 @Storable
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
 
+  @Store({ StoreFor.SAVE, StoreFor.ITEM })
   protected IPoweredTask currentTask = null;
+  @Store({ StoreFor.SAVE, StoreFor.ITEM })
   protected IMachineRecipe lastCompletedRecipe;
   protected IMachineRecipe cachedNextRecipe;
 
@@ -364,31 +368,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     return new PoweredTask(nextRecipe, chance, getRecipeInputs());
-  }
-
-  protected IPoweredTask createTask(NBTTagCompound taskTagCompound) {
-    return PoweredTask.readFromNBT(taskTagCompound);
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    currentTask = nbtRoot.hasKey("currentTask") ? createTask(nbtRoot.getCompoundTag("currentTask")) : null;
-    String uid = nbtRoot.getString("lastCompletedRecipe");
-    lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    if(currentTask != null) {
-      NBTTagCompound currentTaskNBT = new NBTTagCompound();
-      currentTask.writeToNBT(currentTaskNBT);
-      nbtRoot.setTag("currentTask", currentTaskNBT);
-    }
-    if(lastCompletedRecipe != null) {
-      nbtRoot.setString("lastCompletedRecipe", lastCompletedRecipe.getUid());
-    }
   }
 
   @Override

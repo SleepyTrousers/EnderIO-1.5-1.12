@@ -1,6 +1,8 @@
 package crazypants.enderio.machine;
 
 import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +30,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
+  @Store({ StoreFor.SAVE, StoreFor.CLIENT })
+  // Not StoreFor.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
 
@@ -59,7 +63,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public void init() {
     super.init();
-    onCapacitorTypeChange();
+    onCapacitorDataChange();
   }
 
   @Override
@@ -129,14 +133,10 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   }
 
   public void onCapacitorDataChange() {
-    onCapacitorTypeChange();
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
     forceClientUpdate.set();
   }
-
-  @Deprecated
-  public void onCapacitorTypeChange() {}
 
   public int getPowerUsePerTick() {
     return maxEnergyUsed == null ? 0 : maxEnergyUsed.get(capacitorData);
@@ -180,16 +180,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
     updateCapacitorFromSlot();
-    setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
-  }
-
-  /**
-   * Write state common to both block and item
-   */
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
   }
 
   @Override
@@ -200,6 +190,19 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     super.readFromItemStack(stack);
     NBTTagCompound nbtRoot = stack.getTagCompound();
     setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
+  }
+
+  @Override
+  public void writeToItemStack(ItemStack stack) {
+    if (stack == null) {
+      return;
+    }
+    super.writeToItemStack(stack);
+    if (!stack.hasTagCompound()) {
+      stack.setTagCompound(new NBTTagCompound());
+    }
+    NBTTagCompound root = stack.getTagCompound();
+    root.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
   }
 
 }

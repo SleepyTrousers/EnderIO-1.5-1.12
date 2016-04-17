@@ -91,7 +91,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   @Override
-  public void onCapacitorTypeChange() {
+  public void onCapacitorDataChange() {
+    super.onCapacitorDataChange();
     attractorBounds = null;
   }
 

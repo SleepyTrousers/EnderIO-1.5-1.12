@@ -715,6 +715,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   @Override
   public void onCapacitorDataChange() {
+    super.onCapacitorDataChange();
     currentTask = createTask();
   }
 

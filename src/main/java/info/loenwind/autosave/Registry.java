@@ -4,6 +4,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.endercore.HandleBlockCoord;
 import info.loenwind.autosave.handlers.enderio.HandleIMachineRecipe;
+import info.loenwind.autosave.handlers.enderio.HandlePoweredTask;
 import info.loenwind.autosave.handlers.enderio.HandleResettingFlag;
 import info.loenwind.autosave.handlers.enderio.HandleSmartTank;
 import info.loenwind.autosave.handlers.forge.HandleFluid;
@@ -78,6 +79,7 @@ public class Registry {
     GLOBAL_REGISTRY.register(new HandleSmartTank());
     GLOBAL_REGISTRY.register(new HandleIMachineRecipe());
     GLOBAL_REGISTRY.register(new HandleResettingFlag());
+    GLOBAL_REGISTRY.register(new HandlePoweredTask());
   }
 
   @Nonnull
