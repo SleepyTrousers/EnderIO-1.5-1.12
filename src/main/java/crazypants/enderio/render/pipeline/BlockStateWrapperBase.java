@@ -75,6 +75,10 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     this.model = parent.model;
   }
 
+  public static void invalidate() {
+    cache.invalidateAll();
+  }
+
   @SuppressWarnings("rawtypes")
   @Override
   public Collection<IProperty> getPropertyNames() {
