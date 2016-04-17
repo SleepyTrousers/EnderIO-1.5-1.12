@@ -1,5 +1,6 @@
 package crazypants.enderio.machine;
 
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -20,6 +21,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 
+@Storable
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
@@ -130,7 +132,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     onCapacitorTypeChange();
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
-    forceClientUpdate = true;
+    forceClientUpdate.set();
   }
 
   @Deprecated

@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.generator;
 
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.IInternalPowerProvider;
 
+@Storable
 public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEntity implements IInternalPowerProvider {
 
   //RF API Power

@@ -1,5 +1,7 @@
 package crazypants.enderio.machine;
 
+import info.loenwind.autosave.annotations.Storable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +18,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
+@Storable
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
 
   protected IPoweredTask currentTask = null;

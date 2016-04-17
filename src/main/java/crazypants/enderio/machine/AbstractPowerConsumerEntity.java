@@ -1,11 +1,13 @@
 package crazypants.enderio.machine;
 
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 
+@Storable
 public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements IInternalPowerReceiver {
 
   @Deprecated

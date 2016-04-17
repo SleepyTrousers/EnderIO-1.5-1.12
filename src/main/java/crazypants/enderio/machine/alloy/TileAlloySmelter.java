@@ -57,7 +57,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
     if (this.mode != mode) {
       this.mode = mode;
-      forceClientUpdate = true;
+      forceClientUpdate.set();
     }
   }
 

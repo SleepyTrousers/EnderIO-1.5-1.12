@@ -152,7 +152,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
       scanNetwork();
     }
 
-    if(forceClientUpdate) {
+    if (forceClientUpdate.peek()) {
       worldObj.markBlockForUpdate(pos);
       markDirty();
     }
@@ -164,7 +164,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   private void scanNetwork() {
-    EnumFacing facingDir = getFacingDir();
+    EnumFacing facingDir = getFacing();
     EnumFacing backside = facingDir.getOpposite();
 
     ItemConduitNetwork icn = null;
@@ -186,11 +186,11 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
       if(active != dbServer.isOperational()) {
         active = dbServer.isOperational();
-        forceClientUpdate = true;
+        forceClientUpdate.set();
       }
     } else {
       if(active) {
-        forceClientUpdate = true;
+        forceClientUpdate.set();
       }
       dbServer = null;
       active = false;
@@ -384,7 +384,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   private EnumFacing getIODirection() {
-    return getFacingDir().getOpposite();
+    return getFacing().getOpposite();
   }
 
   @Override

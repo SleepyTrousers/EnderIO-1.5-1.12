@@ -2,7 +2,10 @@ package crazypants.enderio.machine;
 
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -16,7 +19,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -41,27 +43,35 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.util.ResettingFlag;
 
+@Storable
 public abstract class AbstractMachineEntity extends TileEntityEio
     implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
 
-  public EnumFacing facing;
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  public EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  protected boolean forceClientUpdate = true;
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  protected ResettingFlag forceClientUpdate = new ResettingFlag();
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
 
+  @Store
   protected ItemStack[] inventory;
   protected final SlotDefinition slotDefinition;
 
+  @Store
   protected RedstoneControlMode redstoneControlMode;
 
+  @Store(StoreFor.SAVE)
   protected boolean redstoneCheckPassed;
 
   private boolean redstoneStateDirty = true;
 
+  @Store(handler = HandleIOMode.class)
   protected Map<EnumFacing, IoMode> faceModes;
 
   private final int[] allSlots;
@@ -79,7 +89,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   public AbstractMachineEntity(SlotDefinition slotDefinition) {
     this.slotDefinition = slotDefinition;
-    facing = EnumFacing.SOUTH;
 
     inventory = new ItemStack[slotDefinition.getNumSlots()];
     redstoneControlMode = RedstoneControlMode.IGNORE;
@@ -116,7 +125,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       faceModes = new EnumMap<EnumFacing, IoMode>(EnumFacing.class);
     }
     faceModes.put(faceHit, mode);
-    forceClientUpdate = true;
+    forceClientUpdate.set();
     notifyNeighbours = true;
 
     updateBlock();
@@ -126,7 +135,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   public void clearAllIoModes() {
     if (faceModes != null) {
       faceModes = null;
-      forceClientUpdate = true;
+      forceClientUpdate.set();
       notifyNeighbours = true;
       updateBlock();
     }
@@ -203,12 +212,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return facing;
   }
 
-  public EnumFacing getFacingDir() {
-    return facing;
-  }
-
   public void setFacing(EnumFacing facing) {
     this.facing = facing;
+    markDirty();
   }
 
   public abstract boolean isActive();
@@ -258,7 +264,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       return;
     } // else is server, do all logic only on the server
 
-    boolean requiresClientSync = forceClientUpdate;
+    boolean requiresClientSync = forceClientUpdate.peek();
     boolean prevRedCheck = redstoneCheckPassed;
     if (redstoneStateDirty) {
       redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
@@ -297,7 +303,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       if (ticksSinceActiveChanged > 20 || isActive()) {
         ticksSinceActiveChanged = 0;
         lastActive = isActive();
-        forceClientUpdate = true;
+        forceClientUpdate.set();
       }
     }
 
@@ -305,9 +311,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       updateSound();
     }
 
-    if (forceClientUpdate) {
+    if (forceClientUpdate.read()) {
       worldObj.markBlockForUpdate(pos);
-      forceClientUpdate = false;
     } else {
       YetaUtil.refresh(this);
     }
@@ -449,10 +454,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-
-    setFacing(EnumFacing.VALUES[nbtRoot.getShort("facing")]);
-    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
-    forceClientUpdate = nbtRoot.getBoolean("forceClientUpdate");
     readCommon(nbtRoot);
   }
 
@@ -460,39 +461,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
    * Read state common to both block and item
    */
   public void readCommon(NBTTagCompound nbtRoot) {
-
-    // read in the inventories contents
-    inventory = new ItemStack[slotDefinition.getNumSlots()];
-
-    NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-    if (itemList != null) {
-      for (int i = 0; i < itemList.tagCount(); i++) {
-        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-        byte slot = itemStack.getByte("Slot");
-        if (slot >= 0 && slot < inventory.length) {
-          inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
-        }
-      }
-    }
-
-    int rsContr = nbtRoot.getInteger("redstoneControlMode");
-    if (rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
-      rsContr = 0;
-    }
-    redstoneControlMode = RedstoneControlMode.values()[rsContr];
-
-    if (nbtRoot.hasKey("hasFaces")) {
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        if (nbtRoot.hasKey("face" + dir.ordinal())) {
-          setIoMode(dir, IoMode.values()[nbtRoot.getShort("face" + dir.ordinal())]);
-        }
-      }
-    }
-
     if (this instanceof IPaintable.IPaintableTileEntity) {
       paintSource = PainterUtil2.readNbt(nbtRoot);
     }
-
   }
 
   public void readFromItemStack(ItemStack stack) {
@@ -517,12 +488,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
-
-    nbtRoot.setShort("facing", (short) facing.ordinal());
-    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
-    nbtRoot.setBoolean("forceClientUpdate", forceClientUpdate);
-    forceClientUpdate = false;
-
     writeCommon(nbtRoot);
   }
 
@@ -530,33 +495,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
    * Write state common to both block and item
    */
   public void writeCommon(NBTTagCompound nbtRoot) {
-
-    // write inventory list
-    NBTTagList itemList = new NBTTagList();
-    for (int i = 0; i < inventory.length; i++) {
-      if (inventory[i] != null) {
-        NBTTagCompound itemStackNBT = new NBTTagCompound();
-        itemStackNBT.setByte("Slot", (byte) i);
-        inventory[i].writeToNBT(itemStackNBT);
-        itemList.appendTag(itemStackNBT);
-      }
-    }
-    nbtRoot.setTag("Items", itemList);
-
-    nbtRoot.setInteger("redstoneControlMode", redstoneControlMode.ordinal());
-
-    // face modes
-    if (faceModes != null) {
-      nbtRoot.setByte("hasFaces", (byte) 1);
-      for (Entry<EnumFacing, IoMode> e : faceModes.entrySet()) {
-        nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
-      }
-    }
-
     if (this instanceof IPaintable.IPaintableTileEntity) {
       PainterUtil2.writeNbt(nbtRoot, paintSource);
     }
-
   }
 
   public void writeToItemStack(ItemStack stack) {

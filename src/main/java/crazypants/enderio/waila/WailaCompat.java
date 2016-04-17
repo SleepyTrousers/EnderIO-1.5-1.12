@@ -235,6 +235,7 @@ public class WailaCompat implements IWailaDataProvider {
           currenttip.add("");
         }
 
+        // TODO: Why do we dump the TEs state into NBT to get these values? We have the TE and could ask it directly.
         int stored = accessor.getNBTData().getInteger("storedEnergyRF");
         int max = accessor.getNBTData().getInteger("maxStoredRF");
 

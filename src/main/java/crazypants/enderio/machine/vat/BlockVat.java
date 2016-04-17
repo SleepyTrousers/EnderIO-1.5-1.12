@@ -93,7 +93,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
       float pY = pos.getY() + 0.7f;
       float pZ = pos.getZ() + 0.5f;
 
-      EnumFacing dir = te.getFacingDir();
+      EnumFacing dir = te.getFacing();
       pX += 0.6f * dir.getFrontOffsetX();
       pZ += 0.6f * dir.getFrontOffsetZ();
 
