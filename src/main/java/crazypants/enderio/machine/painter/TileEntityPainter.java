@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import info.loenwind.autosave.annotations.Storable;
+
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -15,11 +17,12 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PaintSourceValidator;
 
+@Storable
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot
-    super(new SlotDefinition(2, 1));
+    super(new SlotDefinition(2, 1), ModObject.blockPainter);
   }
 
   @Override

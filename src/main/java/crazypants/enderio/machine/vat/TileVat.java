@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.vat;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -23,11 +24,15 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.tool.SmartTank;
 
+@Storable
 public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
-  final FluidTank inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
-  final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
+  @Store
+  final SmartTank inputTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
+  @Store
+  final SmartTank outputTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
 
   private static int IO_MB_TICK = 100;
 
@@ -38,7 +43,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   Fluid currentTaskOutputFluid;
 
   public TileVat() {
-    super(new SlotDefinition(0, 1, -1, -1, -1, -1));
+    super(new SlotDefinition(0, 1, -1, -1, -1, -1), ModObject.blockVat);
   }
 
   @Override
@@ -267,49 +272,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-
-    if(nbtRoot.hasKey("inputTank")) {
-      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("inputTank");
-      if(tankRoot != null) {
-        inputTank.readFromNBT(tankRoot);
-      } else {
-        inputTank.setFluid(null);
-      }
-    } else {
-      inputTank.setFluid(null);
-    }
-
-    if(nbtRoot.hasKey("outputTank")) {
-      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("outputTank");
-      if(tankRoot != null) {
-        outputTank.readFromNBT(tankRoot);
-      } else {
-        outputTank.setFluid(null);
-      }
-    } else {
-      outputTank.setFluid(null);
-    }
-
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    if(inputTank.getFluidAmount() > 0) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      inputTank.writeToNBT(tankRoot);
-      nbtRoot.setTag("inputTank", tankRoot);
-    }
-    if(outputTank.getFluidAmount() > 0) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      outputTank.writeToNBT(tankRoot);
-      nbtRoot.setTag("outputTank", tankRoot);
-    }
-  }
-
-  @Override
   public int getPowerUsePerTick() {
     return Config.vatPowerUserPerTickRF;
   }
@@ -340,7 +302,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public FluidTank[] getOutputTanks() {
-    return new FluidTank[] { outputTank /* , inputTank */};
+    return new FluidTank[] { outputTank };
   }
 
   @Override

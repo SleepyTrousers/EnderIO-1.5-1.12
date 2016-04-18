@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.BitSet;
-
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -12,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +25,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
@@ -34,7 +34,6 @@ import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.tool.ArrayMappingTool;
 
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
@@ -44,6 +43,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
 import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
 
+@Storable
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   private static final int TICKS_PER_WORK = 20;
@@ -141,7 +141,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public static final int minSupSlot = maxFirtSlot + 1;
   public static final int maxSupSlot = maxFirtSlot + NUM_SUPPLY_SLOTS;
 
-  private final BitSet lockedSlots = new BitSet();
+  @Store
+  private int lockedSlots = 0x00;
 
   public String notification = "";
   public boolean sendNotification = false;
@@ -686,11 +687,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (worldObj.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketFarmLockedSlot(this, slot));
     }
-    lockedSlots.flip(slot);
+    setSlotLocked(slot, !isSlotLocked(slot));
   }
 
   public boolean isSlotLocked(int slot) {
-    return lockedSlots.get(slot);
+    return (lockedSlots & (1 << slot)) != 0;
+  }
+
+  private void setSlotLocked(int slot, boolean value) {
+    if (value) {
+      lockedSlots = lockedSlots | (1 << slot);
+    } else {
+      lockedSlots = lockedSlots & ~(1 << slot);
+    }
   }
 
   @Override
@@ -716,53 +725,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Override
   public void onCapacitorDataChange() {
     super.onCapacitorDataChange();
-    currentTask = createTask();
+    currentTask = createTask(null, 0f);
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    currentTask = createTask();
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    lockedSlots.clear();
-    for (int i : nbtRoot.getIntArray("lockedSlots")) {
-      lockedSlots.set(i);
-    }
-    int slotLayoutVersion = nbtRoot.getInteger("slotLayoutVersion");
-    if (slotLayoutVersion == 0) {
-      inventory = (new ArrayMappingTool<ItemStack>("TTSSSSOOOOC", "TTTBBSSSSOOOOOOC")).map(inventory);
-    } else if (slotLayoutVersion == 1) {
-      inventory = (new ArrayMappingTool<ItemStack>("TTTSSSSOOOOC", "TTTBBSSSSOOOOOOC")).map(inventory);
-    } else if (slotLayoutVersion == 2) {
-      inventory = (new ArrayMappingTool<ItemStack>("TTTSSSSOOOOOOC", "TTTBBSSSSOOOOOOC")).map(inventory);
-    }
-  }
-
-  IPoweredTask createTask() {
+  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     return new ContinuousTask(getPowerUsePerTick());
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    nbtRoot.setBoolean("isActive", isActive());
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    if(!lockedSlots.isEmpty()) {
-      int[] locked = new int[lockedSlots.cardinality()];
-      for (int i=0,bit=-1; (bit=lockedSlots.nextSetBit(bit+1)) >= 0; i++) {
-        locked[i] = bit;
-      }
-      nbtRoot.setIntArray("lockedSlots", locked);
-    }
-    nbtRoot.setInteger("slotLayoutVersion", 3);
   }
 
   @Override

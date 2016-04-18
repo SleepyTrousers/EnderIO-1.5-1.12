@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.alloy;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -19,6 +21,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFF
 import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
 
+@Storable
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public static enum Mode {
@@ -35,6 +38,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
   }
 
+  @Store
   private Mode mode;
 
   public TileAlloySmelter() {
@@ -186,23 +190,6 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       }
     }
     return false;
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    short mb = nbtRoot.getShort("mode");
-    Mode[] modes = Mode.values();
-    if (mb < 0 || mb >= modes.length) {
-      mb = 0;
-    }
-    mode = modes[mb];
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    nbtRoot.setShort("mode", (short) mode.ordinal());
   }
 
   @Override

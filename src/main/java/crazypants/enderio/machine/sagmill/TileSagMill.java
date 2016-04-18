@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.sagmill;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
@@ -13,17 +15,21 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 
+@Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
+  @Store
   protected IGrindingMultiplier gb;
+  @Store
   protected int currGbUse = 0;
+  @Store
   protected int maxGbUse = 0;
 
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
 
   public TileSagMill() {
-    super(new SlotDefinition(2, 4));
+    super(new SlotDefinition(2, 4), ModObject.blockSagMill);
   }
 
   @Override
@@ -123,21 +129,8 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    gb = GrindingMultiplierNBT.readFromNBT(nbtRoot);
-    currGbUse = nbtRoot.getInteger("currGbUse");
-    maxGbUse = (gb != null) ? gb.getDurationMJ() : 0;
-  }
-
-  @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
-    if (gb != null) {
-      GrindingMultiplierNBT.writeToNBT(gb, nbtRoot);
-    }
-    nbtRoot.setInteger("currGbUse", currGbUse);
-
     lastSendGbScaled = getBallDurationScaled(16);
   }
 

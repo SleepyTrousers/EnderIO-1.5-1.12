@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,7 +60,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   private PowerDistributor powerDistributor;
 
-  private final EnderRailController railController;
+  private final @Nonnull EnderRailController railController;
 
   private boolean inFluidFill = false;
   private boolean inGetTankInfo = false;

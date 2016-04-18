@@ -3,6 +3,8 @@ package info.loenwind.autosave;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.endercore.HandleBlockCoord;
+import info.loenwind.autosave.handlers.enderio.HandleCapturedMob;
+import info.loenwind.autosave.handlers.enderio.HandleExperienceContainer;
 import info.loenwind.autosave.handlers.enderio.HandleIMachineRecipe;
 import info.loenwind.autosave.handlers.enderio.HandlePoweredTask;
 import info.loenwind.autosave.handlers.enderio.HandleResettingFlag;
@@ -26,6 +28,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import crazypants.enderio.machine.sagmill.GrindingMultiplierNBT;
 
 /**
  * A registry for {@link IHandler}s.
@@ -80,6 +84,9 @@ public class Registry {
     GLOBAL_REGISTRY.register(new HandleIMachineRecipe());
     GLOBAL_REGISTRY.register(new HandleResettingFlag());
     GLOBAL_REGISTRY.register(new HandlePoweredTask());
+    GLOBAL_REGISTRY.register(new HandleCapturedMob());
+    GLOBAL_REGISTRY.register(new GrindingMultiplierNBT());
+    GLOBAL_REGISTRY.register(new HandleExperienceContainer());
   }
 
   @Nonnull

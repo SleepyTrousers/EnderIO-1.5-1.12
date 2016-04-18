@@ -1,11 +1,9 @@
 package crazypants.enderio.xp;
 
+import io.netty.buffer.ByteBuf;
+
 import java.security.InvalidParameterException;
 
-import com.enderio.core.common.util.FluidUtil;
-
-import crazypants.enderio.fluid.Fluids;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -13,6 +11,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
+
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.fluid.Fluids;
 
 public class ExperienceContainer extends FluidTank {
   // Note: We extend FluidTank instead of implementing IFluidTank because it has
@@ -160,8 +162,8 @@ public class ExperienceContainer extends FluidTank {
     return new FluidStack(Fluids.fluidXpJuice, fluidToExtract);
   }
 
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return fluid != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluid, Fluids.fluidXpJuice);
+  public boolean canFill(EnumFacing from, Fluid fluidIn) {
+    return fluidIn != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.fluidXpJuice);
   }
   
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
@@ -187,8 +189,8 @@ public class ExperienceContainer extends FluidTank {
     return XpUtil.experienceToLiquid(canFillXP);
   }
   
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return fluid != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluid, Fluids.fluidXpJuice);
+  public boolean canDrain(EnumFacing from, Fluid fluidIn) {
+    return fluidIn != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.fluidXpJuice);
   }
   
   public FluidTankInfo[] getTankInfo(EnumFacing from) {

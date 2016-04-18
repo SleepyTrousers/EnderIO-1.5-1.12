@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.soul;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,8 +34,10 @@ import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER
 import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
 
+@Storable
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
+  @Store
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
 
   public TileSoulBinder() {
@@ -230,18 +234,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     return xpCont.getTankInfo(from);
   }
 
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    xpCont.readFromNBT(nbtRoot);
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) { 
-    super.writeCommon(nbtRoot);
-    xpCont.writeToNBT(nbtRoot);
-  }
-  
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     return xpCont;

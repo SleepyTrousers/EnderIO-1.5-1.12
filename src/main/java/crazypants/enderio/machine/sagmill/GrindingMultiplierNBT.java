@@ -1,8 +1,18 @@
 package crazypants.enderio.machine.sagmill;
 
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.IHandler;
+
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GrindingMultiplierNBT implements IGrindingMultiplier {
+public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGrindingMultiplier> {
 
   private float chanceMultiplier = 1;
 
@@ -16,22 +26,6 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier {
   private static String PM = "grindBall.powerMultiplier";
   private static String GM = "grindBall.grindingMultiplier";
   private static String DMJ = "grindBall.durationMJ";
-
-  public static GrindingMultiplierNBT readFromNBT(NBTTagCompound nbtRoot) {
-    if (nbtRoot.hasKey(CM) && nbtRoot.hasKey(PM) && nbtRoot.hasKey(GM) && nbtRoot.hasKey(DMJ)) {
-      return new GrindingMultiplierNBT(nbtRoot.getFloat(CM), nbtRoot.getFloat(PM), nbtRoot.getFloat(GM), nbtRoot.getInteger(DMJ));
-    }
-    return null;
-  }
-
-  public static void writeToNBT(IGrindingMultiplier gm, NBTTagCompound nbtRoot) {
-    if (gm != null) {
-      nbtRoot.setFloat(CM, gm.getChanceMultiplier());
-      nbtRoot.setFloat(PM, gm.getPowerMultiplier());
-      nbtRoot.setFloat(GM, gm.getGrindingMultiplier());
-      nbtRoot.setInteger(DMJ, gm.getDurationMJ());
-    }
-  }
 
   protected GrindingMultiplierNBT(float chanceMultiplier, float powerMultiplier, float grindingMultiplier, int durationMJ) {
     this.chanceMultiplier = chanceMultiplier;
@@ -78,6 +72,38 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier {
   @Override
   public void setDurationMJ(int durationMJ) {
     this.durationMJ = durationMJ;
+  }
+
+  public GrindingMultiplierNBT() {
+  }
+
+  @Override
+  public boolean canHandle(Class<?> clazz) {
+    return IGrindingMultiplier.class.isAssignableFrom(clazz);
+  }
+
+  @Override
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+      @Nonnull IGrindingMultiplier object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setFloat(CM, object.getChanceMultiplier());
+    tag.setFloat(PM, object.getPowerMultiplier());
+    tag.setFloat(GM, object.getGrindingMultiplier());
+    tag.setInteger(DMJ, object.getDurationMJ());
+    nbt.setTag(name, tag);
+    return true;
+  }
+
+  @Override
+  public IGrindingMultiplier read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+      @Nullable IGrindingMultiplier object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+    if (nbt.hasKey(name)) {
+      NBTTagCompound tag = (NBTTagCompound) nbt.getTag(name);
+      if (tag.hasKey(CM) && tag.hasKey(PM) && tag.hasKey(GM) && tag.hasKey(DMJ)) {
+        return new GrindingMultiplierNBT(tag.getFloat(CM), tag.getFloat(PM), tag.getFloat(GM), tag.getInteger(DMJ));
+      }
+    }
+    return null;
   }
 
 }

@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.slicensplice;
 
+import info.loenwind.autosave.annotations.Storable;
+
 import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +23,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
 
+@Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   private final int axeIndex = 6;

@@ -1,8 +1,8 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ContinuousTask implements IPoweredTask {
   
@@ -14,6 +14,11 @@ public class ContinuousTask implements IPoweredTask {
   
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
+    nbtRoot.setFloat("powerUserPerTick", powerUserPerTick);
+  }
+
+  public static IPoweredTask readFromNBT(NBTTagCompound nbtRoot) {
+    return new ContinuousTask(nbtRoot.getFloat("powerUserPerTick"));
   }
 
   @Override

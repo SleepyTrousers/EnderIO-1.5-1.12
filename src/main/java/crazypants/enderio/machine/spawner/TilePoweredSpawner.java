@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.spawner;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
@@ -25,9 +28,12 @@ import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 
+@Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   private CapturedMob capturedMob = null;
+  @Store
   private boolean isSpawnMode = true;
   private int remainingSpawnTries;
 
@@ -132,24 +138,15 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    // Must read the mob type first so we know the multiplier to be used when calculating input/output power
-    capturedMob = CapturedMob.create(nbtRoot);
-    if (!nbtRoot.hasKey("isSpawnMode")) {
-      isSpawnMode = true;
-    } else {
-      isSpawnMode = nbtRoot.getBoolean("isSpawnMode");
+  public void writeToItemStack(ItemStack stack) {
+    super.writeToItemStack(stack);
+    // save mob the same way as the soul binder adds it to the item
+    if (hasEntity() && stack != null) {
+      if (!stack.hasTagCompound()) {
+        stack.setTagCompound(new NBTTagCompound());
+      }
+      capturedMob.toNbt(stack.getTagCompound());
     }
-    super.readCommon(nbtRoot);
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    if (hasEntity()) {
-      capturedMob.toNbt(nbtRoot);
-    }
-    nbtRoot.setBoolean("isSpawnMode", isSpawnMode);
-    super.writeCommon(nbtRoot);
   }
 
   @Override
