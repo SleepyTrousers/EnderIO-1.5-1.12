@@ -1,6 +1,7 @@
 package crazypants.util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -14,9 +15,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -32,6 +36,7 @@ import com.enderio.core.common.util.EntityUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class CapturedMob {
 
@@ -244,7 +249,28 @@ public class CapturedMob {
       }
     }
     if (isVariant && entity instanceof EntitySkeleton) {
-      ((EntitySkeleton) entity).setSkeletonType(1);
+      EntitySkeleton skel = (EntitySkeleton) entity;
+      skel.setSkeletonType(1);
+      skel.setCurrentItemOrArmor(0, new ItemStack(Items.stone_sword));
+      skel.setCurrentItemOrArmor(1, null);
+      skel.setCurrentItemOrArmor(2, null);
+      skel.setCurrentItemOrArmor(3, null);
+      skel.setCurrentItemOrArmor(4, null);
+      skel.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
+      skel.setCombatTask();
+
+      Calendar calendar = world.getCurrentDate();
+
+      if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
+        skel.setCurrentItemOrArmor(4, new ItemStack(Math.random() < 0.1 ? Blocks.lit_pumpkin : Blocks.pumpkin));
+        skel.setEquipmentDropChance(4, 0.0F);
+      } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
+        skel.setCurrentItemOrArmor(0, new ItemStack(Math.random() < 0.25 ? Items.leather_boots : Items.stick));
+      } else if (Math.random() < 0.1) {
+        skel.setCurrentItemOrArmor(0, new ItemStack(DarkSteelItems.itemDarkSteelSword));
+        skel.setEquipmentDropChance(0, 0.00001F);
+      }
+
     }
     return entity;
   }
