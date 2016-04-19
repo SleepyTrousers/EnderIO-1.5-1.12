@@ -87,6 +87,7 @@ import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
+import crazypants.enderio.machine.monitor.v2.BlockPMon;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -314,6 +315,7 @@ public class EnderIO {
     blockCrafter = BlockCrafter.create();    
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
+    BlockPMon.create();
     blockFarmStation = BlockFarmStation.create();
 
     blockWirelessCharger = BlockWirelessCharger.create();

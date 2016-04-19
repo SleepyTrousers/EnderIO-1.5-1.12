@@ -49,6 +49,7 @@ public enum ModObject implements IModObject {
   blockSagMill,
   blockHyperCube,
   blockPowerMonitor,
+  blockPowerMonitorv2,
   blockVat,
   blockFarmStation,
   blockTank,
