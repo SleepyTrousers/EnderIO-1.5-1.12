@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -25,14 +24,9 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.render.state.GlState;
 import crazypants.enderio.tool.SmartTank;
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir>  {
-
-  private static final GlState state = GlState.create("color", 1.0f, 1.0f, 1.0f, 1.0f, "blend", true, GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA,
-      "lighting", false, "colormask", true, true, true, true, "depth", true, true, GL11.GL_LEQUAL, "cullface", true, GL11.GL_BACK, "alpha", true,
-      GL11.GL_FRONT_AND_BACK, GL11.GL_AMBIENT_AND_DIFFUSE, "normalize", false);
 
   private final BlockReservoir block;
 
@@ -43,26 +37,22 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   @Override
   public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
     if (tileentity != null && tileentity.tank.getFluidAmount() > 0) {
-      Minecraft.getMinecraft().entityRenderer.disableLightmap();
+
       GlStateManager.pushMatrix();
-
-      state.apply();
-
       GlStateManager.translate(x, y, z);
       RenderUtil.bindBlockTexture();
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.disableLighting();
 
       Tessellator tessellator = Tessellator.getInstance();
       WorldRenderer tes = tessellator.getWorldRenderer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-
       Set<EnumFacing> mergers = getMergers(tileentity.getWorld(), tileentity.getPos());
-
       renderTankFluid(tileentity.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
-
       tessellator.draw();
-      GlState.CLEAN_TESR_STATE.apply_filtered(state);
+
       GlStateManager.popMatrix();
-      Minecraft.getMinecraft().entityRenderer.enableLightmap();
     }
   }
 
