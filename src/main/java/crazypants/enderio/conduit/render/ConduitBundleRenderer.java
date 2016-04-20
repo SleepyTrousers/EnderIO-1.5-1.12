@@ -159,7 +159,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     // Internal conectors between conduits
     List<CollidableComponent> connectors = bundle.getConnectors();    
     for (CollidableComponent component : connectors) {
-      if (component.conduitType != null) {
+      if (component != null && component.conduitType != null) {
         IConduit conduit = bundle.getConduit(component.conduitType);
         if (conduit != null) {
           if (ConduitUtil.renderConduit(player, component.conduitType)) {                   

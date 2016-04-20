@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -43,16 +44,16 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   public static final short NBT_VERSION = 1;
 
-  private final List<IConduit> conduits = new ArrayList<IConduit>();
+  private final List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   private IBlockState facade = null;  
   private EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
   private boolean facadeChanged;
 
-  private final List<CollidableComponent> cachedCollidables = new ArrayList<CollidableComponent>();
+  private final List<CollidableComponent> cachedCollidables = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
 
-  private final List<CollidableComponent> cachedConnectors = new ArrayList<CollidableComponent>();
+  private final List<CollidableComponent> cachedConnectors = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
 
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
