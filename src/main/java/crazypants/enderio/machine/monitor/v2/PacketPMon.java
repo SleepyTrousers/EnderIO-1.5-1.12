@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.PacketHandler;
 
 public class PacketPMon extends MessageTileEntity<TilePMon> {
 
@@ -74,8 +73,8 @@ public class PacketPMon extends MessageTileEntity<TilePMon> {
     @Override
     public IMessage onMessage(PacketPMon msg, MessageContext ctx) {
       TilePMon te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
-      if (te != null && msg.no >= 0 && msg.no < te.stats.length && ctx.getServerHandler() != null && ctx.getServerHandler().playerEntity != null) {
-        PacketHandler.sendTo(sendUpdate(te, msg.no), ctx.getServerHandler().playerEntity);
+      if (te != null && msg.no >= 0 && msg.no < te.stats.length) {
+        return sendUpdate(te, msg.no);
       }
       return null;
     }

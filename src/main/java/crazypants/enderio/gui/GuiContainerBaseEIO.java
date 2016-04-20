@@ -1,6 +1,8 @@
 package crazypants.enderio.gui;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -40,6 +42,10 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
 
   protected ResourceLocation getGuiTexture(int id) {
     return guiTextures.size() > id ? guiTextures.get(id) : null;
+  }
+
+  public List<Rectangle> getBlockingAreas() {
+    return Collections.<Rectangle> emptyList();
   }
 
   public static @Nonnull ResourceLocation getGuiTexture(String name) {

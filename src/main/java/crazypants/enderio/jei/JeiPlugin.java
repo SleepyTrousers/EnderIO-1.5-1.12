@@ -42,6 +42,8 @@ public class JeiPlugin extends BlankModPlugin {
     }
 
     CrafterRecipeTransferHandler.register(registry);
+
+    registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
   }
 
 
