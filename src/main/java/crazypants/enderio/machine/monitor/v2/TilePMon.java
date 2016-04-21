@@ -16,6 +16,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
+import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -23,6 +24,7 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 
+import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
 import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
 import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
 
@@ -41,6 +43,17 @@ public class TilePMon extends AbstractPoweredTaskEntity {
   protected @Store({ SAVE, ITEM }) StatCollector statsIcn = new StatCollector(iconUpdateRate, 28);
 
   protected StatCollector[] stats = { stats10s, stats01m, stats10m, stats01h, stats06h, stats24h, stats07d, statsIcn };
+
+  @Store({ SAVE, CLIENT })
+  private boolean advanced;
+  @Store
+  private boolean engineControlEnabled = false;
+  @Store
+  private float startLevel = 0.75f;
+  @Store
+  private float stopLevel = 0.99f;
+  @Store(CLIENT)
+  private boolean redStoneOn;
 
   public TilePMon() {
     super(new SlotDefinition(0, 0, 0), ModObject.blockPowerMonitorv2);
@@ -61,25 +74,52 @@ public class TilePMon extends AbstractPoweredTaskEntity {
   // tick goes in here
   @Override
   protected boolean checkProgress(boolean redstoneChecksPassed) {
+    usePower();
+    if (!advanced && !engineControlEnabled) {
+      return false;
+    }
     if (slowstart > 0) {
       // give the network a while to form after the chunk has loaded to prevent bogus readings (all zeros)
       slowstart--;
       return false;
     }
-    usePower();
     NetworkPowerManager pm = getPowerManager();
     if (pm != null) {
-      final int capPower = logSrqt2(pm.getPowerInCapacitorBanks());
-      for (StatCollector statCollector : stats) {
-        statCollector.addValue(capPower);
+      if (advanced) {
+        final int capPower = logSrqt2(pm.getPowerInCapacitorBanks());
+        for (StatCollector statCollector : stats) {
+          statCollector.addValue(capPower);
+        }
+      }
+      if (engineControlEnabled) {
+        float level = getPercentFull(pm);
+        if (level < startLevel) {
+          if (!redStoneOn) {
+            redStoneOn = true;
+            broadcastSignal();
+          }
+        } else if (level >= stopLevel) {
+          if (redStoneOn) {
+            redStoneOn = false;
+            broadcastSignal();
+          }
+        }
       }
     }
-    if (shouldDoWorkThisTick(iconUpdateRate / 10)) {
+    if (advanced && shouldDoWorkThisTick(iconUpdateRate / 10)) {
       PacketHandler.sendToAllAround(PacketPMon.sendUpdate(this, stats.length - 1), this);
     }
     return false;
   }
   
+  private float getPercentFull(NetworkPowerManager pm) {
+    return (float) (pm.getPowerInConduits() + pm.getPowerInCapacitorBanks()) / (pm.getMaxPowerInConduits() + pm.getMaxPowerInCapacitorBanks());
+  }
+
+  private void broadcastSignal() {
+    worldObj.notifyNeighborsOfStateChange(getPos(), worldObj.getBlockState(getPos()).getBlock());
+  }
+
   private static final long bit62 = Integer.MAX_VALUE;
   private static final long bit63 = bit62 * 2;
 
@@ -105,7 +145,7 @@ public class TilePMon extends AbstractPoweredTaskEntity {
     return 0;
   }
 
-  private NetworkPowerManager getPowerManager() {
+  NetworkPowerManager getPowerManager() {
     for (EnumFacing dir : EnumFacing.values()) {
       IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
       if (con != null) {
@@ -128,7 +168,7 @@ public class TilePMon extends AbstractPoweredTaskEntity {
 
   @Override
   public void onCapacitorDataChange() {
-    // setCapacitor(new BasicCapacitor(100, 10000, 10));
+    // TODO setCapacitor(new BasicCapacitor(100, 10000, 10));
     currentTask = createTask(null, 0);
   }
 
@@ -177,6 +217,92 @@ public class TilePMon extends AbstractPoweredTaskEntity {
   @SideOnly(Side.CLIENT)
   public int[][] getIconValues() {
     return statsIcn.getValues();
+  }
+
+  // Side.CLIENT
+  protected StatData statData = null;
+
+  // Side.CLIENT
+  private long lastUpdateRequestStatData = -1;
+
+  @SideOnly(Side.CLIENT)
+  public StatData getStatData() {
+    long now = EnderIO.proxy.getTickCount();
+    if (lastUpdateRequestStatData < now) {
+      lastUpdateRequestStatData = now + 10;
+      PacketHandler.INSTANCE.sendToServer(PacketPMon2.requestUpdate(this));
+    }
+    return statData;
+  }
+
+  static class StatData {
+    int powerInConduits;
+    int maxPowerInConduits;
+    long powerInCapBanks;
+    long maxPowerInCapBanks;
+    long powerInMachines;
+    long maxPowerInMachines;
+    float aveRfSent;
+    float aveRfReceived;
+
+    StatData(NetworkPowerManager pm) {
+      powerInConduits = pm.getPowerInConduits();
+      maxPowerInConduits = pm.getMaxPowerInConduits();
+      powerInCapBanks = pm.getPowerInCapacitorBanks();
+      maxPowerInCapBanks = pm.getMaxPowerInCapacitorBanks();
+      powerInMachines = pm.getPowerInReceptors();
+      maxPowerInMachines = pm.getMaxPowerInReceptors();
+      PowerTracker tracker = pm.getNetworkPowerTracker();
+      aveRfSent = tracker.getAverageRfTickSent();
+      aveRfReceived = tracker.getAverageRfTickRecieved();
+    }
+
+    StatData() {
+    }
+  }
+
+  public boolean isAdvanced() {
+    return advanced;
+  }
+
+  public void setAdvanced(boolean advanced) {
+    this.advanced = advanced;
+    markDirty();
+  }
+
+  public boolean isEngineControlEnabled() {
+    return engineControlEnabled;
+  }
+
+  public void setEngineControlEnabled(boolean engineControlEnabled) {
+    this.engineControlEnabled = engineControlEnabled;
+    if (!engineControlEnabled && redStoneOn) {
+      redStoneOn = false;
+      broadcastSignal();
+    }
+    markDirty();
+  }
+
+  public float getStartLevel() {
+    return startLevel;
+  }
+
+  public void setStartLevel(float startLevel) {
+    this.startLevel = startLevel;
+    markDirty();
+  }
+
+  public float getStopLevel() {
+    return stopLevel;
+  }
+
+  public void setStopLevel(float stopLevel) {
+    this.stopLevel = stopLevel;
+    markDirty();
+  }
+
+  public int getRedstoneLevel() {
+    return redStoneOn ? 15 : 0;
   }
 
 }

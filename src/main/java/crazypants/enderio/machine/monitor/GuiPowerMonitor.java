@@ -3,11 +3,9 @@ package crazypants.enderio.machine.monitor;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.text.NumberFormat;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -24,14 +22,9 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.PacketHandler;
-
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
 public class GuiPowerMonitor extends GuiContainerBaseEIO {
 
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
 
   private static final int ICON_SIZE = 16;
 
@@ -48,7 +41,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
   private static final int POWER_HEIGHT = 130;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  private final TilePowerMonitor te;
 
   private boolean isRedstoneMode = false;
 
@@ -71,11 +63,8 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
   private String monHeading4;
   private String monHeading5;
 
-  private String noNetworkError;
-
-  public GuiPowerMonitor(InventoryPlayer playerInv, final TilePowerMonitor te) {
-    super(new ContainerNoInv(te), "powerMonitor");
-    this.te = te;
+  public GuiPowerMonitor(InventoryPlayer playerInv) {
+    super(new ContainerNoInv(null), "powerMonitor");
     xSize = WIDTH;
     ySize = HEIGHT;
 
@@ -92,14 +81,13 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
     monHeading4 = EnderIO.lang.localize("gui.powerMonitor.monHeading4");
     monHeading5 = EnderIO.lang.localize("gui.powerMonitor.monHeading5");
 
-    noNetworkError = EnderIO.lang.localize("gui.powerMonitor.noNetworkError");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
       protected void updateText() {
         text.clear();
-        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
+        text.add(" " + PowerDisplayUtil.abrevation());
       }
 
     });
@@ -109,7 +97,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
     enabledB = new CheckBox(this, 21267, x, 8);
     enabledB.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     enabledB.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
-    enabledB.setSelected(te.engineControlEnabled);
 
     x = MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
     int y = MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
@@ -117,7 +104,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
     startTF.setCanLoseFocus(true);
     startTF.setMaxStringLength(3);
     startTF.setVisible(false);
-    startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
 
     y = y + getFontRenderer().FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
     x = 5 + MARGIN + getFontRenderer().getStringWidth(engineTxt5);
@@ -125,7 +111,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
     endTF.setVisible(false);
-    endTF.setText(INT_NF.format(te.asPercentInt(te.stopLevel)));
 
     textFields.add(startTF);
     textFields.add(endTF);
@@ -183,8 +168,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
-    int i1 = te.getEnergyStoredScaled(POWER_HEIGHT);
-    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 245, 0, POWER_WIDTH, i1);
 
     renderRedstoneTab(sx, sy);
     renderInfoTab(sx, sy);
@@ -194,36 +177,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
   }
 
   private void checkForModifications() {
-    if (enabledB.isSelected() != te.engineControlEnabled || getInt(startTF) != te.asPercentInt(te.startLevel) || getInt(endTF) != te.asPercentInt(te.stopLevel)) {
-
-      te.engineControlEnabled = enabledB.isSelected();
-      int i = getInt(startTF);
-      if (i >= 0) {
-        te.startLevel = te.asPercentFloat(i);
-      }
-      i = getInt(endTF);
-      if (i >= 0) {
-        te.stopLevel = te.asPercentFloat(i);
-      }
-      PacketHandler.INSTANCE.sendToServer(new PacketPowerMonitor(te));
-    }
-
-  }
-
-  private int getInt(GuiTextField tf) {
-    String txt = tf.getText();
-    if (txt == null) {
-      return -1;
-    }
-    try {
-      int val = Integer.parseInt(tf.getText());
-      if (val >= 0 && val <= 100) {
-        return val;
-      }
-      return -1;
-    } catch (Exception e) {
-      return -1;
-    }
   }
 
   private void renderRedstoneTab(int sx, int sy) {
@@ -309,10 +262,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       int sectionGap = SPACING;
 
       FontRenderer fontRenderer = getFontRenderer();
-      if (te.maxPowerInConduits == 0) {
-        fontRenderer.drawSplitString(noNetworkError, x, y, 170, ColorUtil.getRGB(Color.red));
-        return;
-      }
+
 
       rgb = headingCol;
       StringBuilder sb = new StringBuilder();
@@ -322,11 +272,9 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       rgb = valuesCol;
       y += fontRenderer.FONT_HEIGHT + 2;
       sb = new StringBuilder();
-      sb.append(formatPower(te.powerInConduits));
       sb.append(" ");
       sb.append(PowerDisplayUtil.ofStr());
       sb.append(" ");
-      sb.append(formatPower(te.maxPowerInConduits));
       sb.append(" ");
       sb.append(PowerDisplayUtil.abrevation());
       fontRenderer.drawString(sb.toString(), x, y, rgb, false);
@@ -340,11 +288,9 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       rgb = valuesCol;
       y += fontRenderer.FONT_HEIGHT + 2;
       sb = new StringBuilder();
-      sb.append(formatPower(te.powerInCapBanks));
       sb.append(" ");
       sb.append(PowerDisplayUtil.ofStr());
       sb.append(" ");
-      sb.append(formatPower(te.maxPowerInCapBanks));
       sb.append(" ");
       sb.append(PowerDisplayUtil.abrevation());
       fontRenderer.drawString(sb.toString(), x, y, rgb, false);
@@ -358,11 +304,9 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       rgb = valuesCol;
       y += fontRenderer.FONT_HEIGHT + 2;
       sb = new StringBuilder();
-      sb.append(formatPower(te.powerInMachines));
       sb.append(" ");
       sb.append(PowerDisplayUtil.ofStr());
       sb.append(" ");
-      sb.append(formatPower(te.maxPowerInMachines));
       sb.append(" ");
       sb.append(PowerDisplayUtil.abrevation());
       fontRenderer.drawString(sb.toString(), x, y, rgb, false);
@@ -376,7 +320,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       rgb = valuesCol;
       y += fontRenderer.FONT_HEIGHT + 2;
       sb = new StringBuilder();
-      sb.append(formatPowerFloat(te.aveRfSent));
       sb.append(" ");
       sb.append(PowerDisplayUtil.abrevation());
       sb.append(PowerDisplayUtil.perTickStr());
@@ -391,7 +334,6 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
       rgb = valuesCol;
       y += fontRenderer.FONT_HEIGHT + 2;
       sb = new StringBuilder();
-      sb.append(formatPowerFloat(te.aveRfReceived));
       sb.append(" ");
       sb.append(PowerDisplayUtil.abrevation());
       sb.append(PowerDisplayUtil.perTickStr());

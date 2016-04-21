@@ -3,7 +3,8 @@
     "defaults":{
         "textures":{
 		        "particle":"enderio:blocks/machineBottom",
-				    "texture": "enderio:blocks/blockPMonFrame"
+				    "texture": "enderio:blocks/blockPMonFrame",
+				    "fakeface": "enderio:blocks/blockPMon"
         }
     },
     "variants":{

@@ -21,38 +21,36 @@ import com.enderio.core.common.vecmath.Vector3d;
 @SideOnly(Side.CLIENT)
 public class TESRPMon extends TileEntitySpecialRenderer<TilePMon> {
 
-  private static BoundingBox bb1 = BoundingBox.UNIT_CUBE.translate(0f, 0f, -(1.25f / 16f)); // screen
-
-  private static final VertexRotationFacing xform = new VertexRotationFacing(EnumFacing.SOUTH);
-  static {
-    xform.setCenter(new Vector3d(0.5, 0.5, 0.5));
-  }
+  private static final float px = 1f / 16f;
+  private static BoundingBox bb1 = new BoundingBox(1 * px, 1 * px, 14.75f * px, 15 * px, 15 * px, 14.75f * px); // screen
 
   @Override
   public void renderTileEntityAt(TilePMon te, double x, double y, double z, float partialTicks, int destroyStage) {
-    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-    GL11.glPushMatrix();
-    GL11.glTranslatef((float) x, (float) y, (float) z);
+    if (te.isAdvanced()) {
+      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+      GlStateManager.pushMatrix();
+      GlStateManager.translate(x, y, z);
 
-    RenderUtil.bindBlockTexture();
-    GlStateManager.enableBlend();
-    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    GlStateManager.disableLighting();
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+      RenderUtil.bindBlockTexture();
+      GlStateManager.disableLighting();
+      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
-    xform.setRotation(te.getFacing());
-    te.bindTexture();
-    Helper helper = H.get();
-    helper.setupVertices(bb1, xform);
-    GL11.glColor4f(1F, 1F, 1F, 1F);
-    helper.renderSingleFace(tes, EnumFacing.SOUTH, 0f, 1f, 0f, 1f, xform, helper.stdBrightness, false);
+      VertexRotationFacing xform = new VertexRotationFacing(te.getFacing());
+      xform.setCenter(new Vector3d(0.5, 0.5, 0.5));
+      xform.setRotation(EnumFacing.SOUTH);
+      te.bindTexture();
+      Helper helper = threadLocalHelper.get();
+      helper.setupVertices(bb1, xform);
+      GlStateManager.color(1F, 1F, 1F, 1F);
+      helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, helper.stdBrightness, false);
 
-    Tessellator.getInstance().draw();
-    GL11.glPopMatrix();
+      Tessellator.getInstance().draw();
+      GlStateManager.popMatrix();
+    }
   }
 
-  ThreadLocal<Helper> H = new ThreadLocal<Helper>() {
+  ThreadLocal<Helper> threadLocalHelper = new ThreadLocal<Helper>() {
     @Override
     protected Helper initialValue() {
       return new Helper();
@@ -62,14 +60,16 @@ public class TESRPMon extends TileEntitySpecialRenderer<TilePMon> {
   private static class Helper {
 
     final Vector3d[] verts = new Vector3d[8];
-    final float[] stdBrightness = new float[6];
-    final float[] stdBrightnessInside = new float[6];
+    final static float[] stdBrightness = new float[6];
+    final static float[] stdBrightnessInside = new float[6];
 
     Helper() {
       for (int i = 0; i < verts.length; i++) {
         verts[i] = new Vector3d();
       }
+    }
 
+    static {
       for (EnumFacing dir : EnumFacing.values()) {
         stdBrightness[dir.ordinal()] = RenderUtil.getColorMultiplierForFace(dir);
         stdBrightnessInside[dir.ordinal()] = RenderUtil.getColorMultiplierForFace(dir) * .75f;
@@ -101,11 +101,11 @@ public class TESRPMon extends TileEntitySpecialRenderer<TilePMon> {
         if (angle < ROTATION_AMOUNT * 0.5 || angle >= ROTATION_AMOUNT * 3.5) {
           return dir;
         } else if (angle >= ROTATION_AMOUNT * 0.5 && angle < ROTATION_AMOUNT * 1.5) {
-          return dir.rotateY(); // getRotation(EnumFacing.DOWN);
+          return dir.rotateY();
         } else if (angle >= ROTATION_AMOUNT * 1.5 && angle < ROTATION_AMOUNT * 2.5) {
           return dir.getOpposite();
         } else if (angle >= ROTATION_AMOUNT * 2.5 && angle < ROTATION_AMOUNT * 3.5) {
-          return dir.rotateYCCW(); // getRotation(EnumFacing.UP);
+          return dir.rotateYCCW();
         }
       }
       return dir;

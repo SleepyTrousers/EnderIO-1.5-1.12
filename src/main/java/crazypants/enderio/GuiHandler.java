@@ -18,7 +18,6 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_CRUSHER = 6;
   public static final int GUI_ID_HYPER_CUBE = 7;
   public static final int GUI_ID_POWER_MONITOR = 8;
-  public static final int GUI_ID_POWER_MONITOR2 = 28;
 
   public static final int GUI_ID_EXTERNAL_CONNECTION_BASE = 9;
   public static final int GUI_ID_EXTERNAL_CONNECTION_UP = 9 + EnumFacing.UP.ordinal();

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -234,7 +235,7 @@ public class EnderIO {
   public static BlockCapBank blockCapBank;
   public static BlockWirelessCharger blockWirelessCharger;
   public static BlockSagMill blockCrusher; 
-  public static BlockPowerMonitor blockPowerMonitor;
+  public static Block blockPowerMonitor;
   public static BlockVat blockVat;
   public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
