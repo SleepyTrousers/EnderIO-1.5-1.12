@@ -157,15 +157,18 @@ public class PlantableFarmer implements IFarmerJoe {
     boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
-        if(stack != null && !removed && isPlantableForBlock(stack, block)) {
-          stack.stackSize--;
-          removed = true;
-          removedPlantable = stack.copy();
-          if(stack.stackSize > 0) {
+        if (stack != null && stack.stackSize > 0) {
+          if (!removed && isPlantableForBlock(stack, block)) {
+            removed = true;
+            removedPlantable = stack.copy();
+            removedPlantable.stackSize = 1;
+            stack.stackSize--;
+            if (stack.stackSize > 0) {
+              result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
+            }
+          } else {
             result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
           }
-        } else {
-          result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
         }
       }
     }
