@@ -4,6 +4,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -15,11 +21,6 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 
@@ -312,7 +313,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
 
     CapBankType type = cb.getType();
-    EnumFacing left = dir.rotateAround(EnumFacing.Axis.Y);
+    EnumFacing left = dir.rotateYCCW();
     EnumFacing right = left.getOpposite();
 
     int hOff = 0;

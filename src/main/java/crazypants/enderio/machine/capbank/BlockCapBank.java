@@ -137,6 +137,13 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
       blockStateWrapper.addCacheKey(state.getValue(CapBankType.KIND));
       blockStateWrapper.addCacheKey(renderMapper);
+      TileCapBank tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        for (EnumFacing face : EnumFacing.values()) {
+          blockStateWrapper.addCacheKey(tileEntity.getIoMode(face));
+          blockStateWrapper.addCacheKey(tileEntity.getDisplayType(face));
+        }
+      }
       blockStateWrapper.bakeModel();
       return blockStateWrapper;
     } else {
@@ -223,7 +230,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
           InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
           tcb.setDisplayType(faceHit, newDisplayType);
           if (newDisplayType == InfoDisplayType.NONE) {
-            tcb.setDefaultIoMode(faceHit);
+            tcb.toggleIoModeForFace(faceHit);
           }
         } else {
           tcb.toggleIoModeForFace(faceHit);
