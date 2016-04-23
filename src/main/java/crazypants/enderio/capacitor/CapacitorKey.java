@@ -70,6 +70,10 @@ public enum CapacitorKey implements ICapacitorKey {
   STIRLING_POWER_GEN(ModObject.blockStirlingGenerator, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 20),
   STIRLING_POWER_TIME(ModObject.blockStirlingGenerator, CapacitorKeyType.SPEED, Scaler.Factory.BURNTIME, 1),
 
+  POWER_MONITOR_POWER_INTAKE(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
+  POWER_MONITOR_POWER_BUFFER(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 10000),
+  POWER_MONITOR_POWER_USE(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1),
+
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000, null, null),
   LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20, null, null),

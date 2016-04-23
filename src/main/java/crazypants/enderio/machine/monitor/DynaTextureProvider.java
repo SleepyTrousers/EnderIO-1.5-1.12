@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -39,7 +39,7 @@ public class DynaTextureProvider {
   protected static final ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonColor.png");
   protected static final int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
 
-  protected final TilePMon owner;
+  protected final TilePowerMonitor owner;
   protected final String id;
   protected ResourceLocation resourceLocation;
   protected final int[] imageData;
@@ -48,7 +48,7 @@ public class DynaTextureProvider {
   protected final TextureManager textureManager;
   protected final IResourceManager resourceManager;
 
-  public DynaTextureProvider(TilePMon owner) {
+  public DynaTextureProvider(TilePowerMonitor owner) {
     this.owner = owner;
     this.textureManager = Minecraft.getMinecraft().getTextureManager();
     this.resourceManager = Minecraft.getMinecraft().getResourceManager();

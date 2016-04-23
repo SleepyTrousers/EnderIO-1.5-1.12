@@ -394,6 +394,14 @@ tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
 tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
 tile.blockPowerMonitor.tooltip.detailed.line6=conduit
 
+tile.blockPowerMonitorv2.name=Graphical Power Monitor
+tile.blockPowerMonitorv2.tooltip.detailed.line1=Displays details of power use and
+tile.blockPowerMonitorv2.tooltip.detailed.line2=storage
+tile.blockPowerMonitorv2.tooltip.detailed.line3=Can be used to emit redstone
+tile.blockPowerMonitorv2.tooltip.detailed.line4=based on stored power levels
+tile.blockPowerMonitorv2.tooltip.detailed.line5=Must be attached to an EnderIO
+tile.blockPowerMonitorv2.tooltip.detailed.line6=conduit
+
 tile.blockVat.name=The Vat
 tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
 

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -7,15 +7,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-public class PacketPMon3 extends MessageTileEntity<TilePMon> {
+public class PacketPowerMonitorConfig extends MessageTileEntity<TilePowerMonitor> {
 
   private boolean engineControlEnabled;
   private float startLevel, stopLevel;
 
-  public PacketPMon3() {
+  public PacketPowerMonitorConfig() {
   }
 
-  public PacketPMon3(TilePMon tile, boolean engineControlEnabled, float startLevel, float stopLevel) {
+  public PacketPowerMonitorConfig(TilePowerMonitor tile, boolean engineControlEnabled, float startLevel, float stopLevel) {
     super(tile);
     this.engineControlEnabled = engineControlEnabled;
     this.startLevel = startLevel;
@@ -38,11 +38,11 @@ public class PacketPMon3 extends MessageTileEntity<TilePMon> {
     buf.writeFloat(stopLevel);
   }
 
-  public static class ServerHandler implements IMessageHandler<PacketPMon3, IMessage> {
+  public static class ServerHandler implements IMessageHandler<PacketPowerMonitorConfig, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketPMon3 msg, MessageContext ctx) {
-      TilePMon te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+    public IMessage onMessage(PacketPowerMonitorConfig msg, MessageContext ctx) {
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
       if (te != null) {
         te.setEngineControlEnabled(msg.engineControlEnabled);
         te.setStartLevel(msg.startLevel);

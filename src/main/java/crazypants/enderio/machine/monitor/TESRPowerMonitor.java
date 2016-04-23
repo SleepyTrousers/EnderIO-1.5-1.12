@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -19,14 +19,16 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 
 @SideOnly(Side.CLIENT)
-public class TESRPMon extends TileEntitySpecialRenderer<TilePMon> {
+public class TESRPowerMonitor extends TileEntitySpecialRenderer<TilePowerMonitor> {
 
   private static final float px = 1f / 16f;
   private static BoundingBox bb1 = new BoundingBox(1 * px, 1 * px, 14.75f * px, 15 * px, 15 * px, 14.75f * px); // screen
+  private static BoundingBox bb2 = new BoundingBox(0 * px, 0 * px, 16.00f * px, 16 * px, 16 * px, 16.00f * px); // screen, painted
 
   @Override
-  public void renderTileEntityAt(TilePMon te, double x, double y, double z, float partialTicks, int destroyStage) {
+  public void renderTileEntityAt(TilePowerMonitor te, double x, double y, double z, float partialTicks, int destroyStage) {
     if (te.isAdvanced()) {
+      boolean isPainted = te.getPaintSource() != null;
       RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
       GlStateManager.pushMatrix();
       GlStateManager.translate(x, y, z);
@@ -41,9 +43,14 @@ public class TESRPMon extends TileEntitySpecialRenderer<TilePMon> {
       xform.setRotation(EnumFacing.SOUTH);
       te.bindTexture();
       Helper helper = threadLocalHelper.get();
-      helper.setupVertices(bb1, xform);
       GlStateManager.color(1F, 1F, 1F, 1F);
-      helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, helper.stdBrightness, false);
+      if (isPainted) {
+        helper.setupVertices(bb2, xform);
+        helper.renderSingleFace(tes, EnumFacing.SOUTH, 0 * px, 14 * px, 0 * px, 14 * px, xform, helper.stdBrightness, false);
+      } else {
+        helper.setupVertices(bb1, xform);
+        helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, helper.stdBrightness, false);
+      }
 
       Tessellator.getInstance().draw();
       GlStateManager.popMatrix();

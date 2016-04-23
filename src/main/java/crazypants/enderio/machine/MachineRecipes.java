@@ -206,7 +206,9 @@ public class MachineRecipes {
     ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
     ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
+    ItemStack mJMonitor2 = new ItemStack(EnderIO.blockPowerMonitorAdvanced, 1, 0);
     addShaped(mJMonitor, "sms", "sMs", "sps", 's', electricalSteel, 'M', machineChassi, 'm', mJReader, 'p', powerConduit, 'r', redstoneConduit);
+    addShaped(mJMonitor2, "xxx", "xpx", "123", 'p', mJMonitor, '1', "dyeRed", '2', "dyeYellow", '3', "dyeGreen", 'x', new ItemStack(Blocks.wool, 1, 15));
 
     //Enchanter
     ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);

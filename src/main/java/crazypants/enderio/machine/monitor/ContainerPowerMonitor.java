@@ -1,11 +1,11 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-class ContainerPMon extends AbstractMachineContainer<TilePMon> {
+class ContainerPowerMonitor extends AbstractMachineContainer<TilePowerMonitor> {
 
-  public ContainerPMon(InventoryPlayer playerInv, TilePMon te) {
+  public ContainerPowerMonitor(InventoryPlayer playerInv, TilePowerMonitor te) {
     super(playerInv, te);
   }
 

@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.machine.monitor.v2.StatCollector;
+import crazypants.enderio.machine.monitor.StatCollector;
 
 public class HandleStatCollector implements IHandler<StatCollector> {
 

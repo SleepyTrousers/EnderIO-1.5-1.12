@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,20 +12,20 @@ import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
 
-public class PacketPMon extends MessageTileEntity<TilePMon> {
+public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor> {
 
   private int no, collectCount, pos;
   private byte[] data;
 
-  public PacketPMon() {
+  public PacketPowerMonitorGraph() {
   }
 
-  private PacketPMon(TilePMon tile) {
+  private PacketPowerMonitorGraph(TilePowerMonitor tile) {
     super(tile);
   }
 
-  public static IMessage requestUpdate(TilePMon te, int no) {
-    PacketPMon msg = new PacketPMon(te);
+  public static IMessage requestUpdate(TilePowerMonitor te, int no) {
+    PacketPowerMonitorGraph msg = new PacketPowerMonitorGraph(te);
     msg.no = no;
     msg.collectCount = -1;
     msg.pos = -1;
@@ -33,8 +33,8 @@ public class PacketPMon extends MessageTileEntity<TilePMon> {
     return msg;
   }
 
-  public static IMessage sendUpdate(TilePMon te, int no) {
-    PacketPMon msg = new PacketPMon(te);
+  public static IMessage sendUpdate(TilePowerMonitor te, int no) {
+    PacketPowerMonitorGraph msg = new PacketPowerMonitorGraph(te);
     msg.no = no;
     msg.collectCount = te.stats[no].getCollectCount();
     msg.pos = te.stats[no].getPos();
@@ -68,11 +68,11 @@ public class PacketPMon extends MessageTileEntity<TilePMon> {
     }
   }
 
-  public static class ServerHandler implements IMessageHandler<PacketPMon, IMessage> {
+  public static class ServerHandler implements IMessageHandler<PacketPowerMonitorGraph, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketPMon msg, MessageContext ctx) {
-      TilePMon te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+    public IMessage onMessage(PacketPowerMonitorGraph msg, MessageContext ctx) {
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
       if (te != null && msg.no >= 0 && msg.no < te.stats.length) {
         return sendUpdate(te, msg.no);
       }
@@ -80,14 +80,14 @@ public class PacketPMon extends MessageTileEntity<TilePMon> {
     }
   }
 
-  public static class ClientHandler implements IMessageHandler<PacketPMon, IMessage> {
+  public static class ClientHandler implements IMessageHandler<PacketPowerMonitorGraph, IMessage> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IMessage onMessage(PacketPMon msg, MessageContext ctx) {
+    public IMessage onMessage(PacketPowerMonitorGraph msg, MessageContext ctx) {
       EntityPlayer player = EnderIO.proxy.getClientPlayer();
       if (player != null) {
-        TilePMon te = msg.getTileEntity(player.worldObj);
+        TilePowerMonitor te = msg.getTileEntity(player.worldObj);
         if (te != null && msg.no >= 0 && msg.no < te.stats.length) {
           te.stats[msg.no].setCollectCount(msg.collectCount);
           te.stats[msg.no].setPos(msg.pos);

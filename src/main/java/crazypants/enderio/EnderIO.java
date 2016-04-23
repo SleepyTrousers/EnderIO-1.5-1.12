@@ -88,7 +88,6 @@ import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
-import crazypants.enderio.machine.monitor.v2.BlockPMon;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -151,7 +150,6 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
-
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
@@ -236,6 +234,7 @@ public class EnderIO {
   public static BlockWirelessCharger blockWirelessCharger;
   public static BlockSagMill blockCrusher; 
   public static Block blockPowerMonitor;
+  public static Block blockPowerMonitorAdvanced;
   public static BlockVat blockVat;
   public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
@@ -315,8 +314,8 @@ public class EnderIO {
 
     blockCrafter = BlockCrafter.create();    
     blockVat = BlockVat.create();
-    blockPowerMonitor = BlockPowerMonitor.create();
-    BlockPMon.create();
+    blockPowerMonitor = BlockPowerMonitor.createPowerMonitor();
+    blockPowerMonitorAdvanced = BlockPowerMonitor.createAdvancedPowerMonitor();
     blockFarmStation = BlockFarmStation.create();
 
     blockWirelessCharger = BlockWirelessCharger.create();

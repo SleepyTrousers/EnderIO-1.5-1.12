@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import java.awt.Rectangle;
 

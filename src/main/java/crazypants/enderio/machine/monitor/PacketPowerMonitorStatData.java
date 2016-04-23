@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,26 +12,26 @@ import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
-import crazypants.enderio.machine.monitor.v2.TilePMon.StatData;
+import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
 
-public class PacketPMon2 extends MessageTileEntity<TilePMon> {
+public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonitor> {
 
-  private TilePMon.StatData data = null;
+  private TilePowerMonitor.StatData data = null;
 
-  public PacketPMon2() {
+  public PacketPowerMonitorStatData() {
   }
 
-  private PacketPMon2(TilePMon tile) {
+  private PacketPowerMonitorStatData(TilePowerMonitor tile) {
     super(tile);
   }
 
-  public static IMessage requestUpdate(TilePMon te) {
-    PacketPMon2 msg = new PacketPMon2(te);
+  public static IMessage requestUpdate(TilePowerMonitor te) {
+    PacketPowerMonitorStatData msg = new PacketPowerMonitorStatData(te);
     return msg;
   }
 
-  public static IMessage sendUpdate(TilePMon te, TilePMon.StatData data) {
-    PacketPMon2 msg = new PacketPMon2(te);
+  public static IMessage sendUpdate(TilePowerMonitor te, TilePowerMonitor.StatData data) {
+    PacketPowerMonitorStatData msg = new PacketPowerMonitorStatData(te);
     msg.data = data;
     return msg;
   }
@@ -72,11 +72,11 @@ public class PacketPMon2 extends MessageTileEntity<TilePMon> {
     }
   }
 
-  public static class ServerHandler implements IMessageHandler<PacketPMon2, IMessage> {
+  public static class ServerHandler implements IMessageHandler<PacketPowerMonitorStatData, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketPMon2 msg, MessageContext ctx) {
-      TilePMon te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+    public IMessage onMessage(PacketPowerMonitorStatData msg, MessageContext ctx) {
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
       if (te != null) {
         NetworkPowerManager powerManager = te.getPowerManager();
         if (powerManager != null) {
@@ -87,14 +87,14 @@ public class PacketPMon2 extends MessageTileEntity<TilePMon> {
     }
   }
 
-  public static class ClientHandler implements IMessageHandler<PacketPMon2, IMessage> {
+  public static class ClientHandler implements IMessageHandler<PacketPowerMonitorStatData, IMessage> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IMessage onMessage(PacketPMon2 msg, MessageContext ctx) {
+    public IMessage onMessage(PacketPowerMonitorStatData msg, MessageContext ctx) {
       EntityPlayer player = EnderIO.proxy.getClientPlayer();
       if (player != null) {
-        TilePMon te = msg.getTileEntity(player.worldObj);
+        TilePowerMonitor te = msg.getTileEntity(player.worldObj);
         if (te != null) {
           te.statData = msg.data;
         }

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor.v2;
+package crazypants.enderio.machine.monitor;
 
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -21,15 +21,20 @@ import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
 import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
 import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
 import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
 
 @Storable
-public class TilePMon extends AbstractPoweredTaskEntity {
+public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
 
   private static final int iconUpdateRate = 30 * 60 * 20 / 24; // ticks per pixel
 
@@ -55,8 +60,8 @@ public class TilePMon extends AbstractPoweredTaskEntity {
   @Store(CLIENT)
   private boolean redStoneOn;
 
-  public TilePMon() {
-    super(new SlotDefinition(0, 0, 0), ModObject.blockPowerMonitorv2);
+  public TilePowerMonitor() {
+    super(new SlotDefinition(0, 0, 0), POWER_MONITOR_POWER_INTAKE, POWER_MONITOR_POWER_BUFFER, POWER_MONITOR_POWER_USE);
   }
 
   @Override
@@ -67,6 +72,11 @@ public class TilePMon extends AbstractPoweredTaskEntity {
   @Override
   protected boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
     return false;
+  }
+
+  @Override
+  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
+    return mode == IoMode.NONE;
   }
 
   private int slowstart = 100;
@@ -107,7 +117,7 @@ public class TilePMon extends AbstractPoweredTaskEntity {
       }
     }
     if (advanced && shouldDoWorkThisTick(iconUpdateRate / 10)) {
-      PacketHandler.sendToAllAround(PacketPMon.sendUpdate(this, stats.length - 1), this);
+      PacketHandler.sendToAllAround(PacketPowerMonitorGraph.sendUpdate(this, stats.length - 1), this);
     }
     return false;
   }
@@ -183,7 +193,7 @@ public class TilePMon extends AbstractPoweredTaskEntity {
     long now = EnderIO.proxy.getTickCount();
     if (lastUpdateRequest[id] < now) {
       lastUpdateRequest[id] = now + 10;
-      PacketHandler.INSTANCE.sendToServer(PacketPMon.requestUpdate(this, id));
+      PacketHandler.INSTANCE.sendToServer(PacketPowerMonitorGraph.requestUpdate(this, id));
     }
     return stats[id];
   }
@@ -230,7 +240,7 @@ public class TilePMon extends AbstractPoweredTaskEntity {
     long now = EnderIO.proxy.getTickCount();
     if (lastUpdateRequestStatData < now) {
       lastUpdateRequestStatData = now + 10;
-      PacketHandler.INSTANCE.sendToServer(PacketPMon2.requestUpdate(this));
+      PacketHandler.INSTANCE.sendToServer(PacketPowerMonitorStatData.requestUpdate(this));
     }
     return statData;
   }
