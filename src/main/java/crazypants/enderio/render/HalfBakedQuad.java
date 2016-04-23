@@ -185,6 +185,7 @@ public class HalfBakedQuad {
       RenderUtil.bindBlockTexture();
       GlStateManager.enableBlend();
       GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.enableLighting();
       GlStateManager.disableLighting();
       GlStateManager.depthMask(false);
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();

@@ -73,6 +73,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     
     float maxUV = 32;
     GlStateManager.depthFunc(GL11.GL_EQUAL);        
+    GlStateManager.enableLighting();
     GlStateManager.disableLighting();
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);    

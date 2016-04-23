@@ -159,6 +159,7 @@ public class IoDisplay implements IInfoRenderer {
     EnumFacing right = dir.rotateAround(EnumFacing.Axis.Y);
 
     GL11.glPushMatrix();
+    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glTranslatef(
             (dir.getFrontOffsetX() * 1.02f)/2 + 0.5f + right.getFrontOffsetX()*(info.width-1)*0.5f,
             1 + size*0.5f - info.height*0.5f,
@@ -183,6 +184,7 @@ public class IoDisplay implements IInfoRenderer {
 
     GL11.glEnable(GL11.GL_LIGHTING);
     GL11.glDisable(GL11.GL_BLEND);
+    GL11.glPopAttrib();
     GL11.glPopMatrix();
   }
 

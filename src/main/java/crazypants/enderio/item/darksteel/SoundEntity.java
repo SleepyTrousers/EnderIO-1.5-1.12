@@ -62,6 +62,7 @@ public class SoundEntity extends EntityFX {
     float z1 = (float) (prevPosZ + (posZ - prevPosZ) * partialTicks - interpPosZ);
 
     GlStateManager.pushMatrix();
+    GlStateManager.enableLighting();
     GlStateManager.disableLighting();
     GlStateManager.disableDepth();
     GlStateManager.enableBlend();

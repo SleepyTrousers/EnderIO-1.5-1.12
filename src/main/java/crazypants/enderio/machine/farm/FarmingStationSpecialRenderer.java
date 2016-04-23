@@ -20,6 +20,7 @@ public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer<Til
       return;
     }
 
+    GlStateManager.enableLighting();
     GlStateManager.disableLighting();
     RenderUtil.drawBillboardedText(new Vector3f(x + 0.5, y + 1.5, z + 0.5), toRender, 0.25f);
     GlStateManager.enableLighting();

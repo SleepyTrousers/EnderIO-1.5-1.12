@@ -92,6 +92,7 @@ public class PowerBarOverlayRenderHelper {
 
   public void render(double level, int xPosition, int yPosition, int offset) {
     double width = level * BAR_W;
+    GlStateManager.enableLighting();
     GlStateManager.disableLighting();
     GlStateManager.disableDepth();
     GlStateManager.disableTexture2D();

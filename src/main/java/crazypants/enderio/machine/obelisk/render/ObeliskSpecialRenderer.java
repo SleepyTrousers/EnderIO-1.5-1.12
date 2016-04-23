@@ -66,6 +66,7 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
       GlStateManager.translate(0.5f, 0.5f, 0.5f);
       GlStateManager.scale(2, 2, 2);
       GlStateManager.color(1, 1, 1);
+      GlStateManager.enableLighting();
       GlStateManager.disableLighting();
       RenderUtil.renderBlockModelAsItem(world, new ItemStack(block), block.getDefaultState());
       GlStateManager.enableLighting();

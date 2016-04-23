@@ -43,6 +43,7 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer<TileTransceiv
 
     GlStateManager.enableNormalize();
     GlStateManager.enableBlend();
+    GlStateManager.enableLighting();
     GlStateManager.disableLighting();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     if(!isActive) {

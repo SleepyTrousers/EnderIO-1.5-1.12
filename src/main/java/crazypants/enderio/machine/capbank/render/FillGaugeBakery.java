@@ -43,7 +43,7 @@ public class FillGaugeBakery {
   private IBlockAccess world;
   private BlockPos pos;
   private EnumFacing face;
-  private HalfBakedList buffer;
+  private HalfBakedList buffer, litBuffer;
 
   public FillGaugeBakery(double fillLevel) {
     localFillLevel = fillLevel * 10 + 3;
@@ -124,14 +124,16 @@ public class FillGaugeBakery {
 
     BoundingBox bg = new BoundingBox(6.5 * px, (connectDown ? 0 : 2.5) * px, quarter_out, 9.5 * px, (connectUp ? 16 : 13.5) * px, bit_in);
     buffer.add(bg, EnumFacing.NORTH, 12.5 * px, 15.5 * px, (connectDown ? 0 : 2.5) * px, (connectUp ? 16 : 13.5) * px, tex1, null);
+    buffer.transform(rot);
 
-    if (localFillLevel > 0) {
+    if (localFillLevel > 0.001) {
       TextureAtlasSprite tex2 = EnderIO.blockCapBank.getFillBarIcon();
       BoundingBox fg = new BoundingBox(6.5 * px, (connectDown ? 0 : 2.99) * px, half_out, 9.5 * px, localFillLevel * px, bit_in);
-      buffer.add(fg, EnumFacing.NORTH, 13.01 * px, 14.99 * px, (connectDown ? 0 : 2.99) * px, localFillLevel * px, tex2, null);
+      litBuffer = new HalfBakedList();
+      litBuffer.add(fg, EnumFacing.NORTH, 13.01 * px, 14.99 * px, (connectDown ? 0 : 2.99) * px, localFillLevel * px, tex2, null);
+      litBuffer.transform(rot);
     }
 
-    buffer.transform(rot);
   }
 
   private void calculateFillLevel() {
@@ -195,11 +197,22 @@ public class FillGaugeBakery {
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
+      GlStateManager.disableLighting();
+      GlStateManager.enableLighting();
+
       RenderUtil.bindBlockTexture();
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
       buffer.render(tes);
       Tessellator.getInstance().draw();
+
+      if (litBuffer != null) {
+        GlStateManager.disableLighting();
+        tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        litBuffer.render(tes);
+        Tessellator.getInstance().draw();
+        GlStateManager.enableLighting();
+      }
     }
   }
 

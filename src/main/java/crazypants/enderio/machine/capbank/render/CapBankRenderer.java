@@ -3,14 +3,16 @@ package crazypants.enderio.machine.capbank.render;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-
-import crazypants.enderio.machine.capbank.InfoDisplayType;
-import crazypants.enderio.machine.capbank.TileCapBank;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.machine.capbank.InfoDisplayType;
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 @SideOnly(Side.CLIENT)
 public class CapBankRenderer extends TileEntitySpecialRenderer<TileCapBank> {
@@ -46,12 +48,14 @@ public class CapBankRenderer extends TileEntitySpecialRenderer<TileCapBank> {
         if(rend != null) {
           if(!glSetup) {
             glSetup = true;
-            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+            // GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
             GL11.glPolygonOffset(-1.0f, -1.0f);
 
             GL11.glPushMatrix();
             GL11.glTranslatef((float) x, (float) y, (float) z);
+            GlStateManager.disableLighting();
+            GlStateManager.enableLighting();
           }
 
           rend.render(cb, dir, x, y, z, partialTick);
@@ -61,7 +65,8 @@ public class CapBankRenderer extends TileEntitySpecialRenderer<TileCapBank> {
 
     if(glSetup) {
       GL11.glPopMatrix();
-      GL11.glPopAttrib();
+      GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+      // GL11.glPopAttrib();
     }
   }
 

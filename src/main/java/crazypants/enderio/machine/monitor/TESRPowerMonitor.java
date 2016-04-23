@@ -34,6 +34,7 @@ public class TESRPowerMonitor extends TileEntitySpecialRenderer<TilePowerMonitor
       GlStateManager.translate(x, y, z);
 
       RenderUtil.bindBlockTexture();
+      GlStateManager.enableLighting();
       GlStateManager.disableLighting();
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
