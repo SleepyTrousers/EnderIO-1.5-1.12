@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.buffer;
 
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
@@ -20,11 +21,18 @@ import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
-  private boolean hasPower, hasInventory, isCreative;
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  private boolean hasPower;
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  private boolean hasInventory;
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  private boolean isCreative;
 
   private PowerDistributor dist;
 
+  @Store
   private int maxOut = Config.powerConduitTierThreeRF;
+  @Store
   private int maxIn = maxOut;
 
   public TileBuffer() {
@@ -148,36 +156,6 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
     } else {
       return super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
     }
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    nbtRoot.setBoolean("hasInv", hasInventory);
-    nbtRoot.setBoolean("hasPower", hasPower);
-    nbtRoot.setBoolean("creative", isCreative);
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    nbtRoot.setInteger("maxIn", maxIn);
-    nbtRoot.setInteger("maxOut", maxOut);
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    this.hasInventory = nbtRoot.getBoolean("hasInv");
-    this.hasPower = nbtRoot.getBoolean("hasPower");
-    this.isCreative = nbtRoot.getBoolean("creative");
-    super.readCustomNBT(nbtRoot);
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    this.maxIn = nbtRoot.getInteger("maxIn");
-    this.maxOut = nbtRoot.getInteger("maxOut");
-    super.readCommon(nbtRoot);
   }
 
   public boolean hasInventory() {

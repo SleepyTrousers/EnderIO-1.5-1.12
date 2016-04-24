@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -25,16 +27,19 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.tool.SmartTank;
 
+@Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
   private static int IO_MB_TICK = 250;
 
-  final SmartTank fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+  @Store
+  final SmartTank tank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   int outputPerTick = Config.zombieGeneratorRfPerTick;
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
+  @Store(StoreFor.CLIENT)
   private boolean active = false;
   private PowerDistributor powerDis;
 
@@ -42,7 +47,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0));    
+    super(new SlotDefinition(0, 0, 0), ModObject.blockZombieGenerator);
   }
 
   @Override
@@ -151,14 +156,14 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     }
     inPause = false;
 
-    if(fuelTank.getFluidAmount() < getActivationAmount()) {      
+    if(tank.getFluidAmount() < getActivationAmount()) {      
       return false;
     }
     
     
     ticksRemaingFuel--;    
     if(ticksRemaingFuel <= 0) {
-      fuelTank.drain(1, true);
+      tank.drain(1, true);
       ticksRemaingFuel = tickPerBucketOfFuel/1000;    
       tanksDirty = true;
     }    
@@ -167,7 +172,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
   
   int getActivationAmount() {
-    return (int) (fuelTank.getCapacity() * 0.7f);
+    return (int) (tank.getCapacity() * 0.7f);
   }
 
   private boolean transmitEnergy() {
@@ -184,7 +189,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    int res = fuelTank.fill(resource, doFill);
+    int res = tank.fill(resource, doFill);
     if(res > 0 && doFill) {
       tanksDirty = true;
     }
@@ -203,7 +208,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    return fuelTank.canFill(fluid);
+    return tank.canFill(fluid);
   }
 
   @Override
@@ -213,46 +218,22 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { fuelTank.getInfo() };
+    return new FluidTankInfo[] { tank.getInfo() };
   }
 
   public int getFluidStored(EnumFacing from) {
-    return fuelTank.getFluidAmount();
+    return tank.getFluidAmount();
   }
   
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    active = nbtRoot.getBoolean("active");
-  }
-
   @Override
   public boolean shouldRenderInPass(int pass) {
     return pass == 1;
   }
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    fuelTank.readCommon("fuelTank", nbtRoot);
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    fuelTank.writeCommon("fuelTank", nbtRoot);
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    nbtRoot.setBoolean("active", active);
-  }
-
-  @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
-      return fuelTank;
+      return tank;
     }
     return null;
   }
@@ -269,7 +250,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public SmartTank getNutrientTank() {
-    return fuelTank;
+    return tank;
   }
 
 }

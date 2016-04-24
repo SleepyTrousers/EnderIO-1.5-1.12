@@ -8,4 +8,8 @@ public class NoHandlerFoundException extends Exception {
     super("No storage handler found for field " + field.getName() + " of type " + field.getType() + " of " + o);
   }
 
+  public NoHandlerFoundException(Class<?> clazz, String name) {
+    super("No storage handler found for field " + name + " of type " + clazz);
+  }
+
 }

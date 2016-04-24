@@ -30,6 +30,7 @@ import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.render.EnumRenderMode;
@@ -137,7 +138,7 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
   private List<BakedQuad> renderFuel(ItemStack stack) {
     if (stack.hasTagCompound()) {
-      SmartTank tank = TileKillerJoe.loadTank(stack.getTagCompound());
+      SmartTank tank = ItemTankHelper.getTank(stack);
       HalfBakedList buffer = TankRenderHelper.mkTank(tank, 2.51, 1, 14, false);
       if (buffer != null) {
         List<BakedQuad> quads = new ArrayList<BakedQuad>();

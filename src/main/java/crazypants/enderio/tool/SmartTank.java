@@ -141,32 +141,41 @@ public class SmartTank extends FluidTank {
   }
   
   public void writeCommon(String name, NBTTagCompound nbtRoot) {
-    if(getFluidAmount() > 0 || restriction != null) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      writeToNBT(tankRoot);
-      if (restriction != null) {
-        tankRoot.setString("FluidRestriction", restriction.getName());
-      }
-      nbtRoot.setTag(name, tankRoot);
-    } else {
-      nbtRoot.removeTag(name);
+    NBTTagCompound tankRoot = new NBTTagCompound();
+    writeToNBT(tankRoot);
+    if (restriction != null) {
+      tankRoot.setString("FluidRestriction", restriction.getName());
     }
+    tankRoot.setInteger("Capacity", capacity);
+    nbtRoot.setTag(name, tankRoot);
   }
 
   public void readCommon(String name, NBTTagCompound nbtRoot) {
     NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag(name);
     if(tankRoot != null) {
       readFromNBT(tankRoot);
-      restriction = null;
       if (tankRoot.hasKey("FluidRestriction")) {
         String fluidName = tankRoot.getString("FluidRestriction");
         if (!Strings.isNullOrEmpty(fluidName)) {
           restriction = FluidRegistry.getFluid(fluidName);
         }
       }
+      if (tankRoot.hasKey("Capacity")) {
+        capacity = tankRoot.getInteger("Capacity");
+      }
     } else {
       setFluid(null);
       // not reseting 'restriction' here on purpose
     }
   }
+
+  public static SmartTank createFromNBT(String name, NBTTagCompound nbtRoot) {
+    SmartTank result = new SmartTank(0);
+    result.readCommon(name, nbtRoot);
+    if (result.getFluidAmount() > result.getCapacity()) {
+      result.setCapacity(result.getFluidAmount());
+    }
+    return result;
+  }
+
 }

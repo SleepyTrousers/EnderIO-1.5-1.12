@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
+import info.loenwind.autosave.annotations.Storable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,6 +51,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
+@Storable
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
   private AxisAlignedBB attractorBounds;

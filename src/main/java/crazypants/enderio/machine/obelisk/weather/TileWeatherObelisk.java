@@ -1,12 +1,14 @@
 package crazypants.enderio.machine.obelisk.weather;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.awt.Color;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -32,6 +34,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
+@Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
 
   public enum WeatherTask {
@@ -98,6 +101,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean canBeActive = true;
   private boolean tanksDirty;
 
+  @Store
   private FluidTank inputTank = new FluidTank(8000);
   
   /* client fields */
@@ -266,18 +270,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
         playedFuse = false;
       }
     }
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    nbtRoot.setTag("tank", inputTank.writeToNBT(new NBTTagCompound()));
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    inputTank.readFromNBT(nbtRoot.getCompoundTag("tank"));
   }
 
   private boolean isValidFluid(Fluid f) {

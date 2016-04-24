@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.tank;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -26,19 +26,21 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.tool.ArrayMappingTool;
 import crazypants.enderio.tool.SmartTank;
 
+@Storable
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
   private static int IO_MB_TICK = 100;
 
-  protected SmartTank tank;// = new FluidTankEio(16000);
+  @Store
+  protected SmartTank tank;
   protected int lastUpdateLevel = -1;
   
   private boolean tankDirty = false;
   private int lastFluidLuminosity = 0;
 
+  @Store
   private VoidMode voidMode = VoidMode.NEVER;
 
   public TileTank(int meta) {
@@ -392,58 +394,6 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     setTanksDirty();
     markDirty();
     return false;
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    nbtRoot.setInteger("slotLayoutVersion", 1);
-    nbtRoot.setInteger("tankType", getBlockMetadata());
-    nbtRoot.setInteger("voidMode", voidMode.ordinal());
-    saveTank(nbtRoot, tank);
-  }
-  
-  public static void saveTank(NBTTagCompound nbtRoot, FluidTank tank) {
-    if(tank.getFluidAmount() > 0) {
-      NBTTagCompound fluidRoot = new NBTTagCompound();
-      tank.getFluid().writeToNBT(fluidRoot);
-      nbtRoot.setTag("tankContents", fluidRoot);
-    } else {
-      nbtRoot.removeTag("tankContents");
-    }
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    tank = loadTank(nbtRoot);
-    if (nbtRoot.hasKey("voidMode")) {
-      voidMode = VoidMode.values()[nbtRoot.getInteger("voidMode")];    
-    }
-    
-    int slotLayoutVersion = nbtRoot.getInteger("slotLayoutVersion");
-    if (slotLayoutVersion == 0) {
-      inventory = new ArrayMappingTool<ItemStack>("IIOO", "IIIOO").map(inventory);
-    }
-  }
-  
-  public static SmartTank loadTank(NBTTagCompound nbtRoot) {
-    int tankType = nbtRoot.getInteger("tankType");
-    tankType = MathHelper.clamp_int(tankType, 0, 1);
-    SmartTank ret;
-    if(tankType == 1) {
-      ret = new SmartTank(32000);
-    } else {
-      ret = new SmartTank(16000);
-    }
-    
-    if(nbtRoot.hasKey("tankContents")) {
-      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) nbtRoot.getTag("tankContents"));
-      ret.setFluid(fl);
-    } else {
-      ret.setFluid(null);
-    }
-    return ret;
   }
 
   @Override

@@ -39,8 +39,8 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
         text.clear();
         String heading = EnderIO.lang.localize("killerJoe.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
-        if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
+        text.add(Fluids.toCapactityString(getTileEntity().tank));
+        if(tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
           text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
         }
       }
@@ -105,8 +105,8 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     int x = guiLeft + 18;
     int y = guiTop + 11;
     TileKillerJoe joe = getTileEntity();
-    if(joe.fuelTank.getFluidAmount() > 0) {
-      RenderUtil.renderGuiTank(joe.fuelTank.getFluid(), joe.fuelTank.getCapacity(), joe.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
+    if(joe.tank.getFluidAmount() > 0) {
+      RenderUtil.renderGuiTank(joe.tank.getFluid(), joe.tank.getCapacity(), joe.tank.getFluidAmount(), x, y, zLevel, 16, 47);
     }
     ExperienceBarRenderer.render(this, sx + 56, sy + 62, 65, joe.getContainer());
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

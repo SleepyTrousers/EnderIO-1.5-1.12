@@ -29,8 +29,8 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         text.clear();
         String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
-        if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
+        text.add(Fluids.toCapactityString(getTileEntity().tank));
+        if(tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
           text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
         }
       }
@@ -78,9 +78,9 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
 
     int x = guiLeft + 80;
     int y = guiTop + 21;
-    if(gen.fuelTank.getFluidAmount() > 0) {
+    if(gen.tank.getFluidAmount() > 0) {
 
-      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
+      RenderUtil.renderGuiTank(gen.tank.getFluid(), gen.tank.getCapacity(), gen.tank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if(gen.isActive()) {
         txt = gen.tickPerBucketOfFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");

@@ -1,10 +1,14 @@
 package crazypants.enderio.machine.invpanel;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
+
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -35,6 +39,7 @@ import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
 
+@Storable
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
   public static final int SLOT_CRAFTING_START = 0;
@@ -44,22 +49,29 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   public static final int MAX_STORED_CRAFTING_RECIPES = 6;
 
+  @Store
   protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
   private InventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   private boolean active;
+  @Store
   private boolean extractionDisabled;
 
   public InventoryPanelContainer eventHandler;
   private IItemFilter itemFilter;
 
+  @Store
   private int guiSortMode;
+  @Store
   private String guiFilterString = "";
+  @Store
   private boolean guiSync;
 
+  @Store(handler = HandleStoredCraftingRecipeArrayList.class)
   private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
 
   public TileInventoryPanel() {
@@ -298,54 +310,16 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
   /**
    * This is called by PacketUpdateExtractionDisabled on the client side
-   * @param extractionDisabled if extraction is disabled
+   * @param extractionDisabledIn if extraction is disabled
    */
-  void updateExtractionDisabled(boolean extractionDisabled) {
-    this.extractionDisabled = extractionDisabled;
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    fuelTank.writeCommon("fuelTank", nbtRoot);
-    nbtRoot.setInteger("guiSortMode", guiSortMode);
-    nbtRoot.setString("guiFilterString", guiFilterString);
-    nbtRoot.setBoolean("guiSync", guiSync);
-    nbtRoot.setBoolean("extractionDisabled", extractionDisabled);
-
-    if(!storedCraftingRecipes.isEmpty()) {
-      NBTTagList recipesNBT = new NBTTagList();
-      for(StoredCraftingRecipe recipe : storedCraftingRecipes) {
-        NBTTagCompound recipeNBT = new NBTTagCompound();
-        recipe.writeToNBT(recipeNBT);
-        recipesNBT.appendTag(recipeNBT);
-      }
-      nbtRoot.setTag("craftingRecipes", recipesNBT);
-    }
+  void updateExtractionDisabled(boolean extractionDisabledIn) {
+    this.extractionDisabled = extractionDisabledIn;
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-    fuelTank.readCommon("fuelTank", nbtRoot);
-    guiSortMode = nbtRoot.getInteger("guiSortMode");
-    guiFilterString = nbtRoot.getString("guiFilterString");
-    guiSync = nbtRoot.getBoolean("guiSync");
-    extractionDisabled = nbtRoot.getBoolean("extractionDisabled");
     faceModes = null;
-
-    storedCraftingRecipes.clear();
-    NBTTagList recipesNBT = (NBTTagList) nbtRoot.getTag("craftingRecipes");
-    if(recipesNBT != null) {
-      for (int idx = 0; idx < recipesNBT.tagCount() && storedCraftingRecipes.size() < MAX_STORED_CRAFTING_RECIPES; idx++) {
-        NBTTagCompound recipeNBT = recipesNBT.getCompoundTagAt(idx);
-        StoredCraftingRecipe recipe = new StoredCraftingRecipe();
-        if(recipe.readFromNBT(recipeNBT)) {
-          storedCraftingRecipes.add(recipe);
-        }
-      }
-    }
-
     if(eventHandler != null) {
       eventHandler.checkCraftingRecipes();
     }
@@ -354,14 +328,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    active = nbtRoot.getBoolean("active");
     updateItemFilter();
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    nbtRoot.setBoolean("active", active);
   }
 
   @Override

@@ -1,18 +1,20 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
+@Storable
 public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
   private float range = 32;
   
   public TileInhibitorObelisk() {
-    super(new SlotDefinition(0, 0, 1));
+    super(new SlotDefinition(0, 0, 1), ModObject.blockInhibitorObelisk);
   }
 
   @Override
@@ -31,7 +33,7 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {
+  protected boolean processTasks(boolean redstoneCheck) {
     return false;
   }
 

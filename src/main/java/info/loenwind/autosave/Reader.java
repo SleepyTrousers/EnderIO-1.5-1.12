@@ -162,4 +162,33 @@ public class Reader {
     read(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
+  /**
+   * Restore a single field from NBT data.
+   * 
+   * @param tag
+   *          A {@link NBTTagCompound} to read from. This NBTTagCompound represents the whole object, with its fields in the tags.
+   * @param fieldClass
+   *          The class of the field (not the whole object)
+   * @param fieldName
+   *          The name of the field
+   * @param object
+   *          The object that should be restored. May be null if the class's handler supports creating new objects.
+   * @return The restored object (which may be null), or the parameter object if nothing was to be restored.
+   */
+  public static <T> T readField(@Nullable NBTTagCompound tag, @Nullable Class<T> fieldClass, @Nullable String fieldName, @Nullable T object) {
+    try {
+      return StorableEngine.getSingleField(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"),
+          NullHelper.notnull(tag, "Missing NBT"), NullHelper.notnull(fieldName, "Missing field name"), NullHelper.notnull(fieldClass, "Missing field class"),
+          object);
+    } catch (InstantiationException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(e);
+    } catch (NoHandlerFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }

@@ -2,11 +2,6 @@ package crazypants.enderio.machine.tank;
 
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.tool.SmartTank;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,12 +9,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.machine.ItemTankHelper;
+import crazypants.enderio.tool.SmartTank;
 
 public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider, IFluidContainerItem {
 
@@ -75,21 +75,21 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     EnderIO.blockTank.addDetailedEntries(itemstack, entityplayer, list, flag);
   }
   
-  private static final FluidTank dummy = new SmartTank(FluidRegistry.WATER, 16000);
-  
-  private FluidTank loadTank(ItemStack stack) {
+  private SmartTank loadTank(ItemStack stack) {
     if (stack.hasTagCompound()) {
-      FluidTank tank = TileTank.loadTank(stack.getTagCompound());
-      return tank != null ? tank : dummy;
+      SmartTank tank = ItemTankHelper.getTank(stack);
+      if (tank != null) {
+        return tank;
+      }
     }
-    return dummy;
+    return stack.getMetadata() == 0 ? new SmartTank(16000) : new SmartTank(32000);
   }
   
-  private void saveTank(ItemStack stack, FluidTank tank) {
+  private void saveTank(ItemStack stack, SmartTank tank) {
     if (!stack.hasTagCompound()) {
       stack.setTagCompound(new NBTTagCompound());
     }
-    TileTank.saveTank(stack.getTagCompound(), tank);
+    ItemTankHelper.setTank(stack, tank);
   }
 
   @Override
@@ -104,7 +104,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-    FluidTank tank = loadTank(container);
+    SmartTank tank = loadTank(container);
     int ret = tank.fill(resource, doFill);
     saveTank(container, tank);
     return ret;
@@ -112,7 +112,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-    FluidTank tank = loadTank(container);
+    SmartTank tank = loadTank(container);
     FluidStack ret = tank.drain(maxDrain, doDrain);
     saveTank(container, tank);
     return ret;

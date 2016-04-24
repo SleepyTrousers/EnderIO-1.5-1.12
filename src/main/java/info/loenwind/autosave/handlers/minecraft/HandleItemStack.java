@@ -4,6 +4,7 @@ import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.handlers.java.HandleArrayList;
 
 import java.util.Set;
 
@@ -44,6 +45,14 @@ public class HandleItemStack implements IHandler<ItemStack> {
       }
     }
     return object;
+  }
+
+  public static class HandleItemStackArrayList extends HandleArrayList<ItemStack> {
+
+    public HandleItemStackArrayList() {
+      super(new HandleItemStack());
+    }
+
   }
 
 }

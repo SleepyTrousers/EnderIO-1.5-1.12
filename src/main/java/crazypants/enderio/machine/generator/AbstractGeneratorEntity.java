@@ -2,6 +2,7 @@ package crazypants.enderio.machine.generator;
 
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
@@ -19,6 +20,10 @@ public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEnti
 
   protected AbstractGeneratorEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
+  protected AbstractGeneratorEntity(SlotDefinition slotDefinition, ModObject modObject) {
+    super(slotDefinition, modObject);
   }
 
   @Override

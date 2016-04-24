@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -144,6 +145,36 @@ public class StorableEngine {
           break;
         }
       }
+    }
+  }
+
+  public static <T> T getSingleField(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
+      @Nonnull Class<T> clazz, @Nullable T object) throws InstantiationException, IllegalAccessException, IllegalArgumentException, NoHandlerFoundException {
+    if (!tag.hasKey(fieldName + NULL_POSTFIX)) {
+      for (IHandler<T> handler : registry.findHandlers(clazz)) {
+        T result = handler.read(registry, phase, tag, fieldName, object);
+        if (result != null) {
+          return result;
+        }
+      }
+    }
+    return null;
+  }
+
+  public static <T> void setSingleField(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
+      @Nonnull Class<T> clazz, @Nullable T fieldData) throws InstantiationException, IllegalAccessException, IllegalArgumentException, NoHandlerFoundException {
+    if (fieldData != null) {
+      tag.removeTag(fieldName + NULL_POSTFIX);
+      for (IHandler<T> handler : registry.findHandlers(clazz)) {
+        if (handler.store(registry, phase, tag, fieldName, fieldData)) {
+          return;
+        }
+      }
+      throw new NoHandlerFoundException(clazz, fieldName);
+    } else {
+      tag.removeTag(fieldName);
+      tag.setBoolean(fieldName + NULL_POSTFIX, true);
+      return;
     }
   }
 

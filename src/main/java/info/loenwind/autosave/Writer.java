@@ -162,4 +162,32 @@ public class Writer {
     write(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
+  /**
+   * Store a single field to NBT data.
+   * 
+   * @param tag
+   *          A {@link NBTTagCompound} to write to NBTTagCompound represents the whole object, with its fields in the tags.
+   * @param fieldClass
+   *          The class of the field (not the whole object)
+   * @param fieldName
+   *          The name of the field
+   * @param object
+   *          The object that should be stored. May be null, in which case an old value will be removed.
+   */
+  public static <T> void writeField(@Nullable NBTTagCompound tag, @Nullable Class<T> fieldClass, @Nullable String fieldName, @Nullable T object) {
+    try {
+      StorableEngine.setSingleField(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"),
+          NullHelper.notnull(tag, "Missing NBT"), NullHelper.notnull(fieldName, "Missing field name"), NullHelper.notnull(fieldClass, "Missing field class"),
+          object);
+    } catch (InstantiationException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(e);
+    } catch (NoHandlerFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
 }

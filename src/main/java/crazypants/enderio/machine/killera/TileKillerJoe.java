@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.killera;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -12,7 +15,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -57,6 +59,7 @@ import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
 
+@Storable
 public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess, IHasNutrientTank, Predicate<EntityXPOrb> {
 
   public static class ZombieCache {
@@ -85,7 +88,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   protected WirelessChargedLocation chargedLocation;
 
-  final SmartTank fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+  @Store
+  final SmartTank tank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   int lastFluidLevelUpdate;
 
@@ -99,6 +103,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private float prevSwingProgress;
 
+  @Store
   private final ExperienceContainer xpCon;
 
   private boolean hadSword;
@@ -194,7 +199,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       return false;
     }
 
-    if (fuelTank.getFluidAmount() < getActivationAmount()) {
+    if (tank.getFluidAmount() < getActivationAmount()) {
       return false;
     }
 
@@ -250,7 +255,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   int getActivationAmount() {
-    return (int) (fuelTank.getCapacity() * 0.7f);
+    return (int) (tank.getCapacity() * 0.7f);
   }
 
   private boolean canJoeSee(EntityLivingBase ent) {
@@ -443,7 +448,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   // ------------------------------- Fluid Stuff
 
   private void useNutrient() {
-    fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
+    tank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
     tanksDirty = true;
   }
 
@@ -473,7 +478,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    int res = fuelTank.fill(resource, doFill);
+    int res = tank.fill(resource, doFill);
     if (res > 0 && doFill) {
       tanksDirty = true;
     }
@@ -482,12 +487,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    return fuelTank.canFill(fluid);
+    return tank.canFill(fluid);
   }
 
   @Override
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { fuelTank.getInfo() };
+    return new FluidTankInfo[] { tank.getInfo() };
   }
 
   @Override
@@ -503,28 +508,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   public boolean canDrain(EnumFacing from, Fluid fluid) {
     return xpCon.canDrain(from, fluid);
-  }
-
-  // ------------------------------- Save / Load
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    fuelTank.readCommon("fuelTank", nbtRoot);
-    xpCon.readFromNBT(nbtRoot);
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    fuelTank.writeCommon("fuelTank", nbtRoot);
-    xpCon.writeToNBT(nbtRoot);
-  }
-
-  public static SmartTank loadTank(NBTTagCompound nbtRoot) {
-    SmartTank ret = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
-    ret.readCommon("fuelTank", nbtRoot);
-    return ret;
   }
 
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
@@ -563,7 +546,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
-      return fuelTank;
+      return tank;
     }   
     return null;
   }
@@ -580,7 +563,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public SmartTank getNutrientTank() {
-    return fuelTank;
+    return tank;
   }
 
   @Override

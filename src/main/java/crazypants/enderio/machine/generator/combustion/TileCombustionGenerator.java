@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -25,19 +27,27 @@ import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.tool.SmartTank;
 
+@Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
 
-  private final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
-  private final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
+  @Store
+  private final SmartTank coolantTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
+  @Store
+  private final SmartTank fuelTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
   private boolean tanksDirty;
 
+  @Store({ StoreFor.ITEM, StoreFor.SAVE })
   private int ticksRemaingFuel;
+  @Store({ StoreFor.ITEM, StoreFor.SAVE })
   private int ticksRemaingCoolant;
+  @Store(StoreFor.CLIENT)
   private boolean active;
 
   private PowerDistributor powerDis;
 
+  @Store(StoreFor.CLIENT)
   private int generated;
 
   private boolean inPause = false;
@@ -52,7 +62,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   private IFluidCoolant curCoolant;
 
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1));
+    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), ModObject.blockCombustionGenerator);
   }
 
   @Override
@@ -329,66 +339,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] { getCoolantTank().getInfo(), getFuelTank().getInfo() };
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    active = nbtRoot.getBoolean("active");
-    generated = nbtRoot.getInteger("generatedRF");
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    if (nbtRoot.hasKey("coolantTank")) {
-      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("coolantTank");
-      if (tankRoot != null) {
-        getCoolantTank().readFromNBT(tankRoot);
-      } else {
-        getCoolantTank().setFluid(null);
-      }
-    } else {
-      getCoolantTank().setFluid(null);
-    }
-
-    if (nbtRoot.hasKey("fuelTank")) {
-      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("fuelTank");
-      if (tankRoot != null) {
-        getFuelTank().readFromNBT(tankRoot);
-      } else {
-        getFuelTank().setFluid(null);
-      }
-    } else {
-      getFuelTank().setFluid(null);
-    }
-
-    ticksRemaingFuel = nbtRoot.getInteger("ticksRemaingFuel");
-    ticksRemaingCoolant = nbtRoot.getInteger("ticksRemaingCoolant");
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-    if (getCoolantTank().getFluidAmount() > 0) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      getCoolantTank().writeToNBT(tankRoot);
-      nbtRoot.setTag("coolantTank", tankRoot);
-    }
-    if (getFuelTank().getFluidAmount() > 0) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      getFuelTank().writeToNBT(tankRoot);
-      nbtRoot.setTag("fuelTank", tankRoot);
-    }
-    nbtRoot.setInteger("ticksRemaingFuel", ticksRemaingFuel);
-    nbtRoot.setInteger("ticksRemaingCoolant", ticksRemaingCoolant);
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    nbtRoot.setBoolean("active", active);
-    nbtRoot.setInteger("generatedRF", generated);
   }
 
   public int getGeneratedLastTick() {

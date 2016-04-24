@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.crafter;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -8,8 +10,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 
+@Storable
 public class DummyCraftingGrid implements IInventory {
 
+  @Store
   ItemStack[] inv = new ItemStack[10];
 
   public boolean hasValidRecipe() {

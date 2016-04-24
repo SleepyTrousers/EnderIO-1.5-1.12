@@ -12,6 +12,7 @@ import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
@@ -52,7 +53,7 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
   public ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack) {
     ItemQuadCollector result = new ItemQuadCollector();
     if (stack.hasTagCompound()) {
-      SmartTank tank = TileTank.loadTank(stack.getTagCompound());
+      SmartTank tank = ItemTankHelper.getTank(stack);
       HalfBakedList buffer = TankRenderHelper.mkTank(tank, 0.5, 0.5, 15.5, false);
       if (buffer != null) {
         List<BakedQuad> quads = new ArrayList<BakedQuad>();

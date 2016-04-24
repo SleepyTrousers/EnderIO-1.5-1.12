@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
@@ -23,13 +24,16 @@ import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
 import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
 
+@Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
 
   // public for alloy smelter
   public static final String SOUND_NAME = "generator.stirling";
 
   /** How many ticks left until the item is burnt. */
+  @Store
   public int burnTime = 0;
+  @Store
   public int totalBurnTime;
 
   private PowerDistributor powerDis;
@@ -94,20 +98,6 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   @Override
   public String getSoundName() {
     return SOUND_NAME;
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    burnTime = nbtRoot.getInteger("burnTime");
-    totalBurnTime = nbtRoot.getInteger("totalBurnTime");
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    nbtRoot.setInteger("burnTime", burnTime);
-    nbtRoot.setInteger("totalBurnTime", totalBurnTime);
   }
 
   @Override

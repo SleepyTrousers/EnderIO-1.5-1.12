@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,6 +23,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
+@Storable
 public class TileAversionObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
   private boolean registered = false;

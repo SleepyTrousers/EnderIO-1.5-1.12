@@ -29,7 +29,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
         renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), false); // TODO 1.9 hand
         GlStateManager.popMatrix();
       } else if (MinecraftForgeClient.getRenderPass() == 1) {
-        HalfBakedList buffer = TankRenderHelper.mkTank(te.fuelTank, 2.51, 1, 14, false);
+        HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
         if (buffer != null) {
           RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
           GlStateManager.pushMatrix();

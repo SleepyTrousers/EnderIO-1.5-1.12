@@ -33,8 +33,12 @@ public class HandleSmartTank implements IHandler<SmartTank> {
   @Override
   public SmartTank read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nullable SmartTank object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    if (nbt.hasKey(name) && object != null) {
-      object.readCommon(name, nbt);
+    if (nbt.hasKey(name)) {
+      if (object != null) {
+        object.readCommon(name, nbt);
+      } else {
+        object = SmartTank.createFromNBT(name, nbt);
+      }
     }
     return object;
   }
