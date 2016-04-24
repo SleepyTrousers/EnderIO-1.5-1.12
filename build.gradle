@@ -42,7 +42,7 @@ minecraft {
     runDir = 'run'
 
     replace "@VERSION@", project.version
-   	replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:MineFactoryReloaded;after:Waila@[${waila_version},);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)"
+   	replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:MineFactoryReloaded;after:Waila@[${waila_version},);after:Thaumcraft;after:appliedenergistics2@[${ae2_version},);after:ComputerCraft|API@[${cc_version},)"
     replaceIn "EnderIO.java"
 }
 
@@ -67,7 +67,7 @@ dependencies {
     }
 
     deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
-    deobfCompile "mezz.jei:jei_1.8.9:2.28.7.174"   
+    deobfCompile "mezz.jei:jei_1.8.9:${jei_version}"   
     
     compile fileTree(dir: 'lib', include: '*.jar') 
 }

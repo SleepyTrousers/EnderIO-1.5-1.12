@@ -150,12 +150,13 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
+
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
 
 // ATTN: The dependencies string MUST be kept in sync with the "toReplace" in gradle.properties!
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,);after:ComputerCraft|API@[1.79,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila;after:Thaumcraft;after:appliedenergistics2", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
