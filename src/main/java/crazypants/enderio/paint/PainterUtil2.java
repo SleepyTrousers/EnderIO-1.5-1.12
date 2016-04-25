@@ -10,8 +10,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fluids.FluidStack;
 
+import com.enderio.core.common.util.FluidUtil;
 import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
@@ -39,22 +40,24 @@ public class PainterUtil2 {
 
   public static boolean isValid(ItemStack paintSource, Block target) {
     boolean solidPaint = false;
+    boolean textureOnly = false;
     if (paintSource != null) {
-      Item item = paintSource.getItem();
-      if (item instanceof ItemBlock) {
-        Block block = ((ItemBlock) item).getBlock();
-        if (isBlacklisted(block)) {
-          return false;
-        } else if (block instanceof IPaintable) {
-          IBlockState paintSource2 = ((IPaintable) block).getPaintSource(block, paintSource);
-          if (paintSource2 != null) {
-            return false;
-          }
-        }
-        solidPaint = block.isOpaqueCube();
-      } else {
+      Block block = getBlockFromItem(paintSource);
+      if (block == null) {
         return false;
+      } else if (!shouldHaveModel(block)) {
+        if (shouldHaveTexture(block)) {
+          textureOnly = true;
+        } else {
+          return false;
+        }
+      } else if (block instanceof IPaintable) {
+        IBlockState paintSource2 = ((IPaintable) block).getPaintSource(block, paintSource);
+        if (paintSource2 != null) {
+          return false;
+        }
       }
+      solidPaint = block.isOpaqueCube();
     }
 
     if (target == null) {
@@ -64,16 +67,16 @@ public class PainterUtil2 {
     } else if (target instanceof IPaintable.ITexturePaintableBlock) {
       return true;
     } else if (target instanceof IPaintable.ISolidBlockPaintableBlock) {
-      return solidPaint;
+      return solidPaint && !textureOnly;
     } else if (target instanceof IPaintable.INonSolidBlockPaintableBlock) {
-      return !solidPaint;
+      return !solidPaint && !textureOnly;
     } else if (target instanceof IPaintable.IBlockPaintableBlock) {
-      return true;
+      return !textureOnly;
     } else {
       return false;
     }
   }
-  
+
   public static IBlockState rotate(IBlockState paintSource) {
     //TODO: Need to handle cases like stairs and slabs that have 'upper' and 'lower' so they are included in the rotation
     //cycle
@@ -165,13 +168,44 @@ public class PainterUtil2 {
   }
 
   // Note: Config-based white-/blacklisting is done by PaintSourceValidator and checked as part of the input slot validation of the Painter
-  public static boolean isBlacklisted(Block block) {
+  public static boolean shouldHaveModel(Block block) {
     if(block == null) {
       return false;
     }
-    String blockDomain = GameData.getBlockRegistry().getNameForObject(block).getResourceDomain();
-    return (block.getRenderType() != 3 && "minecraft".equals(blockDomain)) || block.getRenderType() == 1 || block
-            .getRenderType() == -1;    
+    return block.getRenderType() == 3;
+  }
+
+  public static boolean shouldHaveTexture(Block block) {
+    if (block == null) {
+      return false;
+    }
+    return block.getRenderType() != -1;
+  }
+
+  public static Block getBlockFromItem(Item itemIn) {
+    if (itemIn instanceof ItemBlock) {
+      return ((ItemBlock) itemIn).getBlock();
+    }
+    if (itemIn != null) {
+      FluidStack fluidStack = FluidUtil.getFluidFromItem(new ItemStack(itemIn));
+      if (fluidStack != null) {
+        return fluidStack.getFluid().getBlock();
+      }
+    }
+    return null;
+  }
+
+  public static Block getBlockFromItem(ItemStack itemStack) {
+    if (itemStack != null) {
+      if (itemStack.getItem() instanceof ItemBlock) {
+        return ((ItemBlock) itemStack.getItem()).getBlock();
+      }
+      FluidStack fluidStack = FluidUtil.getFluidFromItem(itemStack);
+      if (fluidStack != null && fluidStack.getFluid() != null) {
+        return fluidStack.getFluid().getBlock();
+      }
+    }
+    return null;
   }
 
 }

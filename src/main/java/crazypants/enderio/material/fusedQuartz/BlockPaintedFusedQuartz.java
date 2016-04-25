@@ -57,7 +57,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
           return null;
         }
 
-        Block paintBlock = Block.getBlockFromItem(paintSource.getItem());
+        Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
         Block targetBlock = Block.getBlockFromItem(target.getItem());
         if (paintBlock == null || targetBlock == null) {
           return null;

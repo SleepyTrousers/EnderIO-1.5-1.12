@@ -73,7 +73,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     if (target == null || paintSource == null || targetBlock == null) {
       return new ResultStack[0];
     }
-    Block paintBlock = Block.getBlockFromItem(paintSource.getItem());
+    Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
     if (paintBlock == null) {
       return new ResultStack[0];
     }
@@ -145,7 +145,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
       return null;
     }
 
-    Block paintBlock = Block.getBlockFromItem(paintSource.getItem());
+    Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
     Block targetBlock = Block.getBlockFromItem(target.getItem());
     if (paintBlock == null || targetBlock == null) {
       return null;

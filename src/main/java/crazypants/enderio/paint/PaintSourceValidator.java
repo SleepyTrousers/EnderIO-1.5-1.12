@@ -8,7 +8,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -24,7 +23,7 @@ public class PaintSourceValidator {
     if(paintSource == null) {
       return false;
     }
-    Block block = Util.getBlockFromItemId(paintSource);
+    Block block = PainterUtil2.getBlockFromItem(paintSource);
     if (block == null) {
       return false;
     }
