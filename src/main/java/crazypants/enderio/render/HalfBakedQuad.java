@@ -53,7 +53,7 @@ public class HalfBakedQuad {
         Vertex v = it.next();
         if (i == 0) {
           face = EnumFacing.getFacingFromVector(v.nx(), v.ny(), v.nz());
-          builder = new UnpackedBakedQuad.Builder(net.minecraft.client.renderer.vertex.DefaultVertexFormats.ITEM); // this one has normals
+          builder = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM); // this one has normals
           builder.setQuadOrientation(face);
           builder.setQuadColored();
         }
@@ -130,7 +130,7 @@ public class HalfBakedQuad {
   public void render(WorldRenderer tes) {
     for (Vertex v : corners) {
       tes.pos(v.x(), v.y(), v.z()).tex(tex.getInterpolatedU(v.u() * 16), tex.getInterpolatedV(v.v() * 16)).color(color.x, color.y, color.z, color.w)
-          .endVertex();
+          .normal(v.nx(), v.ny(), v.nz()).endVertex();
     }
   }
 
@@ -189,7 +189,7 @@ public class HalfBakedQuad {
       GlStateManager.disableLighting();
       GlStateManager.depthMask(false);
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       render(tes);
       Tessellator.getInstance().draw();
       GlStateManager.depthMask(true);

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
@@ -329,10 +331,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   //----- Info Display
 
   public boolean hasDisplayTypes() {
-    return faceDisplayTypes != null;
+    return faceDisplayTypes != null && !faceDisplayTypes.isEmpty();
   }
 
-  public InfoDisplayType getDisplayType(EnumFacing face) {
+  public @Nonnull InfoDisplayType getDisplayType(EnumFacing face) {
     if(faceDisplayTypes == null) {
       return InfoDisplayType.NONE;
     }

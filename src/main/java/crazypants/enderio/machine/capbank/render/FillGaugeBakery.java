@@ -190,29 +190,21 @@ public class FillGaugeBakery {
   }
   
   public void render() {
-    if (buffer != null) {
+    if (canRender()) {
       int i = world.getCombinedLight(pos.offset(face), 0);
       int j = i % 65536;
       int k = i / 65536;
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-      GlStateManager.disableLighting();
-      GlStateManager.enableLighting();
-
       RenderUtil.bindBlockTexture();
       WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       buffer.render(tes);
-      Tessellator.getInstance().draw();
-
       if (litBuffer != null) {
-        GlStateManager.disableLighting();
-        tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         litBuffer.render(tes);
-        Tessellator.getInstance().draw();
-        GlStateManager.enableLighting();
       }
+      Tessellator.getInstance().draw();
     }
   }
 
@@ -222,6 +214,9 @@ public class FillGaugeBakery {
 
   public void bake(List<BakedQuad> quads) {
     buffer.bake(quads);
+    if (litBuffer != null) {
+      litBuffer.bake(quads);
+    }
   }
 
 }

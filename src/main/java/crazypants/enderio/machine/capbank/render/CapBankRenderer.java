@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.capbank.render;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -17,57 +18,49 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 @SideOnly(Side.CLIENT)
 public class CapBankRenderer extends TileEntitySpecialRenderer<TileCapBank> {
  
-  private Map<InfoDisplayType, IInfoRenderer> infoRenderers;
-  private FillGauge fillGaugeRenderer;
-
-  public CapBankRenderer() {    
-    fillGaugeRenderer = new FillGauge();
-    infoRenderers = new HashMap<InfoDisplayType, IInfoRenderer>();
-    infoRenderers.put(InfoDisplayType.LEVEL_BAR, fillGaugeRenderer);
+  private static final Map<InfoDisplayType, IInfoRenderer> infoRenderers = new EnumMap<InfoDisplayType, IInfoRenderer>(InfoDisplayType.class);
+  static {
+    infoRenderers.put(InfoDisplayType.LEVEL_BAR, new FillGauge());
     infoRenderers.put(InfoDisplayType.IO, new IoDisplay());
+    infoRenderers.put(InfoDisplayType.NONE, new IInfoRenderer() {
+      @Override
+      public void render(TileCapBank cb, EnumFacing dir, double x, double y, double z, float partialTick) {
+      }
+    });
   }
 
- 
+  public CapBankRenderer() {    
+  }
 
   //---- Info Display
 
   @Override
   public void renderTileEntityAt(TileCapBank te, double x, double y, double z, float partialTick, int b) {
-
-    TileCapBank cb = te;
-    if(!cb.hasDisplayTypes()) {
+    if (!te.hasDisplayTypes()) {
       return;
     }
 
-    boolean glSetup = false;
+    GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+    GL11.glPolygonOffset(-1.0f, -1.0f);
+
+    GL11.glPushMatrix();
+    GL11.glTranslated(x, y, z);
+
+    GlStateManager.disableLighting();
+    GlStateManager.enableLighting();
+
+    if (Minecraft.isAmbientOcclusionEnabled()) {
+      GlStateManager.shadeModel(GL11.GL_SMOOTH);
+    } else {
+      GlStateManager.shadeModel(GL11.GL_FLAT);
+    }
 
     for (EnumFacing dir : EnumFacing.VALUES) {
-      InfoDisplayType type = cb.getDisplayType(dir);
-      if(type != InfoDisplayType.NONE) {
-        IInfoRenderer rend = infoRenderers.get(type);
-        if(rend != null) {
-          if(!glSetup) {
-            glSetup = true;
-            // GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-            GL11.glPolygonOffset(-1.0f, -1.0f);
-
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x, (float) y, (float) z);
-            GlStateManager.disableLighting();
-            GlStateManager.enableLighting();
-          }
-
-          rend.render(cb, dir, x, y, z, partialTick);
-        }
-      }
+      infoRenderers.get(te.getDisplayType(dir)).render(te, dir, x, y, z, partialTick);
     }
 
-    if(glSetup) {
-      GL11.glPopMatrix();
-      GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-      // GL11.glPopAttrib();
-    }
+    GL11.glPopMatrix();
+    GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
   }
 
 }
