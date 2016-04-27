@@ -29,6 +29,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
 
 import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
@@ -102,7 +103,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean tanksDirty;
 
   @Store
-  private FluidTank inputTank = new FluidTank(8000);
+  private SmartTank inputTank = new SmartTank(8000);
   
   /* client fields */
   private float progress = 0; // client only
