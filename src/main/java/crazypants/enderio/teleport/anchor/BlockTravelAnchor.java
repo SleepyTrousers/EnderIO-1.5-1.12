@@ -93,11 +93,15 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected void init() {
+  protected final void init() {
     super.init();
+    registerGuiHandlers();
+    registerInSmartModelAttacher();
+  }
+
+  protected void registerGuiHandlers() {
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
-    registerInSmartModelAttacher();
   }
 
   protected void registerInSmartModelAttacher() {

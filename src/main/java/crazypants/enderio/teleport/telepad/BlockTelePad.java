@@ -28,7 +28,6 @@ import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAuth;
@@ -60,11 +59,9 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   }
 
   @Override
-  protected void init() {
-    super.init();
+  protected void registerGuiHandlers() {
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD_TRAVEL, this);
-    SmartModelAttacher.register(this);
   }
 
   @Override
