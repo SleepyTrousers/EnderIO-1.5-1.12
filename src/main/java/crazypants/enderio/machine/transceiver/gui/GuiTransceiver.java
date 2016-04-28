@@ -1,8 +1,16 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,11 +24,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
@@ -236,6 +239,19 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   
   public ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
+  }
+
+  @Override
+  public List<Rectangle> getBlockingAreas() {
+    if (tabs.size() > 0) {
+      int sx = (width - xSize) / 2;
+      int sy = (height - ySize) / 2;
+      int tabX = sx + xSize - 3;
+      int tabY = sy + tabYOffset;
+
+      return Collections.singletonList(new Rectangle(tabX, tabY, 14, tabs.size() * TAB_HEIGHT));
+    }
+    return super.getBlockingAreas();
   }
 
 //  @Override
