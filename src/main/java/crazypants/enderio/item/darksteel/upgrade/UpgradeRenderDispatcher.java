@@ -6,13 +6,16 @@ import java.util.WeakHashMap;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.item.IHasPlayerRenderer;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
+import crazypants.util.BaublesUtil;
 
 @SideOnly(Side.CLIENT)
 public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlayer> {
@@ -47,9 +50,26 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
           if (upg.hasUpgrade(piece)) {
             IRenderUpgrade render = upg.getRender();
             if (render != null) {
-              upg.getRender().doRenderLayer(renderPlayer, piece, entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_,
-                  p_177141_7_, scale);
+              render.doRenderLayer(renderPlayer, piece, entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_, p_177141_7_,
+                  scale);
             }
+          }
+        }
+      } else if (piece != null && piece.getItem() instanceof IHasPlayerRenderer) {
+        IRenderUpgrade render = ((IHasPlayerRenderer) piece.getItem()).getRender();
+        if (render != null) {
+          render.doRenderLayer(renderPlayer, piece, entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_, p_177141_7_, scale);
+        }
+      }
+    }
+    IInventory baubles = BaublesUtil.instance().getBaubles(entitylivingbaseIn);
+    if (baubles != null) {
+      for (int i = 0; i < baubles.getSizeInventory(); i++) {
+        ItemStack piece = baubles.getStackInSlot(i);
+        if (piece != null && piece.getItem() instanceof IHasPlayerRenderer) {
+          IRenderUpgrade render = ((IHasPlayerRenderer) piece.getItem()).getRender();
+          if (render != null) {
+            render.doRenderLayer(renderPlayer, piece, entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_, p_177141_7_, scale);
           }
         }
       }

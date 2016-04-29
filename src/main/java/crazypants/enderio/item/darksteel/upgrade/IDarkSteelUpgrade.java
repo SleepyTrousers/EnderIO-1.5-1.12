@@ -1,14 +1,11 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
+import crazypants.enderio.item.IHasPlayerRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider {
+public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider, IHasPlayerRenderer {
 
   String getUnlocalizedName();
 
@@ -27,9 +24,5 @@ public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider {
   ItemStack getUpgradeItem();
 
   String getUpgradeItemName();
-
-  @Nullable
-  @SideOnly(Side.CLIENT)
-  IRenderUpgrade getRender();
 
 }

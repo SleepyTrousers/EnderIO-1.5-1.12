@@ -2,19 +2,8 @@ package crazypants.enderio.item;
 
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-import com.enderio.core.common.util.ItemUtil;
+import javax.annotation.Nullable;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cofh.api.energy.ItemEnergyContainer;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.util.BaublesUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,9 +18,24 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import cofh.api.energy.ItemEnergyContainer;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.util.BaublesUtil;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
-public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble, IOverlayRenderAware {
+public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
   private static final String ACTIVE_KEY = "magnetActive";
 
@@ -193,6 +197,13 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
+  }
+
+  @Override
+  @Nullable
+  @SideOnly(Side.CLIENT)
+  public IRenderUpgrade getRender() {
+    return MagnetLayer.instance;
   }
 
 }
