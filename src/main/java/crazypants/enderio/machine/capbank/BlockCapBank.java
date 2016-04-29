@@ -91,7 +91,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   public static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/capacitorBankOverlays");
-  public static final TextureSupplier fillBarIcon = TextureRegistry.registerTexture("blocks/capacitorBankFillBar");
   public static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/capBankInfoPanel");
 
   protected BlockCapBank() {
@@ -303,11 +302,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getGaugeIcon() {
     return gaugeIcon.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getFillBarIcon() {
-    return fillBarIcon.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)

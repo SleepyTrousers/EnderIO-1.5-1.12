@@ -44,6 +44,8 @@ import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.gauge.TESRGauge;
+import crazypants.enderio.machine.gauge.TileGauge;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.ZombieGeneratorRenderer;
 import crazypants.enderio.machine.killera.KillerJoeRenderer;
@@ -199,6 +201,8 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TilePowerMonitor.class, new TESRPowerMonitor());
+
+    ClientRegistry.bindTileEntitySpecialRenderer(TileGauge.class, new TESRGauge());
 
     // Overlays
     new YetaWrenchOverlayRenderer();

@@ -402,6 +402,10 @@ tile.blockPowerMonitorv2.tooltip.detailed.line4=based on stored power levels
 tile.blockPowerMonitorv2.tooltip.detailed.line5=Must be attached to an EnderIO
 tile.blockPowerMonitorv2.tooltip.detailed.line6=conduit
 
+tile.blockGauge.name=RF Gauge
+tile.blockGauge.tooltip.detailed.line1=Displays RF levels of adjacent
+tile.blockGauge.tooltip.detailed.line2=blocks.
+
 tile.blockVat.name=The Vat
 tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
 

@@ -116,7 +116,8 @@ public enum ModObject implements IModObject {
   
   blockEnderRail,
   
-  itemEnderFood;
+  itemEnderFood,
+  blockGauge;
 
   private final String unlocalisedName;
 

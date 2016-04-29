@@ -33,12 +33,14 @@ public class SmartModelAttacher {
     IProperty<T> property;
     V defaultsValue;
     V autoValue;
+    boolean itemOnly;
 
-    protected RegistrationHolder(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
+    protected RegistrationHolder(Block block, IProperty<T> property, V defaultsValue, V autoValue, boolean itemOnly) {
       this.block = block;
       this.property = property;
       this.defaultsValue = defaultsValue;
       this.autoValue = autoValue;
+      this.itemOnly = itemOnly;
     }
   }
 
@@ -54,11 +56,19 @@ public class SmartModelAttacher {
    * cannot reference them and must get its blockstates from elsewhere.
    */
   public static void registerNoProps(Block block) {
-    register(block, null, null, null);
+    register(block, null, null, null, false);
+  }
+
+  public static void registerItemOnly(Block block) {
+    register(block, null, null, null, true);
   }
 
   public static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
-    blocks.add(new RegistrationHolder<T, V>(block, property, defaultsValue, autoValue));
+    register(block, property, defaultsValue, autoValue, false);
+  }
+
+  private static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue, boolean itemOnly) {
+    blocks.add(new RegistrationHolder<T, V>(block, property, defaultsValue, autoValue, itemOnly));
   }
 
   public static void create() {
@@ -124,9 +134,11 @@ public class SmartModelAttacher {
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         IBakedModel defaultBakedModel = event.modelRegistry.getObject(defaultMrl);
 
-        for (ModelResourceLocation mrl : locations.values()) {
-          IBakedModel model = event.modelRegistry.getObject(mrl);
-          event.modelRegistry.putObject(mrl, new RelayingBakedModel(model != null ? model : defaultBakedModel));
+        if (!holder.itemOnly) {
+          for (ModelResourceLocation mrl : locations.values()) {
+            IBakedModel model = event.modelRegistry.getObject(mrl);
+            event.modelRegistry.putObject(mrl, new RelayingBakedModel(model != null ? model : defaultBakedModel));
+          }
         }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");

@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.ICacheKey;
@@ -55,7 +56,7 @@ public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapp
       int maxEnergy = energyItem.getMaxEnergyStored(stack);
       if (maxEnergy > 0) {
         int energy = energyItem.getEnergyStored(stack);
-        FillGaugeBakery gauge = new FillGaugeBakery((double) energy / maxEnergy);
+        FillGaugeBakery gauge = new FillGaugeBakery(EnderIO.blockCapBank.getGaugeIcon(), (double) energy / maxEnergy);
         if (gauge.canRender()) {
           ItemQuadCollector result = new ItemQuadCollector();
           List<BakedQuad> quads = new ArrayList<BakedQuad>();

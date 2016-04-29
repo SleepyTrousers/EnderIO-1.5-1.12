@@ -80,6 +80,7 @@ import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
+import crazypants.enderio.machine.gauge.BlockGauge;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
@@ -254,6 +255,7 @@ public class EnderIO {
   public static BlockInventoryPanel blockInventoryPanel;
   public static BlockKillerJoe blockKillerJoe;
   public static BlockEnchanter blockEnchanter;
+  public static BlockGauge blockGauge;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -406,6 +408,8 @@ public class EnderIO {
     blockDarkIronBars = BlockDarkIronBars.create();
     
     itemEnderFood = ItemEnderFood.create();
+
+    blockGauge = BlockGauge.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
 

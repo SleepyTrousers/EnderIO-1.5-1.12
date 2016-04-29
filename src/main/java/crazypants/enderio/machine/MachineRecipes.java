@@ -210,9 +210,26 @@ public class MachineRecipes {
     addShaped(mJMonitor, "sms", "sMs", "sps", 's', electricalSteel, 'M', machineChassi, 'm', mJReader, 'p', powerConduit, 'r', redstoneConduit);
     addShaped(mJMonitor2, "xxx", "xpx", "123", 'p', mJMonitor, '1', "dyeRed", '2', "dyeYellow", '3', "dyeGreen", 'x', new ItemStack(Blocks.wool, 1, 15));
 
+    // RF Gauge
+    ItemStack rfGauge1 = new ItemStack(EnderIO.blockGauge, 1, 0);
+    ItemStack rfGauge2 = new ItemStack(EnderIO.blockGauge, 2, 0);
+    if (Config.recipeLevel < 1) {
+      addShaped(rfGauge2, "i i", "imi", "i i", 'i', "ingotIron", 'e', electricalSteel, 'm', mJReader);
+    } else if (Config.recipeLevel == 1) {
+      addShaped(rfGauge1, "i i", "imi", "i i", 'i', "ingotIron", 'e', electricalSteel, 'm', mJReader);
+    } else if (Config.recipeLevel == 2) {
+      addShaped(rfGauge2, "i i", "eme", "i i", 'i', "ingotIron", 'e', electricalSteel, 'm', mJReader);
+    } else {
+      addShaped(rfGauge1, "i i", "eme", "iMi", 'i', "ingotIron", 'e', electricalSteel, 'm', mJReader, 'M', machineChassi);
+    }
+
     //Enchanter
     ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
-    addShaped(enchanter, "dbd", "sss", " s ", 'd', "gemDiamond", 'b', Items.book, 's', darkSteel);
+    if (Config.recipeLevel < 3) {
+      addShaped(enchanter, "dbd", "sss", " s ", 'd', "gemDiamond", 'b', Items.book, 's', darkSteel);
+    } else {
+      addShaped(enchanter, "dbd", "sss", " s ", 'd', "blockDiamond", 'b', Blocks.bookshelf, 's', DARK_STEEL.getOreBlock());
+    }
 
     //Vacuum Chest
     ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
