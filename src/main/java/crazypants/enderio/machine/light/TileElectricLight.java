@@ -26,6 +26,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
+
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
@@ -62,11 +63,15 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   public void onNeighborBlockChange(Block blockID) {
-    init = true;
+    if (!updatingLightNodes) {
+      init = true;
+    }
   }
 
   public void nodeNeighbourChanged(TileLightNode tileLightNode) {
-    init = true;
+    if (!updatingLightNodes) {
+      init = true;
+    }
   }
 
   public void nodeRemoved(TileLightNode tileLightNode) {
@@ -227,14 +232,27 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       addDiaganals(diags, ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);
 
       if(!before.equals(after)) {
-        clearLightNodes();
+
+        lightNodes.clear();
 
         for (BlockPos entry : after) {
-          worldObj.setBlockState(entry, EnderIO.blockLightNode.getDefaultState(), 3);
-          TileEntity te = worldObj.getTileEntity(entry);
-          if(te instanceof TileLightNode) {
-            ((TileLightNode) te).setParentPos(getPos());
+          if (!before.contains(entry)) {
+            worldObj.setBlockState(entry, EnderIO.blockLightNode.getDefaultState(), 3);
+            TileEntity te = worldObj.getTileEntity(entry);
+            if (te instanceof TileLightNode) {
+              ((TileLightNode) te).setParentPos(getPos());
+              lightNodes.add(entry);
+            }
+          } else {
             lightNodes.add(entry);
+          }
+        }
+        for (BlockPos entry : before) {
+          if (!after.contains(entry)) {
+            TileEntity te = worldObj.getTileEntity(entry);
+            if ((te instanceof TileLightNode) && (((TileLightNode) te).parent == null || ((TileLightNode) te).parent.equals(getPos()))) {
+              worldObj.setBlockToAir(entry);
+            }
           }
         }
 
@@ -305,7 +323,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
     if(isLightNode(offset)) {
       TileLightNode te = (TileLightNode) worldObj.getTileEntity(new BlockPos(x, y, z));
-      if (!getPos().equals(te.parent)) {
+      if (te.parent != null && !getPos().equals(te.parent)) {
         // its somebody else's so leave it alone
         return;
       }
