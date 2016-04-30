@@ -155,7 +155,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
     return 0;
   }
 
-  NetworkPowerManager getPowerManager() {
+  public NetworkPowerManager getPowerManager() {
     for (EnumFacing dir : EnumFacing.values()) {
       IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
       if (con != null) {

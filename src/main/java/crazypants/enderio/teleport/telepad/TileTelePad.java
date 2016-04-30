@@ -1,5 +1,8 @@
 package crazypants.enderio.teleport.telepad;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
@@ -23,7 +26,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import cofh.api.energy.EnergyStorage;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
@@ -32,8 +34,15 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
+import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.capacitor.CapacitorKeyType;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.capacitor.ICapacitorData;
+import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineSound;
@@ -46,12 +55,19 @@ import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 
+@Storable
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
 
   private boolean inNetwork;
   private boolean isMaster;
 
-  private EnergyStorage energy = new EnergyStorage(100000, 1000, 1000);
+  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 1000);
+  private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
+  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1000);
+
+  @Store
+  private int storedEnergyRF;
 
   private TileTelePad master = null;
 
@@ -59,7 +75,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private boolean coordsChanged = false;
 
+  @Store
   private BlockCoord target = new BlockCoord();
+  @Store
   private int targetDim = Integer.MIN_VALUE;
 
   private int lastSyncPowerStored;
@@ -71,6 +89,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
   private MachineSound activeSound = null;
 
+  @Store
   private boolean redstoneActivePrev;
 
   public static final String TELEPORTING_KEY = "eio:teleporting";
@@ -88,8 +107,15 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     super.doUpdate();
 
     // my master is gone!
-    if (master != null && master.isInvalid()) {
-      master.breakNetwork();
+    if (master != null && (master.isInvalid() || master.master != master)) {
+      TileTelePad master1 = master.master, master0 = master;
+      breakNetwork();
+      if (master0 != this) {
+        master0.breakNetwork();
+      }
+      if (master1 != null && master1 != master0 && master1 != this) {
+        master1.breakNetwork();
+      }
     }
 
     if (autoUpdate) {
@@ -97,11 +123,15 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       autoUpdate = false;
     }
 
+    if (!isMaster()) {
+      return;
+    }
+
     if (targetDim == Integer.MIN_VALUE) {
       targetDim = worldObj.provider.getDimensionId();
     }
 
-    if (worldObj.isRemote && isMaster()) {
+    if (worldObj.isRemote) {
       updateRotations();
       if (activeSound != null) {
         activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
@@ -125,7 +155,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
           teleport(toTeleport.poll());
           powerUsed = 0;
         } else {
-          powerUsed += energy.extractEnergy(Math.min(getUsage(), maxPower), false);
+          int usable = Math.min(Math.min(getUsage(), maxPower), getEnergyStored());
+          setEnergyStored(getEnergyStored() - usable);
+          powerUsed += usable;
         }
         if (shouldDoWorkThisTick(5)) {
           updateQueuedEntities();
@@ -290,21 +322,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    super.writeCustomNBT(root);
-    energy.writeToNBT(root);
-    target.writeToNBT(root);
-    root.setInteger("targetDim", targetDim);
-    root.setBoolean("redstoneActive", redstoneActivePrev);
-  }
-
-  @Override
   protected void readCustomNBT(NBTTagCompound root) {
     super.readCustomNBT(root);
-    energy.readFromNBT(root);
-    target = BlockCoord.readFromNBT(root);
-    targetDim = root.getInteger("targetDim");
-    redstoneActivePrev = root.getBoolean("redstoneActive");
     autoUpdate = true;
   }
 
@@ -670,12 +689,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return inNetwork() && master != null ? master == this ? energy.getMaxReceive() : master.getMaxEnergyRecieved(dir) : 0;
+    return inNetwork() && master != null ? master == this ? maxEnergyRecieved.get(capacitorData) : master.getMaxEnergyRecieved(dir) : 0;
   }
 
   @Override
   public int getMaxEnergyStored() {
-    return inNetwork() && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? maxEnergyStored.get(capacitorData) : master.getMaxEnergyStored() : 0;
   }
 
   @Override
@@ -685,14 +704,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int getEnergyStored() {
-    return inNetwork() && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? storedEnergyRF : master.getEnergyStored() : 0;
   }
 
   @Override
   public void setEnergyStored(int storedEnergy) {
     if (inNetwork() && master != null) {
       if (master == this) {
-        energy.setEnergyStored(storedEnergy);
+        storedEnergyRF = Math.min(getMaxEnergyStored(), storedEnergy);
       } else {
         master.setEnergyStored(storedEnergy);
       }
@@ -706,20 +725,27 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-    return inNetwork() && master != null ? master == this ? energy.receiveEnergy(maxReceive, simulate) : master.receiveEnergy(from, maxReceive, simulate) : 0;
+    if (!inNetwork()) {
+      return 0;
+    }
+    int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored() - getEnergyStored()));
+    if (!simulate) {
+      setEnergyStored(getEnergyStored() + max);
+    }
+    return max;
   }
 
   @Override
   public int getEnergyStored(EnumFacing from) {
-    return inNetwork() && master != null ? master == this ? energy.getEnergyStored() : master.getEnergyStored() : 0;
+    return getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored(EnumFacing from) {
-    return inNetwork() && master != null ? master == this ? energy.getMaxEnergyStored() : master.getMaxEnergyStored() : 0;
+    return getMaxEnergyStored();
   }
 
   public int getUsage() {
-    return energy.getMaxReceive();
+    return maxEnergyUsed.get(capacitorData);
   }
 }

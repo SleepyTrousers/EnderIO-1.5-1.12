@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.solar;
 
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
@@ -14,6 +15,7 @@ import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
 
+@Storable
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
 
   private boolean forceNetworkSearch = true;
@@ -123,11 +125,13 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   @Override
   public void readCustomNBT(NBTTagCompound tag) {
+    super.readCustomNBT(tag);
     forceNetworkSearch = true;
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound tag) {
+    super.writeCustomNBT(tag);
     if (network.isValid()) {
       tag.setInteger("rfCap", network.getEnergyMaxPerTick()); // for WAILA
     }

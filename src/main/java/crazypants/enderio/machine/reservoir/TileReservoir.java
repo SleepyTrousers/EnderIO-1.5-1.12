@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.reservoir;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -23,11 +25,14 @@ import crazypants.enderio.tool.SmartTank;
 
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
+@Storable
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 
+  @Store
   SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
   private boolean canRefill = false;
 
+  @Store
   boolean autoEject = false;
 
   private boolean tankDirty = false;
@@ -206,28 +211,6 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   public boolean isAutoEject() {
     return autoEject;
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    autoEject = nbtRoot.getBoolean("autoEject");
-
-    FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("tank"));
-
-    if (liquid != null) {
-      tank.setFluid(liquid);
-    } else {
-      tank.setFluidAmount(0);
-    }
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setBoolean("autoEject", autoEject);
-
-    if (tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid()) != null) {
-      nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
-    }
   }
 
   float getFilledRatio() {

@@ -1,23 +1,27 @@
 package crazypants.enderio.machine.enchanter;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
 
+@Storable
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
+  @Store
   private ItemStack[] inv = new ItemStack[3];
 
+  @Store
   private EnumFacing facing = EnumFacing.NORTH;
 
   public void setFacing(EnumFacing s) {
@@ -26,45 +30,6 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   public EnumFacing getFacing() {
     return facing;
-  }
-
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    NBTTagList itemList = new NBTTagList();
-    for (int i = 0; i < inv.length; i++) {
-      if (inv[i] != null) {
-        NBTTagCompound itemStackNBT = new NBTTagCompound();
-        itemStackNBT.setByte("Slot", (byte) i);
-        inv[i].writeToNBT(itemStackNBT);
-        itemList.appendTag(itemStackNBT);
-      }
-    }
-    root.setTag("Items", itemList);
-    if (facing != null) {
-      root.setShort("facing", (short) facing.ordinal());
-    } else {
-      root.setShort("facing", (short) -1);
-    }
-  }
-
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    NBTTagList itemList = (NBTTagList) root.getTag("Items");
-    if (itemList != null) {
-      for (int i = 0; i < itemList.tagCount(); i++) {
-        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-        byte slot = itemStack.getByte("Slot");
-        if (slot >= 0 && slot < inv.length) {
-          inv[slot] = ItemStack.loadItemStackFromNBT(itemStack);
-        }
-      }
-    }
-    int ord = root.getShort("facing");
-    if (ord < 0) {
-      facing = null;
-    } else {
-      facing = EnumFacing.VALUES[ord];
-    }
   }
 
   @Override

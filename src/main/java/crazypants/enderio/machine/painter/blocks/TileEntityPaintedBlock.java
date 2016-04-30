@@ -1,11 +1,14 @@
 package crazypants.enderio.machine.painter.blocks;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 
+@Storable
 public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.IPaintableTileEntity {
 
   private IBlockState paintSource = null;
@@ -15,11 +18,13 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
+    super.readCustomNBT(nbtRoot);
     this.paintSource = PainterUtil2.readNbt(nbtRoot);
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
     PainterUtil2.writeNbt(nbtRoot, paintSource);
   }
 
@@ -40,24 +45,11 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.
     return paintSource;
   }
 
+  @Storable
   public static class TileEntityTwicePaintedBlock extends TileEntityPaintedBlock {
 
-    private static final String PAINT_SOURCE_2 = "paint2";
+    @Store
     private IBlockState paintSource2 = null;
-
-    @Override
-    public void readCustomNBT(NBTTagCompound nbtRoot) {
-      super.readCustomNBT(nbtRoot);
-      this.paintSource2 = PainterUtil2.readNbt(nbtRoot.getCompoundTag(PAINT_SOURCE_2));
-    }
-
-    @Override
-    public void writeCustomNBT(NBTTagCompound nbtRoot) {
-      super.writeCustomNBT(nbtRoot);
-      NBTTagCompound subTag = new NBTTagCompound();
-      PainterUtil2.writeNbt(subTag, paintSource2);
-      nbtRoot.setTag(PAINT_SOURCE_2, subTag);
-    }
 
     public void setPaintSource2(IBlockState paintSource2) {
       this.paintSource2 = paintSource2;

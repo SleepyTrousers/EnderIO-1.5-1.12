@@ -108,8 +108,6 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
       te.onNeighbourChanged();
     }
   }
-
-  
   
   @Override
   public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {    
@@ -118,12 +116,6 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
       te.checkParent();
     }
   }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerBlockIcons(IIconRegister iIconRegister) {
-//    blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
-//  }
 
   @Override
   public int quantityDropped(Random p_149745_1_) {

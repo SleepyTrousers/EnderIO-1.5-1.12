@@ -1,24 +1,21 @@
 package crazypants.enderio.item.skull;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import crazypants.enderio.TileEntityEio;
-import net.minecraft.nbt.NBTTagCompound;
 
+@Storable
 public class TileEndermanSkull extends TileEntityEio {
 
-  float yaw;
-  
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    root.setFloat("yaw", yaw);    
-  }
+  @Store
+  protected float yaw;
 
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    yaw = root.getFloat("yaw");    
-  }
+  // Rendering data
+  protected long lastTick = -1;
+  protected int lookingAt = 0;
 
   public void setYaw(float yaw) {
-    this.yaw = yaw;    
+    this.yaw = yaw;
   }
 
 }

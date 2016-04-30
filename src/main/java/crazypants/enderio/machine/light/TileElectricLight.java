@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.light;
 
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,7 +11,6 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -24,31 +26,36 @@ import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
-
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
 
+  @Store
   private EnumFacing face = EnumFacing.DOWN;
 
   public static final int RF_USE_PER_TICK = 1;
 
   private boolean init = true;
 
-  private List<TileLightNode> lightNodes;
-
-  private int[] lightNodeCoords;
+  @Store(handler = HandleBlockPos.HandleBlockPosList.class)
+  private List<BlockPos> lightNodes;
 
   private boolean updatingLightNodes = false;
 
   private boolean lastActive = false;
 
+  @Store
   private boolean isInvereted;
 
+  @Store
+  private boolean isWireless;
+
+  @Store
   private boolean requiresPower = true;
   
   private WirelessChargedLocation chargedLocation;
 
+  @Store
   private int energyStoredRF;
 
   public TileElectricLight() {
@@ -97,15 +104,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
   
   public void setWireless(boolean wireless) {
-    if(!wireless) {
-      chargedLocation = null;
-    } else if(chargedLocation == null) {
-      chargedLocation = new WirelessChargedLocation(this);
-    }
+    this.isWireless = wireless;
   }
 
   public boolean isWireless() {
-    return chargedLocation != null;
+    return isWireless;
   }
 
   @Override
@@ -136,14 +139,14 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       worldObj.setBlockState(pos, bs, 2);      
 
       if(requiresPower) {        
-        for (TileLightNode ln : lightNodes) {
+        for (BlockPos ln : lightNodes) {
           if(ln != null) {
-            bs = worldObj.getBlockState(ln.getPos());
+            bs = worldObj.getBlockState(ln);
             if(bs.getBlock() == EnderIO.blockLightNode) {              
               bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
-              worldObj.setBlockState(ln.getPos(), bs, 2);
-              worldObj.markBlockForUpdate(ln.getPos());
-              worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln.getPos());
+              worldObj.setBlockState(ln, bs, 2);
+              worldObj.markBlockForUpdate(ln);
+              worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln);
             }                                              
           }
         }
@@ -154,8 +157,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       lastActive = isActivated;
       
     }
-    
-    if (chargedLocation != null) {
+
+    if (isWireless) {
+      if (chargedLocation == null) {
+        chargedLocation = new WirelessChargedLocation(this);
+      }
       if (energyStoredRF < getMaxEnergyStored()) {
         boolean needInit = energyStoredRF == 0;
         energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
@@ -182,31 +188,17 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     Set<BlockPos> before;
     if(lightNodes != null && !lightNodes.isEmpty()) {
       before = new HashSet<BlockPos>(lightNodes.size());
-      for (TileLightNode node : lightNodes) {
-        before.add(node.getPos());
+      for (BlockPos node : lightNodes) {
+        before.add(node);
       }
     } else {
       before = Collections.emptySet();
     }
-    Set<BlockCoord> after = new HashSet<BlockCoord>(17);
+    Set<BlockPos> after = new HashSet<BlockPos>(17);
     updatingLightNodes = true;
     try {
-      if(lightNodeCoords != null) {
-
-        // just loaded
-        lightNodes = new ArrayList<TileLightNode>();
-        for (int i = 0; i < lightNodeCoords.length; i += 3) {
-          TileEntity te = worldObj.getTileEntity(new BlockPos(lightNodeCoords[i], lightNodeCoords[i + 1], lightNodeCoords[i + 2]));
-          if(te instanceof TileLightNode) {
-            lightNodes.add((TileLightNode) te);
-          }
-        }
-        lightNodeCoords = null;
-
-      } else if(lightNodes == null) { // just created
-
-        lightNodes = new ArrayList<TileLightNode>();
-
+      if (lightNodes == null) { // just created
+        lightNodes = new ArrayList<BlockPos>();
       }
 
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -237,13 +229,12 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       if(!before.equals(after)) {
         clearLightNodes();
 
-        for (BlockCoord entry : after) {
-          worldObj.setBlockState(entry.getBlockPos(), EnderIO.blockLightNode.getDefaultState(), 3);
-          TileEntity te = worldObj.getTileEntity(entry.getBlockPos());
+        for (BlockPos entry : after) {
+          worldObj.setBlockState(entry, EnderIO.blockLightNode.getDefaultState(), 3);
+          TileEntity te = worldObj.getTileEntity(entry);
           if(te instanceof TileLightNode) {
-            TileLightNode ln = (TileLightNode) te;
-            ln.setParentPos(getPos());
-            lightNodes.add(ln);
+            ((TileLightNode) te).setParentPos(getPos());
+            lightNodes.add(entry);
           }
         }
 
@@ -256,7 +247,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     }
   }
 
-  private void addDiaganals(Vector3d[] diags, Vector3d trans, Set<BlockCoord> result) {
+  private void addDiaganals(Vector3d[] diags, Vector3d trans, Set<BlockPos> result) {
     Vector3d offset = new Vector3d();
     offset.set(diags[0]);
     offset.add(diags[1]);
@@ -277,7 +268,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     addNodeInDirection(offset.add(trans), result);
   }
 
-  private void addNodeInDirection(Vector3d offset, Set<BlockCoord> result) {
+  private void addNodeInDirection(Vector3d offset, Set<BlockPos> result) {
     boolean isAir = isAir(offset);
     boolean isTransp = isTranparent(offset);
     if(isAir || isTransp) {
@@ -298,28 +289,28 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private void clearLightNodes() {
     if(lightNodes != null) {
-      for (TileLightNode ln : lightNodes) {
-        if(worldObj.getBlockState(ln.getPos()).getBlock() == EnderIO.blockLightNode) {
-          worldObj.setBlockToAir(ln.getPos());
+      for (BlockPos ln : lightNodes) {
+        if (worldObj.getBlockState(ln).getBlock() == EnderIO.blockLightNode) {
+          worldObj.setBlockToAir(ln);
         }
       }
       lightNodes.clear();
     }
   }
 
-  private void addLightNode(Vector3d offset, Set<BlockCoord> result) {
+  private void addLightNode(Vector3d offset, Set<BlockPos> result) {
     int x = getPos().getX() + (int) offset.x;
     int y = getPos().getY()+ (int) offset.y;
     int z = getPos().getZ() + (int) offset.z;
 
     if(isLightNode(offset)) {
       TileLightNode te = (TileLightNode) worldObj.getTileEntity(new BlockPos(x, y, z));
-      if(te.parentX != getPos().getX() || te.parentY != getPos().getY() || te.parentZ != getPos().getZ()) {
+      if (!getPos().equals(te.parent)) {
         // its somebody else's so leave it alone
         return;
       }
     }
-    result.add(new BlockCoord(x, y, z));
+    result.add(new BlockPos(x, y, z));
   }
 
   private boolean isRailcraftException(Block id) {
@@ -337,45 +328,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private boolean isAir(Vector3d offset) {
     return worldObj.isAirBlock(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)) || isLightNode(offset);
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound root) {
-
-    face = EnumFacing.values()[root.getShort("face")];
-    isInvereted = root.getBoolean("isInverted");
-    requiresPower = root.getBoolean("requiresPower");
-    setWireless(root.getBoolean("isWireless"));
-
-    if(root.hasKey("storedEnergy")) {
-      float se = root.getFloat("storedEnergy");
-      energyStoredRF = (int) (se * 10);
-    } else {
-      energyStoredRF = root.getInteger("storedEnergyRF");
-    }
-
-    lightNodeCoords = root.getIntArray("lightNodes");
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound root) {
-
-    root.setShort("face", (short) face.ordinal());
-    root.setInteger("storedEnergyRF", energyStoredRF);
-    root.setBoolean("isInverted", isInvereted);
-    root.setBoolean("requiresPower", requiresPower);
-    root.setBoolean("isWireless", isWireless());
-
-    if(lightNodes != null) {
-      int[] lnLoc = new int[lightNodes.size() * 3];
-      int index = 0;
-      for (TileLightNode ln : lightNodes) {
-        lnLoc[index++] = ln.getPos().getX();
-        lnLoc[index++] = ln.getPos().getY();
-        lnLoc[index++] = ln.getPos().getZ();
-      }
-      root.setIntArray("lightNodes", lnLoc);
-    }
   }
 
   public boolean hasPower() {

@@ -25,7 +25,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   public static final int MAX_ENERGY_IN = 10000;
   public static final int MAX_ENERGY_OUT = 10000;
 
-  @Store({ StoreFor.ITEM, StoreFor.SAVE })
+  @Store
   int storedEnergyRF;
 
   private double lastPowerUpdate = -1;

@@ -1,9 +1,5 @@
 package crazypants.enderio.item.skull;
 
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
-import crazypants.util.ClientUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -12,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.IStringSerializable;
@@ -21,6 +18,10 @@ import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.crafting.IInfusionStabiliser;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
 public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IInfusionStabiliser, IHaveRenderers {
@@ -113,13 +114,24 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
     float facingYaw = -22.5f * inc;
-    TileEndermanSkull te = (TileEndermanSkull) world.getTileEntity(pos);
-    te.setYaw(facingYaw);
+    TileEndermanSkull te = getTileEntity(world, pos);
+    if (te != null) {
+      te.setYaw(facingYaw);
+    }
     if (world.isRemote) {
       return;
     }
     world.setBlockState(pos, getStateFromMeta(stack.getItemDamage()));
     world.markBlockForUpdate(pos);
+  }
+
+  @Override
+  public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos) {
+    TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);
+    if (tileEntity != null) {
+      tileEntity.lookingAt = 20;
+    }
+    return super.getSelectedBoundingBox(worldIn, pos);
   }
 
   @Override

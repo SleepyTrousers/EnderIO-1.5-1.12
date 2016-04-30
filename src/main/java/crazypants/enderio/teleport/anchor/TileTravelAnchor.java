@@ -1,16 +1,18 @@
 package crazypants.enderio.teleport.anchor;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.enderio.HandleUserIdent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,23 +25,29 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.util.UserIdent;
 
+@Storable
 public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintable.IPaintableTileEntity {
 
-  private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
-  private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
-  
+  @Store
   protected IBlockState sourceBlock;
 
+  @Store
   private AccessMode accessMode = AccessMode.PUBLIC;
 
+  // TODO: Don't send this to all clients, but only to the owner. So the GUI has to request it with a request packet.
+  @Store
   private ItemStack[] password = new ItemStack[5];
   
+  @Store
   private ItemStack itemLabel;
   
+  @Store
   private String label;
 
+  @Store
   private @Nonnull UserIdent owner = UserIdent.nobody;
 
+  @Store(handler = HandleUserIdent.HandleUserIdentArrayList.class)
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
   @Override
@@ -185,107 +193,6 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     this.sourceBlock = sourceBlock;
   }
 
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    if(root.hasKey("accessMode")) {
-      accessMode = AccessMode.values()[root.getShort("accessMode")];
-    } else {
-      //keep behavior the same for blocks placed prior to this update
-      accessMode = AccessMode.PUBLIC;
-    }
-    if (root.hasKey("placedBy")) {
-      owner = UserIdent.create(root.getString("placedBy"));
-    } else {
-      owner = UserIdent.readfromNbt(root, "owner");
-    }
-    for (int i = 0; i < password.length; i++) {
-      if(root.hasKey("password" + i)) {
-        NBTTagCompound stackRoot = (NBTTagCompound) root.getTag("password" + i);
-        password[i] = ItemStack.loadItemStackFromNBT(stackRoot);
-      } else {
-        password[i] = null;
-      }
-    }
-    authorisedUsers.clear();
-    if (root.hasKey("authorisedUsers")) {
-    String userStr = root.getString("authorisedUsers");
-    if(userStr != null && userStr.length() > 0) {
-      String[] users = userStr.split(",");
-      for (String user : users) {
-        if(user != null) {
-          user = user.trim();
-          if(user.length() > 0) {
-              authorisedUsers.add(UserIdent.create(user));
-          }
-        }
-      }
-    }
-    } else {
-      int userIdx = 0;
-      while (UserIdent.existsInNbt(root, "authorisedUser" + userIdx)) {
-        UserIdent.readfromNbt(root, "authorisedUser" + userIdx);
-        userIdx++;
-      }
-    }
-    if(root.hasKey("itemLabel")) {
-      NBTTagCompound stackRoot = (NBTTagCompound) root.getTag("itemLabel");
-      itemLabel = ItemStack.loadItemStackFromNBT(stackRoot);
-    } else {
-      itemLabel = null;
-    }
-    
-    String sourceBlockStr = root.getString(KEY_SOURCE_BLOCK_ID);
-    Block block = Block.getBlockFromName(sourceBlockStr);
-    int sourceBlockMetadata = root.getInteger(KEY_SOURCE_BLOCK_META);
-    if(block != null) {
-      sourceBlock = block.getStateFromMeta(sourceBlockMetadata);
-    } else {
-      sourceBlock = null;
-    }
-    
-    label = root.getString("label");
-    if(label == null || label.trim().length() == 0) {
-      label = null;
-    }    
-  }
-
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    root.setShort("accessMode", (short) accessMode.ordinal());
-    owner.saveToNbt(root, "owner");
-    for (int i = 0; i < password.length; i++) {
-      ItemStack stack = password[i];
-      if(stack != null) {
-        NBTTagCompound stackRoot = new NBTTagCompound();
-        stack.writeToNBT(stackRoot);
-        root.setTag("password" + i, stackRoot);
-      }
-    }
-    int userIdx = 0;
-    for (UserIdent user : authorisedUsers) {
-      if(user != null) {
-        user.saveToNbt(root, "authorisedUser" + userIdx);
-        userIdx++;
-      }
-    }
-    if(itemLabel != null) {
-      NBTTagCompound labelRoot = new NBTTagCompound();
-      itemLabel.writeToNBT(labelRoot);
-      root.setTag("itemLabel", labelRoot);
-    }
-    
-    if(sourceBlock != null) {
-      root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock.getBlock()).toString());
-      root.setInteger(KEY_SOURCE_BLOCK_META, sourceBlock.getBlock().getMetaFromState(sourceBlock));
-    }
-    
-    
-    if(label != null && label.trim().length() > 0) {
-      root.setString("label", label);
-    }
-    
-  }
-    
   @Override
   public BlockCoord getLocation() {
     return new BlockCoord(pos);

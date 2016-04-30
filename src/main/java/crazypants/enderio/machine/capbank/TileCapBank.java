@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.capbank;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.handlers.enderio.HandleDisplayMode;
+import info.loenwind.autosave.handlers.enderio.HandleIOMode;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -8,12 +14,28 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -32,35 +54,28 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
+@Storable
 public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
 
+  @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;
+  @Store(handler = HandleDisplayMode.class)
   private Map<EnumFacing, InfoDisplayType> faceDisplayTypes;
 
+  @Store
   private CapBankType type;
 
+  @Store({ StoreFor.SAVE, StoreFor.CLIENT })
   private int energyStored;
+  @Store
   private int maxInput = -1;
+  @Store
   private int maxOutput = -1;
 
+  @Store
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
+  @Store
   private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
 
   private boolean redstoneStateDirty = true;  
@@ -70,6 +85,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   private ICapBankNetwork network;
 
+  @Store
   private final ItemStack[] inventory;
 
   public TileCapBank() {
@@ -87,6 +103,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   public CapBankType getType() {
     if(type == null) {
+      if (!hasWorldObj()) {
+        // needed when loading from invalid NBT
+        return CapBankType.VIBRANT;
+      }
       type = CapBankType.getTypeFromMeta(getBlockMetadata());
     }
     return type;
@@ -412,7 +432,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getRenderBoundingBox() {
-    if(!type.isMultiblock() || !(network instanceof CapBankClientNetwork)) {
+    if (!getType().isMultiblock() || !(network instanceof CapBankClientNetwork)) {
       return super.getRenderBoundingBox();
     }
 
@@ -822,131 +842,16 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   //---------------- NBT
 
   @Override
-  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
-    writeCommonNBT(nbtRoot);
-  }
-
-  //Values common to both item and block form
-  public void writeCommonNBT(NBTTagCompound nbtRoot) {
-    getType().writeTypeToNBT(nbtRoot);
-    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, energyStored);
-
-    if(maxInput != -1) {
-      nbtRoot.setInteger("maxInput", maxInput);
-    }
-    if(maxOutput != -1) {
-      nbtRoot.setInteger("maxOutput", maxOutput);
-    }
-    if(inputControlMode != RedstoneControlMode.IGNORE) {
-      nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
-    }
-    if(outputControlMode != RedstoneControlMode.IGNORE) {
-      nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
-    }
-
-    //face modes
-    if(faceModes != null) {
-      nbtRoot.setByte("hasFaces", (byte) 1);
-      for (Entry<EnumFacing, IoMode> e : faceModes.entrySet()) {
-        nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
-      }
-    }
-
-    //display type
-    if(faceDisplayTypes != null) {
-      nbtRoot.setByte("hasDisplayTypes", (byte) 1);
-      for (Entry<EnumFacing, InfoDisplayType> e : faceDisplayTypes.entrySet()) {
-        if(e.getValue() != InfoDisplayType.NONE) {
-          nbtRoot.setShort("faceDisplay" + e.getKey().ordinal(), (short) e.getValue().ordinal());
-        }
-      }
-    }
-
-    boolean hasItems = false;
-    NBTTagList itemList = new NBTTagList();
-    for (int i = 0; i < inventory.length; i++) {
-      if(inventory[i] != null) {
-        hasItems = true;
-        NBTTagCompound itemStackNBT = new NBTTagCompound();
-        itemStackNBT.setByte("Slot", (byte) i);
-        inventory[i].writeToNBT(itemStackNBT);
-        itemList.appendTag(itemStackNBT);
-      }
-    }
-    if(hasItems) {
-      nbtRoot.setTag("Items", itemList);
-    }
+  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
+    super.readContentsFromNBT(nbtRoot);
+    energyStored = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
+    setEnergyStored(energyStored); // Call this to clamp values in case config changed
   }
 
   @Override
-  protected void readCustomNBT(NBTTagCompound nbtRoot) {
-    readCommonNBT(nbtRoot);
-  }
-
-  //Values common to both item and block form
-  public void readCommonNBT(NBTTagCompound nbtRoot) {
-    type = CapBankType.readTypeFromNBT(nbtRoot);
-    energyStored = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
-    setEnergyStored(energyStored); //Call this to clamp values in case config changed
-
-    if(nbtRoot.hasKey("maxInput")) {
-      maxInput = nbtRoot.getInteger("maxInput");
-    } else {
-      maxInput = -1;
-    }
-    if(nbtRoot.hasKey("maxOutput")) {
-      maxOutput = nbtRoot.getInteger("maxOutput");
-    } else {
-      maxOutput = -1;
-    }
-
-    if(nbtRoot.hasKey("inputControlMode")) {
-      inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
-    } else {
-      inputControlMode = RedstoneControlMode.IGNORE;
-    }
-    if(nbtRoot.hasKey("outputControlMode")) {
-      outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
-    } else {
-      outputControlMode = RedstoneControlMode.IGNORE;
-    }
-
-    if(nbtRoot.hasKey("hasFaces")) {
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        String key = "face" + dir.ordinal();
-        if(nbtRoot.hasKey(key)) {
-          setIoMode(dir, IoMode.values()[nbtRoot.getShort(key)], false);
-        }
-      }
-    } else {
-      faceModes = null;
-    }
-
-    if(nbtRoot.hasKey("hasDisplayTypes")) {
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        String key = "faceDisplay" + dir.ordinal();
-        if(nbtRoot.hasKey(key)) {
-          setDisplayType(dir, InfoDisplayType.values()[nbtRoot.getShort(key)], false);
-        }
-      }
-    } else {
-      faceDisplayTypes = null;
-    }
-
-    for (int i = 0; i < inventory.length; i++) {
-      inventory[i] = null;
-    }
-
-    if(nbtRoot.hasKey("Items")) {
-      NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-      for (int i = 0; i < itemList.tagCount(); i++) {
-        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-        byte slot = itemStack.getByte("Slot");
-        if(slot >= 0 && slot < inventory.length) {
-          inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
-        }
-      }
-    }
+  public void writeContentsToNBT(NBTTagCompound nbtRoot) {
+    super.writeContentsToNBT(nbtRoot);
+    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, energyStored);
   }
 
   @Override

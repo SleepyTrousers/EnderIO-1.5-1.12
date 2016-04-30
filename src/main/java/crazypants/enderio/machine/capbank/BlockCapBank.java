@@ -335,7 +335,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       return;
     }
     if (stack.getTagCompound() != null) {
-      cb.readCommonNBT(stack.getTagCompound());
+      cb.readContentsFromNBT(stack.getTagCompound());
     }
 
     Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
@@ -401,7 +401,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileCapBank te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
     if (te != null) {
-      te.writeCommonNBT(drop.getTagCompound());
+      te.writeContentsToNBT(drop.getTagCompound());
     }
   }
 

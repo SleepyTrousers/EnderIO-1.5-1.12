@@ -1,22 +1,23 @@
 package crazypants.enderio.machine.light;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import net.minecraft.nbt.NBTTagCompound;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
 
+@Storable
 public class TileLightNode extends TileEntityEio {
 
-  int parentX;
-  int parentY;
-  int parentZ;
+  @Store
+  BlockPos parent;
 
   public TileElectricLight getParent() {
-    if(worldObj == null) {
+    if (worldObj == null || parent == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(new BlockPos(parentX, parentY, parentZ));
+    TileEntity te = worldObj.getTileEntity(parent);
     if(te instanceof TileElectricLight) {
       return (TileElectricLight) te;
     }
@@ -24,9 +25,8 @@ public class TileLightNode extends TileEntityEio {
   }
 
   public void checkParent() {
-    BlockPos bp = new BlockPos(parentX, parentY, parentZ);
-    if(worldObj.isBlockLoaded(bp)) {
-      if(worldObj.getBlockState(bp).getBlock() != EnderIO.blockElectricLight) {
+    if (hasWorldObj() && parent != null && worldObj.isBlockLoaded(parent)) {
+      if (worldObj.getBlockState(parent).getBlock() != EnderIO.blockElectricLight) {
         worldObj.setBlockToAir(pos);
       }
     }
@@ -47,29 +47,12 @@ public class TileLightNode extends TileEntityEio {
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound root) {
-    parentX = root.getInteger("parentX");
-    parentY = root.getInteger("parentY");
-    parentZ = root.getInteger("parentZ");
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound root) {
-    root.setInteger("parentX", parentX);
-    root.setInteger("parentY", parentY);
-    root.setInteger("parentZ", parentZ);
-  }
-
-  @Override
   public String toString() {
-    return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ",  pos=" + pos + ", tileEntityInvalid=" + tileEntityInvalid + "]";
+    return "TileLightNode [parent=" + parent + ",  pos=" + pos + ", tileEntityInvalid=" + tileEntityInvalid + "]";
   }
 
   public void setParentPos(BlockPos pos) {
-    parentX = pos.getX();
-    parentY = pos.getY();
-    parentZ = pos.getZ();
-    
+    parent = pos.getImmutable();
   }
 
 }

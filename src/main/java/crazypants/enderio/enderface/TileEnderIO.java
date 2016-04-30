@@ -1,18 +1,23 @@
 package crazypants.enderio.enderface;
 
-import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 
+@Storable
 public class TileEnderIO extends TileTravelAnchor {
 
   float lastUiPitch = -45;
   float lastUiYaw = 45;
   double lastUiDistance = 10;
 
+  @Store
   float initUiPitch = -45;
+  @Store
   float initUiYaw = 45;
 
   @Override
@@ -29,17 +34,8 @@ public class TileEnderIO extends TileTravelAnchor {
   @Override
   public void readCustomNBT(NBTTagCompound par1nbtTagCompound) {
     super.readCustomNBT(par1nbtTagCompound);
-    initUiPitch = par1nbtTagCompound.getFloat("defaultUiPitch");
-    initUiYaw = par1nbtTagCompound.getFloat("defaultUiYaw");
     lastUiPitch = initUiPitch;
     lastUiYaw = initUiYaw;
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound par1nbtTagCompound) {
-    super.writeCustomNBT(par1nbtTagCompound);
-    par1nbtTagCompound.setFloat("defaultUiPitch", initUiPitch);
-    par1nbtTagCompound.setFloat("defaultUiYaw", initUiYaw);
   }
 
 }

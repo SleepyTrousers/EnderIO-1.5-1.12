@@ -10,6 +10,7 @@ import info.loenwind.autosave.handlers.enderio.HandlePoweredTask;
 import info.loenwind.autosave.handlers.enderio.HandleResettingFlag;
 import info.loenwind.autosave.handlers.enderio.HandleSmartTank;
 import info.loenwind.autosave.handlers.enderio.HandleStatCollector;
+import info.loenwind.autosave.handlers.enderio.HandleUserIdent;
 import info.loenwind.autosave.handlers.forge.HandleFluid;
 import info.loenwind.autosave.handlers.forge.HandleFluidStack;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
@@ -91,6 +92,7 @@ public class Registry {
     GLOBAL_REGISTRY.register(new GrindingMultiplierNBT());
     GLOBAL_REGISTRY.register(new HandleExperienceContainer());
     GLOBAL_REGISTRY.register(new HandleStatCollector());
+    GLOBAL_REGISTRY.register(new HandleUserIdent());
   }
 
   @Nonnull

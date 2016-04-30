@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.painter.blocks;
 
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -23,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -65,35 +67,17 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider,
     IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
+  @Storable
   public static class TilePaintedPressurePlate extends TileEntityPaintedBlock {
 
+    @Store
     private EnumPressurePlateType type = EnumPressurePlateType.WOOD;
+    @Store
     private boolean silent = false;
+    @Store
     private EnumFacing rotation = EnumFacing.NORTH;
+    @Store
     private CapturedMob capturedMob = null;
-
-    @Override
-    public void readCustomNBT(NBTTagCompound nbtRoot) {
-      super.readCustomNBT(nbtRoot);
-      byte nbt = nbtRoot.getByte("type");
-      type = EnumPressurePlateType.getTypeFromMeta(nbt);
-      silent = EnumPressurePlateType.getSilentFromMeta(nbt);
-      rotation = EnumFacing.byName(nbtRoot.getString("rotation"));
-      if (rotation == null) {
-        rotation = EnumFacing.NORTH;
-      }
-      capturedMob = CapturedMob.create(nbtRoot);
-    }
-
-    @Override
-    public void writeCustomNBT(NBTTagCompound nbtRoot) {
-      super.writeCustomNBT(nbtRoot);
-      nbtRoot.setByte("type", (byte) EnumPressurePlateType.getMetaFromType(type, silent));
-      nbtRoot.setString("rotation", rotation.getName());
-      if (capturedMob != null) {
-        capturedMob.toNbt(nbtRoot);
-      }
-    }
 
     protected EnumPressurePlateType getType() {
       return type;
