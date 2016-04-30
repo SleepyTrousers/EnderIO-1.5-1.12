@@ -199,6 +199,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   public void updateConnectedState(boolean fromBlock) {
+    if (!hasWorldObj()) {
+      return;
+    }
 
     EnumSet<EnumFacing> connections = EnumSet.noneOf(EnumFacing.class);
     for (BlockCoord bc : getSurroundingCoords()) {
