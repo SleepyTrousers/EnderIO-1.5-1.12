@@ -14,6 +14,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
 
   public int burnTime;
   public int totalBurnTime;
+  public boolean isLavaFired;
 
   public PacketBurnTime() {
   }
@@ -22,6 +23,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
     super(tile);
     burnTime = tile.burnTime;
     totalBurnTime = tile.totalBurnTime;
+    isLavaFired = tile.isLavaFired;
   }
 
   @Override
@@ -29,6 +31,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
     super.toBytes(buf);
     buf.writeInt(burnTime);
     buf.writeInt(totalBurnTime);
+    buf.writeBoolean(isLavaFired);
   }
 
   @Override
@@ -36,6 +39,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
     super.fromBytes(buf);
     burnTime = buf.readInt();
     totalBurnTime = buf.readInt();
+    isLavaFired = buf.readBoolean();
   }
 
   @Override
@@ -46,6 +50,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
       if (tile != null) {
         tile.burnTime = message.burnTime;
         tile.totalBurnTime = message.totalBurnTime;
+        tile.isLavaFired = message.isLavaFired;
       }
     }
     return null;

@@ -59,7 +59,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
       EnumFacing front = te.facing;
       for (int i = 0; i < 2; i++) {
         double px = pos.getX() + 0.5 + front.getFrontOffsetX() * 0.6;
-        double pz = pos.getY() + 0.5 + front.getFrontOffsetZ() * 0.6;
+        double pz = pos.getZ() + 0.5 + front.getFrontOffsetZ() * 0.6;
         double v = 0.05;
         double vx = 0;
         double vz = 0;
@@ -72,6 +72,9 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
           vx += front == EnumFacing.WEST ? -v : v;
         }
 
+        if (te.isLavaFired && rand.nextInt(40) == 0) {
+          world.spawnParticle(EnumParticleTypes.LAVA, px, pos.getY() + 0.1, pz, 0, 0, 0);
+        }
         world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, px, pos.getY() + 0.1, pz, vx, 0, vz);
       }
     }

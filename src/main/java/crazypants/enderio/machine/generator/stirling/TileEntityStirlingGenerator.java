@@ -3,6 +3,8 @@ package crazypants.enderio.machine.generator.stirling;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -35,6 +37,8 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public int burnTime = 0;
   @Store
   public int totalBurnTime;
+  @Store
+  public boolean isLavaFired;
 
   private PowerDistributor powerDis;
 
@@ -134,9 +138,15 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
           burnTime = getBurnTime(inventory[0]);
           if (burnTime > 0) {
             totalBurnTime = burnTime;
+            isLavaFired = inventory[0].getItem() == Items.lava_bucket;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
             if (containedItem != null) {
-              inventory[0] = containedItem;
+              if (inventory[0].stackSize == 1) {
+                inventory[0] = containedItem;
+              } else {
+                decrStackSize(0, 1);
+                worldObj.spawnEntityInWorld(new EntityItem(worldObj, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
+              }
             } else {
               decrStackSize(0, 1);
             }
