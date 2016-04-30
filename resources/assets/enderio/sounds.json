@@ -69,5 +69,14 @@
     "sounds": [
       "silence"
     ]
+  },
+  "machine.soulbinder": {
+    "category": "block",
+    "sounds": [
+      "machine/soul/grind1",
+      "machine/soul/grind2",
+      "machine/soul/grind3",
+      "machine/soul/grind4"
+    ]
   }
 }

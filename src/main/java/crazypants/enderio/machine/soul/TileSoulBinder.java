@@ -65,6 +65,9 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
       xpCont.setDirty(false);
     }
+    if (isActive()) {
+      sendTaskProgressPacket();
+    }
     return super.processTasks(redstoneChecksPassed);
   }
 
@@ -249,4 +252,44 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     xpCont.setDirty(true);
   }
   
+  public boolean isWorking() {
+    return currentTask == null ? false : currentTask.getProgress() >= 0;
+  }
+
+  private boolean wasWorking = false;
+
+  @Override
+  protected void updateEntityClient() {
+    super.updateEntityClient();
+    if (wasWorking != isWorking()) {
+      wasWorking = isWorking();
+      updateBlock();
+    }
+  }
+
+  @Override
+  public String getSoundName() {
+    return "machine.soulbinder";
+  }
+
+  @Override
+  public float getPitch() {
+    float pitch;
+    switch (getCapacitorData().getBaseLevel()) {
+    case 1:
+      pitch = 0.80f;
+      break;
+    case 2:
+      pitch = 0.85f;
+      break;
+    case 3:
+      pitch = 0.90f;
+      break;
+    default:
+      pitch = 1.00f;
+      break;
+    }
+    return pitch + random.nextFloat() * 0.08f - 0.04f;
+  }
+
 }

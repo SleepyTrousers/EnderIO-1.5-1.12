@@ -16,7 +16,11 @@ public enum EnumRenderPart implements IStringSerializable {
   SOUL_SOUTH(SOUL),
   SOUL_WEST(SOUL),
   SOUL_EAST(SOUL),
-  PAINT_OVERLAY;
+  PAINT_OVERLAY,
+  SOUL_FRAME(true),
+  SOUL_FRAME_SOUTH(SOUL_FRAME),
+  SOUL_FRAME_WEST(SOUL_FRAME),
+  SOUL_FRAME_EAST(SOUL_FRAME);
 
   public static final PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 

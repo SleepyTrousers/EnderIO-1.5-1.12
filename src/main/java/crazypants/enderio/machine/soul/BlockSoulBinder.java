@@ -107,13 +107,13 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return RenderMappers.FRONT_MAPPER_NO_IO;
+    return SoulBinderBlockRenderMapper.instance;
   }
 
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileSoulBinder tileEntity) {
-    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
+    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isWorking());
   }
 
 }

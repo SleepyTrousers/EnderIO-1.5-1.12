@@ -57,6 +57,8 @@ import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.ranged.RangeRenerer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.soul.SoulBinderTESR;
+import crazypants.enderio.machine.soul.TileSoulBinder;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TileTank;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
@@ -203,6 +205,8 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TilePowerMonitor.class, new TESRPowerMonitor());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileGauge.class, new TESRGauge());
+
+    ClientRegistry.bindTileEntitySpecialRenderer(TileSoulBinder.class, new SoulBinderTESR());
 
     // Overlays
     new YetaWrenchOverlayRenderer();
