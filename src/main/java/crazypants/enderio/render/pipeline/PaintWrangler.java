@@ -37,7 +37,7 @@ public class PaintWrangler {
 
   private static final ConcurrentHashMap<Block, Memory> cache = new ConcurrentHashMap<Block, Memory>();
 
-  public static boolean wrangleBakedModel(IBlockAccess blockAccess, BlockPos pos, IBlockState paint, QuadCollector quads) {
+  public static boolean wrangleBakedModel(IBlockAccess blockAccess, BlockPos pos, IBlockState rawPaintSource, IBlockState paint, QuadCollector quads) {
     Block block = paint.getBlock();
     Memory memory = cache.get(block);
     if (memory == null) {
@@ -49,7 +49,7 @@ public class PaintWrangler {
       return false;
     }
 
-    IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(paint);
+    IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(rawPaintSource);
 
     if (Minecraft.getMinecraft().gameSettings.allowBlockAlternatives && paintModel instanceof WeightedBakedModel) {
       paintModel = ((WeightedBakedModel) paintModel).getAlternativeModel(MathHelper.getPositionRandom(pos));
@@ -59,6 +59,7 @@ public class PaintWrangler {
       try {
         paintModel = ((ISmartBlockModel) paintModel).handleBlockState(paint);
       } catch (Throwable t) {
+        Log.error("Failed to invoke block " + paint.getBlock() + "'s ISmartBlockModel for painting. Error: " + t);
         memory.dohandleBlockState = false;
       }
     }

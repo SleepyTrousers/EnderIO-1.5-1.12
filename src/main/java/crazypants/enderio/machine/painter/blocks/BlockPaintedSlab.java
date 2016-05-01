@@ -309,17 +309,13 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "slab_lo", paintSource, null);
-      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "slab_lo", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION3);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      list.add(model2);
-      return list;
-    } else {
-      return null;
-    }
+    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "slab_lo", paintSource, null);
+    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "slab_lo", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION3);
+    List<IBakedModel> list = new ArrayList<IBakedModel>();
+    list.add(model1);
+    list.add(model2);
+    return list;
   }
 
   @Override
@@ -387,7 +383,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
       if (isDouble() || half == state.getValue(HALF)) {
         boolean isTop = half == BlockSlab.EnumBlockHalf.TOP;
         IBlockState paintSource = isTop ? getPaintSource2(state, world, pos) : getPaintSource(state, world, pos);
-        if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer)) {
+        if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
           quadCollector.addFriendlybakedModel(blockLayer, PaintRegistry.getModel(IBakedModel.class, isTop ? "slab_hi" : "slab_lo", paintSource, null),
               paintSource, MathHelper.getPositionRandom(pos));
         }

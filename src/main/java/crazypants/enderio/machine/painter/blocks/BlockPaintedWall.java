@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
@@ -209,7 +210,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   @SuppressWarnings("deprecation")
   @SideOnly(Side.CLIENT)
-  private IBakedModel mapRender(IBlockState state, IBlockState paint) {
+  private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
 
     Boolean up = state.getValue(UP);
     Boolean north = state.getValue(NORTH);
@@ -295,18 +296,14 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      @SuppressWarnings("deprecation")
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "wall_inventory", paintSource, new UVLock(null));
-      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "wall_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION2);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      list.add(model2);
-      return list;
-    } else {
-      return null;
-    }
+    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    @SuppressWarnings("deprecation")
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "wall_inventory", paintSource, new UVLock(null));
+    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "wall_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION2);
+    List<IBakedModel> list = new ArrayList<IBakedModel>();
+    list.add(model1);
+    list.add(model2);
+    return list;
   }
 
   @Override
@@ -327,7 +324,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer)) {
+    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

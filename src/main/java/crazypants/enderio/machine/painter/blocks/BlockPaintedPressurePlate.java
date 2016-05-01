@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
@@ -370,7 +371,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   }
 
   @SideOnly(Side.CLIENT)
-  private IBakedModel mapRender(IBlockState state, IBlockState paint, EnumFacing facing) {
+  private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint, EnumFacing facing) {
 
     ModelRotation rot;
     switch (facing) {
@@ -422,19 +423,15 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", paintSource, null);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
-        IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-        IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
-        list.add(model2);
-      }
-      return list;
-    } else {
-      return null;
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", paintSource, null);
+    List<IBakedModel> list = new ArrayList<IBakedModel>();
+    list.add(model1);
+    if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
+      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
+      list.add(model2);
     }
+    return list;
   }
 
   @Override
@@ -565,7 +562,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer) && paintSource.getBlock() != EnderIO.blockFusedQuartz) {
+    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer) && (paintSource == null || paintSource.getBlock() != EnderIO.blockFusedQuartz)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

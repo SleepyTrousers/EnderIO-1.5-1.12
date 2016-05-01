@@ -1,5 +1,7 @@
 package crazypants.enderio.paint;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;
@@ -9,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -206,6 +209,14 @@ public class PainterUtil2 {
       }
     }
     return null;
+  }
+
+  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, EnumWorldBlockLayer blockLayer) {
+    if (paintSource != null) {
+      return paintSource.getBlock().canRenderInLayer(blockLayer);
+    } else {
+      return blockLayer == EnumWorldBlockLayer.SOLID;
+    }
   }
 
 }

@@ -142,11 +142,13 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   public void bakeModel() {
     long start = crazypants.util.Profiler.client.start();
     QuadCollector quads = null;
+    IBlockState rawPaintSource = null;
     IBlockState paintSource = null;
     String cacheResult;
 
     if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
-      paintSource = PaintWrangler.getDynamicBlockState(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos));
+      rawPaintSource = ((IBlockPaintableBlock) block).getPaintSource(state, world, pos);
+      paintSource = PaintWrangler.getDynamicBlockState(world, pos, rawPaintSource);
     }
 
     if (doCaching) {
@@ -161,7 +163,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
     if (quads == null) {
       quads = new QuadCollector();
-      if (!bakePaintLayer(quads, paintSource)) {
+      if (!bakePaintLayer(quads, rawPaintSource, paintSource)) {
         bakeBlockLayer(quads);
         paintSource = null;
       } else if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware) {
@@ -189,14 +191,14 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     }
   }
 
-  protected boolean bakePaintLayer(QuadCollector quads, IBlockState paintSource) {
+  protected boolean bakePaintLayer(QuadCollector quads, IBlockState rawPaintSource, IBlockState paintSource) {
     if (paintSource != null) {
       EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
       boolean rendered = true;
       for (EnumWorldBlockLayer layer : quads.getBlockLayers()) {
         if (paintSource.getBlock().canRenderInLayer(layer)) {
           ForgeHooksClient.setRenderLayer(layer);
-          rendered = rendered && PaintWrangler.wrangleBakedModel(world, pos, paintSource, quads);
+          rendered = rendered && PaintWrangler.wrangleBakedModel(world, pos, rawPaintSource, paintSource, quads);
         }
       }
       ForgeHooksClient.setRenderLayer(oldRenderLayer);

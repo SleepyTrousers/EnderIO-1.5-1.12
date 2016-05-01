@@ -113,7 +113,7 @@ public class QuadCollector {
    * Adds a baked model that is expected to behave to the quad lists for the given block layer. The block layer will be set when the model is asked for its
    * quads.
    */
-  public void addFriendlybakedModel(EnumWorldBlockLayer pass, IBakedModel model, IBlockState state, long rand) {
+  public void addFriendlybakedModel(EnumWorldBlockLayer pass, IBakedModel model, @Nullable IBlockState state, long rand) {
     if (model != null) {
       EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
       ForgeHooksClient.setRenderLayer(pass);

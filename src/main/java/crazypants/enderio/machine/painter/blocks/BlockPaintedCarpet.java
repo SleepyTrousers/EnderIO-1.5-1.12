@@ -165,17 +165,13 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null);
-      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "carpet", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      list.add(model2);
-      return list;
-    } else {
-      return null;
-    }
+    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null);
+    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "carpet", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
+    List<IBakedModel> list = new ArrayList<IBakedModel>();
+    list.add(model1);
+    list.add(model2);
+    return list;
   }
 
   private IBakedModel mapRender(IBlockState state, IBlockState paint) {
@@ -229,7 +225,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer)) {
+    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

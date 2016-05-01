@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
@@ -179,7 +180,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @SuppressWarnings("deprecation")
   @SideOnly(Side.CLIENT)
-  private IBakedModel mapRender(IBlockState state, IBlockState paint) {
+  private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
 
     final boolean top = state.getValue(HALF) == EnumHalf.TOP;
     int xRot = top ? 180 : 0;
@@ -238,18 +239,14 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    if (paintSource != null) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      @SuppressWarnings("deprecation")
-      IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "stairs", paintSource, new UVLock(null));
-      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "stairs", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION4);
-      List<IBakedModel> list = new ArrayList<IBakedModel>();
-      list.add(model1);
-      list.add(model2);
-      return list;
-    } else {
-      return null;
-    }
+    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    @SuppressWarnings("deprecation")
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "stairs", paintSource, new UVLock(null));
+    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "stairs", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION4);
+    List<IBakedModel> list = new ArrayList<IBakedModel>();
+    list.add(model1);
+    list.add(model2);
+    return list;
   }
 
   @Override
@@ -294,7 +291,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (paintSource != null && paintSource.getBlock().canRenderInLayer(blockLayer)) {
+    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

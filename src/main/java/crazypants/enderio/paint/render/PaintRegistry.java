@@ -54,7 +54,7 @@ public class PaintRegistry {
     public void registerModel(String name, ResourceLocation location, PaintMode paintMode) {
     }
 
-    public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+    public <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotation) {
       return null;
     }
   }
@@ -116,7 +116,7 @@ public class PaintRegistry {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotationIn) {
+    public <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotationIn) {
       IModelState rotation = EIOUVLock.rewrap(rotationIn);
       if (!cache.containsKey(name)) {
         cache.put(name, new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
@@ -155,7 +155,7 @@ public class PaintRegistry {
     }
 
     @SideOnly(Side.CLIENT)
-    private IBakedModel paintModel(IModel sourceModel, final IBlockState paintSource, IModelState rotation, final PaintMode paintMode) {
+    private IBakedModel paintModel(IModel sourceModel, final @Nullable IBlockState paintSource, IModelState rotation, final PaintMode paintMode) {
       IModelState state = sourceModel.getDefaultState();
       state = combine(state, rotation);
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
@@ -163,7 +163,11 @@ public class PaintRegistry {
         public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
           String locationString = location.toString();
           if (paintMode != PaintMode.TAGGED_TEXTURES || locationString.endsWith("PAINT")) {
-            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
+            if (paintSource == null) {
+              return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+            } else {
+              return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
+            }
           } else {
             return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(locationString);
           }
@@ -225,7 +229,7 @@ public class PaintRegistry {
     instance.registerModel(name, location, paintMode);
   }
 
-  public static <T> T getModel(Class<T> clazz, String name, IBlockState paintSource, IModelState rotation) {
+  public static <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotation) {
     return instance.getModel(clazz, name, paintSource, rotation);
   }
 
