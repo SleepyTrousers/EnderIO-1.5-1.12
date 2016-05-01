@@ -87,7 +87,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private int maxPower;
 
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
-  private MachineSound activeSound = null;
+  @SideOnly(Side.CLIENT)
+  private MachineSound activeSound;
 
   @Store
   private boolean redstoneActivePrev;
@@ -132,46 +133,52 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
 
     if (worldObj.isRemote) {
-      updateRotations();
-      if (activeSound != null) {
-        activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
-      }
-      if (active()) {
-        if (activeSound == null) {
-          BlockPos p = getPos();
-          activeSound = new MachineSound(activeRes, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
-          playSound();
-        }
-        updateQueuedEntities();
-      } else if (!active() && activeSound != null) {
-        if (activeSound.getPitch() <= 0.5f) {
-          activeSound.endPlaying();
-          activeSound = null;
-        }
-      }
-    } else if (!worldObj.isRemote) {
-      if (active()) {
-        if (powerUsed >= maxPower) {
-          teleport(toTeleport.poll());
-          powerUsed = 0;
-        } else {
-          int usable = Math.min(Math.min(getUsage(), maxPower), getEnergyStored());
-          setEnergyStored(getEnergyStored() - usable);
-          powerUsed += usable;
-        }
-        if (shouldDoWorkThisTick(5)) {
-          updateQueuedEntities();
-        }
-      }
+      updateEntityClient();
+      return;
+    }
 
-      boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
-      if (powerChanged) {
-        lastSyncPowerStored = getEnergyStored();
-        PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
+    if (active()) {
+      if (powerUsed >= maxPower) {
+        teleport(toTeleport.poll());
+        powerUsed = 0;
+      } else {
+        int usable = Math.min(Math.min(getUsage(), maxPower), getEnergyStored());
+        setEnergyStored(getEnergyStored() - usable);
+        powerUsed += usable;
       }
-      if (coordsChanged && inNetwork() && master != null && isMaster()) {
-        coordsChanged = false;
-        PacketHandler.sendToAllAround(new PacketUpdateCoords(master, master.getX(), master.getY(), master.getZ(), master.getTargetDim()), master);
+      if (shouldDoWorkThisTick(5)) {
+        updateQueuedEntities();
+      }
+    }
+
+    boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
+    if (powerChanged) {
+      lastSyncPowerStored = getEnergyStored();
+      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
+    }
+    if (coordsChanged && inNetwork() && master != null && isMaster()) {
+      coordsChanged = false;
+      PacketHandler.sendToAllAround(new PacketUpdateCoords(master, master.getX(), master.getY(), master.getZ(), master.getTargetDim()), master);
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  protected void updateEntityClient() {
+    updateRotations();
+    if (activeSound != null) {
+      activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
+    }
+    if (active()) {
+      if (activeSound == null) {
+        BlockPos p = getPos();
+        activeSound = new MachineSound(activeRes, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
+        playSound();
+      }
+      updateQueuedEntities();
+    } else if (!active() && activeSound != null) {
+      if (activeSound.getPitch() <= 0.5f) {
+        activeSound.endPlaying();
+        activeSound = null;
       }
     }
   }
@@ -346,6 +353,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
   }
 
+  @SideOnly(Side.CLIENT)
   private void stopPlayingSound() {
     if (activeSound != null) {
       activeSound.endPlaying();

@@ -3,7 +3,10 @@ package crazypants.enderio.machine;
 import net.minecraft.client.audio.ITickableSound;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class MachineSound extends PositionedSound implements ITickableSound {
 
   private boolean donePlaying;
