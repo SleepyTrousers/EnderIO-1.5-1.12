@@ -12,16 +12,14 @@ public class RangeEntity extends Entity {
 
   int totalLife = 20;
   int lifeSpan = totalLife;
-  float range;  
   private IRanged spawnGuard;
 
   public RangeEntity(IRanged sg) {
     super(sg.getRangeWorldObj());
     spawnGuard = sg;
     BlockCoord bc = spawnGuard.getLocation();
-    setPosition(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
+    setPosition(bc.x, bc.y, bc.z);
     ignoreFrustumCheck = true;
-    range = sg.getRange() + 0.5f;
   }
 
   @Override
@@ -35,7 +33,7 @@ public class RangeEntity extends Entity {
   }
 
   @Override
-  protected boolean canTriggerWalking() {    
+  protected boolean canTriggerWalking() {
     return false;
   }
 
@@ -51,10 +49,10 @@ public class RangeEntity extends Entity {
     super.onUpdate();
     lifeSpan--;
     BlockCoord bc = spawnGuard.getLocation();
-    if(!(worldObj.getTileEntity(bc.getBlockPos()) instanceof IRanged)) {
+    if (!(worldObj.getTileEntity(bc.getBlockPos()) instanceof IRanged)) {
       setDead();
     }
-    if(!spawnGuard.isShowingRange()) {
+    if (!spawnGuard.isShowingRange()) {
       setDead();
     }
   }
@@ -66,4 +64,9 @@ public class RangeEntity extends Entity {
   @Override
   protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
   }
+
+  float getRange() {
+    return spawnGuard.getRange() + 1.001f;
+  }
+
 }

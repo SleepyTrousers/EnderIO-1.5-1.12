@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -14,15 +17,13 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
 
   private static final int RANGE_ID = 8738924;
 
   private final ToggleButton showRangeB;
-  
+
   public GuiAttractor(InventoryPlayer par1InventoryPlayer, TileAttractor te) {
     super(te, new ContainerAttractor(par1InventoryPlayer, te), "attractor");
 
@@ -48,7 +49,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
   @Override
   protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
-    if(b.id == RANGE_ID) {
+    if (b.id == RANGE_ID) {
       getTileEntity().setShowRange(showRangeB.isSelected());
     }
   }
@@ -61,15 +62,16 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    
+
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
+
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
+    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
+        ColorUtil.getRGB(Color.white));
   }
 
   @Override
-  protected boolean showRecipeButton() {    
+  protected boolean showRecipeButton() {
     return false;
   }
 

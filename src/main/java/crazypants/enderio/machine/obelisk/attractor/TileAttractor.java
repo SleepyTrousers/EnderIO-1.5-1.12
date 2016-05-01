@@ -33,9 +33,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector3d;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
@@ -134,15 +132,13 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     tickCounter = 0;
 
     if (attractorBounds == null) {
-      BoundingBox bb = new BoundingBox(new BlockCoord(this));
-      bb = bb.scale(getRange(), getRange(), getRange());
-      attractorBounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+      attractorBounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
     }
     Set<EntityLiving> trackingThisTick = new HashSet<EntityLiving>();
     List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, attractorBounds);
-    
+
     for (EntityLiving ent : entsInBounds) {
-      if (!ent.isDead && isMobInFilter(ent)) {    
+      if (!ent.isDead && isMobInFilter(ent)) {
         if (tracking.contains(ent)) {
           trackingThisTick.add(ent);
           onEntityTick(ent);
@@ -212,7 +208,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if (mob == null) {
       return false;
     }
-    return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(getPos())) <= rangeIn;
+    return mob.getDistanceSqToCenter(getPos()) <= rangeIn;
   }
 
   private boolean isMobInFilter(EntityLiving entity) {
@@ -309,7 +305,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       PathEntity pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
       sf.getNavigator().setPath(pathentity, sf.getAIMoveSpeed());
     } else if (ent instanceof EntityBlaze) {
-      
+
       double x = (getPos().getX() + 0.5D - ent.posX);
       double y = (getPos().getX() + 1D - ent.posY);
       double z = (getPos().getX() + 0.5D - ent.posZ);
@@ -358,7 +354,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
     PathFinder pf = new PathFinder(new WalkNodeProcessor());
     return pf.createEntityPathTo(worldObj, entity, new BlockPos(targX, targY, targZ), range);
-
   }
 
   private class Target extends FakePlayerEIO {
@@ -416,7 +411,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       if (!started || updatesSincePathing > 20) {
         started = true;
         int speed = 1;
-//        mob.getNavigator().setAvoidsWater(false);
+        // mob.getNavigator().setAvoidsWater(false);
         boolean res = mob.getNavigator().tryMoveToEntityLiving(target, speed);
         if (!res) {
           mob.getNavigator().tryMoveToXYZ(target.posX, target.posY + 1, target.posZ, speed);

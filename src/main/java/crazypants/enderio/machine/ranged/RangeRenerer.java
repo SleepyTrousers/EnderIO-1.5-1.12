@@ -1,11 +1,5 @@
 package crazypants.enderio.machine.ranged;
 
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -14,11 +8,17 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+
 @SideOnly(Side.CLIENT)
 public class RangeRenerer extends RenderEntity {
 
   public static final Factory FACTORY = new Factory();
-  
+
   public RangeRenerer(RenderManager renderManagerIn) {
     super(renderManagerIn);
   }
@@ -35,22 +35,22 @@ public class RangeRenerer extends RenderEntity {
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glDepthMask(false);
 
-    float scale = 1 - ( se.lifeSpan / (float)se.totalLife);
+    float scale = 1 - (se.lifeSpan / (float) se.totalLife);
     scale = Math.min(scale, 1);
-    scale *= se.range;
+    scale *= se.getRange();
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
-    GL11.glTranslatef(0.5f,0.5f,0.5f);
-    GL11.glScalef(scale, scale, scale);
-    GL11.glTranslatef(-0.5f,-0.5f,-0.5f);
-
     GL11.glColor4f(1, 1, 1, 0.4f);
 
     RenderUtil.bindBlockTexture();
-    
-    //Tessellator.instance.setBrightness(15 << 20 | 15 << 4);   
+
+    GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+    GL11.glScalef(scale, scale, scale);
+    GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
+
+    // Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
     RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, IconUtil.instance.whiteTexture);
 
     GL11.glDepthMask(true);
@@ -58,7 +58,7 @@ public class RangeRenerer extends RenderEntity {
     GL11.glPopMatrix();
 
   }
-  
+
   public static class Factory implements IRenderFactory<RangeEntity> {
 
     @Override
