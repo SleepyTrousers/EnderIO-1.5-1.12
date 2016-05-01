@@ -37,16 +37,20 @@ public class Profiler {
   public void stop(long start, String source) {
     long elapsed = on ? System.nanoTime() - start : -1;
     if (elapsed >= 0) {
-      profiler.putIfAbsent(source, 0L);
-      profilerC.putIfAbsent(source, 0L);
-      profiler.put(source, profiler.get(source) + elapsed);
-      profilerC.put(source, profilerC.get(source) + 1);
-      if (EnderIO.proxy.getTickCount() > lastProfiled) {
-        lastProfiled = EnderIO.proxy.getTickCount() + 200;
-        for (Entry<String, Long> e : profiler.entrySet()) {
-          long avg = e.getValue() / profilerC.get(e.getKey());
-          Log.info(e.getKey() + ": " + avg + " ns avg over " + profilerC.get(e.getKey()) + " calls");
+      try {
+        profiler.putIfAbsent(source, 0L);
+        profilerC.putIfAbsent(source, 0L);
+        profiler.put(source, profiler.get(source) + elapsed);
+        profilerC.put(source, profilerC.get(source) + 1);
+        if (EnderIO.proxy.getTickCount() > lastProfiled) {
+          lastProfiled = EnderIO.proxy.getTickCount() + 200;
+          for (Entry<String, Long> e : profiler.entrySet()) {
+            long avg = e.getValue() / profilerC.get(e.getKey());
+            Log.info(e.getKey() + ": " + avg + " ns avg over " + profilerC.get(e.getKey()) + " calls");
+          }
         }
+      } catch (Throwable t) {
+        // NOP
       }
     }
   }
