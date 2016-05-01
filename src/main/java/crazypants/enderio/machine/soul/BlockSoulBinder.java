@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
@@ -101,7 +100,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
 
   @Override
   public IItemRenderMapper getItemRenderMapper() {
-    return RenderMappers.FRONT_MAPPER_NO_IO;
+    return SoulBinderBlockRenderMapper.instance;
   }
 
   @Override
