@@ -19,13 +19,14 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.RenderUtil;
 
+import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.EnumRenderMode;
 
 public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
 
   @Override
   public void renderTileEntityAt(TileSoulBinder te, double x, double y, double z, float partialTicks, int destroyStage) {
-    if (te.isWorking() && te.getPaintSource() == null) {
+    if (te.isWorking() && (te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacades())) {
       RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
       GL11.glPushMatrix();
       GL11.glTranslatef((float) x, (float) y, (float) z);
