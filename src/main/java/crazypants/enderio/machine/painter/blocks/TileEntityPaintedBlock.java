@@ -3,29 +3,16 @@ package crazypants.enderio.machine.painter.blocks;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
 
 @Storable
 public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.IPaintableTileEntity {
 
+  @Store
   private IBlockState paintSource = null;
 
   public TileEntityPaintedBlock() {
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    this.paintSource = PainterUtil2.readNbt(nbtRoot);
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    PainterUtil2.writeNbt(nbtRoot, paintSource);
   }
 
   @Override

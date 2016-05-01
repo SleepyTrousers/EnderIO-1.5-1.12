@@ -323,11 +323,6 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     if(eventHandler != null) {
       eventHandler.checkCraftingRecipes();
     }
-  }
-
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
     updateItemFilter();
   }
 

@@ -461,9 +461,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
    * Read state common to both block and item
    */
   public void readCommon(NBTTagCompound nbtRoot) {
-    if (this instanceof IPaintable.IPaintableTileEntity) {
-      paintSource = PainterUtil2.readNbt(nbtRoot);
-    }
   }
 
   public void readFromItemStack(ItemStack stack) {
@@ -479,7 +476,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       } finally {
         doingOtherNbt = false;
       }
-    } else if (this instanceof IPaintable.IPaintableTileEntity) {
+    }
+    if (this instanceof IPaintable.IPaintableTileEntity) {
       paintSource = PainterUtil2.readNbt(root);
     }
     return;
@@ -495,9 +493,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
    * Write state common to both block and item
    */
   public void writeCommon(NBTTagCompound nbtRoot) {
-    if (this instanceof IPaintable.IPaintableTileEntity) {
-      PainterUtil2.writeNbt(nbtRoot, paintSource);
-    }
   }
 
   public void writeToItemStack(ItemStack stack) {
@@ -517,6 +512,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       doingOtherNbt = false;
     }
     Writer.write(StoreFor.ITEM, root, this);
+
+    if (this instanceof IPaintable.IPaintableTileEntity) {
+      PainterUtil2.writeNbt(root, paintSource);
+    }
 
     String name;
     if (stack.hasDisplayName()) {
@@ -709,6 +708,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
 
+  @Store
   private IBlockState paintSource = null;
 
   public void setPaintSource(IBlockState paintSource) {

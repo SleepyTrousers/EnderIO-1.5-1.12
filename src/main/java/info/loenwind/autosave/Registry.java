@@ -138,8 +138,17 @@ public class Registry {
   }
 
   /**
-   * Finds all {@link IHandler}s from this registry and all its parents that can
-   * handle the given class.
+   * Registers a new {@link IHandler} that has higher priority than all existing handlers.
+   * 
+   * @param handler
+   *          The {@link IHandler} to register
+   */
+  public void registerPriority(@Nonnull IHandler handler) {
+    handlers.add(0, handler);
+  }
+
+  /**
+   * Finds all {@link IHandler}s from this registry and all its parents that can handle the given class.
    * 
    * <p>
    * Handlers will be returned in this order:
