@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 
 public class HandleEnum implements IHandler<Enum<?>> {
 
@@ -33,7 +34,8 @@ public class HandleEnum implements IHandler<Enum<?>> {
   public Enum<?> read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nullable Enum<?> object) {
     if (nbt.hasKey(name) && object != null) {
-      return object.getClass().getEnumConstants()[nbt.getInteger(name)];
+      Enum<?>[] enumConstants = object.getClass().getEnumConstants();
+      return enumConstants[MathHelper.clamp_int(nbt.getInteger(name), 0, enumConstants.length - 1)];
     } else {
       return object;
     }
