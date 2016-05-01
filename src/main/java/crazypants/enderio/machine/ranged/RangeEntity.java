@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.ranged;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public class RangeEntity extends Entity {
 
@@ -39,9 +39,11 @@ public class RangeEntity extends Entity {
     return false;
   }
 
+  private final AxisAlignedBB noBB = new AxisAlignedBB(0, -1, 0, 0, -1, 0);
+
   @Override
   public AxisAlignedBB getEntityBoundingBox() {
-    return null;
+    return noBB;
   }
 
   @Override

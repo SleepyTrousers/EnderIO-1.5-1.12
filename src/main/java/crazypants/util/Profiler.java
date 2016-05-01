@@ -1,6 +1,5 @@
 package crazypants.util;
 
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,8 +11,8 @@ public class Profiler {
   public static final Profiler client = new Profiler();
   public static final Profiler server = client;
 
-  private Map<String, Long> profiler = new ConcurrentHashMap<String, Long>();
-  private Map<String, Long> profilerC = new ConcurrentHashMap<String, Long>();
+  private ConcurrentHashMap<String, Long> profiler = new ConcurrentHashMap<String, Long>();
+  private ConcurrentHashMap<String, Long> profilerC = new ConcurrentHashMap<String, Long>();
   private long lastProfiled = 0;
   private boolean on = false;
 
@@ -38,10 +37,8 @@ public class Profiler {
   public void stop(long start, String source) {
     long elapsed = on ? System.nanoTime() - start : -1;
     if (elapsed >= 0) {
-      if (!profiler.containsKey(source)) {
-        profiler.put(source, 0L);
-        profilerC.put(source, 0L);
-      }
+      profiler.putIfAbsent(source, 0L);
+      profilerC.putIfAbsent(source, 0L);
       profiler.put(source, profiler.get(source) + elapsed);
       profilerC.put(source, profilerC.get(source) + 1);
       if (EnderIO.proxy.getTickCount() > lastProfiled) {
