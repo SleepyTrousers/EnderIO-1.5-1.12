@@ -10,7 +10,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 
@@ -37,7 +36,7 @@ public class RangeRenerer extends RenderEntity {
 
     float scale = 1 - (se.lifeSpan / (float) se.totalLife);
     scale = Math.min(scale, 1);
-    scale *= se.getRange();
+    // scale *= se.getRange();
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
@@ -51,7 +50,8 @@ public class RangeRenerer extends RenderEntity {
     GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
 
     // Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
-    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, IconUtil.instance.whiteTexture);
+    // RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE, IconUtil.instance.whiteTexture);
+    RenderUtil.renderBoundingBox(se.getRangeBox(), IconUtil.instance.whiteTexture);
 
     GL11.glDepthMask(true);
     GL11.glPopAttrib();

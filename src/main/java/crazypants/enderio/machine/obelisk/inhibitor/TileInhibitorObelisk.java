@@ -2,7 +2,11 @@ package crazypants.enderio.machine.obelisk.inhibitor;
 
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
+import com.enderio.core.client.render.BoundingBox;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
@@ -74,4 +78,11 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
     super.onChunkUnload();
     BlockInhibitorObelisk.instance.activeInhibitors.remove(getLocation());
   }
+
+  @Override
+  public BoundingBox getRangeBox() {
+    return new BoundingBox(new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d)
+        .expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
+  }
+
 }

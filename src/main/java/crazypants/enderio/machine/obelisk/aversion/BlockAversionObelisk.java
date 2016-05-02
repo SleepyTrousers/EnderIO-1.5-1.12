@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
@@ -14,7 +13,7 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
     BlockAversionObelisk res = new BlockAversionObelisk();
     res.init();
 
-    //Just making sure its loaded
+    // Just making sure its loaded
     AversionObeliskController.instance.toString();
 
     return res;
@@ -26,18 +25,18 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileAversionObelisk) {
-      return new ContainerAversionObelisk(player.inventory, (TileAversionObelisk) te);
+    TileAversionObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerAversionObelisk(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileAversionObelisk) {
-      return new GuiAversionObelisk(player.inventory, (TileAversionObelisk) te);
+    TileAversionObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiAversionObelisk(player.inventory, te);
     }
     return null;
   }

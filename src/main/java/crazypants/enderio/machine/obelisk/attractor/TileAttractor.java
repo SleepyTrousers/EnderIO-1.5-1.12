@@ -27,12 +27,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
@@ -52,7 +54,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 @Storable
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
-  private AxisAlignedBB attractorBounds;
+  private AxisAlignedBB bounds;
   private FakePlayer target;
   private Set<EntityLiving> tracking = new HashSet<EntityLiving>();
   private int tickCounter = 0;
@@ -94,7 +96,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   @Override
   public void onCapacitorDataChange() {
     super.onCapacitorDataChange();
-    attractorBounds = null;
+    bounds = null;
   }
 
   @Override
@@ -131,11 +133,9 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     }
     tickCounter = 0;
 
-    if (attractorBounds == null) {
-      attractorBounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
-    }
+    mkBounds();
     Set<EntityLiving> trackingThisTick = new HashSet<EntityLiving>();
-    List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, attractorBounds);
+    List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, bounds);
 
     for (EntityLiving ent : entsInBounds) {
       if (!ent.isDead && isMobInFilter(ent)) {
@@ -156,6 +156,12 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     tracking.clear();
     tracking = trackingThisTick;
     return false;
+  }
+
+  protected void mkBounds() {
+    if (bounds == null) {
+      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
+    }
   }
 
   private void onUntracked(EntityLiving e) {
@@ -208,7 +214,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if (mob == null) {
       return false;
     }
-    return mob.getDistanceSqToCenter(getPos()) <= rangeIn;
+    return bounds.isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
   }
 
   private boolean isMobInFilter(EntityLiving entity) {
@@ -422,6 +428,12 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       }
     }
 
+  }
+
+  @Override
+  public BoundingBox getRangeBox() {
+    mkBounds();
+    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
 
 }

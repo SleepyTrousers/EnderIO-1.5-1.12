@@ -95,11 +95,7 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (bounds == null) {
-      BoundingBox bb = new BoundingBox(getLocation());
-      bb = bb.scale(getRange() + 0.5f, getRange() + 0.5f, getRange() + 0.5f).translate(0.5f, 0.5f, 0.5f);
-      bounds = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    }
+    mkBounds();
     if (redstoneCheck && hasPower()) {
       if(!registered) {
         AversionObeliskController.instance.registerGuard(this);
@@ -108,6 +104,12 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
       usePower();
     } 
     return false;    
+  }
+
+  protected void mkBounds() {
+    if (bounds == null) {
+      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
+    }
   }
 
   protected double usePower() {
@@ -128,7 +130,6 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
     if (mob == null || bounds == null) {
       return false;
     }    
-    //return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= rangeSqu;
     return bounds.isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
   }
 
@@ -140,6 +141,12 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
       }
     }
     return false;
+  }
+
+  @Override
+  public BoundingBox getRangeBox() {
+    mkBounds();
+    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
 
 }

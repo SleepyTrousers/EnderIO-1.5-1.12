@@ -6,6 +6,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 
 public class RangeEntity extends Entity {
@@ -69,4 +70,7 @@ public class RangeEntity extends Entity {
     return spawnGuard.getRange() + 1.001f;
   }
 
+  BoundingBox getRangeBox() {
+    return spawnGuard.getRangeBox();
+  }
 }
