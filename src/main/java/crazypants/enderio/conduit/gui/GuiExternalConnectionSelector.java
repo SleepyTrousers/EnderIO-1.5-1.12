@@ -3,13 +3,16 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 
@@ -22,11 +25,14 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.world.World;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
   Set<EnumFacing> cons;
   IConduitBundle cb;
+  EnumMap<EnumFacing, String> adjacentBlockNames = new EnumMap<EnumFacing, String>(EnumFacing.class);
+  EnumMap<EnumFacing, Point> textPositions = new EnumMap<EnumFacing, Point>(EnumFacing.class);
 
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
@@ -80,11 +86,26 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 
+  protected String getBlockNameForDirection(EnumFacing direction) {
+    World world = cb.getBundleWorldObj();
+    BlockPos blockPos = cb.getLocation().getLocation(direction).getBlockPos();
+    if (world.isAirBlock(blockPos)) {
+      return null;
+    }
+    Block b = world.getBlockState(blockPos).getBlock();
+    if (b != null && b != EnderIO.blockConduitBundle) {
+      return b.getLocalizedName();
+    }
+    return null;
+  }
+
   @Override
   public void initGui() {
     GuiButton b;
     for (EnumFacing dir : EnumFacing.VALUES) {
       Point p = getOffsetForDir(dir, cons.contains(dir));
+      adjacentBlockNames.put(dir, getBlockNameForDirection(dir));
+      textPositions.put(dir, new Point(p.x, p.y + 21));
       b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
       buttonList.add(b);
       if(!cons.contains(dir)) {
@@ -103,13 +124,23 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     drawDefaultBackground();
 
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      String blockName = adjacentBlockNames.get(dir);
+      if (blockName == null) {
+        continue;
+      }
+      int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(blockName);
+      Point p = textPositions.get(dir);
+      drawString(Minecraft.getMinecraft().fontRendererObj, blockName, p.x + 60 / 2 - textWidth / 2, p.y, ColorUtil.getARGB(Color.gray));
+    }
+
     super.drawScreen(par1, par2, par3);
 
     int butHeight = 20;
     String txt = "Select Connection to Adjust";
     int x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
     int y = height / 2 - butHeight * 3 - 5;
-        
+
     drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
 
     if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
