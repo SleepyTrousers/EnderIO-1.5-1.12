@@ -12,9 +12,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.BlockCoord;
@@ -25,14 +31,17 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.world.World;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
+  private static int BUTTON_HEIGHT = 20;
+  private static int BUTTON_WIDTH = 60;
+
   Set<EnumFacing> cons;
   IConduitBundle cb;
-  EnumMap<EnumFacing, String> adjacentBlockNames = new EnumMap<EnumFacing, String>(EnumFacing.class);
   EnumMap<EnumFacing, Point> textPositions = new EnumMap<EnumFacing, Point>(EnumFacing.class);
+  EnumMap<EnumFacing, ItemStack> stacks = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  EnumMap<EnumFacing, Point> stackPositions = new EnumMap<EnumFacing, Point>(EnumFacing.class);
 
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
@@ -86,27 +95,29 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 
-  protected String getBlockNameForDirection(EnumFacing direction) {
+  protected void findBlockDataForDirection(EnumFacing direction) {
     World world = cb.getBundleWorldObj();
     BlockPos blockPos = cb.getLocation().getLocation(direction).getBlockPos();
-    if (world.isAirBlock(blockPos)) {
-      return null;
+    if (!world.isAirBlock(blockPos)) {
+      Block b = world.getBlockState(blockPos).getBlock();
+      if (b != null && b != EnderIO.blockConduitBundle) {
+        try {
+          stacks.put(direction, new ItemStack(b, 1, b.getDamageValue(world, blockPos)));
+        } catch (Throwable t) {
+        }
+      }
     }
-    Block b = world.getBlockState(blockPos).getBlock();
-    if (b != null && b != EnderIO.blockConduitBundle) {
-      return b.getLocalizedName();
-    }
-    return null;
   }
 
   @Override
   public void initGui() {
     GuiButton b;
     for (EnumFacing dir : EnumFacing.VALUES) {
+      findBlockDataForDirection(dir);
       Point p = getOffsetForDir(dir, cons.contains(dir));
-      adjacentBlockNames.put(dir, getBlockNameForDirection(dir));
-      textPositions.put(dir, new Point(p.x, p.y + 21));
-      b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
+      textPositions.put(dir, new Point(p.x, p.y + BUTTON_HEIGHT + 1));
+      stackPositions.put(dir, new Point(p.x + 2, p.y + 2));
+      b = new GuiButton(dir.ordinal(), p.x, p.y, BUTTON_WIDTH, BUTTON_HEIGHT, (stacks.containsKey(dir) ? "  " : "") + dir.toString());
       buttonList.add(b);
       if(!cons.contains(dir)) {
         b.enabled = false;
@@ -124,31 +135,59 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     drawDefaultBackground();
 
+    int scale = fontRendererObj.getUnicodeFlag() ? 1 : 2;
+
     for (EnumFacing dir : EnumFacing.VALUES) {
-      String blockName = adjacentBlockNames.get(dir);
-      if (blockName == null) {
-        continue;
+      if (stacks.containsKey(dir)) {
+        ItemStack stack = stacks.get(dir);
+        String blockName = stack.getUnlocalizedName();
+        if (stack.hasDisplayName()) {
+          blockName = stack.getDisplayName();
+        } else {
+          blockName = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
+        }
+        if (blockName == null) {
+          continue;
+        }
+        int textWidth = fontRendererObj.getStringWidth(blockName) / scale;
+        Point p = textPositions.get(dir);
+
+        GL11.glPushMatrix();
+        GL11.glScalef(1f / scale, 1f / scale, 1f / scale);
+        drawString(fontRendererObj, blockName, scale * (p.x + BUTTON_WIDTH / 2 - textWidth / 2), scale * p.y, ColorUtil.getARGB(Color.gray));
+        GL11.glPopMatrix();
       }
-      int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(blockName);
-      Point p = textPositions.get(dir);
-      drawString(Minecraft.getMinecraft().fontRendererObj, blockName, p.x + 60 / 2 - textWidth / 2, p.y, ColorUtil.getARGB(Color.gray));
     }
 
     super.drawScreen(par1, par2, par3);
 
-    int butHeight = 20;
     String txt = "Select Connection to Adjust";
-    int x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
-    int y = height / 2 - butHeight * 3 - 5;
+    int x = width / 2 - (fontRendererObj.getStringWidth(txt) / 2);
+    int y = height / 2 - BUTTON_HEIGHT * 3 - 5;
 
-    drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+    drawString(fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
 
     if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
       txt = "You can also right-click the connector directly";
-      x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
-      y = height / 2 + butHeight * 3 - 5;
-      drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+      x = width / 2 - (fontRendererObj.getStringWidth(txt) / 2);
+      y = height / 2 + BUTTON_HEIGHT * 3 - 5;
+      drawString(fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
     }
+
+    RenderHelper.enableGUIStandardItemLighting();
+    GlStateManager.disableLighting();
+    GlStateManager.enableRescaleNormal();
+    GlStateManager.enableColorMaterial();
+    GlStateManager.enableLighting();
+
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      if (stacks.containsKey(dir)) {
+        ItemStack stack = stacks.get(dir);
+        Point p = stackPositions.get(dir);
+        itemRender.renderItemAndEffectIntoGUI(stack, p.x, p.y);
+      }
+    }
+
   }
 
   private EnumFacing W, S, A, D;
@@ -161,20 +200,17 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   private Point getOffsetForDir(EnumFacing dir, boolean enabled) {
     int mx = width / 2;
     int my = height / 2;
-    int butWidth = 60;
-    int butHeight = 20;
-
     if (dir.getFrontOffsetY() == 0) {
 
       float playerAngle = Minecraft.getMinecraft().thePlayer.rotationYaw * deg2rad;
       float dirAngle = dir.getHorizontalIndex() * headg2rad;
       float buttonAngle = dirAngle - playerAngle - 90 * deg2rad;
 
-      int ax = (int) (MathHelper.cos((buttonAngle)) * butWidth);
-      int ay = (int) (MathHelper.sin((buttonAngle)) * butHeight * 2);
+      int ax = (int) (MathHelper.cos((buttonAngle)) * BUTTON_WIDTH);
+      int ay = (int) (MathHelper.sin((buttonAngle)) * BUTTON_HEIGHT * 2);
 
-      int x = mx - butWidth / 2 + ax;
-      int y = my - butHeight / 2 + ay;
+      int x = mx - BUTTON_WIDTH / 2 + ax;
+      int y = my - BUTTON_HEIGHT / 2 + ay;
 
       if (ay < w) {
         W = dir;
@@ -200,8 +236,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       return new Point(x, y);
     } else {
 
-      int x = mx - butWidth / 2 - dir.getFrontOffsetY() * (5 + butWidth * 2);
-      int y = my - butHeight / 2 - (dir.getFrontOffsetY() * butHeight * 2);
+      int x = mx - BUTTON_WIDTH / 2 - dir.getFrontOffsetY() * (5 + BUTTON_WIDTH * 2);
+      int y = my - BUTTON_HEIGHT / 2 - (dir.getFrontOffsetY() * BUTTON_HEIGHT * 2);
 
       if (dir == EnumFacing.DOWN) {
         con = enabled;
