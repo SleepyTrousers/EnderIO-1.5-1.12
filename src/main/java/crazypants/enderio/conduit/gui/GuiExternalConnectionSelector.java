@@ -105,7 +105,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     for (EnumFacing dir : EnumFacing.VALUES) {
       Point p = getOffsetForDir(dir, cons.contains(dir));
       adjacentBlockNames.put(dir, getBlockNameForDirection(dir));
-      textPositions.put(dir, new Point(p.x, p.y + 20));
+      textPositions.put(dir, new Point(p.x, p.y + 21));
       b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
       buttonList.add(b);
       if(!cons.contains(dir)) {
