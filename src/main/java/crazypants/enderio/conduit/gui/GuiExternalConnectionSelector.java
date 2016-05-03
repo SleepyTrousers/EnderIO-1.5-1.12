@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 
@@ -27,6 +29,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
   Set<EnumFacing> cons;
   IConduitBundle cb;
+  String adjacentBlockNames[] = new String[6];
+  Point textPositions[] = new Point[6];
 
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
@@ -80,11 +84,21 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 
+  protected String getBlockNameForDirection(EnumFacing direction) {
+    Block b = cb.getBundleWorldObj().getBlockState(cb.getLocation().getLocation(direction).getBlockPos()).getBlock();
+    if (b != null && b != Blocks.air) {
+      return b.getLocalizedName();
+    }
+    return null;
+  }
+
   @Override
   public void initGui() {
     GuiButton b;
     for (EnumFacing dir : EnumFacing.VALUES) {
       Point p = getOffsetForDir(dir, cons.contains(dir));
+      adjacentBlockNames[dir.ordinal()] = getBlockNameForDirection(dir);
+      textPositions[dir.ordinal()] = new Point(p.x, p.y + 20);
       b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
       buttonList.add(b);
       if(!cons.contains(dir)) {
@@ -111,6 +125,14 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     int y = height / 2 - butHeight * 3 - 5;
         
     drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+    for (int i = 0; i < 6; i++) {
+      String blockName = adjacentBlockNames[i];
+      if (blockName == null) {
+        continue;
+      }
+      int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(blockName);
+      drawString(Minecraft.getMinecraft().fontRendererObj, blockName, textPositions[i].x + 60 / 2 - textWidth / 2, textPositions[i].y, ColorUtil.getARGB(Color.gray));
+    }
 
     if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
       txt = "You can also right-click the connector directly";
