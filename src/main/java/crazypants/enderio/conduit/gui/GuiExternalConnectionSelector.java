@@ -124,14 +124,6 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     drawDefaultBackground();
 
-    super.drawScreen(par1, par2, par3);
-
-    int butHeight = 20;
-    String txt = "Select Connection to Adjust";
-    int x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
-    int y = height / 2 - butHeight * 3 - 5;
-        
-    drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
     for (EnumFacing dir : EnumFacing.VALUES) {
       String blockName = adjacentBlockNames.get(dir);
       if (blockName == null) {
@@ -141,6 +133,15 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       Point p = textPositions.get(dir);
       drawString(Minecraft.getMinecraft().fontRendererObj, blockName, p.x + 60 / 2 - textWidth / 2, p.y, ColorUtil.getARGB(Color.gray));
     }
+
+    super.drawScreen(par1, par2, par3);
+
+    int butHeight = 20;
+    String txt = "Select Connection to Adjust";
+    int x = width / 2 - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(txt) / 2);
+    int y = height / 2 - butHeight * 3 - 5;
+
+    drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
 
     if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
       txt = "You can also right-click the connector directly";
