@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 
@@ -24,6 +24,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.world.World;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
@@ -85,8 +86,13 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   protected String getBlockNameForDirection(EnumFacing direction) {
-    Block b = cb.getBundleWorldObj().getBlockState(cb.getLocation().getLocation(direction).getBlockPos()).getBlock();
-    if (b != null && b != Blocks.air) {
+    World world = cb.getBundleWorldObj();
+    BlockPos blockPos = cb.getLocation().getLocation(direction).getBlockPos();
+    if (world.isAirBlock(blockPos)) {
+      return null;
+    }
+    Block b = world.getBlockState(blockPos).getBlock();
+    if (b != null && b != EnderIO.blockConduitBundle) {
       return b.getLocalizedName();
     }
     return null;
