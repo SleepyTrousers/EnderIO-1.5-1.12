@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,8 +31,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
   Set<EnumFacing> cons;
   IConduitBundle cb;
-  String adjacentBlockNames[] = new String[6];
-  Point textPositions[] = new Point[6];
+  EnumMap<EnumFacing, String> adjacentBlockNames = new EnumMap<EnumFacing, String>(EnumFacing.class);
+  EnumMap<EnumFacing, Point> textPositions = new EnumMap<EnumFacing, Point>(EnumFacing.class);
 
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
@@ -103,8 +104,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     GuiButton b;
     for (EnumFacing dir : EnumFacing.VALUES) {
       Point p = getOffsetForDir(dir, cons.contains(dir));
-      adjacentBlockNames[dir.ordinal()] = getBlockNameForDirection(dir);
-      textPositions[dir.ordinal()] = new Point(p.x, p.y + 20);
+      adjacentBlockNames.put(dir, getBlockNameForDirection(dir));
+      textPositions.put(dir, new Point(p.x, p.y + 20));
       b = new GuiButton(dir.ordinal(), p.x, p.y, 60, 20, dir.toString());
       buttonList.add(b);
       if(!cons.contains(dir)) {
@@ -131,13 +132,14 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     int y = height / 2 - butHeight * 3 - 5;
         
     drawString(Minecraft.getMinecraft().fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
-    for (int i = 0; i < 6; i++) {
-      String blockName = adjacentBlockNames[i];
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      String blockName = adjacentBlockNames.get(dir);
       if (blockName == null) {
         continue;
       }
       int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(blockName);
-      drawString(Minecraft.getMinecraft().fontRendererObj, blockName, textPositions[i].x + 60 / 2 - textWidth / 2, textPositions[i].y, ColorUtil.getARGB(Color.gray));
+      Point p = textPositions.get(dir);
+      drawString(Minecraft.getMinecraft().fontRendererObj, blockName, p.x + 60 / 2 - textWidth / 2, p.y, ColorUtil.getARGB(Color.gray));
     }
 
     if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
