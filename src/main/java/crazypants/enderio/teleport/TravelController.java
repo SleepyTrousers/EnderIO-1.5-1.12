@@ -612,6 +612,7 @@ public class TravelController {
     }
   }
 
+  @SideOnly(Side.CLIENT)
   private void onInput(EntityPlayerSP player) {
 
     MovementInput input = player.movementInput;
