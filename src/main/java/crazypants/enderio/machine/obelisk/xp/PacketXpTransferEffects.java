@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -9,6 +8,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
 
 public class PacketXpTransferEffects implements IMessage, IMessageHandler<PacketXpTransferEffects, IMessage> {
 
@@ -46,22 +46,21 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
   @Override
   public IMessage onMessage(PacketXpTransferEffects message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if(player != null) {
+    if (player != null) {
       int particleCount = 1;
-      if(message.swing) {
+      if (message.swing) {
         player.swingItem();
         particleCount = 5;
-      }      
+      }
 
       for (int i = 0; i < particleCount; i++) {
-        
         float xOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
         float yOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
-        float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;  
-        
-        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), 
-            message.x + xOffset, message.y + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);
-        if(fx != null) {
+        float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
+
+        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), message.x + xOffset, message.y
+            + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);
+        if (fx != null) {
           fx.setRBGColorF(0.2f, 0.8f, 0.2f);
           fx.motionY *= 0.5f;
         }

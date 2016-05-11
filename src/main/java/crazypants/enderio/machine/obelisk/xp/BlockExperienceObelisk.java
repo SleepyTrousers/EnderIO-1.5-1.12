@@ -4,9 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -44,18 +42,18 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileExperienceObelisk) {
-      return new ContainerNoInv((IInventory) te);
+    TileExperienceObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerNoInv(te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileExperienceObelisk) {
-      return new GuiExperienceObelisk(player.inventory, (TileExperienceObelisk) te);
+    TileExperienceObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiExperienceObelisk(player.inventory, te);
     }
     return null;
   }
@@ -68,7 +66,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
-    ; // Has no particles
+    // Has no particles
   }
   
   @Override

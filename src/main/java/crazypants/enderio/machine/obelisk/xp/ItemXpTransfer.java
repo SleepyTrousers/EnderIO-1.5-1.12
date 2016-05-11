@@ -1,14 +1,5 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.xp.XpUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -22,6 +13,16 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.XpUtil;
 
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
@@ -59,19 +60,20 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     }
 
     if (res) {
-      sendXPUpdate(player, world, pos.getX(), pos.getY(), pos.getZ(), swing);
+      sendXPUpdate(player, world, pos, swing);
     }
 
     return res;
   }
 
-  public static void sendXPUpdate(EntityPlayer player, World world, int x, int y, int z, boolean swing) {
+  public static void sendXPUpdate(EntityPlayer player, World world, BlockPos pos, boolean swing) {
     Vector3d look = Util.getLookVecEio(player);
     double xP = player.posX + look.x;
     double yP = player.posY + 1.5;
     double zP = player.posZ + look.z;
     PacketHandler.INSTANCE.sendTo(new PacketXpTransferEffects(swing, xP, yP, zP), (EntityPlayerMP) player);
-    world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
+    world.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "random.orb", 0.1F,
+        0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
   }
 
   public static boolean tranferFromBlockToPlayer(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
@@ -84,7 +86,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       return false;
     }
     int currentXP = XpUtil.getPlayerXP(player);
-    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1) + 1;
+    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
     int requiredXP = nextLevelXP - currentXP;
 
     int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
@@ -129,12 +131,6 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemXpTransfer.getUnlocalisedName());
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public void registerIcons(IIconRegister IIconRegister) {
-  // itemIcon = IIconRegister.registerIcon("enderio:xpTransfer");
-  // }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {

@@ -50,20 +50,20 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if(xpCont.isDirty()) {
+    if (xpCont.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
       xpCont.setDirty(false);
     }
     return false;
   }
-  
+
   @Override
   protected boolean doPull(EnumFacing dir) {
     boolean res = super.doPull(dir);
     FluidUtil.doPull(this, dir, Config.fluidConduitMaxIoRate);
     return res;
   }
-  
+
   @Override
   protected boolean doPush(EnumFacing dir) {
     boolean res = super.doPush(dir);
