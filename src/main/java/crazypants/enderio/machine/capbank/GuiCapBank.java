@@ -95,14 +95,13 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
         float change = network.getAverageChangePerTick();
         String color = EnumChatFormatting.WHITE.toString();
-        if(change > 0) {
+        if (change > 0) {
           color = EnumChatFormatting.GREEN.toString() + "+";
-        } else if(change < 0) {
+        } else if (change < 0) {
           color = EnumChatFormatting.RED.toString();
         }
         text.add(String.format("%s%s%s" + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr(), color,
-            PowerDisplayUtil.formatPower(Math.round(change)), " "
-                + EnumChatFormatting.GRAY.toString()));
+            PowerDisplayUtil.formatPower(Math.round(change)), " " + EnumChatFormatting.GRAY.toString()));
       }
 
     });
@@ -141,22 +140,21 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
 
     List<BlockCoord> coords = new ArrayList<BlockCoord>();
-    if(network != null && network.getMembers().size() < 200) {
+    if (network != null && network.getMembers().size() < 200) {
       for (TileCapBank cb : network.getMembers()) {
         coords.add(cb.getLocation());
       }
     }
-    if(coords.isEmpty()) {
+    if (coords.isEmpty()) {
       coords.add(te.getLocation());
     }
-
 
     configOverlay = new GuiOverlayIoConfig(coords) {
       @Override
       protected String getLabelForMode(IoMode mode) {
-        if(mode == IoMode.PUSH) {
+        if (mode == IoMode.PUSH) {
           return EnderIO.lang.localize("gui.capBank.outputMode");
-        } else if(mode == IoMode.PULL) {
+        } else if (mode == IoMode.PULL) {
           return EnderIO.lang.localize("gui.capBank.inputMode");
         }
         return super.getLabelForMode(mode);
@@ -166,15 +164,15 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     y += 20;
     configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, te, configOverlay);
-    
+
     FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
-    
+
     x = inputX - 24;
     y = inputY;
     maxInputTF = new TextFieldEnder(fontRenderer, x, y, 68, 16);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
-    
+
     x = outputX - 24;
     y = outputY;
     maxOutputTF = new TextFieldEnder(fontRenderer, x, y, 68, 16);
@@ -203,17 +201,17 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private void updateInputOutput() {
     int input = PowerDisplayUtil.parsePower(maxInputTF);
-    if(input >= 0 && network.getMaxInput() != input) {
+    if (input >= 0 && network.getMaxInput() != input) {
       setMaxInput(input);
     }
     int output = PowerDisplayUtil.parsePower(maxOutputTF);
-    if(output >= 0 && network.getMaxOutput() != output) {
+    if (output >= 0 && network.getMaxOutput() != output) {
       setMaxOutput(output);
     }
   }
 
   private void setMaxOutput(int output) {
-    if(output != network.getMaxOutput()) {
+    if (output != network.getMaxOutput()) {
       network.setMaxOutput(output);
       maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
       sendUpdateToServer();
@@ -221,7 +219,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   private void setMaxInput(int input) {
-    if(input != network.getMaxInput()) {
+    if (input != network.getMaxInput()) {
       network.setMaxInput(input);
       maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
       sendUpdateToServer();
@@ -229,14 +227,14 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   protected void sendUpdateToServer() {
-    if(network != NULL_NETWORK) {
+    if (network != NULL_NETWORK) {
       PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(capBank));
     }
   }
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    
+
     requestStateUpdate();
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -249,7 +247,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     if (container.hasBaublesSlots()) {
       drawTexturedModalRect(sx, sy + 83, 197, 83, 24, 77);
     }
-    
+
     int i1 = getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
@@ -260,8 +258,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     int midX = sx + xSize / 2;
 
-    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) +
-        " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) + " " + PowerDisplayUtil.abrevation()
+        + PowerDisplayUtil.perTickStr();
     FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
     int x = midX - swid / 2;
@@ -280,7 +278,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;
     drawString(fontRenderer, str, x, y, -1);
-    
+
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
@@ -324,33 +322,33 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   private void requestStateUpdate() {
-    if(EnderIO.proxy.getTickCount() % 2 == 0) {
-      if(!updateState()) {
+    if (EnderIO.proxy.getTickCount() % 2 == 0) {
+      if (!updateState()) {
         network.requestPowerUpdate(capBank, 2);
       }
     }
   }
 
   private boolean updateState() {
-    if(!initState) {
+    if (!initState) {
       return false;
     }
 
-    if(capBank.getNetwork() == null) {
+    if (capBank.getNetwork() == null) {
       network = NULL_NETWORK;
       return true;
     }
-    if(network == null || network == NULL_NETWORK) {
+    if (network == null || network == NULL_NETWORK) {
       network = (CapBankClientNetwork) capBank.getNetwork();
       initialStateCount = network.getStateUpdateCount();
       PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
       return true;
     }
-    if(network.getStateUpdateCount() == initialStateCount) {
+    if (network.getStateUpdateCount() == initialStateCount) {
       PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
       return true;
     }
-    if(network.getStateUpdateCount() > initialStateCount) {
+    if (network.getStateUpdateCount() > initialStateCount) {
       container.updateInventory();
       updateFieldsFromState();
       initState = false;
@@ -365,6 +363,5 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     inputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getInputControlMode()));
     outputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getOutputControlMode()));
   }
-
 
 }

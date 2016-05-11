@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import crazypants.enderio.config.Config;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.MathHelper;
+import crazypants.enderio.config.Config;
 
 public enum CapBankType implements IStringSerializable {
 
@@ -39,7 +39,7 @@ public enum CapBankType implements IStringSerializable {
 
   public static int getMetaFromType(CapBankType type) {
     for (int i = 0; i < TYPES.size(); i++) {
-      if(TYPES.get(i) == type) {
+      if (TYPES.get(i) == type) {
         return i;
       }
     }
@@ -53,7 +53,7 @@ public enum CapBankType implements IStringSerializable {
 
   public static CapBankType getTypeFromUID(String uid) {
     for (CapBankType type : TYPES) {
-      if(type.uid.equals(uid)) {
+      if (type.uid.equals(uid)) {
         return type;
       }
     }
@@ -105,7 +105,7 @@ public enum CapBankType implements IStringSerializable {
   }
 
   public static CapBankType readTypeFromNBT(NBTTagCompound nbtRoot) {
-    if(nbtRoot == null || !nbtRoot.hasKey("type")) {
+    if (nbtRoot == null || !nbtRoot.hasKey("type")) {
       return ACTIVATED;
     }
     return getTypeFromUID(nbtRoot.getString("type"));

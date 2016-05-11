@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.capbank;
 
-
 public enum InfoDisplayType {
 
   NONE,
@@ -10,7 +9,7 @@ public enum InfoDisplayType {
   public InfoDisplayType next() {
     int ord = ordinal();
     ++ord;
-    if(ord >= values().length) {
+    if (ord >= values().length) {
       ord = 0;
     }
     return values()[ord];

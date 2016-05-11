@@ -32,10 +32,10 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   public boolean hasBaublesSlots() {
     return baubles != null;
   }
-  
+
   @Override
   protected void addSlots(final InventoryPlayer playerInv) {
-    if(getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
+    if (getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
       inv = getInv().getNetwork().getInventory();
     } else {
       inv = new InventoryImpl();
@@ -46,13 +46,13 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
       baubles = new ShadowInventory(baubles);
     }
-    
+
     int armorOffset = 21;
-    for(int i = 0; i < 4; i++) {
-      addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i*20, 59));
+    for (int i = 0; i < 4; i++) {
+      addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i * 20, 59));
     }
 
-    //armor slots
+    // armor slots
     for (int i = 0; i < 4; ++i) {
       final int k = i;
       addSlotToContainer(new Slot(playerInv, playerInv.getSizeInventory() - 1 - i, -15 + armorOffset, 12 + i * 18) {
@@ -64,7 +64,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
         @Override
         public boolean isItemValid(ItemStack par1ItemStack) {
-          if(par1ItemStack == null) {
+          if (par1ItemStack == null) {
             return false;
           }
           return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, playerInv.player);
@@ -89,9 +89,9 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       }
     }
   }
-  
+
   public void updateInventory() {
-    if(getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
+    if (getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
       inv.setCapBank(getInv().getNetwork().getInventory().getCapBank());
     }
   }
@@ -102,11 +102,10 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     p.translate(21, 0);
     return p;
   }
-  
+
   @SuppressWarnings("hiding")
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-
     int startPlayerSlot = 4;
     int endPlayerSlot = startPlayerSlot + 26;
     int startHotBarSlot = endPlayerSlot + 1;
@@ -116,7 +115,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
     ItemStack copystack = null;
     Slot slot = inventorySlots.get(slotIndex);
-    if(slot != null && slot.getHasStack()) {
+    if (slot != null && slot.getHasStack()) {
 
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
@@ -124,38 +123,34 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       // Note: Merging into Baubles slots is disabled because the used vanilla
       // merge method does not check if the item can go into the slot or not.
 
-      if(slotIndex < 4) {
+      if (slotIndex < 4) {
         // merge from machine input slots to inventory
-        if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)
-            && /*
-                * !(baubles != null && mergeItemStack(origStack,
-                * startBaublesSlot, endBaublesSlot, false)) &&
-                */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
-            return null;
+        if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex) && /*
+                                                                             * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot,
+                                                                             * false)) &&
+                                                                             */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
+          return null;
         }
 
       } else {
-        //Check from inv-> charge then inv->hotbar or hotbar->inv
-        if(slotIndex >= startPlayerSlot) {
-          if(!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
+        // Check from inv-> charge then inv->hotbar or hotbar->inv
+        if (slotIndex >= startPlayerSlot) {
+          if (!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
 
-            if(slotIndex <= endPlayerSlot) {
+            if (slotIndex <= endPlayerSlot) {
               if (/*
-                   * !(baubles != null && mergeItemStack(origStack,
-                   * startBaublesSlot, endBaublesSlot, false)) &&
+                   * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                    */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                 return null;
               }
-            } else if(slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+            } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
               if (/*
-                   * !(baubles != null && mergeItemStack(origStack,
-                   * startBaublesSlot, endBaublesSlot, false)) &&
+                   * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                    */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
                 return null;
               }
             } else if (slotIndex >= startBaublesSlot && slotIndex <= endBaublesSlot) {
-              if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && 
-                  !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
                 return null;
               }
             }
@@ -164,7 +159,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
         }
       }
 
-      if(origStack.stackSize == 0) {
+      if (origStack.stackSize == 0) {
         slot.putStack((ItemStack) null);
       } else {
         slot.onSlotChanged();
@@ -172,7 +167,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
       slot.onSlotChanged();
 
-      if(origStack.stackSize == copystack.stackSize) {
+      if (origStack.stackSize == copystack.stackSize) {
         return null;
       }
 
@@ -183,13 +178,13 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   }
 
   private boolean mergeItemStackIntoArmor(EntityPlayer entityPlayer, ItemStack origStack, int slotIndex) {
-    if(origStack == null || !(origStack.getItem() instanceof ItemArmor)) {
+    if (origStack == null || !(origStack.getItem() instanceof ItemArmor)) {
       return false;
     }
     ItemArmor armor = (ItemArmor) origStack.getItem();
     int index = 3 - armor.armorType;
     ItemStack[] ai = entityPlayer.inventory.armorInventory;
-    if(ai[index] == null) {
+    if (ai[index] == null) {
       ai[index] = origStack.copy();
       origStack.stackSize = 0;
       return true;

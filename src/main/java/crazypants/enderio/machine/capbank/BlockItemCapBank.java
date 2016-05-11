@@ -46,7 +46,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    if(container.stackSize > 1) {
+    if (container.stackSize > 1) {
       return 0;
     }
     CapBankType type = CapBankType.getTypeFromMeta(container.getItemDamage());
@@ -54,7 +54,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     int maxInput = type.getMaxIO();
     int energyReceived = Math.min(type.getMaxEnergyStored() - energy, Math.min(maxReceive, maxInput));
 
-    if(!simulate && !type.isCreative()) {
+    if (!simulate && !type.isCreative()) {
       energy += energyReceived;
       PowerHandlerUtil.setStoredEnergyForItem(container, energy);
     }
@@ -64,7 +64,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    if(container.stackSize > 1) {
+    if (container.stackSize > 1) {
       return 0;
     }
     CapBankType type = CapBankType.getTypeFromMeta(container.getItemDamage());
@@ -72,7 +72,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     int maxOutput = type.getMaxIO();
     int energyExtracted = Math.min(energy, Math.min(maxExtract, maxOutput));
 
-    if(!simulate && !type.isCreative()) {
+    if (!simulate && !type.isCreative()) {
       energy -= energyExtracted;
       PowerHandlerUtil.setStoredEnergyForItem(container, energy);
     }

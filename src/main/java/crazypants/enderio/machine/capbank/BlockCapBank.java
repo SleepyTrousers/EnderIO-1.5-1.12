@@ -76,7 +76,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   private static CapBankItemRenderMapper CAPBANK_RENDER_MAPPER;
 
   public static BlockCapBank create() {
-
     PacketHandler.INSTANCE.registerMessage(PacketNetworkStateResponse.class, PacketNetworkStateResponse.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketNetworkStateRequest.class, PacketNetworkStateRequest.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketNetworkIdRequest.class, PacketNetworkIdRequest.class, PacketHandler.nextID(), Side.SERVER);
@@ -184,9 +183,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack),
-        CapBankType.getTypeFromMeta(itemstack.getItemDamage()).getMaxEnergyStored()));
-    if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Items")) {
+    list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
+        .getMaxEnergyStored()));
+    if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Items")) { // TODO
       NBTTagList itemList = (NBTTagList) itemstack.getTagCompound().getTag("Items");
       String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
       list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
@@ -203,12 +202,10 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing faceHit, float hitX, float hitY,
       float hitZ) {
 
-    TileEntity te = world.getTileEntity(pos);
-    if (!(te instanceof TileCapBank)) {
+    TileCapBank tcb = getTileEntity(world, pos);
+    if (tcb == null) {
       return false;
     }
-
-    TileCapBank tcb = (TileCapBank) te;
 
     if (entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() == null && faceHit.getFrontOffsetY() == 0) {
       InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
@@ -222,7 +219,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     }
 
     if (!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer)) {
-
       IoMode ioMode = tcb.getIoMode(faceHit);
       if (faceHit.getFrontOffsetY() == 0) {
         if (ioMode == IoMode.DISABLED) {
@@ -266,18 +262,18 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileCapBank) {
-      return new ContainerCapBank(player.inventory, (TileCapBank) te);
+    TileCapBank te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerCapBank(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileCapBank) {
-      return new GuiCapBank(player, player.inventory, (TileCapBank) te);
+    TileCapBank te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiCapBank(player, player.inventory, te);
     }
     return null;
   }
@@ -388,10 +384,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (!world.isRemote && (!player.capabilities.isCreativeMode)) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileCapBank) {
-        TileCapBank cb = (TileCapBank) te;
-        cb.moveInventoryToNetwork();
+      TileCapBank te = getTileEntity(world, pos);
+      if (te != null) {
+        te.moveInventoryToNetwork();
       }
     }
     return super.removedByPlayer(world, pos, player, willHarvest);
@@ -408,12 +403,10 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   public void breakBlock(World world, BlockPos pos, IBlockState state) {
     if (!world.isRemote) {
-      TileEntity te = world.getTileEntity(pos);
-      if (!(te instanceof TileCapBank)) {
-        return;
+      TileCapBank te = getTileEntity(world, pos);
+      if (te != null) {
+        te.onBreakBlock();
       }
-      TileCapBank cb = (TileCapBank) te;
-      cb.onBreakBlock();
     }
     super.breakBlock(world, pos, state);
   }
@@ -452,10 +445,10 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public int getComparatorInputOverride(World w, BlockPos pos) {
-    TileEntity te = w.getTileEntity(pos);
-    if (te instanceof TileCapBank) {
-      return ((TileCapBank) te).getComparatorOutput();
+  public int getComparatorInputOverride(World world, BlockPos pos) {
+    TileCapBank te = getTileEntity(world, pos);
+    if (te != null) {
+      return te.getComparatorOutput();
     }
     return 0;
   }
@@ -515,7 +508,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public CapBankItemRenderMapper getItemRenderMapper() {
-    if(CAPBANK_RENDER_MAPPER == null) {
+    if (CAPBANK_RENDER_MAPPER == null) {
       CAPBANK_RENDER_MAPPER = new CapBankItemRenderMapper();
     }
     return CAPBANK_RENDER_MAPPER;
@@ -555,4 +548,5 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     }
     throw new RuntimeException("Hey, leave our enums alone!");
   }
+
 }
