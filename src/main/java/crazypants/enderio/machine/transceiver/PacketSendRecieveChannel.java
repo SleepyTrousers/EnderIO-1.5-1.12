@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.transceiver;
 
-import com.enderio.core.common.network.MessageTileEntity;
-import com.enderio.core.common.network.NetworkUtil;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,24 +7,27 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketSendRecieveChannel, IMessage>  {
-  
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
+public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketSendRecieveChannel, IMessage> {
+
   private boolean isSend;
   private boolean isAdd;
   private Channel channel;
-  
-  public PacketSendRecieveChannel() {    
+
+  public PacketSendRecieveChannel() {
   }
-  
+
   public PacketSendRecieveChannel(TileTransceiver te, boolean isSend, boolean isAdd, Channel channel) {
     super(te);
     this.isSend = isSend;
     this.isAdd = isAdd;
-    this.channel = channel;    
+    this.channel = channel;
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {    
+  public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
     buf.writeBoolean(isSend);
     buf.writeBoolean(isAdd);
@@ -48,28 +48,23 @@ public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
   @Override
   public IMessage onMessage(PacketSendRecieveChannel message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileTransceiver tile = message.getTileEntity(player.worldObj);   
-    Channel channel = message.channel;
-    boolean isSend = message.isSend;
-    boolean isAdd = message.isAdd;
-    if (tile != null &&  channel != null) {
-      if(isSend) {
-        if(isAdd) {
-          tile.addSendChanel(channel);
+    TileTransceiver tile = message.getTileEntity(player.worldObj);
+    if (tile != null && message.channel != null) {
+      if (message.isSend) {
+        if (message.isAdd) {
+          tile.addSendChanel(message.channel);
         } else {
-          tile.removeSendChanel(channel);
+          tile.removeSendChanel(message.channel);
         }
       } else {
-        if(isAdd) {
-          tile.addRecieveChanel(channel);
+        if (message.isAdd) {
+          tile.addRecieveChanel(message.channel);
         } else {
-          tile.removeRecieveChanel(channel);
+          tile.removeRecieveChanel(message.channel);
         }
-      }       
+      }
     }
     return null;
   }
-  
-  
 
 }

@@ -19,7 +19,6 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.transceiver.ChannelType;
@@ -37,21 +36,22 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver", "itemFilter");
 
-    generalTab = new GeneralTab(this); 
+    generalTab = new GeneralTab(this);
     tabs.add(generalTab);
     FilterTab filterTab = new FilterTab(this);
     tabs.add(filterTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
-    tabs.add(new ChannelTab(this, ChannelType.FLUID));  
-    if(Config.enderRailEnabled) {
-      tabs.add(new ChannelTab(this, ChannelType.RAIL));
-    }
+    tabs.add(new ChannelTab(this, ChannelType.FLUID));
+    // TODO: re-enable when EnderRail is ported
+    // if(Config.enderRailEnabled) {
+    // tabs.add(new ChannelTab(this, ChannelType.RAIL));
+    // }
   }
 
   @Override
   protected void updatePowerBarTooltip(List<String> text) {
-    generalTab.updatePowerBarTooltip(text);    
+    generalTab.updatePowerBarTooltip(text);
   }
 
   @Override
@@ -67,7 +67,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   @Override
   public void updateScreen() {
     for (int i = 0; i < tabs.size(); i++) {
-      if(i == activeTab) {
+      if (i == activeTab) {
         tabs.get(i).updateScreen();
         return;
       }
@@ -76,9 +76,9 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   @Override
   protected void keyTyped(char par1, int par2) {
-    if(par2 == 1) {
+    if (par2 == 1) {
       for (IGuiOverlay overlay : overlays) {
-        if(overlay.isVisible()) {
+        if (overlay.isVisible()) {
           overlay.setIsVisible(false);
           return;
         }
@@ -87,7 +87,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     }
 
     for (int i = 0; i < tabs.size(); i++) {
-      if(i == activeTab) {
+      if (i == activeTab) {
         tabs.get(i).keyTyped(par1, par2);
         return;
       }
@@ -98,13 +98,13 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   public void initGui() {
     super.initGui();
     for (int i = 0; i < tabs.size(); i++) {
-      if(i != activeTab) {
+      if (i != activeTab) {
         tabs.get(i).deactivate();
       }
     }
     ghostSlots.clear();
     for (int i = 0; i < tabs.size(); i++) {
-      if(i == activeTab) {
+      if (i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
       }
     }
@@ -114,7 +114,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   @Override
   public void renderPowerBar(int k, int l) {
-    //super.renderPowerBar(k, l);
+    // super.renderPowerBar(k, l);
   }
 
   @Override
@@ -136,7 +136,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   public int getPowerY() {
     return super.getPowerY();
   }
-  
+
   @Override
   public int getPowerWidth() {
     return POWER_WIDTH;
@@ -152,14 +152,13 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     return 246;
   }
 
-  
   @Override
   public String getPowerOutputLabel() {
     return super.getPowerOutputLabel();
   }
 
   @Override
-  public  int getPowerOutputValue() {
+  public int getPowerOutputValue() {
     return super.getPowerOutputValue();
   }
 
@@ -176,8 +175,8 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     x = (x - guiLeft);
     y = (y - guiTop);
 
-    if(x > tabLeftX && x < tabRightX + 24) {
-      if(y > minY && y < maxY) {
+    if (x > tabLeftX && x < tabRightX + 24) {
+      if (y > minY && y < maxY) {
         activeTab = (y - minY) / 24;
         hideOverlays();
         initGui();
@@ -201,11 +200,11 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     int sy = (height - ySize) / 2;
     int tabX = sx + xSize - 3;
 
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();              
+    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-    
+
     for (int i = 0; i < tabs.size(); i++) {
-      if(i != activeTab) {
+      if (i != activeTab) {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
         IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, sy + tabYOffset + (i * 24));
         IWidgetIcon icon = tabs.get(i).getIcon();
@@ -224,19 +223,19 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
     Tessellator.getInstance().draw();
-    
-    if(tabs.size() > 0) {
+
+    if (tabs.size() > 0) {
       IWidgetIcon icon = tabs.get(activeTab).getIcon();
-      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4, true);      
+      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4, true);
       tabs.get(activeTab).render(par1, par2, par3);
-    } 
-    
+    }
+
   }
-  
+
   public TileTransceiver getTransciever() {
     return getTileEntity();
   }
-  
+
   public ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
   }
@@ -254,17 +253,17 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     return super.getBlockingAreas();
   }
 
-//  @Override
-//  @Optional.Method(modid = "NotEnoughItems")
-//  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
-//    if(tabs.size() > 0) {
-//      int sx = (width - xSize) / 2;
-//      int sy = (height - ySize) / 2;
-//      int tabX = sx + xSize - 3;
-//      int tabY = sy + tabYOffset;
-//
-//      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
-//    }
-//    return false;
-//  }
+  // @Override
+  // @Optional.Method(modid = "NotEnoughItems")
+  // public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+  // if(tabs.size() > 0) {
+  // int sx = (width - xSize) / 2;
+  // int sy = (height - ySize) / 2;
+  // int tabX = sx + xSize - 3;
+  // int tabY = sy + tabYOffset;
+  //
+  // return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
+  // }
+  // return false;
+  // }
 }

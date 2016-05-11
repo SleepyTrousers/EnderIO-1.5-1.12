@@ -2,7 +2,6 @@ package crazypants.enderio.machine.transceiver;
 
 import crazypants.enderio.EnderIO;
 
-
 public class ClientChannelRegister extends ChannelRegister {
 
   public static final ChannelRegister instance = new ClientChannelRegister();
@@ -21,5 +20,5 @@ public class ClientChannelRegister extends ChannelRegister {
     }
     super.addChannel(channel);
   }
-  
+
 }

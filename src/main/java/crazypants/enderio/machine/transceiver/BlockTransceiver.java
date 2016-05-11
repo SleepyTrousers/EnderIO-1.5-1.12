@@ -44,7 +44,6 @@ import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockTransceiver create() {
-
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.CLIENT);
@@ -52,34 +51,34 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannelList.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
 
-    ConnectionHandler ch = new ConnectionHandler();   
+    ConnectionHandler ch = new ConnectionHandler();
     MinecraftForge.EVENT_BUS.register(ch);
 
     BlockTransceiver res = new BlockTransceiver();
     res.init();
     return res;
   }
-  
+
   private TextureSupplier portalIcon = TextureRegistry.registerTexture("blocks/ender_still");
-  
+
   private BlockTransceiver() {
     super(ModObject.blockTransceiver, TileTransceiver.class);
-    if(!Config.transceiverEnabled) {
+    if (!Config.transceiverEnabled) {
       setCreativeTab(null);
-    }    
+    }
   }
 
   @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getPortalIcon() {    
+  public TextureAtlasSprite getPortalIcon() {
     return portalIcon.get(TextureAtlasSprite.class);
   }
 
-  @Override  
-    public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-    if(!world.isRemote) {
+  @Override
+  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+    if (!world.isRemote) {
       TileEntity te = world.getTileEntity(pos);
-      if(te instanceof TileTransceiver) {
-        ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
+      if (te instanceof TileTransceiver) {
+        ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
       }
     }
     return super.removedByPlayer(world, pos, player, willHarvest);
@@ -87,17 +86,20 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileTransceiver) {
-      return new ContainerTransceiver(player.inventory, (TileTransceiver) te);
+    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerTransceiver(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    return new GuiTransceiver(player.inventory, (TileTransceiver) te);
+    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiTransceiver(player.inventory, te);
+    }
+    return null;
   }
 
   @Override
@@ -110,35 +112,32 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
     return false;
   }
 
-  
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
   }
-   
+
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileTransceiver && player.isSneaking()) {
-      TileTransceiver trans = (TileTransceiver) te;
+    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null && player.isSneaking()) {
       for (ChannelType type : ChannelType.VALUES) {
-
-        Set<Channel> recieving = trans.getRecieveChannels(type);
-        Set<Channel> sending = trans.getSendChannels(type);
+        Set<Channel> recieving = te.getRecieveChannels(type);
+        Set<Channel> sending = te.getSendChannels(type);
         String recieve = "[" + buildString(recieving) + "]";
         String send = "[" + buildString(sending) + "]";
 
-        if(isEmpty(recieve) && isEmpty(send)) {
+        if (isEmpty(recieve) && isEmpty(send)) {
           continue;
         }
 
         tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
 
-        if(!isEmpty(recieve)) {
+        if (!isEmpty(recieve)) {
           tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
               + EnumChatFormatting.WHITE, recieve));
         }
-        if(!isEmpty(send)) {
+        if (!isEmpty(send)) {
           tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
               + EnumChatFormatting.WHITE, send));
         }
@@ -168,7 +167,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
   public IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {

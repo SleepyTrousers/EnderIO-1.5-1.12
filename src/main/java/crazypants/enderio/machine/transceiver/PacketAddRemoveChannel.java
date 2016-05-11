@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.transceiver;
 
-import com.enderio.core.common.network.NetworkUtil;
-
-import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -10,19 +7,23 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketAddRemoveChannel, IMessage>  {
+import com.enderio.core.common.network.NetworkUtil;
+
+import crazypants.enderio.network.PacketHandler;
+
+public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketAddRemoveChannel, IMessage> {
 
   private boolean isAdd;
   private Channel channel;
-  
-  public PacketAddRemoveChannel() {    
+
+  public PacketAddRemoveChannel() {
   }
-  
+
   public PacketAddRemoveChannel(Channel channel, boolean isAdd) {
     this.channel = channel;
     this.isAdd = isAdd;
   }
-  
+
   @Override
   public void toBytes(ByteBuf buf) {
     buf.writeBoolean(isAdd);
@@ -30,7 +31,7 @@ public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketA
     channel.writeToNBT(nbt);
     NetworkUtil.writeNBTTagCompound(nbt, buf);
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
     isAdd = buf.readBoolean();
@@ -41,17 +42,15 @@ public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketA
   @Override
   public IMessage onMessage(PacketAddRemoveChannel message, MessageContext ctx) {
     ChannelRegister register = ctx.side == Side.CLIENT ? ClientChannelRegister.instance : ServerChannelRegister.instance;
-    if(message.isAdd) {
-      register.addChannel(message.channel);      
+    if (message.isAdd) {
+      register.addChannel(message.channel);
     } else {
-      register.removeChannel(message.channel);      
+      register.removeChannel(message.channel);
     }
-    if(ctx.side == Side.SERVER) {
-      PacketHandler.INSTANCE.sendToAll(new PacketAddRemoveChannel(message.channel, message.isAdd));  
+    if (ctx.side == Side.SERVER) {
+      PacketHandler.INSTANCE.sendToAll(new PacketAddRemoveChannel(message.channel, message.isAdd));
     }
     return null;
   }
-
-  
 
 }

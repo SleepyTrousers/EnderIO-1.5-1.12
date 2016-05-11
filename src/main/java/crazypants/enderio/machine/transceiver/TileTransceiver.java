@@ -46,7 +46,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
-  //Power will only be sent to other transceivers is the buffer is higher than this amount
+  // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
 
   private final SetMultimap<ChannelType, Channel> sendChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
@@ -91,11 +91,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
     boolean res = super.processTasks(redstoneChecksPassed);
-    if(!redstoneChecksPassed) {
+    if (!redstoneChecksPassed) {
       return res;
     }
 
-    //NB: Fluid done synchronously
+    // NB: Fluid done synchronously
     processPower();
     processItems();
     return res;
@@ -113,11 +113,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
     if (!worldObj.isRemote) {
       railController.doTick();
-      if(sendChannelsDirty) {
+      if (sendChannelsDirty) {
         PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this, 256);
         sendChannelsDirty = false;
       }
-      if(recieveChannelsDirty) {
+      if (recieveChannelsDirty) {
         PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, false), this, 256);
         recieveChannelsDirty = false;
       }
@@ -127,7 +127,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public void invalidate() {
     super.invalidate();
-    if(registered && worldObj != null && !worldObj.isRemote) {
+    if (registered && worldObj != null && !worldObj.isRemote) {
       ServerChannelRegister.instance.dergister(this);
       registered = false;
     }
@@ -136,7 +136,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public void onChunkUnload() {
     super.onChunkUnload();
-    if(registered && worldObj != null && !worldObj.isRemote) {
+    if (registered && worldObj != null && !worldObj.isRemote) {
       ServerChannelRegister.instance.dergister(this);
       registered = false;
     }
@@ -203,7 +203,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   private void removeChannel(Channel channel, SetMultimap<ChannelType, Channel> channnels) {
-    if(channel == null) {
+    if (channel == null) {
       return;
     }
     Set<Channel> chans = channnels.get(channel.getType());
@@ -235,16 +235,16 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     readChannels(nbtRoot, sendChannels, "sendChannels");
     readChannels(nbtRoot, recieveChannels, "recieveChannels");
 
-    if(nbtRoot.hasKey("sendItemFilter")) {
+    if (nbtRoot.hasKey("sendItemFilter")) {
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("sendItemFilter");
       sendItemFilter.copyFrom((ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot));
     }
-    if(nbtRoot.hasKey("recieveItemFilter")) {
+    if (nbtRoot.hasKey("recieveItemFilter")) {
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("recieveItemFilter");
       recieveItemFilter.copyFrom((ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot));
     }
 
-    if(nbtRoot.hasKey("bufferStacks")) {
+    if (nbtRoot.hasKey("bufferStacks")) {
       bufferStacks = nbtRoot.getBoolean("bufferStacks");
     } else {
       bufferStacks = true;
@@ -253,15 +253,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   static void readChannels(NBTTagCompound nbtRoot, SetMultimap<ChannelType, Channel> channels, String key) {
     channels.clear();
-    
-    if(!nbtRoot.hasKey(key)) {
+
+    if (!nbtRoot.hasKey(key)) {
       return;
     }
     NBTTagList tags = (NBTTagList) nbtRoot.getTag(key);
     for (int i = 0; i < tags.tagCount(); i++) {
       NBTTagCompound chanelTag = tags.getCompoundTagAt(i);
       Channel channel = Channel.readFromNBT(chanelTag);
-      if(channel != null) {
+      if (channel != null) {
         channels.put(channel.getType(), channel);
       }
     }
@@ -277,12 +277,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     channelTags = createTagList(recieveChannels);
     nbtRoot.setTag("recieveChannels", channelTags);
 
-    if(sendItemFilter != null) {
+    if (sendItemFilter != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
       FilterRegister.writeFilterToNbt(sendItemFilter, itemRoot);
       nbtRoot.setTag("sendItemFilter", itemRoot);
     }
-    if(recieveItemFilter != null) {
+    if (recieveItemFilter != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
       FilterRegister.writeFilterToNbt(recieveItemFilter, itemRoot);
       nbtRoot.setTag("recieveItemFilter", itemRoot);
@@ -319,13 +319,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return recieveChannels;
   }
 
-  //---------------- Power Handling
-
+  // ---------------- Power Handling
 
   private void processPower() {
     Set<Channel> sendTo = getSendChannels(ChannelType.POWER);
     int canSend = getMaxSendableEnergy();
-    if(canSend > 0 && !sendTo.isEmpty()) {
+    if (canSend > 0 && !sendTo.isEmpty()) {
       Iterator<Channel> iter = sendTo.iterator();
       while (canSend > 0 && iter.hasNext()) {
         ServerChannelRegister.instance.sendPower(this, canSend, iter.next());
@@ -333,8 +332,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       }
     }
     canSend = getMaxSendableEnergy();
-    if(canSend > 0 && !getRecieveChannels(ChannelType.POWER).isEmpty()) {
-      if(powerDistributor == null) {
+    if (canSend > 0 && !getRecieveChannels(ChannelType.POWER).isEmpty()) {
+      if (powerDistributor == null) {
         powerDistributor = new PowerDistributor(getLocation());
       }
       int used = powerDistributor.transmitEnergy(worldObj, canSend);
@@ -349,7 +348,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
-    if(powerDistributor != null) {
+    if (powerDistributor != null) {
       powerDistributor.neighboursChanged();
     }
     neighbourFluidHandlers = null;
@@ -358,7 +357,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private boolean hasRecieveChannel(Set<Channel> channels, ChannelType type) {
     boolean hasChannel = false;
     for (Channel chan : channels) {
-      if(getRecieveChannels(type).contains(chan)) {
+      if (getRecieveChannels(type).contains(chan)) {
         hasChannel = true;
         break;
       }
@@ -366,16 +365,16 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return hasChannel;
   }
 
-  //----------------  Fluid Handling
+  // ---------------- Fluid Handling
 
   @Override
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    if(inFluidFill) {
+    if (inFluidFill) {
       return false;
     }
     try {
       inFluidFill = true;
-      if(getSendChannels(ChannelType.FLUID).isEmpty()) {
+      if (getSendChannels(ChannelType.FLUID).isEmpty()) {
         return false;
       }
       return ServerChannelRegister.instance.canFill(this, getSendChannels(ChannelType.FLUID), fluid);
@@ -385,16 +384,16 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   public boolean canReceive(Set<Channel> channels, Fluid fluid) {
-    if(inFluidFill) {
+    if (inFluidFill) {
       return false;
     }
 
-    if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
+    if (!hasRecieveChannel(channels, ChannelType.FLUID)) {
       return false;
     }
     Map<EnumFacing, IFluidHandler> handlers = getNeighbouringFluidHandlers();
     for (Entry<EnumFacing, IFluidHandler> entry : handlers.entrySet()) {
-      if(entry.getValue().canFill(entry.getKey().getOpposite(), fluid)) {
+      if (entry.getValue().canFill(entry.getKey().getOpposite(), fluid)) {
         return true;
       }
     }
@@ -403,12 +402,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if(inFluidFill) {
+    if (inFluidFill) {
       return 0;
     }
     try {
       inFluidFill = true;
-      if(getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
+      if (getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
         return 0;
       }
       return ServerChannelRegister.instance.fill(this, getSendChannels(ChannelType.FLUID), resource, doFill);
@@ -418,18 +417,18 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   public int recieveFluid(Set<Channel> channels, FluidStack resource, boolean doFill) {
-    if(inFluidFill) {
+    if (inFluidFill) {
       return 0;
     }
-    if(!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
+    if (!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
       return 0;
     }
     Map<EnumFacing, IFluidHandler> handlers = getNeighbouringFluidHandlers();
     for (Entry<EnumFacing, IFluidHandler> entry : handlers.entrySet()) {
       IoMode mode = getIoMode(entry.getKey());
-      if(mode.canOutput()) {
+      if (mode.canOutput()) {
         int res = entry.getValue().fill(entry.getKey().getOpposite(), resource, doFill);
-        if(res > 0) {
+        if (res > 0) {
           return res;
         }
       }
@@ -439,7 +438,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if(inGetTankInfo) {
+    if (inGetTankInfo) {
       return new FluidTankInfo[0];
     }
     try {
@@ -451,18 +450,18 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   public void getRecieveTankInfo(List<FluidTankInfo> infos, Set<Channel> channels) {
-    if(inGetTankInfo) {
+    if (inGetTankInfo) {
       return;
     }
     try {
       inGetTankInfo = true;
-      if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
+      if (!hasRecieveChannel(channels, ChannelType.FLUID)) {
         return;
       }
       Map<EnumFacing, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
       for (Entry<EnumFacing, IFluidHandler> entry : fluidHandlers.entrySet()) {
         FluidTankInfo[] tanks = entry.getValue().getTankInfo(entry.getKey().getOpposite());
-        if(tanks != null) {
+        if (tanks != null) {
           for (FluidTankInfo info : tanks) {
             infos.add(info);
           }
@@ -474,13 +473,13 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   Map<EnumFacing, IFluidHandler> getNeighbouringFluidHandlers() {
-    if(neighbourFluidHandlers == null) {
+    if (neighbourFluidHandlers == null) {
       neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(worldObj, getLocation());
     }
     return neighbourFluidHandlers;
   }
 
-  //Pulling liquids not supported
+  // Pulling liquids not supported
   @Override
   public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
     return null;
@@ -496,7 +495,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return false;
   }
 
-  //---------------- item handling
+  // ---------------- item handling
 
   @Override
   public int getInventoryStackLimit() {
@@ -515,10 +514,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   private void processItems() {
     Set<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);
-    if(!sendItemChannels.isEmpty()) {
+    if (!sendItemChannels.isEmpty()) {
       for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
         ItemStack toSend = getStackInSlot(i);
-        if(toSend != null) {
+        if (toSend != null) {
           ServerChannelRegister.instance.sendItem(this, sendItemChannels, i, toSend);
         }
       }
@@ -547,55 +546,52 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if(itemstack == null) {
+    if (itemstack == null) {
       return false;
     }
-    if(slotDefinition.isInputSlot(slot)) {
-      if(!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
+    if (slotDefinition.isInputSlot(slot)) {
+      if (!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
         return false;
       }
-    } else if(slotDefinition.isOutputSlot(slot)) {
-      if(!getReceiveItemFilter().doesItemPassFilter(null, itemstack)) {
+    } else if (slotDefinition.isOutputSlot(slot)) {
+      if (!getReceiveItemFilter().doesItemPassFilter(null, itemstack)) {
         return false;
       }
     }
     return true;
   }
 
-  
-  
   @Override
   public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing j) {
-    if(itemstack == null) {
+    if (itemstack == null) {
       return false;
     }
 
-    //only allow 1 stack per type
-    if(slotDefinition.isInputSlot(slot)) {
+    // only allow 1 stack per type
+    if (slotDefinition.isInputSlot(slot)) {
 
       Set<Channel> chans = getSendChannels().get(ChannelType.ITEM);
-      if(chans == null || chans.size() == 0) {
+      if (chans == null || chans.size() == 0) {
         return false;
       }
-      if(!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
+      if (!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
         return false;
       }
 
       for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-        if(i != slot) {
-          if(ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
+        if (i != slot) {
+          if (ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
             return false;
           }
         }
       }
-    } else if(slotDefinition.isOutputSlot(slot)) {
-
-      if(!getRecieveItemFilter().doesItemPassFilter(null, itemstack)) {
+    } else if (slotDefinition.isOutputSlot(slot)) {
+      if (!getRecieveItemFilter().doesItemPassFilter(null, itemstack)) {
         return false;
       }
       for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
-        if(i != slot) {
-          if(ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
+        if (i != slot) {
+          if (ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
             return false;
           }
         }

@@ -1,29 +1,23 @@
 package crazypants.enderio.machine.transceiver;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.mojang.authlib.GameProfile;
 
 import crazypants.util.UserIdent;
-import net.minecraft.nbt.NBTTagCompound;
-
 
 public class Channel {
- 
+
   public static Channel readFromNBT(NBTTagCompound root) {
-    if(!root.hasKey("name")) {
+    if (!root.hasKey("name")) {
       return null;
     }
     String name = root.getString("name");
-    UserIdent user;
-    if(root.hasKey("user")) {
-      String legacyUser = root.getString("user");
-      user = UserIdent.create(legacyUser);
-    } else {
-      user = UserIdent.readfromNbt(root, "user");
-    }
+    UserIdent user = UserIdent.readfromNbt(root, "user");
     ChannelType type = ChannelType.values()[root.getShort("type")];
     return new Channel(name, user, type);
   }
-  
+
   private final String name;
   private final UserIdent user;
   final ChannelType type;
@@ -51,20 +45,20 @@ public class Channel {
   }
 
   public void writeToNBT(NBTTagCompound root) {
-    if(name == null || name.isEmpty()) {
+    if (name == null || name.isEmpty()) {
       return;
-    } 
+    }
     root.setString("name", name);
     user.saveToNbt(root, "user");
-    root.setShort("type", (short)type.ordinal());
+    root.setShort("type", (short) type.ordinal());
   }
-  
+
   private String trim(String str) {
-    if(str == null) {
+    if (str == null) {
       return null;
     }
     str = str.trim();
-    if(str.isEmpty()) {
+    if (str.isEmpty()) {
       return null;
     }
     return str;
@@ -82,24 +76,24 @@ public class Channel {
 
   @Override
   public boolean equals(Object obj) {
-    if(this == obj)
+    if (this == obj)
       return true;
-    if(obj == null)
+    if (obj == null)
       return false;
-    if(getClass() != obj.getClass())
+    if (getClass() != obj.getClass())
       return false;
     Channel other = (Channel) obj;
-    if(getName() == null) {
-      if(other.getName() != null)
+    if (getName() == null) {
+      if (other.getName() != null)
         return false;
-    } else if(!getName().equals(other.getName()))
+    } else if (!getName().equals(other.getName()))
       return false;
-    if(type != other.type)
+    if (type != other.type)
       return false;
-    if(user == null) {
-      if(other.user != null)
+    if (user == null) {
+      if (other.user != null)
         return false;
-    } else if(!user.equals(other.user))
+    } else if (!user.equals(other.user))
       return false;
     return true;
   }

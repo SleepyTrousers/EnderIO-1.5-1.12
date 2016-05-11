@@ -44,9 +44,9 @@ public class ServerChannelRegister extends ChannelRegister {
   public static void load() {
     instance.reset();
     File dataFile = getDataFile();
-    if(!dataFile.exists()) {
+    if (!dataFile.exists()) {
       dataFile = getFallbackDataFile();
-      if(!dataFile.exists()) {
+      if (!dataFile.exists()) {
         return;
       } else {
         Log.warn("ServerChannelRegister: Using fallback save location " + dataFile.getAbsolutePath());
@@ -62,14 +62,11 @@ public class ServerChannelRegister extends ChannelRegister {
         UserIdent ident = UserIdent.nobody;
         String uuid = null;
         String playername = null;
-        String legacyUser = null;
         reader.beginObject();
         while (reader.hasNext()) {
           String key = reader.nextName();
           if ("name".equals(key)) {
             name = reader.nextString();
-          } else if ("user".equals(key)) {
-            legacyUser = reader.nextString();
           } else if ("uuid".equals(key)) {
             uuid = reader.nextString();
           } else if ("playername".equals(key)) {
@@ -88,8 +85,6 @@ public class ServerChannelRegister extends ChannelRegister {
             ident = UserIdent.create(uuid, playername);
           } else if (playername != null) {
             ident = UserIdent.create(playername);
-          } else if (legacyUser != null) {
-            ident = UserIdent.create(legacyUser);
           }
           Channel chan = new Channel(name, ident, ChannelType.values()[ordinal]);
           instance.addChannel(chan);
@@ -105,7 +100,7 @@ public class ServerChannelRegister extends ChannelRegister {
   public static void store() {
     Future<?> future = saveExecutor.submit(new SaveRunnable(copyChannels()));
     try {
-      //wait up to 5 seconds for it to finish
+      // wait up to 5 seconds for it to finish
       future.get(5, TimeUnit.SECONDS);
     } catch (Exception e) {
       Log.warn("Failed to write Transciever Channels on exit: " + e);
@@ -119,7 +114,7 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private static void doStore(ListMultimap<ChannelType, Channel> channels) {
     File dataFile = getDataFile();
-    if(!createFolderAndWriteFile(channels, dataFile)) {
+    if (!createFolderAndWriteFile(channels, dataFile)) {
       dataFile = getFallbackDataFile();
       Log.error("ServerChannelRegister: Attempting to write Dimensional Transceiver data to fallback location: " + dataFile.getAbsolutePath());
       try {
@@ -146,10 +141,10 @@ public class ServerChannelRegister extends ChannelRegister {
   }
 
   protected static void writeFile(ListMultimap<ChannelType, Channel> channels, File dataFile) throws IOException {
-    if(dataFile.exists()) {
+    if (dataFile.exists()) {
       File tmpFile = new File(dataFile.getAbsolutePath() + ".tmp");
       doWriteFile(channels, tmpFile);
-      if(FileUtils.deleteQuietly(dataFile)) {
+      if (FileUtils.deleteQuietly(dataFile)) {
         tmpFile.renameTo(dataFile);
       }
 
@@ -186,7 +181,7 @@ public class ServerChannelRegister extends ChannelRegister {
   }
 
   private static ListMultimap<ChannelType, Channel> copyChannels() {
-    //NB: deep copy not needed as all types are immuatble
+    // NB: deep copy not needed as all types are immuatble
     ListMultimap<ChannelType, Channel> copy = MultimapBuilder.enumKeys(ChannelType.class).arrayListValues().build();
     for (Entry<ChannelType, Channel> entry : instance.channels.entries()) {
       copy.put(entry.getKey(), entry.getValue());
@@ -194,7 +189,7 @@ public class ServerChannelRegister extends ChannelRegister {
     return copy;
   }
 
-  //-----------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------
 
   private final List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
   private Map<Channel, RoundRobinIterator<TileTransceiver>> iterators = new HashMap<Channel, RoundRobinIterator<TileTransceiver>>();
@@ -236,23 +231,23 @@ public class ServerChannelRegister extends ChannelRegister {
 
   public RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
     RoundRobinIterator<TileTransceiver> res = iterators.get(channel);
-    if(res == null) {
+    if (res == null) {
       res = new RoundRobinIterator<TileTransceiver>(transceivers);
       iterators.put(channel, res);
     }
     return res;
   }
 
-  //Power
+  // Power
 
   public void sendPower(TileTransceiver sender, int canSend, Channel channel) {
     RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
     for (TileTransceiver trans : iter) {
-      if(trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
+      if (trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
         double invLoss = 1 - Config.transceiverEnergyLoss;
         int canSendWithLoss = (int) Math.round(canSend * invLoss);
         int recieved = trans.receiveEnergy(null, canSendWithLoss, false);
-        if(recieved > 0) {
+        if (recieved > 0) {
           int recievedPlusLoss = (int) Math.round(recieved / invLoss);
           sender.usePower(recievedPlusLoss);
         }
@@ -260,12 +255,12 @@ public class ServerChannelRegister extends ChannelRegister {
     }
   }
 
-  //Fluid
+  // Fluid
 
   public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channelsIn) {
     List<FluidTankInfo> infos = new ArrayList<FluidTankInfo>();
     for (TileTransceiver tran : transceivers) {
-      if(tran != tileTransceiver) {
+      if (tran != tileTransceiver) {
         tran.getRecieveTankInfo(infos, channelsIn);
       }
     }
@@ -274,8 +269,8 @@ public class ServerChannelRegister extends ChannelRegister {
 
   public boolean canFill(TileTransceiver tileTransceiver, Set<Channel> set, Fluid fluid) {
     for (TileTransceiver tran : transceivers) {
-      if(tran != tileTransceiver) {
-        if(tran.canReceive(set, fluid)) {
+      if (tran != tileTransceiver) {
+        if (tran.canReceive(set, fluid)) {
           return true;
         }
       }
@@ -284,16 +279,16 @@ public class ServerChannelRegister extends ChannelRegister {
   }
 
   public int fill(TileTransceiver from, Set<Channel> list, FluidStack resource, boolean doFill) {
-    if(resource == null || !from.hasPower()) {
+    if (resource == null || !from.hasPower()) {
       return 0;
     }
     for (Channel channel : list) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
       for (TileTransceiver trans : iter) {
-        if(trans != from) {
+        if (trans != from) {
           int val = trans.recieveFluid(list, resource, doFill);
-          if(val > 0) {
-            if(doFill && Config.transceiverBucketTransmissionCostRF > 0) {
+          if (val > 0) {
+            if (doFill && Config.transceiverBucketTransmissionCostRF > 0) {
               int powerUsed = (int) Math.max(1, Config.transceiverBucketTransmissionCostRF * val / 1000d);
               from.usePower(powerUsed);
             }
@@ -305,21 +300,21 @@ public class ServerChannelRegister extends ChannelRegister {
     return 0;
   }
 
-  //Item 
+  // Item
 
   public void sendItem(TileTransceiver from, Set<Channel> channelsIn, int slot, ItemStack contents) {
-    if(!from.hasPower()) {
+    if (!from.hasPower()) {
       return;
     }
-    if(!from.getSendItemFilter().doesItemPassFilter(null, contents)) {
+    if (!from.getSendItemFilter().doesItemPassFilter(null, contents)) {
       return;
     }
     for (Channel channel : channelsIn) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
       for (TileTransceiver trans : iter) {
-        if(trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel) && trans.getRedstoneChecksPassed()) {
+        if (trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel) && trans.getRedstoneChecksPassed()) {
           contents = sendItem(from, slot, contents, trans);
-          if(contents == null) {
+          if (contents == null) {
             return;
           }
         }
@@ -329,21 +324,21 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private ItemStack sendItem(TileTransceiver from, int slot, ItemStack contents, TileTransceiver to) {
     SlotDefinition sd = to.getSlotDefinition();
-    if(!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
+    if (!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
       return contents;
     }
-    //try merging into existing stacks    
+    // try merging into existing stacks
 
     boolean sendComplete = false; // Only allow 1 stack per item type
     for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot && !sendComplete; i++) {
       ItemStack existing = to.getStackInSlot(i);
-      if(ItemUtil.areStacksEqual(existing, contents)) {
+      if (ItemUtil.areStacksEqual(existing, contents)) {
         sendComplete = true;
-        if(existing.stackSize < to.getInventoryStackLimit()) {
+        if (existing.stackSize < to.getInventoryStackLimit()) {
           int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
           numCanMerge = Math.min(numCanMerge, contents.stackSize);
           ItemStack remaining;
-          if(numCanMerge >= contents.stackSize) {
+          if (numCanMerge >= contents.stackSize) {
             remaining = null;
           } else {
             remaining = contents.copy();
@@ -353,7 +348,7 @@ public class ServerChannelRegister extends ChannelRegister {
           destStack.stackSize += numCanMerge;
           to.setInventorySlotContents(i, destStack);
           from.setInventorySlotContents(slot, remaining);
-          if(remaining == null) {
+          if (remaining == null) {
             return null;
           } else {
             contents = remaining.copy();
@@ -361,19 +356,19 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
     }
-    if(!sendComplete) {
-      //then fill empty stack
+    if (!sendComplete) {
+      // then fill empty stack
       for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
         ItemStack existing = to.getStackInSlot(i);
-        if(existing == null) {
+        if (existing == null) {
           int numCanMerge = Math.min(contents.stackSize, to.getInventoryStackLimit());
-          if(numCanMerge > 0) {
+          if (numCanMerge > 0) {
             ItemStack destStack = contents.copy();
             destStack.stackSize = numCanMerge;
             to.setInventorySlotContents(i, destStack);
             ItemStack remaining = contents.copy();
             remaining.stackSize -= numCanMerge;
-            if(remaining.stackSize == 0) {
+            if (remaining.stackSize == 0) {
               remaining = null;
             }
             from.setInventorySlotContents(slot, remaining);
