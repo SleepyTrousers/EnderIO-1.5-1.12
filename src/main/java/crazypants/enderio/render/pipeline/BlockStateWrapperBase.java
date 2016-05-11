@@ -49,6 +49,10 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
   private IBakedModel model = null;
 
+  protected static Cache<Pair<Block, Long>, QuadCollector> getCache() {
+    return cache;
+  }
+
   public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper.IBlockRenderMapper renderMapper) {
     this.state = notnull(state);
     this.block = notnull(state.getBlock());
@@ -76,7 +80,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   public static void invalidate() {
-    cache.invalidateAll();
+    getCache().invalidateAll();
   }
 
   @SuppressWarnings("rawtypes")
@@ -155,7 +159,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
       if (paintSource != null) {
         addCacheKeyInternal(paintSource);
       }
-      quads = cache.getIfPresent(Pair.of(block, getCacheKey()));
+      quads = getCache().getIfPresent(Pair.of(block, getCacheKey()));
       cacheResult = quads == null ? "miss" : "hit";
     } else {
       cacheResult = "not cachable";
@@ -171,7 +175,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
       }
 
       if (doCaching) {
-        cache.put(Pair.of(block, getCacheKey()), quads);
+        getCache().put(Pair.of(block, getCacheKey()), quads);
       }
     }
 

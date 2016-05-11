@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.OverlayHolder;
 import crazypants.enderio.render.pipeline.RelayingBakedModel;
@@ -150,6 +151,7 @@ public class SmartModelAttacher {
 
     OverlayHolder.collectOverlayQuads(event);
     BlockStateWrapperBase.invalidate();
+    BlockStateWrapperConduitBundle.invalidate();
   }
 
   private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl) {

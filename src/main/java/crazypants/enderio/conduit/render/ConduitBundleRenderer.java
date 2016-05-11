@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -108,9 +107,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   // ------------ Block Model building
 
-  public List<BakedQuad> getGeneralQuads(IBlockStateWrapper state) {
+  public List<BakedQuad> getGeneralQuads(IBlockStateWrapper state, EnumWorldBlockLayer layer) {
 
-    EnumWorldBlockLayer layer = MinecraftForgeClient.getRenderLayer();
     if(layer != EnumWorldBlockLayer.CUTOUT) {
       return Collections.emptyList();
     }

@@ -105,4 +105,10 @@ public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IP
   //NB: this has to be named differently to the TE method due to obf
   World getBundleWorldObj();
 
+  /**
+   * A callback for conduits to tell the conduit bundle that they have just changed in a way that changes the way the conduit bundle is rendered.
+   * <p>
+   * Safe to call server-side, but ignored there.
+   */
+  void geometryChanged();
 }
