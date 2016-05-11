@@ -104,6 +104,10 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    // has to be exactly 1, must be handled from the caller
+    if (container.stackSize != 1) {
+      return 0;
+    }
     SmartTank tank = loadTank(container);
     int ret = tank.fill(resource, doFill);
     saveTank(container, tank);
@@ -112,6 +116,10 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+    // has to be exactly 1, must be handled from the caller
+    if (container.stackSize != 1) {
+      return null;
+    }
     SmartTank tank = loadTank(container);
     FluidStack ret = tank.drain(maxDrain, doDrain);
     saveTank(container, tank);
