@@ -84,7 +84,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
     public boolean isItemValid(ItemStack itemStack) {
 
       ItemStack refStack = getInv().craftingGrid.getStackInSlot(slotNumber);
-      if(refStack == null || itemStack == null) {
+      if (refStack == null || itemStack == null) {
         return false;
       }
       return TileCrafter.compareDamageable(itemStack, refStack);
@@ -111,10 +111,10 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
 
     @Override
     public void putStack(ItemStack stack) {
-      if(slotIndex >= 9) {
+      if (slotIndex >= 9) {
         return;
       }
-      if(stack != null) {
+      if (stack != null) {
         stack = stack.copy();
         stack.stackSize = 1;
       }

@@ -21,7 +21,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 
-public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
+public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
 
   private final ToggleButton bufferSizeB;
 
@@ -49,10 +49,10 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   protected void mouseClickMove(int mouseX, int mouseY, int button, long par4) {
     if (!getGhostSlots().isEmpty()) {
       GhostSlot slot = getGhostSlot(mouseX, mouseY);
-      if(slot != null) {
+      if (slot != null) {
         ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
         // don't replace already set slots while dragging an item
-        if(st == null || slot.getStack() == null) {
+        if (st == null || slot.getStack() == null) {
           slot.putStack(st);
         }
       }
@@ -63,7 +63,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   @Override
   protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
-    if(b == bufferSizeB) {
+    if (b == bufferSizeB) {
       getTileEntity().setBufferStacks(bufferSizeB.isSelected());
       PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(getTileEntity()));
     }
@@ -73,21 +73,20 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
   public final int getXSize() {
     return 219;
   }
-  
+
   @Override
   protected int getPowerU() {
     return 220;
   }
 
   @Override
-  protected int getPowerX() {    
+  protected int getPowerX() {
     return 9;
-  }  
-  
+  }
+
   @Override
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation()
-        + " " + EnderIO.lang.localize("gui.machine.percraft"));
+    text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation() + " " + EnderIO.lang.localize("gui.machine.percraft"));
     super.updatePowerBarTooltip(text);
   }
 
@@ -98,9 +97,9 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);    
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-  
+
 }

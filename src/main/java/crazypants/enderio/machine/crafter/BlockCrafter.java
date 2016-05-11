@@ -3,7 +3,6 @@ package crazypants.enderio.machine.crafter;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,32 +19,32 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
-  
+
   public static BlockCrafter create() {
-    PacketHandler.INSTANCE.registerMessage(PacketCrafter.class,PacketCrafter.class,PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketCrafter.class, PacketCrafter.class, PacketHandler.nextID(), Side.SERVER);
     BlockCrafter res = new BlockCrafter();
     res.init();
     return res;
   }
-  
+
   protected BlockCrafter() {
     super(ModObject.blockCrafter, TileCrafter.class);
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCrafter) {
-      return new ContainerCrafter(player.inventory, (TileCrafter) te);
+    TileCrafter te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerCrafter(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileCrafter) {
-      return new GuiCrafter(player.inventory, (TileCrafter) te);
+    TileCrafter te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiCrafter(player.inventory, te);
     }
     return null;
   }

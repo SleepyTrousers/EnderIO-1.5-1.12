@@ -46,12 +46,12 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   private boolean bufferStacks = true;
 
   private long ticksSinceLastCraft = 0;
-  
+
   private FakePlayer playerInst;
 
   public TileCrafter() {
     super(new SlotDefinition(9, 1), CRAFTER_POWER_INTAKE, CRAFTER_POWER_BUFFER, null);
-    containerItems = new ArrayList<ItemStack>();    
+    containerItems = new ArrayList<ItemStack>();
   }
 
   @Override
@@ -61,7 +61,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
   @Override
   protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if(!slotDefinition.isInputSlot(slot)) {
+    if (!slotDefinition.isInputSlot(slot)) {
       return false;
     }
     return craftingGrid.inv[slot] != null && compareDamageable(itemstack, craftingGrid.inv[slot]);
@@ -75,24 +75,24 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     ticksSinceLastCraft++;
-    if(!redstoneCheck || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
+    if (!redstoneCheck || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
       return false;
     }
     int ticksPerCraft = getTicksPerCraft();
-    if(ticksSinceLastCraft <= ticksPerCraft) {
+    if (ticksSinceLastCraft <= ticksPerCraft) {
       return false;
     }
     ticksSinceLastCraft = 0;
 
     // process buffered container items
-    if(!containerItems.isEmpty()) {
+    if (!containerItems.isEmpty()) {
       Iterator<ItemStack> iter = containerItems.iterator();
       while (iter.hasNext()) {
         ItemStack stack = iter.next();
-        if(inventory[9] == null) {
+        if (inventory[9] == null) {
           inventory[9] = stack;
           iter.remove();
-        } else if(ItemUtil.areStackMergable(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
+        } else if (ItemUtil.areStackMergable(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
           inventory[9].stackSize += stack.stackSize;
           iter.remove();
         }
@@ -100,7 +100,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       return false;
     }
 
-    if(craftRecipe()) {
+    if (craftRecipe()) {
       int used = Math.min(getEnergyStored(), getPowerUsePerCraft());
       setEnergyStored(getEnergyStored() - used);
     }
@@ -125,10 +125,10 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   static boolean compareDamageable(ItemStack stack, ItemStack req) {
-    if(stack.isItemEqual(req)) {
+    if (stack.isItemEqual(req)) {
       return true;
     }
-    if(stack.isItemStackDamageable() && stack.getItem() == req.getItem()) {
+    if (stack.isItemStackDamageable() && stack.getItem() == req.getItem()) {
       return stack.getItemDamage() < stack.getMaxDamage();
     }
     return false;
@@ -140,7 +140,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   private boolean craftRecipe() {
 
     // (1) Find the items to craft with and put a copy into a temp crafting grid;
-    //     also record what was used to destroy it later
+    // also record what was used to destroy it later
     InventoryCrafting inv = new InventoryCrafting(new Container() {
       @Override
       public boolean canInteractWith(EntityPlayer var1) {
@@ -149,7 +149,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }, 3, 3);
 
     int[] usedItems = new int[9];
-    
+
     for (int j = 0; j < 9; j++) {
       ItemStack req = craftingGrid.getStackInSlot(j);
       if (req != null) {
@@ -269,11 +269,11 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   private boolean canMergeOutput() {
-    if(inventory[9] == null) {
+    if (inventory[9] == null) {
       return true;
     }
     ItemStack output = craftingGrid.getOutput();
-    if(!ItemUtil.areStackMergable(inventory[9], output)) {
+    if (!ItemUtil.areStackMergable(inventory[9], output)) {
       return false;
     }
     return output.getMaxStackSize() >= (inventory[9].stackSize + output.stackSize);
@@ -309,7 +309,6 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     ItemStack matches = CraftingManager.getInstance().findMatchingRecipe(inv, worldObj);
     craftingGrid.setInventorySlotContents(9, matches);
     markDirty();
-
   }
 
 }

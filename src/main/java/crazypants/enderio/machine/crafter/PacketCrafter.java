@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.crafter;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import com.enderio.core.common.network.MessageTileEntity;
 
 public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMessageHandler<PacketCrafter, IMessage> {
 
@@ -46,12 +46,12 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMe
   @Override
   public IMessage onMessage(PacketCrafter msg, MessageContext ctx) {
     TileCrafter te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
-    if(te != null) {
+    if (te != null) {
       msg.execute(te);
     }
     return null;
   }
-  
+
   private void execute(TileCrafter te) {
     te.craftingGrid.setInventorySlotContents(slot, stack);
     te.updateCraftingOutput();
