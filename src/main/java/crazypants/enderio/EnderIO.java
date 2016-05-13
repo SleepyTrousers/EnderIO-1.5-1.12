@@ -92,6 +92,7 @@ import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
+import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
@@ -247,6 +248,7 @@ public class EnderIO {
   public static BlockSoulBinder blockSoulFuser;
   public static BlockAttractor blockAttractor;
   public static BlockAversionObelisk blockSpawnGuard;
+  public static BlockRelocatorObelisk blockSpawnRelocator;
   public static BlockExperienceObelisk blockExperianceOblisk;
   public static BlockWeatherObelisk blockWeatherObelisk;
   public static BlockInhibitorObelisk blockInhibitorObelisk;
@@ -346,6 +348,7 @@ public class EnderIO {
     blockKillerJoe = BlockKillerJoe.create();
     blockAttractor = BlockAttractor.create();
     blockSpawnGuard = BlockAversionObelisk.create();
+    blockSpawnRelocator = BlockRelocatorObelisk.create();
     blockExperianceOblisk = BlockExperienceObelisk.create();
     blockWeatherObelisk = BlockWeatherObelisk.create();
     blockInhibitorObelisk = BlockInhibitorObelisk.create();

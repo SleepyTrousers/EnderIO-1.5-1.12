@@ -258,6 +258,17 @@ public class MachineRecipes {
     ItemStack tormentedEnderman = new ItemStack(EnderIO.blockEndermanSkull, 1, BlockEndermanSkull.SkullType.TORMENTED.ordinal());
     addShaped(aversion, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', tormentedEnderman, 'e', energeticAlloy);
 
+    // Relocator
+    ItemStack relocator = new ItemStack(EnderIO.blockSpawnRelocator);
+    ItemStack prismarine = new ItemStack(Blocks.prismarine, 1, 0);
+    if (Config.recipeLevel < 2) {
+      addShaped(relocator, "p", "a", 'a', aversion, 'p', prismarine);
+    } else if (Config.recipeLevel < 3) {
+      addShaped(relocator, " p ", "pap", " p ", 'a', aversion, 'p', prismarine);
+    } else {
+      addShaped(relocator, "ppp", "pap", "ppp", 'a', aversion, 'p', prismarine);
+    }
+
     //Experience
     ItemStack xp = new ItemStack(EnderIO.blockExperianceOblisk);
     ItemStack xpItem = new ItemStack(EnderIO.itemXpTransfer);

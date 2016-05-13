@@ -61,6 +61,7 @@ public enum ModObject implements IModObject {
   blockSliceAndSplice,
   blockAttractor,
   blockSpawnGuard,
+  blockSpawnRelocator,
   blockExperienceObelisk,
   blockWeatherObelisk,
   blockInhibitorObelisk,
