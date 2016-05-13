@@ -27,7 +27,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
 @Storable
 public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
 
-  private final Map<EntityLivingBase, Integer> todo = new WeakHashMap<EntityLivingBase, Integer>();
+  private final Map<EntityLivingBase, Integer> relocationQueue = new WeakHashMap<EntityLivingBase, Integer>();
   private final Random rand = new Random();
 
   public TileRelocatorObelisk() {
@@ -42,7 +42,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   @Override
   public Result isSpawnPrevented(EntityLivingBase mob) {
     if (redstoneCheckPassed && hasPower() && isMobInRange(mob) && isMobInFilter(mob)) {
-      todo.put(mob, null);
+      relocationQueue.put(mob, null);
       return Result.DONE;
     } else {
       return Result.NEXT;
@@ -51,12 +51,12 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!todo.isEmpty()) {
+    if (!relocationQueue.isEmpty()) {
       AxisAlignedBB targetBB = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(4, 1, 4);
-      Iterator<EntityLivingBase> iterator = todo.keySet().iterator();
+      Iterator<EntityLivingBase> iterator = relocationQueue.keySet().iterator();
       while (iterator.hasNext()) {
         EntityLivingBase mob = iterator.next();
-        if (mob == null || mob.isDead || worldObj.getEntityByID(mob.getEntityId()) == null || todo.size() > 35) {
+        if (mob == null || mob.isDead || worldObj.getEntityByID(mob.getEntityId()) == null || mob.ticksExisted > 60 * 20 || relocationQueue.size() > 35) {
           iterator.remove();
         } else if (rand.nextFloat() < .025f) {
           AxisAlignedBB mobbb = mob.getEntityBoundingBox();
