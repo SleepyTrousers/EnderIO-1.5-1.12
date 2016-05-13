@@ -152,6 +152,7 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
+import crazypants.util.Things;
 
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
@@ -427,6 +428,7 @@ public class EnderIO {
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
+    Things.enterInit();
 
     Config.init();
 
