@@ -12,18 +12,16 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
   public static SliceAndSpliceRecipeManager getInstance() {
     return instance;
   }
-  
-  public SliceAndSpliceRecipeManager() {    
+
+  public SliceAndSpliceRecipeManager() {
     super("SliceAndSpliceRecipes_Core.xml", "SliceAndSpliceRecipes_User.xml", "Slice'N'Splice");
   }
 
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(
-        ModObject.blockSliceAndSplice.getUnlocalisedName(),
-        new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
-            ModObject.blockAlloySmelter.getUnlocalisedName(), this));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSliceAndSplice.getUnlocalisedName(), new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
+        ModObject.blockAlloySmelter.getUnlocalisedName(), this));
   }
 
 }

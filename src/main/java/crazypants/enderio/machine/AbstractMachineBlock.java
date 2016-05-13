@@ -245,6 +245,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return false;
   }
   
+  @Deprecated
   protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {    
     return isActive(blockAccess, new BlockPos(x,y,z));
   }

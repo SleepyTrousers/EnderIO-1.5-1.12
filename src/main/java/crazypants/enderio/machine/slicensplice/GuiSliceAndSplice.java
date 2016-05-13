@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.slicensplice;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 
@@ -19,10 +20,6 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
     ((ContainerSliceAndSplice) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
-  /**
-   * Draw the background layer for the GuiContainer (everything behind the
-   * items)
-   */
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -32,7 +29,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
 
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
-    if(shouldRenderProgress()) {
+    if (shouldRenderProgress()) {
       int scaled = getProgressScaled(24);
       drawTexturedModalRect(k + 103, l + 49, 176, 14, scaled + 1, 16);
     }

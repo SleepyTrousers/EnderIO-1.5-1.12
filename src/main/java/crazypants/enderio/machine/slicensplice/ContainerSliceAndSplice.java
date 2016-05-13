@@ -4,16 +4,17 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 
@@ -42,7 +43,6 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) { 
-    
     for(int i=0;i<INPUT_SLOTS.length;i++) {
       Point p = INPUT_SLOTS[i];
       final int slot = i; 
@@ -65,8 +65,13 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(slotItems1[rand.nextInt(slotItems1.length)], 54, 16));
-    slots.add(new GhostBackgroundItemSlot(slotItems2[rand.nextInt(slotItems2.length)], 72, 16));
+    for (Slot slot : inventorySlots) {
+      if (slot.getSlotIndex() == TileSliceAndSplice.axeIndex) {
+        slots.add(new GhostBackgroundItemSlot(slotItems1[rand.nextInt(slotItems1.length)], slot));
+      } else if (slot.getSlotIndex() == TileSliceAndSplice.shearsIndex) {
+        slots.add(new GhostBackgroundItemSlot(slotItems2[rand.nextInt(slotItems2.length)], slot));
+      }
+    }
   }
 
 }

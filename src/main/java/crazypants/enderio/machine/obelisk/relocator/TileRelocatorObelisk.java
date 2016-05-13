@@ -58,7 +58,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
         EntityLivingBase mob = iterator.next();
         if (mob == null || mob.isDead || worldObj.getEntityByID(mob.getEntityId()) == null || mob.ticksExisted > 60 * 20 || relocationQueue.size() > 35) {
           iterator.remove();
-        } else if (rand.nextFloat() < .025f) {
+        } else if (hasPower() && rand.nextFloat() < .025f) {
           AxisAlignedBB mobbb = mob.getEntityBoundingBox();
           if (targetBB.intersectsWith(mobbb)) {
             iterator.remove();

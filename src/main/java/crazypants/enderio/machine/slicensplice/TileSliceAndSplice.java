@@ -26,8 +26,8 @@ import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
-  private final int axeIndex = 6;
-  private final int shearsIndex = 7;
+  protected final static int axeIndex = 6;
+  protected final static int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
 
   public TileSliceAndSplice() {
@@ -46,7 +46,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
-    if(getAxe() == null || getShears() == null) {
+    if (getAxe() == null || getShears() == null) {
       return null;
     }
     return super.canStartNextTask(chance);
@@ -68,16 +68,16 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   private void damageTool(ItemStack tool, int toolIndex) {
-    if(tool != null && tool.isItemStackDamageable()) {
+    if (tool != null && tool.isItemStackDamageable()) {
       tool.damageItem(1, getFakePlayer());
-      if(tool.getItemDamage() >= tool.getMaxDamage()) {
+      if (tool.getItemDamage() >= tool.getMaxDamage()) {
         inventory[toolIndex] = null;
       }
     }
   }
 
   private EntityLivingBase getFakePlayer() {
-    if(fakePlayer == null) {
+    if (fakePlayer == null) {
       fakePlayer = FakePlayerFactory.getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.getDimensionId()));
     }
     return fakePlayer;
@@ -96,34 +96,34 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if(itemstack == null || itemstack.getItem() == null) {
+    if (itemstack == null || itemstack.getItem() == null) {
       return false;
     }
-    if(!slotDefinition.isInputSlot(slot)) {
+    if (!slotDefinition.isInputSlot(slot)) {
       return false;
     }
-    if(slot == axeIndex) {
+    if (slot == axeIndex) {
       return itemstack.getItem() instanceof ItemAxe;
     }
-    if(slot == shearsIndex) {
+    if (slot == shearsIndex) {
       return itemstack.getItem() instanceof ItemShears;
     }
 
     ItemStack currentStackInSlot = inventory[slot];
-    if(currentStackInSlot != null) {
+    if (currentStackInSlot != null) {
       return currentStackInSlot.isItemEqual(itemstack);
     }
 
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      if(i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
-        if(inventory[i] != null && inventory[i].stackSize > 0) {
+      if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
+        if (inventory[i] != null && inventory[i].stackSize > 0) {
           numSlotsFilled++;
         }
       }
     }
     List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
-    if(numSlotsFilled == 0 && !recipes.isEmpty()) {
+    if (numSlotsFilled == 0 && !recipes.isEmpty()) {
       return true;
     }
     return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
@@ -133,8 +133,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
     ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      if(i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
-        if(i == slot) {
+      if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
+        if (i == slot) {
           resultInv[i] = itemstack;
         } else {
           resultInv[i] = inventory[i];
@@ -143,8 +143,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     }
 
     for (IMachineRecipe recipe : recipes) {
-      if(recipe instanceof ManyToOneMachineRecipe) {
-        if(((ManyToOneMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
+      if (recipe instanceof ManyToOneMachineRecipe) {
+        if (((ManyToOneMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
           return true;
         }
       }
