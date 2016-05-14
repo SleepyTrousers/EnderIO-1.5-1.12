@@ -263,6 +263,7 @@ public class TravelController {
   }
 
   @SubscribeEvent
+  @SideOnly(Side.CLIENT)
   public void onRender(RenderWorldLastEvent event) {
 
     Minecraft mc = Minecraft.getMinecraft();
@@ -530,7 +531,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateVerticalTarget(EntityClientPlayerMP player, int direction) {
+  private void updateVerticalTarget(EntityPlayer player, int direction) {
 
     BlockCoord currentBlock = getActiveTravelBlock(player);
     World world = Minecraft.getMinecraft().theWorld;
@@ -564,7 +565,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateSelectedTarget(EntityClientPlayerMP player) {
+  private void updateSelectedTarget(EntityPlayer player) {
     selectedCoord = null;
     if(candidates.isEmpty()) {
       return;
@@ -602,6 +603,7 @@ public class TravelController {
     }
   }
 
+  @SideOnly(Side.CLIENT)
   private void onInput(EntityClientPlayerMP player) {
 
     MovementInput input = player.movementInput;
@@ -675,6 +677,7 @@ public class TravelController {
     return scale;
   }
 
+  @SideOnly(Side.CLIENT)
   private double addRatio(BlockCoord bc) {
     Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5));
     Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
@@ -689,13 +692,14 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
+  private int getMaxTravelDistanceSqForPlayer(EntityPlayer player) {
     if(isTravelItemActive(player)) {
       return TravelSource.STAFF.getMaxDistanceTravelledSq();
     }
     return TravelSource.BLOCK.getMaxDistanceTravelledSq();
   }
 
+  @SideOnly(Side.CLIENT)
   public boolean doClientTeleport(Entity entity, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z);
@@ -710,7 +714,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {
+  private BlockCoord getActiveTravelBlock(EntityPlayer player) {
     World world = Minecraft.getMinecraft().theWorld;
     if(world != null && player != null) {
       int x = MathHelper.floor_double(player.posX);
