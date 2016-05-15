@@ -2,6 +2,11 @@ package crazypants.enderio.machine.vat;
 
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.google.common.collect.HashBasedTable;
@@ -13,10 +18,6 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class VatRecipe implements IRecipe {
 
@@ -32,14 +33,13 @@ public class VatRecipe implements IRecipe {
   private int requiredItems;
 
   public VatRecipe(IRecipe recipe) {
-
     FluidStack inputFluidStack = null, outputFluidStack = null;
 
     inputs = recipe.getInputs();
 
-    for (RecipeOutput output : recipe.getOutputs()) {
-      if(output.isFluid()) {
-        outputFluidStack = output.getFluidOutput().copy();
+    for (RecipeOutput recipeOutput : recipe.getOutputs()) {
+      if (recipeOutput.isFluid()) {
+        outputFluidStack = recipeOutput.getFluidOutput().copy();
         break;
       }
     }
@@ -68,8 +68,8 @@ public class VatRecipe implements IRecipe {
                     outputFluidStack.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
                     inputFluidStacks.put(r0, r1, inputFluidStack.copy());
                     outputFluidStacks.put(r0, r1, outputFluidStack.copy());
-                    //TODO: 1.8 ee3
-                    //registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), r1.getInput().copy(), inputFluidStack.copy());
+                    // TODO: 1.8 ee3
+                    // registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), r1.getInput().copy(), inputFluidStack.copy());
                   }
                 }
               }
@@ -87,8 +87,8 @@ public class VatRecipe implements IRecipe {
                 outputFluidStack.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
                 inputFluidStacks.put(r0, r0, inputFluidStack.copy());
                 outputFluidStacks.put(r0, r0, outputFluidStack.copy());
-                //TODO: 1.8 ee3                
-//                registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
+                // TODO: 1.8 ee3
+                // registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
               }
             }
           }
@@ -104,9 +104,7 @@ public class VatRecipe implements IRecipe {
     energyRequired = recipe.getEnergyRequired();
 
     this.inputStacks = recipe.getInputStacks();
-    valid = inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() > 0
-        && outputFluidStack != null;
-
+    valid = inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() > 0 && outputFluidStack != null;
   }
 
   @Override
@@ -140,7 +138,7 @@ public class VatRecipe implements IRecipe {
   }
 
   private RecipeInput getRecipeInput(int slot, ItemStack item) {
-    if(item == null) {
+    if (item == null) {
       return null;
     }
     for (RecipeInput ri : inputs) {
@@ -158,11 +156,11 @@ public class VatRecipe implements IRecipe {
 
   @Override
   public boolean isValidInput(FluidStack item) {
-    if(item == null) {
+    if (item == null) {
       return false;
     }
     for (RecipeInput ri : inputs) {
-      if(item.getFluid() != null && item.isFluidEqual(ri.getFluidInput())) {
+      if (item.getFluid() != null && item.isFluidEqual(ri.getFluidInput())) {
         return true;
       }
     }
@@ -184,14 +182,14 @@ public class VatRecipe implements IRecipe {
     }
   }
 
-  private RecipeMatch matchRecipe(MachineRecipeInput... inputs) {
-    if (!isValid() || inputs == null || inputs.length < requiredItems + 1) {
+  private RecipeMatch matchRecipe(MachineRecipeInput... recipeInputs) {
+    if (!isValid() || recipeInputs == null || recipeInputs.length < requiredItems + 1) {
       return null;
     }
     FluidStack inputFluid = null;
     RecipeMatch m = new RecipeMatch();
-    for (MachineRecipeInput in : inputs) {
-      if(in.isFluid()) {
+    for (MachineRecipeInput in : recipeInputs) {
+      if (in.isFluid()) {
         inputFluid = in.fluid;
       } else {
         m.setRecipeInput(getRecipeInput(in.slotNumber, in.item));
@@ -210,8 +208,8 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(MachineRecipeInput... inputs) {
-    RecipeMatch m = matchRecipe(inputs);
+  public boolean isInputForRecipe(MachineRecipeInput... recipeInputs) {
+    RecipeMatch m = matchRecipe(recipeInputs);
     return m != null;
   }
 
@@ -222,15 +220,15 @@ public class VatRecipe implements IRecipe {
 
   public float getMultiplierForInput(FluidStack item) {
     for (RecipeInput input : inputs) {
-      if(input.isInput(item)) {
+      if (input.isInput(item)) {
         return input.getMulitplier();
       }
     }
     return 1;
   }
 
-  public FluidStack getRequiredFluidInput(MachineRecipeInput[] inputs) {
-    RecipeMatch m = matchRecipe(inputs);
+  public FluidStack getRequiredFluidInput(MachineRecipeInput[] recipeInputs) {
+    RecipeMatch m = matchRecipe(recipeInputs);
     if (m != null) {
       return m.in;
     } else {
@@ -239,8 +237,8 @@ public class VatRecipe implements IRecipe {
     }
   }
 
-  public FluidStack getFluidOutput(MachineRecipeInput... inputs) {
-    RecipeMatch m = matchRecipe(inputs);
+  public FluidStack getFluidOutput(MachineRecipeInput... recipeInputs) {
+    RecipeMatch m = matchRecipe(recipeInputs);
     if (m != null) {
       return m.out;
     } else {
@@ -251,7 +249,7 @@ public class VatRecipe implements IRecipe {
 
   public int getNumConsumed(ItemStack item) {
     for (RecipeInput input : inputs) {
-      if(input.isInput(item)) {
+      if (input.isInput(item)) {
         return input.getInput().stackSize;
       }
     }

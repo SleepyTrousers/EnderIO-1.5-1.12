@@ -3,6 +3,9 @@ package crazypants.enderio.machine.vat;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.Log;
@@ -15,11 +18,9 @@ import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 
 public class VatRecipeManager {
-  
+
   private static final String CORE_FILE_NAME = "VatRecipes_Core.xml";
   private static final String CUSTOM_FILE_NAME = "VatRecipes_User.xml";
 
@@ -36,14 +37,13 @@ public class VatRecipeManager {
 
   public void loadRecipesFromConfig() {
     RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, null);
-    if(config != null) {
+    if (config != null) {
       processConfig(config);
     } else {
       Log.error("Could not load recipes for Vat.");
     }
 
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockVat.getUnlocalisedName(), new VatMachineRecipe());
-
   }
 
   public void addCustomRecipes(String xmlDef) {
@@ -55,7 +55,7 @@ public class VatRecipeManager {
       return;
     }
 
-    if(config == null) {
+    if (config == null) {
       Log.error("Could process custom XML");
       return;
     }
@@ -63,11 +63,11 @@ public class VatRecipeManager {
   }
 
   public IRecipe getRecipeForInput(MachineRecipeInput[] inputs) {
-    if(inputs == null || inputs.length == 0) {
+    if (inputs == null || inputs.length == 0) {
       return null;
     }
     for (IRecipe recipe : recipes) {
-      if(recipe.isInputForRecipe(inputs)) {
+      if (recipe.isInputForRecipe(inputs)) {
         return recipe;
       }
     }
@@ -75,7 +75,6 @@ public class VatRecipeManager {
   }
 
   private void processConfig(RecipeConfig config) {
-
     List<Recipe> newRecipes = config.getRecipes(false);
     Log.info("Found " + newRecipes.size() + " valid Vat recipes in config.");
     for (Recipe rec : newRecipes) {
@@ -85,7 +84,7 @@ public class VatRecipeManager {
   }
 
   public void addRecipe(IRecipe recipe) {
-    if(recipe == null || !recipe.isValid()) {
+    if (recipe == null || !recipe.isValid()) {
       Log.debug("Could not add invalid Vat recipe: " + recipe);
       return;
     }
@@ -98,9 +97,9 @@ public class VatRecipeManager {
 
   public boolean isValidInput(MachineRecipeInput input) {
     for (IRecipe recipe : recipes) {
-      if(input.item != null && recipe.isValidInput(input.slotNumber, input.item)) {
+      if (input.item != null && recipe.isValidInput(input.slotNumber, input.item)) {
         return true;
-      } else if(input.fluid != null && recipe.isValidInput(input.fluid)) {
+      } else if (input.fluid != null && recipe.isValidInput(input.fluid)) {
         return true;
       }
     }
@@ -110,30 +109,31 @@ public class VatRecipeManager {
   public boolean isValidInput(MachineRecipeInput[] inputs) {
     for (IRecipe recipe : recipes) {
       boolean allValid = true;
-      for(MachineRecipeInput input : inputs) {
-        if(input.item != null) {
+      for (MachineRecipeInput input : inputs) {
+        if (input.item != null) {
           allValid = recipe.isValidInput(input.slotNumber, input.item);
-        } else if(input.fluid != null) {
+        } else if (input.fluid != null) {
           allValid = recipe.isValidInput(input.fluid);
         }
-        if(!allValid) {
+        if (!allValid) {
           break;
         }
       }
-      if(allValid) {
+      if (allValid) {
         return true;
       }
     }
     return false;
   }
-  
+
   public float getMultiplierForInput(Fluid inputFluid, ItemStack input, Fluid output) {
     if (input != null || output != null) {
       for (IRecipe recipe : recipes) {
         RecipeOutput out = recipe.getOutputs()[0];
         RecipeInput in = recipe.getInputs()[recipe.getInputs().length - 1];
-        
-        if ((inputFluid == null || FluidUtil.areFluidsTheSame(in.getFluidInput().getFluid(), inputFluid) && (output == null || FluidUtil.areFluidsTheSame(out.getFluidOutput().getFluid(), output)))) {
+
+        if ((inputFluid == null || FluidUtil.areFluidsTheSame(in.getFluidInput().getFluid(), inputFluid)
+            && (output == null || FluidUtil.areFluidsTheSame(out.getFluidOutput().getFluid(), output)))) {
           for (RecipeInput ri : recipe.getInputs()) {
             if (ri.isInput(input)) {
               return ri.getMulitplier();
