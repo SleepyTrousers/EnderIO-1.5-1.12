@@ -35,6 +35,8 @@ import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
+import static crazypants.util.Things.TRAVEL_BLACKLIST;
+
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
@@ -153,7 +155,6 @@ import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
-
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
@@ -609,7 +610,7 @@ public class EnderIO {
           } else if(IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
-            TravelController.instance.addBlockToBlinkBlackList(value);
+            TRAVEL_BLACKLIST.add(value);
           } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
             CapturedMob.addToBlackList(value);
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {

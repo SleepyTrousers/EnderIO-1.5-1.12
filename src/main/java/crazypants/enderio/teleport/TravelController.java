@@ -90,10 +90,6 @@ public class TravelController {
   private TravelController() {
   }
 
-  public void addBlockToBlinkBlackList(String blockName) {
-    TRAVEL_BLACKLIST.add(blockName);
-  }
-
   public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
     if(!hasTarget()) {
       return false;
