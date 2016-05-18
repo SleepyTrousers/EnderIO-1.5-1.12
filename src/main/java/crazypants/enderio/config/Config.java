@@ -116,7 +116,7 @@ public final class Config {
   public static boolean useSneakMouseWheelYetaWrench = true;
   public static boolean useSneakRightClickYetaWrench = false;
   public static int     yetaWrenchOverlayMode = 0;
-  
+
   public static boolean itemConduitUsePhyscialDistance = false;
 
   public static int enderFluidConduitExtractRate = 200;
@@ -333,7 +333,7 @@ public final class Config {
   public static boolean magnetAllowInBaublesSlot = true;
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static String  magnetBaublesType = "AMULET";
-  
+
   public static boolean useCombustionGenModel = false;
 
   public static int crafterRfPerCraft = 2500;
@@ -493,6 +493,8 @@ public final class Config {
   public static boolean telepadLockCoords = true;
   public static int telepadPowerCoefficient = 100000;
   public static int telepadPowerInterdimensional = 100000;
+  public static int telepadPowerPerTickRF = 1000;
+  public static int telepadPowerStorageRF = 100000;
 
   public static boolean inventoryPanelFree = false;;
   public static float inventoryPanelPowerPerMB = 800.0f;
@@ -500,7 +502,7 @@ public final class Config {
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
-  
+
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -1092,7 +1094,7 @@ public final class Config {
         "The amount of saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
         "saplings in store, it will only shear part the leaves and break the others for spalings. Set this to 0 to " +
         "always shear all leaves.").getInt(farmSaplingReserveAmount);
-    
+
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
 
@@ -1110,15 +1112,15 @@ public final class Config {
 
     magnetAllowInMainInventory = config.get(sectionMagnet.name, "magnetAllowInMainInventory", magnetAllowInMainInventory,
         "If true the magnet will also work in the main inventory, not just the hotbar").getBoolean(magnetAllowInMainInventory);
-    
+
     magnetAllowInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowInBaublesSlot", magnetAllowInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot (requires Baubles to be installed)").getBoolean(magnetAllowInBaublesSlot);
     magnetAllowDeactivatedInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getBoolean(magnetAllowDeactivatedInBaublesSlot);
-    
+
     magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
         "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
-    
+
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
 
@@ -1198,7 +1200,7 @@ public final class Config {
         "Allows OC conduits. Only has an effect with OpenComputers installed.");
     enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
         enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
-    
+
     soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");
 
@@ -1338,6 +1340,10 @@ public final class Config {
         "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
     telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
         "The amount of RF required for an interdimensional teleport.").getInt();
+    telepadPowerPerTickRF = config.get(sectionTelepad.name, "telepadPowerPerTickRF", telepadPowerPerTickRF,
+        "The number of RF/t consumed by a telepad.").getInt();
+    telepadPowerStorageRF = config.get(sectionTelepad.name, "telepadPowerStorageRF", telepadPowerStorageRF,
+        "The amount of RF a telepad can store.").getInt();
 
     inventoryPanelFree = config.getBoolean("inventoryPanelFree", sectionInventoryPanel.name, inventoryPanelFree, "If true, the inv panel will not accept fluids and will be active permanently.");
     inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
