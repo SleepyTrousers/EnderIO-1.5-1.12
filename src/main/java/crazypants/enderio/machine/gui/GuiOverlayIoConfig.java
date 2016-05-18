@@ -69,6 +69,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   public void draw(int mouseX, int mouseY, float partialTick) {
 
     RenderUtil.renderQuad2D(bounds.x, bounds.y, 0, bounds.width, bounds.height, ColorUtil.getRGB(Color.black));
+    
     Minecraft mc = Minecraft.getMinecraft();
     ScaledResolution scaledresolution = new ScaledResolution(mc);
 
@@ -94,7 +95,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
   @Override
   public boolean isMouseInBounds(int mouseX, int mouseY) {
-    int x = mouseX - screen.getGuiLeft();
+    int x = mouseX - screen.getGuiLeft() + screen.getOverlayOffsetX();
     int y = mouseY - screen.getGuiTop();
     if(bounds.contains(x,y)) {
       return true;

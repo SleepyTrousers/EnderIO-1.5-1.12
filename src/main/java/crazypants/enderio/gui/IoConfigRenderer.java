@@ -10,7 +10,6 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -163,6 +162,7 @@ public class IoConfigRenderer {
 
     long elapsed = System.currentTimeMillis() - initTime;
 
+    //Mouse Over
     int x = Mouse.getEventX();
     int y = Mouse.getEventY();
     Vector3d start = new Vector3d();
@@ -173,6 +173,7 @@ public class IoConfigRenderer {
       updateSelection(start, end);
     }
 
+    //Mouse pressed on configurable side
     if (!Mouse.getEventButtonState() && camera.isValid() && elapsed > 500) {
       if (Mouse.getEventButton() == 1) {
         if (selection != null) {
@@ -232,15 +233,13 @@ public class IoConfigRenderer {
     if (!updateCamera(partialTick, vp.x, vp.y, vp.width, vp.height)) {
       return;
     }
-    GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
     applyCamera(partialTick);
     TravelController.instance.setSelectionEnabled(false);
     renderScene();
     TravelController.instance.setSelectionEnabled(true);
     renderSelection();
-
     renderOverlay(par1, par2);
-    GL11.glPopAttrib();
   }
 
   private void renderSelection() {
@@ -253,10 +252,11 @@ public class IoConfigRenderer {
     TextureAtlasSprite icon = BlockAlloySmelter.selectedFaceIcon.get(TextureAtlasSprite.class);
     List<Vertex> corners = bb.getCornersWithUvForFace(selection.face, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV());
 
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
-    GL11.glDisable(GL11.GL_LIGHTING);
-    RenderUtil.bindBlockTexture();
-    GL11.glColor3f(1, 1, 1);
+    GlStateManager.disableDepth();
+    GlStateManager.disableLighting();
+    
+    RenderUtil.bindBlockTexture();    
+    GlStateManager.color(1, 1, 1);
     WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
 
     GlStateManager.color(1, 1, 1);
@@ -285,16 +285,18 @@ public class IoConfigRenderer {
     GL11.glLoadIdentity();
     GL11.glTranslatef(vpx, vpy, -2000.0F);
 
-    GL11.glDisable(GL11.GL_LIGHTING);
+    GlStateManager.disableLighting();
 
-    int x = vpw - 16;
-    int y = vph - 16;
+    int x = vpw - 17;
+    int y = vph - 18;
 
     mx -= vpx;
     my -= vpy;
 
     if (mx >= x && mx <= x + IconEIO.IO_WHATSIT.width && my >= y && my <= y + IconEIO.IO_WHATSIT.height) {
+      GlStateManager.enableBlend();
       RenderUtil.renderQuad2D(x, y, 0, IconEIO.IO_WHATSIT.width, IconEIO.IO_WHATSIT.height, new Vector4f(0.4f, 0.4f, 0.4f, 0.6f));
+      GlStateManager.disableBlend();
       inNeigButBounds = true;
     } else {
       inNeigButBounds = false;
@@ -305,6 +307,7 @@ public class IoConfigRenderer {
 
     if (selection != null) {
       IconEIO ioIcon = null;
+      int yOffset = 0;
       // INPUT
       IoMode mode = selection.config.getIoMode(selection.face);
       if (mode == IoMode.PULL) {
@@ -315,6 +318,7 @@ public class IoConfigRenderer {
         ioIcon = IconEIO.INPUT_OUTPUT;
       } else if (mode == IoMode.DISABLED) {
         ioIcon = IconEIO.DISABLED;
+        yOffset = 5;
       }
 
       y = vph - mc.fontRendererObj.FONT_HEIGHT - 2;
@@ -326,7 +330,7 @@ public class IoConfigRenderer {
         xd /= 2;
         xd += 4;
         xd /= scaledresolution.getScaleFactor();
-        ioIcon.getMap().render(ioIcon, xd, y - mc.fontRendererObj.FONT_HEIGHT - 2, true);
+        ioIcon.getMap().render(ioIcon, xd, y - mc.fontRendererObj.FONT_HEIGHT - 2 - yOffset, true);
       }
     }
   }
@@ -336,15 +340,17 @@ public class IoConfigRenderer {
   }
 
   private void renderScene() {
-    GL11.glEnable(GL11.GL_CULL_FACE);
-    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-
+    
+    GlStateManager.enableCull();
+    GlStateManager.enableRescaleNormal();
+    
     RenderHelper.disableStandardItemLighting();
     mc.entityRenderer.disableLightmap();
     RenderUtil.bindBlockTexture();
-    GL11.glDisable(GL11.GL_LIGHTING);
-    GL11.glEnable(GL11.GL_TEXTURE_2D);
-    GL11.glEnable(GL11.GL_ALPHA_TEST);
+    
+    GlStateManager.disableLighting();
+    GlStateManager.enableTexture2D();
+    GlStateManager.enableAlpha();
 
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
     
@@ -362,9 +368,8 @@ public class IoConfigRenderer {
       }
     }
     
-
     RenderHelper.enableStandardItemLighting();
-    GL11.glEnable(GL11.GL_LIGHTING);
+    GlStateManager.enableLighting();
     TileEntityRendererDispatcher.instance.entityX = origin.x - eye.x;
     TileEntityRendererDispatcher.instance.entityY = origin.y - eye.y;
     TileEntityRendererDispatcher.instance.entityZ = origin.z - eye.z;
@@ -446,25 +451,28 @@ public class IoConfigRenderer {
   
   private void setGlStateForPass(int layer, boolean isNeighbour) {
 
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1, 1, 1);
     if (isNeighbour) {
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glEnable(GL11.GL_DEPTH_TEST);
+      
+      GlStateManager.enableDepth();
+      GlStateManager.enableBlend();
       float alpha = 1f;
       float col = 1f;
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
-      GL14.glBlendColor(col, col, col, alpha);               
+            
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
+      GL14.glBlendColor(col, col, col, alpha);      
       return;
     }
 
     if (layer == 0) {
-      GL11.glEnable(GL11.GL_DEPTH_TEST);
-      GL11.glDisable(GL11.GL_BLEND);
-      GL11.glDepthMask(true);
+      GlStateManager.enableDepth();
+      GlStateManager.disableBlend();
+      GlStateManager.depthMask(true);
     } else {
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GL11.glDepthMask(false);
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.depthMask(false);
+      
     }
 
   }
@@ -493,7 +501,6 @@ public class IoConfigRenderer {
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
     RenderUtil.loadMatrix(camera.getTransposeViewMatrix());
     GL11.glTranslatef(-(float) eye.x, -(float) eye.y, -(float) eye.z);
-
   }
 
   public static class SelectedFace {

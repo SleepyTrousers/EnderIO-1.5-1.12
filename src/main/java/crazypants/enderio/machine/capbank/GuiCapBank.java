@@ -288,7 +288,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @Override
   public int getGuiLeft() {
-    return guiLeft + 24;
+    return guiLeft + getOverlayOffsetX();
   }
 
   @Override
@@ -303,7 +303,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @Override
   public int getOverlayOffsetX() {
-    return 21;
+    return 22;
   }
 
   @Override
