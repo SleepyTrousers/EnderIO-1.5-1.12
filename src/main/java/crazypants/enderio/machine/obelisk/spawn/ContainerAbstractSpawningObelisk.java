@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.obelisk.aversion;
+package crazypants.enderio.machine.obelisk.spawn;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
-public class ContainerAversionObelisk extends AbstractMachineContainer<TileAversionObelisk> {
+public class ContainerAbstractSpawningObelisk extends AbstractMachineContainer<TileEntityAbstractSpawningObelisk> {
 
-  public ContainerAversionObelisk(InventoryPlayer playerInv, TileAversionObelisk te) {
+  public ContainerAbstractSpawningObelisk(InventoryPlayer playerInv, TileEntityAbstractSpawningObelisk te) {
     super(playerInv, te);
   }
 

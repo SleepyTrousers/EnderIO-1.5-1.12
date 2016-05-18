@@ -59,9 +59,6 @@ public class EndermanSkullRenderer extends TileEntitySpecialRenderer<TileEnderma
 
         Angle diff = new Angle(180, yaw.get() - target.get());
 
-        System.out.println(te.getPos().getX() + "/" + te.getPos().getZ() + " => " + player.posX + "/" + player.posZ + " : " + yaw.get() + " => " + target.get()
-            + " = " + diff.get());
-
         if (diff.get() > 1 || diff.get() < -1) {
           if (diff.get() > 0) {
             yaw.add(-Math.min(diff.get(), speed));

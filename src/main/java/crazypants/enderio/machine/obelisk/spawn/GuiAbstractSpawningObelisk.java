@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.obelisk.aversion;
+package crazypants.enderio.machine.obelisk.spawn;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -18,14 +18,14 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
-public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelisk> {
+public class GuiAbstractSpawningObelisk extends GuiPoweredMachineBase<TileEntityAbstractSpawningObelisk> {
 
   ToggleButton showRangeB;
 
   private static final int RANGE_ID = 8738924;
 
-  public GuiAversionObelisk(InventoryPlayer par1InventoryPlayer, TileAversionObelisk te) {
-    super(te, new ContainerAversionObelisk(par1InventoryPlayer, te), "attractor");
+  public GuiAbstractSpawningObelisk(InventoryPlayer par1InventoryPlayer, TileEntityAbstractSpawningObelisk te) {
+    super(te, new ContainerAbstractSpawningObelisk(par1InventoryPlayer, te), "attractor");
 
     int x = getXSize() - 5 - BUTTON_SIZE;
     showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
@@ -43,7 +43,7 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
     super.initGui();
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
-    ((ContainerAversionObelisk) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerAbstractSpawningObelisk) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override

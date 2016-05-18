@@ -515,6 +515,10 @@ tile.blockSpawnGuard.name=Aversion Obelisk
 tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
 tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
 
+tile.blockSpawnRelocator.name=Relocator Obelisk
+tile.blockSpawnRelocator.tooltip.detailed.line1=Relocates mobs that spawn
+tile.blockSpawnRelocator.tooltip.detailed.line2=within its area of effect
+
 tile.blockExperienceObelisk.name=Experience Obelisk
 tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
 tile.blockExperienceObelisk.tooltip.detailed.line2=Can output liquid XP to

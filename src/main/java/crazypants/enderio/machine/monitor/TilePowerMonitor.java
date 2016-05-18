@@ -315,4 +315,9 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
     return redStoneOn ? 15 : 0;
   }
 
+  @Override
+  public boolean isActive() {
+    return true;
+  }
+
 }

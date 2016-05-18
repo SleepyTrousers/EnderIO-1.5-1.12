@@ -245,6 +245,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(!worldObj.isRemote) {
       worldObj.markBlockForUpdate(getPos());
       markDirty();
+    } else {
+      geometryChanged(); // Q&D
     }
     conduitsDirty = false;
   }
@@ -294,6 +296,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
     }
     if(markForUpdate) {
+      geometryChanged(); // Q&D
       worldObj.markBlockForUpdate(getPos());
     }
   }
@@ -878,6 +881,20 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public BlockCoord getLocation() {
     return new BlockCoord(getPos());
+  }
+
+  private int serial = 0;
+
+  @Override
+  public void geometryChanged() {
+    serial++;
+  }
+
+  /**
+   * @return An integer value that is guaranteed to change whenever the conduit bundle's rendering changes.
+   */
+  public int getSerial() {
+    return serial;
   }
 
   // Immibis Microblocks

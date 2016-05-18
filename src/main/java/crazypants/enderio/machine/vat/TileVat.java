@@ -38,7 +38,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   boolean tanksDirty = false;
 
-  //Used client side in the vat gui to render progress
+  // Used client side in the vat gui to render progress
   Fluid currentTaskInputFluid;
   Fluid currentTaskOutputFluid;
 
@@ -71,21 +71,21 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   @Override
   protected boolean doPush(EnumFacing dir) {
 
-    if(isSideDisabled(dir)) {
+    if (isSideDisabled(dir)) {
       return false;
     }
 
     boolean res = super.doPush(dir);
-    if(outputTank.getFluidAmount() > 0) {
+    if (outputTank.getFluidAmount() > 0) {
 
       BlockCoord loc = getLocation().getLocation(dir);
       IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if(target != null) {
-        if(target.canFill(dir.getOpposite(), outputTank.getFluid().getFluid())) {
+      if (target != null) {
+        if (target.canFill(dir.getOpposite(), outputTank.getFluid().getFluid())) {
           FluidStack push = outputTank.getFluid().copy();
           push.amount = Math.min(push.amount, IO_MB_TICK);
           int filled = target.fill(dir.getOpposite(), push, true);
-          if(filled > 0) {
+          if (filled > 0) {
             outputTank.drain(filled, true);
             tanksDirty = true;
             return res;
@@ -100,37 +100,37 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   @Override
   protected boolean doPull(EnumFacing dir) {
 
-    if(isSideDisabled(dir)) {
+    if (isSideDisabled(dir)) {
       return false;
     }
 
     boolean res = super.doPull(dir);
-    if(inputTank.getFluidAmount() < inputTank.getCapacity()) {
+    if (inputTank.getFluidAmount() < inputTank.getCapacity()) {
       BlockCoord loc = getLocation().getLocation(dir);
       IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if(target != null) {
+      if (target != null) {
 
-        if(inputTank.getFluidAmount() > 0) {
+        if (inputTank.getFluidAmount() > 0) {
           FluidStack canPull = inputTank.getFluid().copy();
           canPull.amount = inputTank.getCapacity() - inputTank.getFluidAmount();
           canPull.amount = Math.min(canPull.amount, IO_MB_TICK);
           FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-          if(drained != null && drained.amount > 0) {
+          if (drained != null && drained.amount > 0) {
             inputTank.fill(drained, true);
             tanksDirty = true;
             return res;
           }
         } else {
-          //empty input tank
+          // empty input tank
           FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-          if(infos != null) {
+          if (infos != null) {
             for (FluidTankInfo info : infos) {
-              if(info.fluid != null && info.fluid.amount > 0) {
-                if(canFill(dir, info.fluid.getFluid())) {
+              if (info.fluid != null && info.fluid.amount > 0) {
+                if (canFill(dir, info.fluid.getFluid())) {
                   FluidStack canPull = info.fluid.copy();
                   canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
                   FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-                  if(drained != null && drained.amount > 0) {
+                  if (drained != null && drained.amount > 0) {
                     inputTank.fill(drained, true);
                     tanksDirty = true;
                     return res;
@@ -148,15 +148,15 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if(isSideDisabled(from)) {
+    if (isSideDisabled(from)) {
       return 0;
     }
 
-    if(resource == null || !canFill(from, resource.getFluid())) {
+    if (resource == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
     int res = inputTank.fill(resource, doFill);
-    if(res > 0 && doFill) {
+    if (res > 0 && doFill) {
       tanksDirty = true;
     }
     return res;
@@ -164,14 +164,14 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    if(isSideDisabled(from)) {
+    if (isSideDisabled(from)) {
       return null;
     }
-    if(outputTank.getFluid() == null || resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
+    if (outputTank.getFluid() == null || resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
       return null;
     }
     FluidStack res = outputTank.drain(resource.amount, doDrain);
-    if(res != null && res.amount > 0 && doDrain) {
+    if (res != null && res.amount > 0 && doDrain) {
       tanksDirty = true;
     }
     return res;
@@ -179,11 +179,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    if(isSideDisabled(from)) {
+    if (isSideDisabled(from)) {
       return null;
     }
     FluidStack res = outputTank.drain(maxDrain, doDrain);
-    if(res != null && res.amount > 0 && doDrain) {
+    if (res != null && res.amount > 0 && doDrain) {
       tanksDirty = true;
     }
     return res;
@@ -192,7 +192,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
     boolean res = super.processTasks(redstoneChecksPassed);
-    if(tanksDirty && shouldDoWorkThisTick(10)) {
+    if (tanksDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketTanks(this), this);
       tanksDirty = false;
     }
@@ -239,16 +239,16 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public boolean canFill(EnumFacing from, Fluid fluid) {
-    if(isSideDisabled(from)) {
+    if (isSideDisabled(from)) {
       return false;
     }
 
-    if(fluid == null || (inputTank.getFluid() != null && !FluidUtil.areFluidsTheSame(inputTank.getFluid().getFluid(), fluid))) {
+    if (fluid == null || (inputTank.getFluid() != null && !FluidUtil.areFluidsTheSame(inputTank.getFluid().getFluid(), fluid))) {
       return false;
     }
 
     MachineRecipeInput[] inputs = getRecipeInputs();
-    if(inputTank.getFluidAmount() <= 0) {
+    if (inputTank.getFluidAmount() <= 0) {
       inputs[inputs.length - 1] = new MachineRecipeInput(0, new FluidStack(fluid, 1));
     }
 
@@ -257,7 +257,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public boolean canDrain(EnumFacing from, Fluid fluid) {
-    if(isSideDisabled(from)) {
+    if (isSideDisabled(from)) {
       return false;
     }
     return outputTank.getFluid() != null && FluidUtil.areFluidsTheSame(outputTank.getFluid().getFluid(), fluid);
@@ -265,7 +265,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if(isSideDisabled(from)) {
+    if (isSideDisabled(from)) {
       return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] { inputTank.getInfo(), outputTank.getInfo() };

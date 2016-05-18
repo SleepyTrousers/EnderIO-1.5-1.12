@@ -33,7 +33,7 @@ public class ChannelTab implements ITabPanel {
   protected static final int ADD_BUTTON_ID = 3;
   protected static final int PRIVATE_BUTTON_ID = 4;
   private static final int DELETE_CHANNEL_BUTTON_ID = 5;
-  
+
   private static final int SEND_BUTTON_ID = 6;
   private static final int RECIEVE_BUTTON_ID = 7;
 
@@ -45,14 +45,14 @@ public class ChannelTab implements ITabPanel {
 
   GuiTextField newChannelTF;
   GuiChannelList channelList;
-  
+
   GuiChannelList sendChannels;
   GuiChannelList recieveChannels;
-  
+
   IconButton deleteChannelB;
   IconButton sendB;
   IconButton recieveB;
-  
+
   ListSelectionListener<Channel> selectionListener;
   TileTransceiver transceiver;
 
@@ -61,7 +61,7 @@ public class ChannelTab implements ITabPanel {
     this.type = type;
     transceiver = guiTransceiver.getTransciever();
 
-    newChannelTF = new GuiTextField(76543, parent.getFontRenderer(), 7, 12, 103, 16);    
+    newChannelTF = new GuiTextField(76543, parent.getFontRenderer(), 7, 12, 103, 16);
     addButton = new IconButton(parent, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
     addButton.setToolTip(EnderIO.lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
@@ -75,13 +75,13 @@ public class ChannelTab implements ITabPanel {
     int x = 7;
     int y = 48;
     channelList = new GuiChannelList(parent, w, h, x, y);
-    channelList.setChannels(ClientChannelRegister.instance.getChannelsForType(type), Predicates.<Channel>alwaysTrue());
+    channelList.setChannels(ClientChannelRegister.instance.getChannelsForType(type), Predicates.<Channel> alwaysTrue());
     channelList.setShowSelectionBox(true);
-    channelList.setScrollButtonIds(100, 101);    
-    
+    channelList.setScrollButtonIds(100, 101);
+
     deleteChannelB = new IconButton(parent, DELETE_CHANNEL_BUTTON_ID, x + w - 20, y + h + 4, IconEIO.MINUS);
     deleteChannelB.setToolTip(EnderIO.lang.localize("gui.trans.deleteChannel"));
-    
+
     Predicate<Channel> predicate = new Predicate<Channel>() {
       @Override
       public boolean apply(@Nullable Channel input) {
@@ -94,39 +94,38 @@ public class ChannelTab implements ITabPanel {
         return super.equals(obj);
       }
     };
-    
+
     x += w + 32;
     h = 35;
     sendChannels = new GuiChannelList(parent, w, h, x, y);
     sendChannels.setChannels(transceiver.getSendChannels(type), predicate);
     sendChannels.setShowSelectionBox(true);
     sendChannels.setScrollButtonIds(200, 201);
-    
-    sendB = new IconButton(parent,SEND_BUTTON_ID,x -24, y + h/2 - 9, IconEIO.ARROWS);
-    
+
+    sendB = new IconButton(parent, SEND_BUTTON_ID, x - 24, y + h / 2 - 9, IconEIO.ARROWS);
+
     y += h + 20;
     recieveChannels = new GuiChannelList(parent, w, h, x, y);
     recieveChannels.setChannels(transceiver.getRecieveChannels(type), predicate);
     recieveChannels.setShowSelectionBox(true);
     recieveChannels.setScrollButtonIds(300, 301);
-        
-    recieveB = new IconButton(parent,RECIEVE_BUTTON_ID,x -24, y + h/2 - 9, IconEIO.ARROWS);
-    
-    
+
+    recieveB = new IconButton(parent, RECIEVE_BUTTON_ID, x - 24, y + h / 2 - 9, IconEIO.ARROWS);
+
     selectionListener = new ListSelectionListener<Channel>() {
-      
+
       @Override
       public void selectionChanged(GuiScrollableList<Channel> list, int selectedIndex) {
-        if(selectedIndex < 0) {
+        if (selectedIndex < 0) {
           return;
         }
-        if(list != channelList) {
+        if (list != channelList) {
           channelList.setSelection(-1);
         }
-        if(list != sendChannels) {
+        if (list != sendChannels) {
           sendChannels.setSelection(-1);
         }
-        if(list != recieveChannels) {
+        if (list != recieveChannels) {
           recieveChannels.setSelection(-1);
         }
       }
@@ -134,7 +133,7 @@ public class ChannelTab implements ITabPanel {
     channelList.addSelectionListener(selectionListener);
     sendChannels.addSelectionListener(selectionListener);
     recieveChannels.addSelectionListener(selectionListener);
-        
+
   }
 
   @Override
@@ -168,8 +167,8 @@ public class ChannelTab implements ITabPanel {
   }
 
   @Override
-  public void keyTyped(char par1, int par2) {    
-    newChannelTF.textboxKeyTyped(par1, par2);    
+  public void keyTyped(char par1, int par2) {
+    newChannelTF.textboxKeyTyped(par1, par2);
     addButton.enabled = newChannelTF.getText().trim().length() > 0;
   }
 
@@ -181,7 +180,7 @@ public class ChannelTab implements ITabPanel {
     case ITEM:
       return IconEIO.WRENCH_OVERLAY_ITEM;
     case POWER:
-      return IconEIO.WRENCH_OVERLAY_POWER;   
+      return IconEIO.WRENCH_OVERLAY_POWER;
     case RAIL:
       return IconEIO.ENDER_RAIL;
     default:
@@ -200,41 +199,41 @@ public class ChannelTab implements ITabPanel {
     channelList.drawScreen(mouseX, mouseY, partialTick);
     sendChannels.drawScreen(mouseX, mouseY, partialTick);
     recieveChannels.drawScreen(mouseX, mouseY, partialTick);
-    
+
     int left = parent.getGuiLeft();
     int top = parent.getGuiTop();
     int x = left + 59;
     int y = top + 36;
     parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.available"), x, y, ColorUtil.getRGB(Color.white));
-    
+
     x = left + 199;
     parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.send"), x, y, ColorUtil.getRGB(Color.white));
-    
+
     y += 56;
-    parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.receive"), x, y, ColorUtil.getRGB(Color.white));           
+    parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.receive"), x, y, ColorUtil.getRGB(Color.white));
   }
 
   @Override
   public void actionPerformed(GuiButton guiButton) {
-    if(guiButton.id == ADD_BUTTON_ID) {
-      addChannelPressed();      
-    } else if(guiButton.id == DELETE_CHANNEL_BUTTON_ID) {
-      deleteChannelPressed();      
-    } else if(guiButton.id == SEND_BUTTON_ID) {
-      sendTogglePressed();      
-    } else if(guiButton.id == RECIEVE_BUTTON_ID) {
-      receiveTogglePressed();      
+    if (guiButton.id == ADD_BUTTON_ID) {
+      addChannelPressed();
+    } else if (guiButton.id == DELETE_CHANNEL_BUTTON_ID) {
+      deleteChannelPressed();
+    } else if (guiButton.id == SEND_BUTTON_ID) {
+      sendTogglePressed();
+    } else if (guiButton.id == RECIEVE_BUTTON_ID) {
+      receiveTogglePressed();
     }
   }
 
   protected void receiveTogglePressed() {
     Channel c = channelList.getSelectedElement();
-    if(c != null && !transceiver.getRecieveChannels(type).contains(c)) {
+    if (c != null && !transceiver.getRecieveChannels(type).contains(c)) {
       transceiver.addRecieveChanel(c);
       PacketHandler.INSTANCE.sendToServer(new PacketSendRecieveChannel(transceiver, false, true, c));
     } else {
       c = recieveChannels.getSelectedElement();
-      if(c != null) {
+      if (c != null) {
         transceiver.removeRecieveChanel(c);
         PacketHandler.INSTANCE.sendToServer(new PacketSendRecieveChannel(transceiver, false, false, c));
       }
@@ -243,12 +242,12 @@ public class ChannelTab implements ITabPanel {
 
   protected void sendTogglePressed() {
     Channel c = channelList.getSelectedElement();
-    if(c != null && !transceiver.getSendChannels(type).contains(c)) {
+    if (c != null && !transceiver.getSendChannels(type).contains(c)) {
       transceiver.addSendChanel(c);
       PacketHandler.INSTANCE.sendToServer(new PacketSendRecieveChannel(transceiver, true, true, c));
     } else {
       c = sendChannels.getSelectedElement();
-      if(c != null) {
+      if (c != null) {
         transceiver.removeSendChanel(c);
         PacketHandler.INSTANCE.sendToServer(new PacketSendRecieveChannel(transceiver, true, false, c));
       }
@@ -257,24 +256,24 @@ public class ChannelTab implements ITabPanel {
 
   private void deleteChannelPressed() {
     Channel c = channelList.getSelectedElement();
-    if(c != null) {        
+    if (c != null) {
       ClientChannelRegister.instance.removeChannel(c);
-      PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, false));    
+      PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, false));
     }
   }
 
   private void addChannelPressed() {
-    if(newChannelTF.getText() == null || newChannelTF.getText().trim().isEmpty()) {
+    if (newChannelTF.getText() == null || newChannelTF.getText().trim().isEmpty()) {
       return;
     }
     Channel c;
-    if(privateButton.isSelected()) {
+    if (privateButton.isSelected()) {
       c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile(), type);
     } else {
       c = new Channel(newChannelTF.getText(), type);
     }
     ClientChannelRegister.instance.addChannel(c);
-    PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, true));           
+    PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, true));
     channelList.setSelection(c);
     newChannelTF.setText("");
   }

@@ -3,6 +3,9 @@ package crazypants.enderio.machine.transceiver.gui;
 import java.awt.Color;
 import java.awt.Point;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -17,8 +20,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 
 public class FilterTab implements ITabPanel {
 
@@ -52,7 +53,7 @@ public class FilterTab implements ITabPanel {
 
   protected void updateSendRecieve() {
     parent.getGhostSlots().clear();
-    if(showSend) {
+    if (showSend) {
       sendGui.updateButtons();
       recGui.deactivate();
       sendGui.createFilterSlots();
@@ -83,19 +84,19 @@ public class FilterTab implements ITabPanel {
 
     GL11.glColor3f(1, 1, 1);
 
-    //Inventory
+    // Inventory
     parent.bindGuiTexture();
     Point invRoot = container.getPlayerInventoryOffset();
     parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 162, 76);
 
-    if(showSend) {
+    if (showSend) {
       sendGui.renderCustomOptions(0, par1, par2, par3);
     } else {
       recGui.renderCustomOptions(0, par1, par2, par3);
     }
 
     String txt = EnderIO.lang.localize("gui.machine.sendfilter");
-    if(!showSend) {
+    if (!showSend) {
       txt = EnderIO.lang.localize("gui.machine.receivefilter");
     }
     FontRenderer fr = parent.getFontRenderer();
@@ -103,17 +104,17 @@ public class FilterTab implements ITabPanel {
     int y = top - fr.FONT_HEIGHT + container.getFilterOffset().y - 7;
     fr.drawStringWithShadow(txt, x, y, ColorUtil.getRGB(Color.WHITE));
 
-    //sendRecB.xPosition = left + container.getFilterOffset().x + fr.getStringWidth(txt) + 10;
-    //System.out.println("FilterTab.enclosing_method: " + (fr.getStringWidth(txt) + 10));
+    // sendRecB.xPosition = left + container.getFilterOffset().x + fr.getStringWidth(txt) + 10;
+    // System.out.println("FilterTab.enclosing_method: " + (fr.getStringWidth(txt) + 10));
   }
 
   @Override
   public void actionPerformed(GuiButton guiButton) {
-    if(guiButton == sendRecB) {
+    if (guiButton == sendRecB) {
       showSend = !showSend;
       updateSendRecieve();
     }
-    if(showSend) {
+    if (showSend) {
       sendGui.actionPerformed(guiButton);
     } else {
       recGui.actionPerformed(guiButton);
@@ -122,7 +123,7 @@ public class FilterTab implements ITabPanel {
 
   @Override
   public void mouseClicked(int x, int y, int par3) {
-    if(showSend) {
+    if (showSend) {
       sendGui.mouseClicked(x, y, par3);
     } else {
       recGui.mouseClicked(x, y, par3);
@@ -149,7 +150,7 @@ public class FilterTab implements ITabPanel {
 
     @Override
     public ItemFilter getItemFilter() {
-      if(isSend) {
+      if (isSend) {
         return trans.getSendItemFilter();
       }
       return trans.getReceiveItemFilter();

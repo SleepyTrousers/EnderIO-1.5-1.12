@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import net.minecraft.entity.player.InventoryPlayer;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class ContainerInhibitorObelisk extends AbstractMachineContainer<AbstractMachineEntity> {
 
@@ -12,6 +12,6 @@ public class ContainerInhibitorObelisk extends AbstractMachineContainer<Abstract
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    
   }
+
 }

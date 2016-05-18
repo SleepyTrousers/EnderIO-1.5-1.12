@@ -1,15 +1,16 @@
 package crazypants.enderio.machine.transceiver;
 
-import com.enderio.core.common.network.MessageTileEntity;
-import com.enderio.core.common.network.NetworkUtil;
-
-import crazypants.enderio.conduit.item.filter.ItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
+import crazypants.enderio.conduit.item.filter.ItemFilter;
 
 public class PacketItemFilter extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketItemFilter, IMessage> {
 
@@ -22,7 +23,7 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> impleme
   public PacketItemFilter(TileTransceiver te, boolean isSend) {
     super(te);
     this.isSend = isSend;
-    if(isSend) {
+    if (isSend) {
       filter = te.getSendItemFilter();
     } else {
       filter = te.getReceiveItemFilter();
@@ -50,14 +51,12 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> impleme
   @Override
   public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileTransceiver tile = message.getTileEntity(player.worldObj);    
-    boolean isSend = message.isSend;
-    ItemFilter filter = message.filter;
-    if(tile != null && filter != null) {
-      if(isSend) {
-        tile.setSendItemFilter(filter);
+    TileTransceiver tile = message.getTileEntity(player.worldObj);
+    if (tile != null && message.filter != null) {
+      if (message.isSend) {
+        tile.setSendItemFilter(message.filter);
       } else {
-        tile.setRecieveItemFilter(filter);
+        tile.setRecieveItemFilter(message.filter);
       }
     }
     return null;

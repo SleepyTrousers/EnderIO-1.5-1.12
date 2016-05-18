@@ -3,6 +3,9 @@ package crazypants.enderio.machine.transceiver.gui;
 import java.awt.Color;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.WorldRenderer;
+
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.base.Predicate;
@@ -11,14 +14,10 @@ import com.google.common.collect.Sets;
 
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.Channel;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.WorldRenderer;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 
   private FluentIterable<Channel> channels;
-
-  // private Channel activeChannel;
 
   private final GuiTransceiver parent;
 

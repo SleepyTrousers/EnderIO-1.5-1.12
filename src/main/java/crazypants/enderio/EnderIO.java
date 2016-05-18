@@ -35,6 +35,8 @@ import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
+import static crazypants.util.Things.TRAVEL_BLACKLIST;
+
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
@@ -92,6 +94,7 @@ import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
+import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
@@ -151,7 +154,7 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
-
+import crazypants.util.Things;
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
@@ -247,6 +250,7 @@ public class EnderIO {
   public static BlockSoulBinder blockSoulFuser;
   public static BlockAttractor blockAttractor;
   public static BlockAversionObelisk blockSpawnGuard;
+  public static BlockRelocatorObelisk blockSpawnRelocator;
   public static BlockExperienceObelisk blockExperianceOblisk;
   public static BlockWeatherObelisk blockWeatherObelisk;
   public static BlockInhibitorObelisk blockInhibitorObelisk;
@@ -346,6 +350,7 @@ public class EnderIO {
     blockKillerJoe = BlockKillerJoe.create();
     blockAttractor = BlockAttractor.create();
     blockSpawnGuard = BlockAversionObelisk.create();
+    blockSpawnRelocator = BlockRelocatorObelisk.create();
     blockExperianceOblisk = BlockExperienceObelisk.create();
     blockWeatherObelisk = BlockWeatherObelisk.create();
     blockInhibitorObelisk = BlockInhibitorObelisk.create();
@@ -424,6 +429,7 @@ public class EnderIO {
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
+    Things.enterInit();
 
     Config.init();
 
@@ -604,7 +610,7 @@ public class EnderIO {
           } else if(IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
-            TravelController.instance.addBlockToBlinkBlackList(value);
+            TRAVEL_BLACKLIST.add(value);
           } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
             CapturedMob.addToBlackList(value);
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {

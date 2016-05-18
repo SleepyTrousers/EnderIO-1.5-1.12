@@ -4,6 +4,12 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -17,11 +23,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
@@ -38,7 +39,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       protected void updateText() {
         text.clear();
         String heading = EnderIO.lang.localize("vat.inputTank");
-        if(getTileEntity().inputTank.getFluid() != null) {
+        if (getTileEntity().inputTank.getFluid() != null) {
           heading += ": " + getTileEntity().inputTank.getFluid().getLocalizedName();
         }
         text.add(heading);
@@ -53,7 +54,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       protected void updateText() {
         text.clear();
         String heading = EnderIO.lang.localize("vat.outputTank");
-        if(getTileEntity().outputTank.getFluid() != null) {
+        if (getTileEntity().outputTank.getFluid() != null) {
           heading += ": " + getTileEntity().outputTank.getFluid().getLocalizedName();
         }
         text.add(heading);
@@ -83,40 +84,36 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
     int x = 30;
     int y = 12;
-    if(mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
+    if (mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
       renderSlotHighlight(PULL_COLOR, x - 2, y - 2, 15 + 4, 47 + 4);
     }
-    if(mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) {
+    if (mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) {
       x = 132;
       renderSlotHighlight(PUSH_COLOR, x - 2, y - 2, 15 + 4, 47 + 4);
     }
   }
 
-  /**
-   * Draw the background layer for the GuiContainer (everything behind the
-   * items)
-   */
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     TileVat vat = getTileEntity();
-    
-    if(shouldRenderProgress()) {
+
+    if (shouldRenderProgress()) {
       int scaled = getProgressScaled(14) + 1;
       drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);
 
       TextureAtlasSprite inputIcon = null;
-      if(vat.currentTaskInputFluid != null) {        
+      if (vat.currentTaskInputFluid != null) {
         inputIcon = RenderUtil.getStillTexture(vat.currentTaskInputFluid);
       }
       TextureAtlasSprite outputIcon = null;
-      if(vat.currentTaskOutputFluid != null) {
+      if (vat.currentTaskOutputFluid != null) {
         outputIcon = RenderUtil.getStillTexture(vat.currentTaskOutputFluid);
       }
 
-      if(inputIcon != null && outputIcon != null) {
+      if (inputIcon != null && outputIcon != null) {
         renderVat(inputIcon, outputIcon, vat.getProgress());
       }
 
@@ -134,7 +131,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     } else {
       outputFluid = vat.currentTaskOutputFluid;
     }
-    
+
     Fluid inputFluid;
     if (vat.inputTank.getFluidAmount() > 0) {
       inputFluid = vat.inputTank.getFluid().getFluid();
@@ -190,9 +187,9 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
 
-    if(b == dump1) {
+    if (b == dump1) {
       dump(1);
-    } else if(b == dump2) {
+    } else if (b == dump2) {
       dump(2);
     }
   }

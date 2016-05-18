@@ -16,7 +16,7 @@ import crazypants.enderio.machine.ranged.IRanged;
 public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements IRanged {
 
   private float range = 32;
-  
+
   public TileInhibitorObelisk() {
     super(new SlotDefinition(0, 0, 1), ModObject.blockInhibitorObelisk);
   }
@@ -42,7 +42,7 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
   }
 
   @Override
-  public World getRangeWorldObj() {   
+  public World getRangeWorldObj() {
     return getWorld();
   }
 
@@ -66,7 +66,7 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
     super.validate();
     BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), range);
   }
-  
+
   @Override
   public void invalidate() {
     super.invalidate();

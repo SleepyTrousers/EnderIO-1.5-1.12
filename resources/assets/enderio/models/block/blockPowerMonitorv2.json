@@ -41,14 +41,6 @@
         "south": { "uv": [ 2.01, 11.01, 3.99, 13.99 ], "texture": "#texture", "cullface": "south" },
         "east":  { "uv": [ 3.01, 11.01, 3.99, 13.99 ], "texture": "#texture", "cullface": "south" }
     }
-},
-{
-    "__comment": "front plate",
-    "from": [ 1, 1, 14 ],
-    "to": [ 15, 15, 14.745 ],
-    "faces": {
-        "south": { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#fakeface", "cullface": "south" }
-    }
 }
 ]
 }

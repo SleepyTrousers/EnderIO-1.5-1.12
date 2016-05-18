@@ -18,7 +18,7 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   static final Point PLAYER_INV_OFFSET = new Point(47, 86);
 
   static final Point ITEM_INV_OFFSET = new Point(54, 30);
-  
+
   static final Point HIDDEN_OFFSET = new Point(-3000, -3000);
 
   static final Point FILTER_OFFSET = new Point(PLAYER_INV_OFFSET.x, 30);
@@ -36,7 +36,6 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
         @Override
         public boolean isItemValid(ItemStack itemstack) {
           return getInv().isItemValidForSlot(getSlotIndex(), itemstack);
-          //return true;
         }
       });
     }
@@ -60,29 +59,28 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   }
 
   public void setBufferSlotsVisible(boolean visible) {
-    Point itemOffset = visible ? getItemInventoryOffset() : HIDDEN_OFFSET;       
+    Point itemOffset = visible ? getItemInventoryOffset() : HIDDEN_OFFSET;
     setItemSlotLocations(itemOffset);
   }
 
   private void setItemSlotLocations(Point offset) {
     int i;
     int x = offset.x;
-    int y = offset.y;    
-    for (i = 0; i < 4; i++) {      
+    int y = offset.y;
+    for (i = 0; i < 4; i++) {
       inventorySlots.get(i).xDisplayPosition = x;
       inventorySlots.get(i).yDisplayPosition = y;
       x += 18;
     }
     x = offset.x;
     y = offset.y + 18;
-    for (; i < 8; i++) {      
+    for (; i < 8; i++) {
       inventorySlots.get(i).xDisplayPosition = x;
       inventorySlots.get(i).yDisplayPosition = y;
       x += 18;
     }
-    
+
     x = offset.x + (18 * 4) + getItemBufferSpacing();
-    //y = offset.y + 18 + getItemRowSpacing();
     y = offset.y;
     for (; i < 12; i++) {
       inventorySlots.get(i).xDisplayPosition = x;
@@ -100,18 +98,18 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
 
   @Override
   public Point getPlayerInventoryOffset() {
-    return PLAYER_INV_OFFSET;     
+    return PLAYER_INV_OFFSET;
   }
-  
-  public Point getItemInventoryOffset() {    
-    return ITEM_INV_OFFSET;    
+
+  public Point getItemInventoryOffset() {
+    return ITEM_INV_OFFSET;
   }
-  
+
   public Point getFilterOffset() {
     return FILTER_OFFSET;
   }
 
-  public int getItemBufferSpacing() {    
+  public int getItemBufferSpacing() {
     return 5;
   }
 

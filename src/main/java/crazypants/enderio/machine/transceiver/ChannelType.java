@@ -6,6 +6,6 @@ public enum ChannelType {
   ITEM,
   FLUID,
   RAIL;
- 
+
   public static final ChannelType[] VALUES = values();
 }

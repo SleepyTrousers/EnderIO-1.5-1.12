@@ -73,6 +73,7 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.network.PacketHandler;
@@ -80,7 +81,6 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.tool.ToolUtil;
 
 @Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
@@ -159,8 +159,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, ConduitRenderMapper.instance);
-      // TODO: can we build a cache key?
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
+      TileConduitBundle bundle = getTileEntity(world, pos);
+      if (bundle != null) {
+        // not the best caching in the world, but good enough. A bit on the memory-intensive side...
+        blockStateWrapper.addCacheKey(bundle);
+        blockStateWrapper.addCacheKey(bundle.getSerial());
+      }
       blockStateWrapper.bakeModel();
       return blockStateWrapper;
     } else {
