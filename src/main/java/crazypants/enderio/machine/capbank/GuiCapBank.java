@@ -5,15 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
-
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.common.util.BlockCoord;
@@ -33,6 +24,13 @@ import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
@@ -236,8 +234,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 
     requestStateUpdate();
-
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    
+    GlStateManager.color(1, 1, 1);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -284,12 +282,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @SuppressWarnings("rawtypes")
   @Override
-  public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
-    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-    GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-    super.drawHoveringText(par1List, par2 + 24, par3, font);
-    GL11.glPopAttrib();
-    GL11.glPopAttrib();
+  public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {    
+    super.drawHoveringText(par1List, par2, par3, font);    
   }
 
   @Override
