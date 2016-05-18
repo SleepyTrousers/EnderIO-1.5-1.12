@@ -2,13 +2,21 @@
     "parent": "enderio:block/blockEndermanSkull_tormented",
     "display": {
         "thirdperson": {
-            "rotation": [ 10, -45, 170 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.375, 0.375, 0.375 ]
+            "rotation": [ 180, -90, 0 ],
+            "translation": [ 0, 0, -0.5 ],
+            "scale": [ 1.4, 1.4, 1.4 ]
+        },
+        "firstperson": {
+            "rotation": [ 0, -180, 0 ],
+            "scale": [ 1.4, 1.4, 1.4 ],
+            "translation": [ 0, 1, -1.5 ]
         },
         "gui": {
-          "translation": [ 0, 2, 0 ],
+          "translation": [ 0, 3, 0 ],
           "scale": [ 1.4, 1.4, 1.4 ]
+        },
+        "ground" : {
+          "scale": [ 2, 2, 2 ]
         }
     }
 }

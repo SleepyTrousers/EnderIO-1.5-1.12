@@ -256,7 +256,6 @@ public class IoConfigRenderer {
     GlStateManager.disableLighting();
     
     RenderUtil.bindBlockTexture();    
-    GlStateManager.color(1, 1, 1);
     WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
 
     GlStateManager.color(1, 1, 1);
