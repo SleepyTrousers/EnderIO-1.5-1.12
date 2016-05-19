@@ -22,6 +22,7 @@ import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.ITESRItemBlock;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 
 public class EnderItemOverrideList /* extends ItemOverrideList */{
@@ -41,6 +42,10 @@ public class EnderItemOverrideList /* extends ItemOverrideList */{
     Block block = Block.getBlockFromItem(stack.getItem());
     if (block == null) {
       throw new NullPointerException("Wrong parameter 'ItemStack stack', not an ItemBlock");
+    }
+
+    if (block instanceof ITESRItemBlock) {
+      return new net.minecraft.client.resources.model.BuiltInModel(originalModel.getItemCameraTransforms());
     }
 
     if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {

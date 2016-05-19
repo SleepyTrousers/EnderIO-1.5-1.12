@@ -14,7 +14,7 @@ public class AversionObeliskRenderer extends ObeliskSpecialRenderer<TileAversion
   private ItemStack onStack = new ItemStack(EnderIO.blockEndermanSkull, 1, BlockEndermanSkull.SkullType.REANIMATED_TORMENTED.ordinal());
 
   public AversionObeliskRenderer() {
-    super(EnderIO.blockSpawnGuard, null);
+    super(null);
   }
 
   @Override

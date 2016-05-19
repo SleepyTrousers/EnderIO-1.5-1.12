@@ -2,20 +2,17 @@ package crazypants.enderio.machine.obelisk.render;
 
 import java.util.Random;
 
-import com.enderio.core.client.render.RenderUtil;
-
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslated;
-
-import crazypants.enderio.EnderIO;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
@@ -27,6 +24,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
+
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslated;
+
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
 public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
@@ -37,11 +43,8 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
 
   private RenderEntityItem rei;
 
-  private final Block block;
-
-  public ObeliskSpecialRenderer(Block block, ItemStack itemStack) {
+  public ObeliskSpecialRenderer(ItemStack itemStack) {
     this.floatingStack = itemStack;
-    this.block = block;
   }
 
   private EntityItem ei = null;
@@ -63,12 +66,18 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
     if (te == null) {
       // Being rendered as an Item
       GlStateManager.pushMatrix();
-      GlStateManager.translate(0.5f, 0.5f, 0.5f);
-      GlStateManager.scale(2, 2, 2);
       GlStateManager.color(1, 1, 1);
       GlStateManager.enableLighting();
       GlStateManager.disableLighting();
-      RenderUtil.renderBlockModelAsItem(world, new ItemStack(block), block.getDefaultState());
+
+      Tessellator tessellator = Tessellator.getInstance();
+      WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+      worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+      for (BakedQuad bakedQuad : ObeliskBakery.bake(ObeliskRenderManager.INSTANCE.getActiveTextures())) {
+        net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(worldrenderer, bakedQuad, -1);
+      }
+      tessellator.draw();
+
       GlStateManager.enableLighting();
       // RenderHelper.enableStandardItemLighting();
       GlStateManager.popMatrix();
