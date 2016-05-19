@@ -4,6 +4,15 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.api.client.render.VertexTransform;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -15,15 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.api.client.render.VertexTransform;
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector4f;
-import com.enderio.core.common.vecmath.Vertex;
 
 public class HalfBakedQuad {
   private final List<Vertex> corners;
@@ -54,7 +54,6 @@ public class HalfBakedQuad {
 
     UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM); // this one has normals
     builder.setQuadOrientation(face);
-    builder.setQuadColored();
     putVertexData(builder, corners.get(0), w01);
     putVertexData(builder, corners.get(1), w01);
     putVertexData(builder, corners.get(2), w23);

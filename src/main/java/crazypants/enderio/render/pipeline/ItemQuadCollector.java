@@ -7,16 +7,18 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraft.world.World;
 
 /**
  * This class can hold all quads a backed item model needs. It can collect them from multiple source, including other ItemQuadCollectors.
@@ -33,7 +35,7 @@ public class ItemQuadCollector {
   private final List<BakedQuad>[] table = new List[EnumFacing.values().length + 1];
 
   private static Integer facing2Integer(EnumFacing facing) {
-    return facing == null ? facing.values().length : facing.ordinal();
+    return facing == null ? EnumFacing.values().length : facing.ordinal();
   }
 
   public void addQuads(EnumFacing side, List<BakedQuad> quads) {
@@ -136,10 +138,7 @@ public class ItemQuadCollector {
   }
 
   public void addBakedModel(IBakedModel model, ItemStack stack, boolean allFacesToGeneral) {
-    if (model instanceof net.minecraftforge.client.model.ISmartItemModel) {
-      model = ((net.minecraftforge.client.model.ISmartItemModel) model).handleItemState(stack);
-    }
-    // model = model.getOverrides().handleItemState(model, stack, (World)null, (EntityLivingBase)null);
+    model = model.getOverrides().handleItemState(model, stack, (World) null, (EntityLivingBase) null);
     if (model == null) {
       model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel();
     }
@@ -151,12 +150,12 @@ public class ItemQuadCollector {
   }
 
   public void addItemBakedModel(IBakedModel model, boolean allFacesToGeneral) {
-    List<BakedQuad> generalQuads = model.getGeneralQuads(); // model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+    List<BakedQuad> generalQuads = model.getQuads((IBlockState) null, (EnumFacing) null, 0L);
     if (generalQuads != null && !generalQuads.isEmpty()) {
       addQuads(null, generalQuads);
     }
     for (EnumFacing face : EnumFacing.values()) {
-      List<BakedQuad> faceQuads = model.getFaceQuads(face); // model.getQuads((IBlockState)null, face, 0L);
+      List<BakedQuad> faceQuads = model.getQuads((IBlockState) null, face, 0L);
       if (faceQuads != null && !faceQuads.isEmpty()) {
         addQuads(allFacesToGeneral ? null : face, faceQuads);
       }

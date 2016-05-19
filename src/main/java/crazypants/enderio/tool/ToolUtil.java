@@ -40,13 +40,17 @@ public class ToolUtil {
   }
   
   public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand) {
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer, hand);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getHeldItemMainhand(), entityPlayer, pos)) {
+    return breakBlockWithTool(block, world, pos, entityPlayer, entityPlayer.getHeldItem(hand));
+  }
+
+  public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EntityPlayer entityPlayer, ItemStack heldItem) {
+    ITool tool = ToolUtil.getToolFromStack(heldItem);
+    if (tool != null && entityPlayer.isSneaking() && tool.canUse(heldItem, entityPlayer, pos)) {
       IBlockState bs = world.getBlockState(pos);;
       if(block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
-        block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos), entityPlayer.getHeldItemMainhand());
+        block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos), heldItem);
       }
-      tool.used(entityPlayer.getHeldItemMainhand(), entityPlayer, pos);
+      tool.used(heldItem, entityPlayer, pos);
       return true;
     }
     return false;
@@ -100,14 +104,17 @@ public class ToolUtil {
       return null;
     }
     ItemStack equipped = player.getHeldItem(hand);
+    return getToolFromStack(equipped);
+  }
+
+  public static ITool getToolFromStack(ItemStack equipped) {
     if(equipped == null) {
       return null;
     }
     if(equipped.getItem() instanceof ITool) {
       return (ITool) equipped.getItem();
     }
-    return getToolImpl(equipped);
-
+    return getInstance().getToolImpl(equipped);
   }
 
   private ITool getToolImpl(ItemStack equipped) {

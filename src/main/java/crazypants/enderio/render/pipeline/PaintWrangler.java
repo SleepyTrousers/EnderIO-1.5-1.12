@@ -3,20 +3,18 @@ package crazypants.enderio.render.pipeline;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import crazypants.enderio.Log;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
+import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.WeightedBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.ISmartBlockModel;
-import crazypants.enderio.Log;
-import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
-import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 
 public class PaintWrangler {
 
@@ -25,13 +23,12 @@ public class PaintWrangler {
     boolean doActualStateWithOutTe = false;
     boolean doExtendedStateWithTe = true;
     boolean doExtendedStateWithOutTe = false;
-    boolean dohandleBlockState = true;
     boolean doPaint = true;
 
     @Override
     public String toString() {
       return "Memory [doActualStateWithTe=" + doActualStateWithTe + ", doActualStateWithOutTe=" + doActualStateWithOutTe + ", doExtendedStateWithTe="
-          + doExtendedStateWithTe + ", doExtendedStateWithOutTe=" + doExtendedStateWithOutTe + ", dohandleBlockState=" + dohandleBlockState + "]";
+          + doExtendedStateWithTe + ", doExtendedStateWithOutTe=" + doExtendedStateWithOutTe + "]";
     }
   }
 
@@ -50,19 +47,6 @@ public class PaintWrangler {
     }
 
     IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(rawPaintSource);
-
-    if (Minecraft.getMinecraft().gameSettings.allowBlockAlternatives && paintModel instanceof WeightedBakedModel) {
-      paintModel = ((WeightedBakedModel) paintModel).getAlternativeModel(MathHelper.getPositionRandom(pos));
-    }
-
-    if (memory.dohandleBlockState && paintModel instanceof ISmartBlockModel) {
-      try {
-        paintModel = ((ISmartBlockModel) paintModel).handleBlockState(paint);
-      } catch (Throwable t) {
-        Log.error("Failed to invoke block " + paint.getBlock() + "'s ISmartBlockModel for painting. Error: " + t);
-        memory.dohandleBlockState = false;
-      }
-    }
 
     List<String> errors = quads.addUnfriendlybakedModel(MinecraftForgeClient.getRenderLayer(), paintModel, paint, MathHelper.getPositionRandom(pos));
     if (errors != null) {

@@ -1,17 +1,22 @@
 package crazypants.enderio.render.pipeline;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverride;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.Attributes;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
 public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel {
@@ -19,19 +24,21 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
   private final IBakedModel parent;
   private final ItemQuadCollector quads;
 
+  private static final ItemOverrideList itemOverrideList = new ItemOverrideList(Collections.<ItemOverride> emptyList()) {
+    @Override
+    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+      return originalModel;
+    }
+  };
+
   public CollectedItemQuadBakedBlockModel(IBakedModel parent, ItemQuadCollector quads) {
     this.parent = parent;
     this.quads = quads;
   }
 
   @Override
-  public List<BakedQuad> getFaceQuads(EnumFacing facing) {
-    return quads.getQuads(facing);
-  }
-
-  @Override
-  public List<BakedQuad> getGeneralQuads() {
-    return quads.getQuads(null);
+  public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+    return quads.getQuads(side);
   }
 
   @Override
@@ -60,20 +67,20 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
     return parent.getItemCameraTransforms();
   }
 
-  @Override
-  public VertexFormat getFormat() {
-    return Attributes.DEFAULT_BAKED_FORMAT;
-  }
-
   @SuppressWarnings("deprecation")
   @Override
-  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(
+  public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
       net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
     if (parent instanceof IPerspectiveAwareModel) {
-      Pair<? extends IFlexibleBakedModel, Matrix4f> perspective = ((IPerspectiveAwareModel) parent).handlePerspective(cameraTransformType);
+      Pair<? extends IBakedModel, Matrix4f> perspective = ((IPerspectiveAwareModel) parent).handlePerspective(cameraTransformType);
       return Pair.of(this, perspective.getRight());
     }
     return Pair.of(this, null);
+  }
+
+  @Override
+  public ItemOverrideList getOverrides() {
+    return itemOverrideList;
   }
 
 }

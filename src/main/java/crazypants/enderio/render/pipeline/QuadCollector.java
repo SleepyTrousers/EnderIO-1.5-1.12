@@ -9,6 +9,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Throwables;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -18,8 +20,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
-
-import com.google.common.base.Throwables;
 
 public class QuadCollector {
 
@@ -63,12 +63,12 @@ public class QuadCollector {
     BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
     for (IBlockState state : states) {
       IBakedModel model = modelShapes.getModelForState(state);
-      List<BakedQuad> generalQuads = model.getGeneralQuads();
+      List<BakedQuad> generalQuads = model.getQuads(state, null, 0);
       if (generalQuads != null && !generalQuads.isEmpty()) {
         addQuads(null, pass, generalQuads);
       }
       for (EnumFacing face : EnumFacing.values()) {
-        List<BakedQuad> faceQuads = model.getFaceQuads(face);
+        List<BakedQuad> faceQuads = model.getQuads(state, face, 0);
         if (faceQuads != null && !faceQuads.isEmpty()) {
           addQuads(face, pass, faceQuads);
         }
@@ -88,7 +88,7 @@ public class QuadCollector {
     List<String> errors = new ArrayList<String>();
 
     try {
-      List<BakedQuad> generalQuads = model.getGeneralQuads();
+      List<BakedQuad> generalQuads = model.getQuads(state, null, rand);
       if (generalQuads != null && !generalQuads.isEmpty()) {
         addQuads(null, pass, generalQuads);
       }
@@ -97,7 +97,7 @@ public class QuadCollector {
     }
     for (EnumFacing face : EnumFacing.values()) {
       try {
-        List<BakedQuad> faceQuads = model.getFaceQuads(face);
+        List<BakedQuad> faceQuads = model.getQuads(state, face, rand);
         if (faceQuads != null && !faceQuads.isEmpty()) {
           addQuads(face, pass, faceQuads);
         }
@@ -117,12 +117,12 @@ public class QuadCollector {
     if (model != null) {
       BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
       ForgeHooksClient.setRenderLayer(pass);
-      List<BakedQuad> generalQuads = model.getGeneralQuads();
+      List<BakedQuad> generalQuads = model.getQuads(state, null, rand);
       if (generalQuads != null && !generalQuads.isEmpty()) {
         addQuads(null, pass, generalQuads);
       }
       for (EnumFacing face : EnumFacing.values()) {
-        List<BakedQuad> faceQuads = model.getFaceQuads(face);
+        List<BakedQuad> faceQuads = model.getQuads(state, face, rand);
         if (faceQuads != null && !faceQuads.isEmpty()) {
           addQuads(face, pass, faceQuads);
         }

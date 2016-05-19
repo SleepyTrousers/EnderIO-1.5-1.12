@@ -9,12 +9,19 @@ import javax.vecmath.Quat4f;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.enderio.core.client.render.RenderUtil;
+import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverride;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 
@@ -29,13 +36,8 @@ public class RotatingSmartItemModel implements IPerspectiveAwareModel {
   }
 
   @Override
-  public List<BakedQuad> getFaceQuads(EnumFacing facing) {
-    return parent.getFaceQuads(facing);
-  }
-
-  @Override
-  public List<BakedQuad> getGeneralQuads() {
-    return parent.getGeneralQuads();
+  public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+    return parent.getQuads(state, side, rand);
   }
 
   @Override
@@ -65,14 +67,9 @@ public class RotatingSmartItemModel implements IPerspectiveAwareModel {
   }
 
   @Override
-  public VertexFormat getFormat() {
-    return parent.getFormat();
-  }
-
-  @Override
-  public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(
+  public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
       @SuppressWarnings("deprecation") net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
-    Pair<? extends IFlexibleBakedModel, Matrix4f> perspective = parent.handlePerspective(cameraTransformType);
+    Pair<? extends IBakedModel, Matrix4f> perspective = parent.handlePerspective(cameraTransformType);
 
     double r = (EnderIO.proxy.getTickCount() % 360) + RenderUtil.getTimer().renderPartialTicks;
 
@@ -84,6 +81,28 @@ public class RotatingSmartItemModel implements IPerspectiveAwareModel {
     TRSRTransformation transformNew = new TRSRTransformation(transformOrig.getTranslation(), leftRot, transformOrig.getScale(), transformOrig.getRightRot());
 
     return Pair.of(perspective.getLeft(), transformNew.getMatrix());
+  }
+
+  private final ItemOverrideList overrides = new ItemOverrideList(Lists.<ItemOverride> newArrayList()) {
+    @Override
+    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+      if (originalModel != RotatingSmartItemModel.this) {
+        return originalModel;
+      }
+
+      if (parent != null) {
+        IBakedModel newBase = parent.getOverrides().handleItemState(parent, stack, world, entity);
+        if (parent != newBase && newBase instanceof IPerspectiveAwareModel) {
+          return new RotatingSmartItemModel((IPerspectiveAwareModel) newBase, speed);
+        }
+      }
+      return RotatingSmartItemModel.this;
+    }
+  };
+
+  @Override
+  public ItemOverrideList getOverrides() {
+    return overrides;
   }
 
 }

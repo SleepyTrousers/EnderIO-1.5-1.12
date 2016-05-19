@@ -7,19 +7,19 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.render.IOMode;
+import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.dummy.BlockMachineIO;
 
 public class OverlayHolder {
 
@@ -42,12 +42,12 @@ public class OverlayHolder {
         BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
         BlockRenderLayer layer = BlockMachineIO.block.getBlockLayer();
         ForgeHooksClient.setRenderLayer(layer);
-        List<BakedQuad> generalQuads = model.getGeneralQuads();
+        List<BakedQuad> generalQuads = model.getQuads(state, null, 0);
         if (generalQuads != null && !generalQuads.isEmpty()) {
           quads.addQuads(null, layer, generalQuads);
         }
         for (EnumFacing face1 : EnumFacing.values()) {
-          List<BakedQuad> faceQuads = model.getFaceQuads(face);
+          List<BakedQuad> faceQuads = model.getQuads(state, face, 0);
           if (faceQuads != null && !faceQuads.isEmpty()) {
             quads.addQuads(face1, layer, faceQuads);
           }
