@@ -1,21 +1,19 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import com.enderio.core.client.render.BoundingBox;
+
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import com.enderio.core.client.render.BoundingBox;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-
 @Storable
-public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements IRanged {
-
-  private float range = 32;
+public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   public TileInhibitorObelisk() {
     super(new SlotDefinition(0, 0, 1), ModObject.blockInhibitorObelisk);
@@ -48,23 +46,19 @@ public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements
 
   @Override
   public float getRange() {
-    return range;
-  }
-
-  public void setRange(float range) {
-    this.range = range;
-    BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), range);
+    return AVERSION_RANGE.getFloat(getCapacitorData()) / 2;
   }
 
   @Override
-  public boolean isShowingRange() {
-    return false;
-  }
+  public void onCapacitorDataChange() {    
+    super.onCapacitorDataChange();
+    BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), getRange());
+  }  
 
   @Override
   public void validate() {
     super.validate();
-    BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), range);
+    BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), getRange());
   }
 
   @Override

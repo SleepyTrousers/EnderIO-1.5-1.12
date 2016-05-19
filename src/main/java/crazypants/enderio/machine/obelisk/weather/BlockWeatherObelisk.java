@@ -5,7 +5,7 @@ import java.util.Random;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockWeatherObelisk extends BlockObeliskAbstract<TileWeatherObelisk> {
+public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk> {
 
   public static BlockWeatherObelisk create() {
     BlockWeatherObelisk ret = new BlockWeatherObelisk();

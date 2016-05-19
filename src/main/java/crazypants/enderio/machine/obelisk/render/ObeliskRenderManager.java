@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
@@ -65,7 +65,7 @@ public class ObeliskRenderManager {
       }
     };
 
-    BlockObeliskAbstract<? extends AbstractMachineEntity> block;
+    AbstractBlockObelisk<? extends AbstractMachineEntity> block;
 
     block = EnderIO.blockExperianceOblisk;
     if (block != null) {
@@ -107,7 +107,7 @@ public class ObeliskRenderManager {
     MinecraftForge.EVENT_BUS.register(this);
   }
 
-  private <T extends AbstractMachineEntity> void registerRenderer(BlockObeliskAbstract<? extends AbstractMachineEntity> block, Class<T> tileClass,
+  private <T extends AbstractMachineEntity> void registerRenderer(AbstractBlockObelisk<? extends AbstractMachineEntity> block, Class<T> tileClass,
       TileEntitySpecialRenderer<? super T> specialRenderer, IStateMapper ignoreState) {
     ClientRegistry.bindTileEntitySpecialRenderer(tileClass, specialRenderer);
     ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block), 0, tileClass);

@@ -1,39 +1,29 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
-import info.loenwind.autosave.annotations.Storable;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.client.render.BoundingBox;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.util.CapturedMob;
-
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 
 @Storable
-public abstract class TileEntityAbstractSpawningObelisk extends AbstractPowerConsumerEntity implements IRanged, ISpawnCallback {
+public abstract class TileEntityAbstractSpawningObelisk extends AbstractRangedTileEntity implements ISpawnCallback {
 
   private boolean registered = false;
-  private AxisAlignedBB bounds;
 
   @Override
   public abstract Result isSpawnPrevented(EntityLivingBase mob);
 
   @Override
   public abstract String getMachineName();
-
-  private boolean showingRange;
+  
 
   public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored,
       ICapacitorKey maxEnergyUsed) {
@@ -50,23 +40,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractPowerCon
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public boolean isShowingRange() {
-    return showingRange;
-  }
-
-  @SideOnly(Side.CLIENT)
-  public void setShowRange(boolean showRange) {
-    if(showingRange == showRange) {
-      return;
-    }
-    showingRange = showRange;
-    if(showingRange) {
-      worldObj.spawnEntityInWorld(new RangeEntity(this));
-    }
-  }
-
-  @Override
   public void invalidate() {
     super.invalidate();    
     SpawningObeliskController.instance.deregisterGuard(this);
@@ -76,12 +49,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractPowerCon
   @Override
   public float getRange() {
     return AVERSION_RANGE.getFloat(getCapacitorData());
-  }
-
-  @Override
-  public void onCapacitorDataChange() {
-    super.onCapacitorDataChange();
-    bounds = null;
   }
 
   @Override
@@ -110,12 +77,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractPowerCon
     return false;    
   }
 
-  protected void mkBounds() {
-    if (bounds == null) {
-      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
-    }
-  }
-
   protected double usePower() {
     return usePower(getPowerUsePerTick());
   }
@@ -127,10 +88,10 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractPowerCon
   }
 
   protected boolean isMobInRange(EntityLivingBase mob) {
-    if (mob == null || bounds == null) {
+    if (mob == null || getBounds() == null) {
       return false;
     }    
-    return bounds.isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
+    return getBounds().isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
   }
 
   protected boolean isMobInFilter(EntityLivingBase entity) {
@@ -141,12 +102,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractPowerCon
       }
     }
     return false;
-  }
-
-  @Override
-  public BoundingBox getRangeBox() {
-    mkBounds();
-    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
 
 }

@@ -6,9 +6,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 
-public class BlockAttractor extends BlockObeliskAbstract<TileAttractor> {
+public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
   public static BlockAttractor create() {
     BlockAttractor res = new BlockAttractor();

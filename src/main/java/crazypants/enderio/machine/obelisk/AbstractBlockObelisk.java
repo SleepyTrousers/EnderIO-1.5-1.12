@@ -17,14 +17,14 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.render.IBlockStateWrapper;
 
-public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> {
+public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> {
 
-  public BlockObeliskAbstract(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
+  public AbstractBlockObelisk(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
     super(mo, teClass, itemBlockClass);
     setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
   }
 
-  protected BlockObeliskAbstract(IModObject mo, Class<T> teClass) {
+  protected AbstractBlockObelisk(IModObject mo, Class<T> teClass) {
     super(mo, teClass);
     setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
   }

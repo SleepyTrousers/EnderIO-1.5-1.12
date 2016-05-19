@@ -1,16 +1,16 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
+import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
+import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
+import crazypants.enderio.machine.obelisk.spawn.SpawningObeliskController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
-import crazypants.enderio.machine.obelisk.spawn.ContainerAbstractSpawningObelisk;
-import crazypants.enderio.machine.obelisk.spawn.GuiAbstractSpawningObelisk;
-import crazypants.enderio.machine.obelisk.spawn.SpawningObeliskController;
 
-public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObelisk> {
+public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObelisk> {
 
   public static BlockAversionObelisk create() {
     BlockAversionObelisk res = new BlockAversionObelisk();
@@ -30,7 +30,7 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileAversionObelisk te = getTileEntity(world, new BlockPos(x, y, z));
     if (te != null) {
-      return new ContainerAbstractSpawningObelisk(player.inventory, te);
+      return new ContainerAbstractObelisk(player.inventory, te);
     }
     return null;
   }
@@ -39,7 +39,7 @@ public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObeli
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileAversionObelisk te = getTileEntity(world, new BlockPos(x, y, z));
     if (te != null) {
-      return new GuiAbstractSpawningObelisk(player.inventory, te);
+      return new GuiRangedObelisk(player.inventory, te);
     }
     return null;
   }

@@ -3,6 +3,14 @@ package crazypants.enderio.machine.obelisk.inhibitor;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Maps;
+
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.TeleportEntityEvent;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
+import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -10,15 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.google.common.collect.Maps;
-
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.TeleportEntityEvent;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
-
-public class BlockInhibitorObelisk extends BlockObeliskAbstract<TileInhibitorObelisk> {
+public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObelisk> {
 
   public static BlockInhibitorObelisk instance;
 
@@ -49,7 +49,7 @@ public class BlockInhibitorObelisk extends BlockObeliskAbstract<TileInhibitorObe
     if (ID == getGuiId()) {
       TileInhibitorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
       if (te != null) {
-        return new GuiInhibitorObelisk(te, new ContainerInhibitorObelisk(player.inventory, te));
+        return new GuiRangedObelisk(player.inventory, te, new ContainerInhibitorObelisk(player.inventory, te), "inhibitor");
       }
     }
     return null;

@@ -1,21 +1,20 @@
-package crazypants.enderio.machine.obelisk.spawn;
+package crazypants.enderio.machine.obelisk;
 
 import java.util.List;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
-public class ContainerAbstractSpawningObelisk extends AbstractMachineContainer<TileEntityAbstractSpawningObelisk> {
+public class ContainerAbstractObelisk extends AbstractMachineContainer<AbstractRangedTileEntity> {
 
-  public ContainerAbstractSpawningObelisk(InventoryPlayer playerInv, TileEntityAbstractSpawningObelisk te) {
+  public ContainerAbstractObelisk(InventoryPlayer playerInv, AbstractRangedTileEntity te) {
     super(playerInv, te);
   }
 

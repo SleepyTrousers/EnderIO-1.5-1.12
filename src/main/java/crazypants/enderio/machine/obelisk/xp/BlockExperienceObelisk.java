@@ -14,11 +14,11 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 
-public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceObelisk> {
+public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceObelisk> {
 
   public static BlockExperienceObelisk create() {
     BlockExperienceObelisk res = new BlockExperienceObelisk();
