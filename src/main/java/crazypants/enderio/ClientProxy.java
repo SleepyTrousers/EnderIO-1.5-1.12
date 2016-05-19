@@ -261,6 +261,12 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(UpgradeRenderDispatcher.instance);
   }
 
+  @Override
+  public void init() {
+    super.init();
+    SmartModelAttacher.registerColoredBlocksAndItems();
+  }
+
   private void registerRenderers(IHaveRenderers bob) {
     if (bob != null) {
       bob.registerRenderers();

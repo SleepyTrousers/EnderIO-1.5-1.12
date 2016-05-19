@@ -5,12 +5,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.render.pipeline.OverlayHolder;
+import crazypants.enderio.render.pipeline.RelayingBakedModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.IRegistry;
@@ -21,11 +30,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.render.pipeline.OverlayHolder;
-import crazypants.enderio.render.pipeline.RelayingBakedModel;
 
 public class SmartModelAttacher {
 
@@ -100,6 +104,33 @@ public class SmartModelAttacher {
         }
       }
     }
+  }
+
+  @SideOnly(Side.CLIENT)
+  public static void registerColoredBlocksAndItems() {
+    List<Block> blocklist = new ArrayList<Block>();
+    List<Item> itemlist = new ArrayList<Item>();
+    for (RegistrationHolder<?, ?> holder : blocks) {
+      Block block = holder.block;
+      Item item = Item.getItemFromBlock(block);
+      if (block instanceof IPaintable) {
+        blocklist.add(block);
+        if (item != null) {
+          itemlist.add(item);
+        }
+      } else {
+        if (block instanceof IBlockColor) {
+          Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((IBlockColor) block, block);
+        }
+        if (item instanceof IItemColor) {
+          Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor) item, item);
+        }
+      }
+    }
+
+    PaintTintHandler handler = new PaintTintHandler();
+    Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(handler, blocklist.toArray(new Block[0]));
+    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(handler, itemlist.toArray(new Item[0]));
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })

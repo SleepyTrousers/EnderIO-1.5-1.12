@@ -1,5 +1,9 @@
 package crazypants.enderio.item.skull;
 
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -11,19 +15,16 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.crafting.IInfusionStabiliser;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
-import crazypants.util.ClientUtil;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
 public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IInfusionStabiliser, IHaveRenderers {
@@ -57,9 +58,15 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     return res;
   }
 
+  public static final AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
+
   private BlockEndermanSkull() {
     super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, Material.circuits);
-    setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
+  }
+
+  @Override
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    return AABB;
   }
 
   @Override

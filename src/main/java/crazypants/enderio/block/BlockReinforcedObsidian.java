@@ -3,6 +3,14 @@ package crazypants.enderio.block;
 import java.util.List;
 import java.util.Random;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.waila.IWailaInfoProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,22 +20,14 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -38,16 +38,16 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   private BlockReinforcedObsidian() {
-    super(ModObject.blockReinforcedObsidian.getUnlocalisedName(), null, Material.rock);    
+    super(ModObject.blockReinforcedObsidian.getUnlocalisedName(), null, Material.rock);
     setHardness(50.0F);
     setResistance(2000.0F);
-    setStepSound(soundTypePiston);
-    
-    if(!Config.reinforcedObsidianEnabled) {
+    setStepSound(SoundType.STONE);
+
+    if (!Config.reinforcedObsidianEnabled) {
       setCreativeTab(null);
     }
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public MapColor getMapColor(IBlockState state) {
@@ -58,7 +58,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState state, World worldIn, BlockPos pos, Random rand) {
     if (rand.nextFloat() < .25f) {
       EnumFacing face = EnumFacing.values()[rand.nextInt(EnumFacing.values().length)];
       double xd = face.getFrontOffsetX() == 0 ? rand.nextDouble() : face.getFrontOffsetX() < 0 ? -0.05 : 1.05;
@@ -66,12 +66,12 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
       double zd = face.getFrontOffsetZ() == 0 ? rand.nextDouble() : face.getFrontOffsetZ() < 0 ? -0.05 : 1.05;
 
       double x = pos.getX() + xd;
-    double y = pos.getY() + yd;
+      double y = pos.getY() + yd;
       double z = pos.getZ() + zd;
 
-    int col = COLS[rand.nextInt(COLS.length)];
+      int col = COLS[rand.nextInt(COLS.length)];
 
-    worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, (col >> 16 & 255) / 255d, (col >> 8 & 255) / 255d, (col & 255) / 255d, new int[0]);
+      worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, (col >> 16 & 255) / 255d, (col >> 8 & 255) / 255d, (col & 255) / 255d, new int[0]);
     }
   }
 
@@ -84,7 +84,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   @Override
-  public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity) {
+  public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
     return !(entity instanceof EntityWither);
   }
 
@@ -97,24 +97,25 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   @Override
   public void onBlockExploded(World world, BlockPos pos, Explosion explosion) {
   }
-  
+
   @Override
   public boolean canDropFromExplosion(Explosion p_149659_1_) {
     return false;
   }
-  
+
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
-  
+
   @Override
   protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return false;
   }
 
   @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {}
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+  }
 
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {

@@ -6,38 +6,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.MovementInput;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
@@ -50,6 +25,32 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.MovementInput;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DarkSteelController {
 
@@ -425,14 +426,16 @@ public class DarkSteelController {
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
-      player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.jump", 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f,
+      SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.jump"));
+      player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f,
           false);
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
         EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
             player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
-        fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
-            player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+        // TODO 1.9 velocity/speed is no longer exposed. use reflection or subclassing to change
+        // fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
+        // player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
       }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
@@ -455,7 +458,7 @@ public class DarkSteelController {
   }
 
   public boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
-    ItemStack helmet = player.getEquipmentInSlot(4);
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return NightVisionUpgrade.loadFromItem(helmet) != null;
   }
 

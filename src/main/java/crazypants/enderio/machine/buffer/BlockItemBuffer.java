@@ -2,30 +2,28 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.List;
 
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.power.PowerHandlerUtil;
-
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 
 public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
@@ -68,22 +66,6 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
   public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
     super.addInformation(stack, playerIn, tooltip, advanced);
     tooltip.add(PainterUtil2.getTooltTipText(stack));
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int getColorFromItemStack(ItemStack stack, int renderPass) {
-    if (block instanceof IPaintable) {
-      IBlockState paintSource = ((IPaintable) block).getPaintSource(block, stack);
-      if (paintSource != null) {
-        final ItemStack paintStack = new ItemStack(paintSource.getBlock(), 1, paintSource.getBlock().getMetaFromState(paintSource));
-        return paintStack.getItem().getColorFromItemStack(paintStack, renderPass);
-
-        // faster but less compatible:
-        // return paintSource.getBlock().getRenderColor(paintSource);
-      }
-    }
-    return super.getColorFromItemStack(stack, renderPass);
   }
 
   @Override
