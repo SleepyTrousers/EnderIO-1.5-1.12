@@ -2,6 +2,8 @@ package crazypants.enderio.api.teleport;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public enum TravelSource {
 
@@ -43,13 +45,21 @@ public enum TravelSource {
     return STAFF.getMaxDistanceTravelledSq();
   }
 
-  public final String sound;
+  public final SoundEvent sound;
 
   private TravelSource() {
     this("mob.endermen.portal");
   }
 
   private TravelSource(String sound) {
+    this(new ResourceLocation(EnderIO.DOMAIN, sound));
+  }
+
+  private TravelSource(ResourceLocation sound) {
+    this.sound = SoundEvent.soundEventRegistry.getObject(sound);
+  }
+
+  private TravelSource(SoundEvent sound) {
     this.sound = sound;
   }
 

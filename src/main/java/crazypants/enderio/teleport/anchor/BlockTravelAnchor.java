@@ -3,25 +3,6 @@ package crazypants.enderio.teleport.anchor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
@@ -55,6 +36,24 @@ import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.telepad.TelepadRenderMapper;
 import crazypants.util.UserIdent;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
     ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
@@ -292,18 +291,19 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return true;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
-      }
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
-  }
+  // TODO 1.9: this involves registering the block in init() (not preinit)
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+  // IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
+  // if (paintSource != null) {
+  // try {
+  // return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+  // } catch (Throwable e) {
+  // }
+  // }
+  // return super.colorMultiplier(worldIn, pos, renderPass);
+  // }
 
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END

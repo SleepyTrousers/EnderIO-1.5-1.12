@@ -2,23 +2,6 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -30,6 +13,23 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock> implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
   
@@ -170,18 +170,19 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     return getPaintSource(getDefaultState(), world, pos);
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(null, worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
-      }
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
-  }
+  // TODO 1.9
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+  // IBlockState paintSource = getPaintSource(null, worldIn, pos);
+  // if (paintSource != null) {
+  // try {
+  // return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+  // } catch (Throwable e) {
+  // }
+  // }
+  // return super.colorMultiplier(worldIn, pos, renderPass);
+  // }
 
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {

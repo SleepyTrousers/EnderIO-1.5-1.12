@@ -3,29 +3,11 @@ package crazypants.enderio.machine.reservoir;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
@@ -38,8 +20,26 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.tool.SmartTank;
 import crazypants.enderio.tool.ToolUtil;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
@@ -54,7 +54,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   private BlockReservoir() {
     super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, Material.rock);
-    setStepSound(Block.soundTypeStone);
+    setStepSound(SoundType.GLASS);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO));
   }
 
@@ -123,26 +123,27 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side,
+      float hitX, float hitY, float hitZ) {
     TileEntity te;
     if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
         && (te = world.getTileEntity(pos)) instanceof TileReservoir) {
       TileReservoir tank = ((TileReservoir) te);
-      if (ToolUtil.isToolEquipped(entityPlayer)) {
+      if (ToolUtil.isToolEquipped(entityPlayer, hand)) {
         tank.setAutoEject(!tank.isAutoEject());
-        world.markBlockForUpdate(pos);
+        world.notifyBlockUpdate(pos, state, state, 0); // TODO 1.9 is this right?
         return true;
       }
-      if (tank.tank.getAvailableSpace() >= BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, tank)) {
+      if (tank.tank.getAvailableSpace() >= BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
         return true;
-      } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, new TankWrapper(tank, world, pos))) {
+      } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, new TankWrapper(tank, world, pos))) {
         return true;
       }
-      if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, tank)) {
+      if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, hand, tank)) {
         return true;
       }
     }
-    return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
   }
 
   private static class TankWrapper implements ITankAccess {

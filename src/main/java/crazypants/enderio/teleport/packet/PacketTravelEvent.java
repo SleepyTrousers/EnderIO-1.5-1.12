@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -87,7 +88,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     y = evt.targetY;
     z = evt.targetZ;
 
-    toTp.worldObj.playSoundEffect(toTp.posX, toTp.posY, toTp.posZ, source.sound, 1.0F, 1.0F);
+    toTp.worldObj.playSound(null, toTp.posX, toTp.posY, toTp.posZ, source.sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
     toTp.playSound(source.sound, 1.0F, 1.0F);
 
@@ -97,7 +98,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
       toTp.setPosition(x, y, z);
     }
 
-    toTp.worldObj.playSoundEffect(x, y, z, source.sound, 1.0F, 1.0F);
+    toTp.worldObj.playSound(null, x, y, z, source.sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
     toTp.fallDistance = 0;
 
     if(player != null) {

@@ -28,9 +28,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -113,7 +113,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side,
       float hitX, float hitY, float hitZ) {
-    if(ToolUtil.isToolEquipped(player)) {
+    if (ToolUtil.isToolEquipped(player, hand)) {
       if(!world.isRemote) {
         //TODO: 1.8
 //        int meta = world.getBlockMetadata(x, y, z);

@@ -1,29 +1,27 @@
 package crazypants.enderio.machine.reservoir;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.FluidUtil;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.tool.SmartTank;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
-
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.tool.SmartTank;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 @Storable
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
@@ -159,7 +157,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     }
 
     if (tankDirty && shouldDoWorkThisTick(2)) {
-      worldObj.markBlockForUpdate(getPos());
+      updateBlock();
       tankDirty = false;
     }
   }

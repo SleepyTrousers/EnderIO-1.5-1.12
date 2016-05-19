@@ -1,6 +1,5 @@
 package crazypants.enderio.paint.render;
 
-import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -8,29 +7,29 @@ import java.util.concurrent.ConcurrentMap;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.block.model.ModelRotation;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.Attributes;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IModelState;
-import net.minecraftforge.client.model.ModelLoader.UVLock;
-import net.minecraftforge.client.model.ModelStateComposition;
-import net.minecraftforge.client.model.TRSRTransformation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.base.Function;
 
 import crazypants.enderio.Log;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelRotation;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.Attributes;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.ModelProcessingHelper;
+import net.minecraftforge.client.model.ModelStateComposition;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PaintRegistry {
 
@@ -103,12 +102,12 @@ public class PaintRegistry {
         try {
           ResourceLocation resourceLocation = entry.getValue().getLeft();
           if (resourceLocation != null) {
-            IModel model = event.modelLoader.getModel(resourceLocation);
+            IModel model = ModelLoaderRegistry.getModel(resourceLocation);
             models.put(entry.getKey(), model);
           } else {
-            models.put(entry.getKey(), event.modelLoader.getMissingModel());
+            models.put(entry.getKey(), ModelLoaderRegistry.getMissingModel());
           }
-        } catch (IOException e) {
+        } catch (Exception e) {
           Log.warn("Model '" + entry.getValue() + "' failed to load: " + e);
         }
       }
@@ -116,8 +115,7 @@ public class PaintRegistry {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotationIn) {
-      IModelState rotation = EIOUVLock.rewrap(rotationIn);
+    public <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotation) {
       if (!cache.containsKey(name)) {
         cache.put(name, new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
       }
@@ -158,6 +156,11 @@ public class PaintRegistry {
     private IBakedModel paintModel(IModel sourceModel, final @Nullable IBlockState paintSource, IModelState rotation, final PaintMode paintMode) {
       IModelState state = sourceModel.getDefaultState();
       state = combine(state, rotation);
+      if (state instanceof UVLock) {
+        // TODO: 1.9 let's really hope everything that comes through here is instanceof IModelUVLock, otherwise I have no idea how to uvlock it...
+        sourceModel = ModelProcessingHelper.uvlock(sourceModel, true);
+        state = ((UVLock) state).getParent();
+      }
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
         @Override
         public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
@@ -180,7 +183,6 @@ public class PaintRegistry {
       });
     }
 
-    @SuppressWarnings("deprecation")
     @SideOnly(Side.CLIENT)
     private IModelState combine(IModelState a, IModelState b) {
       boolean isUVlocked = false;
@@ -231,48 +233,5 @@ public class PaintRegistry {
 
   public static <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotation) {
     return instance.getModel(clazz, name, paintSource, rotation);
-  }
-
-  // TODO: Change all callers to use this instead of UVLock so we don't need to rewrap anymore
-  @SuppressWarnings("deprecation")
-  public static class EIOUVLock extends UVLock {
-
-    public EIOUVLock(IModelState parent) {
-      super(parent);
-    }
-
-    public static IModelState rewrap(IModelState state) {
-      if ((state instanceof UVLock) && !(state instanceof EIOUVLock)) {
-        return new EIOUVLock(((UVLock) state).getParent());
-      }
-      return state;
-    }
-
-    @Override
-    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + 1231;
-      result = prime * result + ((getParent() == null) ? 0 : getParent().hashCode());
-      return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj)
-        return true;
-      if (obj == null)
-        return false;
-      if (getClass() != obj.getClass())
-        return false;
-      EIOUVLock other = (EIOUVLock) obj;
-      if (getParent() == null) {
-        if (other.getParent() != null)
-          return false;
-      } else if (!getParent().equals(other.getParent()))
-        return false;
-      return true;
-    }
-
   }
 }
