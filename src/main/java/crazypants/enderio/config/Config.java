@@ -116,7 +116,7 @@ public final class Config {
   public static boolean useSneakMouseWheelYetaWrench = true;
   public static boolean useSneakRightClickYetaWrench = false;
   public static int     yetaWrenchOverlayMode = 0;
-
+  
   public static boolean itemConduitUsePhyscialDistance = false;
 
   public static int enderFluidConduitExtractRate = 200;
@@ -333,7 +333,7 @@ public final class Config {
   public static boolean magnetAllowInBaublesSlot = true;
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static String  magnetBaublesType = "AMULET";
-
+  
   public static boolean useCombustionGenModel = false;
 
   public static int crafterRfPerCraft = 2500;
@@ -502,7 +502,7 @@ public final class Config {
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
-
+  
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -1094,7 +1094,7 @@ public final class Config {
         "The amount of saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
         "saplings in store, it will only shear part the leaves and break the others for spalings. Set this to 0 to " +
         "always shear all leaves.").getInt(farmSaplingReserveAmount);
-
+    
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
 
@@ -1112,15 +1112,15 @@ public final class Config {
 
     magnetAllowInMainInventory = config.get(sectionMagnet.name, "magnetAllowInMainInventory", magnetAllowInMainInventory,
         "If true the magnet will also work in the main inventory, not just the hotbar").getBoolean(magnetAllowInMainInventory);
-
+    
     magnetAllowInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowInBaublesSlot", magnetAllowInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot (requires Baubles to be installed)").getBoolean(magnetAllowInBaublesSlot);
     magnetAllowDeactivatedInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getBoolean(magnetAllowDeactivatedInBaublesSlot);
-
+    
     magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
         "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
-
+    
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
 
@@ -1200,7 +1200,7 @@ public final class Config {
         "Allows OC conduits. Only has an effect with OpenComputers installed.");
     enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
         enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
-
+    
     soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");
 

@@ -49,7 +49,7 @@ import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
-
+  
   private boolean inNetwork;
   private boolean isMaster;
 
@@ -64,7 +64,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private BlockCoord target = new BlockCoord();
   private int targetDim = Integer.MIN_VALUE;
-
+  
   private int lastSyncPowerStored;
 
   private Queue<Entity> toTeleport = Queues.newArrayDeque();
@@ -73,28 +73,28 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
   private MachineSound activeSound = null;
-
+  
   private boolean redstoneActivePrev;
-
+  
   public static final String TELEPORTING_KEY = "eio:teleporting";
   public static final String PROGRESS_KEY = "teleportprogress";
-
+  
   boolean wasBlocked = false;
-
+  
   // Clientside rendering data
   public float[] bladeRots = new float[3];
   public float spinSpeed = 0;
   public float speedMult = 2.5f;
-
+  
   @Override
   public void doUpdate() {
     super.doUpdate();
-
+    
     // my master is gone!
     if(master != null && master.isInvalid()) {
       master.breakNetwork();
     }
-
+    
     if(autoUpdate) {
       updateConnectedState(true);
       autoUpdate = false;
@@ -103,7 +103,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if(targetDim == Integer.MIN_VALUE) {
       targetDim = worldObj.provider.dimensionId;
     }
-
+    
     if(worldObj.isRemote && isMaster()) {
       updateRotations();
       if(activeSound != null) {
@@ -226,7 +226,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private boolean formNetwork() {
     List<TileTelePad> temp = Lists.newArrayList();
-
+    
     for (BlockCoord c : getSurroundingCoords()) {
       TileEntity te = c.getTileEntity(worldObj);
       if (!(te instanceof TileTelePad) || ((TileTelePad)te).inNetwork()) {
@@ -234,7 +234,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
       temp.add((TileTelePad) te);
     }
-
+    
     for (TileTelePad te : temp) {
       te.master = this;
       te.inNetwork = true;
@@ -321,7 +321,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     super.onDataPacket(net, pkt);
 //    this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
   }
-
+  
   @Override
   public void invalidate() {
     super.invalidate();
@@ -329,7 +329,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       stopPlayingSound();
     }
   }
-
+  
   @Override
   public void onChunkUnload() {
     super.onChunkUnload();
@@ -390,7 +390,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     } else {
       spinSpeed = Math.max(0, spinSpeed - 0.025f);
     }
-
+            
     for (int i = 0; i < bladeRots.length; i++) {
       bladeRots[i] += spinSpeed * ((i * 2) + 20);
       bladeRots[i] %= 360;
@@ -403,7 +403,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   public float getProgress() {
     return ((float) powerUsed) / ((float) maxPower);
   }
-
+  
   @Override
   protected int getProgressUpdateFreq() {
     return 1;
@@ -459,7 +459,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     return target.z;
   }
-
+  
   @Override
   public int getTargetDim() {
     if(inNetwork()) {
