@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.sf.cglib.proxy.Enhancer;
@@ -22,24 +23,24 @@ import net.sf.cglib.proxy.MethodProxy;
 
 public class ToolUtil {
 
-  public static boolean isToolEquipped(EntityPlayer player) {
-    return getInstance().isToolEquippedImpl(player);
+  public static boolean isToolEquipped(EntityPlayer player, EnumHand hand) {
+    return getInstance().isToolEquippedImpl(player, hand);
   }
 
-  public static ITool getEquippedTool(EntityPlayer player) {
-    return getInstance().getEquippedToolImpl(player);
+  public static ITool getEquippedTool(EntityPlayer player, EnumHand hand) {
+    return getInstance().getEquippedToolImpl(player, hand);
   }
 
   public static ItemYetaWrench addInterfaces(ItemYetaWrench item) {
     return getInstance().addInterfacesImpl(item);
   }
 
-  public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer) {
-    return breakBlockWithTool(block, world, new BlockPos(x,y,z), entityPlayer);
+  public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer, EnumHand hand) {
+    return breakBlockWithTool(block, world, new BlockPos(x,y,z), entityPlayer, hand);
   }
   
-  public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EntityPlayer entityPlayer) {
-    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
+  public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand) {
+    ITool tool = ToolUtil.getEquippedTool(entityPlayer, hand);
     if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getHeldItemMainhand(), entityPlayer, pos)) {
       IBlockState bs = world.getBlockState(pos);;
       if(block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
@@ -89,16 +90,16 @@ public class ToolUtil {
     toolProviders.add(toolProvider);
   }
 
-  private boolean isToolEquippedImpl(EntityPlayer player) {
-    return getEquippedToolImpl(player) != null;
+  private boolean isToolEquippedImpl(EntityPlayer player, EnumHand hand) {
+    return getEquippedToolImpl(player, hand) != null;
   }
 
-  private ITool getEquippedToolImpl(EntityPlayer player) {
+  private ITool getEquippedToolImpl(EntityPlayer player, EnumHand hand) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if(player == null) {
       return null;
     }
-    ItemStack equipped = player.getHeldItemMainhand();
+    ItemStack equipped = player.getHeldItem(hand);
     if(equipped == null) {
       return null;
     }

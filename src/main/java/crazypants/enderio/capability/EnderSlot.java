@@ -48,7 +48,7 @@ public class EnderSlot extends SlotItemHandler {
 
   @Override
   public void putStack(ItemStack stack) {
-    ((InventorySlot) itemHandler).set(stack);
+    ((InventorySlot) getItemHandler()).set(stack);
     this.onSlotChanged();
   }
 

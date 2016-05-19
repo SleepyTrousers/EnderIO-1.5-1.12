@@ -75,11 +75,11 @@ public class DarkSteelRecipeManager {
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if(evt.left == null || evt.right == null) {
+    if(evt.getLeft() == null || evt.getRight() == null) {
       return;
     }
 
-    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
+    if(evt.getLeft().getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.getRight(), Alloy.DARK_STEEL.getOreIngot())) {
       handleRepair(evt);
     } else {    
       handleUpgrade(evt);
@@ -87,8 +87,8 @@ public class DarkSteelRecipeManager {
   }
 
   private void handleRepair(AnvilUpdateEvent evt) {
-    ItemStack targetStack = evt.left;
-    ItemStack ingots = evt.right;
+    ItemStack targetStack = evt.getLeft();
+    ItemStack ingots = evt.getRight();
     
     //repair event
     IDarkSteelItem targetItem = (IDarkSteelItem)targetStack.getItem();
@@ -106,20 +106,20 @@ public class DarkSteelRecipeManager {
     ItemStack resultStack = targetStack.copy();
     resultStack.setItemDamage(Math.max(0, resultStack.getItemDamage() - totalDamageRemoved));
     
-    evt.output = resultStack;
-    evt.cost = ingots.stackSize + (int)Math.ceil(getEnchantmentRepairCost(resultStack)/2);
+    evt.setOutput(resultStack);
+    evt.setCost(ingots.stackSize + (int)Math.ceil(getEnchantmentRepairCost(resultStack)/2));
   }
 
   private void handleUpgrade(AnvilUpdateEvent evt) {
     for (IDarkSteelUpgrade upgrade : upgrades) {
-      if(upgrade.isUpgradeItem(evt.right) && upgrade.canAddToItem(evt.left)) {
-        ItemStack res = new ItemStack(evt.left.getItem(), 1, evt.left.getItemDamage());
-        if(evt.left.getTagCompound() != null) {
-          res.setTagCompound((NBTTagCompound) evt.left.getTagCompound().copy());
+      if(upgrade.isUpgradeItem(evt.getRight()) && upgrade.canAddToItem(evt.getLeft())) {
+        ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
+        if(evt.getLeft().getTagCompound() != null) {
+          res.setTagCompound((NBTTagCompound) evt.getLeft().getTagCompound().copy());
         }
         upgrade.writeToItem(res);
-        evt.output = res;
-        evt.cost = upgrade.getLevelCost();
+        evt.setOutput(res);
+        evt.setCost(upgrade.getLevelCost());
         return;
       }
     }
@@ -128,36 +128,28 @@ public class DarkSteelRecipeManager {
   public static int getEnchantmentRepairCost(ItemStack itemStack) {
     //derived from ContainerRepair
     int res = 0;
-    Map<?, ?> map1 = EnchantmentHelper.getEnchantments(itemStack);
-    Iterator<?> iter = map1.keySet().iterator();
+    Map<Enchantment, Integer> map1 = EnchantmentHelper.getEnchantments(itemStack);
+    Iterator<Enchantment> iter = map1.keySet().iterator();
     while (iter.hasNext()) {
-      int i1 = ((Integer) iter.next()).intValue();
-      Enchantment enchantment = Enchantment.getEnchantmentById(i1);
+      Enchantment i1 =  iter.next();
+      Enchantment enchantment = i1;
       
-      int level = ((Integer) map1.get(Integer.valueOf(i1))).intValue();
+      int level = map1.get(enchantment).intValue();
       if(enchantment.canApply(itemStack)) {
         if(level > enchantment.getMaxLevel()) {
           level = enchantment.getMaxLevel();
         }
         int costPerLevel = 0;
         switch (enchantment.getWeight()) {
-        case 1:
+        case VERY_RARE:
           costPerLevel = 8;
           break;
-        case 2:
-          costPerLevel = 4;
-        case 3:
-        case 4:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        default:
-          break;
-        case 5:
+        case RARE:
+          costPerLevel = 4;        
+        case UNCOMMON:
           costPerLevel = 2;
           break;
-        case 10:
+        case COMMON:
           costPerLevel = 1;
         }
         res += costPerLevel * level;

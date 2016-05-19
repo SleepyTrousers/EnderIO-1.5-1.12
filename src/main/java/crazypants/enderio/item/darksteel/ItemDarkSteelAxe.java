@@ -5,20 +5,34 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.ItemUtil;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.machine.farm.farmers.HarvestResult;
+import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -28,19 +42,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.machine.farm.farmers.HarvestResult;
-import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
@@ -50,7 +51,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if (player == null) {
       return false;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if (equipped == null) {
       return false;
     }
@@ -65,7 +66,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if (!isEquipped(player)) {
       return 0;
     }
-    return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem());
+    return EnergyUpgrade.getEnergyStored(player.getHeldItemMainhand());
   }
 
   public static ItemDarkSteelAxe create() {
@@ -82,6 +83,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     super(ItemDarkSteelSword.MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(NAME);
+    setRegistryName(NAME);
   }
 
   @Override
@@ -140,12 +142,12 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     IBlockState bs = worldObj.getBlockState(bc);
     Block block = bs.getBlock();
     bs = block.getActualState(bs, worldObj, bc);
-    ItemStack held = player.getCurrentEquippedItem();
+    ItemStack held = player.getHeldItemMainhand();
 
     List<ItemStack> itemDrops = block.getDrops(worldObj, bc, bs, 0);
     float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, worldObj, bc, bs,
-        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, held), 1,
-        EnchantmentHelper.getEnchantmentLevel(Enchantment.silkTouch.effectId, held) != 0, player);
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.fortune, held), 1,
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.silkTouch, held) != 0, player);
 
     worldObj.setBlockToAir(bc);
     boolean usedPower = false;
@@ -154,7 +156,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
         if (worldObj.rand.nextFloat() <= chance) {
           worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
           if (block == refBlock) { // other wise leaves
-            extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+            extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
             usedPower = true;
           }
         }
@@ -165,20 +167,21 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if (evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.state)) {
-      evt.newSpeed = evt.originalSpeed / Config.darkSteelAxeSpeedPenaltyMultiHarvest;
+    if (evt.getEntityPlayer().isSneaking() && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.getState())) {
+      evt.setNewSpeed(evt.getOriginalSpeed() / Config.darkSteelAxeSpeedPenaltyMultiHarvest);
     }
-    if (isEquipped(evt.entityPlayer) && evt.state.getBlock().getMaterial() == Material.leaves) {
-      evt.newSpeed = 6;
+    if (isEquipped(evt.getEntityPlayer()) && evt.getState().getBlock().getMaterial(evt.getState()) == Material.leaves) {
+      evt.setNewSpeed(6);
     }
   }
 
   @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {
     if (world.isRemote) {
       return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hitX, hitY, hitZ);
     }
-    return false;
+    return EnumActionResult.FAIL;
   }
 
   @Override
@@ -207,14 +210,14 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public float getDigSpeed(ItemStack stack, IBlockState state) {
+  public float getStrVsBlock(ItemStack stack, IBlockState state) {  
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
       if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
     }
-    return super.getDigSpeed(stack, state);
+    return super.getStrVsBlock(stack, state);
   }
 
   private boolean isLog(IBlockState bs) {
@@ -231,7 +234,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, NAME);
+    GameRegistry.register(this);
   }
 
   @Override

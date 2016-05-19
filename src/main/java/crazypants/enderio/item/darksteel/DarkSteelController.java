@@ -14,10 +14,13 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.MovementInput;
@@ -154,7 +157,7 @@ public class DarkSteelController {
       return;
     }
 
-    ItemStack helm = player.getEquipmentInSlot(4);
+    ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
     if (upgrade == null
         || !player.worldObj.canBlockSeeSky(new BlockPos(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + player.eyeHeight + .25),
@@ -187,7 +190,7 @@ public class DarkSteelController {
   }
 
   private void updateSwim(EntityPlayer player) {
-    ItemStack boots = player.getEquipmentInSlot(1);
+    ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     SwimUpgrade upgrade = SwimUpgrade.loadFromItem(boots);
     if (upgrade == null) {
       return;
@@ -243,7 +246,7 @@ public class DarkSteelController {
   }
 
   public boolean isGliderUpgradeEquipped(EntityPlayer player) {
-    ItemStack chestPlate = player.getEquipmentInSlot(3);
+    ItemStack chestPlate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
     GliderUpgrade glideUpgrade = GliderUpgrade.loadFromItem(chestPlate);
     if (glideUpgrade == null) {
       return false;
@@ -252,11 +255,11 @@ public class DarkSteelController {
   }
 
   private void updateSword(EntityPlayer player) {
-    if (ItemDarkSteelSword.isEquipped(player)) {
-      IAttributeInstance attackInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+    if (ItemDarkSteelSword.isEquipped(player, EnumHand.MAIN_HAND)) {
+      IAttributeInstance attackInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
       attackInst.removeModifier(swordDamageModifierPowered);
 
-      ItemStack sword = player.getCurrentEquippedItem();
+      ItemStack sword = player.getHeldItemMainhand();
       if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(sword) >= Config.darkSteelSwordPowerUsePerHit) {
         attackInst.applyModifier(swordDamageModifierPowered);
       }
@@ -268,7 +271,7 @@ public class DarkSteelController {
       return;
     }
 
-    IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
+    IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
     if (moveInst.getModifier(walkModifiers[0].getID()) != null) {
       moveInst.removeModifier(walkModifiers[0]); // any will so as they all have
                                                  // the same UID
@@ -276,7 +279,7 @@ public class DarkSteelController {
       moveInst.removeModifier(sprintModifiers[0]);
     }
 
-    ItemStack leggings = player.getEquipmentInSlot(2);
+    ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if (leggings != null && leggings.getItem() == DarkSteelItems.itemDarkSteelLeggings && speedUpgrade != null && isSpeedActive(player)) {
 
@@ -298,7 +301,7 @@ public class DarkSteelController {
   }
 
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
-    ItemStack boots = player.getEquipmentInSlot(1);
+    ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
     if (boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
@@ -337,8 +340,8 @@ public class DarkSteelController {
         }
       }
     }
-    if (armor != null && remaining > 0) {
-      ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
+    if (armor != null && remaining > 0) {      
+      ItemStack stack = player.getItemStackFromSlot(armor.armorType);
       if (stack != null) {
         armor.extractEnergy(stack, remaining, false);
       }
@@ -357,7 +360,7 @@ public class DarkSteelController {
       }
     }
     if (armor != null) {
-      ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
+      ItemStack stack = player.getItemStackFromSlot(armor.armorType);
       res = armor.getEnergyStored(stack);
     }
     return res;
@@ -365,10 +368,10 @@ public class DarkSteelController {
 
   @SubscribeEvent
   public void onStartTracking(PlayerEvent.StartTracking event) {
-    if (event.target instanceof EntityPlayerMP) {
+    if (event.getTarget() instanceof EntityPlayerMP) {
       for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
-        PacketHandler.sendTo(new PacketUpgradeState(type, isActive((EntityPlayer) event.target, type), event.target.getEntityId()),
-            (EntityPlayerMP) event.entityPlayer);
+        PacketHandler.sendTo(new PacketUpgradeState(type, isActive((EntityPlayer) event.getTarget(), type), event.getTarget().getEntityId()),
+            (EntityPlayerMP) event.getEntityPlayer());
       }
     }
   }
@@ -408,7 +411,7 @@ public class DarkSteelController {
       return;
     }
 
-    ItemStack boots = player.getEquipmentInSlot(1);
+    ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
     if (jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
@@ -439,14 +442,14 @@ public class DarkSteelController {
 
   private void updateNightvision(EntityPlayer player) {
     if (isNightVisionUpgradeEquipped(player) && nightVisionActive) {
-      player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 210, 0, true, true));
+      player.addPotionEffect(new PotionEffect(MobEffects.nightVision, 210, 0, true, true));
     }
     if (!isNightVisionUpgradeEquipped(player) && nightVisionActive) {
       nightVisionActive = false;
       removeNightvision = true;
     }
     if (removeNightvision) {
-      player.removePotionEffect(Potion.nightVision.getId());
+      player.removePotionEffect(MobEffects.nightVision);
       removeNightvision = false;
     }
   }

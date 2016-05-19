@@ -2,14 +2,18 @@ package crazypants.enderio.fluid;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.config.Config;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -19,10 +23,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.StringUtils;
-
-import crazypants.enderio.config.Config;
 
 public class BlockFluidEio extends BlockFluidClassic {
 
@@ -39,23 +39,26 @@ public class BlockFluidEio extends BlockFluidClassic {
     super(fluid, material);
     this.fluid = fluid;    
     setUnlocalizedName(fluid.getUnlocalizedName());
+    setRegistryName( "block" + StringUtils.capitalize(fluidName));
   }
 
   protected void init() {
-    GameRegistry.registerBlock(this, "block" + StringUtils.capitalize(fluidName));
+    GameRegistry.register(this);
   }
 
   @Override
   public boolean canDisplace(IBlockAccess world, BlockPos pos) {
-    if(world.getBlockState(pos).getBlock().getMaterial().isLiquid()) {
+    IBlockState bs = world.getBlockState(pos);
+    if(bs.getBlock().getMaterial(bs).isLiquid()) {
       return false;
     }
     return super.canDisplace(world, pos);
   }
 
   @Override
-  public boolean displaceIfPossible(World world, BlockPos pos) {   
-    if(world.getBlockState(pos).getBlock().getMaterial().isLiquid()) {
+  public boolean displaceIfPossible(World world, BlockPos pos) {
+    IBlockState bs = world.getBlockState(pos);
+    if(bs.getBlock().getMaterial(bs).isLiquid()) {
       return false;
     }
     return super.displaceIfPossible(world, pos);
@@ -72,7 +75,7 @@ public class BlockFluidEio extends BlockFluidClassic {
     if(this == Fluids.blockFireWater) {
       entity.setFire(50);
     } else if(this == Fluids.blockRocketFuel && entity instanceof EntityLivingBase) {
-      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.jump.id, 150, 3, true, true));
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.jump, 150, 3, true, true));
     } else if(this == Fluids.blockNutrientDistillation && entity instanceof EntityPlayerMP) {
       long time = entity.worldObj.getTotalWorldTime();
       EntityPlayerMP player = (EntityPlayerMP) entity;
@@ -81,7 +84,7 @@ public class BlockFluidEio extends BlockFluidClassic {
         player.getEntityData().setLong("eioLastFoodBoost", time);
       }
     } else if (this == Fluids.blockHootch && entity instanceof EntityLivingBase) {
-      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 150, 0, true, true));
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.confusion, 150, 0, true, true));
     }
 
     super.onEntityCollidedWithBlock(world,pos, entity);

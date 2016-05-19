@@ -17,7 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,15 +74,20 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   protected ItemConduitProbe() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName("enderio." + ModObject.itemConduitProbe.name());
+    setRegistryName(ModObject.itemConduitProbe.name());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
   
+  
+  
   @Override
-  public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer playerIn, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {
+  
          TileEntity te = world.getTileEntity(pos);
     if(!(te instanceof IConduitBundle)) {
-      return false;
+      return EnumActionResult.FAIL;
     }
         
     if(itemStack.getItemDamage() == 0) {      
@@ -87,24 +95,23 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
         if(world.isRemote) {
           PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos.getX(), pos.getY(), pos.getZ(), side));
         }
-        return true;
+        return EnumActionResult.PASS;
       }
     } 
-    return false;
+    return EnumActionResult.FAIL;
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemConduitProbe.getUnlocalisedName());
+    GameRegistry.register(this);
   }
-
  
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
+  
   @Override
-  public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player) {  
+  public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {   
     return true;
   }
   

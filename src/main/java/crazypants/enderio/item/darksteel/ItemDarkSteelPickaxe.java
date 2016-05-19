@@ -3,26 +3,6 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
@@ -39,27 +19,48 @@ import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TravelController;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_pickaxe";
 
-  public static boolean isEquipped(EntityPlayer player) {
+  public static boolean isEquipped(EntityPlayer player, EnumHand hand) {
     if (player == null) {
       return false;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItem(hand);
     if (equipped == null) {
       return false;
     }
     return equipped.getItem() == DarkSteelItems.itemDarkSteelPickaxe;
   }
 
-  public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
-    if (!isEquipped(player)) {
+  public static boolean isEquippedAndPowered(EntityPlayer player, EnumHand hand, int requiredPower) {
+    if (!isEquipped(player, hand)) {
       return false;
     }
-    return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem()) >= requiredPower;
+    return EnergyUpgrade.getEnergyStored(player.getHeldItem(hand)) >= requiredPower;
   }
 
   public static ItemDarkSteelPickaxe create() {
@@ -75,6 +76,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     super(ItemDarkSteelSword.MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(NAME);
+    setRegistryName(NAME);
   }
 
   @Override
@@ -102,25 +104,28 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public boolean onBlockDestroyed(ItemStack item, World world, Block block, BlockPos pos, EntityLivingBase entLiving) {
-    if (block.getBlockHardness(world, pos) != 0.0D) {
-      if (useObsidianEffeciency(item, block)) {
+  public boolean onBlockDestroyed(ItemStack item, World world, IBlockState bs, BlockPos pos, EntityLivingBase entityLiving) {
+    if (bs.getBlockHardness(world, pos) != 0.0D) {
+      if (useObsidianEffeciency(item, bs)) {
         extractEnergy(item, Config.darkSteelPickPowerUseObsidian, false);
       }
     }
-    return super.onBlockDestroyed(item, world, block, pos, entLiving);
+    return super.onBlockDestroyed(item, world, bs, pos, entityLiving);
   }
 
+  
+
   @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-    if (!isTravelUpgradeActive(player, item) && world.isRemote) {
+  public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {   
+    if (!isTravelUpgradeActive(player, item, hand) && world.isRemote) {
       return doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);
     }
-    return false;
+    return EnumActionResult.FAIL;
   }
 
   @SideOnly(Side.CLIENT)
-  static boolean doRightClickItemPlace(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10) {
+  static EnumActionResult doRightClickItemPlace(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10) {
     int current = player.inventory.currentItem;
     int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
     if (slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
@@ -130,12 +135,15 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
        */
       player.inventory.currentItem = slot;
       Minecraft mc = Minecraft.getMinecraft();
-      boolean result = mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],
-          mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
+//      boolean result = mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],
+//          mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
+      
+      EnumHand hand = EnumHand.MAIN_HAND;
+      EnumActionResult result = mc.playerController.processRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],hand);      
       player.inventory.currentItem = current;
-      return (result);
+      return result;
     }
-    return false;
+    return EnumActionResult.FAIL;
   }
 
   @Override
@@ -164,7 +172,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public boolean canHarvestBlock(Block block, ItemStack item) {
+  public boolean canHarvestBlock(IBlockState block, ItemStack item) {    
     if (hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
       return block == Blocks.snow_layer ? true : block == Blocks.snow || super.canHarvestBlock(block, item);
     } else {
@@ -173,12 +181,16 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   private boolean hasSpoonUpgrade(ItemStack item) {
+
     return SpoonUpgrade.loadFromItem(item) != null;
   }
 
   @Override
-  public float getDigSpeed(ItemStack stack, IBlockState state) {
-    if (useObsidianEffeciency(stack, state.getBlock())) {
+  public float getStrVsBlock(ItemStack stack, IBlockState state) {
+    if (state.getMaterial() == Material.glass) {
+      return efficiencyOnProperMaterial;
+    }
+    if (useObsidianEffeciency(stack, state)) {
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered
           + Config.darkSteelPickEffeciencyObsidian;
     }
@@ -188,7 +200,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
     }
-    return super.getDigSpeed(stack, state);
+    return super.getStrVsBlock(stack, state);
   }
 
   public static boolean isToolEffective(IBlockState state, ItemStack stack) {
@@ -199,22 +211,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return false;
   }
 
-  @Override
-  public float getStrVsBlock(ItemStack item, Block block) {
-    if (block.getMaterial() == Material.glass) {
-      return efficiencyOnProperMaterial;
-    }
-    return super.getStrVsBlock(item, block);
-  }
-
-  private boolean useObsidianEffeciency(ItemStack item, Block block) {
+  private boolean useObsidianEffeciency(ItemStack item, IBlockState blockState) {
     boolean useObsidianSpeed = false;
     int energy = getEnergyStored(item);
     if (energy > Config.darkSteelPickPowerUseObsidian) {
-      useObsidianSpeed = block == Blocks.obsidian;
+      useObsidianSpeed = blockState.getBlock() == Blocks.obsidian;
       if (!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
         try {
-          useObsidianSpeed = (block != null && block.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
+          useObsidianSpeed = (blockState != null && blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
         } catch (Exception e) {
           // given we are passing in a null world to getBlockHardness it is
           // possible this could cause an NPE, so just ignore it
@@ -234,7 +238,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, NAME);
+    GameRegistry.register(this);
   }
 
   @Override
@@ -298,7 +302,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public boolean isActive(EntityPlayer ep, ItemStack equipped) {
-    return isTravelUpgradeActive(ep, equipped);
+    return isTravelUpgradeActive(ep, equipped, EnumHand.MAIN_HAND) || isTravelUpgradeActive(ep, equipped, EnumHand.OFF_HAND);
   }
 
   @Override
@@ -306,17 +310,17 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     extractEnergy(equipped, power, false);
   }
 
-  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
-    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped, EnumHand hand) {
+    return isEquipped(ep, hand) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
 
   @Override
-  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-    if (isTravelUpgradeActive(player, stack)) {
+  public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    if (isTravelUpgradeActive(player, stack, hand)) {
       if (world.isRemote) {
         if (TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
-          player.swingItem();
-          return stack;
+          player.swingArm(hand);
+          return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
         }
       }
 
@@ -326,14 +330,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       }
       if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
         if (TravelController.instance.doBlink(stack, player)) {
-          player.swingItem();
+          player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
-      return stack;
+      return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
 
-    return super.onItemRightClick(stack, world, player);
+    return super.onItemRightClick(stack, world, player, hand);
   }
 
   @Override
