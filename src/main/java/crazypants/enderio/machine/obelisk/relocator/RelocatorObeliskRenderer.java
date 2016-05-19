@@ -4,7 +4,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 
 @SideOnly(Side.CLIENT)
@@ -14,7 +13,7 @@ public class RelocatorObeliskRenderer extends ObeliskSpecialRenderer<TileRelocat
   private ItemStack onStack = new ItemStack(Blocks.prismarine);
 
   public RelocatorObeliskRenderer() {
-    super(EnderIO.blockSpawnGuard, null);
+    super(null);
   }
 
   @Override
