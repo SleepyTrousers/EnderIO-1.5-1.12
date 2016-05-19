@@ -7,8 +7,10 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IStringSerializable;
@@ -56,8 +58,13 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   private BlockEndermanSkull() {
-    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, ItemEndermanSkull.class, Material.circuits);
+    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, Material.circuits);
     setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
+  }
+
+  @Override
+  protected ItemBlock createItemBlock() {
+    return new ItemEndermanSkull(this);
   }
 
   @Override
@@ -101,13 +108,13 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getRenderType() {
-    return 2;
+  public EnumBlockRenderType getRenderType(IBlockState bs) {
+    return EnumBlockRenderType.MODEL;
   }
 
   @Override
@@ -122,16 +129,16 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
       return;
     }
     world.setBlockState(pos, getStateFromMeta(stack.getItemDamage()));
-    world.markBlockForUpdate(pos);
+    world.notifyBlockUpdate(pos, state, state, 3);    
   }
 
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos) {
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {
     TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);
     if (tileEntity != null) {
       tileEntity.lookingAt = 20;
     }
-    return super.getSelectedBoundingBox(worldIn, pos);
+    return super.getSelectedBoundingBox(bs, worldIn, pos);
   }
 
   @Override

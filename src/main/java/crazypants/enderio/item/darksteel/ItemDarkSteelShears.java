@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -47,7 +48,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     if (player == null) {
       return false;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if (equipped == null) {
       return false;
     }
@@ -62,7 +63,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     if (!isEquipped(player)) {
       return 0;
     }
-    return EnergyUpgrade.getEnergyStored(player.getCurrentEquippedItem());
+    return EnergyUpgrade.getEnergyStored(player.getHeldItemMainhand());
   }
 
   public static ItemDarkSteelShears create() {
@@ -165,15 +166,17 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     }
   };
 
+  
+  
   @Override
-  public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {
+  public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {  
     if (entity.worldObj.isRemote) {
       return false;
     }
 
     int powerStored = getStoredPower(player);
     if (powerStored < Config.darkSteelShearsPowerUsePerDamagePoint) {
-      return super.itemInteractionForEntity(itemstack, player, entity);
+      return super.itemInteractionForEntity(itemstack, player, entity, hand);
     }
 
     if (entity instanceof IShearable) {
@@ -190,7 +193,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
       int maxSheep = Math.min(sortedTargets.size(), powerStored / Config.darkSteelShearsPowerUsePerDamagePoint);
       for (int i = 0; i < maxSheep; i++) {
         Entity entity2 = sortedTargets.get(i);
-        if (entity2 instanceof EntityLivingBase && super.itemInteractionForEntity(itemstack, player, (EntityLivingBase) entity2)) {
+        if (entity2 instanceof EntityLivingBase && super.itemInteractionForEntity(itemstack, player, (EntityLivingBase) entity2, hand)) {
           result = true;
         }
       }
@@ -201,8 +204,8 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if (evt.originalSpeed > 2.0 && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelShearsPowerUsePerDamagePoint)) {
-      evt.newSpeed = evt.originalSpeed * Config.darkSteelShearsEffeciencyBoostWhenPowered;
+    if (evt.getOriginalSpeed() > 2.0 && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelShearsPowerUsePerDamagePoint)) {
+      evt.setNewSpeed(evt.getOriginalSpeed() * Config.darkSteelShearsEffeciencyBoostWhenPowered);
     }
   }
 

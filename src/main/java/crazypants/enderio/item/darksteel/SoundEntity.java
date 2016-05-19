@@ -24,7 +24,7 @@ public class SoundEntity extends EntityFX {
   public SoundEntity(World worldIn, SoundSource ss) {
     super(worldIn, ss.pos.x, ss.pos.y, ss.pos.z, 0.0D, 0.0D, 0.0D);
     this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-    this.motionX = this.motionY = this.motionZ = 0.0D;
+    this.xSpeed = this.ySpeed= this.zSpeed = 0.0D;
     this.particleGravity = 0.0F;
     this.particleMaxAge = Config.darkSteelSoundLocatorLifespan;
     this.ss = ss;
@@ -68,7 +68,7 @@ public class SoundEntity extends EntityFX {
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-    Minecraft.getMinecraft().getTextureManager().bindTexture(icon.TEXTURE);
+    Minecraft.getMinecraft().getTextureManager().bindTexture(IconEIO.TEXTURE);
 
     worldRendererIn.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
     worldRendererIn.pos(x1 - rotX * scale - rotXY * scale, y1 - rotZ * scale, z1 - rotYZ * scale - rotXZ * scale).tex(maxU, maxV)

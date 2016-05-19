@@ -497,7 +497,7 @@ public final class Config {
 
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {
-    if (event.modID.equals(EnderIO.MODID)) {
+    if (event.getModID().equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
       init();
@@ -507,7 +507,7 @@ public final class Config {
 
   @SubscribeEvent
   public void onConfigFileChanged(ConfigFileChangedEvent event) {
-    if (event.modID.equals(EnderIO.MODID)) {
+    if (event.getModID().equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();

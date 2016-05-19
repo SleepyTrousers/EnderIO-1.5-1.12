@@ -9,6 +9,8 @@ import java.util.List;
 
 import net.minecraft.client.renderer.*;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -189,9 +191,10 @@ public class IoConfigRenderer {
     List<RayTraceResult> hits = new ArrayList<RayTraceResult>();
 
     for (BlockCoord bc : configurables) {
-      Block block = world.getBlockState(bc.getBlockPos()).getBlock();
+      IBlockState bs = world.getBlockState(bc.getBlockPos());
+      Block block = bs.getBlock();
       if (block != null) {
-        RayTraceResult hit = block.collisionRayTrace(world, bc.getBlockPos(), new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
+        RayTraceResult hit = block.collisionRayTrace(bs, world, bc.getBlockPos(), new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
         if (hit != null) {
           hits.add(hit);
         }
@@ -253,7 +256,7 @@ public class IoConfigRenderer {
     GlStateManager.disableLighting();
     
     RenderUtil.bindBlockTexture();    
-    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getBuffer();
 
     GlStateManager.color(1, 1, 1);
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
@@ -404,35 +407,35 @@ public class IoConfigRenderer {
 
   private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, BlockRenderLayer layer) {
 
-    VertexBuffer wr = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer wr = Tessellator.getInstance().getBuffer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
 
-    Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
+    Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
 
     for (BlockCoord bc : blocks) {
       IBlockState bs = world.getBlockState(bc.getBlockPos());
       Block block = bs.getBlock();
-      if (block != null && block.canRenderInLayer(layer)) {
-        renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
+      if (block != null && block.canRenderInLayer(bs, layer)) {
+        renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
       }
     }
 
     Tessellator.getInstance().draw();
-    Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);    
+    Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);    
   }
 
   public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, VertexBuffer worldRendererIn) {
 
     try {
       BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
-      int type = state.getBlock().getRenderType();
-      if (type != 3) {
+      EnumBlockRenderType type = state.getBlock().getRenderType(state);
+      if (type != EnumBlockRenderType.MODEL) {
         blockrendererdispatcher.renderBlock(state, pos, blockAccess, worldRendererIn);
         return;
       }
 
       // We only want to change one param here, the check sides
-      IBakedModel ibakedmodel = blockrendererdispatcher.getModelFromBlockState(state, blockAccess, pos);
+      IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(state);
       blockrendererdispatcher.getBlockModelRenderer().renderModel(blockAccess, ibakedmodel, state, pos, worldRendererIn, false);
       
     } catch (Throwable throwable) {

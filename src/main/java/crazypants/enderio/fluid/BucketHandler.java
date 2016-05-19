@@ -36,10 +36,10 @@ public class BucketHandler {
   @SubscribeEvent
   public void onBucketFill(FillBucketEvent event) {
     // no instanceof check, someone may subclass the vanilla bucket
-    if (event.current != null && event.current.getItem() == Items.bucket && event.current.stackSize > 0) {
-      ItemStack res = getFilledBucket(event.world, event.target);
+    if (event.getEmptyBucket() != null && event.getEmptyBucket().getItem() == Items.bucket && event.getEmptyBucket().stackSize > 0) {
+      ItemStack res = getFilledBucket(event.getWorld(), event.getTarget());
       if (res != null) {
-        event.result = res;
+        event.setFilledBucket(res);
         event.setResult(Result.ALLOW);
       }
     }

@@ -19,16 +19,17 @@ import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
-import net.minecraft.block.Block.SoundType;
+import crazypants.enderio.paint.YetaUtil;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -165,7 +166,7 @@ public class ConduitUtil {
     if (player == null) {
       return ConduitDisplayMode.ALL;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if (equipped == null) {
       return ConduitDisplayMode.ALL;
     }
@@ -193,23 +194,27 @@ public class ConduitUtil {
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {
+    return isConduitEquipped(player, EnumHand.MAIN_HAND);
+  }
+  
+  public static boolean isConduitEquipped(EntityPlayer player, EnumHand hand) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if (player == null) {
       return false;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItem(hand);
     if (equipped == null) {
       return false;
     }
     return equipped.getItem() instanceof IConduitItem;
   }
 
-  public static boolean isProbeEquipped(EntityPlayer player) {
+  public static boolean isProbeEquipped(EntityPlayer player, EnumHand hand) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if (player == null) {
       return false;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItem(hand);
     if (equipped == null) {
       return false;
     }
@@ -377,49 +382,49 @@ public class ConduitUtil {
 
   public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getFrequency() * 0.8F);
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
     } else {
       playClientBreakSound(snd);
     }
   }
 
   private static void playClientBreakSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getFrequency() * 0.8F);
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
   public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getFrequency() * 0.8F);
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
     } else {
       playClientHitSound(snd);
     }
   }
 
   private static void playClientHitSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getFrequency() * 0.5F);
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch() * 0.5F);
   }
 
   public static void playStepSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getFrequency() * 0.8F);
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
     } else {
       playClientStepSound(snd);
     }
   }
 
   private static void playClientStepSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getFrequency());
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
   }
 
   public static void playPlaceSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getFrequency() * 0.8F);
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
     } else {
       playClientPlaceSound(snd);
     }
   }
 
   private static void playClientPlaceSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getFrequency());
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
   }
 }

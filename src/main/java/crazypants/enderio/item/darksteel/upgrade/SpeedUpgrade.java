@@ -4,6 +4,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
@@ -37,7 +38,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
   protected float sprintMultiplier;
 
   public static boolean isEquipped(EntityPlayer player) {
-    ItemStack legs = player.getEquipmentInSlot(2);    
+    ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);    
     return loadFromItem(legs) != null;
   }
   

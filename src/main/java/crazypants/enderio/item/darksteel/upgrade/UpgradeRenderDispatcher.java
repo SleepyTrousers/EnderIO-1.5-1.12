@@ -34,9 +34,9 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onPlayerRenderPre(RenderPlayerEvent.Pre event) {
-    if (!injected.containsKey(event.renderer)) {
-      event.renderer.addLayer(new UpgradeRenderDispatcher(event.renderer));
-      injected.put(event.renderer, null);
+    if (!injected.containsKey(event.getRenderer())) {
+      event.getRenderer().addLayer(new UpgradeRenderDispatcher(event.getRenderer()));
+      injected.put(event.getRenderer(), null);
     }
   }
 

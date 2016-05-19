@@ -41,6 +41,7 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import crazypants.enderio.item.ItemConduitProbe;
+import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -49,6 +50,7 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -64,6 +66,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -350,47 +353,47 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean canBeReplacedByLeaves(IBlockAccess world, BlockPos pos) {
+  public boolean canBeReplacedByLeaves(IBlockState bs, IBlockAccess world, BlockPos pos) {
     return false;
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState bs) {
     return 0;
   }
 
   @Override
-  public int getLightOpacity(IBlockAccess world, BlockPos pos) {
+  public int getLightOpacity(IBlockState bs, IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
-      return super.getLightOpacity(world, pos);
+      return super.getLightOpacity(bs, world, pos);
     }
     IConduitBundle con = (IConduitBundle) te;
     return con.getLightOpacity();
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
+  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
-      return super.getLightValue(world, pos);
+      return super.getLightValue(bs, world, pos);
     }
     IConduitBundle con = (IConduitBundle) te;
     int result = 0;
     if (con.hasFacade()) {
       IBlockState paintSource = con.getPaintSource();
-      result = paintSource.getBlock().getLightValue();
-      if (paintSource.getBlock().isOpaqueCube()) {
+      result = paintSource.getBlock().getLightValue(bs);
+      if (paintSource.getBlock().isOpaqueCube(bs)) {
         return result;
       }
     }
@@ -460,10 +463,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public float getBlockHardness(World world, BlockPos pos) {
+  public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {
     IConduitBundle te = getTileEntity(world, pos);
     if (te == null) {
-      return super.getBlockHardness(world, pos);
+      return super.getBlockHardness(bs, world, pos);
     }
     return te.getFacadeType() == EnumFacadeType.HARDENED ? blockHardness * 10 : blockHardness;
   }
@@ -477,17 +480,17 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SubscribeEvent
   public void onBreakSpeed(BreakSpeed event) {
-    if (event.state.getBlock() == this) {
-      ItemStack held = event.entityPlayer.getCurrentEquippedItem();
+    if (event.getState().getBlock() == this) {
+      ItemStack held = event.getEntityPlayer().getHeldItemMainhand();
       if (held == null || held.getItem().getHarvestLevel(held, "pickaxe") == -1) {
-        event.newSpeed += 2;
+        event.setNewSpeed(event.getNewSpeed() + 2);
       }
-      IConduitBundle te = (IConduitBundle) event.entity.worldObj.getTileEntity(event.pos);
+      IConduitBundle te = (IConduitBundle) event.getEntity().worldObj.getTileEntity(event.getPos());
       if (te != null && te.getFacadeType() == EnumFacadeType.HARDENED) {
-        if (!ConduitUtil.isSolidFacadeRendered(te, event.entityPlayer)) {
-          event.newSpeed *= 6;
+        if (!ConduitUtil.isSolidFacadeRendered(te, event.getEntityPlayer())) {
+          event.setNewSpeed(event.getNewSpeed() * 6);
         } else {
-          event.newSpeed *= 2;
+          event.setNewSpeed(event.getNewSpeed() * 2);
         }
       }
     }
@@ -513,12 +516,12 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean canProvidePower() {
+  public boolean canProvidePower(IBlockState bs) {
     return true;
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
     if (te == null) {
       return true;
@@ -532,7 +535,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       PainterUtil2.setSourceBlock(fac, te.getPaintSource());
       drop.add(fac);
 
-      ConduitUtil.playBreakSound(te.getPaintSource().getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
+      ConduitUtil.playBreakSound(te.getPaintSource().getBlock().getStepSound(), world, pos.getX(), pos.getY(), pos.getZ());
       te.setPaintSource(null);
       te.setFacadeType(EnumFacadeType.BASIC);
     }
@@ -605,7 +608,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
 
     BlockCoord bc = te.getLocation();
-    ConduitUtil.playBreakSound(Block.soundTypeMetal, te.getBundleWorldObj(), bc.x, bc.y, bc.z);
+    ConduitUtil.playBreakSound(SoundType.METAL, te.getBundleWorldObj(), bc.x, bc.y, bc.z);
 
     return true;
   }
@@ -624,15 +627,15 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if (!player.isSneaking() || equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
       return;
     }
-    ConduitUtil.openConduitGui(world, pos, player);
+    ConduitUtil.openConduitGui(world, pos, player);    
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
 
     int x = pos.getX();
     int y = pos.getY();
@@ -642,12 +645,12 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return false;
     }
 
-    ItemStack stack = player.getCurrentEquippedItem();
+    ItemStack stack = player.getHeldItem(hand);
     if (stack != null && Block.getBlockFromItem(stack.getItem()) == EnderIO.blockConduitFacade) {
       // add or replace facade
       return handleFacadeClick(world, pos, player, side, bundle, stack);
 
-    } else if (ConduitUtil.isConduitEquipped(player)) {
+    } else if (ConduitUtil.isConduitEquipped(player, hand)) {
       // Add conduit
       if (player.isSneaking()) {
         return false;
@@ -656,14 +659,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         return true;
       }
 
-    } else if (ConduitUtil.isProbeEquipped(player)) {
+    } else if (ConduitUtil.isProbeEquipped(player, hand)) {
       // Handle copy / paste of settings
       if (handleConduitProbeClick(world, x, y, z, player, bundle, stack)) {
         return true;
       }
-    } else if (ToolUtil.isToolEquipped(player) && player.isSneaking()) {
+    } else if (ToolUtil.isToolEquipped(player, hand) && player.isSneaking()) {
       // Break conduit with tool
-      if (handleWrenchClick(world, x, y, z, player)) {
+      if (handleWrenchClick(world, x, y, z, player, hand)) {
         return true;
       }
     }
@@ -729,13 +732,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   }
 
-  private boolean handleWrenchClick(World world, int x, int y, int z, EntityPlayer player) {
-    ITool tool = ToolUtil.getEquippedTool(player);
+  private boolean handleWrenchClick(World world, int x, int y, int z, EntityPlayer player, EnumHand hand) {
+    ITool tool = ToolUtil.getEquippedTool(player, hand);
     if (tool != null) {
-      if (tool.canUse(player.getCurrentEquippedItem(), player, new BlockPos(x, y, z))) {
+      BlockPos pos = new BlockPos(x, y, z);
+      if (tool.canUse(player.getHeldItem(hand), player, pos)) {
         if (!world.isRemote) {
-          removedByPlayer(world, new BlockPos(x, y, z), player, true);
-          tool.used(player.getCurrentEquippedItem(), player, new BlockPos(x, y, z));
+          removedByPlayer(world.getBlockState(pos), world, pos, player, true);
+          tool.used(player.getHeldItem(hand), player, new BlockPos(x, y, z));
         }
         return true;
       }
@@ -754,14 +758,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
   }
 
-  private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+  private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack, EnumHand hand) {
     IConduitItem equipped = (IConduitItem) stack.getItem();
     if (!bundle.hasType(equipped.getBaseConduitType())) {
       if (!world.isRemote) {
         bundle.addConduit(equipped.createConduit(stack, player));
-        ConduitUtil.playBreakSound(soundTypeMetal, world, x, y, z);
+        ConduitUtil.playBreakSound(SoundType.METAL, world, x, y, z);
         if (!player.capabilities.isCreativeMode) {
-          player.getCurrentEquippedItem().stackSize--;
+          player.getHeldItem(hand).stackSize--;
         }
       }
       return true;
@@ -769,19 +773,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return false;
   }
 
-  public boolean handleFacadeClick(World world, BlockPos pos, EntityPlayer player, EnumFacing side, IConduitBundle bundle, ItemStack stack) {
+  public boolean handleFacadeClick(World world, BlockPos pos, EntityPlayer player, EnumFacing side, IConduitBundle bundle, ItemStack stack, EnumHand hand) {
 
     // Add facade
     if (player.isSneaking()) {
       return false;
     }
 
-    IBlockState facadeID = PainterUtil2.getSourceBlock(player.getCurrentEquippedItem());
+    IBlockState facadeID = PainterUtil2.getSourceBlock(player.getHeldItem(hand));
     if (facadeID == null) {
       return false;
     }
 
-    int facadeType = player.getCurrentEquippedItem().getItemDamage();
+    int facadeType = player.getHeldItem(hand).getItemDamage();
 
     if (bundle.hasFacade()) {
       if (!ConduitUtil.isSolidFacadeRendered(bundle, player) || facadeEquals(bundle, facadeID, facadeType)) {
@@ -796,12 +800,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     bundle.setPaintSource(facadeID);
     bundle.setFacadeType(EnumFacadeType.getTypeFromMeta(facadeType));
     if (!world.isRemote) {
-      ConduitUtil.playPlaceSound(facadeID.getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
+      ConduitUtil.playPlaceSound(facadeID.getBlock().getStepSound(), world, pos.getX(), pos.getY(), pos.getZ());
     }
     if (!player.capabilities.isCreativeMode) {
       stack.stackSize--;
     }
-    world.markBlockForUpdate(pos);
+    IBlockState bs = world.getBlockState(pos);
+    world.notifyBlockUpdate(pos, bs, bs, 3);
     bundle.getEntity().markDirty();
     return true;
   }
@@ -901,7 +906,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
 
     TileEntity te = world.getTileEntity(pos);
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;

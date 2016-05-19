@@ -23,13 +23,13 @@ public class ConduitProbeOverlayRenderer {
   @SubscribeEvent
   public void renderOverlay(RenderGameOverlayEvent event) {
     ItemStack equippedProbe = getEquippedProbe();
-    if(equippedProbe != null && event.type == ElementType.ALL) {
+    if(equippedProbe != null && event.getType() == ElementType.ALL) {
       doRenderOverlay(event, equippedProbe);
     }
   }
 
   private ItemStack getEquippedProbe() {
-    ItemStack equipped = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
+    ItemStack equipped = Minecraft.getMinecraft().thePlayer.getHeldItemMainhand();
     if(equipped != null && equipped.getItem() == EnderIO.itemConduitProbe) {
       return equipped;
     }
@@ -45,7 +45,7 @@ public class ConduitProbeOverlayRenderer {
       icon1 = IconEIO.PROBE_OVERLAY_PROBE_OFF;
       icon2 = IconEIO.PROBE_OVERLAY_COPY;
     }
-    ScaledResolution res = event.resolution;
+    ScaledResolution res = event.getResolution();
 
     double offsetX = res.getScaledWidth() - 48;
     double offsetY = res.getScaledHeight() - 16;
